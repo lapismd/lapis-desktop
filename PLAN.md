@@ -16,14 +16,15 @@ edit Markdown, save safely, and restore the session**. Keep the existing Notes
 workspace and editor; use jj-store and JJButler as references for native chrome
 and lifecycle.
 
-Ship Rust plus the system WebView. Node/pnpm remain development tools. Keep
-Tauri’s profiles, database, settings, and layout separate from the existing
-application during migration.
+Ship Rust plus the system WebView. Node/pnpm remain development tools. Use
+`.lapis` as the shared vault-local application-state default across every host.
+The application is unreleased, so pre-release state can be reset or overwritten
+without a legacy-data migration requirement.
 
 The current source provides useful foundations: a native desktop bridge, an
 injectable database connection, and published workspace/editor packages. Two
-upstream changes are needed: recognizing `tauri-desktop` and making
-application-state paths configurable.
+upstream changes are needed: recognizing `tauri-desktop` and changing the shared
+application-state default to `.lapis` throughout the app.
 
 ## Architecture and ownership
 
@@ -49,11 +50,20 @@ application-state paths configurable.
   connection IDs and database paths host-owned, disable arbitrary file
   attachment and extension loading, and qualify these boundaries before enabling
   real-vault editing.
-- **State isolation:** add an optional API configuration-directory setting,
-  defaulting to the existing `.obsidian` behavior. Tauri uses
-  `.obsidian/lapis-desktop` for vault-local settings, layout, hotkeys, and
-  plugin state. Profiles and databases use its separate OS application-data
-  directory. Notes and attachments retain their existing formats and locations.
+- **Shared application state:** change the shared API's default vault-local
+  state directory to `.lapis`. Configuration, workspace/layout, hotkeys, and
+  plugin persistence use that default across desktop, web, and server hosts. Fix
+  hard-coded state paths in their owning packages and validate every affected
+  registry consumer. This is the application default, with no Tauri-specific
+  subdirectory or default override. Host profiles and databases continue to use
+  their OS application-data directories. Notes and attachments retain their
+  existing formats and locations.
+- **Pre-release state policy:** start with fresh `.lapis` state. Do not require
+  `.obsidian` discovery, import, merging, compatibility fallbacks, backups, or
+  legacy-state rollback. Existing pre-release settings, layouts, generated data,
+  and plugin state may be reset or overwritten. Normal note-save integrity,
+  dirty-buffer handling, and database transaction guarantees remain acceptance
+  requirements.
 - **Application ownership:** construct one explicit `App` per session. Install
   the public compatibility lease before plugin loading and release it after
   complete teardown.
@@ -67,29 +77,35 @@ JavaScript runtime.
 Each row is a milestone or milestone task with independently verified work.
 Commit each verified task in its owning repository.
 
-| Slice                                        | Functionality delivered                                                                                                                                                                  | Completion gate                                                                                                                                                                                                             |
-| -------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **M0.0 — Store the full plan**               | Create the new directory and save this entire plan as root `PLAN.md`, before scaffolding.                                                                                                | The saved document contains the complete architecture, delivery sequence, tracking rules, acceptance gates, and deferred work. Include it in the initial repository commit.                                                 |
-| **M0.1 — Governed native shell**             | Initialize the repository, toolchains, specification, tracker, CI, branded Tauri window, native controls, and development commands.                                                      | Cold launch, resize, drag, close, and relaunch work; a local `.app` launches without Deno; governance checks pass.                                                                                                          |
-| **M1 — Shared host compatibility**           | Add `tauri-desktop` to public runtime contracts and desktop classification. Add configurable application-state paths covering configuration, workspace, hotkeys, and plugin persistence. | Upstream regressions prove both the existing default paths and isolated Tauri paths. Publish verified API changes and consume their registry release.                                                                       |
-| **M2 — Native vault access**                 | Native Open/Create folder actions, recent-vault profiles, admitted-root filesystem operations, atomic writes, and scoped resource URLs.                                                  | Real temporary-folder tests cover cancellation, Unicode paths, binary data, permission failures, traversal/symlink escape, and interrupted writes. Existing Deno state remains untouched.                                   |
-| **M3 — Working Notes session**               | Rust database bridge, explicit `App` startup, existing workspace shell, File Explorer, Source Editor, and Markdown editing/reading.                                                      | In the actual WebView, open a seeded vault, edit a note, verify disk content, display a local attachment, close the database, and reopen successfully. Database rollback and restart tests pass.                            |
-| **M4 — Safe everyday use**                   | Restore the last vault and layout; flush pending saves on close, quit, reload, and vault switching; preserve dirty content after failures; detect external changes.                      | Cold edit → save → quit → relaunch restores content and session. Failed saves prevent silent close; external edits never silently overwrite dirty buffers; repeated switching leaves no stale sessions or subscriptions.    |
-| **M5 — File management**                     | Native watching, create/rename/move/delete, attachment import, reveal in Finder, and available system-trash behavior.                                                                    | UI and disk stay consistent after internal and external changes. Dirty-note rename/delete, collisions, watcher overflow/reconciliation, and teardown are covered.                                                           |
-| **M6 — Find and navigate**                   | Search, links, backlinks, outline, tags, properties, and normal workspace navigation through existing packages.                                                                          | Searches and metadata reflect edits, renames, deletions, and restart; navigation opens the intended note and preserves layout.                                                                                              |
-| **M7 — Desktop integration**                 | Full native menus and shortcuts, clipboard, notifications, About, single-instance delivery, and application URLs.                                                                        | Cold launch and already-running delivery pass; external links open safely; menu actions use the same application commands as the UI.                                                                                        |
-| **M8 — Portable plugin intake**              | Add remaining supported first-party plugins individually, beginning with those needing no new native service.                                                                            | Each plugin has its own capability mapping, persistence/restart checks, and interaction/accessibility acceptance. Unsupported capabilities remain explicit.                                                                 |
-| **M9 — Advanced services, deferred**         | Separate tasks for language services, terminal/PTY, AI controller integration, model services, secure storage, signing, and sync.                                                        | Each task receives an owning specification and native lifecycle/security acceptance before implementation. Preserve existing public service protocols; a similar reference implementation does not establish compatibility. |
-| **M10 — Installed-plugin support, deferred** | Verified registry installation, asset delivery, enable/disable persistence, compatibility, and recovery.                                                                                 | Signed-package verification, shared API identity, restart, failed-load recovery, and capability restrictions pass in a packaged app.                                                                                        |
-| **M11 — Distribution and other platforms**   | Signed/notarized macOS distribution and update/rollback handling; then separate Linux and Windows qualification tasks.                                                                   | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                    |
-| **M12 — Desktop cutover**                    | Import supported legacy state, make Tauri the default desktop application, and retire the old desktop host.                                                                              | Every currently supported desktop capability is migrated or explicitly retired, migration/rollback tests pass, and the replacement has no Deno runtime dependency.                                                          |
+| Slice                                        | Functionality delivered                                                                                                                                                                                               | Completion gate                                                                                                                                                                                                             |
+| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **M0.0 — Store the full plan**               | Create the new directory and save this entire plan as root `PLAN.md`, before scaffolding.                                                                                                                             | The saved document contains the complete architecture, delivery sequence, tracking rules, acceptance gates, and deferred work. Include it in the initial repository commit.                                                 |
+| **M0.1 — Governed native shell**             | Initialize the repository, toolchains, specification, tracker, CI, branded Tauri window, native controls, and development commands.                                                                                   | Cold launch, resize, drag, close, and relaunch work; a local `.app` launches without Deno; governance checks pass.                                                                                                          |
+| **M1 — Shared runtime and state defaults**   | Add `tauri-desktop` to public runtime contracts and desktop classification. Make `.lapis` the shared application-state default for configuration, workspace/layout, hotkeys, and plugin persistence across all hosts. | Upstream regressions prove the shared `.lapis` default across every affected package and host. Publish verified shared-package changes and validate their registry consumers.                                               |
+| **M2 — Native vault access**                 | Native Open/Create folder actions, recent-vault profiles, admitted-root filesystem operations, atomic writes, and scoped resource URLs.                                                                               | Real temporary-folder tests cover cancellation, Unicode paths, binary data, permission failures, traversal/symlink escape, and interrupted writes.                                                                          |
+| **M3 — Working Notes session**               | Rust database bridge, explicit `App` startup, existing workspace shell, File Explorer, Source Editor, and Markdown editing/reading.                                                                                   | In the actual WebView, open a seeded vault, edit a note, verify disk content, display a local attachment, close the database, and reopen successfully. Database rollback and restart tests pass.                            |
+| **M4 — Safe everyday use**                   | Restore the last vault and layout; flush pending saves on close, quit, reload, and vault switching; preserve dirty content after failures; detect external changes.                                                   | Cold edit → save → quit → relaunch restores content and session. Failed saves prevent silent close; external edits never silently overwrite dirty buffers; repeated switching leaves no stale sessions or subscriptions.    |
+| **M5 — File management**                     | Native watching, create/rename/move/delete, attachment import, reveal in Finder, and available system-trash behavior.                                                                                                 | UI and disk stay consistent after internal and external changes. Dirty-note rename/delete, collisions, watcher overflow/reconciliation, and teardown are covered.                                                           |
+| **M6 — Find and navigate**                   | Search, links, backlinks, outline, tags, properties, and normal workspace navigation through existing packages.                                                                                                       | Searches and metadata reflect edits, renames, deletions, and restart; navigation opens the intended note and preserves layout.                                                                                              |
+| **M7 — Desktop integration**                 | Full native menus and shortcuts, clipboard, notifications, About, single-instance delivery, and application URLs.                                                                                                     | Cold launch and already-running delivery pass; external links open safely; menu actions use the same application commands as the UI.                                                                                        |
+| **M8 — Portable plugin intake**              | Add remaining supported first-party plugins individually, beginning with those needing no new native service.                                                                                                         | Each plugin has its own capability mapping, persistence/restart checks, and interaction/accessibility acceptance. Unsupported capabilities remain explicit.                                                                 |
+| **M9 — Advanced services, deferred**         | Separate tasks for language services, terminal/PTY, AI controller integration, model services, secure storage, signing, and sync.                                                                                     | Each task receives an owning specification and native lifecycle/security acceptance before implementation. Preserve existing public service protocols; a similar reference implementation does not establish compatibility. |
+| **M10 — Installed-plugin support, deferred** | Verified registry installation, asset delivery, enable/disable persistence, compatibility, and recovery.                                                                                                              | Signed-package verification, shared API identity, restart, failed-load recovery, and capability restrictions pass in a packaged app.                                                                                        |
+| **M11 — Distribution and other platforms**   | Signed/notarized macOS distribution and update/rollback handling; then separate Linux and Windows qualification tasks.                                                                                                | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                    |
+| **M12 — Desktop cutover**                    | Make Tauri the default desktop application and retire the old desktop host. No legacy application-state import is required.                                                                                           | Every currently supported desktop capability is migrated or explicitly retired, and the replacement has no Deno runtime dependency.                                                                                         |
 
 **M4 completes the first useful milestone.** M0–M3 provide runnable, testable
 increments toward it. Later services do not block that milestone.
 
-Migration of the web/server hosts is separate. Retiring `desktop-deno` must
-preserve Deno services still used by those hosts. Features already unsupported
-by the old desktop host do not become migration requirements automatically.
+The shared `.lapis` default applies to web/server hosts in M1 as well. Replacing
+their runtime hosts is separate work. Retiring `desktop-deno` must preserve Deno
+services still used by those hosts. Features already unsupported by the old
+desktop host do not become migration requirements automatically.
+
+On 2026-10-15 the user approved the application-wide `.lapis` default and
+removal of pre-release state preservation and legacy-data migration gates. The
+M1, M2, and M12 scopes and gates reflect that decision; completed M0 gates are
+unchanged.
 
 ## Governance and progress tracking
 
@@ -170,6 +186,7 @@ launch, bundle contents and native behavior without a signing gate (confirmed
 - Prove installation, checks, builds, and packaged launch in an environment
   without Deno. Keep the existing desktop available throughout preview
   qualification.
-- Import legacy state only in the cutover work, with backups, repeatable
-  migration, and rollback evidence. Separate application state does not imply
-  that concurrent editing by both hosts is qualified.
+- Verify fresh `.lapis` configuration, workspace/layout, hotkeys, and plugin
+  persistence in every affected host through the shared packages. Pre-release
+  state resets and overwrites are acceptable; legacy-state import and
+  preservation are not release gates.

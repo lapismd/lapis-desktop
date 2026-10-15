@@ -8,24 +8,24 @@
 
 Completed: M0.0, M0.1.
 
-Next: M1 — Specify and release the shared runtime and state-directory extension
+Next: M1 — Specify and release the app-wide `.lapis` default and Tauri runtime
 
 The first usable notes milestone ends at M4. Native services and
 installed-plugin support remain explicitly deferred.
 
-| Task | Status   | Next action                                                          |
-| ---- | -------- | -------------------------------------------------------------------- |
-| M0.0 | Done     | Complete                                                             |
-| M0.1 | Done     | Complete                                                             |
-| M1   | Planned  | Specify and release the shared runtime and state-directory extension |
-| M2   | Planned  | Implement admitted native vault access                               |
-| M3   | Planned  | Qualify Rust database conformance and mount Notes                    |
-| M4   | Planned  | Prove safe close, restore and external-edit handling                 |
-| M5   | Planned  | Qualify file operations and native watching                          |
-| M6   | Planned  | Integrate search and metadata navigation                             |
-| M7   | Planned  | Complete native menus and application delivery                       |
-| M8   | Planned  | Intake one portable plugin at a time                                 |
-| M9   | Deferred | Specify each advanced service before implementation                  |
-| M10  | Deferred | Specify and qualify verified installed plugins                       |
-| M11  | Planned  | Qualify signed distribution and each additional platform             |
-| M12  | Planned  | Prove legacy migration, rollback and desktop retirement              |
+| Task | Status   | Next action                                                         |
+| ---- | -------- | ------------------------------------------------------------------- |
+| M0.0 | Done     | Complete                                                            |
+| M0.1 | Done     | Complete                                                            |
+| M1   | Planned  | Specify and release the app-wide `.lapis` default and Tauri runtime |
+| M2   | Planned  | Implement admitted native vault access                              |
+| M3   | Planned  | Qualify Rust database conformance and mount Notes                   |
+| M4   | Planned  | Prove safe close, restore and external-edit handling                |
+| M5   | Planned  | Qualify file operations and native watching                         |
+| M6   | Planned  | Integrate search and metadata navigation                            |
+| M7   | Planned  | Complete native menus and application delivery                      |
+| M8   | Planned  | Intake one portable plugin at a time                                |
+| M9   | Deferred | Specify each advanced service before implementation                 |
+| M10  | Deferred | Specify and qualify verified installed plugins                      |
+| M11  | Planned  | Qualify signed distribution and each additional platform            |
+| M12  | Planned  | Qualify capability coverage and retire the old desktop host         |
