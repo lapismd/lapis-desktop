@@ -1,0 +1,78 @@
+import {
+  mkdtempSync,
+  mkdirSync,
+  symlinkSync,
+  existsSync,
+  readFileSync,
+} from "node:fs";
+import { resolve, join } from "node:path";
+import { spawn } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+export async function run(command, args, env = process.env) {
+  return new Promise((resolveRun, reject) => {
+    const child = spawn(command, args, { stdio: "inherit", env });
+    const stop = () => child.kill("SIGTERM");
+    process.once("SIGINT", stop);
+    process.once("SIGTERM", stop);
+    child.once("error", reject);
+    child.once("exit", (code, signal) => {
+      process.removeListener("SIGINT", stop);
+      process.removeListener("SIGTERM", stop);
+      if (code === 0) resolveRun();
+      else reject(new Error(`${command} exited with ${signal ?? code}`));
+    });
+  });
+}
+async function acceptance() {
+  if (process.platform !== "darwin" || process.arch !== "arm64")
+    throw new Error("M0.1 native acceptance requires macOS ARM64.");
+  mkdirSync(".local/native-test", { recursive: true });
+  const directory = mkdtempSync(resolve(".local/native-test/run-"));
+  await run("pnpm", [
+    "exec",
+    "tauri",
+    "build",
+    "--debug",
+    "--no-bundle",
+    "--features",
+    "e2e",
+    "--config",
+    "src-tauri/tauri.e2e.conf.json",
+  ]);
+  const bin = join(directory, "bin");
+  mkdirSync(bin);
+  symlinkSync(process.execPath, join(bin, "node"));
+  const environment = {
+    ...process.env,
+    PATH: `${bin}:/usr/bin:/bin`,
+    LAPIS_DESKTOP_ACCEPTANCE_STATE: join(directory, "window-state.json"),
+    LAPIS_DESKTOP_ACCEPTANCE_ROOT: directory,
+  };
+  await run(
+    resolve("node_modules/.bin/wdio"),
+    ["run", "tests/desktop/wdio.conf.mjs"],
+    environment,
+  );
+  await run(
+    process.execPath,
+    ["--test", "--test-concurrency=1", "tests/desktop/lifecycle.test.mjs"],
+    environment,
+  );
+  if (!existsSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE))
+    throw new Error("The native window-state plugin did not persist geometry.");
+  console.log(
+    "Cold native acceptance passed twice with isolated state and no Deno on PATH.",
+  );
+  console.log(
+    `Native state evidence: ${readFileSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE, "utf8")}`,
+  );
+}
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === fileURLToPath(import.meta.url)
+)
+  acceptance().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });

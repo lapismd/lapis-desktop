@@ -1,0 +1,2685 @@
+{
+  "schema": 1,
+  "sources": {
+    "lapis-notes": {
+      "revision": "8d748436fe7e73353bd52b07a385a198429187b7",
+      "repository": "https://github.com/lapismd/lapis-notes",
+      "capture": "Tracked desktop source and canonical desktop requirements at this revision; optional services remain deferred."
+    }
+  },
+  "coverage": {
+    "acceptance": 67,
+    "command": 81,
+    "event": 8,
+    "packaging": 13,
+    "plugin": 16,
+    "requirement": 94,
+    "service": 17
+  },
+  "items": [
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/app-icon-assets.test.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/app-icon-assets.test.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/app-icon-assets.test.mjs",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/dev-command.test.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/dev-command.test.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/dev-command.test.mjs",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/distribution.test.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/distribution.test.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/distribution.test.mjs",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/lgtm-command.test.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/lgtm-command.test.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/lgtm-command.test.mjs",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/local-registry-env.test.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/local-registry-env.test.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/local-registry-env.test.mjs",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/smoke-database-worker.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/smoke-database-worker.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/smoke-database-worker.mjs",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/scripts/smoke-packaged.mjs",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/scripts/smoke-packaged.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/smoke-packaged.mjs",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/about-window.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/about-window.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/about-window.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/acceptance-mode.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/acceptance-mode.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/acceptance-mode.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/acceptance-report.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/acceptance-report.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/acceptance-report.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/agent-runtime.integration.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/agent-runtime.integration.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/agent-runtime.integration.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/agent-runtime.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/agent-runtime.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/agent-runtime.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/app-database-worker-runtime.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/app-database-worker-runtime.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/app-database-worker-runtime.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/app-database.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/app-database.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/app-database.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/application-menu.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/application-menu.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/application-menu.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/close-coordinator.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/close-coordinator.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/close-coordinator.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/close-signal.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/close-signal.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/close-signal.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/desktop-logging.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/desktop-logging.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/desktop-logging.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/file-watch.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/file-watch.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/file-watch.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/language-service.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/language-service.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/language-service.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/macos-app-icon.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/macos-app-icon.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/macos-app-icon.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/macos-traffic-lights.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/macos-traffic-lights.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/macos-traffic-lights.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/macos-window-close.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/macos-window-close.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/macos-window-close.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/native-actions.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/native-actions.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/native-actions.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/native-telemetry.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/native-telemetry.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/native-telemetry.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/nostr-keychain.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/nostr-keychain.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/nostr-keychain.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/nostr-signer.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/nostr-signer.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/nostr-signer.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/paths.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/paths.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/paths.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/plugin-assets.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/plugin-assets.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/plugin-assets.test.ts",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/production-build.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/production-build.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/production-build.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/renderer-engine.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/renderer-engine.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/renderer-engine.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/renderer-events.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/renderer-events.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/renderer-events.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/renderer-http.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/renderer-http.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/renderer-http.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/single-instance.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/single-instance.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/single-instance.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/sync-local-bridge.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/sync-local-bridge.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-local-bridge.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/sync-secure-store.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/sync-secure-store.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-secure-store.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/sync-security-bridge.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/sync-security-bridge.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-security-bridge.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/sync-security.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/sync-security.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-security.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/terminal-runtime.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/terminal-runtime.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/terminal-runtime.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/vault-fs.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/vault-fs.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/vault-fs.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/vault-resources.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/vault-resources.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/vault-resources.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/window-bindings.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/window-bindings.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/window-bindings.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/window-chrome.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/window-chrome.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/window-chrome.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src-deno/window-drag.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src-deno/window-drag.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/window-drag.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/binding-probe.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/binding-probe.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/binding-probe.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/deno-nostr-signer.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/deno-nostr-signer.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-app-icon.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-app-icon.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-app-icon.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-app-url-delivery.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-app-url-delivery.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-app-url-delivery.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-boot-screen.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-boot-screen.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-boot-screen.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-close-presentation.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-close-presentation.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-close-presentation.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-close-signal.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-close-signal.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-close-signal.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-host-document.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-host-document.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-host-document.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-host-style.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-host-style.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-host-style.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-invoke-envelope.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-invoke-envelope.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-invoke-envelope.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-plugin-registration.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-plugin-registration.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-plugin-registration.test.ts",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-recovery.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-recovery.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-recovery.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-renderer-config.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-renderer-config.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-renderer-config.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-renderer-events.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-renderer-events.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-renderer-events.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-sync-security.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-sync-security.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-sync-security.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-window-drag.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-window-drag.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-window-drag.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/desktop-workspace-startup.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/desktop-workspace-startup.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-workspace-startup.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/external-links.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/external-links.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/external-links.test.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/main.retired-agent-channels.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/main.retired-agent-channels.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.retired-agent-channels.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/renderer-telemetry.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/renderer-telemetry.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/renderer-telemetry.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/sync-security-protocol.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/sync-security-protocol.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/sync-security-protocol.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "acceptance:packages/desktop-deno/src/terminal-acceptance.test.ts",
+      "kind": "acceptance",
+      "label": "packages/desktop-deno/src/terminal-acceptance.test.ts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/terminal-acceptance.test.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_acceptance_report",
+      "kind": "command",
+      "label": "desktop_acceptance_report",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/DesktopWorkspaceSession.svelte",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_acceptance_request_close",
+      "kind": "command",
+      "label": "desktop_acceptance_request_close",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/DesktopWorkspaceSession.svelte",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_agent_",
+      "kind": "command",
+      "label": "desktop_agent_",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_ai_controller_connection",
+      "kind": "command",
+      "label": "desktop_ai_controller_connection",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/DesktopWorkspaceSession.svelte",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_app_database_close",
+      "kind": "command",
+      "label": "desktop_app_database_close",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_app_database_invoke",
+      "kind": "command",
+      "label": "desktop_app_database_invoke",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-app-database.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_app_database_open",
+      "kind": "command",
+      "label": "desktop_app_database_open",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_app_info_get",
+      "kind": "command",
+      "label": "desktop_app_info_get",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/DesktopVaultHost.svelte",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_app_url_take_pending",
+      "kind": "command",
+      "label": "desktop_app_url_take_pending",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_capabilities_get",
+      "kind": "command",
+      "label": "desktop_capabilities_get",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_create_vault_folder",
+      "kind": "command",
+      "label": "desktop_create_vault_folder",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_append_text",
+      "kind": "command",
+      "label": "desktop_fs_append_text",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_atomic_write_abort",
+      "kind": "command",
+      "label": "desktop_fs_atomic_write_abort",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_atomic_write_begin",
+      "kind": "command",
+      "label": "desktop_fs_atomic_write_begin",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_atomic_write_chunk",
+      "kind": "command",
+      "label": "desktop_fs_atomic_write_chunk",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_atomic_write_commit",
+      "kind": "command",
+      "label": "desktop_fs_atomic_write_commit",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_copy",
+      "kind": "command",
+      "label": "desktop_fs_copy",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_exists",
+      "kind": "command",
+      "label": "desktop_fs_exists",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_get_resource_url",
+      "kind": "command",
+      "label": "desktop_fs_get_resource_url",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_list",
+      "kind": "command",
+      "label": "desktop_fs_list",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_mkdir",
+      "kind": "command",
+      "label": "desktop_fs_mkdir",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_open_path",
+      "kind": "command",
+      "label": "desktop_fs_open_path",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_read_binary",
+      "kind": "command",
+      "label": "desktop_fs_read_binary",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_read_range",
+      "kind": "command",
+      "label": "desktop_fs_read_range",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_read_text",
+      "kind": "command",
+      "label": "desktop_fs_read_text",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_remove",
+      "kind": "command",
+      "label": "desktop_fs_remove",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_rename",
+      "kind": "command",
+      "label": "desktop_fs_rename",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_resolve_path",
+      "kind": "command",
+      "label": "desktop_fs_resolve_path",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_reveal_path",
+      "kind": "command",
+      "label": "desktop_fs_reveal_path",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_rmdir",
+      "kind": "command",
+      "label": "desktop_fs_rmdir",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_stat",
+      "kind": "command",
+      "label": "desktop_fs_stat",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_to_vault_path",
+      "kind": "command",
+      "label": "desktop_fs_to_vault_path",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_watch_start",
+      "kind": "command",
+      "label": "desktop_fs_watch_start",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_watch_stop",
+      "kind": "command",
+      "label": "desktop_fs_watch_stop",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_write_binary",
+      "kind": "command",
+      "label": "desktop_fs_write_binary",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_fs_write_text",
+      "kind": "command",
+      "label": "desktop_fs_write_text",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_ls_",
+      "kind": "command",
+      "label": "desktop_ls_",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_ls_capabilities",
+      "kind": "command",
+      "label": "desktop_ls_capabilities",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_ls_code_actions",
+      "kind": "command",
+      "label": "desktop_ls_code_actions",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_ls_diagnostics",
+      "kind": "command",
+      "label": "desktop_ls_diagnostics",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/DesktopWorkspaceSession.svelte",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_ls_update_document",
+      "kind": "command",
+      "label": "desktop_ls_update_document",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_move_vault_folder",
+      "kind": "command",
+      "label": "desktop_move_vault_folder",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_nostr_signer_close",
+      "kind": "command",
+      "label": "desktop_nostr_signer_close",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_connect_remote",
+      "kind": "command",
+      "label": "desktop_nostr_signer_connect_remote",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_create_profile",
+      "kind": "command",
+      "label": "desktop_nostr_signer_create_profile",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_get_public_key",
+      "kind": "command",
+      "label": "desktop_nostr_signer_get_public_key",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_import_private_key",
+      "kind": "command",
+      "label": "desktop_nostr_signer_import_private_key",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_list_accounts",
+      "kind": "command",
+      "label": "desktop_nostr_signer_list_accounts",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_nip44_decrypt",
+      "kind": "command",
+      "label": "desktop_nostr_signer_nip44_decrypt",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_nip44_encrypt",
+      "kind": "command",
+      "label": "desktop_nostr_signer_nip44_encrypt",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_open_session",
+      "kind": "command",
+      "label": "desktop_nostr_signer_open_session",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_nostr_signer_sign_event",
+      "kind": "command",
+      "label": "desktop_nostr_signer_sign_event",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-nostr-signer.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_notifications_show",
+      "kind": "command",
+      "label": "desktop_notifications_show",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_open_external",
+      "kind": "command",
+      "label": "desktop_open_external",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/external-links.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_pick_vault_folder",
+      "kind": "command",
+      "label": "desktop_pick_vault_folder",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_platform_get",
+      "kind": "command",
+      "label": "desktop_platform_get",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_plugin_assets_register",
+      "kind": "command",
+      "label": "desktop_plugin_assets_register",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-plugin-asset-server.ts",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_renderer_close_ready",
+      "kind": "command",
+      "label": "desktop_renderer_close_ready",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/DesktopVaultHost.svelte",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_sync_local_call",
+      "kind": "command",
+      "label": "desktop_sync_local_call",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-sync-session.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_sync_security_call",
+      "kind": "command",
+      "label": "desktop_sync_security_call",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-sync-session.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_sync_security_close",
+      "kind": "command",
+      "label": "desktop_sync_security_close",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-sync-session.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_sync_security_open",
+      "kind": "command",
+      "label": "desktop_sync_security_open",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/deno-sync-session.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_sync_wrapping_key_get",
+      "kind": "command",
+      "label": "desktop_sync_wrapping_key_get",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_telemetry_log",
+      "kind": "command",
+      "label": "desktop_telemetry_log",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/renderer-telemetry-otel.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_terminal_session_",
+      "kind": "command",
+      "label": "desktop_terminal_session_",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_terminal_session_create",
+      "kind": "command",
+      "label": "desktop_terminal_session_create",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_terminal_session_list",
+      "kind": "command",
+      "label": "desktop_terminal_session_list",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_terminal_session_resize",
+      "kind": "command",
+      "label": "desktop_terminal_session_resize",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/terminal-runtime.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_terminal_session_stop",
+      "kind": "command",
+      "label": "desktop_terminal_session_stop",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/telemetry-operations.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_terminal_session_write",
+      "kind": "command",
+      "label": "desktop_terminal_session_write",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/terminal-acceptance.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_del",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_del",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_get",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_get",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_get_many",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_get_many",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_import_if_empty",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_import_if_empty",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_is_empty",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_is_empty",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_keys",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_keys",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_set",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_set",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_vault_bootstrap_kv_set_many",
+      "kind": "command",
+      "label": "desktop_vault_bootstrap_kv_set_many",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/bindings.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_window_drag_begin",
+      "kind": "command",
+      "label": "desktop_window_drag_begin",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-window-drag.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_window_drag_end",
+      "kind": "command",
+      "label": "desktop_window_drag_end",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-window-drag.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "command:desktop_window_drag_move",
+      "kind": "command",
+      "label": "desktop_window_drag_move",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/desktop-window-drag.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "event:desktop_agent_tool_cancel",
+      "kind": "event",
+      "label": "desktop_agent_tool_cancel",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "event:desktop_app_database_change",
+      "kind": "event",
+      "label": "desktop_app_database_change",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/app-database.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "event:desktop_app_url_available",
+      "kind": "event",
+      "label": "desktop_app_url_available",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "event:desktop_fs_watch_event",
+      "kind": "event",
+      "label": "desktop_fs_watch_event",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/file-watch.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "event:desktop_menu_open_vault_picker",
+      "kind": "event",
+      "label": "desktop_menu_open_vault_picker",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/main.ts",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "event:desktop_renderer_before_close",
+      "kind": "event",
+      "label": "desktop_renderer_before_close",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src/main.ts",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "event:desktop_terminal_exit",
+      "kind": "event",
+      "label": "desktop_terminal_exit",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/terminal-runtime.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "event:desktop_terminal_output",
+      "kind": "event",
+      "label": "desktop_terminal_output",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/terminal-runtime.ts",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/accept-sync-security.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/app-icon-assets.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/app-icon-assets.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/app-icon-assets.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/dev-command.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/dev-command.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/dev-command.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/dev.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/dev.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/dev.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/distribution.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/distribution.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/distribution.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/generate-build-icons.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/generate-build-icons.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/generate-build-icons.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/lgtm-command.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/lgtm-command.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/lgtm-command.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/local-registry-env.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/local-registry-env.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/local-registry-env.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/package-app.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/package-app.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/package-app.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/run-lgtm.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/run-lgtm.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/run-lgtm.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/smoke-database-worker.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/smoke-database-worker.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/smoke-database-worker.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/smoke-packaged.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/smoke-packaged.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/smoke-packaged.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "packaging:packages/desktop-deno/scripts/telemetry-env.mjs",
+      "kind": "packaging",
+      "label": "packages/desktop-deno/scripts/telemetry-env.mjs",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/scripts/telemetry-env.mjs",
+      "task": "M11",
+      "disposition": "replace"
+    },
+    {
+      "id": "plugin:@lapis-notes/ai",
+      "kind": "plugin",
+      "label": "@lapis-notes/ai ^0.1.5",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M9",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/bases",
+      "kind": "plugin",
+      "label": "@lapis-notes/bases ^0.1.3",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/bookmarks",
+      "kind": "plugin",
+      "label": "@lapis-notes/bookmarks ^0.1.3",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/file-explorer",
+      "kind": "plugin",
+      "label": "@lapis-notes/file-explorer workspace:*",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/graph",
+      "kind": "plugin",
+      "label": "@lapis-notes/graph ^0.1.3",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/history",
+      "kind": "plugin",
+      "label": "@lapis-notes/history ^0.1.4",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/markdown",
+      "kind": "plugin",
+      "label": "@lapis-notes/markdown ^0.1.6",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/markdown-lint",
+      "kind": "plugin",
+      "label": "@lapis-notes/markdown-lint ^0.1.2",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/search",
+      "kind": "plugin",
+      "label": "@lapis-notes/search ^0.1.3",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M6",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/source-editor",
+      "kind": "plugin",
+      "label": "@lapis-notes/source-editor ^0.1.2",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/spellcheck",
+      "kind": "plugin",
+      "label": "@lapis-notes/spellcheck ^0.1.3",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:@lapis-notes/wordcount",
+      "kind": "plugin",
+      "label": "@lapis-notes/wordcount ^0.1.2",
+      "source": "lapis-notes",
+      "path": "package.json",
+      "task": "M8",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:profile:file-explorer",
+      "kind": "plugin",
+      "label": "Default file-explorer plugin",
+      "source": "lapis-notes",
+      "path": "packages/app-profile/src/index.ts",
+      "task": "M3",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:profile:markdown",
+      "kind": "plugin",
+      "label": "Default markdown plugin",
+      "source": "lapis-notes",
+      "path": "packages/app-profile/src/index.ts",
+      "task": "M3",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:profile:search",
+      "kind": "plugin",
+      "label": "Default search plugin",
+      "source": "lapis-notes",
+      "path": "packages/app-profile/src/index.ts",
+      "task": "M6",
+      "disposition": "reuse"
+    },
+    {
+      "id": "plugin:profile:source-editor",
+      "kind": "plugin",
+      "label": "Default source-editor plugin",
+      "source": "lapis-notes",
+      "path": "packages/app-profile/src/index.ts",
+      "task": "M3",
+      "disposition": "reuse"
+    },
+    {
+      "id": "requirement:LN-DENO-001",
+      "kind": "requirement",
+      "label": "Native desktop host: create its window with Deno 2.9.5",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-002",
+      "kind": "requirement",
+      "label": "Host: implement NativeDesktopBridge through win.bind() and register it",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M1",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-003",
+      "kind": "requirement",
+      "label": "Vault profiles: use the desktop-folder kind. Native filesystem bindings",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M2",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-004",
+      "kind": "requirement",
+      "label": "Open and create vault: collect an absolute folder path",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M2",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-005",
+      "kind": "requirement",
+      "label": "Deno desktop session: open the app database through a native",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M3",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-006",
+      "kind": "requirement",
+      "label": "Before restoring layout, the host: register the shared application-owned notesPluginProfile containing exactly",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-007",
+      "kind": "requirement",
+      "label": "Vault session: install one compatibility App lease before plugin",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-008",
+      "kind": "requirement",
+      "label": "Language, plugin, AI, and terminal host services: use public package boundaries and Deno-owned process",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-009",
+      "kind": "requirement",
+      "label": "Session boot: render Design Core WorkspaceStartup with vault, configuration",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M2",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-010",
+      "kind": "requirement",
+      "label": "Renderer cross-origin isolation",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/core-contract.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-011",
+      "kind": "requirement",
+      "label": "Visible window: complete a bounded, retrying win.bind() invoke probe",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-012",
+      "kind": "requirement",
+      "label": "On macOS, the visible window: provide full-bleed content with native traffic lights",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M0.1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-013",
+      "kind": "requirement",
+      "label": "Launcher drag regions",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M0.1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-014",
+      "kind": "requirement",
+      "label": "Published ESM for renderer Turso WASM",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-015",
+      "kind": "requirement",
+      "label": "Production host: serve the built renderer from the launch",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-016",
+      "kind": "requirement",
+      "label": "Deno bridge: truthfully advertise resources, database/search, language services, plugin",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-017",
+      "kind": "requirement",
+      "label": "Native notifications and file open/reveal actions: either complete on the current platform",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M5",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-018",
+      "kind": "requirement",
+      "label": "Deno: retain one application instance, deliver lapis",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M1",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-019",
+      "kind": "requirement",
+      "label": "Deno menus: expose the established application, File, Edit, View",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M7",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-020",
+      "kind": "requirement",
+      "label": "Window close and vault replacement: persist layout and dispose views, watches, databases",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M5",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-021",
+      "kind": "requirement",
+      "label": "New windows: limited to the workspace popout path. External",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M0.1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-022",
+      "kind": "requirement",
+      "label": "Local distribution: produce macOS and Linux artifacts with stable",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-023",
+      "kind": "requirement",
+      "label": "Automated acceptance: cover first selection, cancellation, reopening, missing-vault fallback",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-024",
+      "kind": "requirement",
+      "label": "Native Markdown language service: consume the built @lapis-notes/language-service/markdownlint/runtime export",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-025",
+      "kind": "requirement",
+      "label": "Native vault watching: use Deno.watchFs, preserve vault containment across canonical",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M5",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-026",
+      "kind": "requirement",
+      "label": "Verified plugin assets: register through the native bridge and load",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-027",
+      "kind": "requirement",
+      "label": "Native agent runtime: supervise a separate lapis-ai-controller process",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-028",
+      "kind": "requirement",
+      "label": "Deno: expose all five desktop*terminal_session*\\* commands",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-029",
+      "kind": "requirement",
+      "label": "Desktop development launcher: run deno desktop without --no-npm so declared",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-030",
+      "kind": "requirement",
+      "label": "Branded startup loading surface",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-031",
+      "kind": "requirement",
+      "label": "Routine native bridge invocation logging: disabled by default and enabled only at",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-032",
+      "kind": "requirement",
+      "label": "Desktop observability: an explicit local-development mode with root LGTM",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-033",
+      "kind": "requirement",
+      "label": "Telemetry mode: identify renderer and native host as separate",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/core-contract.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-034",
+      "kind": "requirement",
+      "label": "Desktop bridge tracing and metrics: cover only bounded database, language, AI, terminal",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-035",
+      "kind": "requirement",
+      "label": "Renderer lifecycle logs: use an allowlisted structured native relay. Native",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-036",
+      "kind": "requirement",
+      "label": "Telemetry mode: trace desktop session startup as one root",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-037",
+      "kind": "requirement",
+      "label": "Vault resource URLs: use a capability-scoped same-origin HTTP route",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-01.md",
+      "task": "M7",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-038",
+      "kind": "requirement",
+      "label": "Before mounting application UI, the desktop renderer: mark the document engine from the native",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-039",
+      "kind": "requirement",
+      "label": "System WebView and CEF sessions: consume the same Design Core scrollbar visibility",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-040",
+      "kind": "requirement",
+      "label": "Bounded native AppDatabase bridge: allow projected indexed-metadata pages and path-only Search",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M6",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-041",
+      "kind": "requirement",
+      "label": "Global Graph startup against a native Turso: render a valid persisted snapshot before stale",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M6",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-042",
+      "kind": "requirement",
+      "label": "System WebView and CEF Graph canvases: share the 1/128\u20268 camera range, deterministic visible",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/core-contract.md",
+      "task": "M6",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-043",
+      "kind": "requirement",
+      "label": "Native Graph Groups: evaluate through the bounded path-only Search bridge",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M6",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-044",
+      "kind": "requirement",
+      "label": "On macOS, maximized groups: reserve the full native traffic-light inset independent",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-045",
+      "kind": "requirement",
+      "label": "Close coordinator: defer renderer notification out of native close",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/core-contract.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-046",
+      "kind": "requirement",
+      "label": "On macOS, the native traffic-light buttons: share the open left-sidebar tab controls' vertical",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-047",
+      "kind": "requirement",
+      "label": "Pnpm desktop development launcher: supply a tracked Lapis application icon",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M7",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-048",
+      "kind": "requirement",
+      "label": "Native About menu action: open one reusable small desktop window containing",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M0.1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-049",
+      "kind": "requirement",
+      "label": "On macOS, development and packaged hosts: show Lapis Notes as the first application",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-050",
+      "kind": "requirement",
+      "label": "Generated macOS development host: ad-hoc signed after its application identity is",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-051",
+      "kind": "requirement",
+      "label": "Native vault filesystem operations: preserve portable missing-path, permission, wrong-type, busy,",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M2",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-052",
+      "kind": "requirement",
+      "label": "Failed saved-vault restore: retain the profile and recent-vault entry, show",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-053",
+      "kind": "requirement",
+      "label": "Desktop startup recovery: offer retry, Manage Vaults, optional-core-plugin disablement, layout-skip",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-054",
+      "kind": "requirement",
+      "label": "Ready desktop session with recovery restrictions: show a Safe Mode banner describing those",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M4",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-055",
+      "kind": "requirement",
+      "label": "External ACP session ownership",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-056",
+      "kind": "requirement",
+      "label": "First-party model discovery: use the shared controller client. Leftover ACP",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-057",
+      "kind": "requirement",
+      "label": "Native-to-renderer events: use a same-origin loopback event stream",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-058",
+      "kind": "requirement",
+      "label": "Shared controller prompt submission",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-059",
+      "kind": "requirement",
+      "label": "Native Turso lifecycle and AppDatabase methods: execute in a dedicated Deno worker. Synchronous",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-060",
+      "kind": "requirement",
+      "label": "Native-to-renderer server-sent event: receive a monotonic event id and remain",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/core-contract.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-061",
+      "kind": "requirement",
+      "label": "First-party run state: come from the shared controller journal. Compatibility",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-062",
+      "kind": "requirement",
+      "label": "Deno desktop development and distribution compile: explicitly include the native database worker entry",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-063",
+      "kind": "requirement",
+      "label": "Desktop and browser agent-runtime capabilities: identify lapis-ai-controller/1. Model discovery, session configuration, tools",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-064",
+      "kind": "requirement",
+      "label": "Desktop development renderer: exclude Harper and registry-installed Design Core Svelte",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-065",
+      "kind": "requirement",
+      "label": "Desktop development renderer: pre-bundle deep @lapismd/mira modules used by registry-installed",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/core-contract.md",
+      "task": "M10",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-066",
+      "kind": "requirement",
+      "label": "After navigating a created macOS renderer window: immediately refresh its public binding registry",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/window-and-shell.md",
+      "task": "M12",
+      "disposition": "retire"
+    },
+    {
+      "id": "requirement:LN-DENO-067",
+      "kind": "requirement",
+      "label": "Desktop renderer: keep @lapis-notes/api outside dependency optimization, expose @lapis-notes/api",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/startup-and-lifecycle.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-068",
+      "kind": "requirement",
+      "label": "Local Nostr secret keys, bunker invitation data: remain in macOS Keychain or Linux Secret",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-069",
+      "kind": "requirement",
+      "label": "Native desktop host: implement local and NIP-46 signing behind desktop*nostr_signer*\\*",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-070",
+      "kind": "requirement",
+      "label": "When Nostr registry discovery is re-enabled, desktop: compose public relay, curator, quorum, and optional",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-071",
+      "kind": "requirement",
+      "label": "Native vault bridge: support cancellable ranged read streams and atomic",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M2",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-072",
+      "kind": "requirement",
+      "label": "Desktop sync keys: remain behind the host crypto service",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-073",
+      "kind": "requirement",
+      "label": "Deno plugin runtime: bind plugin identity and grants",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M1",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-074",
+      "kind": "requirement",
+      "label": "Stable vault identity during sync unlock",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-075",
+      "kind": "requirement",
+      "label": "Atomic acceptance-report publication",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-076",
+      "kind": "requirement",
+      "label": "Renderer HTTP proxy: remove Content-Encoding and Content-Length from decoded upstream",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M5",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-077",
+      "kind": "requirement",
+      "label": "Native filesystem adapter: restore portable error codes from Deno binding",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M4",
+      "disposition": "replace"
+    },
+    {
+      "id": "requirement:LN-DENO-078",
+      "kind": "requirement",
+      "label": "Desktop database host: wait for worker readiness before dispatching requests",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M3",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-079",
+      "kind": "requirement",
+      "label": "Versioned macOS installation",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-080",
+      "kind": "requirement",
+      "label": "Linux distribution launcher",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-081",
+      "kind": "requirement",
+      "label": "Source-bound desktop releases",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-082",
+      "kind": "requirement",
+      "label": "Homebrew distribution",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-083",
+      "kind": "requirement",
+      "label": "Core installation acceptance",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M11",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-084",
+      "kind": "requirement",
+      "label": "Embedded renderer assets",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-085",
+      "kind": "requirement",
+      "label": "Installed terminal runtime",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/packaging-and-acceptance.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-086",
+      "kind": "requirement",
+      "label": "Admitted native Sync sessions",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-087",
+      "kind": "requirement",
+      "label": "Native Sync credential custody",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-088",
+      "kind": "requirement",
+      "label": "Scoped Sync security RPC",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-089",
+      "kind": "requirement",
+      "label": "Recoverable native session open",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-090",
+      "kind": "requirement",
+      "label": "Physical profile root admission",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "requirement:LN-DENO-091",
+      "kind": "requirement",
+      "label": "Bounded native Sync data RPC",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-092",
+      "kind": "requirement",
+      "label": "Native Sync operation authority fences",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-093",
+      "kind": "requirement",
+      "label": "Native Sync transfer teardown",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M9",
+      "disposition": "defer"
+    },
+    {
+      "id": "requirement:LN-DENO-094",
+      "kind": "requirement",
+      "label": "Native upload staging integrity",
+      "source": "lapis-notes",
+      "path": "spec/src/desktop-deno-host/native-vault-and-storage-02.md",
+      "task": "M1",
+      "disposition": "port"
+    },
+    {
+      "id": "service:file-watch",
+      "kind": "service",
+      "label": "file-watch",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/file-watch.ts",
+      "task": "M5",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:language-service",
+      "kind": "service",
+      "label": "language-service",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/language-service.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:native-app-database",
+      "kind": "service",
+      "label": "native-app-database",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/native-app-database.ts",
+      "task": "M3",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/language-service.ts",
+      "kind": "service",
+      "label": "language-service",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/language-service.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/native-telemetry.ts",
+      "kind": "service",
+      "label": "native-telemetry",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/native-telemetry.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/nostr-signer.ts",
+      "kind": "service",
+      "label": "nostr-signer",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/nostr-signer.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/sync-local.ts",
+      "kind": "service",
+      "label": "sync-local",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-local.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/sync-secure-store.ts",
+      "kind": "service",
+      "label": "sync-secure-store",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-secure-store.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/sync-security.ts",
+      "kind": "service",
+      "label": "sync-security",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/sync-security.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/terminal-native-library.ts",
+      "kind": "service",
+      "label": "terminal-native-library",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/terminal-native-library.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:packages/desktop-deno/src-deno/terminal-runtime.ts",
+      "kind": "service",
+      "label": "terminal-runtime",
+      "source": "lapis-notes",
+      "path": "packages/desktop-deno/src-deno/terminal-runtime.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:plugin-assets",
+      "kind": "service",
+      "label": "plugin-assets",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/plugin-assets.ts",
+      "task": "M10",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:sync-local-provider",
+      "kind": "service",
+      "label": "sync-local-provider",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/sync-local-provider.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:sync-security-store",
+      "kind": "service",
+      "label": "sync-security-store",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/sync-security-store.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:sync-vault",
+      "kind": "service",
+      "label": "sync-vault",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/sync-vault.ts",
+      "task": "M9",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:vault-fs",
+      "kind": "service",
+      "label": "vault-fs",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/vault-fs.ts",
+      "task": "M2",
+      "disposition": "replace"
+    },
+    {
+      "id": "service:vault-resources",
+      "kind": "service",
+      "label": "vault-resources",
+      "source": "lapis-notes",
+      "path": "packages/deno-host-services/src/vault-resources.ts",
+      "task": "M2",
+      "disposition": "replace"
+    }
+  ]
+}

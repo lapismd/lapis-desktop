@@ -1,0 +1,60 @@
+{
+  "name": "@lapismd/lapis-desktop",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": "^24.10 || >=26"
+  },
+  "scripts": {
+    "dev": "tauri dev",
+    "build": "vite build",
+    "check": "pnpm spec:validate && pnpm check:types && pnpm check:rust && pnpm format:check",
+    "check:types": "svelte-check --tsconfig tsconfig.json --fail-on-warnings",
+    "check:rust": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --locked -- -D warnings",
+    "check:architecture": "node scripts/source-audit.mjs",
+    "check:app-ownership": "node scripts/source-audit.mjs --app-only",
+    "check:progress": "node scripts/progress.mjs",
+    "progress:generate": "node scripts/progress.mjs --write",
+    "format:check": "prettier --check . && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check",
+    "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
+    "test": "node --test tests/governance/*.test.mjs tests/renderer/*.test.mjs && cargo test --manifest-path src-tauri/Cargo.toml --locked",
+    "test:desktop": "node scripts/desktop-acceptance.mjs",
+    "desktop:bundle": "tauri build --bundles app",
+    "spec:validate": "spec-validator validate",
+    "spec:first": "spec-validator first",
+    "spec:check": "spec-validator check",
+    "spec:build": "spec-validator build",
+    "spec:serve": "spec-validator serve",
+    "spec:search": "spec-validator search",
+    "check:bundle": "node scripts/check-bundle.mjs"
+  },
+  "dependencies": {
+    "@lapismd/design-core": "^0.4.0",
+    "@tauri-apps/api": "~2.12.4",
+    "svelte": "5.56.10"
+  },
+  "devDependencies": {
+    "@lapismd/spec-validator": "^0.1.4",
+    "@sveltejs/vite-plugin-svelte": "6.2.4",
+    "@tauri-apps/cli": "2.12.3",
+    "@types/node": "^24.10.0",
+    "@wdio/cli": "9.31.2",
+    "@wdio/globals": "9.31.3",
+    "@wdio/local-runner": "9.31.2",
+    "@wdio/mocha-framework": "9.31.2",
+    "@wdio/spec-reporter": "9.31.2",
+    "@wdio/tauri-plugin": "1.5.0",
+    "@wdio/tauri-service": "1.5.0",
+    "axe-core": "^4.13.0",
+    "prettier": "3.3.3",
+    "prettier-plugin-svelte": "^3.5.2",
+    "svelte-check": "^4.3.1",
+    "tsx": "^4.23.1",
+    "typescript": "~5.9.3",
+    "vite": "7.3.2",
+    "webdriverio": "9.31.2"
+  }
+}

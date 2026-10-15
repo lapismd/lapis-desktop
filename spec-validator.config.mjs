@@ -1,0 +1,100 @@
+import { defineConfig, tableRequirements } from "@lapismd/spec-validator";
+
+export default defineConfig(
+  tableRequirements({
+    name: "lapis-desktop",
+    idPattern: "^LD-[A-Z]+-\\d{3}$",
+    tableSection: "Requirements",
+    ruleIds: {
+      governance: "LD-GOV-001",
+      summary: "LD-GOV-001",
+      fileLimits: "LD-GOV-001",
+      verification: "LD-GOV-001",
+      book: "LD-GOV-001",
+      bookIgnore: "LD-GOV-001",
+      specFirst: "LD-GOV-002",
+      internal: "LD-GOV-001",
+    },
+    validators: {
+      governance: {
+        acceptance: false,
+        normative: true,
+        references: true,
+        changeMap: false,
+      },
+      summary: true,
+      fileLimits: { maxLines: 400, maxBytes: 32768 },
+      book: true,
+      verification: {
+        file: "current/verification.md",
+        mode: "table",
+        idMode: "single",
+        headers: {
+          ids: ["ID"],
+          status: ["Status"],
+          evidence: ["Evidence"],
+          required: [],
+        },
+        statuses: ["Implemented", "Planned"],
+        statusMatch: "exact",
+        rowMultiplicity: "exactly-one",
+        rejectOrphans: true,
+        requireEvidence: true,
+      },
+      specFirst: {
+        mode: "mapped",
+        canonicalPattern:
+          "^spec/src/current/(?:desktop|governance|migration)\\.md$",
+        protected: [
+          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
+        ],
+        ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
+        rules: [
+          {
+            pattern:
+              "^(?:src/|src-tauri/|public/|tests/desktop/|tests/renderer/|index\\.html$|vite\\.config\\.ts$|svelte\\.config\\.js$)",
+            chapters: ["spec/src/current/desktop.md"],
+          },
+          {
+            pattern:
+              "^(?:PLAN\\.md$|MIGRATION\\.md$|spec/migration-inventory\\.json$|spec/src/current/progress/)",
+            chapters: ["spec/src/current/migration.md"],
+          },
+          {
+            pattern:
+              "^(?:scripts/|docs/|spec/book\\.toml$|tests/governance/|\\.github/|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|[^/]+\\.(?:json|toml|yaml|mjs)$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
+            chapters: ["spec/src/current/governance.md"],
+          },
+        ],
+      },
+    },
+    plugins: ["scripts/spec-plugin.mjs"],
+    documentRoles: [
+      {
+        pattern: "^current/(?:desktop|governance|migration)\\.md$",
+        role: "contract",
+      },
+      { pattern: "^current/verification\\.md$", role: "verification" },
+      { pattern: "^current/progress/", role: "progress" },
+      { pattern: "^history/(?!index)", role: "history" },
+      { pattern: "(?:index|SUMMARY)\\.md$", role: "navigation" },
+    ],
+    check: {
+      build: true,
+      first: true,
+      lanes: [
+        {
+          name: "rust-format",
+          command: "cargo",
+          args: [
+            "fmt",
+            "--manifest-path",
+            "src-tauri/Cargo.toml",
+            "--",
+            "--check",
+          ],
+        },
+      ],
+    },
+  }),
+);

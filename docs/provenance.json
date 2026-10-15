@@ -1,0 +1,47 @@
+{
+  "assets": [
+    {
+      "path": "public/lapis-logo.svg",
+      "source": "lapis-notes/packages/desktop-deno/src/assets/lapis-logo.svg",
+      "revision": "8d748436fe7e73353bd52b07a385a198429187b7",
+      "license": "Apache-2.0",
+      "sha256": "ff52cbc5c4fe5ab335d296c4758331399a26124bcd0bd7f9666dc9ae1741577e"
+    },
+    {
+      "path": "src-tauri/icons/icon.png",
+      "source": "lapis-notes/packages/desktop-deno/build/icon.png",
+      "revision": "8d748436fe7e73353bd52b07a385a198429187b7",
+      "license": "Apache-2.0",
+      "sha256": "89c801232c2ddbc6dae9cf386a9dd49fcf9151551f59fd3b68901133a5e3ffa2"
+    },
+    {
+      "path": "src-tauri/icons/icon.icns",
+      "source": "lapis-notes/packages/desktop-deno/build/icon.icns",
+      "revision": "8d748436fe7e73353bd52b07a385a198429187b7",
+      "license": "Apache-2.0",
+      "sha256": "3fe51ed173fabfcd632511bc6f5236741319b61d00eba71a081425ec768c92f7"
+    }
+  ],
+  "references": [
+    {
+      "repository": "jj-store",
+      "revision": "64790b2b28df43a75974feab7b4ca31bde193eca",
+      "paths": [
+        "desktop/src/native_window.rs",
+        "spec/src/current/contracts/desktop/04-macos-integrated-header.md"
+      ],
+      "use": "Inspected native overlay geometry and lifecycle patterns; application implementation remains owned here.",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "jjbutler",
+      "revision": "66597dfb058ce156ec104e979ff77c802bea6a0a",
+      "paths": [
+        "crates/jj-tauri/tauri.conf.json",
+        "crates/jj-tauri/src/window.rs"
+      ],
+      "use": "Inspected native overlay geometry as a reference. No source copied; Tauri public APIs implement the owned shell.",
+      "license": "FSL-1.1-MIT"
+    }
+  ]
+}

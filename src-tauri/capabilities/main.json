@@ -1,0 +1,12 @@
+{
+  "identifier": "main",
+  "description": "Local main-window shell presentation only",
+  "local": true,
+  "windows": ["main"],
+  "permissions": [
+    "allow-shell-info",
+    "allow-shell-ready",
+    "core:window:allow-start-dragging",
+    "core:window:allow-internal-toggle-maximize"
+  ]
+}

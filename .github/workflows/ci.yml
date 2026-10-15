@@ -1,0 +1,50 @@
+name: Foundation checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  foundation:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.5
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: jj@0.45.1,mdbook@0.5.4
+      - name: Initialize Jujutsu over the checked-out Git revision
+        run: jj git init --colocate .
+      - name: Select the actual pull-request or push revision range
+        run: node scripts/ci-revisions.mjs
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check
+      - run: pnpm test
+      - run: pnpm spec:check
+      - name: Check specification changes over the selected revision range
+        run:
+          pnpm spec:first --base "$LAPIS_DESKTOP_BASE" --head
+          "$LAPIS_DESKTOP_HEAD"
+      - run: pnpm build
+      - run: pnpm desktop:bundle --debug
+      - run: pnpm check:bundle
+      - name: Native ARM64 acceptance
+        run: pnpm test:desktop
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: native-acceptance
+          path: .local/native-test/
+          if-no-files-found: ignore

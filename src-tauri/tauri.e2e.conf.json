@@ -1,0 +1,36 @@
+{
+  "productName": "Lapis Notes Acceptance",
+  "identifier": "com.lapismd.lapis-desktop.acceptance",
+  "build": {
+    "beforeBuildCommand": "pnpm exec vite build --mode native-test --outDir .local/native-test/ui",
+    "frontendDist": "../.local/native-test/ui"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "security": {
+      "capabilities": [
+        "main",
+        {
+          "identifier": "acceptance",
+          "description": "Selected only by the native acceptance configuration",
+          "local": true,
+          "windows": ["main"],
+          "permissions": [
+            "wdio:default",
+            "wdio-webdriver:default",
+            "core:window:allow-inner-size",
+            "core:window:allow-outer-position",
+            "core:window:allow-set-size",
+            "core:window:allow-set-position",
+            "core:window:allow-close",
+            "core:event:allow-listen",
+            "core:event:allow-unlisten"
+          ]
+        }
+      ]
+    }
+  },
+  "bundle": {
+    "active": false
+  }
+}

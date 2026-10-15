@@ -144,6 +144,10 @@ it does not establish product functionality.
 
 ## Verification and rollout
 
+Application signing and notarization are deferred to M11. M0.1 validates local
+launch, bundle contents and native behavior without a signing gate (confirmed
+2026-10-15).
+
 - Start each task at its narrowest acceptance boundary and record its before
   state. Rerun that exact target before widening.
 - Run Rust tests for native services, TypeScript tests for adapters/session
