@@ -37,3 +37,11 @@ fallbacks, backups, and legacy-state rollback are outside the delivery gates.
 M1, M2, and M12 have user-approved revised gates in the task ledger. Normal
 note-saving, dirty-buffer, filesystem, and database transaction guarantees
 remain in scope. No runtime behavior changes in this planning revision.
+
+## Local archive qualification
+
+During migration, shared changes are built, tested, and packed in their owning
+repositories, then installed in Tauri through verified local pnpm archives. This
+is the user-approved M1 qualification path. Package publication moves to the
+final release gate. Tracked registry manifests/lockfiles remain portable;
+ignored install overlays record source revisions and archive checksums.

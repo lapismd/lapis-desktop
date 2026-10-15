@@ -28,9 +28,13 @@ non-blocking and baselines require explicit approval.
 
 - `src` owns desktop presentation and the renderer transport adapter;
   `src-tauri` owns native windows, admission, services and resource lifetime.
-- Consume released Lapis packages through registry semver ranges. Fix package
-  defects upstream and validate public built exports. Never add source aliases,
-  dependency patches, copied components or consumer overrides to hide defects.
+- Keep tracked manifests and lockfiles on registry semver ranges. During this
+  migration, consume verified local pnpm archives through an ignored development
+  overlay and defer package publication to the final release gate. Record source
+  revisions and checksums; build and test changes in their owning repository.
+  Fix package defects upstream and validate public built exports. Never add
+  source aliases, dependency patches, copied components or consumer overrides to
+  hide defects.
 - Keep native transport, application orchestration and presentation separate.
   Production cannot import test fixtures or acceptance instrumentation.
 - Use explicit owned App instances and only the public disposable compatibility

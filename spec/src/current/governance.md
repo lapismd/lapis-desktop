@@ -9,8 +9,14 @@
 | LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit milestone review. Committed evidence MUST remain immutable.                             |
 | LD-GOV-004 | Task pages MUST be the sole completion authority. Done MUST require completed dependencies and passing evidence selected for the original task gate; bookkeeping and substituted tests MUST NOT qualify product behavior.                          |
 | LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors. |
-| LD-GOV-006 | The desktop MUST use released registry packages, pinned toolchains and portable lockfiles. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                               |
+| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.     |
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                      |
+
+The user authorized local pnpm archive consumption and deferred package
+publication to the final release gate. An ignored local install overlay verifies
+archive checksums and source revisions, redirects matching package ranges, and
+preserves the tracked registry manifests and lockfile. Source fixes remain in
+the owning repositories; the overlay does not patch or alias source.
 
 Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not
