@@ -7,5 +7,7 @@
 
 - [E-PLAN-003: local archive migration workflow](E-PLAN-003.md)
 
+- [E-HOST-001: shared host qualification](E-HOST-001.md)
+
 Records preserve actual commands and failures. Completion evidence is selected
 by the task ledger, not inferred from this list.

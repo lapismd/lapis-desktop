@@ -16,3 +16,4 @@
 | LD-DESK-005 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
 | LD-MIG-001  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
 | LD-MIG-002  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-002](../history/E-PLAN-002.md); [E-PLAN-003](../history/E-PLAN-003.md) |
+| LD-HOST-001 | Implemented | [E-HOST-001](../history/E-HOST-001.md)                                                                                   |

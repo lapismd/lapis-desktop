@@ -17,8 +17,9 @@ evidence. Root MIGRATION.md projects that table and links the complete PLAN.md.
 The first useful target ends at M4. M0.1 is a native shell qualification, not a
 claim that the application can edit notes.
 
-The shell qualification retains the original M0.1 gate. The next task is M1;
-application signing and notarization stay deferred to M11 per the user's
+The shell qualification retains the original M0.1 gate. M1 is qualified against
+committed source-owned archives; the next task is M2 native vault access.
+Application signing and notarization stay deferred to M11 per the user's
 2026-10-15 instruction.
 
 ## Shared state policy
@@ -36,7 +37,8 @@ reset or overwritten; `.obsidian` discovery, import, merging, compatibility
 fallbacks, backups, and legacy-state rollback are outside the delivery gates.
 M1, M2, and M12 have user-approved revised gates in the task ledger. Normal
 note-saving, dirty-buffer, filesystem, and database transaction guarantees
-remain in scope. No runtime behavior changes in this planning revision.
+remain in scope. M1 implements and qualifies the shared default across the
+affected hosts.
 
 ## Local archive qualification
 
@@ -45,3 +47,9 @@ repositories, then installed in Tauri through verified local pnpm archives. This
 is the user-approved M1 qualification path. Package publication moves to the
 final release gate. Tracked registry manifests/lockfiles remain portable;
 ignored install overlays record source revisions and archive checksums.
+
+M1 native consumer qualification imports the path default and desktop runtime
+classification from the actual packed public API. Source regression evidence and
+native app evidence are recorded separately. Library archives carry the actual
+Jujutsu source snapshot and verified package identities; passing local
+installation alone does not complete the native consumer gate.

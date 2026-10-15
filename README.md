@@ -21,6 +21,28 @@ pnpm dev
 Vite binds 127.0.0.1:1431. Normal launches use the separate
 `com.lapismd.lapis-desktop.preview` profile.
 
+## Local shared-library archives
+
+During migration, source fixes stay in their owning repositories and npm
+publication is deferred. Pack the Notes source snapshot for local acceptance:
+
+```sh
+pnpm local:pack ../lapis-notes-desktop-migration
+pnpm local:install
+```
+
+The pack command builds each public package through its normal prepack lane and
+records source snapshot revisions and archive checksums under ignored
+`.local/archives`. After the source's public package build/prepack lanes have
+already passed, `pnpm local:pack <source-workspace> --already-built` packs those
+outputs without rerunning the scripts. The installer verifies the actual packed
+identities, preserves peer ranges, and restores the tracked registry
+manifests/lockfile after installation, including failure. Repeat
+packing/installing after source changes; restart Vite/Tauri for a cold check. A
+normal registry install removes the local development overlay from installed
+dependencies. The source defaults remain unpublished until the final release
+gate. Commit each verified slice in its owning repository.
+
 ## Verification
 
 ```sh

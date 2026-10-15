@@ -17,6 +17,16 @@ describe("actual native desktop shell", () => {
     assert.equal(info.runtime, "tauri-desktop");
     assert.equal(info.os, "macos");
     assert.equal(info.ready, true);
+    const shared = await browser.execute(() => ({
+      stateDirectory: document.documentElement.dataset.appStateDirectory,
+      runtime: document.documentElement.dataset.lapisRuntime,
+      classification: document.documentElement.dataset.runtimeClass,
+    }));
+    assert.deepEqual(shared, {
+      stateDirectory: ".lapis",
+      runtime: "tauri-desktop",
+      classification: "desktop",
+    });
     await expect(browser.$("h1")).toHaveText("A new home for your notes");
     assert.equal(await browser.execute(() => location.protocol), "tauri:");
   });

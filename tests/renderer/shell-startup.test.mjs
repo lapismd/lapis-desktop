@@ -35,6 +35,9 @@ test("ready content is exposed only after the native readiness acknowledgement",
   ]);
   assert.equal(document.documentElement.dataset.lapisPlatform, "macos");
   assert.equal(document.documentElement.dataset.shellReady, "true");
+  assert.equal(document.documentElement.dataset.appStateDirectory, ".lapis");
+  assert.equal(document.documentElement.dataset.lapisRuntime, "tauri-desktop");
+  assert.equal(document.documentElement.dataset.runtimeClass, "desktop");
 });
 test("native startup failure preserves loading presentation for the error handler", async () => {
   const { events, document } = fixture();

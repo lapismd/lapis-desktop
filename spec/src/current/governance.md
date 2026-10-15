@@ -38,3 +38,23 @@ being verified rather than inventing a future commit hash.
 The executable configuration is `spec-validator.config.mjs`. Its source and
 progress plugins are also normal check entry points. `spec:first` compares the
 actual Jujutsu change; CI checks the complete pull-request revision range.
+
+The local archive installer validates each checksum, packed package identity,
+version, and source revision before pnpm runs. Its ignored pnpm hook redirects
+matching direct/transitive dependency ranges while retaining peer ranges, and
+restores tracked manifests/lockfiles even after an installation failure.
+
+Local core packing records the actual Jujutsu source snapshot and runs each
+owning package's normal prepack lane. Packing that changes tracked generated
+source fails until those changes are reviewed and the snapshot is repacked. Each
+verified implementation slice is committed after source and consumer acceptance.
+When the source workspace is clean, packing records its committed parent;
+otherwise it records the exact working-copy snapshot being qualified.
+
+After the owning public build/prepack lanes pass, `--already-built` packs those
+verified outputs without rerunning scripts. Source snapshot stability and all
+archive integrity/identity/version checks remain required.
+
+Archives must be explicitly declared in the consumer so framework peers resolve
+to one owned package graph. Successful local installation invalidates the owned
+Vite/Storybook dependency caches before the next cold launch.

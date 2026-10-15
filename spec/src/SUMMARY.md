@@ -12,3 +12,4 @@
   - [Native shell qualification](history/E-SHELL-002.md)
   - [Shared application state plan](history/E-PLAN-002.md)
   - [Local archive migration workflow](history/E-PLAN-003.md)
+  - [Shared host qualification](history/E-HOST-001.md)

@@ -6,13 +6,14 @@ M3.
 
 ## Requirements
 
-| ID          | Requirement                                                                                                                                                                                                                                               |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-DESK-001 | The desktop MUST display Lapis branding and the public Design Core Lapis theme in a bundled Svelte renderer. Startup MUST expose an accessible loading status, followed by ready content or an accessible failure.                                        |
-| LD-DESK-002 | macOS MUST retain native close, minimize and fullscreen controls in an overlay titlebar. A 40px header MUST reserve 80px for traffic lights at 16,25 logical pixels, provide explicit drag regions, and retain usable content at the minimum window size. |
-| LD-DESK-003 | Native IPC MUST grant only named shell metadata/readiness and window-drag/zoom permissions to the local main window. External navigation, generic filesystem, shell execution and remote capability grants MUST remain denied.                            |
-| LD-DESK-004 | The shell MUST persist window geometry in its separate application profile, provide normal native application/edit/window menus, and support cold close and relaunch without leaving an owned process behind.                                             |
-| LD-DESK-005 | Native acceptance MUST exercise the actual macOS WebView, resizing, window movement, close, and relaunch using isolated test state. Automation plugins, permissions and frontend hooks MUST be absent from normal bundles.                                |
+| ID          | Requirement                                                                                                                                                                                                                                                                |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-DESK-001 | The desktop MUST display Lapis branding and the public Design Core Lapis theme in a bundled Svelte renderer. Startup MUST expose an accessible loading status, followed by ready content or an accessible failure.                                                         |
+| LD-DESK-002 | macOS MUST retain native close, minimize and fullscreen controls in an overlay titlebar. A 40px header MUST reserve 80px for traffic lights at 16,25 logical pixels, provide explicit drag regions, and retain usable content at the minimum window size.                  |
+| LD-DESK-003 | Native IPC MUST grant only named shell metadata/readiness and window-drag/zoom permissions to the local main window. External navigation, generic filesystem, shell execution and remote capability grants MUST remain denied.                                             |
+| LD-DESK-004 | The shell MUST persist window geometry in its separate application profile, provide normal native application/edit/window menus, and support cold close and relaunch without leaving an owned process behind.                                                              |
+| LD-DESK-005 | Native acceptance MUST exercise the actual macOS WebView, resizing, window movement, close, and relaunch using isolated test state. Automation plugins, permissions and frontend hooks MUST be absent from normal bundles.                                                 |
+| LD-HOST-001 | The desktop MUST consume the shared API through public package exports, identify its runtime as `tauri-desktop`, and use the shared `.lapis` state default. Migration acceptance MUST use verified source-owned pnpm archives until publication at the final release gate. |
 
 The product name is Lapis Notes Preview and the application identifier is
 `com.lapismd.lapis-desktop.preview`. Development Vite binds literal loopback on
@@ -28,6 +29,9 @@ The private `shell_info` command reports runtime, platform, process identity and
 application version. `shell_ready` acknowledges renderer readiness. Native
 state, rather than a DOM marker alone, confirms that handshake. These commands
 confer no vault or process authority.
+
+Startup reads the public API `path` and `runtime` entrypoints. Runtime identity
+does not need to load optional database or model services.
 
 The native e2e feature uses separate configuration and a test profile. Its
 artifact is never the ordinary application bundle. Browser and Rust tests are
