@@ -213,3 +213,10 @@ Attachment import acceptance dispatches File/DataTransfer through the existing
 Explorer in the real WebView, then verifies native bytes, collision/failure
 handling, rendering and restart. This does not claim a physical operating-system
 drag gesture and adds no native permission or product test hook.
+
+Compressed-renderer acceptance uses the existing debug e2e feature and
+configured 127.0.0.1:1431 dev origin. Its temporary fixture serves only the
+freshly built acceptance renderer, never a user vault. The harness fails if that
+port is owned elsewhere; it cannot stop or reuse an unrelated listener. Bundled
+raw-resource acceptance runs first, and the subsequent dev build does not
+replace the bundled application binary or widen navigation/IPC authority.

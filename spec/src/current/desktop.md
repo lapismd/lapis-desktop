@@ -323,8 +323,8 @@ untouched; only explicit reset uses Workspace reset/flush before restarting. The
 banner remains below the tabs. Message-plus-stack diagnostics retain their
 message when WebKit supplies a stack without it.
 
-M5 native watch service ownership and bounds are defined in `files.md`; watcher
-resources remain separate from renderer file-tree reconciliation.
+M5 watch ownership, bounds and renderer representation qualification live in
+`files.md`; watch resources remain separate from file-tree reconciliation.
 
 Explorer imports and mutations share FileManager writer protection. Cold native
 checks retain dirty conflict bytes before rename, move or deletion and retry

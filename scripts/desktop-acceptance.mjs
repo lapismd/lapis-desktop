@@ -96,6 +96,15 @@ async function acceptance() {
     ],
     environment,
   );
+  await run(
+    process.execPath,
+    [
+      "--test",
+      "--test-concurrency=1",
+      "tests/desktop/file-http-representation.test.mjs",
+    ],
+    environment,
+  );
   if (!existsSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE))
     throw new Error("The native window-state plugin did not persist geometry.");
   console.log(

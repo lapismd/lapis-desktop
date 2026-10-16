@@ -201,3 +201,10 @@ active-view identity and restart layout under the original LD-FILE-003 gate.
 M5 attachment intake reuses Explorer external-file dropping and FileManager
 exclusive creation. Public source and native import qualification remain
 distinct from the inherited HTTP representation item and full end-of-M7 gates.
+
+For LN-DENO-076, preserve the immutable baseline's M5 port disposition and
+record the current transport mapping explicitly: Tauri replaces Deno's
+intermediary Vite Fetch proxy with direct devUrl loading and bundled production
+assets. LD-FILE-005 remains the governing representation invariant; direct
+compressed native loading and unmodified raw resources require their own
+evidence.

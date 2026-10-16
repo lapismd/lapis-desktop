@@ -88,8 +88,9 @@ explicit new-file creation intent. Native creation stages complete bounded bytes
 and atomically publishes without replacing a destination, including one arriving
 during staging. Capability advertisement remains platform-specific. FileManager
 uses the optional source-owned exclusive port; legacy low-level Vault overwrite
-behavior remains explicit. Attachment integration and App reconciliation still
-need qualification under the original M5 gate.
+behavior remains explicit. Attachment intake and App reconciliation have
+targeted source/native evidence; complete full qualification under the original
+M5 gate.
 
 Native watch snapshots are bounded to 100,000 entries and 16 MiB of accounted
 path/stamp storage. Hint accumulation retains at most 2,048 paths. A delivery
@@ -130,3 +131,19 @@ creation on supporting hosts. App admission spans byte reads through tree
 projection; empty drops leave the vault unchanged, and failures use existing
 owned notices. Imports process files sequentially with single-filename
 validation and the native 64 MiB file bound.
+
+## Renderer representation qualification
+
+The frozen Deno host used an intermediate Fetch proxy only for its Vite dev
+renderer. Tauri's devUrl loads that loopback renderer directly; production
+bundles assets through Tauri. There is no decoded-upstream forwarding stage to
+port. Preserve LD-FILE-005 and the captured LN-DENO-076 inventory entry: any
+future Fetch proxy remains subject to its normalization rule. Do not introduce
+an unused proxy to recreate the removed transport.
+
+Qualify the equivalent behavior with the actual WebView loading the unchanged
+application HTML and module assets over gzip from the configured development
+origin. Verify compressed response status/type/cache validators and decoded
+bytes independently at the direct HTTP boundary. Separately prove that the
+bundled host preserves raw scoped-resource body bytes and Content-Length for
+GET/HEAD and admitted binary IPC. Production has no dev-server dependency.

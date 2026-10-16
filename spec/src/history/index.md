@@ -53,3 +53,5 @@ by the task ledger, not inferred from this list.
 - [Internal Explorer mutations and editor retargeting](E-MOVE-001.md)
 
 - [Attachment import through existing Explorer dropping](E-IMPORT-001.md)
+
+- [Direct renderer compression and raw resource representation](E-HTTP-001.md)

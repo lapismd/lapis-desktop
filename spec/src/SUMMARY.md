@@ -51,3 +51,5 @@
   - [Internal Explorer mutations and editor retargeting](history/E-MOVE-001.md)
 
   - [Attachment import through existing Explorer dropping](history/E-IMPORT-001.md)
+
+  - [Direct renderer compression and raw resource representation](history/E-HTTP-001.md)
