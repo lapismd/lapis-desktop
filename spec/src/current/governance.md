@@ -137,3 +137,8 @@ The cold native runner also qualifies focused Properties commits, stale-record
 and failed-save recovery, and first metadata-type creation across restart.
 Keyboard navigation opens the existing property-type submenu; synthetic hover
 alone cannot prove that native WebView interaction.
+
+Settings acceptance uses the shared controls, real permission failures and
+external configuration bytes. Cold shortcut acceptance uses a real vault and the
+normal workspace command. No alternate Settings screen or App fixture replaces
+the running Notes owner.

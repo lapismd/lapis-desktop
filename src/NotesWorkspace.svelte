@@ -104,7 +104,10 @@
         await app.vault.load();
         await app.vault.mkpath(DEFAULT_APP_STATE_DIRECTORY);
       });
-      await phase("configuration", () => app.configuration.load());
+      await phase("configuration", async () => {
+        await app.configuration.load();
+        await app.commands.loadHotkeys();
+      });
       await phase("plugins", () =>
         app.plugins.loadPlugins({
           communityPlugins: "disabled",

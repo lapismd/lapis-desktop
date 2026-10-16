@@ -33,3 +33,4 @@
   - [Native controls, chooser return and Deno freeze](history/E-REVIEW-001.md)
   - [Retained native controls and foreground qualification](history/E-REVIEW-002.md)
   - [Properties and metadata writer intake](history/E-MUTATION-001.md)
+  - [E-STATE-001: Settings and hotkey writers](history/E-STATE-001.md)

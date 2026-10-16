@@ -35,6 +35,7 @@ packages over native storage.
 | LD-LIFE-006    | Native conditional text writes MUST compare exact expected bytes or expected absence before replacement and recheck after staging. An observed regular-file mismatch MUST preserve the current destination and return ECONFLICT. Conditional operations MUST retain admitted-root containment, size limits, metadata handling and staged atomic replacement.                                                                                    |
 | LD-LIFE-007    | Every enabled Notes file writer MUST participate in the owning App's flush, protection and conflict lifecycle, including pending, failed and retired writes. Qualification MUST cover both API text editors and editable Markdown previews in the initial profile.                                                                                                                                                                              |
 | LD-SESSION-003 | Native Notes startup MUST reuse the Deno branded DesktopWorkspaceStartup from the public Workspace package with accessible progress, real phase statuses and current plugin detail. Restoration and storage opening MUST expose progress before the session mounts. Failure MUST retain its failed phase and a route back to vaults. Successful startup MUST remove the progress surface without adding content above workspace tabs.           |
+| LD-SESSION-004 | Notes startup MUST load existing hotkey overrides through the public owned CommandManager before presenting workspace commands. Cold restoration MUST preserve those bindings.                                                                                                                                                                                                                                                                  |
 
 The product name is Lapis Notes Preview and the application identifier is
 `com.lapismd.lapis-desktop.preview`. Development Vite binds literal loopback on
@@ -267,3 +268,8 @@ Properties must compare the displayed record with authoritative frontmatter;
 unrelated body edits remain compatible. Metadata types must join shutdown before
 any debounce can omit an edit, including initial creation and external deletion.
 The complete enabled-writer audit and cold native acceptance remain M4 gates.
+
+Configuration changes use the existing shared Settings controls. Logical updates
+serialize against acknowledged values, and pending/failed drafts join the App
+writer lifecycle. An invalid external record cannot clear a conflict during a
+rejected reset. Core/plugin enablement and App Shell state remain audit items.

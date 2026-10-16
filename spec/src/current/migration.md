@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+The user requested a pause after the current settings/hotkeys component is
+qualified and committed, with the ordinary app open for review. M4 remains
+unfinished and every original milestone gate retains its scope.
+
 Local archive qualification checks active workspace peer imports against the
 verified tarball payload, including peer-only consumers. Editable preview
 integration and tab-first native-window alignment are the current slice; the
