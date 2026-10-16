@@ -67,13 +67,20 @@ test("the public native adapter translates only admitted allowlisted file operat
       },
     },
   });
-  await assert.rejects(
-    bridge.invoke("desktop_fs_remove", {
+  assert.equal(
+    await bridge.invoke("desktop_fs_remove", {
       rootPath: selected.path,
       normalizedPath: "note.md",
     }),
-    /unavailable/u,
+    "native result",
   );
+  assert.deepEqual(calls.at(-1), {
+    command: "vault_fs",
+    payload: {
+      sessionId: selected.sessionId,
+      request: { operation: "remove", path: "note.md" },
+    },
+  });
   await assert.rejects(
     bridge.invoke("shell_execute", { command: "bad" }),
     /unavailable/u,
@@ -85,7 +92,7 @@ test("the public native adapter translates only admitted allowlisted file operat
     }),
     /admission/u,
   );
-  assert.equal(calls.length, 2);
+  assert.equal(calls.length, 3);
 });
 
 test("renderer traversal rejects before invoking Rust and root access is explicit", async () => {

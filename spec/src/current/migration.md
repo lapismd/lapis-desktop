@@ -137,3 +137,7 @@ workspace is ready and does not add content above tabs.
 M4 recovery retains inventory LN-DENO-052/053/054 through the shared startup
 surface and extracted Safe Mode banner. Session recovery must not rewrite
 canonical choices or the skipped saved layout; explicit reset remains separate.
+
+M5 now specifies native mutations, watching/reconciliation, guarded application
+projection, attachment/Finder/trash behavior and the inherited HTTP
+representation contract in `files.md`. Every original M5 gate remains required.

@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { execFileSync } from "node:child_process";
 import { repositoryFiles } from "./repository-files.mjs";
+import { canonicalContractPath } from "./spec-contracts.mjs";
 import {
   parseTasks,
   parseEvidence,
@@ -63,11 +64,7 @@ export function progressFindings(
   }));
   const requirements = new Set(
     files
-      .filter((file) =>
-        /^spec\/src\/current\/(?:governance|desktop|migration)\.md$/u.test(
-          file,
-        ),
-      )
+      .filter((file) => canonicalContractPath.test(file))
       .flatMap((file) =>
         [...read(file).matchAll(/^\|\s*(LD-[A-Z]+-\d{3})\s*\|/gmu)].map(
           (match) => match[1],

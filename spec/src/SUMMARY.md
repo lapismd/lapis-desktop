@@ -3,6 +3,7 @@
 - [Current specification](current/index.md)
   - [Governance](current/governance.md)
   - [Desktop shell](current/desktop.md)
+  - [File management](current/files.md)
   - [Enabled writer audit](current/writer-audit.md)
   - [Migration inventory](current/migration.md)
   - [Milestones](current/progress/milestones.md)
@@ -37,3 +38,4 @@
   - [Renderer source organization](history/E-STRUCTURE-001.md)
   - [Retained plugin writers and admitted creation](history/E-WRITERS-001.md)
   - [Startup recovery and session Safe Mode](history/E-RECOVERY-001.md)
+  - [Contained native mutation component](history/E-FILES-001.md)

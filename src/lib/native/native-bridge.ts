@@ -17,6 +17,10 @@ const fileOperations = new Map([
   ["desktop_fs_write_binary", "write-binary"],
   ["desktop_fs_append_text", "append-text"],
   ["desktop_fs_mkdir", "mkdir"],
+  ["desktop_fs_rename", "rename"],
+  ["desktop_fs_copy", "copy"],
+  ["desktop_fs_remove", "remove"],
+  ["desktop_fs_rmdir", "rmdir"],
 ]);
 
 export function createNativeBridge(
@@ -68,7 +72,10 @@ export function createNativeBridge(
           throw new Error("Invalid expected text snapshot");
         request.expected = payload.expected;
       }
-      if (operation === "mkdir") request.recursive = payload.recursive ?? false;
+      if (operation === "rename" || operation === "copy")
+        request.newPath = vaultPath(payload.normalizedNewPath);
+      if (operation === "mkdir" || operation === "rmdir")
+        request.recursive = payload.recursive ?? false;
       if (operation === "read-range") {
         request.offset = payload.offset;
         request.length = payload.length;

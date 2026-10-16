@@ -1,4 +1,5 @@
 import { defineConfig, tableRequirements } from "@lapismd/spec-validator";
+import { canonicalContractPattern } from "./scripts/spec-contracts.mjs";
 
 export default defineConfig(
   tableRequirements({
@@ -43,13 +44,17 @@ export default defineConfig(
       },
       specFirst: {
         mode: "mapped",
-        canonicalPattern:
-          "^spec/src/current/(?:desktop|governance|migration)\\.md$",
+        canonicalPattern: canonicalContractPattern("spec/src/"),
         protected: [
           "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
         ],
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
+          {
+            pattern:
+              "^(?:src-tauri/src/(?:file_commands\\.rs|vault/(?:mutations\\.rs|watch(?:/|\\.rs)))|src-tauri/tests/vault_(?:mutations|watch)\\.rs|src/lib/native/(?:native-bridge|file-watch)\\.ts|tests/(?:desktop/file-|renderer/native-file-))",
+            chapters: ["spec/src/current/files.md"],
+          },
           {
             pattern:
               "^(?:src/|src-tauri/|public/|tests/desktop/|tests/renderer/|index\\.html$|vite\\.config\\.ts$|svelte\\.config\\.js$)",
@@ -71,7 +76,7 @@ export default defineConfig(
     plugins: ["scripts/spec-plugin.mjs"],
     documentRoles: [
       {
-        pattern: "^current/(?:desktop|governance|migration)\\.md$",
+        pattern: canonicalContractPattern(),
         role: "contract",
       },
       { pattern: "^current/verification\\.md$", role: "verification" },

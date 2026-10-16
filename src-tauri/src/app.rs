@@ -49,7 +49,7 @@ pub fn run() -> tauri::Result<()> {
             crate::vault_commands::vault_select,
             crate::vault_commands::vault_open_recent,
             crate::vault_commands::vault_close,
-            crate::vault_commands::vault_fs,
+            crate::file_commands::vault_fs,
             crate::database_commands::vault_db_open,
             crate::database_commands::vault_db_execute,
             crate::database_commands::vault_db_close

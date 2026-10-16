@@ -47,6 +47,10 @@ impl From<io::Error> for NativeError {
                 io::ErrorKind::AlreadyExists => "EEXIST",
                 io::ErrorKind::InvalidInput | io::ErrorKind::InvalidData => "EINVAL",
                 io::ErrorKind::WouldBlock => "EBUSY",
+                io::ErrorKind::DirectoryNotEmpty => "ENOTEMPTY",
+                io::ErrorKind::IsADirectory => "EISDIR",
+                io::ErrorKind::NotADirectory => "ENOTDIR",
+                io::ErrorKind::Unsupported => "ENOTSUP",
                 _ => "EIO",
             }
         };

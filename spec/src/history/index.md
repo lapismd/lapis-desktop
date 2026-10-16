@@ -41,3 +41,4 @@ by the task ledger, not inferred from this list.
 - [E-REVIEW-002: retained native controls and foreground qualification](E-REVIEW-002.md)
 - [Retained plugin writers and admitted creation](E-WRITERS-001.md)
 - [Startup recovery and session Safe Mode](E-RECOVERY-001.md)
+- [Contained native mutation component](E-FILES-001.md)

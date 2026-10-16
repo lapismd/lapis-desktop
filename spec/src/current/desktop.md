@@ -153,8 +153,9 @@ append, and whole-file atomic write operations. Requests are serialized by the
 native vault owner. Files are limited to 64 MiB per whole-file operation, range
 reads to 256 KiB, and listings to 2,000 entries. The public Notes adapter is
 translated through an explicit command allowlist; unrelated service capabilities
-remain unavailable. File-management operations, watching, and streamed writes
-remain later intake and MUST fail explicitly until implemented.
+remain unavailable. M5 file-management operations and watching are governed
+separately in [File management](files.md). Streamed writes remain later intake
+and MUST fail explicitly until implemented.
 
 Vault paths use forward slashes; the virtual root is the empty string. Reject
 dot/parent components, NUL, backslashes, drive prefixes, and paths over 4,096

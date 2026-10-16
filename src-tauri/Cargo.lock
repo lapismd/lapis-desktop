@@ -2514,6 +2514,7 @@ dependencies = [
  "objc2-app-kit",
  "objc2-foundation",
  "percent-encoding",
+ "rustix 1.1.5",
  "serde",
  "serde_json",
  "tauri",

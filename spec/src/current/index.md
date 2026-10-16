@@ -6,6 +6,7 @@ gates.
 
 - [Governance](governance.md)
 - [Desktop shell](desktop.md)
+- [File management](files.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)
 - [Milestones and next actions](progress/milestones.md)

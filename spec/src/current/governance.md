@@ -163,3 +163,13 @@ session-targeted runs use the same isolated real-WebView harness.
 Startup recovery acceptance uses real malformed layouts, isolated profiles and
 guarded reloads. The canonical cold runner retains this lane. Shared recovery
 presentation stays source-owned and uses verified public package archives.
+
+M5 file-management requirements live in `files.md`. One shared chapter list
+keeps spec-first, document roles and progress coverage aligned, while
+navigation, verification, writer audits and historical evidence retain their
+distinct roles. New chapters retain the same file budgets and one-to-one
+verification rules.
+
+Native mutation/watch implementations, their renderer bridge and file acceptance
+also map explicitly to `files.md`; the owning contract cannot be omitted merely
+because the general desktop map still covers those source paths.

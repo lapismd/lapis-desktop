@@ -4,6 +4,7 @@ compile_error!("The e2e feature is restricted to debug acceptance artifacts");
 mod app;
 mod commands;
 mod database_commands;
+mod file_commands;
 mod lifecycle;
 #[cfg(target_os = "macos")]
 #[allow(unsafe_code)]
