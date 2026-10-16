@@ -123,10 +123,13 @@ desktop-integration gate is verified. Finish M4's complete enabled-writer audit
 before treating everyday use as qualified, then retain all M5–M7 functionality
 and acceptance gates. M8 and later remain outside this request.
 
-The user subsequently requested a pause after the current settings/hotkeys
-component is qualified and committed. Restart the ordinary app for review and
-resume the remaining M4–M7 work only when requested. This pause does not
-complete M4 or change any milestone gate.
+The user resumed delivery through M7 after the settings/hotkeys review and
+source reorganization. Continue through M7 without another review pause. For
+this delivery session only, run targeted regressions and affected checks per
+slice, and defer full repository/consumer suites until M7 implementation is
+complete. Track deferred lanes explicitly, run them before final qualification,
+and retain every original milestone gate. This exception does not apply to later
+sessions.
 
 The shared `.lapis` default applies to web/server hosts in M1 as well. Replacing
 their runtime hosts is separate work. Retiring `desktop-deno` must preserve Deno

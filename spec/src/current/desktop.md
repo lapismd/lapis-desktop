@@ -292,4 +292,16 @@ The complete enabled-writer audit and cold native acceptance remain M4 gates.
 Configuration changes use the existing shared Settings controls. Logical updates
 serialize against acknowledged values, and pending/failed drafts join the App
 writer lifecycle. An invalid external record cannot clear a conflict during a
-rejected reset. Core/plugin enablement and App Shell state remain audit items.
+rejected reset.
+
+Core-plugin choices, App Shell enablement and compatibility data files use
+App-owned retained state writers on conditional hosts. Runtime recovery holds
+the owning lease while applying the selected state outside the persistence
+queue, then rechecks disk bytes before acknowledging the decision. A failed or
+stale projection retains the original draft and shutdown barrier.
+
+Before the global writer guard, teardown awaits admitted App Shell transitions
+and multi-step App file operations. Creation stays admitted through native IO,
+file-tree projection and the existing Explorer open action. Initial Properties
+read failures retain their admitted mutation for retry. The remaining writer
+audit and final M4 aggregate qualification stay explicit in the task ledger.

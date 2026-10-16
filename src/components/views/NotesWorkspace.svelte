@@ -153,12 +153,15 @@
     error = "";
     shutdown = (async () => {
       const focused = section?.ownerDocument.activeElement;
-      if (focused instanceof HTMLElement && section?.contains(focused))
-        focused.blur();
+      // Settings and editor controls can be portalled outside this section.
+      if (focused instanceof HTMLElement) focused.blur();
       await tick();
       await startup;
       busy = true;
       if (!coreDisposed) {
+        await app.workspace.flushPluginChanges();
+        await app.plugins.flushPendingConfigWrites();
+        await app.fileEditingSessions.settleOperations();
         await app.fileEditingSessions.guard(undefined, async () => {
           await app.workspace.flushLayout();
           ready = false;

@@ -1,13 +1,20 @@
 # Migration inventory and progress
 
-The user requested a pause after the current settings/hotkeys component is
-qualified and committed, with the ordinary app open for review. M4 remains
-unfinished and every original milestone gate retains its scope.
+The user resumed delivery through M7 after the settings/hotkeys review and
+source reorganization. M4 remains unfinished and every original milestone gate
+retains its scope. Continue implementation through M7 without another review
+pause.
 
 The requested renderer source reorganization is a separate maintenance slice. It
 adopts feature-grouped components, application logic and global styles, with the
 placement convention documented in the desktop agent guide. The remaining
-functional migration stays paused for review.
+functional migration now resumes under the user's current delivery request.
+
+For this delivery session only, each slice runs targeted regression, affected
+type/build and native acceptance checks. Full repository, consumer and canonical
+native suites are deferred until M7 implementation is complete. Record deferred
+lanes with slice evidence and run them before marking the aggregate gates Done.
+Do not persist this temporary test-scope exception as the default agent policy.
 
 Local archive qualification checks active workspace peer imports against the
 verified tarball payload, including peer-only consumers. Editable preview

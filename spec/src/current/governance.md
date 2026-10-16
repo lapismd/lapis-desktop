@@ -27,6 +27,12 @@ Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not
 authored source. No initial file-size exceptions exist.
 
+For the currently resumed M4–M7 delivery session only, the user requests
+targeted tests per slice and defers full repository and consumer suites until M7
+implementation is complete. Record deferred lanes and run them before aggregate
+qualification. This does not change original milestone gates or the standing
+test policy for later sessions.
+
 The preferred renderer layout is documented in `AGENTS.md` and `desktop.md`:
 bootstrap at the source root, feature-grouped `components` and `lib`, and
 application-wide `styles`. New code follows its owning responsibility. Moves
@@ -149,3 +155,7 @@ Settings acceptance uses the shared controls, real permission failures and
 external configuration bytes. Cold shortcut acceptance uses a real vault and the
 normal workspace command. No alternate Settings screen or App fixture replaces
 the running Notes owner.
+
+The canonical cold runner includes plugin-choice restoration, retained App Shell
+conflicts and admitted Explorer creation through immediate native close. The
+session-targeted runs use the same isolated real-WebView harness.

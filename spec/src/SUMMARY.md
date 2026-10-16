@@ -35,3 +35,4 @@
   - [Properties and metadata writer intake](history/E-MUTATION-001.md)
   - [E-STATE-001: Settings and hotkey writers](history/E-STATE-001.md)
   - [Renderer source organization](history/E-STRUCTURE-001.md)
+  - [Retained plugin writers and admitted creation](history/E-WRITERS-001.md)
