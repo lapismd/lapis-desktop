@@ -87,7 +87,22 @@ moves or introduce barrels, aliases or routing frameworks just to organize
 files. Update renderer tests and the native acceptance entry when their imports
 move, and retain historical evidence at its original paths.
 
-## Local commands
+## Desktop catalog
+
+Keep Storybook configuration in `.storybook`, application stories under
+`catalog/plugins/<feature>` and disposable fixtures under
+`catalog/support/<feature>`. Top-level shell composition stories may stay
+directly in `catalog/plugins`. Stories mount production components, inject
+clients and own in-memory Apps; production code cannot import catalog code.
+Await App/service cleanup between examples. Add copied-story source/destination
+coverage to `catalog/COVERAGE.md` and retain license attribution.
+
+Use `pnpm storybook` (port 7480), `pnpm build-storybook` and
+`pnpm test:storybook`. The test command runs desktop and narrow viewports
+sequentially, with light/dark stories and accessibility failures enabled. Visual
+review remains pending; never update baselines without explicit approval.
+
+## Native development commands
 
 `pnpm dev` starts Tauri with the loopback Vite renderer. `pnpm build` emits the
 renderer and `pnpm desktop:bundle` creates the current-platform application.

@@ -78,3 +78,5 @@
 - [Shared popup workspace](history/E-POPOUT-002.md)
 
 - [Authorized plugin delivery](history/E-PLUGINS-003.md)
+
+- [Desktop catalog foundation](history/E-CATALOG-001.md)

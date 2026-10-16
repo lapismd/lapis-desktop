@@ -75,3 +75,5 @@ by the task ledger, not inferred from this list.
 - [Shared popup workspace](E-POPOUT-002.md)
 
 - [Authorized plugin delivery](E-PLUGINS-003.md)
+
+- [Desktop catalog foundation](E-CATALOG-001.md)

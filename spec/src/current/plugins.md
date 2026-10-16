@@ -28,6 +28,12 @@ package boundaries and owning-repository validation.
 
 ## Qualification and handover
 
+M8.0 catalogs the production VaultLauncher and NotesWorkspace, with injected
+picker clients and a disposable in-memory vault/database session. The real
+workspace owns its App, plugin loading, note editing and teardown. Both themes
+run at desktop and narrow viewport sizes. Native test entrypoints and production
+Vite startup are not loaded by the catalog host.
+
 Each stage records source revisions, public import boundaries, exact tests,
 failures, source-to-destination story coverage and native evidence separately.
 Local links do not bypass source checks. Deno desktop remains frozen. Retain

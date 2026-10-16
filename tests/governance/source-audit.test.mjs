@@ -34,6 +34,7 @@ test("source budgets count CSS universal selectors and reject oversized files", 
 test("production cannot import fixtures or use Deno and utility styles", () => {
   for (const source of [
     "import x from '../tests/fixture.ts'",
+    "import x from '../catalog/support/fixture.ts'",
     "Deno.readTextFile('x')",
     '<div class="flex gap-2">',
   ]) {

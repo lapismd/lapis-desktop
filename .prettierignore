@@ -9,3 +9,6 @@ dist/
 spec/book/
 public/lapis-logo.svg
 .jj/
+storybook-static/
+test-results/
+playwright-report/

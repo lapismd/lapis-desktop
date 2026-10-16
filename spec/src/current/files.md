@@ -1,5 +1,9 @@
 # File management (M5)
 
+The desktop catalog confirms the existing file/view lifecycle through an
+in-memory Notes session. Its accessibility-only wrapper grouping change does not
+alter watch admission, reconciliation, guarded saves or teardown below.
+
 The Tauri host explicitly starts App-owned watch ingestion after metadata and
 view registrations are ready. Native registration precedes complete initial
 reconciliation. Stop retires callbacks and drains work before leave persistence

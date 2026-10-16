@@ -223,6 +223,7 @@
   bind:this={section}
   class="notes-session"
   data-notes-ready={ready && !busy}
+  role="group"
   aria-label="Notes workspace"
   aria-busy={busy}
 >

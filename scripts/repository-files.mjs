@@ -10,6 +10,9 @@ const ignored = new Set([
   ".local",
   "gen",
   "book",
+  "storybook-static",
+  "test-results",
+  "playwright-report",
 ]);
 export function repositoryFiles(root) {
   const files = [];

@@ -122,6 +122,11 @@ qualification remain separate from the local macOS preview.
 
 ## Authorized plugin delivery
 
+M8.0 starts with the real desktop launcher and Notes workspace, disposable
+in-memory vault/database sessions and injected clients. Every story runs at
+desktop and narrow sizes in light and dark, separately from native acceptance.
+Static catalog, production module exclusion and source audits qualify its gate.
+
 The user resumed root `PLUGIN_MIGRATION.md` on 2026-10-17 after M7.2. M8 covers
 Stages 0–3, M9 covers Stage 4 and M10 covers Stages 5–6. The detailed M8.0–M10.4
 tasks and [plugin contract](plugins.md) govern implementation. Completed M0–M7

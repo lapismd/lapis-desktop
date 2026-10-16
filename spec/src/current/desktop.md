@@ -121,7 +121,8 @@ does not need to load optional database or model services.
 
 The native e2e feature uses separate configuration and a test profile. Its
 artifact is never the ordinary application bundle. Browser and Rust tests are
-supporting evidence; neither can replace the actual WebView gate.
+supporting evidence; neither can replace the actual WebView gate. Builds reject
+catalog imports; shell grouping preserves one main landmark.
 
 Application signing and notarization are deferred to M11 at the user's request.
 The local bundle gate checks identity, architecture and runtime contents without

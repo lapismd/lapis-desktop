@@ -15,5 +15,14 @@
     "types": ["vite/client", "node"],
     "skipLibCheck": true
   },
-  "include": ["src/**/*.ts", "src/**/*.svelte", "vite.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.svelte",
+    "vite.config.ts",
+    "catalog/**/*.ts",
+    "catalog/**/*.svelte",
+    ".storybook/**/*.ts",
+    "vite.catalog.config.ts",
+    "vitest.catalog.config.ts"
+  ]
 }

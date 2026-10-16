@@ -1,0 +1,25 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Desktop/Introduction" />
+
+# Desktop component catalog
+
+Run `pnpm storybook` to open the desktop catalog on port 7480. These examples
+mount the production vault launcher and Notes workspace. Picker calls are
+injected and each Notes example owns a disposable in-memory vault, database and
+App. The catalog requires no Tauri process, account, credential or sibling
+service.
+
+Use the appearance toolbar to inspect Lapis light and dark themes. The default
+`pnpm test:storybook` runs the complete catalog sequentially at desktop and
+narrow viewport sizes, including interactions and accessibility assertions.
+`pnpm build-storybook` emits the standalone catalog in `storybook-static`.
+
+The native app uses its own Vite entry and imports no catalog code. Native
+acceptance remains separate from browser fixtures. Stories tagged
+`visual-pending` still need human visual review; these commands do not update
+baselines.
+
+The canonical task ledger records M8–M10 delivery. Add bundled plugin stories
+under `catalog/plugins/<feature>` and their disposable helpers under
+`catalog/support/<feature>`. Keep application code in its owning `src` feature.

@@ -31,7 +31,10 @@
     "spec:search": "spec-validator search",
     "check:bundle": "node scripts/check-bundle.mjs",
     "local:install": "node scripts/local-archives.mjs",
-    "local:pack": "node scripts/pack-local-core.mjs"
+    "local:pack": "node scripts/pack-local-core.mjs",
+    "storybook": "storybook dev --host 127.0.0.1 --port 7480 --no-open --disable-telemetry",
+    "build-storybook": "storybook build --disable-telemetry",
+    "test:storybook": "node scripts/catalog-tests.mjs"
   },
   "dependencies": {
     "@lapis-notes/api": "^0.1.4",
@@ -53,9 +56,16 @@
   },
   "devDependencies": {
     "@lapismd/spec-validator": "^0.1.4",
+    "@playwright/test": "1.61.1",
+    "@storybook/addon-a11y": "10.5.7",
+    "@storybook/addon-docs": "10.5.7",
+    "@storybook/addon-themes": "10.5.7",
+    "@storybook/addon-vitest": "10.5.7",
+    "@storybook/svelte-vite": "10.5.7",
     "@sveltejs/vite-plugin-svelte": "6.2.4",
     "@tauri-apps/cli": "2.12.3",
     "@types/node": "^24.10.0",
+    "@vitest/browser-playwright": "4.1.11",
     "@wdio/cli": "9.31.2",
     "@wdio/globals": "9.31.3",
     "@wdio/local-runner": "9.31.2",
@@ -66,11 +76,15 @@
     "axe-core": "^4.13.0",
     "prettier": "3.3.3",
     "prettier-plugin-svelte": "^3.5.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
     "semver": "^7.8.5",
+    "storybook": "10.5.7",
     "svelte-check": "^4.3.1",
     "tsx": "^4.23.1",
     "typescript": "~5.9.3",
     "vite": "7.3.2",
+    "vitest": "4.1.11",
     "webdriverio": "9.31.2"
   }
 }

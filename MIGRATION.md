@@ -6,9 +6,9 @@
 [Inventory](spec/migration-inventory.json) ·
 [Evidence](spec/src/history/index.md)
 
-Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2.
+Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8.0.
 
-Current work: M8.0 — Implement the standalone catalog and initial composition
+Current work: M8 — M8.0 complete; implement M8.1 Terminal
 
 Oldest pending gate: M7.3 — Separate ordinary popup integration, not an M8
 dependency
@@ -34,12 +34,12 @@ below.
 | M7.1  | Done        | Complete; paused for review before M7.2                         |
 | M7.2  | Done        | Complete; native ordinary integration remains M7.3              |
 | M7.3  | Planned     | Separate ordinary popup integration, not an M8 dependency       |
-| M8    | In progress | Implement M8.0–M8.3, then continue to M9                        |
+| M8    | In progress | M8.0 complete; implement M8.1 Terminal                          |
 | M9    | Planned     | After M8, implement and qualify M9.1                            |
 | M10   | Planned     | After M9, implement M10.1–M10.4 through optional compute        |
 | M11   | Planned     | Qualify signed distribution and each additional platform        |
 | M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop           |
-| M8.0  | In progress | Implement the standalone catalog and initial composition        |
+| M8.0  | Done        | Complete; continue to M8.1 Terminal                             |
 | M8.1  | Planned     | Integrate local lapis-terminal public clients and native policy |
 | M8.2  | Planned     | Remove obsolete web integration after Terminal handover         |
 | M8.3  | Planned     | Qualify remaining portable plugins and production assets        |

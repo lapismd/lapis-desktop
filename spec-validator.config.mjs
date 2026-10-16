@@ -46,10 +46,16 @@ export default defineConfig(
         mode: "mapped",
         canonicalPattern: canonicalContractPattern("spec/src/"),
         protected: [
+          "^(?:\\.storybook/|catalog/|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
           "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|POPOUT_PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
         ],
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
+          {
+            pattern:
+              "^(?:\\.storybook/|catalog/|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
+            chapters: ["spec/src/current/plugins.md"],
+          },
           {
             pattern:
               "^(?:POPOUT_PLAN\\.md$|src-tauri/src/(?:window|macos_chrome|popout_acceptance)\\.rs$|tests/desktop/(?:popout-|PopoutProof))",

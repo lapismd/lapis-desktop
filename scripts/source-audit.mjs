@@ -61,7 +61,7 @@ export function auditSources(files, read, { appOnly = false } = {}) {
       );
     if (
       production &&
-      /(?:from\s*|import\s*\(?\s*)["'][^"']*(?:tests\/|fixtures\/|\.test\.|\.spec\.|\.stories\.)/u.test(
+      /(?:from\s*|import\s*\(?\s*)["'][^"']*(?:catalog\/|tests\/|fixtures\/|\.test\.|\.spec\.|\.stories\.)/u.test(
         source,
       )
     )
