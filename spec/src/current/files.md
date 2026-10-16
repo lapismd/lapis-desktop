@@ -117,3 +117,9 @@ removing files or folders. Explorer uses that owner instead of low-level Vault
 trash; failed/retired writers and changed source paths reject before IO, and
 protection releases on failure so explicit recovery and retry remain possible.
 This component does not complete the remaining M5 file/tree consistency gate.
+
+Internal-mutation acceptance uses the existing Explorer rename and drop actions.
+It verifies collision preservation, admitted dirty-writer flush/recovery, active
+editor retargeting and restored layout against physical files. Browser drop
+delivery exercises the actual component callback; it does not establish a
+physical operating-system drag gesture.

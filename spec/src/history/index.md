@@ -49,3 +49,5 @@ by the task ledger, not inferred from this list.
 - [App-owned external file reconciliation](E-INGESTION-001.md)
 
 - [Native file actions through existing Explorer menus](E-ACTIONS-001.md)
+
+- [Internal Explorer mutations and editor retargeting](E-MOVE-001.md)

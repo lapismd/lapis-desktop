@@ -194,3 +194,6 @@ are preserved.
 Protected FileManager/Explorer deletion and owned notice projection are source
 components of M5. Original App/tree consistency and end-of-M7 full gates remain
 open; the post-M7 plugin plan is preserved and not implemented in this slice.
+
+Internal rename/move qualification retains collision and dirty-writer cases,
+active-view identity and restart layout under the original LD-FILE-003 gate.

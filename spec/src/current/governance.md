@@ -204,3 +204,7 @@ Passive OS-action receipts compile only with e2e, and normal bundle audits
 reject their marker. The cold runner retains real
 Finder/default-open/system-trash and local-trash fallback acceptance using only
 isolated disposable files.
+
+Internal-mutation native qualification uses existing rename/drop components and
+separate isolated profiles. It records browser event delivery separately from
+physical operating-system gestures; no product acceptance hook is added.

@@ -47,3 +47,5 @@
   - [App-owned external file reconciliation](history/E-INGESTION-001.md)
 
   - [Native file actions through existing Explorer menus](history/E-ACTIONS-001.md)
+
+  - [Internal Explorer mutations and editor retargeting](history/E-MOVE-001.md)

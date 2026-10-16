@@ -91,6 +91,7 @@ async function acceptance() {
       "tests/desktop/file-creation.test.mjs",
       "tests/desktop/file-reconciliation.test.mjs",
       "tests/desktop/system-file-actions.test.mjs",
+      "tests/desktop/file-ui-mutations.test.mjs",
     ],
     environment,
   );

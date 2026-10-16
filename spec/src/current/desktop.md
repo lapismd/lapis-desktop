@@ -326,16 +326,16 @@ message when WebKit supplies a stack without it.
 M5 native watch service ownership and bounds are defined in `files.md`; watcher
 resources remain separate from renderer file-tree reconciliation.
 
-Explorer deletion shares FileManager writer protection. Cold native acceptance
-retains dirty conflict bytes before removal and retries through the existing
-menu after explicit recovery; no new presentation surface is introduced.
+Explorer mutations share FileManager writer protection. Cold native checks
+retain dirty conflict bytes before rename, move or deletion and retry existing
+actions after explicit recovery. Clean rename/move retargets the active editor
+and saved layout through restart; view rebinding follows guard release.
 
-New-file intent uses the native exclusive-create port when available. Existing
-application-state overwrite APIs retain their separate semantics; creation does
-not publish UI success after a collision or failed native write.
+New-file intent uses native exclusive creation when available. State overwrite
+APIs keep their separate semantics. Creation cannot project success after a
+collision or failed write.
 
-Existing Explorer menus use the admitted native open/reveal/system-trash ports
-on macOS. Shared capability checks retain explicit unsupported behavior and the
-local-trash fallback. System-trash success is projected once by the shared
-Vault; the host does not perform a second deletion or add a separate action
-surface.
+Existing Explorer menus use admitted macOS open/reveal/system-trash ports.
+Capability checks retain unsupported behavior and local-trash fallback. Shared
+Vault projection handles successful system trash once, without a second deletion
+or replacement action surface.

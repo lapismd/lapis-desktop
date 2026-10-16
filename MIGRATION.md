@@ -18,7 +18,7 @@ The first usable notes milestone ends at M4. Native services and installed-plugi
 | M2 | Done | Complete; proceed to the M3 native database gate |
 | M3 | Done | Complete; proceed to M4 safe everyday-use qualification |
 | M4 | In progress | M4 full gates at M7 end; continue M5 |
-| M5 | In progress | Qualify internal mutations, attachment import and HTTP representation |
+| M5 | In progress | Qualify attachment import and HTTP representation |
 | M6 | Planned | Integrate search and metadata navigation |
 | M7 | Planned | Complete native menus and application delivery |
 | M8 | Planned | After M7 qualification, specify and implement plugin-plan Stages 0–3 |
