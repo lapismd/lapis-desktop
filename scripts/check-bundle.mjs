@@ -35,6 +35,7 @@ for (const marker of [
   "LAPIS_DESKTOP_ACCEPTANCE_",
   "__lapisNativeDatabaseAcceptance",
   "__lapisConditionalWriteAcceptance",
+  "Native controls could not be measured",
 ])
   assert.equal(
     bytes.includes(Buffer.from(marker)),

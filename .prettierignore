@@ -8,3 +8,4 @@ dist/
 .local/
 spec/book/
 public/lapis-logo.svg
+.jj/

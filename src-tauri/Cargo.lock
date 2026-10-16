@@ -2505,10 +2505,14 @@ dependencies = [
 name = "lapis-desktop"
 version = "0.1.0"
 dependencies = [
+ "block2",
  "cap-std",
  "cap-tempfile",
  "libc",
  "mime_guess",
+ "objc2",
+ "objc2-app-kit",
+ "objc2-foundation",
  "percent-encoding",
  "serde",
  "serde_json",

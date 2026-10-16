@@ -4,6 +4,29 @@ import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 
+async function nativeControlsCentered(browser) {
+  await browser.waitUntil(
+    async () => {
+      const info = await browser.execute(() =>
+        globalThis.__TAURI__.core.invoke("shell_info"),
+      );
+      const controls = info.nativeControls?.Ok;
+      return (
+        controls?.length === 3 &&
+        controls.every(
+          ([x, top, width, height]) =>
+            x >= 16 && x + width <= 80 && Math.abs(top + height / 2 - 20) < 0.5,
+        )
+      );
+    },
+    {
+      timeout: 5000,
+      timeoutMsg:
+        "Actual native traffic lights must remain centered at y=20 with their 16px inset",
+    },
+  );
+}
+
 test("workspace tabs meet the native top edge and retain Tauri drag handles", async (context) => {
   const root = mkdtempSync(
     join(process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT, "chrome-"),
@@ -14,6 +37,7 @@ test("workspace tabs meet the native top edge and retain Tauri drag handles", as
   const session = await nativeSession("window-chrome", root);
   context.after(session.cleanup);
   const { browser } = session;
+  await nativeControlsCentered(browser);
   assert.equal(await browser.$(".shell-header").isExisting(), false);
   const launcher = await browser.execute(() => {
     const element = document.querySelector(".shell-content");
@@ -69,6 +93,13 @@ test("workspace tabs meet the native top edge and retain Tauri drag handles", as
   assert.ok(geometry.leftTab >= 80);
   assert.equal(geometry.drag, "deep");
   assert.equal(geometry.excluded, true);
+  await browser.execute(async () => {
+    const { window, dpi } = globalThis.__TAURI__;
+    await window.getCurrentWindow().setSize(new dpi.LogicalSize(900, 640));
+    await window.getCurrentWindow().setFocus();
+  });
+  await browser.waitUntil(() => browser.execute(() => innerWidth === 900));
+  await nativeControlsCentered(browser);
   await browser.$('button[aria-label="Close left sidebar"]').click();
   const reopen = browser.$('button[aria-label="Open left sidebar"]');
   await reopen.waitForDisplayed();
@@ -111,4 +142,8 @@ test("workspace tabs meet the native top edge and retain Tauri drag handles", as
     document.getElementById("native-drag-contract").remove(),
   );
   await session.close();
+  const restored = await nativeSession("window-chrome-restored", root);
+  context.after(restored.cleanup);
+  await nativeControlsCentered(restored.browser);
+  await restored.close();
 });

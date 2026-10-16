@@ -9,6 +9,7 @@
   let { client }: { client: VaultClient } = $props();
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
+  let returnProfileId = $state<string | null>(null);
   let notes = $state<{ dispose(): Promise<void> }>();
   let restoring = $state(true);
   let openingNotes = $state(false);
@@ -104,6 +105,7 @@
   {:else}
     <VaultLauncher
       {client}
+      {returnProfileId}
       errorMessage={failure}
       onError={reportFailure}
       onOpenNotes={openNotes}
@@ -116,7 +118,10 @@
       bind:this={notes}
       {session}
       onBack={back}
-      onReady={() => client.rememberNotes(selected)}
+      onReady={async () => {
+        await client.rememberNotes(selected);
+        returnProfileId = selected?.profileId ?? null;
+      }}
     />
   {/key}
 {/if}

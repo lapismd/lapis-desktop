@@ -22,7 +22,16 @@ describe("real Notes native session", () => {
           frame: window.__navigationFrame,
           visibility: document.visibilityState,
           focused: document.hasFocus(),
-          overlays: [...document.querySelectorAll('[role="menu"], [data-ui-component="workspace-navigation"]')].map(element => ({ html: element.outerHTML.slice(0, 900), bounds: JSON.stringify(element.getBoundingClientRect()), animation: getComputedStyle(element).animation, transition: getComputedStyle(element).transition })),
+          overlays: [
+            ...document.querySelectorAll(
+              '[role="menu"], [data-ui-component="workspace-navigation"]',
+            ),
+          ].map((element) => ({
+            html: element.outerHTML.slice(0, 900),
+            bounds: JSON.stringify(element.getBoundingClientRect()),
+            animation: getComputedStyle(element).animation,
+            transition: getComputedStyle(element).transition,
+          })),
           gutter: document.querySelector(".cm-gutters")?.outerHTML,
           images: [...document.querySelectorAll(".notes-session img")].map(
             (image) => ({
@@ -144,11 +153,34 @@ describe("real Notes native session", () => {
   it("closes the owned database, then reopens the real Notes session with saved content", async () => {
     await browser.execute(() => {
       window.__navigationFrame = "waiting";
-      requestAnimationFrame(() => window.__navigationFrame = "painted");
-      window.__navigationTrace = [{ initial: document.body.innerText.slice(-700), pointer: document.body.style.pointerEvents }];
-      for (const type of ["pointerdown", "pointerup", "click", "keydown", "animationend", "bits.menu-item.select"]) document.addEventListener(type, event => {
-        if (window.__navigationTrace.length < 100) window.__navigationTrace.push({ type, target: event.target.outerHTML?.slice(0, 200), text: event.target.textContent?.slice(0, 100), prevented: event.defaultPrevented });
-      }, true);
+      requestAnimationFrame(() => (window.__navigationFrame = "painted"));
+      window.__navigationTrace = [
+        {
+          initial: document.body.innerText.slice(-700),
+          pointer: document.body.style.pointerEvents,
+        },
+      ];
+      for (const type of [
+        "pointerdown",
+        "pointerup",
+        "click",
+        "keydown",
+        "animationend",
+        "bits.menu-item.select",
+      ])
+        document.addEventListener(
+          type,
+          (event) => {
+            if (window.__navigationTrace.length < 100)
+              window.__navigationTrace.push({
+                type,
+                target: event.target.outerHTML?.slice(0, 200),
+                text: event.target.textContent?.slice(0, 100),
+                prevented: event.defaultPrevented,
+              });
+          },
+          true,
+        );
     });
     await returnToVaults(browser);
     await expect(browser.$("button*=Open Vault")).toBeDisplayed();

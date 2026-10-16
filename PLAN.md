@@ -16,10 +16,17 @@ edit Markdown, save safely, and restore the session**. Keep the existing Notes
 workspace and editor; use jj-store and JJButler as references for native chrome
 and lifecycle.
 
-Reuse the existing Deno desktop presentation through public shared components.
-Both native hosts use the same vault chooser, recent-project search, appearance
-controls and Lapis-branded startup progress. Tauri owns only native integration
-and lifecycle; choosing or creating a vault opens Notes directly.
+Reuse the existing desktop presentation through public shared components: the
+vault chooser, recent-project search, appearance controls and Lapis-branded
+startup progress. Tauri owns native integration and lifecycle; choosing or
+creating a vault opens Notes directly. The chooser's existing close action
+returns to the previously opened vault and restores its saved layout.
+
+**The Deno desktop is superseded and frozen as of 2026-10-16.** Keep it as a
+reference for existing behavior; do not add features, fixes, host changes or new
+qualification work to it. All further desktop work targets Tauri. Shared-library
+fixes still belong in their owning packages. The frozen desktop's eventual
+removal remains M12; Deno services used by other hosts are outside this freeze.
 
 Ship Rust plus the system WebView. Node/pnpm remain development tools. Use
 `.lapis` as the shared vault-local application-state default across every host.
@@ -51,6 +58,10 @@ application-state default to `.lapis` throughout the app.
   Lapis theme. Hide the native title and let sidebar and workspace tab strips
   meet the top edge, as in the Deno host and jj-store. No application title or
   session toolbar sits above the tabs. Defer glass effects and extra windows.
+  Center native traffic lights vertically in the 40px tab strip, retaining their
+  geometry after restore and macOS relayout through a window-scoped native
+  helper as in jj-store. Keep native pointer borrows inside Tauri main-thread
+  callbacks; do not port Deno's timers or renderer adjustments.
 - **Transport:** implement an adapter from the public `NativeDesktopBridge` to
   named Tauri commands and events. Grant access only to the application window
   and admitted vaults. Production uses bundled renderer assets.
@@ -201,8 +212,8 @@ launch, bundle contents and native behavior without a signing gate (confirmed
 - Keep visual review separate and non-blocking; retain `visual-pending` and do
   not update baselines without approval.
 - Prove installation, checks, builds, and packaged launch in an environment
-  without Deno. Keep the existing desktop available throughout preview
-  qualification.
+  without Deno. Keep the frozen desktop available as a reference throughout
+  preview qualification; new Tauri slices do not require Deno packaged reruns.
 - Verify fresh `.lapis` configuration, workspace/layout, hotkeys, and plugin
   persistence in every affected host through the shared packages. Pre-release
   state resets and overwrites are acceptable; legacy-state import and

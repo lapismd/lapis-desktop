@@ -33,3 +33,5 @@ by the task ledger, not inferred from this list.
 - [E-STARTUP-001: native Notes startup progress](E-STARTUP-001.md)
 
 - [E-ONBOARD-001: Shared desktop chooser](E-ONBOARD-001.md)
+- [E-REVIEW-001: native controls, chooser return and Deno freeze](E-REVIEW-001.md)
+- [E-REVIEW-002: retained native controls and foreground qualification](E-REVIEW-002.md)

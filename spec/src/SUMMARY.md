@@ -29,3 +29,5 @@
   - [Tab-first native window](history/E-CHROME-001.md)
   - [Native Notes startup progress](history/E-STARTUP-001.md)
   - [Shared desktop chooser](history/E-ONBOARD-001.md)
+  - [Native controls, chooser return and Deno freeze](history/E-REVIEW-001.md)
+  - [Retained native controls and foreground qualification](history/E-REVIEW-002.md)

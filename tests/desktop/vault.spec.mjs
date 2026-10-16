@@ -287,7 +287,9 @@ describe("actual native vault access", () => {
       [
         ...document.querySelectorAll("[data-desktop-vault-launcher] button"),
       ].map((button) => ({
-        name: button.textContent.trim(),
+        name:
+          button.getAttribute("aria-label")?.trim() ||
+          button.textContent.trim(),
         tabIndex: button.tabIndex,
         disabled: button.disabled,
       })),

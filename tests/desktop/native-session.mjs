@@ -21,7 +21,9 @@ async function availablePort() {
 export async function nativeSession(
   name,
   isolatedRoot,
-  executablePath = resolve("src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop"),
+  executablePath = resolve(
+    "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
+  ),
 ) {
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();

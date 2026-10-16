@@ -28,4 +28,4 @@ installed-plugin support remain explicitly deferred.
 | M9   | Deferred    | Specify each advanced service before implementation         |
 | M10  | Deferred    | Specify and qualify verified installed plugins              |
 | M11  | Planned     | Qualify signed distribution and each additional platform    |
-| M12  | Planned     | Qualify capability coverage and retire the old desktop host |
+| M12  | Planned     | Qualify Tauri coverage and remove frozen Deno desktop       |

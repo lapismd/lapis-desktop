@@ -12,11 +12,13 @@
 
   let {
     client,
+    returnProfileId = null,
     errorMessage = "",
     onOpenNotes,
     onError,
   }: {
     client: VaultClient;
+    returnProfileId?: string | null;
     errorMessage?: string;
     onOpenNotes(selected: VaultDescriptor): Promise<void>;
     onError(error: unknown): void;
@@ -57,6 +59,11 @@
   {host}
   status={busy ? "opening" : "landing"}
   {errorMessage}
+  canReturn={returnProfileId !== null}
+  onClose={() => {
+    const profileId = returnProfileId;
+    if (profileId) void choose(() => client.openRecent(profileId));
+  }}
   onCreate={() => choose(() => client.create())}
   onOpen={() => choose(() => client.select())}
   onOpenRecent={(profile: VaultProfile) =>

@@ -60,6 +60,10 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
                 eprintln!("Could not request safe application quit: {error}");
             }
         }
+        RunEvent::Exit => {
+            #[cfg(target_os = "macos")]
+            crate::macos_chrome::shutdown();
+        }
         _ => {}
     }
 }

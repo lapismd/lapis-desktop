@@ -120,3 +120,12 @@ physical AppKit movement remains an independent native acceptance check.
 Startup acceptance observes the actual public component's phase statuses and
 progress semantics during native IO. It must not add timing delays or test hooks
 to the product. A read-only temporary vault qualifies visible failure recovery.
+
+The cold native runner includes chooser-return acceptance: the existing close
+action restores the last ready vault after cancellation, while departure still
+flushes edits and releases the previous database. This adds no native authority.
+
+The macOS control-layout helper confines native pointer borrows to Tauri live
+main-thread callbacks and window-filtered notifications. Its observer is removed
+on exit. E2E-only rectangle measurement extends the existing read-only shell
+information; normal bundles exclude it and grant no new renderer permissions.

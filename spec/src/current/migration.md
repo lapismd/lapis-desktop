@@ -7,10 +7,11 @@ original M4 application gate and complete-writer coverage remain unchanged.
 
 ## Requirements
 
-| ID         | Requirement                                                                                                                                                                                                                                               |
-| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-MIG-001 | The migration inventory MUST retain source repository revisions and map legacy desktop requirements, commands/events, services, plugins, packaging and acceptance surfaces to a destination task and a reuse, port, replace, defer or retire disposition. |
-| LD-MIG-002 | Every roadmap task MUST retain an explicit gate and next action. Deferred capabilities MUST remain visible, and product implementation MUST first introduce its owning contract. The generated MIGRATION summary MUST agree with the task ledger.         |
+| ID         | Requirement                                                                                                                                                                                                                                                                                                |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-MIG-001 | The migration inventory MUST retain source repository revisions and map legacy desktop requirements, commands/events, services, plugins, packaging and acceptance surfaces to a destination task and a reuse, port, replace, defer or retire disposition.                                                  |
+| LD-MIG-002 | Every roadmap task MUST retain an explicit gate and next action. Deferred capabilities MUST remain visible, and product implementation MUST first introduce its owning contract. The generated MIGRATION summary MUST agree with the task ledger.                                                          |
+| LD-MIG-003 | The Deno desktop MUST remain superseded and frozen. Further desktop features, fixes and host qualification MUST target Tauri. Shared changes MUST remain in their owning packages. The frozen host MAY remain a reference until M12 removes it; Deno services used by other hosts are outside this freeze. |
 
 The immutable baseline inventory is `spec/migration-inventory.json`. It is
 self-contained and validates without sibling checkouts. Capture fresh source
@@ -26,6 +27,13 @@ The shell qualification retains the original M0.1 gate. M1 is qualified against
 committed source-owned archives; M2 native vault access is also qualified.
 Application signing and notarization stay deferred to M11 per the user's
 2026-10-15 instruction.
+
+On 2026-10-16 the user froze the superseded Deno desktop. Existing source and
+historical evidence remain available as reference. Do not port new functionality
+back, change the Deno host, or require further packaged Deno qualification for
+Tauri slices. This removes the outstanding Deno packaged reruns from the active
+slice. It does not complete M12 or change its capability-coverage gate, freeze
+shared-library ownership, or retire Deno services used by other hosts.
 
 ## Shared state policy
 

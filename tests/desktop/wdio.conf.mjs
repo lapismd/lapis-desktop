@@ -30,12 +30,16 @@ export const config = {
       browserName: "tauri",
       "tauri:options": {
         application: acceptanceBinary(
-          resolve("src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop"),
+          resolve(
+            "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
+          ),
         ),
       },
     },
   ],
-  async beforeTest() { await focusNativeWindow(browser); },
+  async beforeTest() {
+    await focusNativeWindow(browser);
+  },
   framework: "mocha",
   reporters: ["spec"],
   waitforTimeout: 15000,

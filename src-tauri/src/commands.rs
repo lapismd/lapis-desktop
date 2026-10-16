@@ -1,5 +1,6 @@
 use serde::Serialize;
 use std::sync::atomic::{AtomicBool, Ordering};
+use tauri::Manager;
 
 #[derive(Default)]
 pub struct ShellState {
@@ -14,16 +15,27 @@ pub struct ShellInfo {
     version: String,
     process_id: u32,
     ready: bool,
+    #[cfg(all(feature = "e2e", target_os = "macos"))]
+    native_controls: Result<Vec<[f64; 4]>, String>,
 }
 
 #[tauri::command]
-pub fn shell_info(app: tauri::AppHandle, state: tauri::State<'_, ShellState>) -> ShellInfo {
+pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
+    #[cfg(all(feature = "e2e", target_os = "macos"))]
+    let native_controls = {
+        match app.get_webview_window("main") {
+            Some(window) => crate::macos_chrome::geometry(window).await,
+            None => Err("The native window is unavailable".into()),
+        }
+    };
     ShellInfo {
         runtime: "tauri-desktop",
         os: std::env::consts::OS,
         version: app.package_info().version.to_string(),
         process_id: std::process::id(),
-        ready: state.ready.load(Ordering::SeqCst),
+        ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
+        #[cfg(all(feature = "e2e", target_os = "macos"))]
+        native_controls,
     }
 }
 
@@ -32,6 +44,14 @@ pub fn shell_ready(
     app: tauri::AppHandle,
     state: tauri::State<'_, ShellState>,
 ) -> Result<(), String> {
+    #[cfg(all(feature = "e2e", target_os = "macos"))]
+    {
+        app.show().map_err(|error| error.to_string())?;
+        if let Some(window) = app.get_webview_window("main") {
+            window.show().map_err(|error| error.to_string())?;
+            window.set_focus().map_err(|error| error.to_string())?;
+        }
+    }
     crate::lifecycle::ready(&app).map_err(|error| error.to_string())?;
     if !state.ready.swap(true, Ordering::SeqCst) {
         println!("lapis-desktop: renderer ready");
