@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount, untrack } from "svelte";
+  import { onMount, tick, untrack } from "svelte";
   import {
     App,
     installApplicationCompatibility,
@@ -57,6 +57,7 @@
   let shutdown: Promise<void> | undefined;
   let disposed = false;
   let coreDisposed = false;
+  let section: HTMLElement | undefined;
   const workspaceNavigation = $derived<WorkspaceNavigation>({
     currentLabel: session.profile?.name ?? "Lapis Notes",
     menuLabel: "Vault",
@@ -113,6 +114,7 @@
       );
       await phase("layout", () => app.workspace.loadLayout());
       await phase("metadata", async () => {
+        await app.metadataTypeManager.load();
         stopMetadataTracking = app.metadataTypeManager.trackChanges();
         await app.metadataCache.load();
         await onReady();
@@ -147,6 +149,10 @@
     busy = true;
     error = "";
     shutdown = (async () => {
+      const focused = section?.ownerDocument.activeElement;
+      if (focused instanceof HTMLElement && section?.contains(focused))
+        focused.blur();
+      await tick();
       await startup;
       busy = true;
       if (!coreDisposed) {
@@ -189,6 +195,7 @@
 </script>
 
 <section
+  bind:this={section}
   class="notes-session"
   data-notes-ready={ready}
   aria-label="Notes workspace"

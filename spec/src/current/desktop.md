@@ -103,7 +103,15 @@ pointer results cannot waive it.
 
 E2E readiness unhides the application and shows/focuses its window before the
 handshake; setting focus alone cannot unhide a background macOS process. This
-activation code is excluded from ordinary bundles.
+activation code is excluded from ordinary bundles. An e2e-only native probe
+distinguishes visibility, minimization, active-Space membership, occlusion and
+key-window state when foreground qualification fails. The original
+visible-document guard and its deadline remain mandatory. While its original
+15-second visibility deadline remains open, the acceptance driver may repeat
+Tauri's focus request for a hidden document. macOS can decline the first request
+while a preceding cold process is leaving its Space. The driver must observe
+actual visibility and a real animation frame before interacting. No Space,
+window-level or stacking override is applied.
 
 ## Native vault access (M2)
 
@@ -212,6 +220,11 @@ layout writer. It never writes a second copy of workspace layout. Failed saves
 must complete before any controller/plugin/database teardown begins. A completed
 guard is followed by editing-registry disposal before releasing the session.
 
+Before entering that guard, the host finishes the focused existing form control
+and awaits its blur callbacks. This admits Properties and Settings changes that
+commit on blur while their component is still mounted. Teardown must not remove
+an active input before its normal commit can join the owned writer queue.
+
 Last-Notes intent lives in the native OS profile and references a known recent
 profile, never a renderer-selected absolute path. Restoration revalidates the
 physical root using normal recent-vault admission. Missing folders, changed
@@ -247,7 +260,10 @@ and retired previews remain visible to shutdown and recovery. Accepting disk
 text must update the visible editor and permit later saves, including after an
 empty save. Unbound writes on conditional-capable hosts reject.
 
-API editors and editable previews are separate qualified components. The enabled
-Properties/frontmatter and metadata write paths still require protection and a
-complete writer audit. Their absence from an editing-session registry cannot
-waive LD-LIFE-007 or complete the original M4 gate.
+API editors and editable previews are separate qualified components. Properties
+and metadata text mutations must join the App-owned writer lifecycle, protect
+existing documents before transformation and retain failed drafts for recovery.
+Properties must compare the displayed record with authoritative frontmatter;
+unrelated body edits remain compatible. Metadata types must join shutdown before
+any debounce can omit an edit, including initial creation and external deletion.
+The complete enabled-writer audit and cold native acceptance remain M4 gates.

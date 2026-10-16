@@ -37,6 +37,12 @@ shared-library ownership, or retire Deno services used by other hosts.
 
 ## Shared state policy
 
+The current request resumes delivery through M7, then stops. The
+[enabled-writer audit](writer-audit.md) tracks M4's remaining settings, hotkey
+and plugin-state ownership before file management, navigation and desktop
+integration are qualified. No component pass or new tracker entry replaces any
+original M4–M7 completion gate.
+
 The user approved `.lapis` as the shared vault-local application-state default
 on 2026-10-15. This applies to the entire application, including desktop, web,
 and server hosts. M1 changes the default in the shared API and resolves

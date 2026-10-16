@@ -118,6 +118,11 @@ Commit each verified task in its owning repository.
 **M4 completes the first useful milestone.** M0–M3 provide runnable, testable
 increments toward it. Later services do not block that milestone.
 
+The active delivery request continues through M7 and stops after its original
+desktop-integration gate is verified. Finish M4's complete enabled-writer audit
+before treating everyday use as qualified, then retain all M5–M7 functionality
+and acceptance gates. M8 and later remain outside this request.
+
 The shared `.lapis` default applies to web/server hosts in M1 as well. Replacing
 their runtime hosts is separate work. Retiring `desktop-deno` must preserve Deno
 services still used by those hosts. Features already unsupported by the old

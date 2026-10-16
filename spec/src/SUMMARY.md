@@ -3,6 +3,7 @@
 - [Current specification](current/index.md)
   - [Governance](current/governance.md)
   - [Desktop shell](current/desktop.md)
+  - [Enabled writer audit](current/writer-audit.md)
   - [Migration inventory](current/migration.md)
   - [Milestones](current/progress/milestones.md)
   - [Verification](current/verification.md)
@@ -31,3 +32,4 @@
   - [Shared desktop chooser](history/E-ONBOARD-001.md)
   - [Native controls, chooser return and Deno freeze](history/E-REVIEW-001.md)
   - [Retained native controls and foreground qualification](history/E-REVIEW-002.md)
+  - [Properties and metadata writer intake](history/E-MUTATION-001.md)

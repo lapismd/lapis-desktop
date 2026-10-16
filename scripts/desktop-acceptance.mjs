@@ -81,6 +81,7 @@ async function acceptance() {
       "tests/desktop/preview-conflicts.test.mjs",
       "tests/desktop/window-chrome.test.mjs",
       "tests/desktop/vault-return.test.mjs",
+      "tests/desktop/properties-persistence.test.mjs",
     ],
     environment,
   );

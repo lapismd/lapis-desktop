@@ -36,6 +36,7 @@ for (const marker of [
   "__lapisNativeDatabaseAcceptance",
   "__lapisConditionalWriteAcceptance",
   "Native controls could not be measured",
+  "Native visibility could not be measured",
 ])
   assert.equal(
     bytes.includes(Buffer.from(marker)),

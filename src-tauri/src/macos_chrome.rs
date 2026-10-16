@@ -200,3 +200,35 @@ pub async fn geometry(window: tauri::WebviewWindow) -> Result<Vec<[f64; 4]>, Str
     .map_err(|error| error.to_string())?
     .ok_or_else(|| "Native controls could not be measured".into())
 }
+
+/// E2E-only foreground diagnostics: visible, minimized, current Space, unoccluded, key.
+#[cfg(feature = "e2e")]
+pub async fn visibility(window: tauri::WebviewWindow) -> Result<[bool; 5], String> {
+    let (send, receive) = std::sync::mpsc::sync_channel(1);
+    window
+        .with_webview(move |platform| {
+            let result = (|| {
+                MainThreadMarker::new()?;
+                // SAFETY: Tauri retains the live NSWindow for this UI-thread callback only.
+                let window = unsafe { platform.ns_window().cast::<NSWindow>().as_ref() }?;
+                Some([
+                    window.isVisible(),
+                    window.isMiniaturized(),
+                    window.isOnActiveSpace(),
+                    window
+                        .occlusionState()
+                        .contains(objc2_app_kit::NSWindowOcclusionState::Visible),
+                    window.isKeyWindow(),
+                ])
+            })();
+            let _ = send.send(result);
+        })
+        .map_err(|error| error.to_string())?;
+    tauri::async_runtime::spawn_blocking(move || {
+        receive.recv_timeout(std::time::Duration::from_secs(5))
+    })
+    .await
+    .map_err(|error| error.to_string())?
+    .map_err(|error| error.to_string())?
+    .ok_or_else(|| "Native visibility could not be measured".into())
+}

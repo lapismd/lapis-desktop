@@ -1,5 +1,7 @@
 # Evidence
 
+- [E-MUTATION-001: Properties and metadata writer intake](E-MUTATION-001.md)
+
 - [E-PLAN-001: saved plan](E-PLAN-001.md)
 - [E-PLAN-002: shared application state plan](E-PLAN-002.md)
 - [E-SHELL-001: native shell foundation](E-SHELL-001.md)

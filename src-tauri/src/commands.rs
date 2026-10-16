@@ -17,10 +17,17 @@ pub struct ShellInfo {
     ready: bool,
     #[cfg(all(feature = "e2e", target_os = "macos"))]
     native_controls: Result<Vec<[f64; 4]>, String>,
+    #[cfg(all(feature = "e2e", target_os = "macos"))]
+    native_visibility: Result<[bool; 5], String>,
 }
 
 #[tauri::command]
 pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
+    #[cfg(all(feature = "e2e", target_os = "macos"))]
+    let native_visibility = match app.get_webview_window("main") {
+        Some(window) => crate::macos_chrome::visibility(window).await,
+        None => Err("The native window is unavailable".into()),
+    };
     #[cfg(all(feature = "e2e", target_os = "macos"))]
     let native_controls = {
         match app.get_webview_window("main") {
@@ -36,6 +43,8 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
         ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
         #[cfg(all(feature = "e2e", target_os = "macos"))]
         native_controls,
+        #[cfg(all(feature = "e2e", target_os = "macos"))]
+        native_visibility,
     }
 }
 

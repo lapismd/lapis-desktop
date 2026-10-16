@@ -129,3 +129,11 @@ The macOS control-layout helper confines native pointer borrows to Tauri live
 main-thread callbacks and window-filtered notifications. Its observer is removed
 on exit. E2E-only rectangle measurement extends the existing read-only shell
 information; normal bundles exclude it and grant no new renderer permissions.
+Foreground failures also report e2e-only native visibility, minimization,
+active-Space, occlusion and key-window measurements. The normal-bundle audit
+rejects this probe's diagnostic marker, just as it rejects control measurement.
+
+The cold native runner also qualifies focused Properties commits, stale-record
+and failed-save recovery, and first metadata-type creation across restart.
+Keyboard navigation opens the existing property-type submenu; synthetic hover
+alone cannot prove that native WebView interaction.
