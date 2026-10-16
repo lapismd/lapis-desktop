@@ -7,6 +7,7 @@ import { remote } from "webdriverio";
 import assert from "node:assert/strict";
 import { focusNativeWindow } from "./native-visibility.mjs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
+import { rendererReadiness } from "./native-readiness.mjs";
 
 async function availablePort() {
   const server = createServer();
@@ -42,10 +43,9 @@ export async function nativeSession(
   });
   const log = createWriteStream(join(root, `${name}.log`));
   let rendererReady = false;
-  let outputTail = "";
+  const observeReadiness = rendererReadiness();
   child.stdout.on("data", (chunk) => {
-    outputTail = (outputTail + chunk.toString()).slice(-512);
-    rendererReady ||= outputTail.includes("lapis-desktop: renderer ready");
+    rendererReady = observeReadiness(chunk);
   });
   child.stdout.pipe(log, { end: false });
   child.stderr.pipe(log, { end: false });

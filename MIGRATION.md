@@ -6,10 +6,10 @@
 [Inventory](spec/migration-inventory.json) ·
 [Evidence](spec/src/history/index.md)
 
-Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1.
+Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2.
 
-Current work: M7.2 — Paused for review; next implement shared projection, safe
-area and lifecycle
+Current work: M7.3 — After review, integrate Tauri, qualify ordinary app and
+pause
 
 Implementation can advance while original milestone gates await qualification.
 The task ledger and selected evidence retain every remaining check.
@@ -17,22 +17,22 @@ The task ledger and selected evidence retain every remaining check.
 The Deno desktop is superseded and frozen. Signing, publication and post-M7
 plugin intake remain deferred to their planned gates.
 
-| Task | Status   | Next action                                                                  |
-| ---- | -------- | ---------------------------------------------------------------------------- |
-| M0.0 | Done     | Complete                                                                     |
-| M0.1 | Done     | Complete                                                                     |
-| M1   | Done     | Complete; proceed to M2 native vault access                                  |
-| M2   | Done     | Complete; proceed to the M3 native database gate                             |
-| M3   | Done     | Complete; proceed to M4 safe everyday-use qualification                      |
-| M4   | Done     | Complete; paused for ordinary app review before M8                           |
-| M5   | Done     | Complete; paused for ordinary app review before M8                           |
-| M6   | Done     | Complete; paused for ordinary app review before M8                           |
-| M7   | Done     | Complete; paused for ordinary app review before M8                           |
-| M7.1 | Done     | Complete; paused for review before M7.2                                      |
-| M7.2 | Planned  | Paused for review; next implement shared projection, safe area and lifecycle |
-| M7.3 | Planned  | After review, integrate Tauri, qualify ordinary app and pause                |
-| M8   | Planned  | Paused for review; begin Stages 0–3 only after the user resumes              |
-| M9   | Deferred | After M8, specify and qualify plugin-plan Stage 4                            |
-| M10  | Deferred | After M9, specify direct ACP AI, then optional compute                       |
-| M11  | Planned  | Qualify signed distribution and each additional platform                     |
-| M12  | Planned  | Qualify Tauri coverage and remove frozen Deno desktop                        |
+| Task | Status   | Next action                                                     |
+| ---- | -------- | --------------------------------------------------------------- |
+| M0.0 | Done     | Complete                                                        |
+| M0.1 | Done     | Complete                                                        |
+| M1   | Done     | Complete; proceed to M2 native vault access                     |
+| M2   | Done     | Complete; proceed to the M3 native database gate                |
+| M3   | Done     | Complete; proceed to M4 safe everyday-use qualification         |
+| M4   | Done     | Complete; paused for ordinary app review before M8              |
+| M5   | Done     | Complete; paused for ordinary app review before M8              |
+| M6   | Done     | Complete; paused for ordinary app review before M8              |
+| M7   | Done     | Complete; paused for ordinary app review before M8              |
+| M7.1 | Done     | Complete; paused for review before M7.2                         |
+| M7.2 | Done     | Complete; native ordinary integration remains M7.3              |
+| M7.3 | Planned  | After review, integrate Tauri, qualify ordinary app and pause   |
+| M8   | Planned  | Paused for review; begin Stages 0–3 only after the user resumes |
+| M9   | Deferred | After M8, specify and qualify plugin-plan Stage 4               |
+| M10  | Deferred | After M9, specify direct ACP AI, then optional compute          |
+| M11  | Planned  | Qualify signed distribution and each additional platform        |
+| M12  | Planned  | Qualify Tauri coverage and remove frozen Deno desktop           |

@@ -38,8 +38,9 @@ unchanged for the main window.
 
 Native focus, resize and close use public Tauri operations on registered window
 labels. The renderer's Window and Document remain the shared surface's DOM host.
-Shared popup header clearance is separately governed by LD-POP-006 and remains
-part of M7.2 and M7.3 qualification.
+Shared popup header clearance is separately governed by LD-POP-006. M7.2
+qualifies its public token and browser geometry; M7.3 measures actual native
+control bounds in ordinary popup windows.
 
 The embedded WebDriver replaces WebKit's UI delegate and removes Wry's popup
 callback. Popup proof processes therefore retain Wry's delegate, self-drive the
@@ -49,9 +50,12 @@ native denial without enabling creation. Only acceptance configuration grants
 main-window enumeration for public native focus/resize checks.
 
 M7.2 owns source-first Design Core/API/Workspace changes and browser evidence.
-M7.3 owns Tauri admission, native action routing, registered attachment access,
-save-safe lifecycle and ordinary-bundle qualification. A passing proof is not
-evidence that tab transfer or native editing is implemented.
+Shared close admission also keeps ordinary note and editable-preview tabs
+mounted after failed saving. Native acceptance retains the tab, draft and
+shutdown barrier, then retries tab removal after explicit recovery. M7.3 owns
+Tauri admission, native action routing, registered attachment access, save-safe
+lifecycle and ordinary-bundle qualification. A passing proof is not evidence
+that tab transfer or native editing is implemented.
 
 Detached windows last for the current session only. Native cross-window drag
 transfer, independent-vault windows and restart restoration remain deferred. M8

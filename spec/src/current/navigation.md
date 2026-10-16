@@ -29,6 +29,12 @@ Use source-owned public builds and verified local archives. Keep tracked npm
 ranges and lockfiles portable, sharing API, Svelte and editor class identities.
 Fix defects in their owning package before refreshing the consumer cohort.
 
+Native canvas acceptance restores native-window visibility before observing
+animation frames and node hover labels; it retains the indexed semantic,
+navigation and persistence assertions. Readiness receipt matching observes each
+complete output chunk before retaining a bounded tail, so batched driver logs
+cannot hide a completed renderer boot.
+
 The enabled-writer audit expands with Search and Graph. A delayed plugin save
 must remain admitted before host shutdown begins; an unload-time save alone is
 not evidence that pending controls entered the original M4 guard. Generated

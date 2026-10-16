@@ -11,6 +11,10 @@ The separately authorized native tab-window workstream is recorded in
 or begin M8. Each verified slice is committed and paused for review. M7.1
 qualifies only debug acceptance hosting; ordinary tab integration remains later.
 
+M7.2 qualifies retained live popup projection, guarded shared close and browser
+header clearance through source-owned public archives. Browser acceptance does
+not admit ordinary Tauri windows or replace M7.3 native lifecycle qualification.
+
 The immutable baseline inventory is `spec/migration-inventory.json`. It retains
 source revisions and validates without sibling checkouts. Capture fresh source
 evidence when extending it; do not treat later checkouts as the original

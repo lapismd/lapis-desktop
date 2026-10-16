@@ -13,6 +13,7 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import { focusNativeWindow } from "./native-visibility.mjs";
 
 const graph = '[data-ui-component="graph"][data-ui-part="global-view"]';
 const local = '[data-ui-component="graph"][data-ui-part="local-view"]';
@@ -80,6 +81,7 @@ async function graphPoints(browser, mode) {
   }, mode);
 }
 async function hoverNodes(browser, mode = "global-view") {
+  await focusNativeWindow(browser);
   const nodes = [];
   let previous = [],
     stable = 0;

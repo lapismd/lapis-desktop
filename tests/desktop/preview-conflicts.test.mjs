@@ -179,7 +179,7 @@ test("closing a preview's owning tab retains its failed draft and App shutdown b
   writeFileSync(file, "External retired-preview content\n");
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.$('button[aria-label="Close Home.md"]').click();
-  await browser.waitUntil(async () => !(await browser.$(card).isExisting()));
+  await browser.$(card).waitForDisplayed();
   assert.equal(
     await browser
       .$('textarea[aria-label="Your version of Target.md"]')
@@ -190,10 +190,17 @@ test("closing a preview's owning tab retains its failed draft and App shutdown b
   await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
   assert.equal(session.isRunning(), true);
   assert.equal(
+    await browser.$('button[aria-label="Close Home.md"]').isExisting(),
+    true,
+  );
+  assert.equal(await browser.$(card).isExisting(), true);
+  assert.equal(
     readFileSync(file, "utf8"),
     "External retired-preview content\n",
   );
   await recover(browser, "Keep my version");
   await browser.waitUntil(() => readFileSync(file, "utf8") === local);
+  await browser.$('button[aria-label="Close Home.md"]').click();
+  await browser.waitUntil(async () => !(await browser.$(card).isExisting()));
   await session.close();
 });

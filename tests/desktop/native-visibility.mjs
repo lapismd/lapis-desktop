@@ -6,7 +6,11 @@ export async function focusNativeWindow(browser) {
   try {
     await browser.waitUntil(
       async () => {
-        if (await browser.execute(() => document.visibilityState === "visible"))
+        if (
+          await browser.execute(
+            () => document.visibilityState === "visible" && document.hasFocus(),
+          )
+        )
           return true;
         await browser.execute(() =>
           globalThis.__TAURI__.window.getCurrentWindow().setFocus(),
@@ -16,7 +20,7 @@ export async function focusNativeWindow(browser) {
       {
         timeout: 15000,
         timeoutMsg:
-          "The actual native WebView must be visible before interaction",
+          "The actual native WebView must be visible and focused before interaction",
       },
     );
   } catch (error) {

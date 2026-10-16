@@ -73,3 +73,5 @@
   - [Final native and ordinary-bundle qualification](history/E-QUALIFICATION-002.md)
 
 - [Related native window hosting](history/E-POPOUT-001.md)
+
+- [Shared popup workspace](history/E-POPOUT-002.md)

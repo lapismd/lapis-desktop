@@ -134,10 +134,7 @@ test("closing a conflicted tab retains its draft and shutdown barrier until reco
   writeFileSync(file, "# External closed-tab version\n");
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.$('button[aria-label="Close Note.md"]').click();
-  await browser.waitUntil(
-    async () =>
-      !(await browser.$('button[aria-label="Close Note.md"]').isExisting()),
-  );
+  await browser.$('button[aria-label="Close Note.md"]').waitForDisplayed();
   assert.equal(
     await browser
       .$('textarea[aria-label="Your version of Note.md"]')
@@ -147,9 +144,18 @@ test("closing a conflicted tab retains its draft and shutdown barrier until reco
   await session.requestClose();
   await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
   assert.equal(session.isRunning(), true);
+  assert.equal(
+    await browser.$('button[aria-label="Close Note.md"]').isExisting(),
+    true,
+  );
   assert.equal(readFileSync(file, "utf8"), "# External closed-tab version\n");
   await browser.$("button=Keep my version").waitForEnabled();
   await browser.$("button=Keep my version").click();
   await browser.waitUntil(() => readFileSync(file, "utf8") === draft);
+  await browser.$('button[aria-label="Close Note.md"]').click();
+  await browser.waitUntil(
+    async () =>
+      !(await browser.$('button[aria-label="Close Note.md"]').isExisting()),
+  );
   await session.close();
 });

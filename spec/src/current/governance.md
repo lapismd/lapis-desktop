@@ -8,6 +8,9 @@ Archive rewriting is idempotent only for an exact dependency path already
 redirected to a verified tarball. Repeated pnpm hook calls preserve that
 redirect; unverified local paths and file-based peer ranges remain rejected.
 
+Native readiness regressions cover receipts split across chunks and receipts
+followed by large driver-log batches without extending the startup deadline.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                        |

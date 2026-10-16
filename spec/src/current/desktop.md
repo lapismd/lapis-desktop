@@ -105,10 +105,10 @@ application version. `shell_ready` acknowledges renderer readiness. Native
 state, rather than a DOM marker alone, confirms that handshake. These commands
 confer no vault or process authority.
 
-Cold-process acceptance waits for the Rust readiness acknowledgement before
-driver script evaluation. A listening WebDriver socket alone does not establish
-that the initial WebView document has its IPC bindings; an early evaluation can
-lose its reply during navigation. Keep the existing bounded startup deadline.
+Cold-process acceptance matches the complete Rust readiness output before
+retaining a bounded tail. A listening driver socket alone cannot prove IPC
+readiness; early evaluation can lose replies during navigation. Keep the bounded
+startup deadline.
 
 Native acceptance launches its separately identified macOS application bundle
 and brings the real WebView forward before interactions. Hidden WebKit pages

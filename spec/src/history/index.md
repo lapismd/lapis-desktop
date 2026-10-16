@@ -71,3 +71,5 @@ by the task ledger, not inferred from this list.
 - [Final native and ordinary-bundle qualification](E-QUALIFICATION-002.md)
 
 - [Related native window hosting](E-POPOUT-001.md)
+
+- [Shared popup workspace](E-POPOUT-002.md)
