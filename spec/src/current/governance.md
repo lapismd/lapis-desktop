@@ -159,3 +159,7 @@ the running Notes owner.
 The canonical cold runner includes plugin-choice restoration, retained App Shell
 conflicts and admitted Explorer creation through immediate native close. The
 session-targeted runs use the same isolated real-WebView harness.
+
+Startup recovery acceptance uses real malformed layouts, isolated profiles and
+guarded reloads. The canonical cold runner retains this lane. Shared recovery
+presentation stays source-owned and uses verified public package archives.

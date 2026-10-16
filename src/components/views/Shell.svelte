@@ -4,12 +4,18 @@
   import NotesWorkspace from "./NotesWorkspace.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { openNotesSession } from "../../lib/notes/notes-session.ts";
-  import type { VaultSession } from "@lapis-notes/api";
+  import {
+    normalRecovery,
+    readRecovery,
+    storeRecovery,
+  } from "../../lib/notes/startup-recovery.ts";
+  import type { VaultSession, AppSafeModeState } from "@lapis-notes/api";
   import type {
     VaultClient,
     VaultDescriptor,
   } from "../../lib/native/vault-client.ts";
   let { client }: { client: VaultClient } = $props();
+  let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
   let returnProfileId = $state<string | null>(null);
@@ -20,6 +26,7 @@
   let failure = $state("");
   let restoration: Promise<void> = Promise.resolve();
   let opening: Promise<void> = Promise.resolve();
+  let restarting: Promise<void> | undefined;
 
   export function reportFailure(error: unknown): void {
     failure = error instanceof Error ? error.message : String(error);
@@ -39,7 +46,11 @@
     })();
   });
 
-  function openNotes(target: VaultDescriptor): Promise<void> {
+  function openNotes(
+    target: VaultDescriptor,
+    recovery = readRecovery(target.profileId),
+  ): Promise<void> {
+    safeMode = recovery;
     failure = "";
     selected = target;
     openingNotes = true;
@@ -59,7 +70,25 @@
     return operation;
   }
 
+  function restartNotes(mode: AppSafeModeState): Promise<void> {
+    if (restarting) return restarting;
+    restarting = (async () => {
+      const target = selected;
+      if (!target || !notes)
+        throw new Error("No Notes session is available to restart");
+      await notes.dispose();
+      storeRecovery(target.profileId, mode);
+      session = null;
+      await tick();
+      await openNotes(target, mode);
+    })().finally(() => {
+      restarting = undefined;
+    });
+    return restarting;
+  }
+
   async function back(): Promise<void> {
+    if (selected) storeRecovery(selected.profileId, normalRecovery());
     await client.rememberNotes(null);
     if (selected) await client.close(selected);
     selected = null;
@@ -120,6 +149,8 @@
     <NotesWorkspace
       bind:this={notes}
       {session}
+      {safeMode}
+      onRestart={restartNotes}
       onBack={back}
       onReady={async () => {
         await client.rememberNotes(selected);

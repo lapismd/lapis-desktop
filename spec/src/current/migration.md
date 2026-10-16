@@ -133,3 +133,7 @@ The original M0.1 gate remains unchanged. App signing remains deferred to M11.
 E-STARTUP-001 records restoration of the Deno host's public branded startup
 presentation, actual loading phases and plugin details. It disappears when the
 workspace is ready and does not add content above tabs.
+
+M4 recovery retains inventory LN-DENO-052/053/054 through the shared startup
+surface and extracted Safe Mode banner. Session recovery must not rewrite
+canonical choices or the skipped saved layout; explicit reset remains separate.

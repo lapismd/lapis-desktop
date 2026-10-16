@@ -6,34 +6,45 @@
     provideApplicationState,
     takeHostSyncService,
     type VaultSession,
+    type AppSafeModeState,
   } from "@lapis-notes/api";
-  import { DEFAULT_APP_STATE_DIRECTORY } from "@lapis-notes/api/path";
   import {
     WorkspaceShell,
     DesktopWorkspaceStartup,
+    DesktopRecoveryBanner,
   } from "@lapis-notes/workspace";
   import type { WorkspaceNavigation } from "@lapismd/design-core/workspace/app-shell";
   import type {
     WorkspaceStartupFailure,
     WorkspaceStartupTask,
   } from "@lapismd/design-core/workspace/startup";
-  import { desktopNotesPlugins } from "../../lib/notes/notes-plugins.ts";
+  import {
+    startNotes,
+    startupTasks,
+    StartupPhaseError,
+  } from "../../lib/notes/notes-startup.ts";
+  import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
 
   let {
     session,
     onBack,
     onReady,
+    onRestart,
+    safeMode,
   }: {
     session: VaultSession;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
+    onRestart(mode: AppSafeModeState): Promise<void>;
+    safeMode: AppSafeModeState;
   } = $props();
   const app = untrack(
     () =>
       new App({
         version: "0.1.0",
         session,
+        safeMode,
         workspaceShell: { notifications: true },
         markdownRenderer: async () => {},
       }),
@@ -45,13 +56,8 @@
   let busy = $state(true);
   let error = $state("");
   let startupFailure = $state<WorkspaceStartupFailure | null>(null);
-  let tasks = $state<WorkspaceStartupTask[]>([
-    { id: "vault", label: "Open the vault", status: "pending" },
-    { id: "configuration", label: "Load app configuration", status: "pending" },
-    { id: "plugins", label: "Load configured core plugins", status: "pending" },
-    { id: "layout", label: "Restore the workspace layout", status: "pending" },
-    { id: "metadata", label: "Load note metadata", status: "pending" },
-  ]);
+  const recovery = untrack(() => new NotesRecovery(app, onRestart));
+  let tasks = $state<WorkspaceStartupTask[]>(startupTasks());
   let stopMetadataTracking: (() => void) | undefined;
   let startup: Promise<void>;
   let shutdown: Promise<void> | undefined;
@@ -88,48 +94,27 @@
   }
 
   async function initialize(): Promise<void> {
-    let activeTask = "vault";
-    async function phase(
-      id: string,
-      run: () => Promise<unknown>,
-    ): Promise<void> {
-      activeTask = id;
-      setTask(id, "active");
-      await run();
-      setTask(id, "complete");
-    }
     try {
-      app.plugins.registerStaticPlugins(desktopNotesPlugins);
-      await phase("vault", async () => {
-        await app.vault.load();
-        await app.vault.mkpath(DEFAULT_APP_STATE_DIRECTORY);
-      });
-      await phase("configuration", async () => {
-        await app.configuration.load();
-        await app.commands.loadHotkeys();
-      });
-      await phase("plugins", () =>
-        app.plugins.loadPlugins({
-          communityPlugins: "disabled",
-          onProgress: ({ name }) =>
-            setTask("plugins", "active", `Loading ${name}`),
-        }),
-      );
-      await phase("layout", () => app.workspace.loadLayout());
-      await phase("metadata", async () => {
-        await app.metadataTypeManager.load();
-        stopMetadataTracking = app.metadataTypeManager.trackChanges();
-        await app.metadataCache.load();
-        await onReady();
+      await startNotes(app, {
+        setTask,
+        onMetadataTracking: (stop) => {
+          stopMetadataTracking = stop;
+        },
+        onReady,
       });
       ready = true;
     } catch (failure) {
-      setTask(activeTask, "failed");
+      const task =
+        failure instanceof StartupPhaseError ? failure.task : "vault";
+      const cause =
+        failure instanceof StartupPhaseError ? failure.failure : failure;
+      const result = recovery.failure(task, cause);
       startupFailure = {
-        title: "Lapis Notes could not start",
-        description: "The workspace could not complete its startup sequence.",
-        detail: message(failure),
-        actions: [{ id: "back", label: "Back to vaults", onSelect: back }],
+        ...result,
+        actions: [
+          ...(result.actions ?? []),
+          { id: "back", label: "Back to vaults", onSelect: back },
+        ],
       };
     } finally {
       busy = false;
@@ -216,8 +201,22 @@
         workspaceLabel={session.profile?.name}
       />
     </div>
+    {#if app.safeMode.active}
+      <DesktopRecoveryBanner
+        reasons={recovery.reasons}
+        lastFailure={app.safeMode.lastStartupFailure?.message}
+        message={recovery.message}
+        metadataBusy={recovery.metadataBusy}
+        searchBusy={recovery.searchBusy}
+        disabled={busy}
+        onRebuildMetadata={() => recovery.rebuild("metadata")}
+        onRebuildSearch={() => recovery.rebuild("search")}
+        onRestart={() => recovery.normal()}
+      />
+    {/if}
   {:else}
     <DesktopWorkspaceStartup {tasks} failure={startupFailure} />
+    {#if recovery.message}<p role="status">{recovery.message}</p>{/if}
   {/if}
   <FileConflicts
     registry={app.fileEditingSessions.textConflicts}

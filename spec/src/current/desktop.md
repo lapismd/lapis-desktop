@@ -36,6 +36,8 @@ packages over native storage.
 | LD-LIFE-007    | Every enabled Notes file writer MUST participate in the owning App's flush, protection and conflict lifecycle, including pending, failed and retired writes. Qualification MUST cover both API text editors and editable Markdown previews in the initial profile.                                                                                                                                                                              |
 | LD-SESSION-003 | Native Notes startup MUST reuse the Deno branded DesktopWorkspaceStartup from the public Workspace package with accessible progress, real phase statuses and current plugin detail. Restoration and storage opening MUST expose progress before the session mounts. Failure MUST retain its failed phase and a route back to vaults. Successful startup MUST remove the progress surface without adding content above workspace tabs.           |
 | LD-SESSION-004 | Notes startup MUST load existing hotkey overrides through the public owned CommandManager before presenting workspace commands. Cold restoration MUST preserve those bindings.                                                                                                                                                                                                                                                                  |
+| LD-REC-001     | Startup failure MUST retain the failed phase, complete message and stack, copyable diagnostic, Retry, vault management, optional-plugin disablement, layout skip and explicit saved-layout reset actions. Retry MUST finish owned teardown before creating a fresh App for the admitted vault.                                                                                                                                                  |
+| LD-REC-002     | Safe Mode MUST use session-scoped AppSafeModeState across renderer reloads without changing saved configuration merely by entering recovery. Its shared banner MUST describe restrictions, offer metadata and Search rebuilds and a normal restart that clears recovery. Unavailable community and notebook controls MUST remain absent.                                                                                                        |
 
 The product name is Lapis Notes Preview and the application identifier is
 `com.lapismd.lapis-desktop.preview`. Development Vite binds literal loopback on
@@ -305,3 +307,11 @@ and multi-step App file operations. Creation stays admitted through native IO,
 file-tree projection and the existing Explorer open action. Initial Properties
 read failures retain their admitted mutation for retry. The remaining writer
 audit and final M4 aggregate qualification stay explicit in the task ledger.
+
+Startup recovery uses the existing shared startup component and extracted Deno
+Safe Mode banner. Host callbacks retry through guarded session teardown and
+fresh App construction. Recovery is scoped to the selected vault in session
+storage, never vault configuration. Skipping layout leaves its original bytes
+untouched; only explicit reset uses Workspace reset/flush before restarting. The
+banner remains below the tabs. Message-plus-stack diagnostics retain their
+message when WebKit supplies a stack without it.
