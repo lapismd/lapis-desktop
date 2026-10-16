@@ -62,13 +62,18 @@ async function acceptance() {
   );
   await run(
     process.execPath,
-    ["--test", "--test-concurrency=1", "tests/desktop/lifecycle.test.mjs"],
+    [
+      "--test",
+      "--test-concurrency=1",
+      "tests/desktop/lifecycle.test.mjs",
+      "tests/desktop/notes-lifecycle.test.mjs",
+    ],
     environment,
   );
   if (!existsSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE))
     throw new Error("The native window-state plugin did not persist geometry.");
   console.log(
-    "Cold native acceptance passed twice with isolated state and no Deno on PATH.",
+    "Cold native geometry and Notes lifecycle acceptance passed with isolated state and no Node/Deno on PATH.",
   );
   console.log(
     `Native state evidence: ${readFileSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE, "utf8")}`,

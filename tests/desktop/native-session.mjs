@@ -17,7 +17,8 @@ async function availablePort() {
   await new Promise((resolveClose) => server.close(resolveClose));
   return port;
 }
-export async function nativeSession(name) {
+export async function nativeSession(name, isolatedRoot) {
+  const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
   const child = spawn(
     acceptanceBinary(resolve("src-tauri/target/debug/lapis-desktop")),
@@ -27,13 +28,15 @@ export async function nativeSession(name) {
         ...process.env,
         PATH: "/usr/bin:/bin",
         TAURI_WEBDRIVER_PORT: String(port),
+        LAPIS_DESKTOP_ACCEPTANCE_ROOT: root,
+        LAPIS_DESKTOP_ACCEPTANCE_STATE: isolatedRoot
+          ? join(root, "window-state.json")
+          : process.env.LAPIS_DESKTOP_ACCEPTANCE_STATE,
       },
       stdio: ["ignore", "pipe", "pipe"],
     },
   );
-  const log = createWriteStream(
-    join(process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT, `${name}.log`),
-  );
+  const log = createWriteStream(join(root, `${name}.log`));
   let rendererReady = false;
   let outputTail = "";
   child.stdout.on("data", (chunk) => {
@@ -95,17 +98,22 @@ export async function nativeSession(name) {
         ),
       { timeout: 10000 },
     );
+    async function requestClose(quit = false) {
+      await browser.execute((quit) => {
+        setTimeout(() => {
+          if (quit) void globalThis.__TAURI__.core.invoke("lifecycle_quit");
+          else void globalThis.__TAURI__.window.getCurrentWindow().close();
+        }, 100);
+        return true;
+      }, quit);
+    }
     return {
       browser,
       cleanup,
-      async close() {
-        await browser.execute(() => {
-          setTimeout(
-            () => globalThis.__TAURI__.window.getCurrentWindow().close(),
-            100,
-          );
-          return true;
-        });
+      requestClose,
+      isRunning: () => child.exitCode === null && child.signalCode === null,
+      async close(quit = false) {
+        await requestClose(quit);
         const timer = setTimeout(() => child.kill("SIGKILL"), 10000);
         const result = await exited;
         clearTimeout(timer);

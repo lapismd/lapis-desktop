@@ -69,3 +69,11 @@ the Notes intake regressions; E-SESSION-002 qualifies the committed archive
 cohort, native disk editing, attachment display and database reopen. M3's
 original combined gate passes. Safe close, restore and external-edit handling
 remain M4.
+
+M4 now specifies native save coordination and last-Notes restoration separately
+from external-edit protection. Its original aggregate gate remains unchanged;
+partial lifecycle evidence cannot mark the everyday-use milestone complete.
+
+E-LIFE-001 qualifies native save/close/Quit/reload, last-Notes restoration and
+repeated edited vault switching through the API-owned layout writer. M4 remains
+In progress until external-edit conflict protection meets the original gate.

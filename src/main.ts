@@ -14,10 +14,23 @@ import Shell from "./Shell.svelte";
 import { startShell } from "./shell-startup";
 import { VaultClient } from "./vault-client.ts";
 import { createNativeBridge } from "./native-bridge.ts";
+import { installDesktopLifecycle } from "./desktop-lifecycle.ts";
 
 const vaultClient = new VaultClient();
 
 try {
+  let shell:
+    | { prepareToLeave(): Promise<void>; reportFailure(failure: unknown): void }
+    | undefined;
+  const stopLifecycle = await installDesktopLifecycle(
+    async () => {
+      if (!shell)
+        throw new Error("The workspace is still starting. Please try again.");
+      await shell.prepareToLeave();
+    },
+    (failure) => shell?.reportFailure(failure),
+  );
+  addEventListener("pagehide", stopLifecycle, { once: true });
   const appearance = matchMedia("(prefers-color-scheme: dark)");
   const applyAppearance = () =>
     document.documentElement.classList.toggle("dark", appearance.matches);
@@ -35,10 +48,11 @@ try {
         ? (os as NativeDesktopPlatformOs)
         : "unknown";
       setNativeDesktopBridge(createNativeBridge(vaultClient, platform));
-      return mount(Shell, {
+      shell = mount(Shell, {
         target: document.getElementById("app")!,
         props: { client: vaultClient },
       });
+      return shell;
     },
     document,
   });

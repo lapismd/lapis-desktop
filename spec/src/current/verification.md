@@ -29,3 +29,8 @@
 | LD-DB-004      | Implemented | [E-DB-001](../history/E-DB-001.md)                                                                                             |
 | LD-SESSION-001 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md)                                                                                   |
 | LD-SESSION-002 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md)                                                                                   |
+| LD-LIFE-001    | Implemented | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
+| LD-LIFE-002    | Implemented | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
+| LD-LIFE-003    | Implemented | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
+| LD-LIFE-004    | Planned     | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
+| LD-LIFE-005    | Implemented | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |

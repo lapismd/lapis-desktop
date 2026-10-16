@@ -3,7 +3,12 @@ fn main() {
         tauri_build::AppManifest::new().commands(&[
             "shell_info",
             "shell_ready",
+            "lifecycle_reload",
+            "lifecycle_quit",
+            "lifecycle_result",
             "vault_recents",
+            "vault_restore",
+            "vault_remember_notes",
             "vault_select",
             "vault_open_recent",
             "vault_close",

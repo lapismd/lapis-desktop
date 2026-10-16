@@ -21,3 +21,4 @@
 
 - [E-SESSION-001: native Notes workspace](history/E-SESSION-001.md)
   - [E-SESSION-002: complete native Notes qualification](history/E-SESSION-002.md)
+  - [Safe lifecycle and restoration](history/E-LIFE-001.md)

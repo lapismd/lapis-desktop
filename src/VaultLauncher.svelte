@@ -10,12 +10,13 @@
   let {
     client,
     onOpenNotes,
+    active = $bindable(null),
   }: {
     client: VaultClient;
     onOpenNotes(selected: VaultDescriptor): Promise<void>;
+    active?: VaultDescriptor | null;
   } = $props();
   let recents = $state<RecentVault[]>([]);
-  let active = $state<VaultDescriptor | null>(null);
   let listing = $state<VaultListing>({ files: [], folders: [] });
   let busy = $state(true);
   let error = $state("");
@@ -31,7 +32,10 @@
   onMount(() => {
     client
       .recents()
-      .then((profiles) => (recents = profiles))
+      .then(async (profiles) => {
+        recents = profiles;
+        if (active) listing = await client.list(active);
+      })
       .catch((failure) => (error = message(failure)))
       .finally(() => (busy = false));
   });

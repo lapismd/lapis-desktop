@@ -89,3 +89,7 @@ workspaces to produce the full ten-archive Notes cohort. It validates each
 owning package identity and source snapshot, records per-package revisions and
 checksums, and writes the manifest only after every selected source packs
 successfully.
+
+M4 adds only named lifecycle request/result and native last-Notes profile
+commands. Exit approval requires a current host-issued request; no generic
+window destruction, process exit or arbitrary profile-path permission is added.

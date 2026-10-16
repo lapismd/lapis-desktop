@@ -15,6 +15,27 @@ pub async fn vault_recents(host: tauri::State<'_, VaultHost>) -> Result<Value, N
 }
 
 #[tauri::command]
+pub async fn vault_restore(
+    host: tauri::State<'_, VaultHost>,
+) -> Result<Option<VaultDescriptor>, NativeError> {
+    access(host.inner().clone(), |manager| {
+        manager.vaults.restore_notes()
+    })
+    .await
+}
+
+#[tauri::command]
+pub async fn vault_remember_notes(
+    host: tauri::State<'_, VaultHost>,
+    session_id: Option<String>,
+) -> Result<(), NativeError> {
+    access(host.inner().clone(), move |manager| {
+        manager.vaults.remember_notes(session_id.as_deref())
+    })
+    .await
+}
+
+#[tauri::command]
 pub async fn vault_select(
     window: tauri::WebviewWindow,
     host: tauri::State<'_, VaultHost>,

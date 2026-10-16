@@ -86,6 +86,32 @@ impl VaultManager {
         &self.recents
     }
 
+    pub fn remember_notes(&self, session_id: Option<&str>) -> io::Result<()> {
+        let profile_id = session_id
+            .map(|id| {
+                self.descriptor(id)
+                    .map(|descriptor| descriptor.profile_id.clone())
+            })
+            .transpose()?;
+        let mut staged = TempFile::new(&self.profile_dir)?;
+        staged.write_all(&serde_json::to_vec(&profile_id)?)?;
+        staged.as_file().sync_all()?;
+        staged.replace("last-notes.json")?;
+        Ok(())
+    }
+
+    pub fn restore_notes(&mut self) -> io::Result<Option<VaultDescriptor>> {
+        let bytes = match self.profile_dir.read("last-notes.json") {
+            Ok(bytes) if bytes.len() <= 1024 => bytes,
+            Ok(_) => return Err(invalid("Saved Notes profile is too large")),
+            Err(error) if error.kind() == io::ErrorKind::NotFound => return Ok(None),
+            Err(error) => return Err(error),
+        };
+        let profile_id: Option<String> = serde_json::from_slice(&bytes)
+            .map_err(|_| invalid("Saved Notes profile is invalid"))?;
+        profile_id.map(|id| self.open_recent(&id)).transpose()
+    }
+
     pub fn select(
         &mut self,
         selection: Option<PathBuf>,

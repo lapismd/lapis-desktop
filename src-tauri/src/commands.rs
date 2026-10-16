@@ -28,8 +28,13 @@ pub fn shell_info(app: tauri::AppHandle, state: tauri::State<'_, ShellState>) ->
 }
 
 #[tauri::command]
-pub fn shell_ready(state: tauri::State<'_, ShellState>) {
+pub fn shell_ready(
+    app: tauri::AppHandle,
+    state: tauri::State<'_, ShellState>,
+) -> Result<(), String> {
+    crate::lifecycle::ready(&app).map_err(|error| error.to_string())?;
     if !state.ready.swap(true, Ordering::SeqCst) {
         println!("lapis-desktop: renderer ready");
     }
+    Ok(())
 }

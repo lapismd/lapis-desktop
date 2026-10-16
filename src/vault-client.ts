@@ -53,6 +53,23 @@ export class VaultClient {
     return this.#call("vault_recents");
   }
 
+  async restore(): Promise<VaultDescriptor | null> {
+    const selected = await this.#call<VaultDescriptor | null>("vault_restore");
+    if (selected) this.#admissions.set(selected.sessionId, selected);
+    return selected;
+  }
+
+  rememberNotes(selected: VaultDescriptor | null): Promise<void> {
+    return this.#call("vault_remember_notes", {
+      sessionId: selected?.sessionId ?? null,
+    });
+  }
+
+  async closeAll(): Promise<void> {
+    for (const selected of this.#admissions.values())
+      await this.close(selected);
+  }
+
   async select(createName?: string): Promise<VaultDescriptor | null> {
     const selected = await this.#call<VaultDescriptor | null>("vault_select", {
       createName: createName ?? null,

@@ -167,3 +167,45 @@ test("structured native failures preserve Error identity, message and portable c
     },
   );
 });
+
+test("restoration admits the host-selected vault and remembers Notes by admission only", async () => {
+  const selected = {
+    profileId: "p",
+    sessionId: "s",
+    path: "/vault",
+    name: "Vault",
+    resourceToken: "r",
+  };
+  const calls = [];
+  const client = new VaultClient(async (command, payload) => {
+    calls.push({ command, payload });
+    if (command === "vault_restore") return selected;
+  });
+  assert.deepEqual(await client.restore(), selected);
+  assert.deepEqual(client.admitted("/vault"), selected);
+  await client.rememberNotes(selected);
+  await client.closeAll();
+  await client.rememberNotes(null);
+  assert.throws(() => client.admitted("/vault"), /closed/u);
+  assert.deepEqual(calls, [
+    { command: "vault_restore", payload: undefined },
+    { command: "vault_remember_notes", payload: { sessionId: "s" } },
+    { command: "vault_close", payload: { sessionId: "s" } },
+    { command: "vault_remember_notes", payload: { sessionId: null } },
+  ]);
+});
+
+test("failed admission cleanup remains retryable and prevents successful drain", async () => {
+  let fail = true;
+  const selected = { sessionId: "s", path: "/vault" };
+  const client = new VaultClient(async (command) => {
+    if (command === "vault_restore") return selected;
+    if (fail) throw new Error("database still open");
+  });
+  await client.restore();
+  await assert.rejects(client.closeAll(), /database still open/u);
+  assert.deepEqual(client.admitted("/vault"), selected);
+  fail = false;
+  await client.closeAll();
+  assert.throws(() => client.admitted("/vault"), /closed/u);
+});

@@ -11,6 +11,7 @@ pub fn run() -> tauri::Result<()> {
     };
     let builder = tauri::Builder::default()
         .manage(commands_state())
+        .manage(crate::lifecycle::NativeLifecycle::default())
         .plugin(tauri_plugin_dialog::init())
         .register_uri_scheme_protocol("lapis-vault", |context, request| {
             if context.webview_label() != "main" {
@@ -39,7 +40,12 @@ pub fn run() -> tauri::Result<()> {
         .invoke_handler(tauri::generate_handler![
             crate::commands::shell_info,
             crate::commands::shell_ready,
+            crate::lifecycle::lifecycle_reload,
+            crate::lifecycle::lifecycle_quit,
+            crate::lifecycle::lifecycle_result,
             crate::vault_commands::vault_recents,
+            crate::vault_commands::vault_restore,
+            crate::vault_commands::vault_remember_notes,
             crate::vault_commands::vault_select,
             crate::vault_commands::vault_open_recent,
             crate::vault_commands::vault_close,
@@ -54,7 +60,9 @@ pub fn run() -> tauri::Result<()> {
             crate::window::build(app.handle())?;
             Ok(())
         })
-        .run(tauri::generate_context!())
+        .build(tauri::generate_context!())?
+        .run(crate::lifecycle::on_event);
+    Ok(())
 }
 
 fn commands_state() -> crate::commands::ShellState {
