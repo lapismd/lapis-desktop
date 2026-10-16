@@ -28,7 +28,12 @@ const architectures = execFileSync("/usr/bin/lipo", ["-archs", executable], {
 }).trim();
 assert.equal(architectures, "arm64");
 const bytes = readFileSync(executable);
-for (const marker of ["TAURI_WEBDRIVER_PORT", "wdioTauri", "__wdio_mocks__"])
+for (const marker of [
+  "TAURI_WEBDRIVER_PORT",
+  "wdioTauri",
+  "__wdio_mocks__",
+  "LAPIS_DESKTOP_ACCEPTANCE_",
+])
   assert.equal(
     bytes.includes(Buffer.from(marker)),
     false,

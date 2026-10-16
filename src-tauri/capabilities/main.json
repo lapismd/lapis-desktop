@@ -1,11 +1,16 @@
 {
   "identifier": "main",
-  "description": "Local main-window shell presentation only",
+  "description": "Local main-window shell and explicitly admitted vaults",
   "local": true,
   "windows": ["main"],
   "permissions": [
     "allow-shell-info",
     "allow-shell-ready",
+    "allow-vault-recents",
+    "allow-vault-select",
+    "allow-vault-open-recent",
+    "allow-vault-close",
+    "allow-vault-fs",
     "core:window:allow-start-dragging",
     "core:window:allow-internal-toggle-maximize"
   ]

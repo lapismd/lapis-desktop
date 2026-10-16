@@ -53,3 +53,9 @@ classification from the actual packed public API. Source regression evidence and
 native app evidence are recorded separately. Library archives carry the actual
 Jujutsu source snapshot and verified package identities; passing local
 installation alone does not complete the native consumer gate.
+
+M1 and M2 are complete. Native folder admission, recent profiles, contained
+reads/writes and scoped attachments have passed the original temporary-folder
+failure gate and actual WebView acceptance. M3's database feasibility and M4's
+safe everyday-use gate remain required before describing this preview as a
+useful notes app.

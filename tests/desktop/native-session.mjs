@@ -29,6 +29,12 @@ export async function nativeSession(name) {
   const log = createWriteStream(
     join(process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT, `${name}.log`),
   );
+  let rendererReady = false;
+  let outputTail = "";
+  child.stdout.on("data", (chunk) => {
+    outputTail = (outputTail + chunk.toString()).slice(-512);
+    rendererReady ||= outputTail.includes("lapis-desktop: renderer ready");
+  });
   child.stdout.pipe(log, { end: false });
   child.stderr.pipe(log, { end: false });
   const exited = new Promise((resolveExit, reject) => {
@@ -50,7 +56,7 @@ export async function nativeSession(name) {
   try {
     const deadline = Date.now() + 15000;
     let listening = false;
-    while (!listening && Date.now() < deadline) {
+    while ((!listening || !rendererReady) && Date.now() < deadline) {
       if (child.exitCode !== null)
         throw new Error("Native process exited before WebDriver readiness.");
       try {
@@ -63,6 +69,11 @@ export async function nativeSession(name) {
       }
     }
     assert.equal(listening, true, "Native WebDriver server must start.");
+    assert.equal(
+      rendererReady,
+      true,
+      "Rust must acknowledge the renderer before driver evaluation.",
+    );
     browser = await remote({
       hostname: "127.0.0.1",
       port,

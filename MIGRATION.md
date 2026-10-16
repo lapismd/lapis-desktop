@@ -6,9 +6,9 @@
 [Inventory](spec/migration-inventory.json) ·
 [Evidence](spec/src/history/index.md)
 
-Completed: M0.0, M0.1, M1.
+Completed: M0.0, M0.1, M1, M2.
 
-Next: M2 — Implement admitted native vault access
+Next: M3 — Qualify Rust database conformance and mount Notes
 
 The first usable notes milestone ends at M4. Native services and
 installed-plugin support remain explicitly deferred.
@@ -18,7 +18,7 @@ installed-plugin support remain explicitly deferred.
 | M0.0 | Done     | Complete                                                    |
 | M0.1 | Done     | Complete                                                    |
 | M1   | Done     | Complete; proceed to M2 native vault access                 |
-| M2   | Planned  | Implement admitted native vault access                      |
+| M2   | Done     | Complete; proceed to the M3 native database gate            |
 | M3   | Planned  | Qualify Rust database conformance and mount Notes           |
 | M4   | Planned  | Prove safe close, restore and external-edit handling        |
 | M5   | Planned  | Qualify file operations and native watching                 |

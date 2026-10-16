@@ -58,3 +58,9 @@ archive integrity/identity/version checks remain required.
 Archives must be explicitly declared in the consumer so framework peers resolve
 to one owned package graph. Successful local installation invalidates the owned
 Vite/Storybook dependency caches before the next cold launch.
+
+M2 extends the exact main-window allowlist with picker/profile/admitted-file
+commands. Generic dialog, filesystem, asset-protocol and process permissions
+remain denied. Rust directory capabilities enforce vault containment; native
+dialog access is called only from the owned picker command. E2E fixture
+selection is compiled only behind the existing debug-only acceptance feature.

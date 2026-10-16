@@ -2,6 +2,7 @@ import { mount } from "svelte";
 import "@lapismd/design-core/styles.css";
 import "@lapismd/design-core/themes/lapis.css";
 import "./shell.css";
+import "./vault-launcher.css";
 import Shell from "./Shell.svelte";
 import { startShell } from "./shell-startup";
 

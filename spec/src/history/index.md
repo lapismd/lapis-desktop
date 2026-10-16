@@ -11,3 +11,5 @@
 
 Records preserve actual commands and failures. Completion evidence is selected
 by the task ledger, not inferred from this list.
+
+- [E-VAULT-001: admitted native vault access](E-VAULT-001.md)

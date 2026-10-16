@@ -115,6 +115,11 @@ export function auditManifest(manifest, capabilities, normalConfig) {
   const expected = [
     "allow-shell-info",
     "allow-shell-ready",
+    "allow-vault-recents",
+    "allow-vault-select",
+    "allow-vault-open-recent",
+    "allow-vault-close",
+    "allow-vault-fs",
     "core:window:allow-start-dragging",
     "core:window:allow-internal-toggle-maximize",
   ];

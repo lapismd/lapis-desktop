@@ -4,6 +4,8 @@ import {
   symlinkSync,
   existsSync,
   readFileSync,
+  writeFileSync,
+  copyFileSync,
 } from "node:fs";
 import { resolve, join } from "node:path";
 import { spawn } from "node:child_process";
@@ -29,6 +31,10 @@ async function acceptance() {
     throw new Error("M0.1 native acceptance requires macOS ARM64.");
   mkdirSync(".local/native-test", { recursive: true });
   const directory = mkdtempSync(resolve(".local/native-test/run-"));
+  const vault = join(directory, "vault-笔记 café");
+  mkdirSync(vault);
+  writeFileSync(join(vault, "Welcome.md"), "# A native vault\n");
+  copyFileSync("src-tauri/icons/icon.png", join(vault, "café.png"));
   await run("pnpm", [
     "exec",
     "tauri",
