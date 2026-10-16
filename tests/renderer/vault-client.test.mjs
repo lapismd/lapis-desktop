@@ -29,6 +29,20 @@ function fixture() {
   };
 }
 
+test("native destination creation registers only the returned admission", async () => {
+  const { client, calls, selected } = fixture();
+  assert.equal(await client.create(), selected);
+  assert.deepEqual(calls, [
+    { command: "vault_select", payload: { create: true } },
+  ]);
+  assert.equal(client.admitted(selected.path), selected);
+  await client.closeAll();
+  assert.throws(() => client.admitted(selected.path), /closed or unknown/u);
+  const cancelled = new VaultClient(async () => null);
+  assert.equal(await cancelled.create(), null);
+  assert.throws(() => cancelled.admitted(selected.path), /closed or unknown/u);
+});
+
 test("the public native adapter translates only admitted allowlisted file operations", async () => {
   const { client, calls, bridge, selected } = fixture();
   await client.select();

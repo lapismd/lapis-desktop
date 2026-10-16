@@ -8,9 +8,16 @@
     type VaultSession,
   } from "@lapis-notes/api";
   import { DEFAULT_APP_STATE_DIRECTORY } from "@lapis-notes/api/path";
-  import { WorkspaceShell } from "@lapis-notes/workspace";
+  import {
+    WorkspaceShell,
+    DesktopWorkspaceStartup,
+  } from "@lapis-notes/workspace";
+  import type { WorkspaceNavigation } from "@lapismd/design-core/workspace/app-shell";
+  import type {
+    WorkspaceStartupFailure,
+    WorkspaceStartupTask,
+  } from "@lapismd/design-core/workspace/startup";
   import { desktopNotesPlugins } from "./notes-plugins.ts";
-  import { requestReload } from "./desktop-lifecycle.ts";
   import FileConflicts from "./FileConflicts.svelte";
 
   let {
@@ -37,30 +44,88 @@
   let ready = $state(false);
   let busy = $state(true);
   let error = $state("");
+  let startupFailure = $state<WorkspaceStartupFailure | null>(null);
+  let tasks = $state<WorkspaceStartupTask[]>([
+    { id: "vault", label: "Open the vault", status: "pending" },
+    { id: "configuration", label: "Load app configuration", status: "pending" },
+    { id: "plugins", label: "Load configured core plugins", status: "pending" },
+    { id: "layout", label: "Restore the workspace layout", status: "pending" },
+    { id: "metadata", label: "Load note metadata", status: "pending" },
+  ]);
   let stopMetadataTracking: (() => void) | undefined;
   let startup: Promise<void>;
   let shutdown: Promise<void> | undefined;
   let disposed = false;
   let coreDisposed = false;
+  const workspaceNavigation = $derived<WorkspaceNavigation>({
+    currentLabel: session.profile?.name ?? "Lapis Notes",
+    menuLabel: "Vault",
+    items: [
+      {
+        id: "current",
+        label: session.profile?.name ?? "Lapis Notes",
+        disabled: true,
+      },
+    ],
+    manageLabel: "Back to vaults",
+    onSelect: () => {},
+    onManage: back,
+  });
 
   function message(failure: unknown): string {
     return failure instanceof Error ? failure.message : String(failure);
   }
 
+  function setTask(
+    id: string,
+    status: WorkspaceStartupTask["status"],
+    detail?: string,
+  ): void {
+    tasks = tasks.map((task) =>
+      task.id === id ? { ...task, status, detail } : task,
+    );
+  }
+
   async function initialize(): Promise<void> {
+    let activeTask = "vault";
+    async function phase(
+      id: string,
+      run: () => Promise<unknown>,
+    ): Promise<void> {
+      activeTask = id;
+      setTask(id, "active");
+      await run();
+      setTask(id, "complete");
+    }
     try {
       app.plugins.registerStaticPlugins(desktopNotesPlugins);
-      await app.vault.load();
-      await app.vault.mkpath(DEFAULT_APP_STATE_DIRECTORY);
-      await app.configuration.load();
-      await app.plugins.loadPlugins({ communityPlugins: "disabled" });
-      await app.workspace.loadLayout();
-      stopMetadataTracking = app.metadataTypeManager.trackChanges();
-      await app.metadataCache.load();
-      await onReady();
+      await phase("vault", async () => {
+        await app.vault.load();
+        await app.vault.mkpath(DEFAULT_APP_STATE_DIRECTORY);
+      });
+      await phase("configuration", () => app.configuration.load());
+      await phase("plugins", () =>
+        app.plugins.loadPlugins({
+          communityPlugins: "disabled",
+          onProgress: ({ name }) =>
+            setTask("plugins", "active", `Loading ${name}`),
+        }),
+      );
+      await phase("layout", () => app.workspace.loadLayout());
+      await phase("metadata", async () => {
+        stopMetadataTracking = app.metadataTypeManager.trackChanges();
+        await app.metadataCache.load();
+        await onReady();
+      });
       ready = true;
     } catch (failure) {
-      error = message(failure);
+      setTask(activeTask, "failed");
+      startupFailure = {
+        title: "Lapis Notes could not start",
+        description: "The workspace could not complete its startup sequence.",
+        detail: message(failure),
+        actions: [{ id: "back", label: "Back to vaults", onSelect: back }],
+      };
     } finally {
       busy = false;
     }
@@ -129,31 +194,21 @@
   aria-label="Notes workspace"
   aria-busy={busy}
 >
-  <div class="notes-session-toolbar">
-    <strong>{session.profile?.name ?? "Lapis Notes"}</strong>
-    <button disabled={busy} onclick={back}>Back to vaults</button>
-    <button
-      disabled={busy}
-      onclick={() =>
-        requestReload().catch((failure) => {
-          error = message(failure);
-        })}>Reload notes</button
-    >
-  </div>
-  {#if error}<p role="alert">{error}</p>{/if}
-  <FileConflicts
-    registry={app.fileEditingSessions.textConflicts}
-    disabled={busy}
-  />
   {#if ready}
     <div class="notes-session-workspace" inert={busy}>
       <WorkspaceShell
         {app}
+        {workspaceNavigation}
         displayMode="desktop"
         workspaceLabel={session.profile?.name}
       />
     </div>
-  {:else if busy}
-    <p role="status">Opening your notes…</p>
+  {:else}
+    <DesktopWorkspaceStartup {tasks} failure={startupFailure} />
   {/if}
+  <FileConflicts
+    registry={app.fileEditingSessions.textConflicts}
+    disabled={busy}
+  />
+  {#if error}<p role="alert">{error}</p>{/if}
 </section>

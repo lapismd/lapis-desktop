@@ -40,7 +40,8 @@ async function acceptance() {
     "tauri",
     "build",
     "--debug",
-    "--no-bundle",
+    "--bundles",
+    "app",
     "--features",
     "e2e",
     "--config",
@@ -56,6 +57,15 @@ async function acceptance() {
     LAPIS_DESKTOP_ACCEPTANCE_ROOT: directory,
   };
   await run(
+    process.execPath,
+    [
+      "--test",
+      "--test-concurrency=1",
+      "tests/desktop/startup-progress.test.mjs",
+    ],
+    environment,
+  );
+  await run(
     resolve("node_modules/.bin/wdio"),
     ["run", "tests/desktop/wdio.conf.mjs"],
     environment,
@@ -68,6 +78,8 @@ async function acceptance() {
       "tests/desktop/lifecycle.test.mjs",
       "tests/desktop/notes-lifecycle.test.mjs",
       "tests/desktop/notes-conflicts.test.mjs",
+      "tests/desktop/preview-conflicts.test.mjs",
+      "tests/desktop/window-chrome.test.mjs",
     ],
     environment,
   );

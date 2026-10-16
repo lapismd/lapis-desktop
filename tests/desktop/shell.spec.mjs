@@ -27,7 +27,7 @@ describe("actual native desktop shell", () => {
       runtime: "tauri-desktop",
       classification: "desktop",
     });
-    await expect(browser.$("h1")).toHaveText("A new home for your notes");
+    await expect(browser.$("h1")).toHaveText("Create a vault");
     assert.equal(await browser.execute(() => location.protocol), "tauri:");
   });
   it("keeps privileged native commands unavailable", async () => {
@@ -44,7 +44,7 @@ describe("actual native desktop shell", () => {
     });
     assert.equal(denied, true);
   });
-  it("resizes the native window and retains usable content and traffic-light inset", async () => {
+  it("resizes the native window and retains a full-height draggable launcher", async () => {
     await browser.execute(async () => {
       const { window, dpi } = globalThis.__TAURI__;
       await window.getCurrentWindow().setSize(new dpi.LogicalSize(640, 480));
@@ -53,19 +53,25 @@ describe("actual native desktop shell", () => {
       async () => (await browser.execute(() => innerWidth)) === 640,
     );
     const geometry = await browser.execute(() => {
-      const header = document.querySelector("header");
+      const launcher = document.querySelector(".shell-content");
       return {
-        inset: getComputedStyle(header).paddingInlineStart,
-        height: header.getBoundingClientRect().height,
+        header: !!document.querySelector(".shell-header"),
+        top: launcher.getBoundingClientRect().top,
+        height: launcher.getBoundingClientRect().height,
         overflow: document.documentElement.scrollWidth > innerWidth,
-        drag: header.hasAttribute("data-tauri-drag-region"),
+        drag: launcher.getAttribute("data-tauri-drag-region"),
+        controls: document
+          .querySelector("[data-desktop-vault-launcher-content]")
+          .getAttribute("data-tauri-drag-region"),
       };
     });
     assert.deepEqual(geometry, {
-      inset: "80px",
-      height: 40,
+      header: false,
+      top: 0,
+      height: 480,
       overflow: false,
-      drag: true,
+      drag: "deep",
+      controls: "false",
     });
   });
   it("moves the actual native window", async () => {

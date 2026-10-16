@@ -16,13 +16,7 @@ async function fixture(context, name) {
   context.after(session.cleanup);
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
   const { browser } = session;
-  await browser.$("button=Open vault…").click();
-  await browser.waitUntil(
-    async () =>
-      (await browser.$(".vault-location").getText()) === vault &&
-      (await browser.$("button=Open notes").isEnabled()),
-  );
-  await browser.$("button=Open notes").click();
+  await browser.$("button*=Open Vault").click();
   await browser.$('[data-notes-ready="true"]').waitForDisplayed();
   await browser.$('[data-path="Note.md"]').click();
   await browser.$('.cm-content[contenteditable="true"]').waitForDisplayed();

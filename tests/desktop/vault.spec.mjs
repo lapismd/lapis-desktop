@@ -1,3 +1,4 @@
+import { returnToVaults } from "./workspace-navigation.mjs";
 import { browser, expect } from "@wdio/globals";
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync, rmSync } from "node:fs";
@@ -27,29 +28,46 @@ describe("actual native vault access", () => {
     await idle();
   });
 
-  it("cancels a native selection request without changing the launcher", async () => {
-    queue(null);
-    await browser.$("button=Open vault…").click();
-    await idle();
-    await expect(browser.$('.vault-launcher [role="status"]')).toHaveText(
-      "Selection cancelled.",
+  it("cancels a native selection request without changing profiles or mounting Notes", async () => {
+    const before = await browser.tauri.execute(({ core }) =>
+      core.invoke("vault_recents"),
     );
-    assert.equal(await browser.$("button=Close vault").isExisting(), false);
+    queue(null);
+    await browser.$("button*=Open Vault").click();
+    await idle();
+    assert.deepEqual(
+      await browser.tauri.execute(({ core }) => core.invoke("vault_recents")),
+      before,
+    );
+    assert.equal(await browser.$(".notes-session").isExisting(), false);
+    await expect(browser.$("h1")).toHaveText("Create a vault");
   });
 
-  it("opens a real Unicode folder and lists its actual files", async () => {
+  it("opens a real Unicode folder directly in Notes and lists its actual files", async () => {
     queue(root);
-    await browser.$("button=Open vault…").click();
-    await idle();
-    await expect(browser.$(".vault-location")).toHaveText(root);
-    await expect(browser.$('[aria-label="Vault contents"]')).toHaveText(
-      expect.stringContaining("Welcome.md"),
-    );
+    await browser.$("button*=Open Vault").click();
+    await browser.$('[data-notes-ready="true"]').waitForDisplayed();
+    await expect(
+      browser.$('button[aria-label="Current workspace: vault-笔记 café"]'),
+    ).toBeDisplayed();
     admission = await browser.tauri.execute(async ({ core }) => {
       const [recent] = await core.invoke("vault_recents");
       return core.invoke("vault_open_recent", { profileId: recent.id });
     });
     assert.equal(admission.path, root);
+    const listing = await browser.tauri.execute(
+      ({ core }, selected) =>
+        core.invoke("vault_fs", {
+          sessionId: selected.sessionId,
+          request: { operation: "list", path: "" },
+        }),
+      admission,
+    );
+    assert.ok(listing.files.includes("Welcome.md"));
+    assert.ok(listing.files.length + listing.folders.length <= 2000);
+    await returnToVaults(browser);
+    await browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
+    assert.equal(await browser.$("button=Open notes").isExisting(), false);
   });
 
   it("round trips text, binary and .lapis state through admitted Rust commands", async () => {
@@ -205,59 +223,74 @@ describe("actual native vault access", () => {
     assert.equal(denied, true);
   });
 
-  it("retains the current vault after cancellation and a create collision", async () => {
+  it("retains a live admission and recent profiles after cancellation and a create collision", async () => {
+    const before = await browser.tauri.execute(({ core }) =>
+      core.invoke("vault_recents"),
+    );
+    const retained = await browser.tauri.execute(
+      ({ core }, id) => core.invoke("vault_open_recent", { profileId: id }),
+      admission.profileId,
+    );
     queue(null);
-    await browser.$("button=Open vault…").click();
+    await browser.$("button*=Open Vault").click();
     await idle();
-    await expect(browser.$(".vault-location")).toHaveText(root);
-    await browser.$("#vault-name").setValue("vault-笔记 café");
-    queue(profile);
-    await browser.$("button=Create vault…").click();
+    queue(root);
+    await browser.$("button*=Create New Vault").click();
     await idle();
     await expect(browser.$('[role="alert"]')).toBeDisplayed();
-    await expect(browser.$(".vault-location")).toHaveText(root);
-    assert.equal(
-      readFileSync(join(root, "Welcome.md"), "utf8"),
-      "# A native vault\n",
+    assert.deepEqual(
+      await browser.tauri.execute(({ core }) => core.invoke("vault_recents")),
+      before,
+    );
+    const content = await browser.tauri.execute(
+      ({ core }, selected) =>
+        core.invoke("vault_fs", {
+          sessionId: selected.sessionId,
+          request: { operation: "read-text", path: "Welcome.md" },
+        }),
+      retained,
+    );
+    assert.equal(content, "# A native vault\n");
+    assert.equal(readFileSync(join(root, "Welcome.md"), "utf8"), content);
+    await browser.tauri.execute(
+      ({ core }, selected) =>
+        core.invoke("vault_close", { sessionId: selected.sessionId }),
+      retained,
     );
   });
 
   it("creates, closes and reopens a recent vault and reports a missing folder", async () => {
-    await browser.$("#vault-name").setValue("New Notes");
-    queue(profile);
-    await browser.$("button=Create vault…").click();
-    await idle();
-    await expect(browser.$(".vault-location")).toHaveText(
-      join(profile, "New Notes"),
-    );
-    await browser.$("button=Close vault").click();
-    await idle();
-    const recent = browser.$(".vault-recents").$("button*=New Notes");
-    await recent.click();
-    await idle();
-    await expect(browser.$(".vault-location")).toHaveText(
-      join(profile, "New Notes"),
-    );
-    await browser.$("button=Close vault").click();
-    await idle();
-    rmSync(join(profile, "New Notes"), { recursive: true });
-    await recent.click();
+    const created = join(profile, "New Notes");
+    queue(created);
+    await browser.$("button*=Create New Vault").click();
+    await browser.$('[data-notes-ready="true"]').waitForDisplayed();
+    await expect(
+      browser.$('button[aria-label="Current workspace: New Notes"]'),
+    ).toBeDisplayed();
+    await returnToVaults(browser);
+    await browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
+    const recent = () => browser.$('[data-ui-part="recent-open"]*=New Notes');
+    await recent().click();
+    await browser.$('[data-notes-ready="true"]').waitForDisplayed();
+    await returnToVaults(browser);
+    await browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
+    rmSync(created, { recursive: true });
+    await recent().click();
     await idle();
     await expect(browser.$('[role="alert"]')).toBeDisplayed();
-    assert.equal(await browser.$("button=Close vault").isExisting(), false);
+    assert.equal(await browser.$(".notes-session").isExisting(), false);
   });
 
   it("exposes semantic keyboard controls with no axe violations", async () => {
-    await browser.$("#vault-name").setValue("Keyboard vault");
-    await browser.$("#vault-name").click();
+    await browser.$("button*=Open Vault").waitForEnabled();
     const controls = await browser.execute(() =>
-      [...document.querySelectorAll(".vault-launcher button")].map(
-        (button) => ({
-          name: button.textContent.trim(),
-          tabIndex: button.tabIndex,
-          disabled: button.disabled,
-        }),
-      ),
+      [
+        ...document.querySelectorAll("[data-desktop-vault-launcher] button"),
+      ].map((button) => ({
+        name: button.textContent.trim(),
+        tabIndex: button.tabIndex,
+        disabled: button.disabled,
+      })),
     );
     assert.ok(controls.length >= 2);
     assert.ok(

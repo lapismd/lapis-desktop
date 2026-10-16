@@ -6,33 +6,34 @@ packages over native storage.
 
 ## Requirements
 
-| ID             | Requirement                                                                                                                                                                                                                                                                                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| LD-DESK-001    | The desktop MUST display Lapis branding and the public Design Core Lapis theme in a bundled Svelte renderer. Startup MUST expose an accessible loading status, followed by ready content or an accessible failure.                                                                                                                                           |
-| LD-DESK-002    | macOS MUST retain native close, minimize and fullscreen controls in an overlay titlebar. A 40px header MUST reserve 80px for traffic lights at 16,25 logical pixels, provide explicit drag regions, and retain usable content at the minimum window size.                                                                                                    |
-| LD-DESK-003    | Native IPC MUST grant only named shell and admitted-vault commands and window-drag/zoom permissions to the local main window. External navigation, generic filesystem, shell execution and remote capability grants MUST remain denied.                                                                                                                      |
-| LD-DESK-004    | The shell MUST persist window geometry in its separate application profile, provide normal native application/edit/window menus, and support cold close and relaunch without leaving an owned process behind.                                                                                                                                                |
-| LD-DESK-005    | Native acceptance MUST exercise the actual macOS WebView, resizing, window movement, close, and relaunch using isolated test state. Automation plugins, permissions and frontend hooks MUST be absent from normal bundles.                                                                                                                                   |
-| LD-HOST-001    | The desktop MUST consume the shared API through public package exports, identify its runtime as `tauri-desktop`, and use the shared `.lapis` state default. Migration acceptance MUST use verified source-owned pnpm archives until publication at the final release gate.                                                                                   |
-| LD-VAULT-001   | Open and Create MUST use a native folder picker. Cancellation MUST leave the current selection and recent profiles unchanged. Create MUST validate a single folder name and reject existing destinations without overwriting them.                                                                                                                           |
-| LD-VAULT-002   | Recent vault profiles MUST live in the separate native application profile and reopen only by a host-owned profile ID. Missing or changed physical roots MUST report failure without silently selecting another folder.                                                                                                                                      |
-| LD-VAULT-003   | Filesystem commands MUST require a live host-issued admission and relative vault paths. Absolute paths, parent traversal, symlink escape, and operations after close MUST reject. Directory handles MUST enforce containment during operations, including concurrent symlink substitution.                                                                   |
-| LD-VAULT-004   | Text and binary writes MUST stage in the destination directory, flush the staged file, and atomically replace the destination. Failed or interrupted staging MUST preserve the previous complete destination. Permission and encoding failures MUST remain observable.                                                                                       |
-| LD-VAULT-005   | Attachment URLs MUST use revocable, unguessable admission tokens and the contained native resource handler. Responses MUST have explicit media types, no-store and nosniff headers; executable document types, arbitrary file URLs, traversal, and closed admissions MUST remain unavailable.                                                                |
-| LD-VAULT-006   | The launcher MUST expose accessible Open, Create, recent-vault, and Close actions, selected-vault identity, and a bounded root listing. Native tests MUST use isolated profiles and real temporary folders; acceptance instrumentation MUST remain absent from ordinary bundles.                                                                             |
-| LD-DB-001      | Tauri database connections MUST use pinned in-process Rust Turso and host-owned profile paths. Opening MUST require a live vault admission; renderer payloads MUST NOT select database paths. Unknown, closed, mismatched, or conflicting connection authority MUST reject.                                                                                  |
-| LD-DB-002      | Native connection operations MUST serialize. A batch MUST execute atomically with explicit transaction behavior, roll back on failure, and expose none of a failed batch's writes. Close and restart MUST preserve committed data; failed rollback MUST block further operations until recovery.                                                             |
-| LD-DB-003      | The desktop MUST implement the public TursoConnection methods through typed bounded frames, preserving null, text, real, signed 64-bit integer, binary, positional and named parameter values. The actual packed TursoAppDatabase schema and operations MUST pass native consumer qualification before App startup is enabled.                               |
-| LD-DB-004      | Native SQL MUST NOT attach other databases, vacuum into arbitrary files, load extensions, perform file-access functions, or change filesystem-related pragmas. Transaction control MUST remain native-owned; validation MUST precede batch execution.                                                                                                        |
-| LD-SESSION-001 | Each Notes session MUST construct one explicitly owned App with an injected direct native Turso provider. It MUST use the shared .lapis state default and public plugin/workspace packages. The compatibility lease MUST span plugin loading through complete owned teardown.                                                                                |
-| LD-SESSION-002 | M3 MUST prove a real seeded vault in the actual WebView: open a note, edit and save it to disk, display a local attachment, close the database and reopen successfully. Browser mocks or an in-memory database MUST NOT qualify that gate.                                                                                                                   |
-| LD-LIFE-001    | Close, Quit, reload and returning to vaults MUST protect registered writers and await pending note and layout persistence before destructive teardown. Persistence failure MUST leave the owned session available and show a recoverable error.                                                                                                              |
-| LD-LIFE-002    | Native close and Quit MUST wait for a correlated renderer acknowledgement. Duplicate requests MUST share one operation. Failure MUST cancel that request and allow retry; a timeout MUST NOT approve exit. Reload MUST use the same save and teardown boundary.                                                                                              |
-| LD-LIFE-003    | The native profile MUST remember the last successfully initialized Notes vault separately from mere folder admissions. Cold startup and reload MUST restore that physical vault and saved layout. Returning to vaults MUST clear the active Notes preference. Failed restoration MUST show the error and preserve the recovery route.                        |
-| LD-LIFE-004    | External file edits MUST NOT silently overwrite dirty editor content or be overwritten by a later dirty save. Conflicts MUST remain observable and preserve both the current buffer and external file until an explicit resolution.                                                                                                                          |
-| LD-LIFE-005    | Repeated vault switching MUST release the old workspace, plugins, metadata, editing sessions, compatibility lease, database and subscriptions before admitting another Notes owner.                                                                                                                                                                          |
-| LD-LIFE-006    | Native conditional text writes MUST compare exact expected bytes or expected absence before replacement and recheck after staging. An observed regular-file mismatch MUST preserve the current destination and return ECONFLICT. Conditional operations MUST retain admitted-root containment, size limits, metadata handling and staged atomic replacement. |
-| LD-LIFE-007    | Every enabled Notes file writer MUST participate in the owning App's flush, protection and conflict lifecycle, including pending, failed and retired writes. Qualification MUST cover both API text editors and editable Markdown previews in the initial profile.                                                                                           |
+| ID             | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-DESK-001    | The desktop MUST display Lapis branding and the public Design Core Lapis theme in a bundled Svelte renderer. Startup MUST expose an accessible loading status, followed by ready content or an accessible failure.                                                                                                                                                                                                                      |
+| LD-DESK-002    | macOS MUST retain native close, minimize and fullscreen controls in an overlay window with no visible title. Workspace tabs and sidebar tabs MUST meet the top edge with no application title or toolbar above them. Public window-control tokens MUST reserve native-control clearance, and declared background regions MUST use Tauri HTML dragging while interactive controls remain usable.                                         |
+| LD-DESK-003    | Native IPC MUST grant only named shell and admitted-vault commands and window-drag/zoom permissions to the local main window. External navigation, generic filesystem, shell execution and remote capability grants MUST remain denied.                                                                                                                                                                                                 |
+| LD-DESK-004    | The shell MUST persist window geometry in its separate application profile, provide normal native application/edit/window menus, and support cold close and relaunch without leaving an owned process behind.                                                                                                                                                                                                                           |
+| LD-DESK-005    | Native acceptance MUST exercise the actual macOS WebView, resizing, window movement, close, and relaunch using isolated test state. Automation plugins, permissions and frontend hooks MUST be absent from normal bundles.                                                                                                                                                                                                              |
+| LD-HOST-001    | The desktop MUST consume the shared API through public package exports, identify its runtime as `tauri-desktop`, and use the shared `.lapis` state default. Migration acceptance MUST use verified source-owned pnpm archives until publication at the final release gate.                                                                                                                                                              |
+| LD-VAULT-001   | Open and Create MUST use a native picker; Create MUST select the new folder destination. Cancellation MUST leave the current selection and recent profiles unchanged. Create MUST validate a single folder name and reject existing destinations without overwriting them.                                                                                                                                                              |
+| LD-VAULT-002   | Recent vault profiles MUST live in the separate native application profile and reopen only by a host-owned profile ID. Missing or changed physical roots MUST report failure without silently selecting another folder.                                                                                                                                                                                                                 |
+| LD-VAULT-003   | Filesystem commands MUST require a live host-issued admission and relative vault paths. Absolute paths, parent traversal, symlink escape, and operations after close MUST reject. Directory handles MUST enforce containment during operations, including concurrent symlink substitution.                                                                                                                                              |
+| LD-VAULT-004   | Text and binary writes MUST stage in the destination directory, flush the staged file, and atomically replace the destination. Failed or interrupted staging MUST preserve the previous complete destination. Permission and encoding failures MUST remain observable.                                                                                                                                                                  |
+| LD-VAULT-005   | Attachment URLs MUST use revocable, unguessable admission tokens and the contained native resource handler. Responses MUST have explicit media types, no-store and nosniff headers; executable document types, arbitrary file URLs, traversal, and closed admissions MUST remain unavailable.                                                                                                                                           |
+| LD-VAULT-006   | The launcher MUST reuse the shared Deno desktop chooser, including its branding, Create New Vault, Open Vault, recent-project search and appearance controls. Successful selection MUST open Notes directly. Returning to vaults MUST close the Notes owner and admission before another selection. Native acceptance MUST preserve bounded-listing, cancellation, collision and byte-integrity evidence through isolated real folders. |
+| LD-DB-001      | Tauri database connections MUST use pinned in-process Rust Turso and host-owned profile paths. Opening MUST require a live vault admission; renderer payloads MUST NOT select database paths. Unknown, closed, mismatched, or conflicting connection authority MUST reject.                                                                                                                                                             |
+| LD-DB-002      | Native connection operations MUST serialize. A batch MUST execute atomically with explicit transaction behavior, roll back on failure, and expose none of a failed batch's writes. Close and restart MUST preserve committed data; failed rollback MUST block further operations until recovery.                                                                                                                                        |
+| LD-DB-003      | The desktop MUST implement the public TursoConnection methods through typed bounded frames, preserving null, text, real, signed 64-bit integer, binary, positional and named parameter values. The actual packed TursoAppDatabase schema and operations MUST pass native consumer qualification before App startup is enabled.                                                                                                          |
+| LD-DB-004      | Native SQL MUST NOT attach other databases, vacuum into arbitrary files, load extensions, perform file-access functions, or change filesystem-related pragmas. Transaction control MUST remain native-owned; validation MUST precede batch execution.                                                                                                                                                                                   |
+| LD-SESSION-001 | Each Notes session MUST construct one explicitly owned App with an injected direct native Turso provider. It MUST use the shared .lapis state default and public plugin/workspace packages. The compatibility lease MUST span plugin loading through complete owned teardown.                                                                                                                                                           |
+| LD-SESSION-002 | M3 MUST prove a real seeded vault in the actual WebView: open a note, edit and save it to disk, display a local attachment, close the database and reopen successfully. Browser mocks or an in-memory database MUST NOT qualify that gate.                                                                                                                                                                                              |
+| LD-LIFE-001    | Close, Quit, reload and returning to vaults MUST protect registered writers and await pending note and layout persistence before destructive teardown. Persistence failure MUST leave the owned session available and show a recoverable error.                                                                                                                                                                                         |
+| LD-LIFE-002    | Native close and Quit MUST wait for a correlated renderer acknowledgement. Duplicate requests MUST share one operation. Failure MUST cancel that request and allow retry; a timeout MUST NOT approve exit. Reload MUST use the same save and teardown boundary.                                                                                                                                                                         |
+| LD-LIFE-003    | The native profile MUST remember the last successfully initialized Notes vault separately from mere folder admissions. Cold startup and reload MUST restore that physical vault and saved layout. Returning to vaults MUST clear the active Notes preference. Failed restoration MUST show the error and preserve the recovery route.                                                                                                   |
+| LD-LIFE-004    | External file edits MUST NOT silently overwrite dirty editor content or be overwritten by a later dirty save. Conflicts MUST remain observable and preserve both the current buffer and external file until an explicit resolution.                                                                                                                                                                                                     |
+| LD-LIFE-005    | Repeated vault switching MUST release the old workspace, plugins, metadata, editing sessions, compatibility lease, database and subscriptions before admitting another Notes owner.                                                                                                                                                                                                                                                     |
+| LD-LIFE-006    | Native conditional text writes MUST compare exact expected bytes or expected absence before replacement and recheck after staging. An observed regular-file mismatch MUST preserve the current destination and return ECONFLICT. Conditional operations MUST retain admitted-root containment, size limits, metadata handling and staged atomic replacement.                                                                            |
+| LD-LIFE-007    | Every enabled Notes file writer MUST participate in the owning App's flush, protection and conflict lifecycle, including pending, failed and retired writes. Qualification MUST cover both API text editors and editable Markdown previews in the initial profile.                                                                                                                                                                      |
+| LD-SESSION-003 | Native Notes startup MUST reuse the Deno branded DesktopWorkspaceStartup from the public Workspace package with accessible progress, real phase statuses and current plugin detail. Restoration and storage opening MUST expose progress before the session mounts. Failure MUST retain its failed phase and a route back to vaults. Successful startup MUST remove the progress surface without adding content above workspace tabs.   |
 
 The product name is Lapis Notes Preview and the application identifier is
 `com.lapismd.lapis-desktop.preview`. Development Vite binds literal loopback on
@@ -44,6 +45,23 @@ interop, extra windows and user documents remain later work. Closing the only
 window exits this shell; unsaved-document coordination is introduced before
 document editing is considered qualified in M4.
 
+The Notes workspace fills the native content area. Its existing 40px tab strips
+start at the top edge; no application title or session toolbar precedes them.
+The hidden native title and traffic lights at 16,25 logical pixels follow the
+jj-store overlay configuration. Host CSS maps the Deno shell's 65px main-pane
+and 80px sidebar clearances through public Design Core window-control tokens,
+subtracting the ribbon width where appropriate. Expanded and collapsed sidebar
+states keep their controls clear without shifting tabs vertically.
+
+The host translates public `data-desktop-drag-region` backgrounds to Tauri's
+`data-tauri-drag-region="deep"`; explicit `false` descendants remain excluded.
+It observes newly mounted and reconfigured regions and releases the observer on
+page teardown. Tauri owns native dragging and double-click zoom. The launcher
+uses the same native HTML handles on empty background, excluding its interactive
+content. Back to vaults lives in the workspace navigation menu; Mod+R retains
+the existing guarded reload boundary. Recovery stays below the workspace so tabs
+remain at the top edge even when conflicts are visible.
+
 The private `shell_info` command reports runtime, platform, process identity and
 application version. `shell_ready` acknowledges renderer readiness. Native
 state, rather than a DOM marker alone, confirms that handshake. These commands
@@ -53,6 +71,11 @@ Cold-process acceptance waits for the Rust readiness acknowledgement before
 driver script evaluation. A listening WebDriver socket alone does not establish
 that the initial WebView document has its IPC bindings; an early evaluation can
 lose its reply during navigation. Keep the existing bounded startup deadline.
+
+Native acceptance launches its separately identified macOS application bundle
+and brings the real WebView forward before interactions. Hidden WebKit pages
+suspend animation frames and cannot qualify menu completion. Focus permission
+belongs only to the e2e capability; ordinary bundles retain their existing grants.
 
 Startup reads the public API `path` and `runtime` entrypoints. Runtime identity
 does not need to load optional database or model services.
@@ -142,16 +165,25 @@ remain denied. Turso attachment and vacuum features remain disabled. Host-owned
 batches select deferred, immediate or exclusive behavior and prevalidate every
 statement.
 
-The launcher opens an admitted folder first; its Open notes action then opens
-the owned Notes session. Returning to vaults MUST finish session teardown before
-the launcher becomes available. A failed startup or teardown MUST remain visible
-and retain ownership for recovery instead of silently opening another session.
+The shared desktop launcher selects or creates a native folder and opens the
+owned Notes session immediately, matching the Deno flow. Returning to vaults
+MUST finish session teardown before the launcher becomes available. A failed
+startup or teardown MUST remain visible and retain ownership for recovery
+instead of silently opening another session.
 
 The desktop-owned initial plugin profile contains Source Editor, Markdown and
 File Explorer through public exports. Search and other plugin intake retain
 their later milestones. The retained WorkspaceShell owns presentation; desktop
 owns boot, profile resolution, native transport and teardown. M3's editing proof
 does not waive M4's close/save/conflict/session-restoration gate.
+
+## Notes startup presentation
+
+Startup reports vault loading, configuration, plugins, layout and metadata from
+their actual awaited operations. It does not simulate time or add minimum
+delays. The host composes the existing public startup component used by the Deno
+app; Design Core continues to own the progress bar, task presentation and
+semantics.
 
 ## Safe lifecycle and restoration (M4)
 
@@ -193,7 +225,15 @@ Check disk again refreshes an unavailable or superseded snapshot without
 resolving it. Failed or stale decisions retain the conflict and keep lifecycle
 shutdown blocked. The desktop must not implement a parallel editor save path.
 
-API text-editor recovery is qualified separately from portable editable Markdown
-previews. The latter still use a separate adapter writer and require their own
-registered, document-owned conditional integration under LD-LIFE-007. Their
-absence from an editing-session registry cannot waive the original M4 gate.
+Editable Markdown previews bind their captured Mira session to the original
+App's editing registry and the public API FileTextPersistence contract. Each
+source keeps its own acknowledged baseline and operation-owned recovery lease;
+equivalent internal-link resolution must not replace the visible writer. Failed
+and retired previews remain visible to shutdown and recovery. Accepting disk
+text must update the visible editor and permit later saves, including after an
+empty save. Unbound writes on conditional-capable hosts reject.
+
+API editors and editable previews are separate qualified components. The enabled
+Properties/frontmatter and metadata write paths still require protection and a
+complete writer audit. Their absence from an editing-session registry cannot
+waive LD-LIFE-007 or complete the original M4 gate.

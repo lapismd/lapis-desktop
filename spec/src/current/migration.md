@@ -1,9 +1,9 @@
 # Migration inventory and progress
 
-Local archive qualification now checks active workspace peer imports against the
-verified tarball payload, including peer-only consumers. This tooling work
-supports the pending Markdown preview integration and leaves the original M4
-application gate and writer-coverage requirements unchanged.
+Local archive qualification checks active workspace peer imports against the
+verified tarball payload, including peer-only consumers. Editable preview
+integration and tab-first native-window alignment are the current slice; the
+original M4 application gate and complete-writer coverage remain unchanged.
 
 ## Requirements
 
@@ -91,8 +91,15 @@ everyday-use gate remain open.
 E-CONFLICT-001 qualifies document-owned API text-editor baselines and retained
 App-owned recovery through the real native UI. Closed tabs retain their drafts
 and shutdown barriers; stale choices require another review. The original M4
-gate remains unchanged and In progress. Editable Markdown previews still use a
-separate unconditional, unregistered adapter writer, so LD-LIFE-004 and the
-explicit complete-writer coverage requirement LD-LIFE-007 remain Planned.
-Integrate those public Mira/plugin ports in their owning repositories and
-qualify the native consumer before completing M4.
+gate remains unchanged and In progress. E-PREVIEW-001 records source-owned
+Mira/API/Markdown binding and native preview recovery. Properties/frontmatter
+and metadata writers still require protection and a complete writer audit, so
+LD-LIFE-004 and LD-LIFE-007 remain Planned. Native watching stays in M5.
+
+E-CHROME-001 records the user-requested tab-first window alignment: no title or
+toolbar above the workspace, native-control clearance and Tauri HTML handles.
+The original M0.1 gate remains unchanged. App signing remains deferred to M11.
+
+E-STARTUP-001 records restoration of the Deno host's public branded startup
+presentation, actual loading phases and plugin details. It disappears when the
+workspace is ready and does not add content above tabs.

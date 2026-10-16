@@ -5,6 +5,7 @@ import { resolve, join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { remote } from "webdriverio";
 import assert from "node:assert/strict";
+import { focusNativeWindow } from "./native-visibility.mjs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
 
 async function availablePort() {
@@ -20,7 +21,7 @@ async function availablePort() {
 export async function nativeSession(
   name,
   isolatedRoot,
-  executablePath = resolve("src-tauri/target/debug/lapis-desktop"),
+  executablePath = resolve("src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop"),
 ) {
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
@@ -98,6 +99,7 @@ export async function nativeSession(
         ),
       { timeout: 10000 },
     );
+    await focusNativeWindow(browser);
     async function requestClose(quit = false) {
       await browser.execute((quit) => {
         setTimeout(() => {

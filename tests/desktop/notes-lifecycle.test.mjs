@@ -13,6 +13,7 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import { reloadNotes, returnToVaults } from "./workspace-navigation.mjs";
 
 const acceptance = process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
 function fixture(name) {
@@ -31,13 +32,7 @@ async function ready(session) {
 }
 async function choose(session, root, vault) {
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
-  await session.browser.$("button=Open vault…").click();
-  await session.browser.waitUntil(
-    async () =>
-      (await session.browser.$(".vault-location").getText()) === vault &&
-      (await session.browser.$("button=Open notes").isEnabled()),
-  );
-  await session.browser.$("button=Open notes").click();
+  await session.browser.$("button*=Open Vault").click();
   await ready(session);
 }
 async function openNote(session) {
@@ -62,8 +57,8 @@ async function editorText(session, content) {
   );
 }
 async function returningToLauncher(session) {
-  await session.browser.$("button=Back to vaults").click();
-  await session.browser.$("button=Close vault").click();
+  await returnToVaults(session.browser);
+  await session.browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
 }
 
 test("cold Close and application Quit flush unsaved notes and restore the last vault and active note", async (context) => {
@@ -96,7 +91,7 @@ test("cold Close and application Quit flush unsaved notes and restore the last v
   await third.close();
   const fourth = await nativeSession("launcher-restored", root);
   context.after(fourth.cleanup);
-  await fourth.browser.$("button=Open vault…").waitForDisplayed();
+  await fourth.browser.$("button*=Open Vault").waitForDisplayed();
   assert.equal(
     await fourth.browser.$('[data-notes-ready="true"]').isExisting(),
     false,
@@ -142,7 +137,7 @@ test("failed layout saves block reload; repaired reload restores in the same nat
   await session.browser.execute(() => {
     document.documentElement.dataset.reloadProbe = "old-document";
   });
-  await session.browser.$("button=Reload notes").click();
+  await reloadNotes(session.browser);
   await session.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
   assert.equal(session.isRunning(), true);
   assert.equal(
@@ -152,7 +147,7 @@ test("failed layout saves block reload; repaired reload restores in the same nat
     "old-document",
   );
   rmSync(layout, { recursive: true });
-  await session.browser.$("button=Reload notes").click();
+  await reloadNotes(session.browser);
   await session.browser.waitUntil(() =>
     session.browser.execute(
       () => !document.documentElement.dataset.reloadProbe,
@@ -179,14 +174,13 @@ test("failed physical-root restoration stays visible and preserves the recovery 
   const second = await nativeSession("missing-profile", root);
   context.after(second.cleanup);
   await second.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
-  await second.browser.$("button=Open vault…").waitForDisplayed();
+  await second.browser.$("button*=Open Vault").waitForDisplayed();
   assert.equal(
     readFileSync(join(root, "profile/last-notes.json"), "utf8"),
     saved,
   );
   renameSync(`${vault}-moved`, vault);
-  await second.browser.$(".vault-recents button").click();
-  await second.browser.$("button=Open notes").click();
+  await second.browser.$("[data-ui-part=recent-open]").click();
   await ready(second);
   await returningToLauncher(second);
   await second.close();
@@ -217,8 +211,8 @@ test("repeated vault switching saves pending edits, releases each old database a
     await session.browser.$(`[data-path="${note}"]`).click();
     const content = `# Saved before switch ${++switchCount}\n`;
     await edit(session, content);
-    await session.browser.$("button=Back to vaults").click();
-    await session.browser.$("button=Open notes").waitForDisplayed();
+    await returnToVaults(session.browser);
+    await session.browser.$("button*=Open Vault").waitForDisplayed();
     assert.equal(await session.browser.$(".notes-session").isExisting(), false);
     assert.equal(readFileSync(join(target, note), "utf8"), content);
     const released = await session.browser.execute(async () => {
@@ -239,7 +233,7 @@ test("repeated vault switching saves pending edits, releases each old database a
     });
     assert.equal(released, true);
   }
-  await session.browser.$("button=Close vault").click();
+  await session.browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
   await session.close();
 });
 
@@ -251,14 +245,22 @@ test("a broken saved layout reports startup failure and allows a return to vault
   const session = await nativeSession("broken-layout", root);
   context.after(session.cleanup);
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
-  await session.browser.$("button=Open vault…").click();
-  await session.browser.$("button=Open notes").click();
-  await session.browser.$('.notes-session [role="alert"]').waitForDisplayed();
+  await session.browser.$("button*=Open Vault").click();
+  const failure = session.browser.$(
+    '[data-ui-component="workspace-startup"][data-state="failed"]',
+  );
+  await failure.$('[role="alert"]').waitForDisplayed();
+  assert.ok(
+    (await failure.$('[data-ui-part="failure-summary"]').getText()).includes(
+      "Restore the workspace layout",
+    ),
+  );
   assert.equal(
     await session.browser.$('[data-notes-ready="true"]').isExisting(),
     false,
   );
-  await returningToLauncher(session);
+  await failure.$("button=Back to vaults").click();
+  await session.browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
   assert.equal(readFileSync(layout, "utf8"), "not a layout");
   assert.equal(readFileSync(file, "utf8"), "# Initial note\n");
   await session.close();

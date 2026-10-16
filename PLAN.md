@@ -16,6 +16,11 @@ edit Markdown, save safely, and restore the session**. Keep the existing Notes
 workspace and editor; use jj-store and JJButler as references for native chrome
 and lifecycle.
 
+Reuse the existing Deno desktop presentation through public shared components.
+Both native hosts use the same vault chooser, recent-project search, appearance
+controls and Lapis-branded startup progress. Tauri owns only native integration
+and lifecycle; choosing or creating a vault opens Notes directly.
+
 Ship Rust plus the system WebView. Node/pnpm remain development tools. Use
 `.lapis` as the shared vault-local application-state default across every host.
 The application is unreleased, so pre-release state can be reset or overwritten
@@ -42,8 +47,10 @@ application-state default to `.lapis` throughout the app.
   Add Search in its own slice. The existing private `app-profile` package does
   not become a checkout dependency.
 - **Native shell:** use an overlay titlebar with native traffic lights, explicit
-  drag regions, normal macOS menus, saved window geometry, and the Lapis theme.
-  Defer glass effects and extra windows.
+  Tauri HTML drag regions, normal macOS menus, saved window geometry, and the
+  Lapis theme. Hide the native title and let sidebar and workspace tab strips
+  meet the top edge, as in the Deno host and jj-store. No application title or
+  session toolbar sits above the tabs. Defer glass effects and extra windows.
 - **Transport:** implement an adapter from the public `NativeDesktopBridge` to
   named Tauri commands and events. Grant access only to the application window
   and admitted vaults. Production uses bundled renderer assets.

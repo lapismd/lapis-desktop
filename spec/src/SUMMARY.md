@@ -25,3 +25,7 @@
   - [Native conditional text storage](history/E-WRITE-001.md)
   - [API editor conflict recovery](history/E-CONFLICT-001.md)
   - [Workspace peer archive verification](history/E-ARCHIVES-001.md)
+  - [Editable Markdown preview recovery](history/E-PREVIEW-001.md)
+  - [Tab-first native window](history/E-CHROME-001.md)
+  - [Native Notes startup progress](history/E-STARTUP-001.md)
+  - [Shared desktop chooser](history/E-ONBOARD-001.md)

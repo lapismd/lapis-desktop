@@ -14,7 +14,9 @@
           "identifier": "acceptance",
           "description": "Selected only by the native acceptance configuration",
           "local": true,
-          "windows": ["main"],
+          "windows": [
+            "main"
+          ],
           "permissions": [
             "wdio:default",
             "wdio-webdriver:default",
@@ -24,13 +26,14 @@
             "core:window:allow-set-position",
             "core:window:allow-close",
             "core:event:allow-listen",
-            "core:event:allow-unlisten"
+            "core:event:allow-unlisten",
+            "core:window:allow-set-focus"
           ]
         }
       ]
     }
   },
   "bundle": {
-    "active": false
+    "active": true
   }
 }

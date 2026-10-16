@@ -110,7 +110,7 @@
     max-height: 50%;
     overflow: auto;
     padding: 1rem;
-    border-bottom: 1px solid var(--ui-workspace-border);
+    border-top: 1px solid var(--ui-workspace-border);
     color: var(--ui-workspace-foreground);
     background: var(--ui-workspace-panel-background);
     font-size: 0.8125rem;

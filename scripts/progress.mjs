@@ -34,6 +34,19 @@ export function changedPaths(
     .split("\n")
     .filter(Boolean);
 }
+export function evidenceFileErrors(evidence, current, base, historicalFiles) {
+  const errors = [];
+  for (const entry of evidence) {
+    let recorded;
+    for (const file of entry.files ?? []) {
+      if (current.has(file) || base.has(file)) continue;
+      if (base.has(entry.path)) recorded ??= historicalFiles(entry.path);
+      if (!recorded?.has(file))
+        errors.push(`${entry.id}: evidence names missing file ${file}.`);
+    }
+  }
+  return errors;
+}
 export function progressFindings(
   root,
   { checkSummary = true, checkRevision = true } = {},
@@ -68,10 +81,39 @@ export function progressFindings(
       tasks,
     ),
   ];
-  for (const entry of evidence)
-    for (const file of entry.files ?? [])
-      if (!files.includes(file))
-        errors.push(`${entry.id}: evidence names missing file ${file}.`);
+  const base = process.env.LAPIS_DESKTOP_BASE ?? "@-";
+  const previousFiles = new Set(
+    vcs(root, ["file", "list", "-r", base]).trim().split("\n"),
+  );
+  errors.push(
+    ...evidenceFileErrors(evidence, new Set(files), previousFiles, (path) => {
+      const revision = vcs(root, [
+        "log",
+        "--no-graph",
+        "-r",
+        `latest(::(${base}) & files(${JSON.stringify(path)}))`,
+        "-T",
+        "commit_id",
+      ]).trim();
+      if (!revision) return new Set();
+      const parents = vcs(root, [
+        "log",
+        "--no-graph",
+        "-r",
+        `parents(${revision})`,
+        "-T",
+        'commit_id ++ "\\n"',
+      ])
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      return new Set(
+        [revision, ...parents].flatMap((snapshot) =>
+          vcs(root, ["file", "list", "-r", snapshot]).trim().split("\n"),
+        ),
+      );
+    }),
+  );
   const summary = migrationSummary(tasks);
   if (
     checkSummary &&
@@ -80,10 +122,6 @@ export function progressFindings(
     errors.push("MIGRATION.md is stale; run pnpm progress:generate.");
   if (checkRevision) {
     const changed = changedPaths(root);
-    const base = process.env.LAPIS_DESKTOP_BASE ?? "@-";
-    const previousFiles = new Set(
-      vcs(root, ["file", "list", "-r", base]).trim().split("\n"),
-    );
     for (const file of evidenceFiles)
       if (
         previousFiles.has(file) &&

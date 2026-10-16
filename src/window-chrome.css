@@ -1,0 +1,27 @@
+:root[data-lapis-platform="macos"] [data-ui-component="app-shell"] {
+  --lapis-window-controls: 65px;
+  --lapis-sidebar-window-controls: 80px;
+  --ui-workspace-window-controls-inline-start: var(--lapis-window-controls);
+  --ui-workspace-window-controls-overlay-inline-start: 65px;
+}
+:root[data-lapis-platform="macos"]
+  [data-ui-component="app-shell"]:has(
+    > [data-ui-component="workspace-ribbon"]
+  ) {
+  --lapis-window-controls: max(
+    0px,
+    calc(65px - var(--ui-workspace-ribbon-width, 3rem))
+  );
+  --lapis-sidebar-window-controls: max(
+    0px,
+    calc(80px - var(--ui-workspace-ribbon-width, 3rem))
+  );
+}
+:root[data-lapis-platform="macos"]
+  [data-workspace-sidebar-side="left"]
+  > [data-ui-part="sidebar-tab-bar"] {
+  padding-inline-start: calc(
+    var(--ui-workspace-sidebar-tab-header-inline-padding, 0.5rem) +
+      var(--lapis-sidebar-window-controls)
+  );
+}

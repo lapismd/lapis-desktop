@@ -32,6 +32,12 @@ runs and all failed attempts. An appended record may resolve an older failure;
 it cannot rewrite that result. Use `enclosing-change` for evidence in the change
 being verified rather than inventing a future commit hash.
 
+Evidence paths resolve against current files, actual base-revision deletions, or
+the immutable record's enclosing snapshot and its deletion parents. Fresh
+evidence cannot claim an unrelated historical path. Missing references still
+fail closed; removing an obsolete component does not authorize rewriting its old
+evidence.
+
 ## Change map
 
 | Protected area                                                                                                                 | Required chapter |
@@ -106,3 +112,11 @@ exclude the conditional-write acceptance driver. No generic permission is added.
 File-conflict recovery consumes the public App-owned registry and its protected
 actions. Its real cold acceptance joins the existing lifecycle lane; no generic
 filesystem authority or second desktop save implementation is introduced.
+
+Preview recovery and tab-first window acceptance join the canonical cold native
+runner explicitly. HTML drag attributes and geometry are supporting evidence;
+physical AppKit movement remains an independent native acceptance check.
+
+Startup acceptance observes the actual public component's phase statuses and
+progress semantics during native IO. It must not add timing delays or test hooks
+to the product. A read-only temporary vault qualifies visible failure recovery.

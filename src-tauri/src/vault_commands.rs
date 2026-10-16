@@ -40,18 +40,23 @@ pub async fn vault_select(
     window: tauri::WebviewWindow,
     host: tauri::State<'_, VaultHost>,
     create_name: Option<String>,
+    create: Option<bool>,
 ) -> Result<Option<VaultDescriptor>, NativeError> {
     if let Some(name) = &create_name {
         lapis_desktop::vault::validate_name(name)?;
     }
     let host = host.inner().clone();
     tauri::async_runtime::spawn_blocking(move || {
+        let create_destination = create.unwrap_or(false);
+        if create_destination && create_name.is_some() {
+            return Err(io::Error::other("Choose one vault creation mode"));
+        }
         #[cfg(not(feature = "e2e"))]
-        let selection = pick_native(&window, create_name.is_some())?;
+        let selection = pick_native(&window, create_name.is_some(), create_destination)?;
         #[cfg(feature = "e2e")]
         let selection = {
             if std::env::var_os("LAPIS_DESKTOP_ACCEPTANCE_REAL_PICKER").is_some() {
-                pick_native(&window, create_name.is_some())?
+                pick_native(&window, create_name.is_some(), create_destination)?
             } else {
                 let queue = std::path::PathBuf::from(
                     std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")
@@ -63,6 +68,25 @@ pub async fn vault_select(
                 std::fs::remove_file(queue)?;
                 selection
             }
+        };
+        let (selection, create_name) = if create_destination {
+            match selection {
+                Some(path) => {
+                    let name = path
+                        .file_name()
+                        .and_then(|name| name.to_str())
+                        .ok_or_else(|| io::Error::other("Enter a single folder name"))?
+                        .to_owned();
+                    lapis_desktop::vault::validate_name(&name)?;
+                    let parent = path
+                        .parent()
+                        .ok_or_else(|| io::Error::other("Choose a parent folder"))?;
+                    (Some(parent.to_path_buf()), Some(name))
+                }
+                None => (None, None),
+            }
+        } else {
+            (selection, create_name)
         };
         host.0
             .lock()
@@ -78,7 +102,24 @@ pub async fn vault_select(
 fn pick_native(
     window: &tauri::WebviewWindow,
     create: bool,
+    create_destination: bool,
 ) -> io::Result<Option<std::path::PathBuf>> {
+    if create_destination {
+        return window
+            .app_handle()
+            .dialog()
+            .file()
+            .set_parent(window)
+            .set_title("Create New Vault")
+            .set_file_name("Untitled vault")
+            .blocking_save_file()
+            .map(|selection| {
+                selection
+                    .into_path()
+                    .map_err(|_| io::Error::other("Selected folder is not a local path"))
+            })
+            .transpose();
+    }
     let title = if create {
         "Choose the parent folder for your new vault"
     } else {

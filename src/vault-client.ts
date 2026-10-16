@@ -78,6 +78,14 @@ export class VaultClient {
     return selected;
   }
 
+  async create(): Promise<VaultDescriptor | null> {
+    const selected = await this.#call<VaultDescriptor | null>("vault_select", {
+      create: true,
+    });
+    if (selected) this.#admissions.set(selected.sessionId, selected);
+    return selected;
+  }
+
   async openRecent(profileId: string): Promise<VaultDescriptor> {
     const selected = await this.#call<VaultDescriptor>("vault_open_recent", {
       profileId,

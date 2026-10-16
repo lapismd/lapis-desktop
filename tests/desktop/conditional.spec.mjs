@@ -1,3 +1,4 @@
+import { returnToVaults } from "./workspace-navigation.mjs";
 import { browser } from "@wdio/globals";
 import assert from "node:assert/strict";
 import {
@@ -34,14 +35,10 @@ describe("public native conditional text writes", () => {
   before(async () => {
     mkdirSync(root);
     writeFileSync(join(root, path), baseline);
-    await browser.$("button=Open vault…").waitForEnabled();
+    await browser.$("button*=Open Vault").waitForEnabled();
     writeFileSync(join(profile, "picker.json"), JSON.stringify(root));
-    await browser.$("button=Open vault…").click();
-    await browser.waitUntil(
-      async () =>
-        (await browser.$(".vault-location").getText()) === root &&
-        (await browser.$("button=Close vault").isEnabled()),
-    );
+    await browser.$("button*=Open Vault").click();
+    await browser.$('[data-notes-ready="true"]').waitForDisplayed();
   });
 
   it("uses the public capability and commits matching Unicode contents", async () => {
@@ -80,6 +77,6 @@ describe("public native conditional text writes", () => {
   });
 
   after(async () => {
-    await browser.$("button=Close vault").click();
+    await returnToVaults(browser);
   });
 });

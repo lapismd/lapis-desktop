@@ -27,3 +27,9 @@ by the task ledger, not inferred from this list.
 - [E-CONFLICT-001: API editor conflict recovery](E-CONFLICT-001.md)
 
 - [E-ARCHIVES-001: workspace peer archive verification](E-ARCHIVES-001.md)
+
+- [E-PREVIEW-001: editable Markdown preview recovery](E-PREVIEW-001.md)
+- [E-CHROME-001: tab-first native window](E-CHROME-001.md)
+- [E-STARTUP-001: native Notes startup progress](E-STARTUP-001.md)
+
+- [E-ONBOARD-001: Shared desktop chooser](E-ONBOARD-001.md)

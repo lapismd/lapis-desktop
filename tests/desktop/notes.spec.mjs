@@ -3,6 +3,7 @@ import { Key } from "webdriverio";
 import assert from "node:assert/strict";
 import { join } from "node:path";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
+import { returnToVaults } from "./workspace-navigation.mjs";
 
 const profile = process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
 const root = join(profile, "vault-笔记 café");
@@ -17,6 +18,11 @@ describe("real Notes native session", () => {
         "Notes UI failure:",
         await browser.execute(() => ({
           text: document.body.innerText,
+          navigation: window.__navigationTrace,
+          frame: window.__navigationFrame,
+          visibility: document.visibilityState,
+          focused: document.hasFocus(),
+          overlays: [...document.querySelectorAll('[role="menu"], [data-ui-component="workspace-navigation"]')].map(element => ({ html: element.outerHTML.slice(0, 900), bounds: JSON.stringify(element.getBoundingClientRect()), animation: getComputedStyle(element).animation, transition: getComputedStyle(element).transition })),
           gutter: document.querySelector(".cm-gutters")?.outerHTML,
           images: [...document.querySelectorAll(".notes-session img")].map(
             (image) => ({
@@ -47,8 +53,7 @@ describe("real Notes native session", () => {
       "# Native Note\n\n![Local attachment](café.png)\n",
     );
     writeFileSync(join(profile, "picker.json"), JSON.stringify(root));
-    await browser.$("button=Open vault…").click();
-    await browser.$("button=Open notes").click();
+    await browser.$("button*=Open Vault").click();
     await browser.waitUntil(() =>
       browser.$('[data-notes-ready="true"]').isExisting(),
     );
@@ -137,8 +142,16 @@ describe("real Notes native session", () => {
   }
 
   it("closes the owned database, then reopens the real Notes session with saved content", async () => {
-    await browser.$("button=Back to vaults").click();
-    await expect(browser.$("button=Open notes")).toBeDisplayed();
+    await browser.execute(() => {
+      window.__navigationFrame = "waiting";
+      requestAnimationFrame(() => window.__navigationFrame = "painted");
+      window.__navigationTrace = [{ initial: document.body.innerText.slice(-700), pointer: document.body.style.pointerEvents }];
+      for (const type of ["pointerdown", "pointerup", "click", "keydown", "animationend", "bits.menu-item.select"]) document.addEventListener(type, event => {
+        if (window.__navigationTrace.length < 100) window.__navigationTrace.push({ type, target: event.target.outerHTML?.slice(0, 200), text: event.target.textContent?.slice(0, 100), prevented: event.defaultPrevented });
+      }, true);
+    });
+    await returnToVaults(browser);
+    await expect(browser.$("button*=Open Vault")).toBeDisplayed();
     const released = await browser.tauri.execute(async ({ core }) => {
       const [profile] = await core.invoke("vault_recents");
       const selected = await core.invoke("vault_open_recent", {
@@ -159,7 +172,7 @@ describe("real Notes native session", () => {
       true,
       "Another admission must be able to open the released native database",
     );
-    await browser.$("button=Open notes").click();
+    await browser.$("[data-ui-part=recent-open]").click();
     await browser.waitUntil(() =>
       browser.$('[data-notes-ready="true"]').isExisting(),
     );
@@ -176,7 +189,7 @@ describe("real Notes native session", () => {
       expect.stringContaining("Native edit persisted"),
     );
     assert.equal(readFileSync(join(root, "Native Note.md"), "utf8"), content);
-    await browser.$("button=Back to vaults").click();
-    await browser.$("button=Close vault").click();
+    await returnToVaults(browser);
+    await browser.$("[data-desktop-vault-launcher]").waitForDisplayed();
   });
 });
