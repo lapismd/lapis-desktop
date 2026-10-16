@@ -7,7 +7,7 @@
     type VaultListing,
   } from "./vault-client.ts";
 
-  const client = new VaultClient();
+  let { client }: { client: VaultClient } = $props();
   let recents = $state<RecentVault[]>([]);
   let active = $state<VaultDescriptor | null>(null);
   let listing = $state<VaultListing>({ files: [], folders: [] });

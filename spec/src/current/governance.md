@@ -64,3 +64,8 @@ commands. Generic dialog, filesystem, asset-protocol and process permissions
 remain denied. Rust directory capabilities enforce vault containment; native
 dialog access is called only from the owned picker command. E2E fixture
 selection is compiled only behind the existing debug-only acceptance feature.
+
+M3 adds only named admitted database open/execute/close commands. Typed frames
+are bounded and SQL file/extension authority remains denied. Pin Rust Turso to
+0.7.2 with built-in FTS and without the alternate global allocator. Public API
+consumption continues through the M1 committed-source archives.

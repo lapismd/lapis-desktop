@@ -120,6 +120,9 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-vault-open-recent",
     "allow-vault-close",
     "allow-vault-fs",
+    "allow-vault-db-open",
+    "allow-vault-db-execute",
+    "allow-vault-db-close",
     "core:window:allow-start-dragging",
     "core:window:allow-internal-toggle-maximize",
   ];

@@ -33,6 +33,7 @@ for (const marker of [
   "wdioTauri",
   "__wdio_mocks__",
   "LAPIS_DESKTOP_ACCEPTANCE_",
+  "__lapisNativeDatabaseAcceptance",
 ])
   assert.equal(
     bytes.includes(Buffer.from(marker)),
@@ -60,7 +61,7 @@ assert.ok(rendererFiles.length > 0);
 for (const path of rendererFiles)
   assert.doesNotMatch(
     readFileSync(path, "utf8"),
-    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT/u,
+    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisNativeDatabaseAcceptance/u,
   );
 const report = {
   result: "pass",

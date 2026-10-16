@@ -1,67 +1,17 @@
-use lapis_desktop::vault::{VaultDescriptor, VaultManager, WriteOptions};
-use serde::{Deserialize, Serialize};
+use crate::native_host::{NativeError, NativeHost as VaultHost, access};
+use lapis_desktop::vault::{VaultDescriptor, WriteOptions};
+use serde::Deserialize;
 use serde_json::{Value, json};
 use std::io;
-use std::sync::{Arc, Mutex};
 use tauri::Manager;
 use tauri_plugin_dialog::DialogExt;
 
-#[derive(Clone)]
-pub struct VaultHost(pub Arc<Mutex<VaultManager>>);
-
-#[derive(Serialize)]
-pub struct NativeError {
-    code: &'static str,
-    message: String,
-}
-
-impl From<io::Error> for NativeError {
-    fn from(error: io::Error) -> Self {
-        let code = match error.kind() {
-            io::ErrorKind::NotFound => "ENOENT",
-            io::ErrorKind::PermissionDenied => "EACCES",
-            io::ErrorKind::AlreadyExists => "EEXIST",
-            io::ErrorKind::InvalidInput | io::ErrorKind::InvalidData => "EINVAL",
-            _ => "EIO",
-        };
-        Self {
-            code,
-            message: error.to_string(),
-        }
-    }
-}
-
-pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
-    #[cfg(not(feature = "e2e"))]
-    let profile = app.path().app_data_dir()?;
-    #[cfg(feature = "e2e")]
-    let profile =
-        std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
-    app.manage(VaultHost(Arc::new(Mutex::new(VaultManager::new(
-        &profile,
-    )?))));
-    Ok(())
-}
-
-async fn access<T: Send + 'static>(
-    host: VaultHost,
-    action: impl FnOnce(&mut VaultManager) -> io::Result<T> + Send + 'static,
-) -> Result<T, NativeError> {
-    tauri::async_runtime::spawn_blocking(move || {
-        let mut manager = host
-            .0
-            .lock()
-            .map_err(|_| io::Error::other("Vault owner is unavailable"))?;
-        action(&mut manager)
-    })
-    .await
-    .map_err(|_| io::Error::other("Vault operation could not complete"))?
-    .map_err(Into::into)
-}
-
 #[tauri::command]
 pub async fn vault_recents(host: tauri::State<'_, VaultHost>) -> Result<Value, NativeError> {
-    access(host.inner().clone(), |manager| Ok(json!(manager.recents()))).await
+    access(host.inner().clone(), |manager| {
+        Ok(json!(manager.vaults.recents()))
+    })
+    .await
 }
 
 #[tauri::command]
@@ -96,6 +46,7 @@ pub async fn vault_select(
         host.0
             .lock()
             .map_err(|_| io::Error::other("Vault owner is unavailable"))?
+            .vaults
             .select(selection, create_name.as_deref())
     })
     .await
@@ -133,7 +84,7 @@ pub async fn vault_open_recent(
     profile_id: String,
 ) -> Result<VaultDescriptor, NativeError> {
     access(host.inner().clone(), move |manager| {
-        manager.open_recent(&profile_id)
+        manager.vaults.open_recent(&profile_id)
     })
     .await
 }
@@ -144,7 +95,7 @@ pub async fn vault_close(
     session_id: String,
 ) -> Result<(), NativeError> {
     access(host.inner().clone(), move |manager| {
-        manager.close(&session_id)
+        manager.close_vault(&session_id)
     })
     .await
 }
@@ -204,7 +155,7 @@ pub async fn vault_fs(
     request: FileRequest,
 ) -> Result<Value, NativeError> {
     access(host.inner().clone(), move |manager| {
-        let root = manager.get(&session_id)?;
+        let root = manager.vaults.get(&session_id)?;
         Ok(match request {
             FileRequest::Stat { path } => json!(root.stat(&path)?),
             FileRequest::Exists { path } => json!(root.stat(&path)?.is_some()),

@@ -1,25 +1,31 @@
 # Verification
 
-| ID           | Status      | Evidence                                                                                                                 |
-| ------------ | ----------- | ------------------------------------------------------------------------------------------------------------------------ |
-| LD-GOV-001   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-GOV-002   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-GOV-003   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-GOV-004   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-GOV-005   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-GOV-006   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md)                                         |
-| LD-GOV-007   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-DESK-001  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-DESK-002  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-DESK-003  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-DESK-004  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-DESK-005  | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-MIG-001   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
-| LD-MIG-002   | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-002](../history/E-PLAN-002.md); [E-PLAN-003](../history/E-PLAN-003.md) |
-| LD-HOST-001  | Implemented | [E-HOST-001](../history/E-HOST-001.md)                                                                                   |
-| LD-VAULT-001 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
-| LD-VAULT-002 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
-| LD-VAULT-003 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
-| LD-VAULT-004 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
-| LD-VAULT-005 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
-| LD-VAULT-006 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| ID             | Status      | Evidence                                                                                                                 |
+| -------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------ |
+| LD-GOV-001     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-GOV-002     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-GOV-003     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-GOV-004     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-GOV-005     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-GOV-006     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md)                                         |
+| LD-GOV-007     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-DESK-001    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-DESK-002    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-DESK-003    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-DESK-004    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-DESK-005    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-MIG-001     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                 |
+| LD-MIG-002     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-002](../history/E-PLAN-002.md); [E-PLAN-003](../history/E-PLAN-003.md) |
+| LD-HOST-001    | Implemented | [E-HOST-001](../history/E-HOST-001.md)                                                                                   |
+| LD-VAULT-001   | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| LD-VAULT-002   | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| LD-VAULT-003   | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| LD-VAULT-004   | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| LD-VAULT-005   | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| LD-VAULT-006   | Implemented | [E-VAULT-001](../history/E-VAULT-001.md)                                                                                 |
+| LD-DB-001      | Implemented | [E-DB-001](../history/E-DB-001.md)                                                                                       |
+| LD-DB-002      | Implemented | [E-DB-001](../history/E-DB-001.md)                                                                                       |
+| LD-DB-003      | Implemented | [E-DB-001](../history/E-DB-001.md)                                                                                       |
+| LD-DB-004      | Implemented | [E-DB-001](../history/E-DB-001.md)                                                                                       |
+| LD-SESSION-001 | Planned     | [E-DB-001](../history/E-DB-001.md)                                                                                       |
+| LD-SESSION-002 | Planned     | [E-DB-001](../history/E-DB-001.md)                                                                                       |

@@ -2,7 +2,7 @@ import { resolve } from "node:path";
 
 export const config = {
   runner: "local",
-  specs: ["./shell.spec.mjs", "./vault.spec.mjs"],
+  specs: ["./shell.spec.mjs", "./vault.spec.mjs", "./database.spec.mjs"],
   maxInstances: 1,
   logLevel: "warn",
   outputDir: process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT,

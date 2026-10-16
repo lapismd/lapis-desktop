@@ -193,6 +193,18 @@ impl VaultManager {
             })
     }
 
+    pub fn descriptor(&self, session_id: &str) -> io::Result<&VaultDescriptor> {
+        self.sessions
+            .get(session_id)
+            .map(|entry| &entry.descriptor)
+            .ok_or_else(|| {
+                io::Error::new(
+                    io::ErrorKind::PermissionDenied,
+                    "Vault admission is closed or unknown",
+                )
+            })
+    }
+
     pub fn resource(&self, token: &str) -> io::Result<&VaultRoot> {
         self.sessions
             .values()

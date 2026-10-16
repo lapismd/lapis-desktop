@@ -59,3 +59,7 @@ reads/writes and scoped attachments have passed the original temporary-folder
 failure gate and actual WebView acceptance. M3's database feasibility and M4's
 safe everyday-use gate remain required before describing this preview as a
 useful notes app.
+
+M3 starts with native database conformance and then explicit App/workspace
+intake. Keep its original combined gate: a passing database component cannot
+promote the complete Notes-session milestone.

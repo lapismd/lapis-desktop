@@ -16,3 +16,5 @@
   - [Shared host qualification](history/E-HOST-001.md)
 
   - [E-VAULT-001: admitted native vault access](history/E-VAULT-001.md)
+
+  - [Native database and Notes session](history/E-DB-001.md)

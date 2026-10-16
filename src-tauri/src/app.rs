@@ -21,9 +21,9 @@ pub fn run() -> tauri::Result<()> {
             }
             let host = context
                 .app_handle()
-                .state::<crate::vault_commands::VaultHost>();
+                .state::<crate::native_host::NativeHost>();
             match host.0.lock() {
-                Ok(manager) => lapis_desktop::resources::response(&manager, &request),
+                Ok(services) => lapis_desktop::resources::response(&services.vaults, &request),
                 Err(_) => tauri::http::Response::builder()
                     .status(503)
                     .body(Vec::new())
@@ -43,10 +43,13 @@ pub fn run() -> tauri::Result<()> {
             crate::vault_commands::vault_select,
             crate::vault_commands::vault_open_recent,
             crate::vault_commands::vault_close,
-            crate::vault_commands::vault_fs
+            crate::vault_commands::vault_fs,
+            crate::database_commands::vault_db_open,
+            crate::database_commands::vault_db_execute,
+            crate::database_commands::vault_db_close
         ])
         .setup(|app| {
-            crate::vault_commands::initialize(app.handle())?;
+            crate::native_host::initialize(app.handle())?;
             app.set_menu(tauri::menu::Menu::default(app.handle())?)?;
             crate::window::build(app.handle())?;
             Ok(())

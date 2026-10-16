@@ -8,6 +8,9 @@ fn main() {
             "vault_open_recent",
             "vault_close",
             "vault_fs",
+            "vault_db_open",
+            "vault_db_execute",
+            "vault_db_close",
         ]),
     ))
     .expect("Tauri build metadata and command permissions must be generated");
