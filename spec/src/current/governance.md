@@ -11,6 +11,10 @@ redirect; unverified local paths and file-based peer ranges remain rejected.
 Native readiness regressions cover receipts split across chunks and receipts
 followed by large driver-log batches without extending the startup deadline.
 
+The canonical chapter registry includes `plugins.md` for authorized M8–M10
+catalog, bundled plugins, dynamic installation and native AI/compute contracts.
+The task ledger keeps their detailed stage gates alongside original milestones.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                        |

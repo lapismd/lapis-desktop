@@ -3,23 +3,37 @@
 This combines the agreed desktop-owned plugin migration and Storybook work into
 one delivery sequence. It replaces the earlier separate plugin plans.
 
-## Scheduling and handoff after M7
+## Authorized delivery and tracking
 
-Begin this work only after M7's original acceptance gate and the deferred M4–M7
-repository/consumer checks have passed. Do not interrupt or expand the other
-agent's active M4–M7 delivery. Saving this document does not start plugin
-implementation or mark a milestone complete.
+The user resumed the complete M8–M10 workstream on 2026-10-17, after the current
+M7.2 slice. M0–M7 and M7.2 retain their completed gates. M7.3 remains a separate
+ordinary-window integration task; its pending admission does not block the
+requested plugin delivery.
 
-[PLAN.md](PLAN.md) schedules this as the next workstream. Stages 0–3 form the
-revised M8 roadmap, Stage 4 the revised M9 roadmap, and Stages 5–6 the revised
-M10 roadmap; M11 distribution and M12 cutover follow. The task ledger records
-these future roadmap allocations without changing the active M4–M7 tasks. At the
-post-M7 handoff, introduce the detailed task breakdown, owning canonical
-requirements, verification rows and current migration mappings before
-implementation. Preserve the captured migration inventory as historical baseline
-and record current mapping changes separately. The existing task ledger remains
-the sole status and completion authority; this documentation slice does not
-start implementation.
+[PLAN.md](PLAN.md) and the
+[task ledger](spec/src/current/progress/milestones.md) schedule Stages 0–3 as
+M8, Stage 4 as M9 and Stages 5–6 as M10. M9 and M10 are in scope. Continue
+through every stage, recording and committing each verified slice without an
+automatic review stop. M11 distribution and M12 cutover remain later work.
+Saving or changing this plan does not complete a product gate.
+
+The [plugin contract](spec/src/current/plugins.md) owns behavior. The task
+ledger alone owns status; `MIGRATION.md` is generated from it. Keep
+source-to-destination story coverage and current plugin mappings with each
+stage's evidence. Preserve the captured historical inventory and committed
+evidence.
+
+| Stage | Task  | Independently qualified result                                                    |
+| ----- | ----- | --------------------------------------------------------------------------------- |
+| 0     | M8.0  | Desktop catalog, real composition, both themes, static build and interactions/axe |
+| 1     | M8.1  | Bundled Terminal, scoped native lifecycle, retained settings and migrated stories |
+| 2     | M8.2  | Web rejects AI/Terminal activation and makes no service connections               |
+| 3     | M8.3  | Portable plugin persistence, freshness and packaged worker/WASM lifecycle         |
+| 4     | M9.1  | Verified dynamic install/update/remove, shared identity and reserved bundled IDs  |
+| 5A    | M10.1 | Reusable native ACP adapter with correlation, ownership and teardown              |
+| 5B    | M10.2 | Desktop-owned AI, preserved conversations/context/memory and migrated stories     |
+| 5C    | M10.3 | Authenticated Rust app tools, exact approvals and native credentials              |
+| 6     | M10.4 | Explicit optional compute lifecycle and mutually admitted peers                   |
 
 ## 1. Scope and ownership
 
@@ -42,9 +56,9 @@ only when used.
 Remove AI and Terminal support from the web host. There is no replacement web
 gateway or later web migration.
 
-**Excluded from this slice:** Roles/CV, Docs, Tasks, both Sync variants and the
-parked Community plugin. Sync-only signing/key-custody work is excluded; native
-credential handling required by AI remains in scope.
+**Excluded from this workstream:** Roles/CV, Docs, Tasks, both Sync variants and
+the parked Community plugin. Sync-only signing/key-custody work is excluded;
+native credential handling required by AI remains in scope.
 
 The desktop remains **Rust + WebView**, without a Node/Deno compatibility
 runtime. Node/pnpm remain development tools.
@@ -265,23 +279,18 @@ Deliver AI in three independently reviewable slices.
 **A. Reusable native adapter**
 
 Implement the Tauri adapter in `lapis-ai`, wrapping its Rust clients. Desktop
-supplies executable, workspace and credential policy.
-
-Support session lifecycle, ordered events, request correlation,
-model/configuration selection, prompts, exact permission responses, cancellation
-and teardown.
-
-Respect each ACP worker's single-active-turn restriction and launch-fixed
-configuration. Concurrent conversations use separately owned workers.
+supplies executable, workspace and credential policy. Support session lifecycle,
+ordered events, request correlation, model/configuration selection, prompts,
+exact permission responses, cancellation and teardown. Respect each ACP worker's
+single-active-turn restriction and launch-fixed configuration. Concurrent
+conversations use separately owned workers.
 
 **B. Desktop-owned AI integration**
 
 Move retained AI UI, settings, conversations, context preparation and memory
-orchestration into `lapis-desktop`.
-
-Preserve existing presentation and storage while replacing controller execution
-with direct ACP. Remove controller-owned types and memory imports from the
-shipped desktop dependency path.
+orchestration into `lapis-desktop`. Preserve existing presentation and storage
+while replacing controller execution with direct ACP. Remove controller-owned
+types and memory imports from the shipped desktop dependency path.
 
 - Keep user-authored messages separate from injected context.
 - Preserve old conversations without treating controller thread IDs as ACP
@@ -295,24 +304,19 @@ shipped desktop dependency path.
 
 Replace legacy JavaScript/Deno app-tool hosting with a bundled Rust bridge using
 private authenticated IPC. Historical hosts used different transports; preserve
-their authorization contract, not their runtime launch code.
-
-Retain the application-tool registry, vault authorization, guarded edits and
-approval UI. Forward exact provider permission option IDs; unknown options must
-not become automatic approval.
-
-Credentials remain native-side. Qualify the packaged Rust `lapis-agent` first.
-External ACP adapters have explicit prerequisites and cannot assume the app
-supplies Node.
-
-Codex Native and OpenCode Native modes remain deferred.
+their authorization contract, not their runtime launch code. Retain the
+application-tool registry, vault authorization, guarded edits and approval UI.
+Forward exact provider permission option IDs; unknown options must not become
+automatic approval. Credentials remain native-side. Qualify the packaged Rust
+`lapis-agent` first. External ACP adapters have explicit prerequisites and
+cannot assume the app supplies Node. Codex Native and OpenCode Native modes
+remain deferred.
 
 **AI Storybook migration**
 
 Use the maintained `lapis-plugins` stories as the starting point, compare their
-Notes counterparts and retain unique regression coverage.
-
-Copy the necessary fixtures, examples and interaction helpers for:
+Notes counterparts and retain unique regression coverage. Copy the necessary
+fixtures, examples and interaction helpers for:
 
 - Chat submission/completion, cancellation and failure.
 - Permissions, questions, tool activity and guarded edits.
@@ -322,7 +326,6 @@ Copy the necessary fixtures, examples and interaction helpers for:
 
 Split oversized stories and harnesses to meet desktop limits. Adapt obsolete
 runtime scenarios to ACP-only behaviour without losing applicable assertions.
-
 Replace old live-controller stories with native acceptance scenarios. Do not
 copy controller bridges, URL/token configuration or browser-host attachment into
 desktop Storybook.
@@ -334,13 +337,11 @@ without `ai-controller`.
 ### Stage 6 — Optional compute last
 
 Integrate `lapis-compute` as an independently enabled desktop AI capability.
-
 Provide explicit model download/import/start/stop and optional peer pairing.
 Sharing defaults off; startup downloads nothing and does not silently fall back
-to cloud inference. Preserve the existing pairing protocol.
-
-Retain the current non-streaming limitation. Cross-application singleton
-management and embeddings support remain outside this slice.
+to cloud inference. Preserve the existing pairing protocol. Retain the current
+non-streaming limitation. Cross-application singleton management and embeddings
+support remain outside this slice.
 
 **Gate:** explicit model lifecycle, disabled startup, peer admission, failures
 and shutdown are qualified independently from ACP and Storybook fixtures.
@@ -349,12 +350,8 @@ and shutdown are qualified independently from ACP and Storybook fixtures.
 
 Maintain a source-to-destination coverage checklist for copied stories. Desktop
 owns the migrated application-level stories; reusable package catalogs remain
-with their libraries.
-
-Retire superseded app-level story registrations only after their replacements
-pass.
-
-Default Storybook execution must:
+with their libraries. Retire superseded app-level story registrations only after
+their replacements pass. Default Storybook execution must:
 
 - Require no running sibling service, native process or credential.
 - Use fake Terminal/AI clients and disposable fixture state.
@@ -363,12 +360,10 @@ Default Storybook execution must:
 - Exercise operational failures through the existing notification service.
 
 Changes to shared Storybook configuration run the complete affected catalog.
-Feature-only changes begin with their exact stories and direct consumers.
-
-Visual baselines remain pending explicit approval. Passing interactions or
-accessibility checks does not constitute visual approval.
-
-Native acceptance remains separate and covers:
+Feature-only changes begin with their exact stories and direct consumers. Visual
+baselines remain pending explicit approval. Passing interactions or
+accessibility checks does not constitute visual approval. Native acceptance
+remains separate and covers:
 
 - Reload, cancelled close, actual exit and crash recovery.
 - Vault/window isolation, stale handles and revoked access.
@@ -385,8 +380,12 @@ Native acceptance remains separate and covers:
 - macOS ARM64 is the first native qualification target.
 - Reusable defects are fixed in `lapis-ai` or `lapis-terminal`; desktop
   integration defects stay in `lapis-desktop`.
-- Use verified public package exports or permitted local archives. Publication
-  and wider platform qualification remain separate gates.
-- Each stage ends with focused checks, recorded evidence and a review stop.
+- Prefer local source checkouts through their public package exports and built
+  output; use ignored JavaScript install overlays and Rust path dependencies.
+  Keep publishable manifests portable. Verified archives remain suitable for
+  reproducible acceptance. Do not publish releases for this migration.
+- Each stage ends with focused checks, recorded evidence and a commit, then
+  continues to the next authorized stage. A user-requested pause still stops it.
+- If commit signing fails, commit without a signature as authorized by the user.
 - Implementations must update their owning canonical specifications and task
   evidence. This saved plan alone establishes no runtime qualification.

@@ -73,3 +73,5 @@ by the task ledger, not inferred from this list.
 - [Related native window hosting](E-POPOUT-001.md)
 
 - [Shared popup workspace](E-POPOUT-002.md)
+
+- [Authorized plugin delivery](E-PLUGINS-003.md)

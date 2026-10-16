@@ -10,6 +10,7 @@ gates.
 - [Find and navigate](navigation.md)
 - [Desktop integration](integration.md)
 - [Native workspace windows](windows.md)
+- [Desktop plugins and catalog](plugins.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)
 - [Milestones and next actions](progress/milestones.md)

@@ -64,6 +64,7 @@ test("migration summary separates active implementation from the oldest pending 
   assert.match(summary, /Oldest pending gate: M4 — Full gates at M7 end/u);
   assert.match(summary, /Completed: M3\./u);
   assert.doesNotMatch(summary, /Next: M4|Native services.*deferred/u);
+  assert.doesNotMatch(summary, /post-M7 plugin intake remain deferred/u);
   assert.match(
     migrationSummary([task("M0.0")]),
     /Current work: M0.0 — Run the native gate/u,

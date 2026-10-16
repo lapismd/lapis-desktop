@@ -2,8 +2,8 @@
 
 Read this with
 [Stage 5 of the plugin migration](PLUGIN_MIGRATION.md#stage-5--ai-through-direct-acp-with-migrated-stories).
-This is implementation guidance for deferred M10, not permission to begin it.
-The task ledger and existing review stops remain authoritative.
+This guides the M10 work authorized on 2026-10-17. The task ledger owns status;
+its adapter and native acceptance gates still require implementation evidence.
 
 ## Decision and alternatives
 

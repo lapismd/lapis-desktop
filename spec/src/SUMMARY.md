@@ -4,6 +4,7 @@
   - [Governance](current/governance.md)
   - [Desktop shell](current/desktop.md)
   - [Native workspace windows](current/windows.md)
+  - [Desktop plugins and catalog](current/plugins.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
@@ -75,3 +76,5 @@
 - [Related native window hosting](history/E-POPOUT-001.md)
 
 - [Shared popup workspace](history/E-POPOUT-002.md)
+
+- [Authorized plugin delivery](history/E-PLUGINS-003.md)

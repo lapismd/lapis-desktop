@@ -123,19 +123,11 @@ Commit each verified task in its owning repository.
 **M4 completes the first useful milestone.** M0–M3 provide runnable, testable
 increments toward it. Later services do not block that milestone.
 
-The active delivery request continues through M7 and stops after its original
-desktop-integration gate is verified. Finish M4's complete enabled-writer audit
-before treating everyday use as qualified, then retain all M5–M7 functionality
-and acceptance gates. The separately scheduled plugin migration begins after
-that qualification; it does not expand the other agent's active M4–M7 run.
-
-The user resumed delivery through M7 after the settings/hotkeys review and
-source reorganization. Continue through M7 without another review pause. For
-this delivery session only, run targeted regressions and affected checks per
-slice, and defer full repository/consumer suites until M7 implementation is
-complete. Track deferred lanes explicitly, run them before final qualification,
-and retain every original milestone gate. This exception does not apply to later
-sessions.
+M0–M7 meet their original qualification gates. M7.2 is complete. On 2026-10-17
+the user authorized continuing through M8, M9 and M10 and completing the entire
+`PLUGIN_MIGRATION.md` sequence. Commit verified slices and continue without an
+automatic review pause. M7.3 ordinary popup integration remains separately
+planned; M11 signing/distribution and M12 cutover remain later gates.
 
 ### Next workstream after M7: plugins and Storybook
 
@@ -146,13 +138,10 @@ portable plugins and workers → installed plugins → direct ACP AI and stories
 optional compute. Reuse already qualified M5–M7 services and Search integration
 rather than repeating them.
 
-The M8–M10 rows above and the canonical ledger record the revised future roadmap
-allocation. Before Stage 0, introduce their detailed task breakdown, owning
-requirements, verification and current migration mappings as a governed handoff.
-Preserve the captured inventory as historical baseline. M4–M7 task rows and
-previously committed evidence remain unchanged; no existing completion status is
-reclassified here. M9 and M10 remain Deferred until the post-M7 work is
-admitted.
+The M8–M10 rows and detailed tasks now cover the authorized implementation. The
+canonical plugin contract, verification rows and source/evidence mappings must
+accompany each stage. Preserve historical inventory and completed gates. M9 and
+M10 are in scope and remain Planned until their dependencies complete.
 
 AI and Terminal are bundled, desktop-owned and user-disableable; their services
 start lazily. Preserve their settings, conversations and explicit disabled
@@ -183,9 +172,8 @@ repository.
 
 - Keep `PLAN.md` as the implementation roadmap and `PLUGIN_MIGRATION.md` as its
   complete post-M7 plugin/Storybook detail. Record approved scope or sequencing
-  changes alongside the relevant specification and tracker changes. The post-M7
-  handoff above expands the planned tasks before implementation without changing
-  the other agent's active M4–M7 work.
+  changes alongside specification and tracker changes. M8–M10 follow the user's
+  2026-10-17 continuation request and the detailed canonical task breakdown.
 - Maintain canonical requirements under `spec/src/current`, using
   `LD-<AREA>-NNN` IDs and exactly one verification row per requirement.
 - Keep milestone task pages as the **sole status authority**. Each task records
@@ -232,11 +220,12 @@ it does not establish product functionality.
 ## Verification and rollout
 
 Shared-library changes are developed and verified in their owning repositories,
-then consumed as local pnpm archives during migration. Keep registry semver
-manifests and lockfiles portable; record archive checksums and source revisions.
-Package publication is deferred until the final release gate, after functional
-qualification. This replaces M1's earlier publication requirement at the user's
-request.
+then consumed through local public package links or verified archives during
+migration. Prefer local checkouts without creating releases. Keep registry
+semver manifests/locks portable through ignored JavaScript install overlays; use
+explicit Rust path dependencies and record source revisions. Package publication
+is deferred until the final release gate, after functional qualification. This
+replaces M1's earlier publication requirement at the user's request.
 
 Application signing and notarization are deferred to M11. M0.1 validates local
 launch, bundle contents and native behavior without a signing gate (confirmed

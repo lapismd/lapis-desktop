@@ -3,17 +3,15 @@
 The task ledger alone owns current statuses and selected completion evidence.
 Root `MIGRATION.md` is its generated projection; `PLAN.md` retains every
 original milestone gate. Component success, bookkeeping and screenshots cannot
-replace those gates. The active delivery request ends after M7 qualification and
-an ordinary app review launch. Stop before implementing M8.
-
-The separately authorized native tab-window workstream is recorded in
-`POPOUT_PLAN.md` and tasks M7.1–M7.3. It does not reopen completed M0–M7 gates
-or begin M8. Each verified slice is committed and paused for review. M7.1
-qualifies only debug acceptance hosting; ordinary tab integration remains later.
+replace those gates. The user authorized completion of the current slice
+followed by all M8–M10 plugin-plan stages on 2026-10-17. Commit each verified
+slice and continue without an automatic review pause. M7.3 remains a separate
+ordinary-window integration task, while M11 distribution and M12 cutover remain
+later work.
 
 M7.2 qualifies retained live popup projection, guarded shared close and browser
-header clearance through source-owned public archives. Browser acceptance does
-not admit ordinary Tauri windows or replace M7.3 native lifecycle qualification.
+header clearance through source-owned public archives. Its browser evidence does
+not admit ordinary Tauri windows or replace M7.3 native qualification.
 
 The immutable baseline inventory is `spec/migration-inventory.json`. It retains
 source revisions and validates without sibling checkouts. Capture fresh source
@@ -122,39 +120,28 @@ Application signing and notarization remain deferred to M11 per the user's
 2026-10-15 instruction. Publication and clean-machine/platform distribution
 qualification remain separate from the local macOS preview.
 
-## Scheduled plugin work after M7
+## Authorized plugin delivery
 
-On 2026-10-16 the user requested the combined plugin and Storybook plan in root
-`PLUGIN_MIGRATION.md`, scheduled after M7 in `PLAN.md`. M7's original gate and
-all deferred M4–M7 checks must pass first. This does not expand the other
-agent's active M4–M7 request or qualify any plugin implementation.
+The user resumed root `PLUGIN_MIGRATION.md` on 2026-10-17 after M7.2. M8 covers
+Stages 0–3, M9 covers Stage 4 and M10 covers Stages 5–6. The detailed M8.0–M10.4
+tasks and [plugin contract](plugins.md) govern implementation. Completed M0–M7
+and M7.2 gate strings and immutable evidence remain intact.
 
-M8 now plans Stages 0–3: desktop Storybook, bundled Terminal, retirement of web
-AI/Terminal support and remaining portable plugins/workers. M9 plans Stage 4,
-verified installed plugins. M10 plans Stages 5–6, bundled direct-ACP AI and
-optional compute last. M8 remains Planned; M9 and M10 remain Deferred until the
-post-M7 work is admitted. Before implementation, introduce detailed tasks and
-owning product contracts/verification. M11 and M12 remain subsequent milestones.
+Prefer local source checkouts through public exports and verified built output,
+using ignored JavaScript install overlays and explicit Rust path dependencies.
+Do not create package releases for this work. Verified archives remain supported
+for reproducible acceptance. Every source change receives its owner's checks,
+source revision and consumer evidence. If signing fails, use unsigned local
+commits as the user authorized; this does not alter artifact signature checks.
 
-The desktop owns both plugin integrations and copied/adapted application
-stories; `lapis-ai` and `lapis-terminal` remain reusable packages. Preserve the
-affected plugin IDs, settings, conversations and explicit disabled preferences,
-and reject duplicate installed copies. This is a scoped exception to pre-release
-state-reset permission, not a general legacy-state import gate.
+Desktop owns bundled AI/Terminal policy and migrated application stories;
+`lapis-ai` and `lapis-terminal` own reusable native runtimes/adapters. Preserve
+the affected plugin data and disabled preferences. Deno desktop stays frozen.
+Web AI/Terminal removal preserves unrelated data and supported shared app tools.
 
-Roles/CV, Docs, Tasks, both Sync variants, Sync-only signing and the parked
-Community plugin are excluded. The plan adds no Node/Deno runtime, shared AI
-controller, web AI/Terminal gateway or arbitrary native plugin installer.
-Storybook uses fake clients; native acceptance and visual approval stay
-separate.
-
-The captured inventory remains immutable historical baseline. Record revised
-current destination mappings separately at the post-M7 handoff. E-PLUGINS-001
-records this scheduling decision only; active task gates and committed evidence
-are preserved.
-
-Stage 5 also links root `AI_ACP_REFERENCE.md`, which pins the pre-controller
-plugin and Notes host, maps reusable ACP interfaces/tests and records the
-control-v3 adaptation work. Reuse preserves current application data and fixes;
-it is not a wholesale rollback. E-PLUGINS-002 records this M10 handoff guidance
-only. All task statuses, gates and review stops remain unchanged.
+The captured inventory remains an immutable baseline. Each stage records fresh
+source-to-destination story coverage and current plugin mappings. Root
+`AI_ACP_REFERENCE.md` pins the pre-controller ACP seam; reuse current fixes and
+data rather than rolling back the plugin. No AI controller or Node/Deno runtime
+is introduced. Roles/CV, Docs, Tasks, Sync and Community remain excluded.
+Application signing/publication and other-platform distribution remain deferred.

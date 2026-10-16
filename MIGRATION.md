@@ -8,31 +8,43 @@
 
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2.
 
-Current work: M7.3 — After review, integrate Tauri, qualify ordinary app and
-pause
+Current work: M8.0 — Implement the standalone catalog and initial composition
+
+Oldest pending gate: M7.3 — Separate ordinary popup integration, not an M8
+dependency
 
 Implementation can advance while original milestone gates await qualification.
 The task ledger and selected evidence retain every remaining check.
 
-The Deno desktop is superseded and frozen. Signing, publication and post-M7
-plugin intake remain deferred to their planned gates.
+The Deno desktop is superseded and frozen. Signing and publication remain
+deferred to their distribution gates. Plugin delivery follows the current tasks
+below.
 
-| Task | Status   | Next action                                                     |
-| ---- | -------- | --------------------------------------------------------------- |
-| M0.0 | Done     | Complete                                                        |
-| M0.1 | Done     | Complete                                                        |
-| M1   | Done     | Complete; proceed to M2 native vault access                     |
-| M2   | Done     | Complete; proceed to the M3 native database gate                |
-| M3   | Done     | Complete; proceed to M4 safe everyday-use qualification         |
-| M4   | Done     | Complete; paused for ordinary app review before M8              |
-| M5   | Done     | Complete; paused for ordinary app review before M8              |
-| M6   | Done     | Complete; paused for ordinary app review before M8              |
-| M7   | Done     | Complete; paused for ordinary app review before M8              |
-| M7.1 | Done     | Complete; paused for review before M7.2                         |
-| M7.2 | Done     | Complete; native ordinary integration remains M7.3              |
-| M7.3 | Planned  | After review, integrate Tauri, qualify ordinary app and pause   |
-| M8   | Planned  | Paused for review; begin Stages 0–3 only after the user resumes |
-| M9   | Deferred | After M8, specify and qualify plugin-plan Stage 4               |
-| M10  | Deferred | After M9, specify direct ACP AI, then optional compute          |
-| M11  | Planned  | Qualify signed distribution and each additional platform        |
-| M12  | Planned  | Qualify Tauri coverage and remove frozen Deno desktop           |
+| Task  | Status      | Next action                                                     |
+| ----- | ----------- | --------------------------------------------------------------- |
+| M0.0  | Done        | Complete                                                        |
+| M0.1  | Done        | Complete                                                        |
+| M1    | Done        | Complete; proceed to M2 native vault access                     |
+| M2    | Done        | Complete; proceed to the M3 native database gate                |
+| M3    | Done        | Complete; proceed to M4 safe everyday-use qualification         |
+| M4    | Done        | Complete                                                        |
+| M5    | Done        | Complete                                                        |
+| M6    | Done        | Complete                                                        |
+| M7    | Done        | Complete                                                        |
+| M7.1  | Done        | Complete; paused for review before M7.2                         |
+| M7.2  | Done        | Complete; native ordinary integration remains M7.3              |
+| M7.3  | Planned     | Separate ordinary popup integration, not an M8 dependency       |
+| M8    | In progress | Implement M8.0–M8.3, then continue to M9                        |
+| M9    | Planned     | After M8, implement and qualify M9.1                            |
+| M10   | Planned     | After M9, implement M10.1–M10.4 through optional compute        |
+| M11   | Planned     | Qualify signed distribution and each additional platform        |
+| M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop           |
+| M8.0  | In progress | Implement the standalone catalog and initial composition        |
+| M8.1  | Planned     | Integrate local lapis-terminal public clients and native policy |
+| M8.2  | Planned     | Remove obsolete web integration after Terminal handover         |
+| M8.3  | Planned     | Qualify remaining portable plugins and production assets        |
+| M9.1  | Planned     | Qualify dynamic distribution and existing loader                |
+| M10.1 | Planned     | Implement lapis-ai adapter before desktop AI                    |
+| M10.2 | Planned     | Port retained plugin policy and application stories             |
+| M10.3 | Planned     | Implement and qualify native tools and credentials              |
+| M10.4 | Planned     | Integrate optional compute last                                 |

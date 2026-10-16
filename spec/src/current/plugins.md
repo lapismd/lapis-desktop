@@ -1,0 +1,39 @@
+# Desktop plugins and catalog
+
+The delivery sequence is root `PLUGIN_MIGRATION.md`. M8–M10 are authorized;
+their original aggregate gates remain in the task ledger. Ordinary popup
+admission remains the separate M7.3 task. Local dependency links retain public
+package boundaries and owning-repository validation.
+
+## Requirements
+
+| ID             | Requirement                                                                                                                                                                                                                                                                                                                                    |
+| -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-CAT-001     | Desktop MUST own a standalone Svelte/Vite Storybook with documentation, light/dark controls, desktop typography, narrow layouts, static build and browser interaction/accessibility commands. Stories MUST render production components through public dependencies.                                                                           |
+| LD-CAT-002     | Default catalog execution MUST require no native process, sibling service or credential. App-backed fixtures MUST own disposable in-memory Apps and injectable clients, clean up resources and remain excluded from application bundles.                                                                                                       |
+| LD-PLUG-001    | AI and Terminal MUST be bundled desktop-owned plugins retaining `ai` and `terminal` identities, commands, settings, views, conversations and explicit disabled preferences. Safe Mode MUST prevent optional activation. Bundled implementations MUST take precedence over installed copies without duplicate registration.                     |
+| LD-TERM-001    | Terminal MUST use lapis-terminal's public viewport, rendered-frame client and Tauri adapter. Rust MUST resolve opaque targets into admitted executable, environment and working-directory policy; the renderer MUST NOT submit arbitrary launch specifications. Native services MUST start lazily.                                             |
+| LD-TERM-002    | Moving, hiding or detaching a Terminal view MUST retain its shell. Reload MUST reconnect retained sessions. Explicit tab closure, plugin disable, vault closure and actual exit MUST release affected shells; cancelled close MUST retain them. Scoped teardown MUST NOT stop another window's sessions.                                       |
+| LD-TERM-003    | Terminal MUST preserve shell/cwd preferences and bottom-panel commands. Full restart MUST restore an explicit Start action rather than launch shells automatically. Desktop stories and cold native acceptance MUST cover input, resize, scrolling, errors and retained-session lifecycle.                                                     |
+| LD-PLUG-002    | Web MUST expose no AI/Terminal connection settings, activation paths, environment attachment or service connection attempts. Existing installations of those IDs MUST be skipped as desktop-only. Saved conversations, settings and layout MUST remain; obsolete dedicated connection secrets MUST be removed without deleting unrelated data. |
+| LD-PLUG-003    | Portable plugins MUST reuse App-owned database, metadata, guarded writes and watch reconciliation. Bookmarks, Wordcount and Slides qualify before Bases and History; Search and Graph MUST retain completed M6 behavior. Optional additions MUST remain user-disableable and vault-isolated.                                                   |
+| LD-PLUG-004    | Markdown Lint and Spellcheck MUST use existing browser workers/WASM from packaged production URLs with correct MIME and CSP. Disable MUST terminate owned workers/subscriptions. Semantic models MUST remain separately enabled with explicit preparation and no compute dependency.                                                           |
+| LD-INSTALL-001 | Dynamic plugin loading MUST select Tauri desktop explicitly, verify signed hashes/compatibility and share API/Svelte identities. It MUST reject unsupported Node, Electron and native-service entries before activation while distinguishing unsupported capabilities from disabled supported services.                                        |
+| LD-INSTALL-002 | Compatible dynamic plugins MUST install, enable, disable, update and uninstall without rebuilding the app. Unsafe live replacement MUST require reload. Failure and restart MUST preserve recoverability and release resources. Bundled AI/Terminal identities MUST resist replacement and duplicate activation.                               |
+| LD-AI-001      | Desktop AI MUST use a reusable lapis-ai Tauri adapter for direct ACP with host-owned executable/root/credential policy, correlated ordered events, exact permission option IDs, model/configuration selection, cancellation and teardown. Each single-turn worker MUST remain isolated; uncertain submissions MUST NOT replay automatically.   |
+| LD-AI-002      | Desktop MUST retain current AI UI, conversations, app tools, context and memory while adapting the pre-controller ACP seam. Injected context MUST remain distinct from authored messages. Old controller IDs MUST NOT become ACP session IDs; unsupported resume MUST create an explicit new binding and context handoff.                      |
+| LD-AI-003      | Application tools MUST use a bundled Rust bridge with private authenticated IPC, existing registry/vault authorization, guarded edits and approval UI. Credentials MUST remain native-side. Unknown permission options MUST NOT approve. Packaged lapis-agent qualification MUST precede external adapters with explicit prerequisites.        |
+| LD-AI-004      | Migrated AI stories MUST retain applicable source scenarios and unique regression coverage, use fake clients by default and replace live-controller scenarios with native acceptance. Native chat, cancellation, approval, reads/edits, recovery, isolation and process cleanup MUST pass without ai-controller.                               |
+| LD-COMP-001    | Optional compute MUST default to no sharing, no model download and no automatic cloud fallback. Explicit download/import/start/stop and existing mutually admitted pairing MUST qualify independently of ACP. Non-streaming inference MUST remain explicit; embeddings and cross-app singleton management remain outside scope.                |
+
+## Qualification and handover
+
+Each stage records source revisions, public import boundaries, exact tests,
+failures, source-to-destination story coverage and native evidence separately.
+Local links do not bypass source checks. Deno desktop remains frozen. Retain
+license notices and attribution when moving plugin code. Retire old active
+distribution/story registrations only after replacements pass.
+
+Roles/CV, Docs, Tasks, both Sync variants and the parked Community plugin remain
+excluded. Application signing, publication and other-platform distribution stay
+outside M8–M10. Dynamic package signature verification remains required.
