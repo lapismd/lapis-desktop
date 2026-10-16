@@ -46,10 +46,15 @@ export default defineConfig(
         mode: "mapped",
         canonicalPattern: canonicalContractPattern("spec/src/"),
         protected: [
-          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
+          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|POPOUT_PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
         ],
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
+          {
+            pattern:
+              "^(?:POPOUT_PLAN\\.md$|src-tauri/src/(?:window|macos_chrome|popout_acceptance)\\.rs$|tests/desktop/(?:popout-|PopoutProof))",
+            chapters: ["spec/src/current/windows.md"],
+          },
           {
             pattern:
               "^(?:src-tauri/src/(?:integration|application_menu|desktop_services)|src/lib/(?:desktop|native|notes)/.*integration|tests/(?:desktop|renderer)/integration-)",

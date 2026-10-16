@@ -45,9 +45,16 @@ pub fn run() -> tauri::Result<()> {
         })
         .plugin(state.build());
     #[cfg(feature = "e2e")]
-    let builder = builder
-        .plugin(tauri_plugin_wdio::init())
-        .plugin(tauri_plugin_wdio_webdriver::init());
+    let builder = {
+        let builder = builder.plugin(tauri_plugin_wdio::init());
+        // The embedded driver's WKUIDelegate replaces Wry's popup callback.
+        // This dedicated proof uses console receipts and retains the real delegate.
+        if crate::popout_acceptance::mode().is_some() {
+            builder
+        } else {
+            builder.plugin(tauri_plugin_wdio_webdriver::init())
+        }
+    };
     builder
         .invoke_handler(tauri::generate_handler![
             crate::commands::shell_info,

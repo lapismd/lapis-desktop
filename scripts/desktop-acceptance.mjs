@@ -80,6 +80,7 @@ async function acceptance() {
       "tests/desktop/notes-conflicts.test.mjs",
       "tests/desktop/preview-conflicts.test.mjs",
       "tests/desktop/window-chrome.test.mjs",
+      "tests/desktop/popout-host.test.mjs",
       "tests/desktop/vault-return.test.mjs",
       "tests/desktop/properties-persistence.test.mjs",
       "tests/desktop/settings-persistence.test.mjs",

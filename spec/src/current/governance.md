@@ -63,6 +63,12 @@ evidence.
 | `scripts/`, `tests/governance/`, toolchain, formatting, CI, manifests and lockfiles, `AGENTS.md`, spec-validator configuration | `governance.md`  |
 | `PLAN.md`, `MIGRATION.md`, migration inventory and milestone task pages                                                        | `migration.md`   |
 
+The native-window workstream maps `POPOUT_PLAN.md`, the native window/chrome
+modules and popup proof acceptance to `windows.md`. M7.1 admits related blank
+windows only behind the debug acceptance feature and explicit fixture opt-in;
+ordinary permissions remain exact. Bundle audits reject native and renderer
+proof markers. Native tests retain isolated profiles and no Node/Deno app PATH.
+
 The executable configuration is `spec-validator.config.mjs`. Its source and
 progress plugins are also normal check entry points. `spec:first` compares the
 actual Jujutsu change; CI checks the complete pull-request revision range.

@@ -61,11 +61,12 @@ application-state default to `.lapis` throughout the app.
   Tauri HTML drag regions, normal macOS menus, saved window geometry, and the
   Lapis theme. Hide the native title and let sidebar and workspace tab strips
   meet the top edge, as in the Deno host and jj-store. No application title or
-  session toolbar sits above the tabs. Defer glass effects and extra windows.
-  Center native traffic lights vertically in the 40px tab strip, retaining their
-  geometry after restore and macOS relayout through a window-scoped native
-  helper as in jj-store. Keep native pointer borrows inside Tauri main-thread
-  callbacks; do not port Deno's timers or renderer adjustments.
+  session toolbar sits above the tabs. Defer glass effects. Extra windows follow
+  the separate post-M7 [native tab-window plan](POPOUT_PLAN.md). Center native
+  traffic lights vertically in the 40px tab strip, retaining their geometry
+  after restore and macOS relayout through a window-scoped native helper as in
+  jj-store. Keep native pointer borrows inside Tauri main-thread callbacks; do
+  not port Deno's timers or renderer adjustments.
 - **Transport:** implement an adapter from the public `NativeDesktopBridge` to
   named Tauri commands and events. Grant access only to the application window
   and admitted vaults. Production uses bundled renderer assets.

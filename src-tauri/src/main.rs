@@ -18,6 +18,8 @@ mod lifecycle;
 mod macos_chrome;
 mod native_host;
 mod navigation;
+#[cfg(feature = "e2e")]
+mod popout_acceptance;
 mod vault_commands;
 mod watch_commands;
 mod window;

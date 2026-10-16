@@ -45,6 +45,12 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
         .approved_exit();
     match event {
         #[cfg(target_os = "macos")]
+        RunEvent::WindowEvent {
+            label,
+            event: WindowEvent::Destroyed,
+            ..
+        } => crate::macos_chrome::release(&label),
+        #[cfg(target_os = "macos")]
         RunEvent::Opened { urls } => {
             for url in urls {
                 crate::integration::enqueue(app, url.to_string());

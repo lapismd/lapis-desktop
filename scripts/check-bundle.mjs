@@ -42,6 +42,13 @@ for (const marker of [
   "Acceptance action receipt unavailable",
   "Native controls could not be measured",
   "Native visibility could not be measured",
+  "LAPIS_DESKTOP_POPOUT_PROOF",
+  "Related native window proof failed",
+  "popout-proof-",
+  "__lapisPopoutProof",
+  "nativeChromeObservers",
+  "popoutProofMode",
+  "LAPIS_POPOUT_PROOF:",
 ])
   assert.equal(
     bytes.includes(Buffer.from(marker)),
@@ -69,7 +76,7 @@ assert.ok(rendererFiles.length > 0);
 for (const path of rendererFiles)
   assert.doesNotMatch(
     readFileSync(path, "utf8"),
-    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisNativeDatabaseAcceptance|__lapisNativeWatchAcceptance|__lapisConditionalWriteAcceptance/u,
+    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisNativeDatabaseAcceptance|__lapisNativeWatchAcceptance|__lapisConditionalWriteAcceptance|__lapisPopoutProof/u,
   );
 const report = {
   result: "pass",

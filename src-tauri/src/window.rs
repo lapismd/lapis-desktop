@@ -16,6 +16,10 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     let popup = app.clone();
     WebviewWindowBuilder::from_config(app, configuration)?
         .on_navigation(move |url| {
+            #[cfg(feature = "e2e")]
+            if std::env::var("LAPIS_DESKTOP_POPOUT_PROOF").as_deref() == Ok("1") {
+                crate::integration_acceptance::record("proof-navigation", url.as_str());
+            }
             let allowed = crate::navigation::allowed(
                 url,
                 cfg!(debug_assertions) && !cfg!(feature = "custom-protocol"),
@@ -25,7 +29,11 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
             }
             allowed
         })
-        .on_new_window(move |url, _| {
+        .on_new_window(move |url, _features| {
+            #[cfg(feature = "e2e")]
+            if let Some(response) = crate::popout_acceptance::open(&popup, &url, _features) {
+                return response;
+            }
             route_link(&popup, &url);
             NewWindowResponse::Deny
         })
@@ -36,20 +44,23 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
             }
         })
         .build()
-        .inspect(|window| {
-            #[cfg(target_os = "macos")]
-            {
-                let chrome = window.clone();
-                window.on_window_event(move |event| {
-                    if matches!(
-                        event,
-                        tauri::WindowEvent::Focused(_)
-                            | tauri::WindowEvent::Resized(_)
-                            | tauri::WindowEvent::Moved(_)
-                    ) {
-                        crate::macos_chrome::align(&chrome);
-                    }
-                });
+        .inspect(chrome_events)
+}
+
+pub fn chrome_events(window: &WebviewWindow) {
+    #[cfg(target_os = "macos")]
+    {
+        let chrome = window.clone();
+        window.on_window_event(move |event| {
+            if matches!(
+                event,
+                tauri::WindowEvent::Focused(_)
+                    | tauri::WindowEvent::Resized(_)
+                    | tauri::WindowEvent::Moved(_)
+            ) {
+                crate::macos_chrome::align(&chrome);
             }
-        })
+        });
+        crate::macos_chrome::align(window);
+    }
 }

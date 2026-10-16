@@ -3,6 +3,7 @@
 - [Current specification](current/index.md)
   - [Governance](current/governance.md)
   - [Desktop shell](current/desktop.md)
+  - [Native workspace windows](current/windows.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
@@ -67,4 +68,7 @@
 - [Desktop integration](current/integration.md)
 - [M7 native integration qualification](history/E-INTEGRATION-001.md)
 - [End-of-M7 full qualification](history/E-QUALIFICATION-001.md)
+
   - [Final native and ordinary-bundle qualification](history/E-QUALIFICATION-002.md)
+
+- [Related native window hosting](history/E-POPOUT-001.md)

@@ -17,6 +17,12 @@ pub struct ShellInfo {
     ready: bool,
     #[cfg(feature = "e2e")]
     native_menus: Result<Vec<crate::integration_acceptance::MenuEntry>, String>,
+    #[cfg(feature = "e2e")]
+    native_popouts: Vec<crate::popout_acceptance::ProofWindow>,
+    #[cfg(feature = "e2e")]
+    popout_proof_mode: Option<&'static str>,
+    #[cfg(all(feature = "e2e", target_os = "macos"))]
+    native_chrome_observers: usize,
     #[cfg(all(feature = "e2e", target_os = "macos"))]
     native_controls: Result<Vec<[f64; 4]>, String>,
     #[cfg(all(feature = "e2e", target_os = "macos"))]
@@ -45,6 +51,12 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
         ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
         #[cfg(feature = "e2e")]
         native_menus: crate::integration_acceptance::menus(&app),
+        #[cfg(feature = "e2e")]
+        native_popouts: crate::popout_acceptance::windows(&app).await,
+        #[cfg(feature = "e2e")]
+        popout_proof_mode: crate::popout_acceptance::mode(),
+        #[cfg(all(feature = "e2e", target_os = "macos"))]
+        native_chrome_observers: crate::macos_chrome::observer_count(),
         #[cfg(all(feature = "e2e", target_os = "macos"))]
         native_controls,
         #[cfg(all(feature = "e2e", target_os = "macos"))]

@@ -43,10 +43,11 @@ and the complete M7 gate rather than carrying Deno runtime code forward.
 The native navigation and new-window callbacks enforce the same bounded link
 policy as renderer anchors and window.open. External links enter the OS opener;
 supported application links enter the native queue. The original admitted
-WebView origins remain exact and additional WebViews remain denied. Global link
-fallback must run after component and document-delegated actions, respect their
-prevented default, and avoid duplicate OS opens or application URL admissions.
-Components retain their existing action ownership.
+WebView origins remain exact. Additional WebViews remain denied except for the
+debug-only [native hosting proof](windows.md). Global link fallback must run
+after component and document-delegated actions, respect their prevented default,
+and avoid duplicate OS opens or application URL admissions. Components retain
+their existing action ownership.
 
 URL delivery waits for the public workspace controller's awaitable start after
 the shared shell mounts. Core Notes/layout loading alone cannot admit delivery:

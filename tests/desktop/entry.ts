@@ -9,6 +9,9 @@ import {
 } from "@lapis-notes/api";
 
 await init();
+const platformOpen = window.open.bind(window);
+const { installPopoutProof } = await import("./popout-entry.ts");
+installPopoutProof(platformOpen);
 await import("../../src/main.ts");
 await import("./watch-entry.ts");
 
@@ -110,3 +113,6 @@ Object.assign(globalThis, {
     },
   },
 });
+
+const { runPopoutProof } = await import("./popout-runner.ts");
+await runPopoutProof();

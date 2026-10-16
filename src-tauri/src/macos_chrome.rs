@@ -8,32 +8,52 @@ use objc2_foundation::{
 };
 use std::{
     cell::{Cell, RefCell},
+    collections::{HashMap, hash_map::Entry},
     ptr::NonNull,
 };
 
 struct UpdateObserver(Retained<ProtocolObject<dyn NSObjectProtocol>>);
+#[cfg(feature = "e2e")]
+static OBSERVER_COUNT: std::sync::atomic::AtomicUsize = std::sync::atomic::AtomicUsize::new(0);
+
+#[cfg(feature = "e2e")]
+pub fn observer_count() -> usize {
+    OBSERVER_COUNT.load(std::sync::atomic::Ordering::SeqCst)
+}
+
 impl Drop for UpdateObserver {
     fn drop(&mut self) {
         // SAFETY: this exact token came from the center, and this owner stays on the UI thread.
         unsafe { NSNotificationCenter::defaultCenter().removeObserver(self.0.as_ref()) };
+        #[cfg(feature = "e2e")]
+        OBSERVER_COUNT.fetch_sub(1, std::sync::atomic::Ordering::SeqCst);
     }
 }
 thread_local! {
-    static OBSERVER: RefCell<Option<UpdateObserver>> = const { RefCell::new(None) };
+    static OBSERVERS: RefCell<HashMap<String, UpdateObserver>> = RefCell::new(HashMap::new());
     static ALIGNING: Cell<bool> = const { Cell::new(false) };
 }
 
 pub fn shutdown() {
     if MainThreadMarker::new().is_some() {
-        OBSERVER.with(|owner| {
-            owner.borrow_mut().take();
+        OBSERVERS.with(|owners| {
+            owners.borrow_mut().clear();
+        });
+    }
+}
+
+pub fn release(label: &str) {
+    if MainThreadMarker::new().is_some() {
+        OBSERVERS.with(|owners| {
+            owners.borrow_mut().remove(label);
         });
     }
 }
 
 pub fn align(window: &tauri::WebviewWindow) {
+    let label = window.label().to_owned();
     // Tauri invokes this closure on the UI thread with the live window retained.
-    let _ = window.with_webview(|platform| {
+    let _ = window.with_webview(move |platform| {
         if MainThreadMarker::new().is_none() {
             return;
         }
@@ -42,9 +62,9 @@ pub fn align(window: &tauri::WebviewWindow) {
         let Some(window) = (unsafe { platform.ns_window().cast::<NSWindow>().as_ref() }) else {
             return;
         };
-        OBSERVER.with(|owner| {
-            let mut owner = owner.borrow_mut();
-            if owner.is_none() {
+        OBSERVERS.with(|owners| {
+            let mut owners = owners.borrow_mut();
+            if let Entry::Vacant(owner) = owners.entry(label) {
                 let callback = RcBlock::new(|notification: NonNull<NSNotification>| {
                     if MainThreadMarker::new().is_none() {
                         return;
@@ -71,7 +91,9 @@ pub fn align(window: &tauri::WebviewWindow) {
                             &callback,
                         )
                 };
-                *owner = Some(UpdateObserver(token));
+                owner.insert(UpdateObserver(token));
+                #[cfg(feature = "e2e")]
+                OBSERVER_COUNT.fetch_add(1, std::sync::atomic::Ordering::SeqCst);
             }
         });
         align_native(window, true);

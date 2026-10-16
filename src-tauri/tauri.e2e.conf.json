@@ -19,6 +19,7 @@
             "wdio:default",
             "wdio-webdriver:default",
             "core:window:allow-inner-size",
+            "core:window:allow-get-all-windows",
             "core:window:allow-outer-position",
             "core:window:allow-set-size",
             "core:window:allow-set-position",

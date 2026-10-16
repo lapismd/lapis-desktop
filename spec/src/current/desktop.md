@@ -71,9 +71,10 @@ gates.
 
 Use public Tauri overlay configuration and native menus. Native-pointer access
 is limited to the macOS control-layout helper described below. Glass, other
-platform-pointer interop, extra windows and user documents remain later work.
-Closing the only window exits this shell; unsaved-document coordination is
-introduced before document editing is considered qualified in M4.
+platform-pointer interop and user documents remain later work; see
+[windows](windows.md). Closing the only window exits this shell;
+unsaved-document coordination is introduced before document editing is
+considered qualified in M4.
 
 The Notes workspace fills the native content area. Its existing 40px tab strips
 start at the top edge; no application title or session toolbar precedes them.
@@ -81,11 +82,11 @@ The native title stays hidden. The configured native inset is 16,26 logical
 pixels, and the control centers stay at y=20 in the 40px tabs. A macOS-only
 helper retains native button geometry and hover tracking after AppKit relayout.
 It borrows the live NSWindow only inside Tauri's main-thread callback or the
-window's own update notification. One retained observer is removed on exit, with
-a reentrancy guard and no polling or stored raw pointers. Native interop stays
-in that one audited module; the rest of the binary denies unsafe code and the
-service library forbids it. No HTML traffic lights or tab transforms are added.
-Host CSS maps the Deno shell's 65px main-pane and 80px sidebar clearances
+window's own update notification. Each window's observer retires on destruction,
+with a reentrancy guard and no polling or stored raw pointers. Native interop
+stays in that one audited module; the rest of the binary denies unsafe code and
+the service library forbids it. No HTML traffic lights or tab transforms are
+added. Host CSS maps the Deno shell's 65px main-pane and 80px sidebar clearances
 through public Design Core window-control tokens, subtracting the ribbon width
 where appropriate. Expanded and collapsed sidebar states keep their controls
 clear without shifting tabs vertically.

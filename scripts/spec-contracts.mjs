@@ -4,6 +4,7 @@ const chapters = [
   "files",
   "navigation",
   "integration",
+  "windows",
   "governance",
   "migration",
 ];

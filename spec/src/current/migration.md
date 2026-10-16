@@ -6,6 +6,11 @@ original milestone gate. Component success, bookkeeping and screenshots cannot
 replace those gates. The active delivery request ends after M7 qualification and
 an ordinary app review launch. Stop before implementing M8.
 
+The separately authorized native tab-window workstream is recorded in
+`POPOUT_PLAN.md` and tasks M7.1–M7.3. It does not reopen completed M0–M7 gates
+or begin M8. Each verified slice is committed and paused for review. M7.1
+qualifies only debug acceptance hosting; ordinary tab integration remains later.
+
 The immutable baseline inventory is `spec/migration-inventory.json`. It retains
 source revisions and validates without sibling checkouts. Capture fresh source
 evidence when extending it; do not treat later checkouts as the original
