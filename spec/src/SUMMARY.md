@@ -22,6 +22,7 @@
   - [Native database and Notes session](history/E-DB-001.md)
 
 - [E-SESSION-001: native Notes workspace](history/E-SESSION-001.md)
+
   - [E-SESSION-002: complete native Notes qualification](history/E-SESSION-002.md)
   - [Safe lifecycle and restoration](history/E-LIFE-001.md)
   - [Native conditional text storage](history/E-WRITE-001.md)
@@ -44,3 +45,5 @@
   - [Protected native Explorer deletion](history/E-TRASH-001.md)
   - [Exclusive native new-file creation](history/E-CREATE-001.md)
   - [App-owned external file reconciliation](history/E-INGESTION-001.md)
+
+  - [Native file actions through existing Explorer menus](history/E-ACTIONS-001.md)

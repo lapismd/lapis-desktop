@@ -90,6 +90,7 @@ async function acceptance() {
       "tests/desktop/file-deletion.test.mjs",
       "tests/desktop/file-creation.test.mjs",
       "tests/desktop/file-reconciliation.test.mjs",
+      "tests/desktop/system-file-actions.test.mjs",
     ],
     environment,
   );

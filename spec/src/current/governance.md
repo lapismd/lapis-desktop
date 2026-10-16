@@ -196,3 +196,11 @@ shared notification component and verifies physical bytes and explicit recovery.
 Exclusive creation shares the capability-opened staged publication helper with
 copy and retains the same source budget and file-contract mapping. Source APIs
 remain opt-in and portable; no broad native permission is added.
+
+Open, reveal, relative-path conversion and system trash use named variants of
+the existing admitted vault command. Physical descriptor identity and macOS file
+reference URLs constrain OS dispatch; unresolved or replaced targets reject.
+Passive OS-action receipts compile only with e2e, and normal bundle audits
+reject their marker. The cold runner retains real
+Finder/default-open/system-trash and local-trash fallback acceptance using only
+isolated disposable files.

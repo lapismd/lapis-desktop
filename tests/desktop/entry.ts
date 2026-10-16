@@ -2,7 +2,11 @@ import { init } from "@wdio/tauri-plugin";
 import { createNativeDatabaseProvider } from "../../src/lib/native/database/native-database-provider.ts";
 import type { AppDatabase } from "@lapis-notes/api/app-database";
 import type { VaultDescriptor } from "../../src/lib/native/vault-client.ts";
-import { NativeDesktopVaultAdapter } from "@lapis-notes/api";
+import {
+  NativeDesktopVaultAdapter,
+  getNativeDesktopBridge,
+  setNativeDesktopBridge,
+} from "@lapis-notes/api";
 
 await init();
 await import("../../src/main.ts");
@@ -45,6 +49,17 @@ Object.assign(globalThis, { __lapisNativeDatabaseAcceptance: driver });
 
 Object.assign(globalThis, {
   __lapisConditionalWriteAcceptance: {
+    useLocalTrash() {
+      const bridge = getNativeDesktopBridge();
+      if (!bridge) throw new Error("No native bridge is installed");
+      setNativeDesktopBridge({
+        ...bridge,
+        capabilities: {
+          ...bridge.capabilities,
+          "system-trash": { id: "system-trash", status: "unavailable" },
+        },
+      });
+    },
     availableCreate(root: string) {
       return new NativeDesktopVaultAdapter(
         root,

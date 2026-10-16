@@ -11,7 +11,7 @@ import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
 
-test("Explorer deletion preserves failed note writers and succeeds after explicit recovery", async (context) => {
+test("Explorer local-trash fallback preserves failed note writers and succeeds after explicit recovery", async (context) => {
   const root = mkdtempSync(
     join(process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT, "delete-writer-"),
   );
@@ -22,6 +22,9 @@ test("Explorer deletion preserves failed note writers and succeeds after explici
   const session = await nativeSession("delete-writer", root);
   context.after(session.cleanup);
   const { browser } = session;
+  await browser.execute(() =>
+    globalThis.__lapisConditionalWriteAcceptance.useLocalTrash(),
+  );
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
   await browser.$("button*=Open Vault").click();
   await browser.$('[data-notes-ready="true"]').waitForDisplayed();

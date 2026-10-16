@@ -1,3 +1,4 @@
+mod action_targets;
 mod conditional;
 mod creates;
 mod files;
@@ -6,6 +7,7 @@ mod profiles;
 mod staged;
 mod writes;
 
+pub use action_targets::ActionTarget;
 pub use conditional::TextWriteConflict;
 pub use files::{FileStat, ListedFiles, VaultRoot};
 pub use profiles::{RecentVault, VaultDescriptor, VaultManager, validate_name};

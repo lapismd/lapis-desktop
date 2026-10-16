@@ -6,6 +6,11 @@ import type { VaultClient } from "./vault-client.ts";
 import { vaultPath } from "./vault-path.ts";
 
 const fileOperations = new Map([
+  ["desktop_fs_to_vault_path", "to-vault-path"],
+  ["desktop_fs_resolve_path", "resolve-path"],
+  ["desktop_fs_open_path", "open-path"],
+  ["desktop_fs_reveal_path", "reveal-path"],
+  ["desktop_fs_trash_system", "trash-system"],
   ["desktop_fs_create_exclusive", "create-file"],
   ["desktop_fs_stat", "stat"],
   ["desktop_fs_exists", "exists"],
@@ -32,6 +37,16 @@ export function createNativeBridge(
     runtime: "tauri-desktop",
     platform: { runtime: "tauri-desktop", os, arch: "aarch64" },
     capabilities: {
+      "file-system-actions": {
+        id: "file-system-actions",
+        status: os === "macos" ? "available" : "unavailable",
+        provider: "tauri-file-actions",
+      },
+      "system-trash": {
+        id: "system-trash",
+        status: os === "macos" ? "available" : "unavailable",
+        provider: "tauri-file-actions",
+      },
       "exclusive-create": {
         id: "exclusive-create",
         status: os === "macos" || os === "linux" ? "available" : "unavailable",
@@ -60,11 +75,26 @@ export function createNativeBridge(
       const operation = fileOperations.get(command);
       if (!operation)
         throw new Error(`Native operation is unavailable: ${command}`);
+      if (
+        [
+          "to-vault-path",
+          "resolve-path",
+          "open-path",
+          "reveal-path",
+          "trash-system",
+        ].includes(operation) &&
+        os !== "macos"
+      )
+        throw new Error("Native file actions are unavailable on this platform");
       const selected = client.admitted(payload.rootPath);
       const request: Record<string, unknown> = {
         operation,
-        path: vaultPath(payload.normalizedPath),
+        ...(operation === "to-vault-path"
+          ? { absolutePath: payload.absolutePath }
+          : { path: vaultPath(payload.normalizedPath) }),
       };
+      if (operation === "trash-system" && !request.path)
+        throw new Error("Cannot trash the vault root");
       if (
         [
           "create-file",

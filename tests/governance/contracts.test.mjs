@@ -39,6 +39,14 @@ test("progress recognizes requirement IDs from every selected canonical chapter"
 test("M5 filesystem implementations and acceptance retain a mapped file contract", () => {
   for (const path of [
     "src-tauri/src/file_commands.rs",
+    "src-tauri/src/system_actions/mod.rs",
+    "src-tauri/src/system_actions/macos.rs",
+    "src-tauri/src/vault/action_targets.rs",
+    "src-tauri/src/action_acceptance.rs",
+    "src-tauri/tests/system_action_targets.rs",
+    "src-tauri/tests/macos_system_actions.rs",
+    "tests/desktop/system-file-actions.test.mjs",
+    "tests/renderer/native-system-actions.test.mjs",
     "src-tauri/src/vault/mutations.rs",
     "src-tauri/src/vault/creates.rs",
     "src-tauri/src/vault/staged.rs",

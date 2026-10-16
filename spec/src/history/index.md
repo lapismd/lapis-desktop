@@ -47,3 +47,5 @@ by the task ledger, not inferred from this list.
 - [Protected native Explorer deletion](E-TRASH-001.md)
 - [Exclusive native new-file creation](E-CREATE-001.md)
 - [App-owned external file reconciliation](E-INGESTION-001.md)
+
+- [Native file actions through existing Explorer menus](E-ACTIONS-001.md)

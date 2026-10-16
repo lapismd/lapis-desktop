@@ -11,6 +11,21 @@ use serde_json::{Value, json};
     rename_all_fields = "camelCase"
 )]
 pub enum FileRequest {
+    ToVaultPath {
+        absolute_path: String,
+    },
+    ResolvePath {
+        path: String,
+    },
+    OpenPath {
+        path: String,
+    },
+    RevealPath {
+        path: String,
+    },
+    TrashSystem {
+        path: String,
+    },
     CreateFile {
         path: String,
         data: Vec<u8>,
@@ -95,6 +110,32 @@ pub async fn vault_fs(
         manager.with_files(|manager| {
             let root = manager.vaults.get(&session_id)?;
             Ok(match request {
+                FileRequest::ToVaultPath { absolute_path } => json!(
+                    lapis_desktop::system_actions::to_relative(root, &absolute_path)?
+                ),
+                FileRequest::ResolvePath { path } => {
+                    json!(lapis_desktop::system_actions::resolve(root, &path)?)
+                }
+                FileRequest::OpenPath { path } => {
+                    lapis_desktop::system_actions::open(root, &path)?;
+                    #[cfg(feature = "e2e")]
+                    crate::action_acceptance::record("open-path", &path, None);
+                    Value::Null
+                }
+                FileRequest::RevealPath { path } => {
+                    lapis_desktop::system_actions::reveal(root, &path)?;
+                    #[cfg(feature = "e2e")]
+                    crate::action_acceptance::record("reveal-path", &path, None);
+                    Value::Null
+                }
+                FileRequest::TrashSystem { path } => {
+                    let receipt = lapis_desktop::system_actions::trash(root, &path)?;
+                    #[cfg(feature = "e2e")]
+                    crate::action_acceptance::record("trash-system", &path, receipt.as_deref());
+                    #[cfg(not(feature = "e2e"))]
+                    let _ = receipt;
+                    json!(true)
+                }
                 FileRequest::CreateFile {
                     path,
                     data,

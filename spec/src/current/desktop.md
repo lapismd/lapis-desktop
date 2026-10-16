@@ -333,3 +333,9 @@ menu after explicit recovery; no new presentation surface is introduced.
 New-file intent uses the native exclusive-create port when available. Existing
 application-state overwrite APIs retain their separate semantics; creation does
 not publish UI success after a collision or failed native write.
+
+Existing Explorer menus use the admitted native open/reveal/system-trash ports
+on macOS. Shared capability checks retain explicit unsupported behavior and the
+local-trash fallback. System-trash success is projected once by the shared
+Vault; the host does not perform a second deletion or add a separate action
+surface.
