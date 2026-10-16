@@ -215,6 +215,11 @@ evidence.
 
 M5 implementation has targeted source/native evidence through E-HTTP-001; full
 qualification stays pending until M7 end. M6 now owns Search, Markdown
-metadata/navigation and both Graph views in `navigation.md`. Search and metadata
-have targeted native qualification; qualify Graph next, retaining the complete
-M6 gate and enabled-writer audit.
+metadata/navigation and both Graph views in `navigation.md`. Search, metadata
+and both Graph views have targeted native qualification. Retain the complete M6
+gate and enabled-writer audit for end-of-M7 full qualification.
+
+M6 Graph intake consumes the existing public plugin after Search, preserving its
+optional enablement, global/local views and native settings admission.
+Source/native component evidence is recorded in E-GRAPH-001/002; the original M6
+gate remains pending until end-of-M7 full qualification.

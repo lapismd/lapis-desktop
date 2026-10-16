@@ -8,8 +8,7 @@
 
 Completed: M0.0, M0.1, M1, M2, M3.
 
-Current work: M6 — Search/settings and metadata native pass; qualify both Graph
-views
+Current work: M6 — M6 implementation qualified; full gates at M7 end; proceed M7
 
 Oldest pending gate: M4 — M4 full gates at M7 end; implement M6–M7
 
@@ -28,7 +27,7 @@ plugin intake remain deferred to their planned gates.
 | M3   | Done        | Complete; proceed to M4 safe everyday-use qualification              |
 | M4   | In progress | M4 full gates at M7 end; implement M6–M7                             |
 | M5   | In progress | M5 implementation qualified; full gates at M7 end; proceed M6        |
-| M6   | In progress | Search/settings and metadata native pass; qualify both Graph views   |
+| M6   | In progress | M6 implementation qualified; full gates at M7 end; proceed M7        |
 | M7   | Planned     | Complete native menus and application delivery                       |
 | M8   | Planned     | After M7 qualification, specify and implement plugin-plan Stages 0–3 |
 | M9   | Deferred    | After M8, specify and qualify plugin-plan Stage 4                    |

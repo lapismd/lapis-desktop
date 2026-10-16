@@ -118,8 +118,17 @@ export async function nativeSession(
       isRunning: () => child.exitCode === null && child.signalCode === null,
       async close(quit = false) {
         await requestClose(quit);
+        const diagnostic = setTimeout(() => {
+          void browser
+            .execute(() => document.body.innerText)
+            .then(
+              (text) => console.error("Native Close still pending:", text),
+              () => {},
+            );
+        }, 8000);
         const timer = setTimeout(() => child.kill("SIGKILL"), 10000);
         const result = await exited;
+        clearTimeout(diagnostic);
         clearTimeout(timer);
         assert.deepEqual(
           result,

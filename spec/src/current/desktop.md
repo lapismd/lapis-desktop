@@ -2,8 +2,8 @@
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on
-failure (LD-FILE-002/003). M6 Search, settings recovery, metadata and Graph
-intake is specified in `navigation.md`.
+failure (LD-FILE-002/003). M6 registers public Search and Graph with native
+settings recovery and metadata qualification governed by `navigation.md`.
 
 M0.1 establishes the native shell; M2 adds admitted folder access and a
 launcher. M3 integrates the existing Notes workspace and App through public

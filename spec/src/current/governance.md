@@ -237,3 +237,12 @@ uses the source-owned public package archive and existing Configuration events.
 Native metadata acceptance joins the canonical runner with registered Markdown
 views and Search handoffs, including disabled/re-enabled Search and ordinary
 internal links. It uses real source-position edits in isolated vaults.
+
+Graph native tests observe forwarded Canvas drawing calls to locate actually
+rendered nodes and deliver browser pointer/context-menu events to existing
+handlers. The instrumentation lives only in the external acceptance driver and
+is absent from every application bundle. The owning Graph package retains its
+data and settings lifecycle qualification.
+
+E-GRAPH-002 retains final-cohort failures and source-owned startup ordering
+qualification. Close timeout diagnostics preserve the unchanged native deadline.

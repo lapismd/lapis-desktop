@@ -52,3 +52,16 @@ original close barriers remain part of the acceptance.
 Metadata acceptance uses the existing command openers and public panel hosts.
 Qualify Outline source-position navigation, Backlinks/Outgoing Links activation,
 Tags/property Search handoffs, external refresh and restored native views.
+
+Graph intake follows Search in the optional default-enabled profile. Native
+acceptance exercises the real global/local canvases, indexed node/link counts,
+filters, file-follow and refresh, node-menu navigation and restart. Test
+observers forward unchanged standard Canvas drawing calls; they do not supply
+graph data or replace its renderer. Source package tests retain graph derivation
+semantics.
+
+The affected native profile also qualifies shared startup and teardown after
+Graph registration. Native Close timeout diagnostics capture visible failure
+text before forced cleanup; they never extend the original deadline or turn a
+blocked close into success. Sync-host observed events queue behind its initial
+identity reconciliation in the owning API package.

@@ -96,6 +96,7 @@ async function acceptance() {
       "tests/desktop/navigation-search.test.mjs",
       "tests/desktop/navigation-search-settings.test.mjs",
       "tests/desktop/navigation-metadata.test.mjs",
+      "tests/desktop/navigation-graph.test.mjs",
     ],
     environment,
   );

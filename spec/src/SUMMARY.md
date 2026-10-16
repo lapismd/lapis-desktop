@@ -60,3 +60,6 @@
   - [Search settings recovery](history/E-SEARCH-002.md)
 
   - [Native metadata navigation](history/E-NAV-001.md)
+
+  - [Native Graph intake](history/E-GRAPH-001.md)
+  - [Native Graph intake](history/E-GRAPH-002.md)

@@ -6,6 +6,8 @@ import { SourceEditorPlugin } from "@lapis-notes/source-editor";
 import sourceEditorStyles from "@lapis-notes/source-editor/styles.css?inline";
 import { SearchPlugin } from "@lapis-notes/search";
 import searchStyles from "@lapis-notes/search/styles.css?inline";
+import { GraphPlugin } from "@lapis-notes/graph";
+import graphStyles from "@lapis-notes/graph/styles.css?inline";
 
 export const desktopNotesPlugins = [
   {
@@ -26,5 +28,11 @@ export const desktopNotesPlugins = [
     required: false,
     enabledByDefault: true,
     styles: searchStyles,
+  },
+  {
+    plugin: GraphPlugin,
+    required: false,
+    enabledByDefault: true,
+    styles: graphStyles,
   },
 ] as const satisfies PluginProfile;

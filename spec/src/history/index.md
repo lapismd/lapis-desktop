@@ -61,3 +61,6 @@ by the task ledger, not inferred from this list.
 - [Search settings recovery](E-SEARCH-002.md)
 
 - [Native metadata navigation](E-NAV-001.md)
+
+- [Native Graph intake](E-GRAPH-001.md)
+- [Native Graph intake](E-GRAPH-002.md)
