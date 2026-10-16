@@ -1,8 +1,14 @@
 import { resolve } from "node:path";
+import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
 
 export const config = {
   runner: "local",
-  specs: ["./shell.spec.mjs", "./vault.spec.mjs", "./database.spec.mjs"],
+  specs: [
+    "./shell.spec.mjs",
+    "./vault.spec.mjs",
+    "./database.spec.mjs",
+    "./notes.spec.mjs",
+  ],
   maxInstances: 1,
   logLevel: "warn",
   outputDir: process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT,
@@ -12,7 +18,7 @@ export const config = {
       {
         driverProvider: "embedded",
         captureBackendLogs: false,
-        captureFrontendLogs: false,
+        captureFrontendLogs: true,
       },
     ],
   ],
@@ -20,7 +26,9 @@ export const config = {
     {
       browserName: "tauri",
       "tauri:options": {
-        application: resolve("src-tauri/target/debug/lapis-desktop"),
+        application: acceptanceBinary(
+          resolve("src-tauri/target/debug/lapis-desktop"),
+        ),
       },
     },
   ],

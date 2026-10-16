@@ -1,8 +1,8 @@
 # Desktop shell
 
 M0.1 establishes the native shell; M2 adds admitted folder access and a
-launcher. The existing Notes workspace and App will be integrated through public
-packages in M3.
+launcher. M3 integrates the existing Notes workspace and App through public
+packages over native storage.
 
 ## Requirements
 
@@ -99,6 +99,14 @@ served. The only added renderer network origins are this local resource scheme
 and its platform-local equivalent. M2 does not construct App or claim note
 editing; M3 mounts the existing workspace and proves the native database.
 
+The renderer transport translates native serialized errors into JavaScript
+Errors while preserving their portable code and message. Shared adapters must
+receive usable filesystem failures, including EEXIST during state
+initialization.
+
+Directory listings return immediate child names at every depth, relative to the
+requested directory, as required by the public Notes vault adapter contract.
+
 ## Native database and Notes intake (M3)
 
 Native Turso is the early feasibility gate. The host opens one database per
@@ -126,6 +134,11 @@ table-valued equivalents are public. Virtual tables and filesystem modules
 remain denied. Turso attachment and vacuum features remain disabled. Host-owned
 batches select deferred, immediate or exclusive behavior and prevalidate every
 statement.
+
+The launcher opens an admitted folder first; its Open notes action then opens
+the owned Notes session. Returning to vaults MUST finish session teardown before
+the launcher becomes available. A failed startup or teardown MUST remain visible
+and retain ownership for recovery instead of silently opening another session.
 
 The desktop-owned initial plugin profile contains Source Editor, Markdown and
 File Explorer through public exports. Search and other plugin intake retain

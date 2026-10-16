@@ -1,5 +1,9 @@
 # Governance
 
+Archive rewriting is idempotent only for an exact dependency path already
+redirected to a verified tarball. Repeated pnpm hook calls preserve that
+redirect; unverified local paths and file-based peer ranges remain rejected.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                        |
@@ -69,3 +73,19 @@ M3 adds only named admitted database open/execute/close commands. Typed frames
 are bounded and SQL file/extension authority remains denied. Pin Rust Turso to
 0.7.2 with built-in FTS and without the alternate global allocator. Public API
 consumption continues through the M1 committed-source archives.
+
+M3 Notes intake consumes the public Source Editor and Markdown registry packages
+alongside those verified core archives. The desktop owns its initial plugin
+profile, App construction and teardown; it does not import the private Notes
+application profile or expose acceptance instrumentation in production.
+
+Native acceptance launchers inspect the actual executable for both the embedded
+driver and isolated-profile feature markers before spawning it. A normal Cargo
+build can replace the shared target path; that artifact must fail closed before
+any process starts. Rebuild the e2e artifact after ordinary Cargo builds/tests.
+
+The tracked local pack command accepts optional Mira and plugin source
+workspaces to produce the full ten-archive Notes cohort. It validates each
+owning package identity and source snapshot, records per-package revisions and
+checksums, and writes the manifest only after every selected source packs
+successfully.

@@ -139,3 +139,31 @@ test("cancelling folder selection has no file or recent-profile side effects", a
   assert.deepEqual(calls, ["vault_select"]);
   assert.throws(() => client.admitted("/anything"), /admission/u);
 });
+
+test("structured native failures preserve Error identity, message and portable code", async () => {
+  const selected = {
+    profileId: "profile",
+    sessionId: "session",
+    path: "/vault",
+    name: "Notes",
+    resourceToken: "token",
+  };
+  const client = new VaultClient(async (command) => {
+    if (command === "vault_select") return selected;
+    throw { code: "EEXIST", message: "The folder already exists" };
+  });
+  await client.select();
+  const bridge = createNativeBridge(client, "macos");
+  await assert.rejects(
+    bridge.invoke("desktop_fs_mkdir", {
+      rootPath: selected.path,
+      normalizedPath: ".lapis",
+    }),
+    (error) => {
+      assert.ok(error instanceof Error);
+      assert.equal(error.code, "EEXIST");
+      assert.equal(error.message, "The folder already exists");
+      return true;
+    },
+  );
+});

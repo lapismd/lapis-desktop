@@ -7,7 +7,13 @@
     type VaultListing,
   } from "./vault-client.ts";
 
-  let { client }: { client: VaultClient } = $props();
+  let {
+    client,
+    onOpenNotes,
+  }: {
+    client: VaultClient;
+    onOpenNotes(selected: VaultDescriptor): Promise<void>;
+  } = $props();
   let recents = $state<RecentVault[]>([]);
   let active = $state<VaultDescriptor | null>(null);
   let listing = $state<VaultListing>({ files: [], folders: [] });
@@ -75,6 +81,19 @@
       busy = false;
     }
   }
+
+  async function openNotes(): Promise<void> {
+    if (!active) return;
+    busy = true;
+    error = "";
+    try {
+      await onOpenNotes(active);
+    } catch (failure) {
+      error = message(failure);
+    } finally {
+      busy = false;
+    }
+  }
 </script>
 
 <section class="vault-launcher" aria-label="Vaults" aria-busy={busy}>
@@ -82,6 +101,7 @@
     <h2>{active.name}</h2>
     <p class="vault-location">{active.path}</p>
     <p>Your folder is ready for your notes.</p>
+    <button disabled={busy} onclick={openNotes}>Open notes</button>
     <button disabled={busy} onclick={close}>Close vault</button>
     <h3>Files and folders</h3>
     {#if listing.files.length || listing.folders.length}

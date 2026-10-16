@@ -1,0 +1,36 @@
+.notes-session {
+  height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.notes-session-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--ui-workspace-border);
+  font-size: 0.8125rem;
+}
+.notes-session-toolbar button {
+  font: inherit;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--ui-workspace-border);
+  border-radius: 0.375rem;
+  color: var(--ui-workspace-foreground);
+  background: var(--ui-workspace-panel-background);
+  cursor: pointer;
+}
+.notes-session-toolbar button:focus-visible {
+  outline: 2px solid var(--ui-workspace-foreground);
+  outline-offset: 2px;
+}
+.notes-session-workspace {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.notes-session > p {
+  padding: 1rem;
+}

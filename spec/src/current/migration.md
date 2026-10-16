@@ -18,7 +18,7 @@ The first useful target ends at M4. M0.1 is a native shell qualification, not a
 claim that the application can edit notes.
 
 The shell qualification retains the original M0.1 gate. M1 is qualified against
-committed source-owned archives; the next task is M2 native vault access.
+committed source-owned archives; M2 native vault access is also qualified.
 Application signing and notarization stay deferred to M11 per the user's
 2026-10-15 instruction.
 
@@ -56,10 +56,16 @@ installation alone does not complete the native consumer gate.
 
 M1 and M2 are complete. Native folder admission, recent profiles, contained
 reads/writes and scoped attachments have passed the original temporary-folder
-failure gate and actual WebView acceptance. M3's database feasibility and M4's
-safe everyday-use gate remain required before describing this preview as a
-useful notes app.
+failure gate and actual WebView acceptance. M3 qualifies the public Notes
+workspace on native storage. M4's safe everyday-use gate remains required before
+describing this preview as an everyday notes app.
 
 M3 starts with native database conformance and then explicit App/workspace
 intake. Keep its original combined gate: a passing database component cannot
 promote the complete Notes-session milestone.
+
+The native database component is qualified in E-DB-001. E-SESSION-001 preserves
+the Notes intake regressions; E-SESSION-002 qualifies the committed archive
+cohort, native disk editing, attachment display and database reopen. M3's
+original combined gate passes. Safe close, restore and external-edit handling
+remain M4.

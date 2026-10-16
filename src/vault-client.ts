@@ -1,4 +1,5 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+import { nativeError } from "./native-error.ts";
 
 export interface RecentVault {
   id: string;
@@ -38,7 +39,13 @@ export class VaultClient {
   #admissions = new Map<string, VaultDescriptor>();
 
   constructor(call: NativeCall = invoke, fileUrl = convertFileSrc) {
-    this.#call = call;
+    this.#call = async <T>(...args: Parameters<NativeCall>) => {
+      try {
+        return await call<T>(...args);
+      } catch (error) {
+        throw nativeError(error);
+      }
+    };
     this.#fileUrl = fileUrl;
   }
 

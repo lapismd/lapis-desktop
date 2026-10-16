@@ -18,3 +18,6 @@
   - [E-VAULT-001: admitted native vault access](history/E-VAULT-001.md)
 
   - [Native database and Notes session](history/E-DB-001.md)
+
+- [E-SESSION-001: native Notes workspace](history/E-SESSION-001.md)
+  - [E-SESSION-002: complete native Notes qualification](history/E-SESSION-002.md)

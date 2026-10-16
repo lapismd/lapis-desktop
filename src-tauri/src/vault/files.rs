@@ -159,15 +159,10 @@ impl VaultRoot {
                 .file_name()
                 .into_string()
                 .map_err(|_| invalid("Filename is not UTF-8"))?;
-            let relative = if path.is_empty() {
-                name
-            } else {
-                format!("{path}/{name}")
-            };
             if kind.is_dir() {
-                result.folders.push(relative);
+                result.folders.push(name);
             } else {
-                result.files.push(relative);
+                result.files.push(name);
             }
         }
         result.files.sort();

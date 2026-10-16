@@ -3,6 +3,7 @@ import type {
   TursoStatementInput,
 } from "@lapis-notes/api/app-database";
 import { invoke } from "@tauri-apps/api/core";
+import { nativeError } from "./native-error.ts";
 import type { NativeCall, VaultDescriptor } from "./vault-client.ts";
 import {
   callArgs,
@@ -16,17 +17,6 @@ type Reply =
   | { kind: "run"; result: unknown }
   | { kind: "rows"; rows: Record<string, SqlValue>[] }
   | { kind: "batch"; results: unknown[] };
-
-function nativeError(error: unknown): Error {
-  if (error instanceof Error) return error;
-  if (error && typeof error === "object" && "message" in error) {
-    return Object.assign(
-      new Error(String(error.message)),
-      "code" in error ? { code: error.code } : {},
-    );
-  }
-  return new Error("The native database operation failed");
-}
 
 export class NativeTursoConnection implements TursoConnection {
   #call: NativeCall;

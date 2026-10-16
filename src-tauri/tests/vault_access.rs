@@ -48,6 +48,26 @@ fn unicode_binary_and_modification_time_round_trip_on_disk() {
 }
 
 #[test]
+fn directory_listings_return_child_names_at_every_depth() {
+    let root = tempdir().unwrap();
+    let vault = VaultRoot::open(root.path()).unwrap();
+    vault.mkdir(".lapis/plugins", true).unwrap();
+    vault
+        .write(".lapis/app.json", b"{}", &WriteOptions::default())
+        .unwrap();
+    vault.mkdir("笔记/资料", true).unwrap();
+    vault
+        .write("笔记/café.md", b"# Native", &WriteOptions::default())
+        .unwrap();
+    let state = vault.list(".lapis").unwrap();
+    assert_eq!(state.files, ["app.json"]);
+    assert_eq!(state.folders, ["plugins"]);
+    let notes = vault.list("笔记").unwrap();
+    assert_eq!(notes.files, ["café.md"]);
+    assert_eq!(notes.folders, ["资料"]);
+}
+
+#[test]
 fn absolute_paths_and_parent_components_are_rejected_before_io() {
     let root = tempdir().unwrap();
     let vault = VaultRoot::open(root.path()).unwrap();

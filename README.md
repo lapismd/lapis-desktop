@@ -1,8 +1,8 @@
 # Lapis Desktop
 
-A Tauri desktop host for Lapis Notes with a native shell and vault launcher.
-Open or create a folder, inspect its contents, and reopen recent vaults. Notes
-workspace/editor integration follows in the [migration plan](PLAN.md).
+A Tauri desktop preview for Lapis Notes with a native vault launcher and the
+existing Notes workspace, editor and Markdown reader. Safe everyday-use
+qualification remains the M4 gate in the [migration plan](PLAN.md).
 
 Start with [MIGRATION.md](MIGRATION.md) for current status, original gates and
 next work. Canonical behavior lives in the
@@ -29,6 +29,16 @@ publication is deferred. Pack the Notes source snapshot for local acceptance:
 
 ```sh
 pnpm local:pack ../lapis-notes-desktop-migration
+pnpm local:install
+```
+
+The complete Notes editor cohort also includes source-owned Mira and Markdown
+archives. After qualifying and building each owning source repository:
+
+```sh
+pnpm local:pack ../lapis-notes-desktop-migration \
+  --mira ../mira-mde-desktop-migration \
+  --plugins ../lapis-plugins-desktop-migration --already-built
 pnpm local:install
 ```
 

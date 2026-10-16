@@ -5,6 +5,7 @@ import { resolve, join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { remote } from "webdriverio";
 import assert from "node:assert/strict";
+import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
 
 async function availablePort() {
   const server = createServer();
@@ -18,14 +19,18 @@ async function availablePort() {
 }
 export async function nativeSession(name) {
   const port = await availablePort();
-  const child = spawn(resolve("src-tauri/target/debug/lapis-desktop"), [], {
-    env: {
-      ...process.env,
-      PATH: "/usr/bin:/bin",
-      TAURI_WEBDRIVER_PORT: String(port),
+  const child = spawn(
+    acceptanceBinary(resolve("src-tauri/target/debug/lapis-desktop")),
+    [],
+    {
+      env: {
+        ...process.env,
+        PATH: "/usr/bin:/bin",
+        TAURI_WEBDRIVER_PORT: String(port),
+      },
+      stdio: ["ignore", "pipe", "pipe"],
     },
-    stdio: ["ignore", "pipe", "pipe"],
-  });
+  );
   const log = createWriteStream(
     join(process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT, `${name}.log`),
   );

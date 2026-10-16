@@ -99,3 +99,36 @@ test("failed local installs restore both registry dependency files byte for byte
     "pnpm-lock.yaml\n",
   );
 });
+
+test("archive rewriting is idempotent only for the exact verified dependency path", (context) => {
+  const { root, manifest } = fixture(context);
+  const hook = join(root, "repeat-hook.cjs");
+  writeFileSync(hook, archiveHookSource(readArchiveManifest(manifest)));
+  const { hooks } = createRequire(import.meta.url)(hook);
+  const pkg = {
+    dependencies: { "@lapis-notes/api": "^0.1.4" },
+    peerDependencies: { "@lapis-notes/api": "^0.1.4" },
+  };
+  const once = hooks.readPackage(pkg);
+  const expected = once.dependencies["@lapis-notes/api"];
+  assert.equal(
+    hooks.readPackage(once).dependencies["@lapis-notes/api"],
+    expected,
+  );
+  assert.equal(pkg.peerDependencies["@lapis-notes/api"], "^0.1.4");
+  for (const field of ["dependencies", "peerDependencies"])
+    assert.throws(
+      () =>
+        hooks.readPackage({
+          [field]: {
+            "@lapis-notes/api": `file:${join(root, "unverified.tgz")}`,
+          },
+        }),
+      /does not satisfy/u,
+    );
+  assert.throws(
+    () =>
+      hooks.readPackage({ peerDependencies: { "@lapis-notes/api": expected } }),
+    /does not satisfy/u,
+  );
+});

@@ -5,8 +5,11 @@ import {
 } from "@lapis-notes/api/desktop-native";
 import "@lapismd/design-core/styles.css";
 import "@lapismd/design-core/themes/lapis.css";
+import "@lapis-notes/ui/theme.css";
+import "@lapis-notes/ui/codemirror-autocomplete.css";
 import "./shell.css";
 import "./vault-launcher.css";
+import "./notes-workspace.css";
 import Shell from "./Shell.svelte";
 import { startShell } from "./shell-startup";
 import { VaultClient } from "./vault-client.ts";

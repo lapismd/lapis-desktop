@@ -70,9 +70,11 @@ module.exports = { hooks: { readPackage(pkg) {
     for (const [name, entry] of archives) {
       const range = pkg[field]?.[name];
       if (!range) continue;
+      const target = "file:" + entry.tarball;
+      if (field !== "peerDependencies" && range === target) continue;
       if (!semver.satisfies(entry.version, range, { includePrerelease: true }))
         throw new Error(name + " archive " + entry.version + " does not satisfy " + range);
-      if (field !== "peerDependencies") pkg[field][name] = "file:" + entry.tarball;
+      if (field !== "peerDependencies") pkg[field][name] = target;
     }
   }
   return pkg;
