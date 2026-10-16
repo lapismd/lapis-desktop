@@ -6,15 +6,16 @@ redirect; unverified local paths and file-based peer ranges remain rejected.
 
 ## Requirements
 
-| ID         | Requirement                                                                                                                                                                                                                                        |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                            |
-| LD-GOV-002 | Protected behavior and tooling changes MUST update their mapped canonical chapters in the same Jujutsu change. Unmapped protected paths MUST fail closed.                                                                                          |
-| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit milestone review. Committed evidence MUST remain immutable.                             |
-| LD-GOV-004 | Task pages MUST be the sole completion authority. Done MUST require completed dependencies and passing evidence selected for the original task gate; bookkeeping and substituted tests MUST NOT qualify product behavior.                          |
-| LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors. |
-| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.     |
-| LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                      |
+| ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                        |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                                                                                                                                                                            |
+| LD-GOV-002 | Protected behavior and tooling changes MUST update their mapped canonical chapters in the same Jujutsu change. Unmapped protected paths MUST fail closed.                                                                                                                                                                                                                                          |
+| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit milestone review. Committed evidence MUST remain immutable.                                                                                                                                                                             |
+| LD-GOV-004 | Task pages MUST be the sole completion authority. Done MUST require completed dependencies and passing evidence selected for the original task gate; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                                                                                          |
+| LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                 |
+| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                                                     |
+| LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                      |
+| LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Temporary dependency redirection MUST NOT alter tracked manifests or lockfiles. |
 
 The user authorized local pnpm archive consumption and deferred package
 publication to the final release gate. An ignored local install overlay verifies
@@ -46,7 +47,11 @@ actual Jujutsu change; CI checks the complete pull-request revision range.
 The local archive installer validates each checksum, packed package identity,
 version, and source revision before pnpm runs. Its ignored pnpm hook redirects
 matching direct/transitive dependency ranges while retaining peer ranges, and
-restores tracked manifests/lockfiles even after an installation failure.
+restores tracked manifests/lockfiles even after an installation failure. The
+hook provides an install-only direct dependency for matching peer-only
+consumers. After installation, the installer enumerates active pnpm workspace
+projects and verifies their existing local import routes against the root
+archive identities before recording the qualification receipt.
 
 Local core packing records the actual Jujutsu source snapshot and runs each
 owning package's normal prepack lane. Packing that changes tracked generated

@@ -9,6 +9,7 @@
 | LD-GOV-005     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                       |
 | LD-GOV-006     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-SESSION-002](../history/E-SESSION-002.md) |
 | LD-GOV-007     | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                       |
+| LD-GOV-008     | Implemented | [E-ARCHIVES-001](../history/E-ARCHIVES-001.md): six focused cases and 28 real workspace import routes pass.                    |
 | LD-DESK-001    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                       |
 | LD-DESK-002    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                       |
 | LD-DESK-003    | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)                                                                                       |

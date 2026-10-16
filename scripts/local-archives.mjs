@@ -1,17 +1,13 @@
 import { createHash } from "node:crypto";
-import {
-  readFileSync,
-  writeFileSync,
-  mkdirSync,
-  realpathSync,
-  rmSync,
-} from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, resolve, join } from "node:path";
 import { execFileSync, spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 import semver from "semver";
+import { verifyArchiveResolution } from "./archive-resolution.mjs";
+export { verifyArchiveResolution } from "./archive-resolution.mjs";
 
 const require = createRequire(import.meta.url);
 export function readArchiveManifest(manifestPath) {
@@ -74,7 +70,11 @@ module.exports = { hooks: { readPackage(pkg) {
       if (field !== "peerDependencies" && range === target) continue;
       if (!semver.satisfies(entry.version, range, { includePrerelease: true }))
         throw new Error(name + " archive " + entry.version + " does not satisfy " + range);
-      if (field !== "peerDependencies") pkg[field][name] = target;
+      if (field === "peerDependencies") {
+        // Give peer-only workspace consumers the same verified package identity.
+        pkg.dependencies ??= {};
+        pkg.dependencies[name] = target;
+      } else pkg[field][name] = target;
     }
   }
   return pkg;
@@ -134,22 +134,17 @@ export async function installLocalArchives(root, manifestPath) {
       `--config.pnpmfile=${hookPath}`,
     ]),
   );
-  for (const entry of entries) {
-    const installed = join(root, "node_modules", entry.name);
-    const packed = JSON.parse(
-      readFileSync(join(installed, "package.json"), "utf8"),
-    );
-    assert.equal(
-      packed.version,
-      entry.version,
-      `Wrong installed version: ${entry.name}`,
-    );
-    assert.match(
-      realpathSync(installed),
-      /[/\\]\.pnpm[/\\].*@file\+/u,
-      `Archive not installed: ${entry.name}`,
-    );
-  }
+  const projects = JSON.parse(
+    execFileSync("pnpm", ["list", "--recursive", "--depth", "-1", "--json"], {
+      cwd: root,
+      encoding: "utf8",
+    }),
+  );
+  const checked = verifyArchiveResolution(
+    root,
+    entries,
+    projects.map((project) => project.path),
+  );
   for (const cache of ["node_modules/.vite", "node_modules/.cache/storybook"]) {
     rmSync(join(root, cache), { recursive: true, force: true });
   }
@@ -158,7 +153,7 @@ export async function installLocalArchives(root, manifestPath) {
     JSON.stringify({ packages: entries }, null, 2) + "\n",
   );
   console.log(
-    `Installed ${entries.length} verified local archives; tracked dependency files preserved.`,
+    `Installed ${entries.length} verified local archives across ${checked} import routes; tracked dependency files preserved.`,
   );
 }
 if (

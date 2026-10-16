@@ -1,5 +1,10 @@
 # Migration inventory and progress
 
+Local archive qualification now checks active workspace peer imports against the
+verified tarball payload, including peer-only consumers. This tooling work
+supports the pending Markdown preview integration and leaves the original M4
+application gate and writer-coverage requirements unchanged.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                               |

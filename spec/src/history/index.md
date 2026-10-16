@@ -25,3 +25,5 @@ by the task ledger, not inferred from this list.
 - [E-WRITE-001: native conditional text storage](E-WRITE-001.md)
 
 - [E-CONFLICT-001: API editor conflict recovery](E-CONFLICT-001.md)
+
+- [E-ARCHIVES-001: workspace peer archive verification](E-ARCHIVES-001.md)

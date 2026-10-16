@@ -6,6 +6,7 @@ import {
   writeFileSync,
   readFileSync,
   rmSync,
+  symlinkSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -17,6 +18,7 @@ import {
   archiveHookSource,
   preserveDependencyFiles,
 } from "../../scripts/local-archives.mjs";
+import * as archives from "../../scripts/local-archives.mjs";
 
 function fixture(context) {
   const root = mkdtempSync(join(tmpdir(), "lapis-archives-"));
@@ -130,5 +132,91 @@ test("archive rewriting is idempotent only for the exact verified dependency pat
     () =>
       hooks.readPackage({ peerDependencies: { "@lapis-notes/api": expected } }),
     /does not satisfy/u,
+  );
+});
+
+test("peer-only workspace consumers receive the verified archive as an install-only dependency", (context) => {
+  const { root, manifest } = fixture(context);
+  const hook = join(root, "peer-hook.cjs");
+  writeFileSync(hook, archiveHookSource(readArchiveManifest(manifest)));
+  const { hooks } = createRequire(import.meta.url)(hook);
+  const pkg = hooks.readPackage({
+    peerDependencies: { "@lapis-notes/api": "^0.1.2" },
+  });
+  assert.equal(
+    pkg.dependencies?.["@lapis-notes/api"],
+    `file:${join(root, "api.tgz")}`,
+  );
+  assert.equal(pkg.peerDependencies["@lapis-notes/api"], "^0.1.2");
+});
+
+test("installation rejects a workspace peer that resolves a second registry API identity", (context) => {
+  const { root, manifest } = fixture(context);
+  const [entry] = readArchiveManifest(manifest);
+  const verified = join(
+    root,
+    "node_modules/.pnpm/api@file+fixture+api.tgz_peer-one/node_modules/@lapis-notes/api",
+  );
+  const registry = join(
+    root,
+    "node_modules/.pnpm/api@0.1.4/node_modules/@lapis-notes/api",
+  );
+  for (const directory of [verified, registry]) {
+    mkdirSync(directory, { recursive: true });
+    writeFileSync(
+      join(directory, "package.json"),
+      JSON.stringify({ name: entry.name, version: entry.version }),
+    );
+  }
+  mkdirSync(join(root, "node_modules/@lapis-notes"), { recursive: true });
+  symlinkSync(verified, join(root, "node_modules/@lapis-notes/api"));
+  mkdirSync(join(verified, "node_modules/.bin"), { recursive: true });
+  writeFileSync(
+    join(verified, "node_modules/.bin/generated"),
+    "pnpm-generated command shim",
+  );
+  const workspace = join(root, "packages/fixture");
+  mkdirSync(join(workspace, "node_modules/@lapis-notes"), { recursive: true });
+  writeFileSync(
+    join(workspace, "package.json"),
+    JSON.stringify({ peerDependencies: { "@lapis-notes/api": "^0.1.2" } }),
+  );
+  const peer = join(workspace, "node_modules/@lapis-notes/api");
+  symlinkSync(registry, peer);
+  assert.throws(
+    () => archives.verifyArchiveResolution(root, [entry], [root, workspace]),
+    /identity|archive/i,
+  );
+  rmSync(peer);
+  symlinkSync(verified, peer);
+  assert.equal(
+    archives.verifyArchiveResolution(root, [entry], [root, workspace]),
+    2,
+  );
+  const peerContext = join(
+    root,
+    "node_modules/.pnpm/api@file+fixture+api.tgz_peer-two/node_modules/@lapis-notes/api",
+  );
+  mkdirSync(peerContext, { recursive: true });
+  writeFileSync(
+    join(peerContext, "package.json"),
+    readFileSync(join(verified, "package.json")),
+  );
+  rmSync(peer);
+  symlinkSync(peerContext, peer);
+  assert.equal(
+    archives.verifyArchiveResolution(root, [entry], [root, workspace]),
+    2,
+  );
+  const unverified = join(
+    root,
+    "node_modules/.pnpm/api@file+unverified+api.tgz_peer-two/node_modules/@lapis-notes/api",
+  );
+  mkdirSync(unverified, { recursive: true });
+  rmSync(peer);
+  symlinkSync(unverified, peer);
+  assert.throws(
+    () => archives.verifyArchiveResolution(root, [entry], [root, workspace]),
+    /identity/,
   );
 });
