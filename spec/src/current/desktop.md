@@ -32,6 +32,7 @@ packages over native storage.
 | LD-LIFE-004    | External file edits MUST NOT silently overwrite dirty editor content or be overwritten by a later dirty save. Conflicts MUST remain observable and preserve both the current buffer and external file until an explicit resolution.                                                                                                                          |
 | LD-LIFE-005    | Repeated vault switching MUST release the old workspace, plugins, metadata, editing sessions, compatibility lease, database and subscriptions before admitting another Notes owner.                                                                                                                                                                          |
 | LD-LIFE-006    | Native conditional text writes MUST compare exact expected bytes or expected absence before replacement and recheck after staging. An observed regular-file mismatch MUST preserve the current destination and return ECONFLICT. Conditional operations MUST retain admitted-root containment, size limits, metadata handling and staged atomic replacement. |
+| LD-LIFE-007    | Every enabled Notes file writer MUST participate in the owning App's flush, protection and conflict lifecycle, including pending, failed and retired writes. Qualification MUST cover both API text editors and editable Markdown previews in the initial profile.                                                                                           |
 
 The product name is Lapis Notes Preview and the application identifier is
 `com.lapismd.lapis-desktop.preview`. Development Vite binds literal loopback on
@@ -183,3 +184,16 @@ including changes observed during staging. Uncoordinated filesystem writers can
 race OS operations; this is not a cross-process filesystem transaction. Editor
 document baselines, visible conflicts and explicit recovery remain required
 before the original M4 gate can complete.
+
+The Notes host consumes the public App-owned text-conflict registry. Recovery
+shows each original path, local text and the observed disk version, including
+retired writers. Keep my version conditionally replaces only the displayed
+external version; Use disk version revalidates before discarding local text.
+Check disk again refreshes an unavailable or superseded snapshot without
+resolving it. Failed or stale decisions retain the conflict and keep lifecycle
+shutdown blocked. The desktop must not implement a parallel editor save path.
+
+API text-editor recovery is qualified separately from portable editable Markdown
+previews. The latter still use a separate adapter writer and require their own
+registered, document-owned conditional integration under LD-LIFE-007. Their
+absence from an editing-session registry cannot waive the original M4 gate.

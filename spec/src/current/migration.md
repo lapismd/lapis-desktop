@@ -82,3 +82,12 @@ E-WRITE-001 qualifies the conditional native storage component through exact
 preconditions and the public adapter in the actual WebView. Document-owned
 baselines and explicit conflict recovery are next; LD-LIFE-004 and the original
 everyday-use gate remain open.
+
+E-CONFLICT-001 qualifies document-owned API text-editor baselines and retained
+App-owned recovery through the real native UI. Closed tabs retain their drafts
+and shutdown barriers; stale choices require another review. The original M4
+gate remains unchanged and In progress. Editable Markdown previews still use a
+separate unconditional, unregistered adapter writer, so LD-LIFE-004 and the
+explicit complete-writer coverage requirement LD-LIFE-007 remain Planned.
+Integrate those public Mira/plugin ports in their owning repositories and
+qualify the native consumer before completing M4.

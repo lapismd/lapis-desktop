@@ -11,6 +11,7 @@
   import { WorkspaceShell } from "@lapis-notes/workspace";
   import { desktopNotesPlugins } from "./notes-plugins.ts";
   import { requestReload } from "./desktop-lifecycle.ts";
+  import FileConflicts from "./FileConflicts.svelte";
 
   let {
     session,
@@ -140,6 +141,10 @@
     >
   </div>
   {#if error}<p role="alert">{error}</p>{/if}
+  <FileConflicts
+    registry={app.fileEditingSessions.textConflicts}
+    disabled={busy}
+  />
   {#if ready}
     <div class="notes-session-workspace" inert={busy}>
       <WorkspaceShell

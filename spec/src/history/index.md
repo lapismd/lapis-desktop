@@ -23,3 +23,5 @@ by the task ledger, not inferred from this list.
 - [E-LIFE-001: safe lifecycle and restoration](E-LIFE-001.md)
 
 - [E-WRITE-001: native conditional text storage](E-WRITE-001.md)
+
+- [E-CONFLICT-001: API editor conflict recovery](E-CONFLICT-001.md)

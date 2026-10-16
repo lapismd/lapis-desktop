@@ -17,25 +17,25 @@ async function availablePort() {
   await new Promise((resolveClose) => server.close(resolveClose));
   return port;
 }
-export async function nativeSession(name, isolatedRoot) {
+export async function nativeSession(
+  name,
+  isolatedRoot,
+  executablePath = resolve("src-tauri/target/debug/lapis-desktop"),
+) {
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
-  const child = spawn(
-    acceptanceBinary(resolve("src-tauri/target/debug/lapis-desktop")),
-    [],
-    {
-      env: {
-        ...process.env,
-        PATH: "/usr/bin:/bin",
-        TAURI_WEBDRIVER_PORT: String(port),
-        LAPIS_DESKTOP_ACCEPTANCE_ROOT: root,
-        LAPIS_DESKTOP_ACCEPTANCE_STATE: isolatedRoot
-          ? join(root, "window-state.json")
-          : process.env.LAPIS_DESKTOP_ACCEPTANCE_STATE,
-      },
-      stdio: ["ignore", "pipe", "pipe"],
+  const child = spawn(acceptanceBinary(executablePath), [], {
+    env: {
+      ...process.env,
+      PATH: "/usr/bin:/bin",
+      TAURI_WEBDRIVER_PORT: String(port),
+      LAPIS_DESKTOP_ACCEPTANCE_ROOT: root,
+      LAPIS_DESKTOP_ACCEPTANCE_STATE: isolatedRoot
+        ? join(root, "window-state.json")
+        : process.env.LAPIS_DESKTOP_ACCEPTANCE_STATE,
     },
-  );
+    stdio: ["ignore", "pipe", "pipe"],
+  });
   const log = createWriteStream(join(root, `${name}.log`));
   let rendererReady = false;
   let outputTail = "";
