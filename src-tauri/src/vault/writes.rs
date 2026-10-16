@@ -1,3 +1,4 @@
+use super::conditional::WriteCondition;
 use super::{MAX_FILE_BYTES, VaultRoot, invalid};
 use cap_tempfile::TempFile;
 use serde::Deserialize;
@@ -20,6 +21,26 @@ impl VaultRoot {
         source: impl Read,
         options: &WriteOptions,
     ) -> io::Result<()> {
+        self.stage_write(path, source, options, WriteCondition::Any)
+    }
+
+    pub fn write_if_unchanged(
+        &self,
+        path: &str,
+        source: impl Read,
+        expected: Option<&[u8]>,
+        options: &WriteOptions,
+    ) -> io::Result<()> {
+        self.stage_write(path, source, options, WriteCondition::Contents(expected))
+    }
+
+    fn stage_write(
+        &self,
+        path: &str,
+        source: impl Read,
+        options: &WriteOptions,
+        condition: WriteCondition<'_>,
+    ) -> io::Result<()> {
         let relative = self.checked(path, false)?;
         let mtime = match options.mtime {
             Some(value) if value.is_finite() && (0.0..=253_402_300_799_999.0).contains(&value) => {
@@ -28,7 +49,16 @@ impl VaultRoot {
             Some(_) => return Err(invalid("Invalid modification time")),
             None => None,
         };
-        let original = match self.dir.metadata(&relative) {
+        let parent_path = relative
+            .parent()
+            .filter(|parent| !parent.as_os_str().is_empty())
+            .unwrap_or(std::path::Path::new("."));
+        let parent = self.dir.open_dir(parent_path)?;
+        let name = relative
+            .file_name()
+            .ok_or_else(|| invalid("Missing filename"))?;
+        condition.verify(&parent, name, path)?;
+        let original = match parent.metadata(name) {
             Ok(metadata) => {
                 if !metadata.is_file() {
                     return Err(invalid("Destination is not a regular file"));
@@ -44,11 +74,6 @@ impl VaultRoot {
             Err(error) if error.kind() == io::ErrorKind::NotFound => None,
             Err(error) => return Err(error),
         };
-        let parent_path = relative
-            .parent()
-            .filter(|parent| !parent.as_os_str().is_empty())
-            .unwrap_or(std::path::Path::new("."));
-        let parent = self.dir.open_dir(parent_path)?;
         let mut staged = TempFile::new(&parent)?;
         if let Some(original) = original {
             staged.as_file().set_permissions(original.permissions())?;
@@ -65,11 +90,8 @@ impl VaultRoot {
                 .set_modified(mtime)?;
         }
         staged.as_file().sync_all()?;
-        staged.replace(
-            relative
-                .file_name()
-                .ok_or_else(|| invalid("Missing filename"))?,
-        )?;
+        condition.verify(&parent, name, path)?;
+        staged.replace(name)?;
         parent.into_std_file().sync_all()?;
         Ok(())
     }

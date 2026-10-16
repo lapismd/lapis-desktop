@@ -150,6 +150,13 @@ pub enum FileRequest {
         #[serde(default)]
         options: WriteOptions,
     },
+    WriteTextIfUnchanged {
+        path: String,
+        data: String,
+        expected: Option<String>,
+        #[serde(default)]
+        options: WriteOptions,
+    },
     WriteBinary {
         path: String,
         data: Vec<u8>,
@@ -194,6 +201,20 @@ pub async fn vault_fs(
                 options,
             } => {
                 root.write(&path, data.as_bytes(), &options)?;
+                Value::Null
+            }
+            FileRequest::WriteTextIfUnchanged {
+                path,
+                data,
+                expected,
+                options,
+            } => {
+                root.write_if_unchanged(
+                    &path,
+                    data.as_bytes(),
+                    expected.as_deref().map(str::as_bytes),
+                    &options,
+                )?;
                 Value::Null
             }
             FileRequest::WriteBinary {

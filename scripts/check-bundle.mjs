@@ -34,6 +34,7 @@ for (const marker of [
   "__wdio_mocks__",
   "LAPIS_DESKTOP_ACCEPTANCE_",
   "__lapisNativeDatabaseAcceptance",
+  "__lapisConditionalWriteAcceptance",
 ])
   assert.equal(
     bytes.includes(Buffer.from(marker)),

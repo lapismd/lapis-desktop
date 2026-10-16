@@ -35,13 +35,20 @@ pub struct NativeError {
 
 impl From<io::Error> for NativeError {
     fn from(error: io::Error) -> Self {
-        let code = match error.kind() {
-            io::ErrorKind::NotFound => "ENOENT",
-            io::ErrorKind::PermissionDenied => "EACCES",
-            io::ErrorKind::AlreadyExists => "EEXIST",
-            io::ErrorKind::InvalidInput | io::ErrorKind::InvalidData => "EINVAL",
-            io::ErrorKind::WouldBlock => "EBUSY",
-            _ => "EIO",
+        let code = if error
+            .get_ref()
+            .is_some_and(|cause| cause.is::<lapis_desktop::vault::TextWriteConflict>())
+        {
+            "ECONFLICT"
+        } else {
+            match error.kind() {
+                io::ErrorKind::NotFound => "ENOENT",
+                io::ErrorKind::PermissionDenied => "EACCES",
+                io::ErrorKind::AlreadyExists => "EEXIST",
+                io::ErrorKind::InvalidInput | io::ErrorKind::InvalidData => "EINVAL",
+                io::ErrorKind::WouldBlock => "EBUSY",
+                _ => "EIO",
+            }
         };
         Self {
             code,

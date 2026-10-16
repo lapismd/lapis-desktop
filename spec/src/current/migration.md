@@ -77,3 +77,8 @@ partial lifecycle evidence cannot mark the everyday-use milestone complete.
 E-LIFE-001 qualifies native save/close/Quit/reload, last-Notes restoration and
 repeated edited vault switching through the API-owned layout writer. M4 remains
 In progress until external-edit conflict protection meets the original gate.
+
+E-WRITE-001 qualifies the conditional native storage component through exact
+preconditions and the public adapter in the actual WebView. Document-owned
+baselines and explicit conflict recovery are next; LD-LIFE-004 and the original
+everyday-use gate remain open.

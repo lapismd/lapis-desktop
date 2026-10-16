@@ -34,3 +34,4 @@
 | LD-LIFE-003    | Implemented | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
 | LD-LIFE-004    | Planned     | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
 | LD-LIFE-005    | Implemented | [E-LIFE-001](../history/E-LIFE-001.md)                                                                                         |
+| LD-LIFE-006    | Implemented | [E-WRITE-001](../history/E-WRITE-001.md)                                                                                       |

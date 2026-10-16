@@ -1,7 +1,9 @@
+mod conditional;
 mod files;
 mod profiles;
 mod writes;
 
+pub use conditional::TextWriteConflict;
 pub use files::{FileStat, ListedFiles, VaultRoot};
 pub use profiles::{RecentVault, VaultDescriptor, VaultManager, validate_name};
 pub use writes::WriteOptions;

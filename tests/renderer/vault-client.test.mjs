@@ -209,3 +209,61 @@ test("failed admission cleanup remains retryable and prevents successful drain",
   await client.closeAll();
   assert.throws(() => client.admitted("/vault"), /closed/u);
 });
+
+test("conditional writes preserve explicit contents or absence in the admitted native frame", async () => {
+  const { client, bridge, calls, selected } = fixture();
+  await client.select();
+  assert.equal(
+    bridge.capabilities["conditional-text-write"].status,
+    "available",
+  );
+  for (const expected of ["baseline", null]) {
+    await bridge.invoke("desktop_fs_write_text_if_unchanged", {
+      rootPath: selected.path,
+      normalizedPath: "笔记/café.md",
+      data: "new",
+      expected,
+      options: { ctime: 1, mtime: 2 },
+    });
+    assert.deepEqual(calls.at(-1), {
+      command: "vault_fs",
+      payload: {
+        sessionId: selected.sessionId,
+        request: {
+          operation: "write-text-if-unchanged",
+          path: "笔记/café.md",
+          data: "new",
+          expected,
+          options: { mtime: 2 },
+        },
+      },
+    });
+  }
+});
+
+test("invalid conditional snapshots and closed admissions reject before file IPC", async () => {
+  const { client, bridge, calls, selected } = fixture();
+  await client.select();
+  for (const expected of [undefined, 123, false])
+    await assert.rejects(
+      bridge.invoke("desktop_fs_write_text_if_unchanged", {
+        rootPath: selected.path,
+        normalizedPath: "note.md",
+        data: "new",
+        expected,
+      }),
+      /expected/u,
+    );
+  assert.equal(calls.length, 1);
+  await client.close(selected);
+  await assert.rejects(
+    bridge.invoke("desktop_fs_write_text_if_unchanged", {
+      rootPath: selected.path,
+      normalizedPath: "note.md",
+      data: "new",
+      expected: "old",
+    }),
+    /admission/u,
+  );
+  assert.equal(calls.length, 2);
+});

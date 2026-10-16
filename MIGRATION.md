@@ -8,7 +8,7 @@
 
 Completed: M0.0, M0.1, M1, M2, M3.
 
-Next: M4 — Implement external-edit conflict protection
+Next: M4 — Add document-owned baselines and explicit conflict recovery
 
 The first usable notes milestone ends at M4. Native services and
 installed-plugin support remain explicitly deferred.
@@ -20,7 +20,7 @@ installed-plugin support remain explicitly deferred.
 | M1   | Done        | Complete; proceed to M2 native vault access                 |
 | M2   | Done        | Complete; proceed to the M3 native database gate            |
 | M3   | Done        | Complete; proceed to M4 safe everyday-use qualification     |
-| M4   | In progress | Implement external-edit conflict protection                 |
+| M4   | In progress | Add document-owned baselines and explicit conflict recovery |
 | M5   | Planned     | Qualify file operations and native watching                 |
 | M6   | Planned     | Integrate search and metadata navigation                    |
 | M7   | Planned     | Complete native menus and application delivery              |

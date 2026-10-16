@@ -6,6 +6,7 @@ export const config = {
   specs: [
     "./shell.spec.mjs",
     "./vault.spec.mjs",
+    "./conditional.spec.mjs",
     "./database.spec.mjs",
     "./notes.spec.mjs",
   ],

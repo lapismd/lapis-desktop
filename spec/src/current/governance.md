@@ -93,3 +93,7 @@ successfully.
 M4 adds only named lifecycle request/result and native last-Notes profile
 commands. Exit approval requires a current host-issued request; no generic
 window destruction, process exit or arbitrary profile-path permission is added.
+
+Conditional writes add a bounded variant to the existing admitted vault command.
+The public API advertises the capability explicitly; normal bundles must also
+exclude the conditional-write acceptance driver. No generic permission is added.

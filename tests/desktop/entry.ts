@@ -2,6 +2,7 @@ import { init } from "@wdio/tauri-plugin";
 import { createNativeDatabaseProvider } from "../../src/native-database-provider.ts";
 import type { AppDatabase } from "@lapis-notes/api/app-database";
 import type { VaultDescriptor } from "../../src/vault-client.ts";
+import { NativeDesktopVaultAdapter } from "@lapis-notes/api";
 
 await init();
 await import("../../src/main.ts");
@@ -40,3 +41,33 @@ const driver = {
 };
 
 Object.assign(globalThis, { __lapisNativeDatabaseAcceptance: driver });
+
+Object.assign(globalThis, {
+  __lapisConditionalWriteAcceptance: {
+    available(root: string) {
+      return new NativeDesktopVaultAdapter(
+        root,
+        undefined,
+        "tauri-desktop",
+      ).getCapabilities().conditionalTextWrite;
+    },
+    async write(
+      root: string,
+      path: string,
+      expected: string | null,
+      data: string,
+    ) {
+      try {
+        await new NativeDesktopVaultAdapter(
+          root,
+          undefined,
+          "tauri-desktop",
+        ).writeTextIfUnchanged(path, data, expected);
+        return { ok: true };
+      } catch (failure) {
+        const error = failure as Error & { code?: string };
+        return { ok: false, code: error.code, message: error.message };
+      }
+    },
+  },
+});

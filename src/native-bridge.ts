@@ -13,6 +13,7 @@ const fileOperations = new Map([
   ["desktop_fs_read_binary", "read-binary"],
   ["desktop_fs_read_range", "read-range"],
   ["desktop_fs_write_text", "write-text"],
+  ["desktop_fs_write_text_if_unchanged", "write-text-if-unchanged"],
   ["desktop_fs_write_binary", "write-binary"],
   ["desktop_fs_append_text", "append-text"],
   ["desktop_fs_mkdir", "mkdir"],
@@ -26,6 +27,11 @@ export function createNativeBridge(
     runtime: "tauri-desktop",
     platform: { runtime: "tauri-desktop", os, arch: "aarch64" },
     capabilities: {
+      "conditional-text-write": {
+        id: "conditional-text-write",
+        status: "available",
+        provider: "tauri-vault",
+      },
       resource: {
         id: "resource",
         status: "available",
@@ -44,11 +50,23 @@ export function createNativeBridge(
         operation,
         path: vaultPath(payload.normalizedPath),
       };
-      if (["write-text", "write-binary", "append-text"].includes(operation)) {
+      if (
+        [
+          "write-text",
+          "write-text-if-unchanged",
+          "write-binary",
+          "append-text",
+        ].includes(operation)
+      ) {
         request.data = payload.data;
         const options = payload.options as { mtime?: number } | undefined;
         request.options =
           options?.mtime === undefined ? {} : { mtime: options.mtime };
+      }
+      if (operation === "write-text-if-unchanged") {
+        if (payload.expected !== null && typeof payload.expected !== "string")
+          throw new Error("Invalid expected text snapshot");
+        request.expected = payload.expected;
       }
       if (operation === "mkdir") request.recursive = payload.recursive ?? false;
       if (operation === "read-range") {
