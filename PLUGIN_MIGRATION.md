@@ -246,6 +246,20 @@ resource cleanup and bundled-ID collision coverage.
 
 ### Stage 5 — AI through direct ACP, with migrated stories
 
+**Start with the pre-controller implementation.** Read
+[AI_ACP_REFERENCE.md](AI_ACP_REFERENCE.md) before designing the adapter. It pins
+the earlier `@lapis-notes/ai` plugin at `lapis-plugins` revision `27c1427a3aa3`
+and its Notes host at `28bc7ab228bd`, with the later controller cutover
+revisions for comparison. The earlier plugin supported direct ACP alongside
+Codex Native; this migration selects only its ACP path.
+
+Reuse the `AcpAgentRuntime` / `AcpRuntimeBackend` seam and applicable regression
+tests, retaining current UI, conversation storage and fixes. Replace the old
+desktop backend with the Rust `lapis-ai` Tauri client; recover app-owned types,
+context handoff and memory logic from before controller extraction. A wholesale
+rollback would reintroduce obsolete hosts and lose later fixes. The reference
+maps the files, transport differences and permission fallback that must change.
+
 Deliver AI in three independently reviewable slices.
 
 **A. Reusable native adapter**
@@ -279,8 +293,9 @@ shipped desktop dependency path.
 
 **C. Application tools and credentials**
 
-Replace the Node MCP shim with a bundled Rust bridge using private authenticated
-IPC.
+Replace legacy JavaScript/Deno app-tool hosting with a bundled Rust bridge using
+private authenticated IPC. Historical hosts used different transports; preserve
+their authorization contract, not their runtime launch code.
 
 Retain the application-tool registry, vault authorization, guarded edits and
 approval UI. Forward exact provider permission option IDs; unknown options must

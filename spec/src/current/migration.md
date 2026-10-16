@@ -148,3 +148,9 @@ The captured inventory remains immutable historical baseline. Record revised
 current destination mappings separately at the post-M7 handoff. E-PLUGINS-001
 records this scheduling decision only; active task gates and committed evidence
 are preserved.
+
+Stage 5 also links root `AI_ACP_REFERENCE.md`, which pins the pre-controller
+plugin and Notes host, maps reusable ACP interfaces/tests and records the
+control-v3 adaptation work. Reuse preserves current application data and fixes;
+it is not a wholesale rollback. E-PLUGINS-002 records this M10 handoff guidance
+only. All task statuses, gates and review stops remain unchanged.

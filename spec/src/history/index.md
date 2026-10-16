@@ -44,6 +44,7 @@ by the task ledger, not inferred from this list.
 - [Contained native mutation component](E-FILES-001.md)
 - [Bounded native watch transport](E-WATCH-001.md)
 - [Post-M7 plugin and Storybook plan](E-PLUGINS-001.md)
+- [Pre-controller ACP migration reference](E-PLUGINS-002.md)
 - [Protected native Explorer deletion](E-TRASH-001.md)
 - [Exclusive native new-file creation](E-CREATE-001.md)
 - [App-owned external file reconciliation](E-INGESTION-001.md)
