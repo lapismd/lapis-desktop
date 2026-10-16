@@ -93,6 +93,7 @@ async function acceptance() {
       "tests/desktop/system-file-actions.test.mjs",
       "tests/desktop/file-ui-mutations.test.mjs",
       "tests/desktop/file-import.test.mjs",
+      "tests/desktop/navigation-search.test.mjs",
     ],
     environment,
   );

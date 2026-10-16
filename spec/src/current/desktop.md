@@ -1,10 +1,9 @@
 # Desktop shell
 
-The Notes composition root starts its App-owned watch service only after
-metadata/view setup. The Notes leave coordinator stops and drains ingestion
-before persistence and teardown, resuming only the same still-live App after a
-failed leave. Watch ingestion uses shared file/view owners under
-LD-FILE-002/003.
+The Notes composition root starts App-owned watching after metadata/view setup.
+Leave drains it before persistence/teardown and resumes only a still-live App on
+failure (LD-FILE-002/003). M6 Search, metadata, navigation and Graph intake is
+specified in `navigation.md`.
 
 M0.1 establishes the native shell; M2 adds admitted folder access and a
 launcher. M3 integrates the existing Notes workspace and App through public

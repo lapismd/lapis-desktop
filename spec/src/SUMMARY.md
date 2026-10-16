@@ -4,6 +4,7 @@
   - [Governance](current/governance.md)
   - [Desktop shell](current/desktop.md)
   - [File management](current/files.md)
+  - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
   - [Migration inventory](current/migration.md)
   - [Milestones](current/progress/milestones.md)
@@ -53,3 +54,5 @@
   - [Attachment import through existing Explorer dropping](history/E-IMPORT-001.md)
 
   - [Direct renderer compression and raw resource representation](history/E-HTTP-001.md)
+
+  - [Search and native indexed navigation intake](history/E-SEARCH-001.md)

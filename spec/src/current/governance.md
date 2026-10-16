@@ -220,3 +220,12 @@ freshly built acceptance renderer, never a user vault. The harness fails if that
 port is owned elsewhere; it cannot stop or reuse an unrelated listener. Bundled
 raw-resource acceptance runs first, and the subsequent dev build does not
 replace the bundled application binary or widen navigation/IPC authority.
+
+M6 navigation is a first-class canonical chapter in the shared contract list.
+Plugin-profile intake and native find/navigation acceptance map explicitly to
+that owner, while shell composition, writer audit and milestone gates keep their
+existing contracts.
+
+The generated migration summary distinguishes the latest started milestone from
+the oldest unfinished gate. Both statuses and next actions derive from the task
+ledger; advancing implementation cannot silently complete deferred gates.

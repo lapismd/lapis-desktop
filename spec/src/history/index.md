@@ -55,3 +55,5 @@ by the task ledger, not inferred from this list.
 - [Attachment import through existing Explorer dropping](E-IMPORT-001.md)
 
 - [Direct renderer compression and raw resource representation](E-HTTP-001.md)
+
+- [Search and native indexed navigation intake](E-SEARCH-001.md)

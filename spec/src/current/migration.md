@@ -50,8 +50,13 @@ the original migration baseline.
 
 [Milestone tasks](progress/milestones.md) alone own statuses and selected gate
 evidence. Root MIGRATION.md projects that table and links the complete PLAN.md.
-The first useful target ends at M4. M0.1 is a native shell qualification, not a
-claim that the application can edit notes.
+It identifies the latest started task as current work and separately names the
+oldest pending gate when implementation has advanced beyond qualification. M6
+Search has targeted source/native evidence; metadata navigation, Search settings
+recovery and both Graph views still require qualification. M4/M5 remain In
+progress until their deferred full gates pass. The first useful target ends at
+M4. M0.1 is a native shell qualification, not a claim that the application can
+edit notes.
 
 The shell qualification retains the original M0.1 gate. M1 is qualified against
 committed source-owned archives; M2 native vault access is also qualified.
@@ -208,3 +213,8 @@ intermediary Vite Fetch proxy with direct devUrl loading and bundled production
 assets. LD-FILE-005 remains the governing representation invariant; direct
 compressed native loading and unmodified raw resources require their own
 evidence.
+
+M5 implementation has targeted source/native evidence through E-HTTP-001; full
+qualification stays pending until M7 end. M6 now owns Search, Markdown
+metadata/navigation and both Graph views in `navigation.md`. Qualify Search
+first and Graph next, retaining the complete M6 gate and enabled-writer audit.

@@ -4,6 +4,7 @@ import {
   markdownProjection,
   validateProgress,
   inventoryErrors,
+  migrationSummary,
 } from "../../scripts/progress-model.mjs";
 
 test("generated status comparison tolerates Markdown alignment but rejects changed status", () => {
@@ -50,6 +51,28 @@ const record = (overrides = {}) => ({
   ...overrides,
 });
 const requirements = new Set(["LD-GOV-004"]);
+test("migration summary separates active implementation from the oldest pending gate", () => {
+  const tasks = [
+    task("M3", { status: "Done" }),
+    task("M4", { status: "In progress", next: "Full gates at M7 end" }),
+    task("M5", { status: "In progress", next: "Full gates at M7 end" }),
+    task("M6", { status: "In progress", next: "Qualify metadata and Graph" }),
+    task("M7", { next: "Desktop integration" }),
+  ];
+  const summary = migrationSummary(tasks);
+  assert.match(summary, /Current work: M6 — Qualify metadata and Graph/u);
+  assert.match(summary, /Oldest pending gate: M4 — Full gates at M7 end/u);
+  assert.match(summary, /Completed: M3\./u);
+  assert.doesNotMatch(summary, /Next: M4|Native services.*deferred/u);
+  assert.match(
+    migrationSummary([task("M0.0")]),
+    /Current work: M0.0 — Run the native gate/u,
+  );
+  assert.match(
+    migrationSummary([task("M0.0", { status: "Done" })]),
+    /No pending task/u,
+  );
+});
 test("Done requires the original gate and completed prerequisites", () => {
   const tasks = [
     task("M0.0"),

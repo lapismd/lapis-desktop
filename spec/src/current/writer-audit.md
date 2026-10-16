@@ -2,8 +2,8 @@
 
 This inventory supports LD-LIFE-007. The milestone ledger remains the completion
 authority; an inventory row or passing component test does not complete M4.
-Scope is the desktop's enabled Source Editor, Markdown and File Explorer profile
-plus the shared shell's settings and navigation commands.
+Scope expands from Source Editor, Markdown and File Explorer to the M6 Search
+and Graph intake, plus shared shell settings and navigation commands.
 
 | Writer                                                           | Owner and boundary                                                             | Evidence or next verification                                                                                                                                                |
 | ---------------------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -29,3 +29,8 @@ After component qualification, rerun the complete cold edit/save/quit/relaunch,
 failed-save, external-conflict and repeated-switch gates before marking M4 Done.
 M5, M6 and M7 must then meet every functionality item and original gate in
 PLAN.md. Deno desktop stays frozen; no publication or app signing is introduced.
+
+M6 adds Search settings/recent-query data and Graph control/settings persistence
+to the enabled writer surface. Audit their admission, debounces, unload and
+failure recovery before LD-NAV-007 or the aggregate M4/M6 gates can complete.
+Source integration and cold native evidence remain pending.

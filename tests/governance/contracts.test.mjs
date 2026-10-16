@@ -76,3 +76,31 @@ test("M5 filesystem implementations and acceptance retain a mapped file contract
     );
   }
 });
+
+test("M6 profile and native navigation retain their dedicated canonical owner", () => {
+  assert.ok(
+    new RegExp(config.validators.specFirst.canonicalPattern).test(
+      "spec/src/current/navigation.md",
+    ),
+  );
+  assert.ok(
+    config.documentRoles.some(
+      ({ pattern, role }) =>
+        role === "contract" &&
+        new RegExp(pattern).test("current/navigation.md"),
+    ),
+  );
+  for (const path of [
+    "src/lib/notes/notes-plugins.ts",
+    "tests/desktop/navigation-search.test.mjs",
+    "tests/desktop/navigation-graph.test.mjs",
+  ]) {
+    const chapters = config.validators.specFirst.rules
+      .filter(({ pattern }) => new RegExp(pattern).test(path))
+      .flatMap((rule) => rule.chapters ?? []);
+    assert.ok(
+      chapters.includes("spec/src/current/navigation.md"),
+      `${path} must update its navigation contract`,
+    );
+  }
+});
