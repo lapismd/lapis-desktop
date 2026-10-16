@@ -8,8 +8,8 @@
 
 Completed: M0.0, M0.1, M1, M2, M3.
 
-Current work: M6 — Search native passes; qualify metadata, Search settings and
-both Graph views
+Current work: M6 — Search/settings and metadata native pass; qualify both Graph
+views
 
 Oldest pending gate: M4 — M4 full gates at M7 end; implement M6–M7
 
@@ -19,19 +19,19 @@ The task ledger and selected evidence retain every remaining check.
 The Deno desktop is superseded and frozen. Signing, publication and post-M7
 plugin intake remain deferred to their planned gates.
 
-| Task | Status      | Next action                                                                  |
-| ---- | ----------- | ---------------------------------------------------------------------------- |
-| M0.0 | Done        | Complete                                                                     |
-| M0.1 | Done        | Complete                                                                     |
-| M1   | Done        | Complete; proceed to M2 native vault access                                  |
-| M2   | Done        | Complete; proceed to the M3 native database gate                             |
-| M3   | Done        | Complete; proceed to M4 safe everyday-use qualification                      |
-| M4   | In progress | M4 full gates at M7 end; implement M6–M7                                     |
-| M5   | In progress | M5 implementation qualified; full gates at M7 end; proceed M6                |
-| M6   | In progress | Search native passes; qualify metadata, Search settings and both Graph views |
-| M7   | Planned     | Complete native menus and application delivery                               |
-| M8   | Planned     | After M7 qualification, specify and implement plugin-plan Stages 0–3         |
-| M9   | Deferred    | After M8, specify and qualify plugin-plan Stage 4                            |
-| M10  | Deferred    | After M9, specify direct ACP AI, then optional compute                       |
-| M11  | Planned     | Qualify signed distribution and each additional platform                     |
-| M12  | Planned     | Qualify Tauri coverage and remove frozen Deno desktop                        |
+| Task | Status      | Next action                                                          |
+| ---- | ----------- | -------------------------------------------------------------------- |
+| M0.0 | Done        | Complete                                                             |
+| M0.1 | Done        | Complete                                                             |
+| M1   | Done        | Complete; proceed to M2 native vault access                          |
+| M2   | Done        | Complete; proceed to the M3 native database gate                     |
+| M3   | Done        | Complete; proceed to M4 safe everyday-use qualification              |
+| M4   | In progress | M4 full gates at M7 end; implement M6–M7                             |
+| M5   | In progress | M5 implementation qualified; full gates at M7 end; proceed M6        |
+| M6   | In progress | Search/settings and metadata native pass; qualify both Graph views   |
+| M7   | Planned     | Complete native menus and application delivery                       |
+| M8   | Planned     | After M7 qualification, specify and implement plugin-plan Stages 0–3 |
+| M9   | Deferred    | After M8, specify and qualify plugin-plan Stage 4                    |
+| M10  | Deferred    | After M9, specify direct ACP AI, then optional compute               |
+| M11  | Planned     | Qualify signed distribution and each additional platform             |
+| M12  | Planned     | Qualify Tauri coverage and remove frozen Deno desktop                |

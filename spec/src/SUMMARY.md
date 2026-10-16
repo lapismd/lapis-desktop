@@ -56,3 +56,7 @@
   - [Direct renderer compression and raw resource representation](history/E-HTTP-001.md)
 
   - [Search and native indexed navigation intake](history/E-SEARCH-001.md)
+
+  - [Search settings recovery](history/E-SEARCH-002.md)
+
+  - [Native metadata navigation](history/E-NAV-001.md)

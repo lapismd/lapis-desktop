@@ -229,3 +229,11 @@ existing contracts.
 The generated migration summary distinguishes the latest started milestone from
 the oldest unfinished gate. Both statuses and next actions derive from the task
 ledger; advancing implementation cannot silently complete deferred gates.
+
+Native Search settings acceptance joins the existing sequential runner. Failed
+locator fixtures remain distinct from reproduced stale recovery; qualification
+uses the source-owned public package archive and existing Configuration events.
+
+Native metadata acceptance joins the canonical runner with registered Markdown
+views and Search handoffs, including disabled/re-enabled Search and ordinary
+internal links. It uses real source-position edits in isolated vaults.

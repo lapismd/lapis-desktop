@@ -94,6 +94,8 @@ async function acceptance() {
       "tests/desktop/file-ui-mutations.test.mjs",
       "tests/desktop/file-import.test.mjs",
       "tests/desktop/navigation-search.test.mjs",
+      "tests/desktop/navigation-search-settings.test.mjs",
+      "tests/desktop/navigation-metadata.test.mjs",
     ],
     environment,
   );

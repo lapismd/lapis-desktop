@@ -43,3 +43,12 @@ The active session still defers full source, Storybook/axe, web, Desktop and
 ordinary-bundle lanes until M7 implementation is complete. Original M4–M7 gates
 remain open until those deferred lanes pass. Deno is frozen; publishing,
 signing, semantic compute and post-M7 plugin intake remain deferred.
+
+Search settings qualification includes immediate close/cold restore, retained
+permission failure and explicit disk recovery. The recovered values must reach
+the real controls before an unrelated partial change; native disk bytes and
+original close barriers remain part of the acceptance.
+
+Metadata acceptance uses the existing command openers and public panel hosts.
+Qualify Outline source-position navigation, Backlinks/Outgoing Links activation,
+Tags/property Search handoffs, external refresh and restored native views.

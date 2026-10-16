@@ -33,4 +33,5 @@ PLAN.md. Deno desktop stays frozen; no publication or app signing is introduced.
 M6 adds Search settings/recent-query data and Graph control/settings persistence
 to the enabled writer surface. Audit their admission, debounces, unload and
 failure recovery before LD-NAV-007 or the aggregate M4/M6 gates can complete.
-Source integration and cold native evidence remain pending.
+E-SEARCH-002 records passing Search close/cold restore, failed-save protection
+and live disk recovery through the source-owned repair. Graph remains pending.

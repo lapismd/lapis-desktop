@@ -57,3 +57,7 @@ by the task ledger, not inferred from this list.
 - [Direct renderer compression and raw resource representation](E-HTTP-001.md)
 
 - [Search and native indexed navigation intake](E-SEARCH-001.md)
+
+- [Search settings recovery](E-SEARCH-002.md)
+
+- [Native metadata navigation](E-NAV-001.md)
