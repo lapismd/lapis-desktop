@@ -2,7 +2,7 @@ import type {
   AppDatabaseOpenContext,
   AppDatabaseProvider,
 } from "@lapis-notes/api/app-database";
-import type { NativeCall, VaultDescriptor } from "./vault-client.ts";
+import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 import { NativeTursoConnection } from "./native-connection.ts";
 
 export function createNativeDatabaseProvider(

@@ -3,8 +3,8 @@ import {
   NativeDesktopVaultAdapter,
   type VaultSession,
 } from "@lapis-notes/api";
-import { createNativeDatabaseProvider } from "./native-database-provider.ts";
-import type { VaultDescriptor } from "./vault-client.ts";
+import { createNativeDatabaseProvider } from "../native/database/native-database-provider.ts";
+import type { VaultDescriptor } from "../native/vault-client.ts";
 
 export function openNotesSession(
   selected: VaultDescriptor,

@@ -42,6 +42,26 @@ The product name is Lapis Notes Preview and the application identifier is
 port 1431. Production loads bundled assets through Tauri's local application
 protocol and permits no network connection except native IPC.
 
+## Renderer organization
+
+`src/main.ts` owns renderer bootstrap. Feature components live in
+`src/components`: `views` composes the shell and Notes workspace, `vaults`
+contains launcher presentation, and `files` contains conflict presentation.
+Non-visual code lives in feature directories under `src/lib`: `desktop` owns
+startup and window lifecycle, `launcher` owns appearance preferences, `notes`
+constructs sessions and the plugin profile, and `native` owns the transport
+adapters with a dedicated `database` subdirectory. Native adapters do not depend
+on Notes orchestration or local UI components.
+
+`src/styles` contains application-wide host CSS. Component-specific styles stay
+scoped with their component. Add future code to its owning feature instead of
+flattening the source root or creating catch-all helpers. Use direct relative
+imports and preserve these boundaries when moving code. This organization does
+not change the shared components, native permissions, state policy or migration
+gates.
+
+## Native shell presentation
+
 Use public Tauri overlay configuration and native menus. Native-pointer access
 is limited to the macOS control-layout helper described below. Glass, other
 platform-pointer interop, extra windows and user documents remain later work.

@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { startShell } from "../../src/shell-startup.ts";
+import { startShell } from "../../src/lib/desktop/shell-startup.ts";
 
 function fixture() {
   const events = [];

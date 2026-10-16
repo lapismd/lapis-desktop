@@ -3,8 +3,8 @@ import type {
   TursoStatementInput,
 } from "@lapis-notes/api/app-database";
 import { invoke } from "@tauri-apps/api/core";
-import { nativeError } from "./native-error.ts";
-import type { NativeCall, VaultDescriptor } from "./vault-client.ts";
+import { nativeError } from "../native-error.ts";
+import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 import {
   callArgs,
   decodeRows,

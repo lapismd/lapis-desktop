@@ -1,5 +1,6 @@
 # Evidence
 
+- [E-STRUCTURE-001: Renderer source organization](E-STRUCTURE-001.md)
 - [E-MUTATION-001: Properties and metadata writer intake](E-MUTATION-001.md)
 - [E-STATE-001: Settings and hotkey writers](E-STATE-001.md)
 

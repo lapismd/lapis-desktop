@@ -4,6 +4,11 @@ The user requested a pause after the current settings/hotkeys component is
 qualified and committed, with the ordinary app open for review. M4 remains
 unfinished and every original milestone gate retains its scope.
 
+The requested renderer source reorganization is a separate maintenance slice. It
+adopts feature-grouped components, application logic and global styles, with the
+placement convention documented in the desktop agent guide. The remaining
+functional migration stays paused for review.
+
 Local archive qualification checks active workspace peer imports against the
 verified tarball payload, including peer-only consumers. Editable preview
 integration and tab-first native-window alignment are the current slice; the

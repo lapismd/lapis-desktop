@@ -5,9 +5,9 @@ import {
   decodeValue,
   callArgs,
   decodeRows,
-} from "../../src/database-codec.ts";
-import { NativeTursoConnection } from "../../src/native-connection.ts";
-import { createNativeDatabaseProvider } from "../../src/native-database-provider.ts";
+} from "../../src/lib/native/database/database-codec.ts";
+import { NativeTursoConnection } from "../../src/lib/native/database/native-connection.ts";
+import { createNativeDatabaseProvider } from "../../src/lib/native/database/native-database-provider.ts";
 
 const selected = {
   profileId: "profile",

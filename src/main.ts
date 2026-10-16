@@ -7,16 +7,16 @@ import "@lapismd/design-core/styles.css";
 import "@lapismd/design-core/themes/lapis.css";
 import "@lapis-notes/ui/theme.css";
 import "@lapis-notes/ui/codemirror-autocomplete.css";
-import "./shell.css";
-import "./notes-workspace.css";
-import "./window-chrome.css";
-import Shell from "./Shell.svelte";
-import { readLauncherAppearance } from "./launcher-appearance.ts";
-import { startShell } from "./shell-startup";
-import { VaultClient } from "./vault-client.ts";
-import { createNativeBridge } from "./native-bridge.ts";
-import { installDesktopLifecycle } from "./desktop-lifecycle.ts";
-import { installWindowDragRegions } from "./window-drag.ts";
+import "./styles/shell.css";
+import "./styles/notes-workspace.css";
+import "./styles/window-chrome.css";
+import Shell from "./components/views/Shell.svelte";
+import { readLauncherAppearance } from "./lib/launcher/launcher-appearance.ts";
+import { startShell } from "./lib/desktop/shell-startup";
+import { VaultClient } from "./lib/native/vault-client.ts";
+import { createNativeBridge } from "./lib/native/native-bridge.ts";
+import { installDesktopLifecycle } from "./lib/desktop/desktop-lifecycle.ts";
+import { installWindowDragRegions } from "./lib/desktop/window-drag.ts";
 
 const vaultClient = new VaultClient();
 

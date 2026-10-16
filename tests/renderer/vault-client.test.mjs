@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { VaultClient } from "../../src/vault-client.ts";
-import { createNativeBridge } from "../../src/native-bridge.ts";
+import { VaultClient } from "../../src/lib/native/vault-client.ts";
+import { createNativeBridge } from "../../src/lib/native/native-bridge.ts";
 
 function fixture() {
   const calls = [];

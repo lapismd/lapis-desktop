@@ -1,7 +1,7 @@
 import { init } from "@wdio/tauri-plugin";
-import { createNativeDatabaseProvider } from "../../src/native-database-provider.ts";
+import { createNativeDatabaseProvider } from "../../src/lib/native/database/native-database-provider.ts";
 import type { AppDatabase } from "@lapis-notes/api/app-database";
-import type { VaultDescriptor } from "../../src/vault-client.ts";
+import type { VaultDescriptor } from "../../src/lib/native/vault-client.ts";
 import { NativeDesktopVaultAdapter } from "@lapis-notes/api";
 
 await init();

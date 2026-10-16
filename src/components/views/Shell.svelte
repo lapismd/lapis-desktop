@@ -1,11 +1,14 @@
 <script lang="ts">
   import { onMount, tick } from "svelte";
-  import VaultLauncher from "./VaultLauncher.svelte";
+  import VaultLauncher from "../vaults/VaultLauncher.svelte";
   import NotesWorkspace from "./NotesWorkspace.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
-  import { openNotesSession } from "./notes-session.ts";
+  import { openNotesSession } from "../../lib/notes/notes-session.ts";
   import type { VaultSession } from "@lapis-notes/api";
-  import type { VaultClient, VaultDescriptor } from "./vault-client.ts";
+  import type {
+    VaultClient,
+    VaultDescriptor,
+  } from "../../lib/native/vault-client.ts";
   let { client }: { client: VaultClient } = $props();
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);

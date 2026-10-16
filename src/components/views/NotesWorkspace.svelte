@@ -17,8 +17,8 @@
     WorkspaceStartupFailure,
     WorkspaceStartupTask,
   } from "@lapismd/design-core/workspace/startup";
-  import { desktopNotesPlugins } from "./notes-plugins.ts";
-  import FileConflicts from "./FileConflicts.svelte";
+  import { desktopNotesPlugins } from "../../lib/notes/notes-plugins.ts";
+  import FileConflicts from "../files/FileConflicts.svelte";
 
   let {
     session,

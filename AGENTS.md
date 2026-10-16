@@ -53,6 +53,40 @@ Run `pnpm check:architecture` and `pnpm check:app-ownership` for source-boundary
 changes. Both are included in normal and specification validation. Native
 automation is explicitly feature-gated and unavailable in ordinary bundles.
 
+## Renderer source layout
+
+Group new code by responsibility and feature, following this layout:
+
+```text
+src/
+  main.ts                  Renderer bootstrap and global style imports
+  components/
+    views/                 Shell and Notes workspace composition roots
+    vaults/                Vault launcher presentation
+    files/                 File conflict presentation
+  lib/
+    desktop/               Startup, window behavior and leave coordination
+    launcher/              Launcher appearance preferences
+    native/                Native bridge, vault client and transport errors
+      database/            Database frames, connections and provider
+    notes/                 Notes session construction and plugin profile
+  styles/                  Global shell, workspace and window chrome CSS
+```
+
+Keep `src` itself limited to bootstrap files. Add components and supporting
+logic to their owning feature directory; create another named feature when its
+responsibility is distinct. Composition roots may combine features. Keep `lib`
+independent of local UI components and native adapters independent of Notes
+orchestration. Use a shared directory only for code with actual reuse; avoid
+catch-all utility folders and flat component or library directories.
+
+Keep component-specific styles scoped with their component; `styles` is for
+application-wide host styling using public tokens. Import modules directly with
+relative paths. Do not leave compatibility re-exports at old locations after
+moves or introduce barrels, aliases or routing frameworks just to organize
+files. Update renderer tests and the native acceptance entry when their imports
+move, and retain historical evidence at its original paths.
+
 ## Local commands
 
 `pnpm dev` starts Tauri with the loopback Vite renderer. `pnpm build` emits the

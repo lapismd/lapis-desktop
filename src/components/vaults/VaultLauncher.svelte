@@ -4,11 +4,14 @@
     DesktopVaultLauncher,
     type DesktopVaultLauncherHost,
   } from "@lapis-notes/workspace";
-  import type { VaultClient, VaultDescriptor } from "./vault-client.ts";
+  import type {
+    VaultClient,
+    VaultDescriptor,
+  } from "../../lib/native/vault-client.ts";
   import {
     readLauncherAppearance,
     saveLauncherAppearance,
-  } from "./launcher-appearance.ts";
+  } from "../../lib/launcher/launcher-appearance.ts";
 
   let {
     client,

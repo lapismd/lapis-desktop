@@ -27,6 +27,13 @@ Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not
 authored source. No initial file-size exceptions exist.
 
+The preferred renderer layout is documented in `AGENTS.md` and `desktop.md`:
+bootstrap at the source root, feature-grouped `components` and `lib`, and
+application-wide `styles`. New code follows its owning responsibility. Moves
+update live imports and acceptance entrypoints; historical evidence remains
+immutable and resolves against its enclosing snapshot. Organization alone does
+not authorize new functionality or resume a paused migration milestone.
+
 Evidence uses a JSON metadata block inside readable Markdown. Record independent
 runs and all failed attempts. An appended record may resolve an older failure;
 it cannot rewrite that result. Use `enclosing-change` for evidence in the change
