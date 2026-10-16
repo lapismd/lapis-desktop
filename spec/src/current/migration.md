@@ -145,3 +145,34 @@ representation contract in `files.md`. Every original M5 gate remains required.
 M5 native watch transport has targeted ownership, bounded delivery and real
 WebView evidence. Its task remains In progress pending shared App ingestion,
 remaining file flows and the original end-of-M7 qualification gates.
+
+## Scheduled plugin work after M7
+
+On 2026-10-16 the user requested the combined plugin and Storybook plan in root
+`PLUGIN_MIGRATION.md`, scheduled after M7 in `PLAN.md`. M7's original gate and
+all deferred M4–M7 checks must pass first. This does not expand the other
+agent's active M4–M7 request or qualify any plugin implementation.
+
+M8 now plans Stages 0–3: desktop Storybook, bundled Terminal, retirement of web
+AI/Terminal support and remaining portable plugins/workers. M9 plans Stage 4,
+verified installed plugins. M10 plans Stages 5–6, bundled direct-ACP AI and
+optional compute last. M8 remains Planned; M9 and M10 remain Deferred until the
+post-M7 work is admitted. Before implementation, introduce detailed tasks and
+owning product contracts/verification. M11 and M12 remain subsequent milestones.
+
+The desktop owns both plugin integrations and copied/adapted application
+stories; `lapis-ai` and `lapis-terminal` remain reusable packages. Preserve the
+affected plugin IDs, settings, conversations and explicit disabled preferences,
+and reject duplicate installed copies. This is a scoped exception to pre-release
+state-reset permission, not a general legacy-state import gate.
+
+Roles/CV, Docs, Tasks, both Sync variants, Sync-only signing and the parked
+Community plugin are excluded. The plan adds no Node/Deno runtime, shared AI
+controller, web AI/Terminal gateway or arbitrary native plugin installer.
+Storybook uses fake clients; native acceptance and visual approval stay
+separate.
+
+The captured inventory remains immutable historical baseline. Record revised
+current destination mappings separately at the post-M7 handoff. E-PLUGINS-001
+records this scheduling decision only; active task gates and committed evidence
+are preserved.

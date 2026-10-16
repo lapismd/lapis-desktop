@@ -43,3 +43,4 @@ by the task ledger, not inferred from this list.
 - [Startup recovery and session Safe Mode](E-RECOVERY-001.md)
 - [Contained native mutation component](E-FILES-001.md)
 - [Bounded native watch transport](E-WATCH-001.md)
+- [Post-M7 plugin and Storybook plan](E-PLUGINS-001.md)

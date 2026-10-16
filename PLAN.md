@@ -52,7 +52,11 @@ application-state default to `.lapis` throughout the app.
 - **Application profile:** define a small desktop-owned profile from public
   plugin exports. Initially enable Source Editor, Markdown, and File Explorer.
   Add Search in its own slice. The existing private `app-profile` package does
-  not become a checkout dependency.
+  not become a checkout dependency. After M7, follow
+  [PLUGIN_MIGRATION.md](PLUGIN_MIGRATION.md): desktop-owned bundled AI and
+  Terminal integrations, desktop Storybook, portable plugins and installed
+  plugin support. Keep `lapis-ai` and `lapis-terminal` reusable, and remove AI
+  and Terminal support from the web host.
 - **Native shell:** use an overlay titlebar with native traffic lights, explicit
   Tauri HTML drag regions, normal macOS menus, saved window geometry, and the
   Lapis theme. Hide the native title and let sidebar and workspace tab strips
@@ -109,9 +113,9 @@ Commit each verified task in its owning repository.
 | **M5 — File management**                     | Native watching, create/rename/move/delete, attachment import, reveal in Finder, and available system-trash behavior.                                                                                                 | UI and disk stay consistent after internal and external changes. Dirty-note rename/delete, collisions, watcher overflow/reconciliation, and teardown are covered.                                                                   |
 | **M6 — Find and navigate**                   | Search, links, backlinks, outline, tags, properties, and normal workspace navigation through existing packages.                                                                                                       | Searches and metadata reflect edits, renames, deletions, and restart; navigation opens the intended note and preserves layout.                                                                                                      |
 | **M7 — Desktop integration**                 | Full native menus and shortcuts, clipboard, notifications, About, single-instance delivery, and application URLs.                                                                                                     | Cold launch and already-running delivery pass; external links open safely; menu actions use the same application commands as the UI.                                                                                                |
-| **M8 — Portable plugin intake**              | Add remaining supported first-party plugins individually, beginning with those needing no new native service.                                                                                                         | Each plugin has its own capability mapping, persistence/restart checks, and interaction/accessibility acceptance. Unsupported capabilities remain explicit.                                                                         |
-| **M9 — Advanced services, deferred**         | Separate tasks for language services, terminal/PTY, AI controller integration, model services, secure storage, signing, and sync.                                                                                     | Each task receives an owning specification and native lifecycle/security acceptance before implementation. Preserve existing public service protocols; a similar reference implementation does not establish compatibility.         |
-| **M10 — Installed-plugin support, deferred** | Verified registry installation, asset delivery, enable/disable persistence, compatibility, and recovery.                                                                                                              | Signed-package verification, shared API identity, restart, failed-load recovery, and capability restrictions pass in a packaged app.                                                                                                |
+| **M8 — Desktop plugin foundation**           | After M7 qualification, implement plugin-plan Stages 0–3: desktop Storybook, bundled Terminal, web AI/Terminal retirement and remaining portable plugins/workers.                                                     | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths.                                         |
+| **M9 — Installed-plugin support**            | Implement plugin-plan Stage 4: verified registry installation, asset delivery, enable/disable persistence, compatibility and recovery, with bundled plugin IDs reserved.                                              | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app.                                                                    |
+| **M10 — Direct ACP AI and optional compute** | Implement plugin-plan Stages 5–6: desktop-owned AI and copied stories, the reusable lapis-ai Tauri adapter, direct ACP and Rust application tools; optional compute last.                                             | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification.                                           |
 | **M11 — Distribution and other platforms**   | Signed/notarized macOS distribution and update/rollback handling; then separate Linux and Windows qualification tasks.                                                                                                | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                            |
 | **M12 — Desktop cutover**                    | Make Tauri the default desktop application and retire the old desktop host. No legacy application-state import is required.                                                                                           | Every currently supported desktop capability is migrated or explicitly retired, and the replacement has no Deno runtime dependency.                                                                                                 |
 
@@ -121,7 +125,8 @@ increments toward it. Later services do not block that milestone.
 The active delivery request continues through M7 and stops after its original
 desktop-integration gate is verified. Finish M4's complete enabled-writer audit
 before treating everyday use as qualified, then retain all M5–M7 functionality
-and acceptance gates. M8 and later remain outside this request.
+and acceptance gates. The separately scheduled plugin migration begins after
+that qualification; it does not expand the other agent's active M4–M7 run.
 
 The user resumed delivery through M7 after the settings/hotkeys review and
 source reorganization. Continue through M7 without another review pause. For
@@ -130,6 +135,35 @@ slice, and defer full repository/consumer suites until M7 implementation is
 complete. Track deferred lanes explicitly, run them before final qualification,
 and retain every original milestone gate. This exception does not apply to later
 sessions.
+
+### Next workstream after M7: plugins and Storybook
+
+The complete combined plan is [PLUGIN_MIGRATION.md](PLUGIN_MIGRATION.md). Begin
+it only after M7's original gate and all deferred M4–M7 checks pass. Follow its
+order: Storybook foundation → Terminal and stories → web AI/Terminal removal →
+portable plugins and workers → installed plugins → direct ACP AI and stories →
+optional compute. Reuse already qualified M5–M7 services and Search integration
+rather than repeating them.
+
+The M8–M10 rows above and the canonical ledger record the revised future roadmap
+allocation. Before Stage 0, introduce their detailed task breakdown, owning
+requirements, verification and current migration mappings as a governed handoff.
+Preserve the captured inventory as historical baseline. M4–M7 task rows and
+previously committed evidence remain unchanged; no existing completion status is
+reclassified here. M9 and M10 remain Deferred until the post-M7 work is
+admitted.
+
+AI and Terminal are bundled, desktop-owned and user-disableable; their services
+start lazily. Preserve their settings, conversations and explicit disabled
+preferences, and prevent duplicate activation of old installed copies. This is a
+scoped exception to the general pre-release state reset policy, not a general
+legacy-state import requirement.
+
+Roles/CV, Docs, Tasks, both Sync variants and the parked Community plugin are
+outside this workstream. Sync-only signing/key-custody work remains excluded. No
+Node/Deno compatibility runtime, AI controller integration, web AI/Terminal
+gateway or arbitrary native plugin installer is planned. M11 distribution and
+M12 desktop cutover remain subsequent milestones.
 
 The shared `.lapis` default applies to web/server hosts in M1 as well. Replacing
 their runtime hosts is separate work. Retiring `desktop-deno` must preserve Deno
@@ -146,9 +180,11 @@ unchanged.
 Use jj-store’s governance model, with a small implementation appropriate to this
 repository.
 
-- Keep `PLAN.md` as the complete implementation roadmap. Record approved scope
-  or sequencing changes there alongside the relevant specification and tracker
-  changes.
+- Keep `PLAN.md` as the implementation roadmap and `PLUGIN_MIGRATION.md` as its
+  complete post-M7 plugin/Storybook detail. Record approved scope or sequencing
+  changes alongside the relevant specification and tracker changes. The post-M7
+  handoff above expands the planned tasks before implementation without changing
+  the other agent's active M4–M7 work.
 - Maintain canonical requirements under `spec/src/current`, using
   `LD-<AREA>-NNN` IDs and exactly one verification row per requirement.
 - Keep milestone task pages as the **sole status authority**. Each task records
@@ -230,4 +266,6 @@ launch, bundle contents and native behavior without a signing gate (confirmed
 - Verify fresh `.lapis` configuration, workspace/layout, hotkeys, and plugin
   persistence in every affected host through the shared packages. Pre-release
   state resets and overwrites are acceptable; legacy-state import and
-  preservation are not release gates.
+  preservation are not general release gates. The later AI/Terminal handover
+  preserves the specific plugin data and disabled preferences identified in
+  `PLUGIN_MIGRATION.md`.
