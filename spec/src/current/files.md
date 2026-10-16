@@ -123,3 +123,10 @@ It verifies collision preservation, admitted dirty-writer flush/recovery, active
 editor retargeting and restored layout against physical files. Browser drop
 delivery exercises the actual component callback; it does not establish a
 physical operating-system drag gesture.
+
+Attachment import connects the existing Explorer external-file drop action to
+the shared FileManager new-file boundary. Complete binary bytes use exclusive
+creation on supporting hosts. App admission spans byte reads through tree
+projection; empty drops leave the vault unchanged, and failures use existing
+owned notices. Imports process files sequentially with single-filename
+validation and the native 64 MiB file bound.

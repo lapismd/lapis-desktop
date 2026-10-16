@@ -51,3 +51,5 @@ by the task ledger, not inferred from this list.
 - [Native file actions through existing Explorer menus](E-ACTIONS-001.md)
 
 - [Internal Explorer mutations and editor retargeting](E-MOVE-001.md)
+
+- [Attachment import through existing Explorer dropping](E-IMPORT-001.md)

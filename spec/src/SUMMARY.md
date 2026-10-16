@@ -49,3 +49,5 @@
   - [Native file actions through existing Explorer menus](history/E-ACTIONS-001.md)
 
   - [Internal Explorer mutations and editor retargeting](history/E-MOVE-001.md)
+
+  - [Attachment import through existing Explorer dropping](history/E-IMPORT-001.md)

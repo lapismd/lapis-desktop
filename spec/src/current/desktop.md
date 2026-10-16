@@ -326,10 +326,10 @@ message when WebKit supplies a stack without it.
 M5 native watch service ownership and bounds are defined in `files.md`; watcher
 resources remain separate from renderer file-tree reconciliation.
 
-Explorer mutations share FileManager writer protection. Cold native checks
-retain dirty conflict bytes before rename, move or deletion and retry existing
-actions after explicit recovery. Clean rename/move retargets the active editor
-and saved layout through restart; view rebinding follows guard release.
+Explorer imports and mutations share FileManager writer protection. Cold native
+checks retain dirty conflict bytes before rename, move or deletion and retry
+existing actions after explicit recovery. Clean rename/move retargets the active
+editor and saved layout through restart; view rebinding follows guard release.
 
 New-file intent uses native exclusive creation when available. State overwrite
 APIs keep their separate semantics. Creation cannot project success after a

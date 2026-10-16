@@ -197,3 +197,7 @@ open; the post-M7 plugin plan is preserved and not implemented in this slice.
 
 Internal rename/move qualification retains collision and dirty-writer cases,
 active-view identity and restart layout under the original LD-FILE-003 gate.
+
+M5 attachment intake reuses Explorer external-file dropping and FileManager
+exclusive creation. Public source and native import qualification remain
+distinct from the inherited HTTP representation item and full end-of-M7 gates.

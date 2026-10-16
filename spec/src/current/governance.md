@@ -208,3 +208,8 @@ isolated disposable files.
 Internal-mutation native qualification uses existing rename/drop components and
 separate isolated profiles. It records browser event delivery separately from
 physical operating-system gestures; no product acceptance hook is added.
+
+Attachment import acceptance dispatches File/DataTransfer through the existing
+Explorer in the real WebView, then verifies native bytes, collision/failure
+handling, rendering and restart. This does not claim a physical operating-system
+drag gesture and adds no native permission or product test hook.
