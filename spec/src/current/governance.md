@@ -180,3 +180,11 @@ workers cannot acquire the services mutex while vault closure joins them.
 
 Native watch acceptance hooks are imported only by the e2e renderer entry.
 Normal bundle audits reject their marker in both binary and renderer output.
+
+The native runner retains the real Explorer dirty-delete regression. Its
+contextmenu event opens the existing Bits UI menu when the embedded driver does
+not synthesize that browser default; the real Delete item performs IO.
+
+Existing App notices project through the source-owned workspace notification
+bridge and retire with that host. Real native failure/retry acceptance uses the
+shared notification component and verifies physical bytes and explicit recovery.

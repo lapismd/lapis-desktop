@@ -176,3 +176,7 @@ The captured inventory remains immutable historical baseline. Record revised
 current destination mappings separately at the post-M7 handoff. E-PLUGINS-001
 records this scheduling decision only; active task gates and committed evidence
 are preserved.
+
+Protected FileManager/Explorer deletion and owned notice projection are source
+components of M5. Original App/tree consistency and end-of-M7 full gates remain
+open; the post-M7 plugin plan is preserved and not implemented in this slice.

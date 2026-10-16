@@ -94,3 +94,9 @@ callbacks immediately, awaits pending start and native stop, and retains failed
 cleanup for retry before releasing admission. Native-watch capability is
 advertised only with that transport installed. App ingestion remains a separate
 shared API boundary and is not established by transport acceptance.
+
+Managed deletion now enters the shared FileManager protection boundary before
+removing files or folders. Explorer uses that owner instead of low-level Vault
+trash; failed/retired writers and changed source paths reject before IO, and
+protection releases on failure so explicit recovery and retry remain possible.
+This component does not complete the remaining M5 file/tree consistency gate.

@@ -41,3 +41,4 @@
   - [Contained native mutation component](history/E-FILES-001.md)
   - [Bounded native watch transport](history/E-WATCH-001.md)
   - [Post-M7 plugin and Storybook plan](history/E-PLUGINS-001.md)
+  - [Protected native Explorer deletion](history/E-TRASH-001.md)

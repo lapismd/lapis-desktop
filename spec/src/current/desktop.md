@@ -319,3 +319,7 @@ message when WebKit supplies a stack without it.
 
 M5 native watch service ownership and bounds are defined in `files.md`; watcher
 resources remain separate from renderer file-tree reconciliation.
+
+Explorer deletion shares FileManager writer protection. Cold native acceptance
+retains dirty conflict bytes before removal and retries through the existing
+menu after explicit recovery; no new presentation surface is introduced.

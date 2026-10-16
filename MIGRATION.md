@@ -21,7 +21,7 @@ installed-plugin support remain explicitly deferred.
 | M2   | Done        | Complete; proceed to the M3 native database gate                     |
 | M3   | Done        | Complete; proceed to M4 safe everyday-use qualification              |
 | M4   | In progress | M4 full gates at M7 end; continue M5                                 |
-| M5   | In progress | Add shared App reconciliation and file UI qualification              |
+| M5   | In progress | Finish App reconciliation, collisions and native file actions        |
 | M6   | Planned     | Integrate search and metadata navigation                             |
 | M7   | Planned     | Complete native menus and application delivery                       |
 | M8   | Planned     | After M7 qualification, specify and implement plugin-plan Stages 0–3 |
