@@ -6,6 +6,7 @@ import { NativeDesktopVaultAdapter } from "@lapis-notes/api";
 
 await init();
 await import("../../src/main.ts");
+await import("./watch-entry.ts");
 
 const databases = new Map<string, AppDatabase>();
 

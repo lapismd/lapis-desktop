@@ -316,3 +316,6 @@ storage, never vault configuration. Skipping layout leaves its original bytes
 untouched; only explicit reset uses Workspace reset/flush before restarting. The
 banner remains below the tabs. Message-plus-stack diagnostics retain their
 message when WebKit supplies a stack without it.
+
+M5 native watch service ownership and bounds are defined in `files.md`; watcher
+resources remain separate from renderer file-tree reconciliation.

@@ -35,6 +35,7 @@ for (const marker of [
   "LAPIS_DESKTOP_ACCEPTANCE_",
   "__lapisNativeDatabaseAcceptance",
   "__lapisConditionalWriteAcceptance",
+  "__lapisNativeWatchAcceptance",
   "Native controls could not be measured",
   "Native visibility could not be measured",
 ])
@@ -64,7 +65,7 @@ assert.ok(rendererFiles.length > 0);
 for (const path of rendererFiles)
   assert.doesNotMatch(
     readFileSync(path, "utf8"),
-    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisNativeDatabaseAcceptance/u,
+    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisNativeDatabaseAcceptance|__lapisNativeWatchAcceptance/u,
   );
 const report = {
   result: "pass",

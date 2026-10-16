@@ -173,3 +173,10 @@ verification rules.
 Native mutation/watch implementations, their renderer bridge and file acceptance
 also map explicitly to `files.md`; the owning contract cannot be omitted merely
 because the general desktop map still covers those source paths.
+
+Native watch start/stop permissions remain exact local main-window grants.
+Registry ownership and capability-scoped file snapshots use the M5 mapping;
+workers cannot acquire the services mutex while vault closure joins them.
+
+Native watch acceptance hooks are imported only by the e2e renderer entry.
+Normal bundle audits reject their marker in both binary and renderer output.

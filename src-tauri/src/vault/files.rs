@@ -33,6 +33,13 @@ impl VaultRoot {
         Ok(Self { dir, path })
     }
 
+    pub(crate) fn clone_for_watch(&self) -> io::Result<Self> {
+        Ok(Self {
+            dir: self.dir.try_clone()?,
+            path: self.path.clone(),
+        })
+    }
+
     pub fn path(&self) -> &Path {
         &self.path
     }

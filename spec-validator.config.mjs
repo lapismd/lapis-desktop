@@ -52,7 +52,7 @@ export default defineConfig(
         rules: [
           {
             pattern:
-              "^(?:src-tauri/src/(?:file_commands\\.rs|vault/(?:mutations\\.rs|watch(?:/|\\.rs)))|src-tauri/tests/vault_(?:mutations|watch)\\.rs|src/lib/native/(?:native-bridge|file-watch)\\.ts|tests/(?:desktop/file-|renderer/native-file-))",
+              "^(?:src-tauri/src/(?:file_commands\\.rs|watch_commands\\.rs|watch/|vault/(?:mutations\\.rs|watch(?:/|\\.rs)))|src-tauri/tests/(?:vault_(?:mutations|watch)|watch_registry)\\.rs|src/lib/native/(?:native-bridge|file-watch|vault-client|vault-path)\\.ts|tests/(?:desktop/file-|renderer/native-file-))",
             chapters: ["spec/src/current/files.md"],
           },
           {

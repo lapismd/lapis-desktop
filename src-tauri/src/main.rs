@@ -12,6 +12,7 @@ mod macos_chrome;
 mod native_host;
 mod navigation;
 mod vault_commands;
+mod watch_commands;
 mod window;
 
 fn main() {

@@ -42,3 +42,4 @@ by the task ledger, not inferred from this list.
 - [Retained plugin writers and admitted creation](E-WRITERS-001.md)
 - [Startup recovery and session Safe Mode](E-RECOVERY-001.md)
 - [Contained native mutation component](E-FILES-001.md)
+- [Bounded native watch transport](E-WATCH-001.md)

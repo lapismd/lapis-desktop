@@ -86,6 +86,7 @@ async function acceptance() {
       "tests/desktop/plugin-persistence.test.mjs",
       "tests/desktop/startup-recovery.test.mjs",
       "tests/desktop/file-operations.test.mjs",
+      "tests/desktop/file-watch.test.mjs",
     ],
     environment,
   );

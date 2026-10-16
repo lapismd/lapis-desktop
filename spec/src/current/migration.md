@@ -141,3 +141,7 @@ canonical choices or the skipped saved layout; explicit reset remains separate.
 M5 now specifies native mutations, watching/reconciliation, guarded application
 projection, attachment/Finder/trash behavior and the inherited HTTP
 representation contract in `files.md`. Every original M5 gate remains required.
+
+M5 native watch transport has targeted ownership, bounded delivery and real
+WebView evidence. Its task remains In progress pending shared App ingestion,
+remaining file flows and the original end-of-M7 qualification gates.

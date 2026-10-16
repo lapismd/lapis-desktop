@@ -73,3 +73,24 @@ selection. Preserve the existing low-level API contract where intentional;
 introduce the necessary source-owned guarded/exclusive boundary for Tauri and
 qualify the original application flow. These are review findings awaiting exact
 source regressions, not completed gate evidence.
+
+Native watch snapshots are bounded to 100,000 entries and 16 MiB of accounted
+path/stamp storage. Hint accumulation retains at most 2,048 paths. A delivery
+contains at most 256 changes and 128 KiB of accounted path/wire overhead;
+exceeding a delivery bound requests full reconciliation without a partial list.
+Incomplete scans retain the last complete snapshot and report recovery needs.
+The event worker owns and drops its native notifier, and close joins that
+worker.
+
+The native registry bounds active watches to 16 per admission and 32 overall.
+Only the issuing live admission may stop its subscriptions. Vault closure joins
+all workers before releasing the root; failed cleanup stays owned for retry.
+Only the exact named start/stop commands are available to the local main window.
+
+Renderer subscriptions validate each complete bounded frame before delivery.
+Malformed or out-of-scope changes, sequence gaps and native reconciliation flags
+emit a portable reconciliation error, never a partial list. Close retires queued
+callbacks immediately, awaits pending start and native stop, and retains failed
+cleanup for retry before releasing admission. Native-watch capability is
+advertised only with that transport installed. App ingestion remains a separate
+shared API boundary and is not established by transport acceptance.

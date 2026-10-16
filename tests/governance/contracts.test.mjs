@@ -40,8 +40,15 @@ test("M5 filesystem implementations and acceptance retain a mapped file contract
   for (const path of [
     "src-tauri/src/file_commands.rs",
     "src-tauri/src/vault/mutations.rs",
+    "src-tauri/src/watch/mod.rs",
+    "src-tauri/src/watch/registry.rs",
+    "src-tauri/src/watch_commands.rs",
     "src-tauri/tests/vault_mutations.rs",
+    "src-tauri/tests/watch_registry.rs",
     "src/lib/native/native-bridge.ts",
+    "src/lib/native/file-watch.ts",
+    "src/lib/native/vault-client.ts",
+    "src/lib/native/vault-path.ts",
     "tests/desktop/file-operations.test.mjs",
   ]) {
     const chapters = config.validators.specFirst.rules

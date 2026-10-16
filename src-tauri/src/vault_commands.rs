@@ -18,7 +18,7 @@ pub async fn vault_restore(
     host: tauri::State<'_, VaultHost>,
 ) -> Result<Option<VaultDescriptor>, NativeError> {
     access(host.inner().clone(), |manager| {
-        manager.vaults.restore_notes()
+        manager.with_files(|manager| manager.vaults.restore_notes())
     })
     .await
 }
@@ -29,7 +29,7 @@ pub async fn vault_remember_notes(
     session_id: Option<String>,
 ) -> Result<(), NativeError> {
     access(host.inner().clone(), move |manager| {
-        manager.vaults.remember_notes(session_id.as_deref())
+        manager.with_files(|manager| manager.vaults.remember_notes(session_id.as_deref()))
     })
     .await
 }
@@ -90,8 +90,7 @@ pub async fn vault_select(
         host.0
             .lock()
             .map_err(|_| io::Error::other("Vault owner is unavailable"))?
-            .vaults
-            .select(selection, create_name.as_deref())
+            .with_files(|manager| manager.vaults.select(selection, create_name.as_deref()))
     })
     .await
     .map_err(|_| io::Error::other("Folder selection could not complete"))?
@@ -145,7 +144,7 @@ pub async fn vault_open_recent(
     profile_id: String,
 ) -> Result<VaultDescriptor, NativeError> {
     access(host.inner().clone(), move |manager| {
-        manager.vaults.open_recent(&profile_id)
+        manager.with_files(|manager| manager.vaults.open_recent(&profile_id))
     })
     .await
 }

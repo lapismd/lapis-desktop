@@ -39,3 +39,4 @@
   - [Retained plugin writers and admitted creation](history/E-WRITERS-001.md)
   - [Startup recovery and session Safe Mode](history/E-RECOVERY-001.md)
   - [Contained native mutation component](history/E-FILES-001.md)
+  - [Bounded native watch transport](history/E-WATCH-001.md)

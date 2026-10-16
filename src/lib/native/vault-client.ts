@@ -1,4 +1,16 @@
 import { convertFileSrc, invoke } from "@tauri-apps/api/core";
+import type {
+  ChangeEvent,
+  NativeWatchSubscription,
+  WatchErrorEvent,
+  WatchOptions,
+} from "@lapis-notes/api";
+import {
+  startFileWatch,
+  nativeWatchChannel,
+  type WatchChannelFactory,
+} from "./file-watch.ts";
+import { vaultPath } from "./vault-path.ts";
 import { nativeError } from "./native-error.ts";
 
 export interface RecentVault {
@@ -19,26 +31,20 @@ export interface VaultListing {
 }
 export type NativeCall = typeof invoke;
 
-export function vaultPath(path: unknown): string {
-  if (path === "/") return "";
-  if (typeof path !== "string" || path.length > 4096 || /[\\\0:]/u.test(path)) {
-    throw new Error("Invalid relative vault path");
-  }
-  if (
-    path &&
-    path.split("/").some((part) => !part || part === "." || part === "..")
-  ) {
-    throw new Error("Invalid relative vault path");
-  }
-  return path;
-}
-
 export class VaultClient {
   #call: NativeCall;
   #fileUrl: (path: string, protocol: string) => string;
+  #channel: WatchChannelFactory;
+  #watches = new Map<string, Set<NativeWatchSubscription>>();
+  #closing = new Map<string, Promise<void>>();
+  #retiring = new Set<string>();
   #admissions = new Map<string, VaultDescriptor>();
 
-  constructor(call: NativeCall = invoke, fileUrl = convertFileSrc) {
+  constructor(
+    call: NativeCall = invoke,
+    fileUrl = convertFileSrc,
+    channel = nativeWatchChannel,
+  ) {
     this.#call = async <T>(...args: Parameters<NativeCall>) => {
       try {
         return await call<T>(...args);
@@ -47,6 +53,7 @@ export class VaultClient {
       }
     };
     this.#fileUrl = fileUrl;
+    this.#channel = channel;
   }
 
   recents(): Promise<RecentVault[]> {
@@ -94,16 +101,65 @@ export class VaultClient {
     return selected;
   }
 
-  async close(selected: VaultDescriptor): Promise<void> {
+  close(selected: VaultDescriptor): Promise<void> {
+    const current = this.#closing.get(selected.sessionId);
+    if (current) return current;
+    this.#retiring.add(selected.sessionId);
+    const operation = this.#release(selected).finally(() => {
+      this.#closing.delete(selected.sessionId);
+      this.#retiring.delete(selected.sessionId);
+    });
+    this.#closing.set(selected.sessionId, operation);
+    return operation;
+  }
+
+  async #release(selected: VaultDescriptor): Promise<void> {
+    const results = await Promise.allSettled(
+      [...(this.#watches.get(selected.sessionId) ?? [])].map(async (watch) =>
+        watch.close(),
+      ),
+    );
+    const failed = results.find((result) => result.status === "rejected");
+    if (failed?.status === "rejected") throw failed.reason;
     await this.#call("vault_close", { sessionId: selected.sessionId });
     this.#admissions.delete(selected.sessionId);
+    this.#watches.delete(selected.sessionId);
+  }
+
+  watch(
+    rootPath: string,
+    path: string,
+    options: WatchOptions,
+    listener: (event: ChangeEvent | WatchErrorEvent) => void,
+  ): NativeWatchSubscription {
+    const selected = this.admitted(rootPath);
+    const watch = startFileWatch(
+      this.#call,
+      selected,
+      path,
+      options.recursive ?? false,
+      listener,
+      this.#channel,
+    );
+    const owned: NativeWatchSubscription = {
+      ready: watch.ready,
+      close: async () => {
+        await watch.close();
+        this.#watches.get(selected.sessionId)?.delete(owned);
+      },
+    };
+    const subscriptions = this.#watches.get(selected.sessionId) ?? new Set();
+    subscriptions.add(owned);
+    this.#watches.set(selected.sessionId, subscriptions);
+    return owned;
   }
 
   admitted(rootPath: unknown): VaultDescriptor {
     const selected = [...this.#admissions.values()].find(
       (entry) => entry.path === rootPath,
     );
-    if (!selected) throw new Error("Vault admission is closed or unknown");
+    if (!selected || this.#retiring.has(selected.sessionId))
+      throw new Error("Vault admission is closed or unknown");
     return selected;
   }
 
@@ -111,7 +167,10 @@ export class VaultClient {
     selected: VaultDescriptor,
     request: Record<string, unknown>,
   ): Promise<T> {
-    if (!this.#admissions.has(selected.sessionId)) {
+    if (
+      !this.#admissions.has(selected.sessionId) ||
+      this.#retiring.has(selected.sessionId)
+    ) {
       return Promise.reject(new Error("Vault admission is closed or unknown"));
     }
     return this.#call<T>("vault_fs", {

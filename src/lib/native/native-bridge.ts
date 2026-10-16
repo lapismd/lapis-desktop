@@ -3,7 +3,7 @@ import type {
   NativeDesktopPlatformOs,
 } from "@lapis-notes/api";
 import type { VaultClient } from "./vault-client.ts";
-import { vaultPath } from "./vault-client.ts";
+import { vaultPath } from "./vault-path.ts";
 
 const fileOperations = new Map([
   ["desktop_fs_stat", "stat"],
@@ -33,6 +33,11 @@ export function createNativeBridge(
     capabilities: {
       "conditional-text-write": {
         id: "conditional-text-write",
+        status: "available",
+        provider: "tauri-vault",
+      },
+      "file-watch": {
+        id: "file-watch",
         status: "available",
         provider: "tauri-vault",
       },
@@ -82,6 +87,8 @@ export function createNativeBridge(
       }
       return client.file<T>(selected, request);
     },
+    watch: (root, path, options, listener) =>
+      client.watch(root, path, options, listener),
     toFileUrl: (path) => client.absoluteResource(path),
     getResourceUrl: async (root, path) => client.resource(root, path),
   };

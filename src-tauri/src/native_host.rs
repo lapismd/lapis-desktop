@@ -1,4 +1,4 @@
-use lapis_desktop::{database::NativeDatabases, vault::VaultManager};
+use lapis_desktop::{database::NativeDatabases, vault::VaultManager, watch::WatchRegistry};
 use serde::Serialize;
 use std::{
     io,
@@ -9,6 +9,8 @@ use tauri::Manager;
 pub struct NativeServices {
     pub vaults: VaultManager,
     pub databases: NativeDatabases,
+    pub watches: WatchRegistry,
+    pub fs_gate: Arc<Mutex<()>>,
 }
 
 impl NativeServices {
@@ -20,7 +22,21 @@ impl NativeServices {
                 "Close the owned database before closing the vault",
             ));
         }
-        self.vaults.close(session_id)
+        // A watcher never acquires the services lock. Do not hold fs_gate here:
+        // joining a worker waiting to snapshot would otherwise deadlock.
+        self.watches.close_session(session_id)?;
+        self.with_files(|services| services.vaults.close(session_id))
+    }
+
+    pub fn with_files<T>(
+        &mut self,
+        action: impl FnOnce(&mut Self) -> io::Result<T>,
+    ) -> io::Result<T> {
+        let gate = self.fs_gate.clone();
+        let _guard = gate
+            .lock()
+            .map_err(|_| io::Error::other("File IO owner is unavailable"))?;
+        action(self)
     }
 }
 
@@ -70,6 +86,8 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
         vaults: VaultManager::new(&profile)?,
         databases: NativeDatabases::new(profile.join("databases")),
+        watches: WatchRegistry::default(),
+        fs_gate: Arc::new(Mutex::new(())),
     }))));
     Ok(())
 }
