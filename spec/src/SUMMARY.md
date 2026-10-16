@@ -80,3 +80,5 @@
 - [Authorized plugin delivery](history/E-PLUGINS-003.md)
 
 - [Desktop catalog foundation](history/E-CATALOG-001.md)
+
+- [Bundled Terminal qualification](history/E-TERMINAL-001.md)

@@ -3,6 +3,7 @@
   import VaultLauncher from "../vaults/VaultLauncher.svelte";
   import NotesWorkspace from "./NotesWorkspace.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
+  import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
   import { openNotesSession } from "../../lib/notes/notes-session.ts";
   import {
     normalRecovery,
@@ -24,7 +25,7 @@
   let selected = $state<VaultDescriptor | null>(null);
   let returnProfileId = $state<string | null>(null);
   let notes = $state<{
-    dispose(): Promise<void>;
+    dispose(mode?: "close" | "reload"): Promise<void>;
     openVaults(): Promise<void>;
     canEdit(): boolean;
   }>();
@@ -103,7 +104,9 @@
     session = null;
   }
 
-  export async function prepareToLeave(): Promise<void> {
+  export async function prepareToLeave(
+    mode: "close" | "reload" = "close",
+  ): Promise<void> {
     leaving = true;
     failure = "";
     await tick();
@@ -113,7 +116,7 @@
     if (session) {
       if (!notes)
         throw new Error("The workspace is still starting. Please try again.");
-      await notes.dispose();
+      await notes.dispose(mode);
     }
     await client.closeAll();
   }
@@ -172,6 +175,7 @@
       {session}
       {urlDelivery}
       {safeMode}
+      createTerminal={(app) => createNativeTerminal(app, selected!)}
       onRestart={restartNotes}
       onBack={back}
       onReady={async () => {

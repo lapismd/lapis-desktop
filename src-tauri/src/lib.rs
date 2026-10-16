@@ -6,6 +6,7 @@ pub mod integration_urls;
 pub mod lifecycle_state;
 pub mod resources;
 pub mod system_actions;
+pub mod terminal_policy;
 pub mod vault;
 
 pub mod watch;

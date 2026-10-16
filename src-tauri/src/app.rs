@@ -9,7 +9,10 @@ pub fn run() -> tauri::Result<()> {
         assert!(std::path::Path::new(&path).is_absolute());
         state.with_filename(path)
     };
+    let terminal = crate::terminal::DesktopTerminalPolicy::default();
     let builder = tauri::Builder::default()
+        .manage(terminal.clone())
+        .plugin(tauri_plugin_lapis_terminal::Builder::new(terminal).build())
         .plugin(tauri_plugin_single_instance::init(|app, args, _| {
             crate::integration::arguments(app, args);
             crate::integration::raise(app);
@@ -57,6 +60,8 @@ pub fn run() -> tauri::Result<()> {
     };
     builder
         .invoke_handler(tauri::generate_handler![
+            crate::terminal::desktop_terminal_admit,
+            crate::terminal::desktop_terminal_release,
             crate::commands::shell_info,
             crate::commands::shell_ready,
             crate::desktop_services::desktop_clipboard_read,

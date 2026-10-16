@@ -34,6 +34,8 @@ turso = { version = "=0.7.2", default-features = false, features = ["fts"] }
 url = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 
+tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin-lapis-terminal" }
+
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-usernotifications = { version = "=0.3.1", default-features = false }
 objc2 = "=0.6.5"

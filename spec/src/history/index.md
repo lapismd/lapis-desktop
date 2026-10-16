@@ -77,3 +77,5 @@ by the task ledger, not inferred from this list.
 - [Authorized plugin delivery](E-PLUGINS-003.md)
 
 - [Desktop catalog foundation](E-CATALOG-001.md)
+
+- [Bundled Terminal qualification](E-TERMINAL-001.md)

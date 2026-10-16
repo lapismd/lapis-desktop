@@ -76,3 +76,7 @@ changes. Keep exact draft/disk, retired-owner and failed-close assertions. The
 compressed-resource test harness retains the build toolchain PATH while building
 its development fixture. Each actual native app process still receives only
 `/usr/bin:/bin`; build-tool availability cannot substitute for that proof.
+
+Terminal adds three exact main-window grants for its scoped public session API
+and desktop admission/release commands. Clipboard, notification, URL and menu
+contracts remain unchanged; plugins do not receive general shell execution.

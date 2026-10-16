@@ -13,7 +13,7 @@ package boundaries and owning-repository validation.
 | LD-CAT-002     | Default catalog execution MUST require no native process, sibling service or credential. App-backed fixtures MUST own disposable in-memory Apps and injectable clients, clean up resources and remain excluded from application bundles.                                                                                                       |
 | LD-PLUG-001    | AI and Terminal MUST be bundled desktop-owned plugins retaining `ai` and `terminal` identities, commands, settings, views, conversations and explicit disabled preferences. Safe Mode MUST prevent optional activation. Bundled implementations MUST take precedence over installed copies without duplicate registration.                     |
 | LD-TERM-001    | Terminal MUST use lapis-terminal's public viewport, rendered-frame client and Tauri adapter. Rust MUST resolve opaque targets into admitted executable, environment and working-directory policy; the renderer MUST NOT submit arbitrary launch specifications. Native services MUST start lazily.                                             |
-| LD-TERM-002    | Moving, hiding or detaching a Terminal view MUST retain its shell. Reload MUST reconnect retained sessions. Explicit tab closure, plugin disable, vault closure and actual exit MUST release affected shells; cancelled close MUST retain them. Scoped teardown MUST NOT stop another window's sessions.                                       |
+| LD-TERM-002    | Moving, hiding or detaching a Terminal view MUST retain its shell. Reload MUST reconnect retained sessions. Explicit tab closure, plugin disable, vault closure, admission revocation and actual exit MUST release affected shells; cancelled close MUST retain them. Scoped teardown MUST NOT stop another window's sessions.                 |
 | LD-TERM-003    | Terminal MUST preserve shell/cwd preferences and bottom-panel commands. Full restart MUST restore an explicit Start action rather than launch shells automatically. Desktop stories and cold native acceptance MUST cover input, resize, scrolling, errors and retained-session lifecycle.                                                     |
 | LD-PLUG-002    | Web MUST expose no AI/Terminal connection settings, activation paths, environment attachment or service connection attempts. Existing installations of those IDs MUST be skipped as desktop-only. Saved conversations, settings and layout MUST remain; obsolete dedicated connection secrets MUST be removed without deleting unrelated data. |
 | LD-PLUG-003    | Portable plugins MUST reuse App-owned database, metadata, guarded writes and watch reconciliation. Bookmarks, Wordcount and Slides qualify before Bases and History; Search and Graph MUST retain completed M6 behavior. Optional additions MUST remain user-disableable and vault-isolated.                                                   |
@@ -43,3 +43,23 @@ distribution/story registrations only after replacements pass.
 Roles/CV, Docs, Tasks, both Sync variants and the parked Community plugin remain
 excluded. Application signing, publication and other-platform distribution stay
 outside M8–M10. Dynamic package signature verification remains required.
+
+## Terminal host integration
+
+The bundled Terminal uses the local `@lapismd/terminal` built public exports and
+Rust Tauri plugin. The private migration app records this unpublished local link
+as a temporary development prerequisite; distribution must resolve it later.
+Native code reads compatible shell/cwd preferences from admitted vault state,
+validates executable files and confines cwd to that physical vault. The renderer
+submits only opaque target and request identities.
+
+App-owned session coordination separates viewport detach from explicit close.
+Confirmed reload suspends its admission after guarded persistence and reconnects
+the same native process; cold restart never launches a shell. Plugin disable,
+vault return and trust revocation release only their window admission. Native
+exit cleanup remains owned by the public terminal plugin.
+
+Terminal settings use the public controlled plugin-settings definition: plugin
+data owns shell/cwd values, subscription cleanup follows plugin disable and the
+workspace does not create a second application-configuration writer. New-shell
+commands drain admitted data operations before reading native launch policy.

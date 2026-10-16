@@ -30,6 +30,7 @@ export async function startNotes(
     ): void;
     onMetadataTracking(stop: () => void): void;
     onReady(): Promise<void>;
+    registerBundledPlugins?(): Promise<void>;
   },
 ): Promise<void> {
   let activeTask = "vault";
@@ -48,6 +49,7 @@ export async function startNotes(
     await phase("configuration", async () => {
       await app.configuration.load();
       await app.commands.loadHotkeys();
+      await options.registerBundledPlugins?.();
     });
     await phase("plugins", () =>
       app.plugins.loadPlugins({

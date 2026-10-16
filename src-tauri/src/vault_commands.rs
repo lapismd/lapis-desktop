@@ -151,11 +151,14 @@ pub async fn vault_open_recent(
 
 #[tauri::command]
 pub async fn vault_close(
+    app: tauri::AppHandle,
     host: tauri::State<'_, VaultHost>,
     session_id: String,
 ) -> Result<(), NativeError> {
+    let closing = session_id.clone();
     access(host.inner().clone(), move |manager| {
-        manager.close_vault(&session_id)
+        manager.close_vault(&closing)
     })
-    .await
+    .await?;
+    crate::terminal::close_vault(&app, &session_id).map_err(|error| io::Error::other(error).into())
 }

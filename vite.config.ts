@@ -39,6 +39,7 @@ export default defineConfig(({ mode }) => ({
         ]
       : []),
   ],
+  resolve: { dedupe: ["svelte", "@lapis-notes/api", "@lapismd/design-core"] },
   server: { host: "127.0.0.1", port: 1431, strictPort: true },
   clearScreen: false,
   build: { target: "safari16" },

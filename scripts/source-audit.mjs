@@ -106,13 +106,23 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "optionalDependencies",
   ])
     for (const [name, version] of Object.entries(manifest[section] ?? {}))
-      if (/^(?:file:|link:|workspace:|git|https?:|\/|\.\.)/u.test(version))
+      if (
+        /^(?:file:|link:|workspace:|git|https?:|\/|\.\.)/u.test(version) &&
+        !(
+          manifest.private === true &&
+          name === "@lapismd/terminal" &&
+          version === "link:../lapis-terminal/packages/terminal"
+        )
+      )
         report(
           "package.json",
           "LD-PACKAGE-LOCAL",
           `${name} must use a registry range.`,
         );
   const expected = [
+    "lapis-terminal:session",
+    "allow-desktop-terminal-admit",
+    "allow-desktop-terminal-release",
     "core:event:allow-listen",
     "core:event:allow-unlisten",
     "allow-shell-info",

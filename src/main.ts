@@ -33,7 +33,7 @@ try {
   addEventListener("pagehide", stopDragRegions, { once: true });
   let shell:
     | {
-        prepareToLeave(): Promise<void>;
+        prepareToLeave(action?: "close" | "reload"): Promise<void>;
         openVaults(): Promise<void>;
         canEdit(): boolean;
         reportFailure(failure: unknown): void;
@@ -62,10 +62,10 @@ try {
     { once: true },
   );
   const stopLifecycle = await installDesktopLifecycle(
-    async () => {
+    async (action) => {
       if (!shell)
         throw new Error("The workspace is still starting. Please try again.");
-      await shell.prepareToLeave();
+      await shell.prepareToLeave(action);
     },
     (failure) => shell?.reportFailure(failure),
   );

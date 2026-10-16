@@ -150,3 +150,7 @@ source-to-destination story coverage and current plugin mappings. Root
 data rather than rolling back the plugin. No AI controller or Node/Deno runtime
 is introduced. Roles/CV, Docs, Tasks, Sync and Community remain excluded.
 Application signing/publication and other-platform distribution remain deferred.
+
+M8.0 is committed. M8.1 integrates the unpublished local Terminal public build
+without publishing a release; its temporary private-app link is explicit.
+Terminal runtime qualification remains separate from catalog evidence.

@@ -156,3 +156,7 @@ M7 menus and application URL navigation retain the existing App-owned writer
 guard. URL dispatch and its native acknowledgement enter admitted operations
 before teardown; retiring the owning App stops new URL admission. File access
 remains confined to the selected admitted root. See `integration.md`.
+
+Terminal launch uses the same admitted physical vault. Successful vault closure
+releases its scoped shells, except a confirmed reload suspension; failed guarded
+persistence never reaches this teardown. File/watch contracts remain unchanged.

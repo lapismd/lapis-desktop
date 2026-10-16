@@ -1,6 +1,8 @@
 fn main() {
     tauri_build::try_build(tauri_build::Attributes::new().app_manifest(
         tauri_build::AppManifest::new().commands(&[
+            "desktop_terminal_admit",
+            "desktop_terminal_release",
             "shell_info",
             "shell_ready",
             "desktop_clipboard_read",

@@ -77,6 +77,7 @@ async function acceptance() {
       "--test-concurrency=1",
       "tests/desktop/lifecycle.test.mjs",
       "tests/desktop/notes-lifecycle.test.mjs",
+      "tests/desktop/terminal-lifecycle.test.mjs",
       "tests/desktop/notes-conflicts.test.mjs",
       "tests/desktop/preview-conflicts.test.mjs",
       "tests/desktop/window-chrome.test.mjs",

@@ -84,3 +84,29 @@ test("desktop integration retains exact local grants and rejects additional plug
     );
   }
 });
+
+test("only the authorized private Terminal public-build link is admitted during migration", () => {
+  const capabilities = JSON.parse(
+    readFileSync("src-tauri/capabilities/main.json", "utf8"),
+  );
+  const configuration = JSON.parse(
+    readFileSync("src-tauri/tauri.conf.json", "utf8"),
+  );
+  const terminal = {
+    private: true,
+    dependencies: {
+      "@lapismd/terminal": "link:../lapis-terminal/packages/terminal",
+    },
+  };
+  assert.deepEqual(auditManifest(terminal, capabilities, configuration), []);
+  for (const manifest of [
+    { ...terminal, private: false },
+    { private: true, dependencies: { "@lapismd/terminal": "link:../other" } },
+    { private: true, dependencies: { other: "link:../other" } },
+  ])
+    assert.ok(
+      auditManifest(manifest, capabilities, configuration).some(
+        (value) => value.code === "LD-PACKAGE-LOCAL",
+      ),
+    );
+});

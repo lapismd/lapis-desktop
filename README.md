@@ -13,7 +13,16 @@ changing implementation.
 ## Development
 
 Use Node 24.10 or a supported newer major, pnpm 10.34.5, the pinned Rust
-toolchain and Xcode command-line tools on macOS.
+toolchain and Xcode command-line tools on macOS. Build the local unpublished
+Terminal library through its public package first:
+
+```sh
+pnpm --dir ../lapis-terminal build:js
+```
+
+The private preview links `../lapis-terminal/packages/terminal`; Rust links its
+Tauri plugin from the same sibling. This temporary prerequisite is recorded in
+the migration evidence and is resolved at the distribution gate.
 
 ```sh
 pnpm install --frozen-lockfile

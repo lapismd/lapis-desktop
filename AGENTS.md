@@ -28,7 +28,9 @@ non-blocking and baselines require explicit approval.
 
 - `src` owns desktop presentation and the renderer transport adapter;
   `src-tauri` owns native windows, admission, services and resource lifetime.
-- Keep tracked manifests and lockfiles on registry semver ranges. During this
+- Keep published dependency ranges portable. The private migration app may link
+  an unpublished sibling through its built public exports; record its revision
+  and remove that temporary prerequisite at the distribution gate. During this
   migration, consume verified local pnpm archives through an ignored development
   overlay and defer package publication to the final release gate. Record source
   revisions and checksums; build and test changes in their owning repository.
@@ -64,12 +66,14 @@ src/
     views/                 Shell and Notes workspace composition roots
     vaults/                Vault launcher presentation
     files/                 File conflict presentation
+    terminal/              Bundled plugin composition and retained presentation
   lib/
     desktop/               Startup, window behavior and leave coordination
     launcher/              Launcher appearance preferences
     native/                Native bridge, vault client and transport errors
       database/            Database frames, connections and provider
     notes/                 Notes session construction and plugin profile
+    terminal/              Session coordination, preferences and owned bindings
   styles/                  Global shell, workspace and window chrome CSS
 ```
 

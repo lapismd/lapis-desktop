@@ -40,6 +40,26 @@ impl VaultRoot {
         })
     }
 
+    pub fn physical_identity(&self) -> io::Result<(u64, u64)> {
+        use cap_std::fs::MetadataExt;
+        let metadata = self.dir.dir_metadata()?;
+        Ok((metadata.dev(), metadata.ino()))
+    }
+
+    pub fn verify_physical_root(&self) -> io::Result<()> {
+        use cap_std::fs::MetadataExt;
+        use std::os::unix::fs::MetadataExt as _;
+        let expected = self.dir.dir_metadata()?;
+        let actual = std::fs::symlink_metadata(&self.path)?;
+        if !actual.is_dir() || actual.dev() != expected.dev() || actual.ino() != expected.ino() {
+            return Err(io::Error::new(
+                io::ErrorKind::PermissionDenied,
+                "Vault folder changed; select it again",
+            ));
+        }
+        Ok(())
+    }
+
     pub fn path(&self) -> &Path {
         &self.path
     }

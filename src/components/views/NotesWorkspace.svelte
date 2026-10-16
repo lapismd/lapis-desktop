@@ -30,8 +30,17 @@
   import { attachNotesUrls } from "../../lib/notes/notes-integration.ts";
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
 
+  import { terminalEnabledByDefault } from "../../lib/terminal/terminal-preferences.ts";
+  import { TerminalPlugin } from "../terminal/terminal-plugin.ts";
+  import {
+    bindTerminal,
+    prepareTerminalLeave,
+    type TerminalFactory,
+  } from "../../lib/terminal/terminal-binding.ts";
+
   let {
     session,
+    createTerminal,
     onBack,
     onReady,
     onRestart,
@@ -39,6 +48,7 @@
     urlDelivery,
   }: {
     session: VaultSession;
+    createTerminal?: TerminalFactory;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
     onRestart(mode: AppSafeModeState): Promise<void>;
@@ -55,6 +65,10 @@
         markdownRenderer: async () => {},
       }),
   );
+  const terminalFactory = untrack(() => createTerminal);
+  if (terminalFactory) {
+    bindTerminal(app, terminalFactory);
+  }
   provideApplicationState(app);
   const releaseCompatibility = installApplicationCompatibility(app);
   const sync = takeHostSyncService(app);
@@ -103,6 +117,16 @@
   async function initialize(): Promise<void> {
     try {
       await startNotes(app, {
+        registerBundledPlugins: async () => {
+          if (terminalFactory)
+            app.plugins.registerStaticPlugins([
+              {
+                plugin: TerminalPlugin,
+                required: false,
+                enabledByDefault: await terminalEnabledByDefault(app),
+              },
+            ]);
+        },
         setTask,
         onMetadataTracking: (stop) => {
           stopMetadataTracking = stop;
@@ -147,7 +171,7 @@
     };
   });
 
-  export function dispose(): Promise<void> {
+  export function dispose(mode: "close" | "reload" = "close"): Promise<void> {
     if (shutdown) return shutdown;
     if (disposed) return Promise.resolve();
     busy = true;
@@ -170,6 +194,7 @@
             await app.fileEditingSessions.settleOperations();
             await app.fileEditingSessions.guard(undefined, async () => {
               await app.workspace.flushLayout();
+              prepareTerminalLeave(app, mode);
               ready = false;
               await app.workspace.disposeWorkspaceHost();
               stopMetadataTracking?.();

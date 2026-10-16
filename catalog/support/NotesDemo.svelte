@@ -11,7 +11,20 @@
   import { normalRecovery } from "../../src/lib/notes/startup-recovery";
   import { registerCatalogCleanup } from "./lifecycle";
 
-  let { class: className = "" }: { class?: string } = $props();
+  import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
+  import type { AppSafeModeState } from "@lapis-notes/api";
+
+  let {
+    class: className = "",
+    createTerminal,
+    files = {},
+    safeMode,
+  }: {
+    class?: string;
+    createTerminal?: TerminalFactory;
+    files?: Record<string, string>;
+    safeMode?: AppSafeModeState;
+  } = $props();
 
   let session = $state<VaultSession>();
   let workspace = $state<{ dispose(): Promise<void> }>();
@@ -27,6 +40,7 @@
     let disposed = false;
     const boot = createVaultSession(
       new MemoryVaultAdapter({
+        ...files,
         "Welcome.md": "# A desktop catalog\n\nEdit this disposable note.\n",
       }),
       {
@@ -72,7 +86,8 @@
     <NotesWorkspace
       bind:this={workspace}
       {session}
-      safeMode={normalRecovery()}
+      {createTerminal}
+      safeMode={safeMode ?? normalRecovery()}
       urlDelivery={urls}
       onReady={async () => {
         ready = true;

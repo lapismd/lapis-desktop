@@ -9,7 +9,7 @@ export function requestReload(): Promise<void> {
 
 /** Install before shell_ready so native close cannot outrun the listener. */
 export async function installDesktopLifecycle(
-  prepare: () => Promise<void>,
+  prepare: (action: "close" | "reload") => Promise<void>,
   report: (failure: unknown) => void,
 ): Promise<() => void> {
   let pending: Promise<void> | undefined;
@@ -20,7 +20,7 @@ export async function installDesktopLifecycle(
       pending = (async () => {
         let saved = false;
         try {
-          await prepare();
+          await prepare(payload.action);
           saved = true;
         } catch (failure) {
           report(failure);

@@ -31,6 +31,9 @@
     "allow-vault-db-execute",
     "allow-vault-db-close",
     "core:window:allow-start-dragging",
-    "core:window:allow-internal-toggle-maximize"
+    "core:window:allow-internal-toggle-maximize",
+    "lapis-terminal:session",
+    "allow-desktop-terminal-admit",
+    "allow-desktop-terminal-release"
   ]
 }

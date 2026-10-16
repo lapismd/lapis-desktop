@@ -13,3 +13,31 @@ retiring an old registration.
 Terminal application stories arrive in M8.1, portable plugin qualification in
 M8.3 and retained AI scenarios in M10.2. Library-specific viewport/runtime
 catalogs remain with `lapis-terminal` and `lapis-ai`.
+
+## Terminal handover
+
+Reusable source: `lapis-terminal` at `d7e0a7cd`,
+`catalog/Terminal.stories.svelte` and `catalog/shells/Shells.stories.svelte`.
+Production commands/settings/view identity also retain `lapis-plugin-terminal`
+at `61f4ef24a6f2`, with its licence. The destination uses the actual desktop
+plugin and NotesWorkspace, rather than the library example shell. Library
+catalogs stay maintained by their owner.
+
+| Source scenario                   | Desktop destination in `plugins/terminal/Terminal.stories.ts` | Retained assertion                                                                                  |
+| --------------------------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| Bottom dock; Workspace; App Shell | DockRetention                                                 | One shell through hide/show and pane move; explicit close releases it                               |
+| Workspace panes; Narrow container | DockRetention, MultipleTerminals + both viewport runs         | Real workspace placement, responsive viewport and independent shells; closing one retains the other |
+| Input and Unicode                 | InputResizeAndScroll                                          | Native-frame viewport receives keyboard input, dimensions and scroll                                |
+| IME paste and copy                | ImePasteCopy                                                  | Composition sends once, paste reaches client, selected text copies                                  |
+| Colored output                    | ColoredOutput                                                 | Painted green/yellow/red/cyan glyph pixels and diagnostic labels in both themes                     |
+| Exited session                    | Exited                                                        | Exited shell disables input and keeps visible status                                                |
+| High output                       | HighOutput                                                    | Packaged viewport displays bounded rendered-frame output                                            |
+| Recoverable error                 | RecoverableError + Unavailable                                | Existing notification service, retained viewport, retryable Start                                   |
+| New desktop scenarios             | RestoredStart, Disabled, SafeMode                             | No automatic shell on cold restore, optional activation respects preferences                        |
+| Existing installations            | InstalledCopyPrecedence, InstalledDisabled                    | Bundled identity wins, commands do not duplicate, data and explicit disabling survive               |
+
+The SettingsSource case also verifies controlled shell preferences persist only
+through plugin data, without a second flat application-configuration writer.
+
+Cold native acceptance remains separate from fake-client catalog evidence.
+Visual baselines remain pending approval.
