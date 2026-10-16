@@ -3,6 +3,13 @@ fn main() {
         tauri_build::AppManifest::new().commands(&[
             "shell_info",
             "shell_ready",
+            "desktop_clipboard_read",
+            "desktop_clipboard_write",
+            "desktop_external_open",
+            "desktop_notify",
+            "desktop_url_next",
+            "desktop_url_ack",
+            "desktop_url_enqueue",
             "lifecycle_reload",
             "lifecycle_quit",
             "lifecycle_result",

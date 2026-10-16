@@ -52,6 +52,11 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^(?:src-tauri/src/(?:integration|application_menu|desktop_services)|src/lib/(?:desktop|native|notes)/.*integration|tests/(?:desktop|renderer)/integration-)",
+            chapters: ["spec/src/current/integration.md"],
+          },
+          {
+            pattern:
               "^(?:src/lib/notes/notes-plugins\\.ts|tests/(?:desktop/navigation-|renderer/notes-profile))",
             chapters: ["spec/src/current/navigation.md"],
           },

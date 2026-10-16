@@ -4,6 +4,7 @@ import type {
 } from "@lapis-notes/api";
 import type { VaultClient } from "./vault-client.ts";
 import { vaultPath } from "./vault-path.ts";
+import type { DesktopIntegrationPorts } from "./desktop-integration.ts";
 
 const fileOperations = new Map([
   ["desktop_fs_to_vault_path", "to-vault-path"],
@@ -32,11 +33,17 @@ const fileOperations = new Map([
 export function createNativeBridge(
   client: VaultClient,
   os: NativeDesktopPlatformOs,
+  ports?: DesktopIntegrationPorts,
 ): NativeDesktopBridge {
   return {
     runtime: "tauri-desktop",
     platform: { runtime: "tauri-desktop", os, arch: "aarch64" },
     capabilities: {
+      notifications: {
+        id: "notifications",
+        status: ports ? "available" : "unavailable",
+        provider: "tauri-notifications",
+      },
       "file-system-actions": {
         id: "file-system-actions",
         status: os === "macos" ? "available" : "unavailable",
@@ -128,5 +135,6 @@ export function createNativeBridge(
       client.watch(root, path, options, listener),
     toFileUrl: (path) => client.absoluteResource(path),
     getResourceUrl: async (root, path) => client.resource(root, path),
+    showNotification: ports?.notify,
   };
 }

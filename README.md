@@ -1,8 +1,9 @@
 # Lapis Desktop
 
 A Tauri desktop preview for Lapis Notes with a native vault launcher and the
-existing Notes workspace, editor and Markdown reader. Safe everyday-use
-qualification remains the M4 gate in the [migration plan](PLAN.md).
+existing Notes workspace, editor, Markdown reader, Search, metadata and Graph
+views. Native menus and services use the same owned application lifecycle. The
+[migration plan](PLAN.md) defines qualification and deferred distribution.
 
 Start with [MIGRATION.md](MIGRATION.md) for current status, original gates and
 next work. Canonical behavior lives in the

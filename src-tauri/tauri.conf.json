@@ -24,7 +24,7 @@
         "hiddenTitle": true,
         "trafficLightPosition": {
           "x": 16,
-          "y": 22
+          "y": 26
         }
       }
     ],
@@ -32,6 +32,11 @@
       "capabilities": ["main"],
       "csp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: lapis-vault: http://lapis-vault.localhost; media-src 'self' lapis-vault: http://lapis-vault.localhost; connect-src ipc: http://ipc.localhost lapis-vault: http://lapis-vault.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'",
       "devCsp": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: lapis-vault: http://lapis-vault.localhost; media-src 'self' lapis-vault: http://lapis-vault.localhost; connect-src ipc: http://ipc.localhost lapis-vault: http://lapis-vault.localhost ws://127.0.0.1:1431; object-src 'none'; frame-src 'none'; base-uri 'none'"
+    }
+  },
+  "plugins": {
+    "deep-link": {
+      "desktop": { "schemes": ["lapis", "lapis-notes", "web+lapis"] }
     }
   },
   "bundle": {

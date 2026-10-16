@@ -8,6 +8,7 @@ gates.
 - [Desktop shell](desktop.md)
 - [File management](files.md)
 - [Find and navigate](navigation.md)
+- [Desktop integration](integration.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)
 - [Milestones and next actions](progress/milestones.md)

@@ -63,3 +63,8 @@
 
   - [Native Graph intake](history/E-GRAPH-001.md)
   - [Native Graph intake](history/E-GRAPH-002.md)
+
+- [Desktop integration](current/integration.md)
+- [M7 native integration qualification](history/E-INTEGRATION-001.md)
+- [End-of-M7 full qualification](history/E-QUALIFICATION-001.md)
+  - [Final native and ordinary-bundle qualification](history/E-QUALIFICATION-002.md)

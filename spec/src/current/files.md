@@ -147,3 +147,8 @@ origin. Verify compressed response status/type/cache validators and decoded
 bytes independently at the direct HTTP boundary. Separately prove that the
 bundled host preserves raw scoped-resource body bytes and Content-Length for
 GET/HEAD and admitted binary IPC. Production has no dev-server dependency.
+
+M7 menus and application URL navigation retain the existing App-owned writer
+guard. URL dispatch and its native acknowledgement enter admitted operations
+before teardown; retiring the owning App stops new URL admission. File access
+remains confined to the selected admitted root. See `integration.md`.

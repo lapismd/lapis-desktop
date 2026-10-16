@@ -24,10 +24,11 @@ export async function nativeSession(
   executablePath = resolve(
     "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
   ),
+  args = [],
 ) {
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
-  const child = spawn(acceptanceBinary(executablePath), [], {
+  const child = spawn(acceptanceBinary(executablePath), args, {
     env: {
       ...process.env,
       PATH: "/usr/bin:/bin",
@@ -116,6 +117,7 @@ export async function nativeSession(
       cleanup,
       requestClose,
       isRunning: () => child.exitCode === null && child.signalCode === null,
+      waitForExit: () => exited,
       async close(quit = false) {
         await requestClose(quit);
         const diagnostic = setTimeout(() => {

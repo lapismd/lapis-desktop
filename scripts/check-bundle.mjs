@@ -37,6 +37,8 @@ for (const marker of [
   "__lapisConditionalWriteAcceptance",
   "__lapisNativeWatchAcceptance",
   "file-actions.jsonl",
+  "integration-actions.jsonl",
+  "Integration receipt unavailable",
   "Acceptance action receipt unavailable",
   "Native controls could not be measured",
   "Native visibility could not be measured",

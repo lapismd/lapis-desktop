@@ -44,8 +44,8 @@ test("external changes block Close and require a fresh decision before keeping l
     "conflict-keep",
   );
   const local = "# My retained draft — 笔记\n";
-  writeFileSync(file, "# External one\n");
   await edit(browser, local);
+  writeFileSync(file, "# External one\n");
   await session.requestClose();
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
@@ -83,8 +83,8 @@ test("external changes block Close and require a fresh decision before keeping l
 
 test("accessible recovery accepts disk text without saving the discarded draft", async (context) => {
   const { session, browser, file } = await fixture(context, "conflict-disk");
-  writeFileSync(file, "# Use the disk version\n");
   await edit(browser, "# Discard this draft\n");
+  writeFileSync(file, "# Use the disk version\n");
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   assert.equal(readFileSync(file, "utf8"), "# Use the disk version\n");
   await browser.execute(
@@ -130,8 +130,8 @@ test("accessible recovery accepts disk text without saving the discarded draft",
 test("closing a conflicted tab retains its draft and shutdown barrier until recovery", async (context) => {
   const { session, browser, file } = await fixture(context, "conflict-retired");
   const draft = "# Draft from a closed tab\n";
-  writeFileSync(file, "# External closed-tab version\n");
   await edit(browser, draft);
+  writeFileSync(file, "# External closed-tab version\n");
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.$('button[aria-label="Close Note.md"]').click();
   await browser.waitUntil(

@@ -10,9 +10,21 @@ pub fn run() -> tauri::Result<()> {
         state.with_filename(path)
     };
     let builder = tauri::Builder::default()
+        .plugin(tauri_plugin_single_instance::init(|app, args, _| {
+            crate::integration::arguments(app, args);
+            crate::integration::raise(app);
+        }))
+        .manage(crate::integration::IntegrationState::default())
         .manage(commands_state())
         .manage(crate::lifecycle::NativeLifecycle::default())
         .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_deep_link::init())
+        .plugin(tauri_plugin_clipboard_manager::init())
+        .plugin(
+            tauri_plugin_opener::Builder::new()
+                .open_js_links_on_click(false)
+                .build(),
+        )
         .register_uri_scheme_protocol("lapis-vault", |context, request| {
             if context.webview_label() != "main" {
                 return tauri::http::Response::builder()
@@ -40,6 +52,13 @@ pub fn run() -> tauri::Result<()> {
         .invoke_handler(tauri::generate_handler![
             crate::commands::shell_info,
             crate::commands::shell_ready,
+            crate::desktop_services::desktop_clipboard_read,
+            crate::desktop_services::desktop_clipboard_write,
+            crate::desktop_services::desktop_external_open,
+            crate::desktop_services::desktop_notify,
+            crate::integration::desktop_url_next,
+            crate::integration::desktop_url_ack,
+            crate::integration::desktop_url_enqueue,
             crate::lifecycle::lifecycle_reload,
             crate::lifecycle::lifecycle_quit,
             crate::lifecycle::lifecycle_result,
@@ -58,10 +77,12 @@ pub fn run() -> tauri::Result<()> {
         ])
         .setup(|app| {
             crate::native_host::initialize(app.handle())?;
-            app.set_menu(tauri::menu::Menu::default(app.handle())?)?;
+            app.set_menu(crate::application_menu::build(app.handle())?)?;
             crate::window::build(app.handle())?;
+            crate::integration::arguments(app.handle(), std::env::args().skip(1));
             Ok(())
         })
+        .on_menu_event(|app, event| crate::application_menu::dispatch(app, event.id().as_ref()))
         .build(tauri::generate_context!())?
         .run(crate::lifecycle::on_event);
     Ok(())

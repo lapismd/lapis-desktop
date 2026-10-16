@@ -1,13 +1,33 @@
-use tauri::{AppHandle, WebviewWindow, WebviewWindowBuilder};
+use tauri::{AppHandle, Emitter, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse};
+
+fn route_link(app: &AppHandle, url: &url::Url) {
+    if lapis_desktop::integration_urls::supported_scheme(url.scheme()) {
+        crate::integration::enqueue(app, url.to_string());
+    } else if matches!(url.scheme(), "http" | "https")
+        && let Err(error) = crate::desktop_services::open_external(app, url.as_str())
+    {
+        let _ = app.emit_to("main", "lapis-integration-error", error);
+    }
+}
 
 pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     let configuration = &app.config().app.windows[0];
+    let navigation = app.clone();
+    let popup = app.clone();
     WebviewWindowBuilder::from_config(app, configuration)?
-        .on_navigation(|url| {
-            crate::navigation::allowed(
+        .on_navigation(move |url| {
+            let allowed = crate::navigation::allowed(
                 url,
                 cfg!(debug_assertions) && !cfg!(feature = "custom-protocol"),
-            )
+            );
+            if !allowed {
+                route_link(&navigation, url);
+            }
+            allowed
+        })
+        .on_new_window(move |url, _| {
+            route_link(&popup, &url);
+            NewWindowResponse::Deny
         })
         .on_page_load(|window, payload| {
             if payload.event() == tauri::webview::PageLoadEvent::Finished {

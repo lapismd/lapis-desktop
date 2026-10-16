@@ -15,6 +15,8 @@ pub struct ShellInfo {
     version: String,
     process_id: u32,
     ready: bool,
+    #[cfg(feature = "e2e")]
+    native_menus: Result<Vec<crate::integration_acceptance::MenuEntry>, String>,
     #[cfg(all(feature = "e2e", target_os = "macos"))]
     native_controls: Result<Vec<[f64; 4]>, String>,
     #[cfg(all(feature = "e2e", target_os = "macos"))]
@@ -41,6 +43,8 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
         version: app.package_info().version.to_string(),
         process_id: std::process::id(),
         ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
+        #[cfg(feature = "e2e")]
+        native_menus: crate::integration_acceptance::menus(&app),
         #[cfg(all(feature = "e2e", target_os = "macos"))]
         native_controls,
         #[cfg(all(feature = "e2e", target_os = "macos"))]

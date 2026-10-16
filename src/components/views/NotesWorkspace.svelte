@@ -26,6 +26,9 @@
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
   import { leaveWithStoppedWatching } from "../../lib/notes/notes-leave.ts";
+  import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
+  import { attachNotesUrls } from "../../lib/notes/notes-integration.ts";
+  import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
 
   let {
     session,
@@ -33,12 +36,14 @@
     onReady,
     onRestart,
     safeMode,
+    urlDelivery,
   }: {
     session: VaultSession;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
     onRestart(mode: AppSafeModeState): Promise<void>;
     safeMode: AppSafeModeState;
+    urlDelivery: DesktopUrlDelivery;
   } = $props();
   const app = untrack(
     () =>
@@ -60,6 +65,7 @@
   const recovery = untrack(() => new NotesRecovery(app, onRestart));
   let tasks = $state<WorkspaceStartupTask[]>(startupTasks());
   let stopMetadataTracking: (() => void) | undefined;
+  let stopUrls: (() => void) | undefined;
   let startup: Promise<void>;
   let shutdown: Promise<void> | undefined;
   let disposed = false;
@@ -104,6 +110,15 @@
         onReady,
       });
       ready = true;
+      await tick();
+      try {
+        await getWorkspaceHostBinding(app.workspace).controller.start();
+      } catch (failure) {
+        ready = false;
+        setTask("layout", "failed");
+        throw new StartupPhaseError("layout", failure);
+      }
+      if (!shutdown) stopUrls = attachNotesUrls(app, urlDelivery);
     } catch (failure) {
       const task =
         failure instanceof StartupPhaseError ? failure.task : "vault";
@@ -136,6 +151,8 @@
     if (shutdown) return shutdown;
     if (disposed) return Promise.resolve();
     busy = true;
+    stopUrls?.();
+    stopUrls = undefined;
     error = "";
     shutdown = (async () => {
       const focused = section?.ownerDocument.activeElement;
@@ -174,6 +191,7 @@
       shutdown = undefined;
       error = message(failure);
       busy = false;
+      if (ready && !coreDisposed) stopUrls = attachNotesUrls(app, urlDelivery);
       throw failure;
     });
     return shutdown;
@@ -190,12 +208,21 @@
       busy = false;
     }
   }
+
+  export async function openVaults(): Promise<void> {
+    if (busy || disposed) return;
+    await back();
+  }
+
+  export function canEdit(): boolean {
+    return ready && !busy && !disposed;
+  }
 </script>
 
 <section
   bind:this={section}
   class="notes-session"
-  data-notes-ready={ready}
+  data-notes-ready={ready && !busy}
   aria-label="Notes workspace"
   aria-busy={busy}
 >

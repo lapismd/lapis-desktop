@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   ambientApp,
   auditSources,
@@ -55,4 +56,30 @@ test("package and permission audits reject source links, broad native grants and
     config,
   );
   assert.equal(findings.length, 3);
+});
+
+test("desktop integration retains exact local grants and rejects additional plugin authority", () => {
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  const capabilities = JSON.parse(
+    readFileSync("src-tauri/capabilities/main.json", "utf8"),
+  );
+  const configuration = JSON.parse(
+    readFileSync("src-tauri/tauri.conf.json", "utf8"),
+  );
+  assert.deepEqual(auditManifest(manifest, capabilities, configuration), []);
+  for (const permission of [
+    "opener:default",
+    "clipboard-manager:default",
+    "core:default",
+  ]) {
+    const broad = {
+      ...capabilities,
+      permissions: [...capabilities.permissions, permission],
+    };
+    assert.ok(
+      auditManifest(manifest, broad, configuration).some(
+        (finding) => finding.code === "LD-CAPABILITY-SCOPE",
+      ),
+    );
+  }
 });

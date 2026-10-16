@@ -97,6 +97,8 @@ async function acceptance() {
       "tests/desktop/navigation-search-settings.test.mjs",
       "tests/desktop/navigation-metadata.test.mjs",
       "tests/desktop/navigation-graph.test.mjs",
+      "tests/desktop/integration-ports.test.mjs",
+      "tests/desktop/integration-urls.test.mjs",
     ],
     environment,
   );
@@ -107,7 +109,9 @@ async function acceptance() {
       "--test-concurrency=1",
       "tests/desktop/file-http-representation.test.mjs",
     ],
-    environment,
+    // The harness builds a development fixture with Cargo. nativeSession still
+    // starts both actual app processes with only /usr/bin:/bin on PATH.
+    { ...environment, PATH: process.env.PATH },
   );
   if (!existsSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE))
     throw new Error("The native window-state plugin did not persist geometry.");

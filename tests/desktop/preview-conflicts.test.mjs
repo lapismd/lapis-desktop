@@ -29,12 +29,20 @@ async function fixture(context, name) {
     '[data-link-preview-trigger][data-link-preview-path="Target"][data-link-preview-state="resolved"]',
   );
   await trigger.waitForDisplayed({ timeout: 15000 });
+  await browser.keys(Key.Tab);
   await browser.execute(
     (element) => {
-      if (document.activeElement === element) element.blur();
+      element.blur();
       element.focus();
     },
     await trigger,
+  );
+  await browser.waitUntil(async () =>
+    browser.execute(
+      (element) =>
+        document.activeElement === element && element.matches(":focus-visible"),
+      await trigger,
+    ),
   );
   try {
     await browser
@@ -89,8 +97,8 @@ test("external changes in a Markdown preview block Close and require a fresh rec
     "preview-keep",
   );
   const local = "Preview draft retained — 笔记\n";
-  writeFileSync(file, "External preview one\n");
   await edit(browser, local);
+  writeFileSync(file, "External preview one\n");
   await session.requestClose();
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
@@ -125,8 +133,8 @@ test("external changes in a Markdown preview block Close and require a fresh rec
 
 test("accepting the disk version replaces a preview draft and permits later saves", async (context) => {
   const { browser, session, file } = await fixture(context, "preview-disk");
-  writeFileSync(file, "Reviewed preview disk content\n");
   await edit(browser, "Discard this preview draft\n");
+  writeFileSync(file, "Reviewed preview disk content\n");
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.execute(
     readFileSync(
@@ -167,8 +175,8 @@ test("accepting the disk version replaces a preview draft and permits later save
 test("closing a preview's owning tab retains its failed draft and App shutdown barrier", async (context) => {
   const { browser, session, file } = await fixture(context, "preview-retired");
   const local = "Retained draft from a closed preview\n";
-  writeFileSync(file, "External retired-preview content\n");
   await edit(browser, local);
+  writeFileSync(file, "External retired-preview content\n");
   await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
   await browser.$('button[aria-label="Close Home.md"]').click();
   await browser.waitUntil(async () => !(await browser.$(card).isExisting()));

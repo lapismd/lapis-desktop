@@ -5,26 +5,36 @@ import { join } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 
 async function nativeControlsCentered(browser) {
-  await browser.waitUntil(
-    async () => {
-      const info = await browser.execute(() =>
-        globalThis.__TAURI__.core.invoke("shell_info"),
-      );
-      const controls = info.nativeControls?.Ok;
-      return (
-        controls?.length === 3 &&
-        controls.every(
-          ([x, top, width, height]) =>
-            x >= 16 && x + width <= 80 && Math.abs(top + height / 2 - 20) < 0.5,
-        )
-      );
-    },
-    {
-      timeout: 5000,
-      timeoutMsg:
-        "Actual native traffic lights must remain centered at y=20 with their 16px inset",
-    },
-  );
+  let measured;
+  await browser
+    .waitUntil(
+      async () => {
+        const info = await browser.execute(() =>
+          globalThis.__TAURI__.core.invoke("shell_info"),
+        );
+        const controls = info.nativeControls?.Ok;
+        measured = info.nativeControls;
+        return (
+          controls?.length === 3 &&
+          controls.every(
+            ([x, top, width, height]) =>
+              x >= 16 &&
+              x + width <= 80 &&
+              Math.abs(top + height / 2 - 20) < 0.5,
+          )
+        );
+      },
+      {
+        timeout: 5000,
+        timeoutMsg:
+          "Actual native traffic lights must remain centered at y=20 with their 16px inset",
+      },
+    )
+    .catch((error) => {
+      throw new Error(`${error.message}: ${JSON.stringify(measured)}`, {
+        cause: error,
+      });
+    });
 }
 
 test("workspace tabs meet the native top edge and retain Tauri drag handles", async (context) => {
@@ -93,13 +103,30 @@ test("workspace tabs meet the native top edge and retain Tauri drag handles", as
   assert.ok(geometry.leftTab >= 80);
   assert.equal(geometry.drag, "deep");
   assert.equal(geometry.excluded, true);
-  await browser.execute(async () => {
-    const { window, dpi } = globalThis.__TAURI__;
-    await window.getCurrentWindow().setSize(new dpi.LogicalSize(900, 640));
-    await window.getCurrentWindow().setFocus();
-  });
-  await browser.waitUntil(() => browser.execute(() => innerWidth === 900));
-  await nativeControlsCentered(browser);
+  for (const [width, height] of [
+    [900, 640],
+    [1040, 720],
+    [900, 640],
+  ]) {
+    await browser.execute(
+      async (width, height) => {
+        const { window, dpi } = globalThis.__TAURI__;
+        await window
+          .getCurrentWindow()
+          .setSize(new dpi.LogicalSize(width, height));
+        await window.getCurrentWindow().setFocus();
+      },
+      width,
+      height,
+    );
+    await browser.waitUntil(() =>
+      browser.execute((width) => innerWidth === width, width),
+    );
+    await browser.executeAsync((done) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => done(true))),
+    );
+    await nativeControlsCentered(browser);
+  }
   await browser.$('button[aria-label="Close left sidebar"]').click();
   const reopen = browser.$('button[aria-label="Open left sidebar"]');
   await reopen.waitForDisplayed();

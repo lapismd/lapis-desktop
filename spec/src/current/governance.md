@@ -246,3 +246,14 @@ data and settings lifecycle qualification.
 
 E-GRAPH-002 retains final-cohort failures and source-owned startup ordering
 qualification. Close timeout diagnostics preserve the unchanged native deadline.
+
+M7 native integration has a dedicated canonical chapter and mapped source/tests;
+its evidence retains targeted results and every deferred full qualification
+lane.
+
+M7 adds exactly seven named main-window service permissions: text clipboard
+read/write, bounded external open, notification delivery and queued URL
+next/acknowledge/enqueue. The fail-closed capability audit lists those grants
+explicitly and still rejects extra generic plugin permissions. Opener automatic
+JavaScript link injection stays disabled; only the bounded host route may open
+an external address. Native menu snapshots and passive receipts are e2e-only.

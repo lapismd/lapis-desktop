@@ -1,5 +1,12 @@
 // One chapter list keeps spec-first, document roles and task coverage aligned.
-const chapters = ["desktop", "files", "navigation", "governance", "migration"];
+const chapters = [
+  "desktop",
+  "files",
+  "navigation",
+  "integration",
+  "governance",
+  "migration",
+];
 export function canonicalContractPattern(prefix = "") {
   return `^${prefix}current/(?:${chapters.join("|")})\\.md$`;
 }

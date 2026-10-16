@@ -77,7 +77,7 @@ introduced before document editing is considered qualified in M4.
 
 The Notes workspace fills the native content area. Its existing 40px tab strips
 start at the top edge; no application title or session toolbar precedes them.
-The native title stays hidden. The configured native inset is 16,22 logical
+The native title stays hidden. The configured native inset is 16,26 logical
 pixels, and the control centers stay at y=20 in the 40px tabs. A macOS-only
 helper retains native button geometry and hover tracking after AppKit relayout.
 It borrows the live NSWindow only inside Tauri's main-thread callback or the
@@ -322,8 +322,8 @@ untouched; only explicit reset uses Workspace reset/flush before restarting. The
 banner remains below the tabs. Message-plus-stack diagnostics retain their
 message when WebKit supplies a stack without it.
 
-M5 watch ownership, bounds and renderer representation qualification live in
-`files.md`; watch resources remain separate from file-tree reconciliation.
+M5 watch ownership lives in `files.md`; M7 native integration lives in
+`integration.md`. Watch resources remain separate from projection.
 
 Explorer imports and mutations share FileManager writer protection. Cold native
 checks retain dirty conflict bytes before rename, move or deletion and retry

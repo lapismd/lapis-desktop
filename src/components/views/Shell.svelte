@@ -10,16 +10,24 @@
     storeRecovery,
   } from "../../lib/notes/startup-recovery.ts";
   import type { VaultSession, AppSafeModeState } from "@lapis-notes/api";
+  import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
   import type {
     VaultClient,
     VaultDescriptor,
   } from "../../lib/native/vault-client.ts";
-  let { client }: { client: VaultClient } = $props();
+  let {
+    client,
+    urlDelivery,
+  }: { client: VaultClient; urlDelivery: DesktopUrlDelivery } = $props();
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
   let returnProfileId = $state<string | null>(null);
-  let notes = $state<{ dispose(): Promise<void> }>();
+  let notes = $state<{
+    dispose(): Promise<void>;
+    openVaults(): Promise<void>;
+    canEdit(): boolean;
+  }>();
   let restoring = $state(true);
   let openingNotes = $state(false);
   let leaving = $state(false);
@@ -109,6 +117,19 @@
     }
     await client.closeAll();
   }
+
+  export async function openVaults(): Promise<void> {
+    if (leaving) return;
+    await restoration;
+    await opening;
+    if (leaving) return;
+    if (notes) await notes.openVaults();
+  }
+
+  export function canEdit(): boolean {
+    if (leaving || restoring || openingNotes) return false;
+    return session ? (notes?.canEdit() ?? false) : true;
+  }
 </script>
 
 {#if failure}<p class="shell-failure" role="alert">{failure}</p>{/if}
@@ -149,6 +170,7 @@
     <NotesWorkspace
       bind:this={notes}
       {session}
+      {urlDelivery}
       {safeMode}
       onRestart={restartNotes}
       onBack={back}

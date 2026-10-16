@@ -17,6 +17,14 @@ import { VaultClient } from "./lib/native/vault-client.ts";
 import { createNativeBridge } from "./lib/native/native-bridge.ts";
 import { installDesktopLifecycle } from "./lib/desktop/desktop-lifecycle.ts";
 import { installWindowDragRegions } from "./lib/desktop/window-drag.ts";
+import { invoke } from "@tauri-apps/api/core";
+import { installDesktopMenu } from "./lib/desktop/desktop-integration.ts";
+import { DesktopUrlDelivery } from "./lib/native/integration-urls.ts";
+import {
+  DesktopIntegrationPorts,
+  installDesktopClipboard,
+  installDesktopExternalLinks,
+} from "./lib/native/desktop-integration.ts";
 
 const vaultClient = new VaultClient();
 
@@ -24,8 +32,35 @@ try {
   const stopDragRegions = installWindowDragRegions(document.documentElement);
   addEventListener("pagehide", stopDragRegions, { once: true });
   let shell:
-    | { prepareToLeave(): Promise<void>; reportFailure(failure: unknown): void }
+    | {
+        prepareToLeave(): Promise<void>;
+        openVaults(): Promise<void>;
+        canEdit(): boolean;
+        reportFailure(failure: unknown): void;
+      }
     | undefined;
+  const report = (failure: unknown) => shell?.reportFailure(failure);
+  const ports = new DesktopIntegrationPorts(invoke);
+  const urlDelivery = new DesktopUrlDelivery(invoke, report);
+  const stopClipboard = installDesktopClipboard(ports, navigator);
+  const stopExternal = installDesktopExternalLinks(ports, report);
+  const stopMenu = await installDesktopMenu(
+    async () => {
+      await shell?.openVaults();
+    },
+    report,
+    urlDelivery,
+    () => shell?.canEdit() ?? false,
+  );
+  addEventListener(
+    "pagehide",
+    () => {
+      stopMenu();
+      stopExternal();
+      stopClipboard();
+    },
+    { once: true },
+  );
   const stopLifecycle = await installDesktopLifecycle(
     async () => {
       if (!shell)
@@ -56,10 +91,10 @@ try {
       const platform = ["macos", "windows", "linux"].includes(os ?? "")
         ? (os as NativeDesktopPlatformOs)
         : "unknown";
-      setNativeDesktopBridge(createNativeBridge(vaultClient, platform));
+      setNativeDesktopBridge(createNativeBridge(vaultClient, platform, ports));
       shell = mount(Shell, {
         target: document.getElementById("app")!,
-        props: { client: vaultClient },
+        props: { client: vaultClient, urlDelivery },
       });
       return shell;
     },

@@ -54,6 +54,37 @@ test("startup retry uses a fresh owner after external layout repair and retains 
     .getText();
   assert.match(diagnostic, /JSON|parse|layout/iu);
   assert.match(diagnostic, /@|\bat /u);
+  const previousClipboard = await browser.execute(() =>
+    globalThis.__TAURI__.core
+      .invoke("desktop_clipboard_read")
+      .catch(() => null),
+  );
+  try {
+    await browser.$("button=Copy error details").click();
+    await browser.waitUntil(async () => {
+      const text = await browser.execute(() =>
+        globalThis.__TAURI__.core.invoke("desktop_clipboard_read"),
+      );
+      try {
+        const copied = JSON.parse(text);
+        return (
+          copied.formatVersion === 1 &&
+          copied.application === "Lapis Notes" &&
+          copied.phase === "layout" &&
+          copied.detail === diagnostic
+        );
+      } catch {
+        return false;
+      }
+    });
+  } finally {
+    if (previousClipboard !== null)
+      await browser.execute(
+        (text) =>
+          globalThis.__TAURI__.core.invoke("desktop_clipboard_write", { text }),
+        previousClipboard,
+      );
+  }
   writeFileSync(layout, "{}");
   await browser.$("button=Retry").click();
   await browser.$('[data-notes-ready="true"]').waitForDisplayed();

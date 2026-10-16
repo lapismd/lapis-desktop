@@ -64,3 +64,7 @@ by the task ledger, not inferred from this list.
 
 - [Native Graph intake](E-GRAPH-001.md)
 - [Native Graph intake](E-GRAPH-002.md)
+
+- [Desktop integration](E-INTEGRATION-001.md)
+- [End-of-M7 full qualification](E-QUALIFICATION-001.md)
+- [Final native and ordinary-bundle qualification](E-QUALIFICATION-002.md)
