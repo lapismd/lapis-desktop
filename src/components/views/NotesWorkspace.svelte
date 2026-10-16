@@ -25,6 +25,7 @@
   } from "../../lib/notes/notes-startup.ts";
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
+  import { leaveWithStoppedWatching } from "../../lib/notes/notes-leave.ts";
 
   let {
     session,
@@ -144,20 +145,26 @@
       await startup;
       busy = true;
       if (!coreDisposed) {
-        await app.workspace.flushPluginChanges();
-        await app.plugins.flushPendingConfigWrites();
-        await app.fileEditingSessions.settleOperations();
-        await app.fileEditingSessions.guard(undefined, async () => {
-          await app.workspace.flushLayout();
-          ready = false;
-          await app.workspace.disposeWorkspaceHost();
-          stopMetadataTracking?.();
-          await app.metadataCache.dispose();
-          for (const plugin of [...app.plugins.corePlugins].reverse())
-            await plugin.disable();
-          await sync.dispose();
-          coreDisposed = true;
-        });
+        await leaveWithStoppedWatching(
+          app,
+          async () => {
+            await app.workspace.flushPluginChanges();
+            await app.plugins.flushPendingConfigWrites();
+            await app.fileEditingSessions.settleOperations();
+            await app.fileEditingSessions.guard(undefined, async () => {
+              await app.workspace.flushLayout();
+              ready = false;
+              await app.workspace.disposeWorkspaceHost();
+              stopMetadataTracking?.();
+              await app.metadataCache.dispose();
+              for (const plugin of [...app.plugins.corePlugins].reverse())
+                await plugin.disable();
+              await sync.dispose();
+              coreDisposed = true;
+            });
+          },
+          () => ready && !coreDisposed,
+        );
       }
       await app.fileEditingSessions.dispose();
       await session.close();

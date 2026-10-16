@@ -72,6 +72,7 @@ export async function startNotes(
       await app.metadataTypeManager.load();
       options.onMetadataTracking(app.metadataTypeManager.trackChanges());
       await app.metadataCache.load();
+      await app.vaultChanges.start();
       await options.onReady();
     });
   } catch (error) {

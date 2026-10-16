@@ -1,5 +1,10 @@
 # Migration inventory and progress
 
+M5 now integrates the shared bounded App watcher/reconciler. Native acceptance
+must prove external UI/disk consistency and dirty-writer recovery, as well as
+stop/drain/resume through failed leave and repeated switching. Component success
+does not close the remaining native-action/import/proxy inventory.
+
 The M5 native runner retains exclusive text/binary creation and real Explorer
 new-note acceptance under LD-FILE-006. Component evidence does not replace the
 original aggregate milestone gates or attachment import qualification.

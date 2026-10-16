@@ -52,6 +52,11 @@ test("M5 filesystem implementations and acceptance retain a mapped file contract
     "src/lib/native/file-watch.ts",
     "src/lib/native/vault-client.ts",
     "src/lib/native/vault-path.ts",
+    "src/lib/notes/notes-leave.ts",
+    "src/lib/notes/notes-startup.ts",
+    "src/components/views/NotesWorkspace.svelte",
+    "tests/renderer/notes-leave.test.mjs",
+    "tests/desktop/file-reconciliation.test.mjs",
     "tests/desktop/file-operations.test.mjs",
   ]) {
     const chapters = config.validators.specFirst.rules

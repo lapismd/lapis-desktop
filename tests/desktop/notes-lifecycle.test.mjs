@@ -117,6 +117,10 @@ test("failed note saves block native close, retain the dirty editor and permit r
     await session.browser.$('[data-notes-ready="true"]').isExisting(),
     true,
   );
+  writeFileSync(join(vault, "After failed close.md"), "# Watching resumed\n");
+  await session.browser
+    .$('[data-path="After failed close.md"]')
+    .waitForDisplayed();
   chmodSync(join(vault, "Notes"), 0o755);
   await session.close();
   assert.equal(readFileSync(file, "utf8"), "# Dirty text must survive\n");

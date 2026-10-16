@@ -46,3 +46,4 @@ by the task ledger, not inferred from this list.
 - [Post-M7 plugin and Storybook plan](E-PLUGINS-001.md)
 - [Protected native Explorer deletion](E-TRASH-001.md)
 - [Exclusive native new-file creation](E-CREATE-001.md)
+- [App-owned external file reconciliation](E-INGESTION-001.md)

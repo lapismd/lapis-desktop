@@ -1,5 +1,9 @@
 # Governance
 
+App watch startup/leave integration and native reconciliation acceptance map
+explicitly to the M5 file contract. The source-owned public archive supplies
+tree and view behavior; the host retains only startup and teardown policy.
+
 Archive rewriting is idempotent only for an exact dependency path already
 redirected to a verified tarball. Repeated pnpm hook calls preserve that
 redirect; unverified local paths and file-based peer ranges remain rejected.

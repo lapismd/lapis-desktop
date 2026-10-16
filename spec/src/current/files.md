@@ -1,5 +1,18 @@
 # File management (M5)
 
+The Tauri host explicitly starts App-owned watch ingestion after metadata and
+view registrations are ready. Native registration precedes complete initial
+reconciliation. Stop retires callbacks and drains work before leave persistence
+and teardown; failed saves resume and reconcile the same live App. An App that
+has entered destructive disposal does not restart ingestion.
+
+Shared Vault projection preserves canonical resource identities, complete trees,
+cache and filename indexes. Existing workspace events refresh clean editors;
+existing FileView/layout lifecycles follow clean renames and removals. Dirty or
+retired writers keep their original views and recovery owner, with existing
+notifications explaining external moves/removals. This integration remains
+subject to actual native and original aggregate qualification.
+
 M5 preserves its original PLAN.md gate. Targeted slices do not complete the
 aggregate milestone while end-of-M7 full qualification remains deferred.
 
@@ -52,7 +65,7 @@ and containment, dirty-note mutations, external filesystem changes, watch
 overflow/reconciliation, attachment import, Finder/trash behavior and teardown.
 Complete the original UI/disk consistency gate before marking M5 Done.
 
-## Next implementation boundaries
+## Implementation boundaries and remaining qualification
 
 Native watch ingestion must observe complete host writes. Use the native owner's
 shared file-IO gate when taking capability-based snapshots, rather than hiding
@@ -61,11 +74,13 @@ acquire the native services mutex: stopping/joining it during vault closure must
 not deadlock behind the owner performing that closure. Register watching before
 the initial snapshot and retain bounded continuity/recovery.
 
-App ingestion belongs in the API, not a desktop-only tree override. The existing
-DirectoryWatcher delivers events but is not wired to an App-owned vault-tree
-reconciler. Reconciliation must preserve live file identity, notify the existing
-metadata/editing owners and protect dirty content. Native delivery alone does
-not qualify UI consistency.
+App ingestion belongs in the API. The App-owned service now registers its
+DirectoryWatcher before a complete bounded scan, serializes reconciliation with
+internal Vault mutations and preserves live resource identities. Existing
+metadata and workspace/editor owners receive the resulting events. Cold native
+acceptance covers clean and dirty external changes plus failed-leave restart;
+the complete internal-operation, import, native-action and aggregate gate
+qualification remains open.
 
 Source regressions now protect Explorer deletion through FileManager and add
 explicit new-file creation intent. Native creation stages complete bounded bytes
