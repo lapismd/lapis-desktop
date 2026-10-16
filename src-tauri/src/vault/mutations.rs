@@ -1,57 +1,12 @@
+use super::staged::{StagedFile, rename_exclusive};
 use super::{VaultRoot, invalid};
-use cap_std::fs::{Dir, File, OpenOptions};
-use std::ffi::{OsStr, OsString};
+use cap_std::fs::Dir;
+use std::ffi::OsString;
 use std::io::{self, Write};
 use std::path::Path;
 
-fn rename_exclusive(from: &Dir, source: &OsStr, to: &Dir, destination: &OsStr) -> io::Result<()> {
-    #[cfg(any(
-        target_os = "macos",
-        target_os = "ios",
-        target_os = "linux",
-        target_os = "android"
-    ))]
-    {
-        rustix::fs::renameat_with(
-            from,
-            source,
-            to,
-            destination,
-            rustix::fs::RenameFlags::NOREPLACE,
-        )
-        .map_err(Into::into)
-    }
-    #[cfg(not(any(
-        target_os = "macos",
-        target_os = "ios",
-        target_os = "linux",
-        target_os = "android"
-    )))]
-    {
-        let _ = (from, source, to, destination);
-        Err(io::Error::new(
-            io::ErrorKind::Unsupported,
-            "Exclusive rename is unavailable on this platform",
-        ))
-    }
-}
-
-struct StagedCopy<'a> {
-    parent: &'a Dir,
-    name: String,
-    file: File,
-    published: bool,
-}
-impl Drop for StagedCopy<'_> {
-    fn drop(&mut self) {
-        if !self.published {
-            let _ = self.parent.remove_file(&self.name);
-        }
-    }
-}
-
 impl VaultRoot {
-    fn entry_parent(&self, path: &str) -> io::Result<(Dir, OsString)> {
+    pub(super) fn entry_parent(&self, path: &str) -> io::Result<(Dir, OsString)> {
         let relative = self.checked(path, false)?;
         let name = relative
             .file_name()
@@ -94,22 +49,11 @@ impl VaultRoot {
             Err(error) if error.kind() == io::ErrorKind::NotFound => {}
             Err(error) => return Err(error),
         }
-        let stage_name = format!(".lapis-stage-{}", uuid::Uuid::new_v4());
-        let mut options = OpenOptions::new();
-        options.write(true).create_new(true);
-        let file = parent.open_with(&stage_name, &options)?;
-        let mut staged = StagedCopy {
-            parent: &parent,
-            name: stage_name,
-            file,
-            published: false,
-        };
+        let mut staged = StagedFile::new(&parent)?;
         staged.file.set_permissions(permissions)?;
         staged.file.write_all(&bytes)?;
         staged.file.sync_all()?;
-        rename_exclusive(&parent, OsStr::new(&staged.name), &parent, &name)?;
-        staged.published = true;
-        drop(staged);
+        staged.publish(&name)?;
         parent.into_std_file().sync_all()
     }
 

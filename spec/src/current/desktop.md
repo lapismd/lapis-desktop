@@ -323,3 +323,7 @@ resources remain separate from renderer file-tree reconciliation.
 Explorer deletion shares FileManager writer protection. Cold native acceptance
 retains dirty conflict bytes before removal and retries through the existing
 menu after explicit recovery; no new presentation surface is introduced.
+
+New-file intent uses the native exclusive-create port when available. Existing
+application-state overwrite APIs retain their separate semantics; creation does
+not publish UI success after a collision or failed native write.

@@ -45,6 +45,29 @@ Object.assign(globalThis, { __lapisNativeDatabaseAcceptance: driver });
 
 Object.assign(globalThis, {
   __lapisConditionalWriteAcceptance: {
+    availableCreate(root: string) {
+      return new NativeDesktopVaultAdapter(
+        root,
+        undefined,
+        "tauri-desktop",
+      ).getCapabilities().exclusiveCreate;
+    },
+    async create(root: string, path: string, data: string | number[]) {
+      try {
+        await new NativeDesktopVaultAdapter(
+          root,
+          undefined,
+          "tauri-desktop",
+        ).writeExclusive(
+          path,
+          typeof data === "string" ? data : Uint8Array.from(data).buffer,
+        );
+        return { ok: true };
+      } catch (failure) {
+        const error = failure as Error & { code?: string };
+        return { ok: false, code: error.code, message: error.message };
+      }
+    },
     available(root: string) {
       return new NativeDesktopVaultAdapter(
         root,

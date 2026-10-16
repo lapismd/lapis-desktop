@@ -11,6 +11,12 @@ use serde_json::{Value, json};
     rename_all_fields = "camelCase"
 )]
 pub enum FileRequest {
+    CreateFile {
+        path: String,
+        data: Vec<u8>,
+        #[serde(default)]
+        options: WriteOptions,
+    },
     Rename {
         path: String,
         new_path: String,
@@ -89,6 +95,14 @@ pub async fn vault_fs(
         manager.with_files(|manager| {
             let root = manager.vaults.get(&session_id)?;
             Ok(match request {
+                FileRequest::CreateFile {
+                    path,
+                    data,
+                    options,
+                } => {
+                    root.create_file(&path, data.as_slice(), &options)?;
+                    Value::Null
+                }
                 FileRequest::Rename { path, new_path } => {
                     root.rename(&path, &new_path)?;
                     Value::Null

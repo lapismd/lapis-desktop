@@ -6,6 +6,7 @@ import type { VaultClient } from "./vault-client.ts";
 import { vaultPath } from "./vault-path.ts";
 
 const fileOperations = new Map([
+  ["desktop_fs_create_exclusive", "create-file"],
   ["desktop_fs_stat", "stat"],
   ["desktop_fs_exists", "exists"],
   ["desktop_fs_list", "list"],
@@ -31,6 +32,11 @@ export function createNativeBridge(
     runtime: "tauri-desktop",
     platform: { runtime: "tauri-desktop", os, arch: "aarch64" },
     capabilities: {
+      "exclusive-create": {
+        id: "exclusive-create",
+        status: os === "macos" || os === "linux" ? "available" : "unavailable",
+        provider: "tauri-vault",
+      },
       "conditional-text-write": {
         id: "conditional-text-write",
         status: "available",
@@ -61,6 +67,7 @@ export function createNativeBridge(
       };
       if (
         [
+          "create-file",
           "write-text",
           "write-text-if-unchanged",
           "write-binary",

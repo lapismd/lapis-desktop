@@ -1,7 +1,9 @@
 mod conditional;
+mod creates;
 mod files;
 mod mutations;
 mod profiles;
+mod staged;
 mod writes;
 
 pub use conditional::TextWriteConflict;

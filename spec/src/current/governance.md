@@ -188,3 +188,7 @@ not synthesize that browser default; the real Delete item performs IO.
 Existing App notices project through the source-owned workspace notification
 bridge and retire with that host. Real native failure/retry acceptance uses the
 shared notification component and verifies physical bytes and explicit recovery.
+
+Exclusive creation shares the capability-opened staged publication helper with
+copy and retains the same source budget and file-contract mapping. Source APIs
+remain opt-in and portable; no broad native permission is added.

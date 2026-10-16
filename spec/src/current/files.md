@@ -5,13 +5,14 @@ aggregate milestone while end-of-M7 full qualification remains deferred.
 
 ## Requirements
 
-| ID          | Requirement                                                                                                                                                                                                                                                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| LD-FILE-001 | Native rename, move, copy, file removal and directory removal MUST remain within the live admitted root, reject root/parent/symlink escapes, and preserve existing destinations on collisions. A failed operation MUST report a portable error and MUST NOT project success into the vault tree.                               |
-| LD-FILE-002 | Native watching MUST publish bounded, subscription-scoped portable changes for the admitted root, including external creation, modification, rename and deletion. Overflow, incomplete events and lost continuity MUST cause reconciliation. Closing a subscription or session MUST retire its callbacks and native resources. |
-| LD-FILE-003 | Existing File Explorer and App file commands MUST protect dirty editors before rename, move or delete, await admitted IO through tree/workspace projection and keep disk, tabs, metadata and file identity consistent. Unresolved writer failures MUST block destructive mutations.                                            |
-| LD-FILE-004 | The desktop MUST support attachment import through the existing application surface, reveal admitted paths in Finder and use available system trash. Cancellation MUST leave the vault unchanged. Unavailable platform operations MUST report that capability explicitly instead of succeeding silently.                       |
-| LD-FILE-005 | Renderer HTTP proxy responses MUST avoid a second decoding of decoded upstream bodies by removing Content-Encoding and Content-Length while preserving status, content type, cache validators and bytes. Vault, plugin and raw filesystem responses MUST retain their representation headers.                                  |
+| ID          | Requirement                                                                                                                                                                                                                                                                                                                                                       |
+| ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-FILE-001 | Native rename, move, copy, file removal and directory removal MUST remain within the live admitted root, reject root/parent/symlink escapes, and preserve existing destinations on collisions. A failed operation MUST report a portable error and MUST NOT project success into the vault tree.                                                                  |
+| LD-FILE-002 | Native watching MUST publish bounded, subscription-scoped portable changes for the admitted root, including external creation, modification, rename and deletion. Overflow, incomplete events and lost continuity MUST cause reconciliation. Closing a subscription or session MUST retire its callbacks and native resources.                                    |
+| LD-FILE-003 | Existing File Explorer and App file commands MUST protect dirty editors before rename, move or delete, await admitted IO through tree/workspace projection and keep disk, tabs, metadata and file identity consistent. Unresolved writer failures MUST block destructive mutations.                                                                               |
+| LD-FILE-004 | The desktop MUST support attachment import through the existing application surface, reveal admitted paths in Finder and use available system trash. Cancellation MUST leave the vault unchanged. Unavailable platform operations MUST report that capability explicitly instead of succeeding silently.                                                          |
+| LD-FILE-005 | Renderer HTTP proxy responses MUST avoid a second decoding of decoded upstream bodies by removing Content-Encoding and Content-Length while preserving status, content type, cache validators and bytes. Vault, plugin and raw filesystem responses MUST retain their representation headers.                                                                     |
+| LD-FILE-006 | New-note and attachment creation MUST publish complete bytes only when the destination is absent. A collision, including a destination appearing during staging, MUST preserve that destination, report EEXIST and leave no temporary files. Hosts MUST advertise exclusive creation only when implemented; legacy low-level overwrite semantics remain explicit. |
 
 ## Authority and boundaries
 
@@ -66,13 +67,13 @@ reconciler. Reconciliation must preserve live file identity, notify the existing
 metadata/editing owners and protect dirty content. Native delivery alone does
 not qualify UI consistency.
 
-Source review also identifies two next reproductions: File Explorer deletion
-currently enters low-level Vault trash without the FileManager writer guard, and
-new-note/binary creation can race a destination that appears after name
-selection. Preserve the existing low-level API contract where intentional;
-introduce the necessary source-owned guarded/exclusive boundary for Tauri and
-qualify the original application flow. These are review findings awaiting exact
-source regressions, not completed gate evidence.
+Source regressions now protect Explorer deletion through FileManager and add
+explicit new-file creation intent. Native creation stages complete bounded bytes
+and atomically publishes without replacing a destination, including one arriving
+during staging. Capability advertisement remains platform-specific. FileManager
+uses the optional source-owned exclusive port; legacy low-level Vault overwrite
+behavior remains explicit. Attachment integration and App reconciliation still
+need qualification under the original M5 gate.
 
 Native watch snapshots are bounded to 100,000 entries and 16 MiB of accounted
 path/stamp storage. Hint accumulation retains at most 2,048 paths. A delivery

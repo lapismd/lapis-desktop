@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+The M5 native runner retains exclusive text/binary creation and real Explorer
+new-note acceptance under LD-FILE-006. Component evidence does not replace the
+original aggregate milestone gates or attachment import qualification.
+
 The user resumed delivery through M7 after the settings/hotkeys review and
 source reorganization. M4 remains unfinished and every original milestone gate
 retains its scope. Continue implementation through M7 without another review

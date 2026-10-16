@@ -45,3 +45,4 @@ by the task ledger, not inferred from this list.
 - [Bounded native watch transport](E-WATCH-001.md)
 - [Post-M7 plugin and Storybook plan](E-PLUGINS-001.md)
 - [Protected native Explorer deletion](E-TRASH-001.md)
+- [Exclusive native new-file creation](E-CREATE-001.md)

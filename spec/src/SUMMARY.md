@@ -42,3 +42,4 @@
   - [Bounded native watch transport](history/E-WATCH-001.md)
   - [Post-M7 plugin and Storybook plan](history/E-PLUGINS-001.md)
   - [Protected native Explorer deletion](history/E-TRASH-001.md)
+  - [Exclusive native new-file creation](history/E-CREATE-001.md)

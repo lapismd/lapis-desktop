@@ -42,13 +42,7 @@ impl VaultRoot {
         condition: WriteCondition<'_>,
     ) -> io::Result<()> {
         let relative = self.checked(path, false)?;
-        let mtime = match options.mtime {
-            Some(value) if value.is_finite() && (0.0..=253_402_300_799_999.0).contains(&value) => {
-                Some(std::time::UNIX_EPOCH + std::time::Duration::from_secs_f64(value / 1000.0))
-            }
-            Some(_) => return Err(invalid("Invalid modification time")),
-            None => None,
-        };
+        let mtime = modification_time(options)?;
         let parent_path = relative
             .parent()
             .filter(|parent| !parent.as_os_str().is_empty())
@@ -105,4 +99,16 @@ impl VaultRoot {
         bytes.extend_from_slice(data.as_bytes());
         self.write(path, &bytes, options)
     }
+}
+
+pub(super) fn modification_time(
+    options: &WriteOptions,
+) -> io::Result<Option<std::time::SystemTime>> {
+    Ok(match options.mtime {
+        Some(value) if value.is_finite() && (0.0..=253_402_300_799_999.0).contains(&value) => {
+            Some(std::time::UNIX_EPOCH + std::time::Duration::from_secs_f64(value / 1000.0))
+        }
+        Some(_) => return Err(invalid("Invalid modification time")),
+        None => None,
+    })
 }
