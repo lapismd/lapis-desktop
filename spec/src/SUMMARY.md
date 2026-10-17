@@ -126,3 +126,4 @@
 
   - [Quiet desktop test entrypoints](history/E-TEST-001.md)
   - [Desktop state review coverage](history/E-CATALOG-002.md)
+  - [E-AI-021: External user-command refresh](history/E-AI-021.md)

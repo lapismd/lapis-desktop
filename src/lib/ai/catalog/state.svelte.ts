@@ -107,6 +107,9 @@ export function createCatalogState(props: AiCatalogProps) {
       () => void refresh(),
     );
     const unsubscribeSettings = subscribeSettings?.(() => void refresh());
+    const unsubscribeCommands = props.subscribeUserCommands?.(
+      () => void refresh(),
+    );
     if (app.workspace.layoutReady) void refresh();
     return () => {
       active = false;
@@ -121,6 +124,7 @@ export function createCatalogState(props: AiCatalogProps) {
       app.vault.offref(renamed);
       app.workspace.offref(activeLeaf);
       unsubscribeSettings?.();
+      unsubscribeCommands?.();
       props.onDispose?.(work.settle());
     };
   }

@@ -27,6 +27,8 @@ export class AiCatalogView extends OwnedAiPanelView {
         onOpenSkill: (path) => this.host.openCatalogSkill(path),
         subscribeSettings: (listener) =>
           this.host.subscribeSettings(() => listener()),
+        subscribeUserCommands: (listener) =>
+          this.host.userAgents?.subscribe?.(listener) ?? (() => {}),
       },
     });
   }

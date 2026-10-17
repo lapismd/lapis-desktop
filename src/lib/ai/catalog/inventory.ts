@@ -89,7 +89,7 @@ export async function collectAiCatalog(
     discoveredCommands.commands,
     discoveredCommands.overlays,
   );
-  const reserved = catalog.list();
+  const reserved = catalog.list().filter((command) => command.source === "app");
   const overlayByName = new Map(
     discoveredCommands.overlays.map((command) => [command.name, command]),
   );

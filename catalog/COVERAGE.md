@@ -177,3 +177,10 @@ checks now run in the leaf panel and every placement. Fixed viewport hosts and
 unconditional viewport assertions cover unnamed browser-test canvases too. All
 stories remain visual-pending; native admission and authenticated tools are
 separate from fake-client browser evidence.
+
+`Desktop/AI/User commands` adds two minimal-shell scenarios for external global
+command refresh and unreadable-inventory recovery. They mount the actual bundled
+AI plugin and Catalog using the production native command adapter with an
+explicit disposable IO port. They also reject duplicate app copies of file
+commands. The normal one-second refresh interval is retained; new observation
+bounds allow three seconds for polling and rendering. No native IO is claimed.

@@ -133,6 +133,11 @@ Nope
     expect(ai?.commands.some((command) => command.name === "help")).toBe(true);
     expect(
       groups
+        .flatMap((group) => group.commands)
+        .filter((command) => command.name === "review"),
+    ).toHaveLength(1);
+    expect(
+      groups
         .find((group) => group.id === "diagnostics")
         ?.diagnostics.some((item) =>
           /Reserved command name/u.test(item.message),

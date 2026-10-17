@@ -376,9 +376,8 @@ Vault changes refresh it through the existing file-view lifecycle. Filename
 changes update schema selection after guarded writes/renames settle. Mounting
 uses the retained file-view content host so reopening preserves the surface.
 Pending view loads and component teardown belong to the AI scope; closing or
-disabling cancels publication and drains owned work. Previewing stored data
-never starts or resumes an ACP session. This does not qualify ordinary bundled
-native AI admission or its recovery gate.
+disabling cancels publication and drains owned work. Stored previews never start
+or resume ACP; native admission and recovery stay separately gated.
 
 `catalog/AI_MIGRATION.md` maps source differences and pending native cases.
 
@@ -387,14 +386,15 @@ conversation menus and offline recovery, provider attribution and scope follow.
 Catalog controls retain explicit expand/collapse and source navigation for both
 commands and skills. The Notes copy's additional assertions remain required even
 where its story names match maintained plugin cases. Test clients and timing
-gates remain catalog-owned. Fixtures own definite viewport heights; full-window
-geometry checks also apply to unnamed test canvases. Ordinary native execution
-keeps its separate gate.
-
-Native dependency intake preserves the separate admission gate.
+gates remain catalog-owned. Definite fixture heights retain full-window checks
+on unnamed test canvases. Native dependency intake and ordinary execution
+preserve separate admission gates.
 
 User-wide command files use the native `~/.lapis/agents/commands` directory. An
 admitted local main window may list, check, create missing files or replace one
 named Markdown command. Names retain the public slash-command grammar; writes
 stage/sync atomically, seeds never overwrite existing commands, and IPC cannot
 choose directories or follow escaping symlinks. AI execution stays gated.
+Subscribed stores poll bounded admitted inventories every second without
+overlapping reads or repeated errors. Last unsubscribe stops polling; closure
+drains reads and fences late results. File commands have no duplicate app rows.

@@ -159,5 +159,10 @@ read cleanup. These do not admit ordinary native AI execution.
 
 Native user-command storage adds four renderer transport/lifetime cases and an
 atomic default-seeding regression alongside the original seed case. Rust file
-policy and cold named-IPC acceptance remain separate evidence in E-AI-020.
-Ordinary AI activation and external user-command watching remain M10.2 work.
+policy and cold named-IPC acceptance remain separate evidence in E-AI-020. Nine
+external-refresh regressions cover lazy bounded polling, additions/edits/
+deletion, one lease, stable order, failure deduplication/recovery, acknowledged
+writes, stale reads/errors and drained closure. The catalog inventory regression
+rejects file commands duplicated as app-owned commands. Real minimal-shell
+stories separately qualify visible refresh and retained inventory on IO failure.
+Ordinary service binding and mounted native recovery remain M10.2 work.
