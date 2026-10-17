@@ -123,11 +123,41 @@ Commit each verified task in its owning repository.
 **M4 completes the first useful milestone.** M0–M3 provide runnable, testable
 increments toward it. Later services do not block that milestone.
 
-M0–M7 meet their original qualification gates. M7.2 is complete. On 2026-10-17
-the user authorized continuing through M8, M9 and M10 and completing the entire
-`PLUGIN_MIGRATION.md` sequence. Commit verified slices and continue without an
-automatic review pause. M7.3 ordinary popup integration remains separately
-planned; M11 signing/distribution and M12 cutover remain later gates.
+M0–M9 meet their original gates, including M7.1–M7.2 and the M8 plugin
+foundation. M10.1's reusable ACP adapter is complete; M10.2 remains in progress.
+The current slice binds native AI services to Notes and fixes initial shared
+progress. It does not enable an ordinary AI execution target.
+
+**Review checkpoint (2026-10-17):** the user requested a pause after this slice,
+with the ordinary desktop app opened for review. Commit the qualified slice and
+stop implementation until the user resumes. Keep unfinished tasks In progress or
+Planned; a review pause does not complete their gates.
+
+When resumed, finish the remaining work in this order:
+
+1. **M10.2:** finish native chat execution, bootstrap/context/skills, durable
+   conversation recovery, active trust revocation and cleanup; qualify remaining
+   native AI scenarios. Retained UI, conversations, memory and stories are
+   already migrated; unavailable AI is intentional until targets are admitted.
+2. **M10.3:** authenticated Rust application tools, native credentials, exact
+   approvals and guarded reads/edits with the packaged Rust agent.
+3. **M10.4:** optional compute model lifecycle and peer admission, separately
+   enabled and qualified.
+4. **M7.3:** integrate ordinary native pop-out windows and qualify editing,
+   saving, redocking, multiple-window isolation and safe closing. M7.1–M7.2's
+   proofs do not make the ordinary Open in new window action available.
+5. **M11:** publication/distribution prerequisites, signing/notarization,
+   updates/rollback and separate Linux/Windows qualification. Signing remains
+   deferred until this stage and requires the governing release authorization.
+6. **M12:** final capability audit, Tauri default and frozen Deno host removal.
+
+Before admitting an AI execution target, cover full service shutdown after an
+uncertain model-probe close and revocation of running work when workspace trust
+changes. Native reload recovery still needs a durable consumed-event cursor;
+retain interrupted/unknown outcomes and never replay uncertain prompts.
+
+M7.3 remains independent of M8–M10 and is scheduled before distribution. Do not
+repeat completed foundation work or restore the frozen Deno host.
 
 ### Next workstream after M7: plugins and Storybook
 
@@ -141,7 +171,9 @@ rather than repeating them.
 The M8–M10 rows and detailed tasks now cover the authorized implementation. The
 canonical plugin contract, verification rows and source/evidence mappings must
 accompany each stage. Preserve historical inventory and completed gates. M9 and
-M10 are in scope and remain Planned until their dependencies complete.
+M10 remain in scope. M8/M9 and M10.1 are Done; M10.2 is In progress and
+M10.3/M10.4 remain Planned. The requested review checkpoint governs
+continuation.
 
 AI and Terminal are bundled, desktop-owned and user-disableable; their services
 start lazily. Preserve their settings, conversations and explicit disabled

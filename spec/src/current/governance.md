@@ -8,8 +8,9 @@ Archive rewriting is idempotent only for an exact dependency path already
 redirected to a verified tarball. Repeated pnpm hook calls preserve that
 redirect; unverified local paths and file-based peer ranges remain rejected.
 
-Native readiness regressions cover receipts split across chunks and receipts
-followed by large driver-log batches without extending the startup deadline.
+Native readiness covers split/log-batched receipts without longer deadlines. The
+e2e entry shares early progress, then imports runtime instrumentation; ordinary
+bundle audits reject its startup capture marker.
 
 The canonical registry separates `plugins.md` for catalog, bundled plugins and
 dynamic installation from `ai.md` for direct ACP, native AI and optional
@@ -27,10 +28,13 @@ repository-source traversal, formatting and commits.
 ## Requirements
 
 Native AI admission adds only named main-window admit/release frames. Ordinary
-ACP renderer execution stays denied. The linked Rust adapter is compiled into
-ordinary builds but its policy exposes no targets or executable selection.
-Actual mounted admission/recovery qualification remains required before Notes
-service binding is enabled; the existing e2e transport fixture is independent.
+ACP execution still has no admitted target. The linked Rust adapter is compiled
+into ordinary builds but its policy exposes no targets or executable selection.
+Actual mounted admission/recovery qualification retains the M10.2 gate; the
+existing e2e transport fixture is independent. Notes owns the lazy native
+factory and optional bundled registration. The main window's exact ACP-session
+grant exposes only host-admitted operations; extra individual, default, wildcard
+and remote plugin grants remain denied.
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -39,7 +43,7 @@ service binding is enabled; the existing e2e transport fixture is independent.
 | LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit milestone review. Committed evidence MUST remain immutable.                                                                                                                                                                                                                                   |
 | LD-GOV-004 | Task pages MUST be the sole completion authority. Done MUST require completed dependencies and passing evidence selected for the original task gate; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                                                                                                                                                |
 | LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                                                                       |
-| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, except the explicitly authorized unpublished Terminal public-build link in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                              |
+| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, except the authorized unpublished Terminal and AI public-build links in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                 |
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                            |
 | LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006. |
 | LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit headed option MUST retain the complete native WebView/window/OS suite. Headless success MUST NOT substitute for a native acceptance gate; invalid mode flags MUST reject before launching children.                                                                                    |

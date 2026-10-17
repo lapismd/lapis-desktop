@@ -84,6 +84,7 @@ async function acceptance() {
       "tests/desktop/acp-transport.test.mjs",
       "tests/desktop/ai-user-commands.test.mjs",
       "tests/desktop/ai-admission.test.mjs",
+      "tests/desktop/ai-notes-binding.test.mjs",
       "tests/desktop/plugin-assets.test.mjs",
       "tests/desktop/plugin-distribution.test.mjs",
       "tests/desktop/plugin-distribution-recovery.test.mjs",

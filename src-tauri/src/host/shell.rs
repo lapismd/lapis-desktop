@@ -18,6 +18,8 @@ pub struct ShellInfo {
     #[cfg(feature = "e2e")]
     background_api: bool,
     #[cfg(feature = "e2e")]
+    native_ai_policy: bool,
+    #[cfg(feature = "e2e")]
     native_menus: Result<Vec<crate::acceptance::integration::MenuEntry>, String>,
     #[cfg(feature = "e2e")]
     native_popouts: Vec<crate::acceptance::popouts::ProofWindow>,
@@ -53,6 +55,8 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
         ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
         #[cfg(feature = "e2e")]
         background_api: crate::acceptance::background::enabled(),
+        #[cfg(feature = "e2e")]
+        native_ai_policy: crate::acceptance::background::native_ai_policy(),
         #[cfg(feature = "e2e")]
         native_menus: crate::acceptance::integration::menus(&app),
         #[cfg(feature = "e2e")]

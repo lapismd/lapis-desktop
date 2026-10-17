@@ -9,6 +9,7 @@ import {
   rmSync,
   copyFileSync,
   chmodSync,
+  existsSync,
 } from "node:fs";
 import { join } from "node:path";
 import { Key } from "webdriverio";
@@ -383,6 +384,15 @@ test("Graph failed writes block Close and disk recovery refreshes controls befor
     "graph-recovery",
   );
   await settings(browser);
+  // Isolate the Graph write fault from the debounced layout save after F7.
+  const layout = join(vault, ".lapis/workspace.json");
+  await browser.waitUntil(
+    () =>
+      existsSync(layout) &&
+      JSON.stringify(JSON.parse(readFileSync(layout, "utf8"))).includes(
+        '"type":"graph"',
+      ),
+  );
   const external = JSON.parse(readFileSync(path, "utf8"));
   const directory = join(vault, ".lapis");
   context.after(() => chmodSync(directory, 0o700));

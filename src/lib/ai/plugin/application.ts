@@ -9,6 +9,7 @@ import { AiConversationHost } from "./conversation-host.ts";
 import {
   ownedAiServices,
   selectAiRuntime,
+  aiLeaveMode,
   type AiLeaveMode,
 } from "./services.ts";
 import { AppToolHost } from "../tools/app-tool-host.ts";
@@ -158,13 +159,19 @@ export class AiApplication extends AiConversationHost {
     const results = await Promise.allSettled([
       this.operations.closeViews(),
       this.services.appToolBridge?.close(),
-      this.services.close(this.leaveMode),
     ]);
-    await Promise.all([
-      this.maintenance.settle(),
-      this.settings.settle(),
-      this.operations.settle(),
-    ]);
+    results.push(
+      ...(await Promise.allSettled([
+        this.maintenance.settle(),
+        this.settings.settle(),
+        this.operations.settle(),
+      ])),
+    );
+    results.push(
+      ...(await Promise.allSettled([
+        this.services.close(aiLeaveMode(this.app, this.leaveMode)),
+      ])),
+    );
     const failures = results.flatMap((result) =>
       result.status === "rejected" ? [result.reason] : [],
     );

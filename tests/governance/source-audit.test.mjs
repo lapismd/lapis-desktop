@@ -136,12 +136,18 @@ test("desktop integration retains exact local grants and rejects additional plug
   }
 });
 
-test("AI admission grants never include ACP execution authority", () => {
+test("AI session permission stays exact and bound to the admitted main window", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const capabilities = JSON.parse(
     readFileSync("src-tauri/capabilities/main.json", "utf8"),
   );
   const config = JSON.parse(readFileSync("src-tauri/tauri.conf.json", "utf8"));
+  assert.deepEqual(
+    capabilities.permissions.filter((permission) =>
+      permission.startsWith("lapis-ai:"),
+    ),
+    ["lapis-ai:acp-session"],
+  );
   const admitted = {
     ...capabilities,
     permissions: [
@@ -154,7 +160,7 @@ test("AI admission grants never include ACP execution authority", () => {
   };
   assert.deepEqual(auditManifest(manifest, admitted, config), []);
   for (const permission of [
-    "lapis-ai:acp-session",
+    "lapis-ai:default",
     "lapis-ai:allow-open",
     "lapis-ai:allow-submit",
   ])

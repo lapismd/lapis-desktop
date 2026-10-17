@@ -12,16 +12,19 @@
   import { registerCatalogCleanup } from "./lifecycle";
 
   import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
+  import type { AiFactory } from "../../src/lib/ai/plugin/services";
   import type { AppSafeModeState } from "@lapis-notes/api";
 
   let {
     class: className = "",
     createTerminal,
+    createAi,
     files = {},
     safeMode,
   }: {
     class?: string;
     createTerminal?: TerminalFactory;
+    createAi?: AiFactory;
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
   } = $props();
@@ -87,6 +90,7 @@
       bind:this={workspace}
       {session}
       {createTerminal}
+      {createAi}
       safeMode={safeMode ?? normalRecovery()}
       urlDelivery={urls}
       onReady={async () => {

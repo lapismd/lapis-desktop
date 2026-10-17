@@ -5,6 +5,10 @@ scopes before releasing the vault. An open database still blocks that closure
 without changing AI authority. Suspended reload scopes retain their generation
 for verified re-admission; failed cleanup cannot activate a replacement scope.
 
+The Notes leave guard passes the requested close/reload mode to bundled AI after
+writer protection succeeds. AI views, settings and maintenance drain before
+native streams, user-command subscriptions and the admitted scope are released.
+
 Signed plugin installation uses the existing admitted native filesystem port
 with relative vault paths. SDK staging, replacement and retained plugin data add
 no native grant and do not change the file writer, watch or teardown contracts

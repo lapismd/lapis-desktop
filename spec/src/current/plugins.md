@@ -130,6 +130,12 @@ desktop-specific Plugins screen is introduced.
 
 ## AI and compute
 
+Notes composes the bundled AI plugin through an App-owned native service factory
+before loading optional plugins. Disabled and Safe Mode Apps allocate no native
+clients. Catalog scenes mount NotesWorkspace with the production factory and
+disposable named IO ports, including an unavailable agent and strict close/
+reload resource ordering. These scenes qualify UI ownership, not native chat.
+
 The [AI contract](ai.md) owns direct ACP, retained AI, tools, credentials and
 optional compute under the original M10 gates. Shared plugin identity and
 catalog requirements remain here.

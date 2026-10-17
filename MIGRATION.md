@@ -9,10 +9,9 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M8.0,
 M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
-Current work: M10.2 — Bind Notes AI services; qualify context and recovery
+Current work: M10.2 — Paused for review; next native chat, context and recovery
 
-Oldest pending gate: M7.3 — Separate ordinary popup integration, not an M8
-dependency
+Oldest pending gate: M7.3 — After M10.4: qualify ordinary native popouts
 
 Implementation can advance while original milestone gates await qualification.
 The task ledger and selected evidence retain every remaining check.
@@ -32,12 +31,12 @@ below.
 | M5    | Done        | Complete                                                  |
 | M6    | Done        | Complete                                                  |
 | M7    | Done        | Complete                                                  |
-| M7.1  | Done        | Complete; paused for review before M7.2                   |
+| M7.1  | Done        | Complete; proof retained                                  |
 | M7.2  | Done        | Complete; native ordinary integration remains M7.3        |
-| M7.3  | Planned     | Separate ordinary popup integration, not an M8 dependency |
+| M7.3  | Planned     | After M10.4: qualify ordinary native popouts              |
 | M8    | Done        | Complete; continue to M9.1                                |
 | M9    | Done        | Complete; continue to M10.1 native ACP adapter            |
-| M10   | In progress | Continue M10.2 mounted AI, then native tools and compute  |
+| M10   | In progress | Paused for review; resume M10.2, then M10.3-M10.4         |
 | M11   | Planned     | Qualify signed distribution and each additional platform  |
 | M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop     |
 | M8.0  | Done        | Complete; continue to M8.1 Terminal                       |
@@ -46,7 +45,7 @@ below.
 | M8.3  | Done        | Complete; continue to M9.1                                |
 | M9.1  | Done        | Complete; continue to M10.1 native ACP adapter            |
 | M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI              |
-| M10.2 | In progress | Bind Notes AI services; qualify context and recovery      |
+| M10.2 | In progress | Paused for review; next native chat, context and recovery |
 | M10.3 | Planned     | Implement and qualify native tools and credentials        |
 | M10.4 | Planned     | Integrate optional compute last                           |
 | M0.2  | Done        | Complete; native qualification remains explicit           |

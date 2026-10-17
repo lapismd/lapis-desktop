@@ -51,10 +51,10 @@ Query and metadata assertions must inspect visible results alongside disk bytes,
 then repeat after edit/rename/delete and cold restart. Graph qualification uses
 its real views and indexed source data, not a fixture renderer or copied panel.
 
-The active session still defers full source, Storybook/axe, web, Desktop and
-ordinary-bundle lanes until M7 implementation is complete. Original M4–M7 gates
-remain open until those deferred lanes pass. Deno is frozen; publishing,
-signing, semantic compute and post-M7 plugin intake remain deferred.
+The initial M6 session deferred full source, Storybook/axe, web, desktop and
+ordinary-bundle lanes until M7. E-QUALIFICATION-001/002 subsequently qualify
+M4–M7; the current ledger owns later plugin/AI progress. Deno stays frozen and
+publication/signing retain their distribution gates.
 
 Search settings qualification includes immediate close/cold restore, retained
 permission failure and explicit disk recovery. The recovered values must reach
@@ -77,3 +77,8 @@ Graph registration. Native Close timeout diagnostics capture visible failure
 text before forced cleanup; they never extend the original deadline or turn a
 blocked close into success. Sync-host observed events queue behind its initial
 identity reconciliation in the owning API package.
+
+Graph permission-failure acceptance waits for the opened Graph layout to be
+committed before faulting its settings writer. This isolates the intended
+settings recovery from an unrelated debounced layout write and preserves every
+original close, disk-byte and live-control assertion.

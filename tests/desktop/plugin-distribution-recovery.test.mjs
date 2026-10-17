@@ -147,6 +147,10 @@ test("invalid signatures, altered files, incompatible releases and bundled IDs f
     "signed-rejections",
   );
   const terminal = await inspect(browser, "terminal");
+  const ai = await inspect(browser, "ai");
+  assert.equal(ai.registered, true);
+  assert.equal(ai.enabled, true);
+  assert.equal(ai.sharedApi, true);
   const corePath = join(vault, ".lapis/core-plugins.json");
   const before = existsSync(corePath) ? readFileSync(corePath, "utf8") : null;
   for (const [id, code] of [
@@ -154,7 +158,7 @@ test("invalid signatures, altered files, incompatible releases and bundled IDs f
     ["native-tampered", "hash-mismatch"],
     ["native-incompatible", "compatibility-failed"],
     ["terminal", "reserved-id"],
-    ["ai", "compatibility-failed"],
+    ["ai", "reserved-id"],
   ]) {
     const result = await distributionCall(browser, "install", id);
     assert.equal(result.ok, false, `${id}: ${JSON.stringify(result)}`);
@@ -163,6 +167,10 @@ test("invalid signatures, altered files, incompatible releases and bundled IDs f
     assert.equal((await inspect(browser, id)).record, null, id);
   }
   assert.equal((await inspect(browser, "terminal")).enabled, terminal.enabled);
+  const retainedAi = await inspect(browser, "ai");
+  assert.equal(retainedAi.registered, ai.registered);
+  assert.equal(retainedAi.enabled, ai.enabled);
+  assert.equal(retainedAi.sharedApi, ai.sharedApi);
   assert.equal(
     existsSync(corePath) ? readFileSync(corePath, "utf8") : null,
     before,

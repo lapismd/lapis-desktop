@@ -1,3 +1,6 @@
-import { bootstrapDesktop } from "./lib/desktop/bootstrap.ts";
+import { launchDesktop } from "./lib/desktop/launch.ts";
 
-await bootstrapDesktop();
+await launchDesktop(async () => {
+  const { bootstrapDesktop } = await import("./lib/desktop/bootstrap.ts");
+  await bootstrapDesktop();
+});

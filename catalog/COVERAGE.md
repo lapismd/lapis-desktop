@@ -6,6 +6,17 @@ states are mapped in the [desktop review inventory](DESKTOP_STATES.md),
 including loading, failure, Safe Mode, file conflicts and both desktop-only
 plugins.
 
+`plugins/ai/NativeNotes.stories.ts` mounts production NotesWorkspace and its
+native service factory through disposable named IO ports. UnavailableAgent,
+Disabled, SafeMode and Untrusted cover real optional registration, global
+command seeding, one lazy admission and zero-allocation inactive/revoked
+startup. `ResourceOrder` proves native close/reload runs only after owned view
+drainage. Native IO and chat qualification remain separate.
+
+`plugins/desktop/ShellStartup.stories.ts` reviews the production early entry
+composition, reusing DesktopWorkspaceStartup for loading and import failure.
+Native acceptance captures it before the application graph imports.
+
 The canonical task ledger owns completion status. This maps application surfaces
 to their real component stories; migrated plugin stages extend it with source
 revision, source story, destination story and retained assertions before

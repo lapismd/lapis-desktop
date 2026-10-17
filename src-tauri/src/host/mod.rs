@@ -66,7 +66,7 @@ pub fn run() -> tauri::Result<()> {
     let builder = builder.plugin(tauri_plugin_lapis_ai::Builder::new(ai.clone()).build());
     #[cfg(feature = "e2e")]
     let builder = {
-        let builder = if crate::acceptance::background::enabled() {
+        let builder = if crate::acceptance::background::native_ai_policy() {
             builder.plugin(tauri_plugin_lapis_ai::Builder::new(ai.clone()).build())
         } else {
             let policy = crate::acceptance::acp::Policy::default();

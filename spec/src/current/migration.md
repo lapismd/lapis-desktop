@@ -5,17 +5,26 @@ Root `MIGRATION.md` is its generated projection; `PLAN.md` retains every
 original milestone gate. Component success, bookkeeping and screenshots cannot
 replace those gates. The user authorized completion of the current slice
 followed by all M8–M10 plugin-plan stages on 2026-10-17. Commit each verified
-slice and continue without an automatic review pause. M7.3 remains a separate
-ordinary-window integration task, while M11 distribution and M12 cutover remain
-later work.
+slice. The latest user instruction pauses after the current Notes AI-binding and
+initial-progress correction, then opens the ordinary app for review. Resume only
+when requested: M10.2 execution/context/skills/recovery, M10.3 native tools and
+credentials, M10.4 optional compute, independent M7.3 ordinary pop-outs, then
+M11 distribution and M12 cutover. Original task gates remain unchanged.
 
 Quiet desktop checks and the mapped minimal-shell state catalog are complete
 (M0.2/M8.4). Native AI admission groundwork is selected under M10.2: caller and
 vault lifetime checks have a separate hidden-WebView API lane. Ordinary builds
-still expose no AI execution targets or ACP-session grants. Bind the admitted
-Notes services and qualify mounted context/skills/recovery next. Full native UI
-qualification remains explicit headed work; both corrected Search consumer
-regressions pass in E-AI-022.
+expose no AI execution targets; the exact main-window ACP-session grant cannot
+select an executable. Notes now binds admitted services; native execution,
+context/skills and recovery remain open. Full native UI qualification remains
+explicit headed work; both corrected Search consumer regressions pass in
+E-AI-022.
+
+M10.2 now binds Notes to the native AI factory and restores its optional bundled
+registration. Global command files and the retained Settings/History/Catalog
+stay App-owned; native target execution, skills/context integration and mounted
+turn recovery still require qualification. E-AI-023 records this binding slice
+without claiming the aggregate AI gate.
 
 M7.2 qualifies retained live popup projection, guarded shared close and browser
 header clearance through source-owned public archives. Its browser evidence does
@@ -195,14 +204,15 @@ handoff (E-AI-005), the adapted native-client runtime seam (E-AI-006), retained
 skill discovery and original policy tests (E-AI-007), and command/bootstrap
 policy with a legacy-runtime audit (E-AI-008), and chat state/transcript
 projection with exact-choice and interrupted-work recovery (E-AI-009). The unit
-coverage inventory is `tests/ai/COVERAGE.md`. These modules are not yet mounted
-in production AI views.
+coverage inventory is `tests/ai/COVERAGE.md`. E-AI-023 subsequently mounts the
+retained views with native services; it does not qualify ordinary execution.
 
-Retained current UI, memory, activation, production native admission, the native
-user-global command port and complete migrated stories retain the unchanged
-M10.2 gate. Native application tools/credentials and optional compute remain
-M10.3 and M10.4. The ledger alone owns completion; existing catalog passes
-cannot qualify the still-unmigrated AI stories or native product behavior.
+Retained UI, memory, activation, native admission, command storage and migrated
+stories now have their focused evidence below. Native execution, context/skills
+and durable recovery retain the unchanged aggregate M10.2 gate. Native
+application tools/credentials and optional compute remain M10.3 and M10.4. The
+ledger alone owns completion; catalog passes cannot qualify the remaining native
+execution, recovery or application-tool behavior.
 
 M10.2's restored memory policy retains original service/storage/scheduler
 suites; its app-tool-host case now runs through the retained owned policy.

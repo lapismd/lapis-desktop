@@ -130,3 +130,5 @@
   - [E-AI-021: External user-command refresh](history/E-AI-021.md)
   - [E-STRUCTURE-003: Dedicated AI contract](history/E-STRUCTURE-003.md)
   - [E-AI-022: Native AI admission and quiet IPC acceptance](history/E-AI-022.md)
+  - [E-AI-023: Notes-owned native AI services](history/E-AI-023.md)
+  - [E-STARTUP-002: Shared progress before shell import](history/E-STARTUP-002.md)

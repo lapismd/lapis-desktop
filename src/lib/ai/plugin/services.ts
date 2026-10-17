@@ -19,6 +19,13 @@ export interface AiServices {
 }
 export type AiFactory = (app: App, tools: AppToolHost) => AiServices;
 const bindings = new WeakMap<App, AiFactory>();
+const leaveModes = new WeakMap<App, AiLeaveMode>();
+export function prepareAiLeave(app: App, mode: AiLeaveMode): void {
+  leaveModes.set(app, mode);
+}
+export function aiLeaveMode(app: App, fallback: AiLeaveMode): AiLeaveMode {
+  return leaveModes.get(app) ?? fallback;
+}
 export function bindAi(app: App, factory: AiFactory): () => void {
   if (bindings.has(app)) throw new Error("AI is already bound to this App");
   bindings.set(app, factory);

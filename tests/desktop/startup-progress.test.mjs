@@ -21,6 +21,23 @@ async function fixture(context, name) {
   return { session, vault };
 }
 
+test("cold shell mounts shared centered progress before importing the application", async (context) => {
+  const { session } = await fixture(context, "shell-first-progress");
+  const initial = await session.browser.execute(
+    () => globalThis.__lapisShellStartupAcceptance,
+  );
+  assert.equal(initial.progress, true);
+  assert.equal(initial.message, "Load the desktop shell");
+  assert.equal(initial.standaloneLogos, 0);
+  assert.equal(initial.appChildren, 0);
+  assert.ok(
+    initial.logoTop > 52,
+    "The initial branded progress stays below native controls",
+  );
+  assert.ok(Math.abs(initial.logoCenter - initial.windowCenter) < 1);
+  await session.close();
+});
+
 test("real Notes startup reports phases, plugin detail and accessible progress before the top-edge workspace", async (context) => {
   const { session } = await fixture(context, "startup-progress");
   const { browser } = session;

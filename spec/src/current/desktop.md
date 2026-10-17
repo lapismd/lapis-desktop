@@ -14,9 +14,9 @@ Plugin assets and Terminal follow [plugins](plugins.md).
 
 | ID             | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                     |
 | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-DESK-001    | The desktop MUST display Lapis branding and the public Design Core Lapis theme in a bundled Svelte renderer. Startup MUST expose an accessible loading status, followed by ready content or an accessible failure.                                                                                                                                                                                                                              |
+| LD-DESK-001    | The desktop MUST display Lapis branding and the public Design Core Lapis theme in a bundled Svelte renderer. The first renderer screen MUST use shared branded progress before importing the full shell, followed by ready content or an accessible failure.                                                                                                                                                                                    |
 | LD-DESK-002    | macOS MUST retain native close, minimize and fullscreen controls, vertically centered in the 40px top tab strip, in an overlay window with no visible title. Workspace tabs and sidebar tabs MUST meet the top edge with no application title or toolbar above them. Public window-control tokens MUST reserve native-control clearance, and declared background regions MUST use Tauri HTML dragging while interactive controls remain usable. |
-| LD-DESK-003    | Native IPC MUST grant only named shell, admitted vault and AI command-store operations plus drag/zoom to the local main window. External navigation, generic filesystem, arbitrary process launch and remote capability grants MUST remain denied.                                                                                                                                                                                              |
+| LD-DESK-003    | Native IPC MUST grant only named shell, admitted vault and scoped AI operations plus drag/zoom to the local main window. External navigation, generic filesystem, arbitrary process launch and remote capability grants MUST remain denied.                                                                                                                                                                                                     |
 | LD-DESK-004    | The shell MUST persist window geometry in its separate application profile, provide normal native application/edit/window menus, and support cold close and relaunch without leaving an owned process behind.                                                                                                                                                                                                                                   |
 | LD-DESK-005    | Native acceptance MUST exercise the actual macOS WebView, resizing, window movement, close, and relaunch using isolated test state. Automation plugins, permissions and frontend hooks MUST be absent from normal bundles.                                                                                                                                                                                                                      |
 | LD-HOST-001    | The desktop MUST consume the shared API through public package exports, identify its runtime as `tauri-desktop`, and use the shared `.lapis` state default. Migration acceptance MUST use verified source-owned pnpm archives until publication at the final release gate.                                                                                                                                                                      |
@@ -52,11 +52,12 @@ protocol and permits no network connection except native IPC.
 
 ## Source organization
 
-`src/main.ts` calls `src/lib/desktop/bootstrap.ts` for startup and host styles.
-The e2e entry reuses it with public App options. Components and logic group by
-feature under `src/components` and `src/lib`; adapters stay independent of Notes
-orchestration and local UI. Global host CSS lives in `src/styles`; component
-styles stay scoped. Use direct relative imports and avoid catch-all helpers.
+`src/main.ts` mounts shared progress through `src/lib/desktop/launch.ts` before
+lazily importing `bootstrap.ts`. The e2e entry shares this sequence. Components
+and logic group by feature under `src/components` and `src/lib`; adapters stay
+independent of Notes orchestration and local UI. Global host CSS lives in
+`src/styles`; component styles stay scoped. Use direct relative imports and
+avoid catch-all helpers.
 
 Only `main.rs` and `lib.rs` remain at `src-tauri/src` root. Features own
 reusable services; `host` owns Tauri adapters. `acceptance` compiles only with

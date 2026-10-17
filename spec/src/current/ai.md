@@ -14,17 +14,29 @@ retained. Invalid active roots identify exactly their retired generation for
 scoped cleanup. Native caller/origin checks and target policy remain host-owned;
 the renderer cannot choose a root, executable, environment or generation.
 
-Ordinary builds register the native ACP host with no targets and no renderer
-ACP-session grant. The two exact admit/release commands accept only a vault
-token or reload flag, reject surplus authority fields and derive window/origin
-from Tauri. Pending scopes stay unavailable until prior worker cleanup succeeds.
-Failed cleanup remains retryable; root failure retires only its old generation.
-Vault closure retains exact generation-scoped cleanup targets across retries, so
-delayed old-vault cleanup cannot revoke a newer window admission. Destroyed
-windows invalidate pending admissions before they can publish late. The isolated
-e2e transport policy remains separate. Production target selection, Notes
-service binding and actual mounted native recovery keep their M10.2 gate;
-registering the host alone cannot enable ordinary AI execution.
+Ordinary builds register the native ACP host with no targets. The exact main
+ACP-session grant permits the scoped protocol without executable selection. The
+two admit/release commands accept only a vault token or reload flag, reject
+surplus authority fields and derive window/origin from Tauri. Pending scopes
+stay unavailable until prior worker cleanup succeeds. Failed cleanup remains
+retryable; root failure retires only its old generation. Vault closure retains
+exact generation-scoped cleanup targets across retries, so delayed old-vault
+cleanup cannot revoke a newer window admission. Destroyed windows invalidate
+pending admissions before they can publish late. The isolated e2e transport
+policy remains separate. Production target selection and actual mounted native
+recovery keep their M10.2 gate; registering the host alone cannot enable
+ordinary AI execution.
+
+Notes binds the native AI factory before optional plugin loading. Client
+allocation and ACP admission remain lazy, scoped to the owning physical vault
+and guarded by current workspace trust. Disabled/Safe Mode startup allocates
+neither. Closing fences new work, drains admitted IO and view persistence,
+detaches owned streams, and then releases native authority. Failed cleanup stays
+retryable. Full close resolves uncertain detach through awaited whole-scope
+revocation; reload requires successful detach before suspension. Reload retains
+only the native generation; it does not invent resume or replay a prompt. Native
+model catalogs use temporary, non-prompting sessions and release them after
+reading the provider's actual advertised model state.
 
 ## Requirements
 

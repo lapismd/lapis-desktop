@@ -5,6 +5,8 @@
   import NotesWorkspace from "./NotesWorkspace.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
+  import { createNativeAi } from "../../lib/native/ai/services.ts";
+  import type { AiServices } from "../../lib/ai/plugin/services.ts";
   import { openNotesSession } from "../../lib/notes/notes-session.ts";
   import {
     normalRecovery,
@@ -25,10 +27,15 @@
     client,
     urlDelivery,
     pluginDistributionOptions,
+    createAi = createNativeAi,
   }: {
     client: VaultClient;
     urlDelivery: DesktopUrlDelivery;
     pluginDistributionOptions?: AppPluginDistributionOptions;
+    createAi?: (
+      app: import("@lapis-notes/api").App,
+      vault: VaultDescriptor,
+    ) => AiServices;
   } = $props();
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
@@ -191,6 +198,7 @@
         selected!.resourceToken,
       )}
       createTerminal={(app) => createNativeTerminal(app, selected!)}
+      createAi={(app) => createAi(app, selected!)}
       onRestart={restartNotes}
       onBack={back}
       onReady={async () => {

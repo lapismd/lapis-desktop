@@ -30,6 +30,7 @@ and editing-owner lifecycle with an injected in-memory file service. They do not
 claim native atomic publication. Unreadable and pending operations remain
 visible for review; fixture cleanup releases work before closing its owned App.
 
+Initial shell loading/failure is reviewed in `Desktop/Initial shell loading`.
 The loading scenes retain the existing shared startup surface. Failed startup
 and Safe Mode scenes run the actual NotesWorkspace. The shell failure scenes run
 the actual Shell with injected failing native ports. No replacement screen or
@@ -39,6 +40,13 @@ Native traffic lights, dragging/focus, OS picker input, clipboard, default-app
 opening, system trash and process cleanup retain their actual headed checks.
 Their shared HTML hosts/clearance are present in shell examples; browser output
 cannot reproduce native controls or supply their acceptance evidence.
+
+`Desktop/AI/Native Notes binding` adds the actual Notes host and native factory
+with disposable IO: an unavailable agent, disabled plugin, Safe Mode and revoked
+workspace trust. Its command seeding and lazy admission are visible through the
+retained Chat and Catalog; no replacement screen is introduced.
+`Desktop/AI/Resource order` retains the same shell while verifying close/reload
+drain before native release.
 
 Ordinary Notes AI admission/recovery still retains M10.2's gate, and the two
 former live-controller replacements remain native work. A catalog entry is not

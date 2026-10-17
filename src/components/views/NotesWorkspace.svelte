@@ -35,19 +35,16 @@
   import { attachNotesUrls } from "../../lib/notes/notes-integration.ts";
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
 
-  import { terminalEnabledByDefault } from "../../lib/terminal/terminal-preferences.ts";
-  import { TerminalPlugin } from "../terminal/terminal-plugin.ts";
-  import {
-    bindTerminal,
-    prepareTerminalLeave,
-    type TerminalFactory,
-  } from "../../lib/terminal/terminal-binding.ts";
+  import type { TerminalFactory } from "../../lib/terminal/terminal-binding.ts";
+  import type { AiFactory } from "../../lib/ai/plugin/services.ts";
+  import { notesBundledPlugins } from "./notes-bundled-plugins.ts";
 
   let {
     session,
     pluginAssetServer,
     pluginDistributionOptions,
     createTerminal,
+    createAi,
     onBack,
     onReady,
     onRestart,
@@ -58,6 +55,7 @@
     pluginAssetServer?: PluginAssetServer;
     pluginDistributionOptions?: AppPluginDistributionOptions;
     createTerminal?: TerminalFactory;
+    createAi?: AiFactory;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
     onRestart(mode: AppSafeModeState): Promise<void>;
@@ -71,16 +69,15 @@
         session,
         pluginAssetServer,
         pluginDistributionOptions,
-        unavailablePlugins: unavailableDesktopPlugins,
+        unavailablePlugins: createAi ? {} : unavailableDesktopPlugins,
         safeMode,
         workspaceShell: { notifications: true },
         markdownRenderer: async () => {},
       }),
   );
-  const terminalFactory = untrack(() => createTerminal);
-  if (terminalFactory) {
-    bindTerminal(app, terminalFactory);
-  }
+  const bundled = untrack(() =>
+    notesBundledPlugins(app, createTerminal, createAi),
+  );
   provideApplicationState(app);
   const releaseCompatibility = installApplicationCompatibility(app);
   const sync = takeHostSyncService(app);
@@ -131,16 +128,7 @@
   async function initialize(): Promise<void> {
     try {
       await startNotes(app, {
-        registerBundledPlugins: async () => {
-          if (terminalFactory)
-            app.plugins.registerStaticPlugins([
-              {
-                plugin: TerminalPlugin,
-                required: false,
-                enabledByDefault: await terminalEnabledByDefault(app),
-              },
-            ]);
-        },
+        registerBundledPlugins: bundled.register,
         setTask,
         onMetadataTracking: (stop) => {
           stopMetadataTracking = stop;
@@ -208,7 +196,7 @@
             await app.fileEditingSessions.settleOperations();
             await app.fileEditingSessions.guard(undefined, async () => {
               await app.workspace.flushLayout();
-              prepareTerminalLeave(app, mode);
+              bundled.prepareLeave(mode);
               ready = false;
               await app.workspace.disposeWorkspaceHost();
               stopMetadataTracking?.();
@@ -226,6 +214,7 @@
       }
       await app.fileEditingSessions.dispose();
       await session.close();
+      bundled.dispose();
       releaseCompatibility();
       disposed = true;
     })().catch((failure) => {

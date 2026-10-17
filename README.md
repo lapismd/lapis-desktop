@@ -121,8 +121,10 @@ gates. See the [asset and reference provenance](docs/provenance.json).
 
 The M10.1 native ACP acceptance lane also requires a clean, verified `lapis-ai`
 checkout. Build its public outputs first with `pnpm -C ../lapis-ai build`.
-Desktop consumes the private `@lapismd/ai` built exports and optional Rust
-plugin; no package publication is required. `pnpm test:desktop:headed` stages
-the actual ACP binary and an isolated compiled Rust provider only into the
-acceptance bundle. The ordinary application excludes that policy, provider and
-test driver.
+Desktop consumes the private `@lapismd/ai` public build as a runtime dependency
+and its Rust plugin; no package publication is required. Notes binds the bundled
+AI views and user command store lazily. No ordinary execution target is enabled
+yet; native chat, context and recovery retain M10.2 qualification.
+`pnpm test:desktop:headed` stages the actual ACP binary and an isolated compiled
+Rust provider only into the acceptance bundle. The ordinary application excludes
+that policy, provider and test driver.
