@@ -100,7 +100,7 @@
         session = undefined;
       }}
       onRestart={async () => {
-        throw new Error("Restart is native acceptance only");
+        throw new Error("Lapis could not restart. Please try again.");
       }}
     />
   {/if}

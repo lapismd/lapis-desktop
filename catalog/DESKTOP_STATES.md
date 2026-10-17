@@ -53,3 +53,12 @@ former live-controller replacements remain native work. A catalog entry is not
 an assertion that an unavailable native capability is enabled.
 
 All new scenes remain visual-pending. No Visual Delta baseline is changed.
+
+## Shell presentation follow-up
+
+File conflicts now open the real Problems panel. `ProblemsList` keeps that
+initial state visible; `ModifiedOnDisk` opens the shared three-way review.
+Existing deletion, unreadable, failure, busy, stale-snapshot, leaving and
+whole-version decision stories use the same production review. Terminal stories
+start with both sidebars collapsed and contain no visible fixture telemetry.
+Suites/native acceptance for these changes are deferred; visual-pending remains.

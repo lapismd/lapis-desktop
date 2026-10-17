@@ -122,7 +122,7 @@ export const FailedRecoveryAction: Story = {
       canvas.getByRole("button", { name: "Restart normally" }),
     );
     await expect(
-      await canvas.findByText("Restart is native acceptance only"),
+      await canvas.findByText("Lapis could not restart. Please try again."),
     ).toBeVisible();
     await expect(
       canvas.getByRole("button", { name: "Restart normally" }),

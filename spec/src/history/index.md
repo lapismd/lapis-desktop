@@ -135,3 +135,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-025: shared native vault admission](E-AI-025.md)
 - [Physical repository admission](E-REPO-001.md)
 - [Native admitted history and vault lifetime](E-REPO-002.md)
+
+- [E-CATALOG-003: Desktop shell presentation review](E-CATALOG-003.md)

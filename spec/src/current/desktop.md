@@ -232,11 +232,11 @@ does not waive M4's close/save/conflict/session-restoration gate.
 
 ## Notes startup presentation
 
-Startup reports vault loading, configuration, plugins, layout and metadata from
-their actual awaited operations. It does not simulate time or add minimum
-delays. The host composes the existing public startup component used by the Deno
-app; Design Core continues to own the progress bar, task presentation and
-semantics.
+Startup reports actual awaited vault, configuration, plugin, layout and metadata
+operations through the existing shared startup component. No simulated time or
+minimum delays are added. Design Core owns progress bars, tasks and semantics.
+Recovery uses the shared themed banner. Conflict decisions retain the writer
+guard (`files.md`).
 
 ## Safe lifecycle and restoration (M4)
 

@@ -139,3 +139,18 @@ reload resource ordering. These scenes qualify UI ownership, not native chat.
 The [AI contract](ai.md) owns direct ACP, retained AI, tools, credentials and
 optional compute under the original M10 gates. Shared plugin identity and
 catalog requirements remain here.
+
+## Shell presentation review
+
+The current local Design Core intake combines main's 0.5.1 fixes with the
+existing unpublished desktop guarded-close and plugin-transition contracts.
+Consume prepared public archives through the ignored development overlay;
+portable dependency ranges and the registry lock resolution remain tracked. This
+review intake has no publication or native qualification claim.
+
+Catalog previews show only product presentation. Terminal fixtures keep their
+observations outside the DOM and start with both sidebars collapsed. Recovery
+banners use opaque theme tokens and meaningful action icons. File conflicts open
+Problems and use the shared three-way comparison in a workspace view. The user
+has deferred suites and native builds for this presentation slice; retain
+visual-pending and the pending verification ledger.

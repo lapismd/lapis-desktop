@@ -5,10 +5,14 @@
   import { normalRecovery } from "../../../src/lib/notes/startup-recovery";
   import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
   import { TerminalPlugin } from "../../../src/components/terminal/terminal-plugin";
+  import { reviewLayout } from "../desktop/layout";
+  import { registerTerminalReview } from "./review";
   let { scenario = "normal" }: { scenario?: TerminalScenario } = $props();
   const fixture = untrack(() => terminalFixture(scenario));
   const files = untrack(() => {
-    const value: Record<string, string> = {};
+    const value: Record<string, string> = {
+      ".lapis/workspace.json": JSON.stringify(reviewLayout()),
+    };
     if (scenario === "disabled")
       value[".lapis/core-plugins.json"] = JSON.stringify({
         disabled: ["terminal"],
@@ -47,26 +51,8 @@
       ? { ...normalRecovery(), active: true, disableOptionalCorePlugins: true }
       : normalRecovery(),
   );
-  let fixtureRoot: HTMLDivElement;
-  let active = $state(0);
-  let sent = $state("");
-  let dimensions = $state("");
-  let scrolls = $state("");
-  let preferences = $state("");
-  let canonical = $state("");
+  let fixtureRoot = $state<HTMLDivElement>();
   let generation = 0;
-  async function status(): Promise<void> {
-    active = (await fixture.transport.list()).length;
-    sent = JSON.stringify(fixture.transport.inputs);
-    dimensions = JSON.stringify(fixture.dimensions);
-    scrolls = JSON.stringify(fixture.scrolls);
-    preferences = JSON.stringify(plugin()?.getSettings());
-    canonical = JSON.stringify(
-      JSON.parse(
-        (await fixture.app?.vault.adapter.read(".lapis/app.json")) ?? "{}",
-      ),
-    );
-  }
   function plugin(): TerminalPlugin | undefined {
     return fixture.app?.plugins.corePlugins.find(
       (value) => value instanceof TerminalPlugin,
@@ -83,77 +69,60 @@
     await app.workspace.revealLeaf(leaf);
     app.workspace.setBottomPanelOpen(true);
   }
-</script>
 
-<div bind:this={fixtureRoot} data-terminal-scenario={scenario}>
-  <NotesDemo createTerminal={fixture.factory} {files} {safeMode} />
-  <div
-    class="fixture-controls"
-    role="group"
-    aria-label="Terminal fixture controls"
-  >
-    <button
-      onclick={async () => {
-        await fixture.app?.commands.executeCommand("terminal:new");
-      }}>New terminal command</button
-    >
-    <button onclick={startRestored}>Restore old terminal tab</button>
-    <button onclick={status}>Inspect native sessions</button>
-    <output aria-label="Retained sessions">{active}</output>
-    <output aria-label="Sent input">{sent}</output>
-    <output aria-label="Terminal dimensions">{dimensions}</output>
-    <output aria-label="Scroll deltas">{scrolls}</output>
-    <output aria-label="Terminal preferences">{preferences}</output>
-    <output aria-label="Canonical configuration">{canonical}</output>
-    <button
-      onclick={async () => {
+  $effect(() => {
+    const root = fixtureRoot;
+    if (!root) return;
+    return registerTerminalReview(root, {
+      fixture,
+      restore: startRestored,
+      async move() {
         const app = fixture.app;
         const leaf = app?.workspace.getLeavesOfType("terminal")[0];
-        if (leaf)
-          await app?.workspace.dropWorkspaceItemOnTabs(
-            app.workspace.rootSplit,
-            { item: leaf, position: "right" },
-          );
-      }}>Move terminal to main pane</button
-    >
-    <button
-      onclick={async () => {
+        if (app && leaf)
+          await app.workspace.dropWorkspaceItemOnTabs(app.workspace.rootSplit, {
+            item: leaf,
+            position: "right",
+          });
+      },
+      async close() {
         const app = fixture.app;
         const leaf = app?.workspace.getLeavesOfType("terminal")[0];
         if (app && leaf)
           getWorkspaceHostBinding(app.workspace).controller.workspace.closeLeaf(
             leaf.id,
           );
-        await status();
-      }}>Close terminal tab</button
-    >
-    <button
-      onclick={async () => {
+      },
+      async disable() {
         await plugin()?.disable();
-        await status();
-      }}>Disable Terminal</button
-    >
-    <button
-      onclick={async () => {
+      },
+      async exit() {
         const [info] = await fixture.transport.list();
         if (info) fixture.transport.exit(info.id);
-      }}>Exit shell</button
-    >
-    <button
-      onclick={async () => {
-        const panel = fixtureRoot.querySelector<HTMLElement>(".notes-demo");
+      },
+      resize() {
+        const panel = root.querySelector<HTMLElement>(".notes-demo");
         if (panel) panel.style.height = ++generation % 2 ? "520px" : "760px";
-      }}>Resize workspace</button
-    >
-  </div>
-</div>
+      },
+      async inspect() {
+        return {
+          sessions: (await fixture.transport.list()).length,
+          inputs: JSON.stringify(fixture.transport.inputs),
+          dimensions: JSON.stringify(fixture.dimensions),
+          scrolls: JSON.stringify(fixture.scrolls),
+          preferences: JSON.stringify(plugin()?.getSettings() ?? {}),
+          configuration: JSON.stringify(
+            JSON.parse(
+              (await fixture.app?.vault.adapter.read(".lapis/app.json")) ??
+                "{}",
+            ),
+          ),
+        };
+      },
+    });
+  });
+</script>
 
-<style>
-  .fixture-controls {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
-</style>
+<div bind:this={fixtureRoot} data-terminal-scenario={scenario}>
+  <NotesDemo createTerminal={fixture.factory} {files} {safeMode} />
+</div>

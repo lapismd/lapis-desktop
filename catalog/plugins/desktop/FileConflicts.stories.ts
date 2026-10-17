@@ -25,20 +25,57 @@ async function retained(canvasElement: HTMLElement) {
   await waitFor(() =>
     expect(canvasElement.querySelector('[data-ready="true"]')).not.toBeNull(),
   );
+  const fixture = conflictFixture(canvasElement);
+  await waitFor(() => expect(fixture.app.workspace.diagnostics.size).toBe(1));
+  if (canvasElement.querySelector(".shell[inert]")) {
+    const leaf = fixture.app.workspace.getLeaf("tab");
+    await leaf.setViewState({
+      type: "desktop:file-conflict",
+      state: { path: "Note.md" },
+    });
+    fixture.app.workspace.setActiveLeaf(leaf);
+    await fixture.app.workspace.revealLeaf(leaf);
+    fixture.app.workspace.requestSaveLayout();
+  } else {
+    await userEvent.click(
+      await canvas.findByRole("button", {
+        name: /Review (your|the retained) draft/,
+      }),
+    );
+  }
   const conflict = await canvas.findByRole("region", {
     name: "File conflict: Note.md",
   });
-  await expect(canvas.getByLabelText("Your version of Note.md")).toHaveValue(
-    "# My unsaved draft\n",
-  );
+  await expect(
+    within(conflict).getByRole("region", { name: "Your version", exact: true }),
+  ).toHaveTextContent("# My unsaved draft");
+  await expect(
+    within(conflict).getByRole("region", {
+      name: "Last saved version",
+      exact: true,
+    }),
+  ).toHaveTextContent("# Original note");
   return { canvas, conflict };
 }
+export const ProblemsList: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      await canvas.findByRole("button", {
+        name: /Review your draft before saving/,
+      }),
+    ).toBeVisible();
+    await expect(
+      canvas.queryByRole("region", { name: "File conflict: Note.md" }),
+    ).toBeNull();
+  },
+};
 export const ModifiedOnDisk: Story = {
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
-    await expect(canvas.getByLabelText("Disk version of Note.md")).toHaveValue(
-      "# Changed outside Lapis\n",
-    );
+    await expect(
+      canvas.getByRole("region", { name: "Disk version", exact: true }),
+    ).toHaveTextContent("# Changed outside Lapis");
   },
 };
 export const DeletedOnDisk: Story = {
@@ -78,9 +115,9 @@ export const FailedRecovery: Story = {
     await expect(await canvas.findByRole("alert")).toHaveTextContent(
       "The note is read-only",
     );
-    await expect(canvas.getByLabelText("Your version of Note.md")).toHaveValue(
-      "# My unsaved draft\n",
-    );
+    await expect(
+      canvas.getByRole("region", { name: "Your version", exact: true }),
+    ).toHaveTextContent("# My unsaved draft");
   },
 };
 export const RecoveryInProgress: Story = {
@@ -91,15 +128,16 @@ export const RecoveryInProgress: Story = {
       canvas.getByRole("button", { name: "Use disk version" }),
     );
     await waitFor(() =>
-      expect(canvas.getByLabelText("File conflicts")).toHaveAttribute(
-        "aria-busy",
-        "true",
-      ),
+      expect(
+        canvas.getByRole("region", { name: "File conflict: Note.md" }),
+      ).toHaveAttribute("aria-busy", "true"),
     );
-    for (const button of within(
-      canvas.getByLabelText("File conflicts"),
-    ).getAllByRole("button"))
-      await expect(button).toBeDisabled();
+    for (const name of [
+      "Keep my version",
+      "Use disk version",
+      "Check disk again",
+    ])
+      await expect(canvas.getByRole("button", { name })).toBeDisabled();
   },
 };
 export const KeepMyVersion: Story = {
@@ -109,7 +147,9 @@ export const KeepMyVersion: Story = {
       canvas.getByRole("button", { name: "Keep my version" }),
     );
     await waitFor(() =>
-      expect(canvas.queryByLabelText("File conflicts")).toBeNull(),
+      expect(
+        canvas.queryByRole("region", { name: "File conflict: Note.md" }),
+      ).toBeNull(),
     );
     await expect(
       await conflictFixture(canvasElement).adapter.read("Note.md"),
@@ -123,7 +163,9 @@ export const UseDiskVersion: Story = {
       canvas.getByRole("button", { name: "Use disk version" }),
     );
     await waitFor(() =>
-      expect(canvas.queryByLabelText("File conflicts")).toBeNull(),
+      expect(
+        canvas.queryByRole("region", { name: "File conflict: Note.md" }),
+      ).toBeNull(),
     );
     await expect(
       await conflictFixture(canvasElement).adapter.read("Note.md"),
@@ -141,13 +183,13 @@ export const FreshDiskSnapshot: Story = {
       canvas.getByRole("button", { name: "Check disk again" }),
     );
     await waitFor(() =>
-      expect(canvas.getByLabelText("Disk version of Note.md")).toHaveValue(
-        "# Newest disk version\n",
-      ),
+      expect(
+        canvas.getByRole("region", { name: "Disk version", exact: true }),
+      ).toHaveTextContent("# Newest disk version"),
     );
-    await expect(canvas.getByLabelText("Your version of Note.md")).toHaveValue(
-      "# My unsaved draft\n",
-    );
+    await expect(
+      canvas.getByRole("region", { name: "Your version", exact: true }),
+    ).toHaveTextContent("# My unsaved draft");
   },
 };
 export const StaleDecision: Story = {
@@ -161,9 +203,9 @@ export const StaleDecision: Story = {
     await expect(await canvas.findByRole("alert")).toHaveTextContent(
       "File changed on disk",
     );
-    await expect(canvas.getByLabelText("Disk version of Note.md")).toHaveValue(
-      "# Changed again\n",
-    );
+    await expect(
+      canvas.getByRole("region", { name: "Disk version", exact: true }),
+    ).toHaveTextContent("# Changed again");
     await expect(await fixture.adapter.read("Note.md")).toBe(
       "# Changed again\n",
     );
@@ -173,10 +215,12 @@ export const LeavingWorkspace: Story = {
   parameters: { leaving: true },
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
-    for (const button of within(
-      canvas.getByLabelText("File conflicts"),
-    ).getAllByRole("button"))
-      await expect(button).toBeDisabled();
+    for (const name of [
+      "Keep my version",
+      "Use disk version",
+      "Check disk again",
+    ])
+      await expect(canvas.getByRole("button", { name })).toBeDisabled();
     await expect(canvasElement.querySelector(".shell")).toHaveAttribute(
       "inert",
     );

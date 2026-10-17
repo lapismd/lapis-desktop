@@ -195,3 +195,13 @@ AI plugin and Catalog using the production native command adapter with an
 explicit disposable IO port. They also reject duplicate app copies of file
 commands. The normal one-second refresh interval is retained; new observation
 bounds allow three seconds for polling and rendering. No native IO is claimed.
+
+## Shell review follow-up
+
+`Desktop/File conflicts` retains the original persistence scenarios while
+routing them through real Problems and Design Core MergeEditor. `ProblemsList`
+adds the initial diagnostic state. `Desktop/Startup and recovery` uses the
+shared opaque banner and icon actions. Terminal stories retain observations
+through a private fixture port while showing product UI only, with both sidebars
+collapsed. Current Design Core 0.5.1 intake and deferred acceptance are
+documented in E-CATALOG-003; all changed stories remain visual-pending.

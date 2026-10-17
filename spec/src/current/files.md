@@ -45,6 +45,17 @@ aggregate milestone while end-of-M7 full qualification remains deferred.
 | LD-FILE-005 | Renderer HTTP proxy responses MUST avoid a second decoding of decoded upstream bodies by removing Content-Encoding and Content-Length while preserving status, content type, cache validators and bytes. Vault, plugin and raw filesystem responses MUST retain their representation headers.                                                                     |
 | LD-FILE-006 | New-note and attachment creation MUST publish complete bytes only when the destination is absent. A collision, including a destination appearing during staging, MUST preserve that destination, report EEXIST and leave no temporary files. Hosts MUST advertise exclusive creation only when implemented; legacy low-level overwrite semantics remain explicit. |
 | LD-FILE-007 | Native open, reveal and system trash MUST act on the pinned admitted file or folder. Path replacement, symlink escapes, closed admissions and unresolved physical identities MUST reject before OS dispatch. Native system trash MUST reject the vault root and preserve an explicit unsupported fallback; successful trash MUST NOT trigger a second deletion.   |
+| LD-FILE-008 | Retained file conflicts MUST reveal Problems. Opening a problem MUST show the draft, baseline and disk version through the shared three-way comparison, with guarded whole-version choices and refresh. Closing the review MUST preserve unresolved drafts; successful resolution MUST clear its diagnostic.                                                      |
+
+## Conflict review presentation
+
+Conflicts publish an App-owned diagnostic collection and reveal Problems.
+Opening a diagnostic reveals or reuses the file's conflict review leaf. The
+shared read-only three-way MergeEditor compares the retained draft, last saved
+baseline and current disk snapshot. Whole-version choices and refresh call the
+original writer-owned conflict actions; this adds no save pipeline or native
+permission. Resolving clears the diagnostic and review; closing only the view
+retains the conflict. Unreadable disk state and guarded leave disable choices.
 
 ## Authority and boundaries
 

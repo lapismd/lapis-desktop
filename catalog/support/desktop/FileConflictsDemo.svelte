@@ -45,6 +45,7 @@
       <WorkspaceShell app={fixture.app} displayMode="desktop" />
     </div>
     <FileConflicts
+      app={fixture.app}
       registry={fixture.app.fileEditingSessions.textConflicts}
       disabled={leaving}
     />

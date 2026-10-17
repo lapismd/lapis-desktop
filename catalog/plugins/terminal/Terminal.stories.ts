@@ -3,6 +3,7 @@ import { expect, within, userEvent, waitFor } from "storybook/test";
 import TerminalDemo from "../../support/terminal/TerminalDemo.svelte";
 import { colorChecks } from "../../support/terminal/color-checks";
 import { cleanupCatalog } from "../../support/lifecycle";
+import { terminalReview } from "../../support/terminal/review";
 
 const meta = {
   title: "Desktop/Terminal",
@@ -23,7 +24,7 @@ async function ready(element: HTMLElement) {
 async function open(element: HTMLElement) {
   const canvas = await ready(element);
   await userEvent.click(canvas.getByRole("button", { name: "Open Terminal" }));
-  await waitFor(() =>
+  await waitFor(async () =>
     expect(
       canvas.getByRole("textbox", { name: "Terminal output" }),
     ).toHaveTextContent("Lapis Terminal"),
@@ -31,9 +32,7 @@ async function open(element: HTMLElement) {
   return canvas;
 }
 async function inspect(element: HTMLElement) {
-  await userEvent.click(
-    within(element).getByRole("button", { name: "Inspect native sessions" }),
-  );
+  return terminalReview(element).inspect();
 }
 
 export const DockRetention: Story = {
@@ -46,17 +45,16 @@ export const DockRetention: Story = {
     await userEvent.click(
       within(panel).getByRole("button", { name: "Close bottom panel" }),
     );
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.queryByRole("complementary", { name: "Bottom panel" }),
       ).toBeNull(),
     );
-    await inspect(canvasElement);
-    expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("1");
+    expect((await inspect(canvasElement)).sessions).toBe(1);
     await userEvent.click(
       canvas.getByRole("button", { name: "Open bottom panel" }),
     );
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("Lapis Terminal"),
@@ -65,38 +63,29 @@ export const DockRetention: Story = {
       "data-session-id",
       id,
     );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Move terminal to main pane" }),
-    );
-    await waitFor(() =>
+    await terminalReview(canvasElement).move();
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toBeInTheDocument(),
     );
-    await inspect(canvasElement);
-    expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("1");
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Close terminal tab" }),
-    );
+    expect((await inspect(canvasElement)).sessions).toBe(1);
+    await terminalReview(canvasElement).close();
     await waitFor(async () => {
-      await inspect(canvasElement);
-      expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("0");
+      expect((await inspect(canvasElement)).sessions).toBe(0);
     });
   },
 };
 export const RestoredStart: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Restore old terminal tab" }),
-    );
+    await terminalReview(canvasElement).restore();
     const start = await canvas.findByRole("button", {
       name: "Start",
     });
-    await inspect(canvasElement);
-    expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("0");
+    expect((await inspect(canvasElement)).sessions).toBe(0);
     await userEvent.click(start);
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("Lapis Terminal"),
@@ -109,7 +98,7 @@ export const InputResizeAndScroll: Story = {
     const input = canvas.getByRole("textbox", { name: "Terminal input" });
     await userEvent.click(input);
     await userEvent.keyboard("echo{Enter}");
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("echo"),
@@ -118,23 +107,14 @@ export const InputResizeAndScroll: Story = {
     surface.dispatchEvent(
       new WheelEvent("wheel", { bubbles: true, cancelable: true, deltaY: 160 }),
     );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Resize workspace" }),
-    );
+    await terminalReview(canvasElement).resize();
     await waitFor(async () => {
-      await inspect(canvasElement);
-      expect(canvas.getByLabelText("Scroll deltas")).not.toHaveTextContent(
-        "[]",
-      );
+      expect((await inspect(canvasElement)).scrolls).not.toContain("[]");
     });
-    expect(canvas.getByLabelText("Terminal dimensions")).not.toHaveTextContent(
-      "[]",
-    );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Disable Terminal" }),
-    );
-    await waitFor(() =>
-      expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("0"),
+    expect((await inspect(canvasElement)).dimensions).not.toContain("[]");
+    await terminalReview(canvasElement).disable();
+    await waitFor(async () =>
+      expect((await inspect(canvasElement)).sessions).toBe(0),
     );
   },
 };
@@ -152,12 +132,11 @@ export const ImePasteCopy: Story = {
     input.dispatchEvent(
       new InputEvent("input", { bubbles: true, isComposing: true }),
     );
-    await inspect(canvasElement);
-    expect(canvas.getByLabelText("Sent input")).toHaveTextContent("[]");
+    expect((await inspect(canvasElement)).inputs).toContain("[]");
     input.dispatchEvent(
       new CompositionEvent("compositionend", { bubbles: true, data: "日本語" }),
     );
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("日本語"),
@@ -171,7 +150,7 @@ export const ImePasteCopy: Story = {
         clipboardData: clipboard,
       }),
     );
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("paste payload"),
@@ -218,7 +197,7 @@ export const RecoverableError: Story = {
     await userEvent.keyboard("x");
     await canvas.findByText("Terminal temporarily unavailable");
     await userEvent.keyboard("y");
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("y"),
@@ -228,8 +207,8 @@ export const RecoverableError: Story = {
 export const Exited: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await open(canvasElement);
-    await userEvent.click(canvas.getByRole("button", { name: "Exit shell" }));
-    await waitFor(() =>
+    await terminalReview(canvasElement).exit();
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal input" }),
       ).toBeDisabled(),
@@ -244,7 +223,7 @@ export const HighOutput: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Open Terminal" }),
     );
-    await waitFor(() =>
+    await waitFor(async () =>
       expect(
         canvas.getByRole("textbox", { name: "Terminal output" }),
       ).toHaveTextContent("build step"),
@@ -270,12 +249,11 @@ export const InstalledCopyPrecedence: Story = {
     expect(
       canvas.getAllByRole("button", { name: "Open Terminal" }),
     ).toHaveLength(1);
-    await inspect(canvasElement);
-    expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("1");
-    expect(canvas.getByLabelText("Terminal preferences")).toHaveTextContent(
+    expect((await inspect(canvasElement)).sessions).toBe(1);
+    expect((await inspect(canvasElement)).preferences).toContain(
       '"shell":"/bin/sh"',
     );
-    expect(canvas.getByLabelText("Terminal preferences")).toHaveTextContent(
+    expect((await inspect(canvasElement)).preferences).toContain(
       '"cwd":"notes"',
     );
   },
@@ -309,42 +287,37 @@ export const SettingsSource: Story = {
     await userEvent.tab();
     await userEvent.keyboard("{Escape}");
     await waitFor(async () => {
-      await inspect(canvasElement);
-      expect(canvas.getByLabelText("Terminal preferences")).toHaveTextContent(
+      expect((await inspect(canvasElement)).preferences).toContain(
         '"shell":"/bin/zsh"',
       );
-      expect(
-        canvas.getByLabelText("Canonical configuration"),
-      ).toHaveTextContent('"pluginData"');
+      expect((await inspect(canvasElement)).configuration).toContain(
+        '"pluginData"',
+      );
     });
-    expect(canvas.getByLabelText("Canonical configuration")).toHaveTextContent(
+    expect((await inspect(canvasElement)).configuration).toContain(
       '"retainedExtra":true',
     );
-    expect(
-      canvas.getByLabelText("Canonical configuration"),
-    ).not.toHaveTextContent('"terminal.shell":');
-    expect(
-      canvas.getByLabelText("Canonical configuration"),
-    ).not.toHaveTextContent('"terminal.cwd":');
+    expect((await inspect(canvasElement)).configuration).not.toContain(
+      '"terminal.shell":',
+    );
+    expect((await inspect(canvasElement)).configuration).not.toContain(
+      '"terminal.cwd":',
+    );
   },
 };
 
 export const MultipleTerminals: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await open(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "New terminal command" }),
+    await terminalReview(canvasElement).fixture.app?.commands.executeCommand(
+      "terminal:new",
     );
     await waitFor(async () => {
-      await inspect(canvasElement);
-      expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("2");
+      expect((await inspect(canvasElement)).sessions).toBe(2);
     });
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Close terminal tab" }),
-    );
+    await terminalReview(canvasElement).close();
     await waitFor(async () => {
-      await inspect(canvasElement);
-      expect(canvas.getByLabelText("Retained sessions")).toHaveTextContent("1");
+      expect((await inspect(canvasElement)).sessions).toBe(1);
     });
     expect(
       canvas.getByRole("textbox", { name: "Terminal input" }),
