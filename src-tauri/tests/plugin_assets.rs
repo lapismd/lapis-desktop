@@ -1,4 +1,4 @@
-use lapis_desktop::{plugin_assets, vault::VaultManager};
+use lapis_desktop::{plugins::assets, vault::VaultManager};
 use serde_json::json;
 use sha2::{Digest, Sha256};
 use std::fs;
@@ -53,7 +53,7 @@ impl Fixture {
     }
 
     fn request(&self, method: Method, uri: &str) -> tauri::http::Response<Vec<u8>> {
-        plugin_assets::response(
+        assets::response(
             &self.manager,
             &Request::builder()
                 .method(method)
@@ -131,7 +131,7 @@ fn requests_reject_foreign_origins_methods_and_unbound_coordinates() {
         .body(Vec::new())
         .unwrap();
     assert_eq!(
-        plugin_assets::response(&fixture.manager, &request).status(),
+        assets::response(&fixture.manager, &request).status(),
         StatusCode::NOT_FOUND
     );
 }

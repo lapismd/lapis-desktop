@@ -49,12 +49,17 @@ implementation is complete. Record deferred lanes and run them before aggregate
 qualification. This does not change original milestone gates or the standing
 test policy for later sessions.
 
-The preferred renderer layout is documented in `AGENTS.md` and `desktop.md`:
+The preferred source layouts are documented in `AGENTS.md` and `desktop.md`:
 bootstrap at the source root, feature-grouped `components` and `lib`, and
 application-wide `styles`. New code follows its owning responsibility. Moves
 update live imports and acceptance entrypoints; historical evidence remains
 immutable and resolves against its enclosing snapshot. Organization alone does
-not authorize new functionality or resume a paused migration milestone.
+not authorize new functionality or resume a paused migration milestone. Native
+service features, Tauri `host` adapters and debug-only `acceptance` modules have
+separate owners. Only `main.rs` and `lib.rs` may live at the native source root;
+the normal and canonical architecture audits reject other implementation files.
+Moves update spec-first mappings and their regression cases without old-path
+re-exports, path-routing attributes or weaker unsafe-code boundaries.
 
 Evidence uses a JSON metadata block inside readable Markdown. Record independent
 runs and all failed attempts. An appended record may resolve an older failure;

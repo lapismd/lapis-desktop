@@ -1,5 +1,5 @@
 #![cfg(target_os = "macos")]
-use lapis_desktop::{system_actions, vault::VaultRoot};
+use lapis_desktop::vault::{VaultRoot, system_actions};
 use objc2::rc::{Retained, autoreleasepool};
 use objc2_foundation::{NSFileManager, NSString, NSURL};
 use std::{fs, path::PathBuf};

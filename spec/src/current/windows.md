@@ -65,3 +65,9 @@ their original deferred gates.
 The main window’s bundled-origin resource hook validates installed plugin assets
 under the existing vault admission. This adds no popup admission or window
 permission; ordinary popup integration remains M7.3.
+
+Window creation, navigation admission and macOS chrome group under
+`host/windows`; popup proof helpers live under debug-only
+`acceptance/popouts.rs`. The window contract maps those paths explicitly. The
+native chrome module alone retains its binary unsafe-code allowance; service
+code remains forbidden unsafe.

@@ -1,4 +1,4 @@
-use lapis_desktop::integration_policy::{self, Notification};
+use lapis_desktop::integration::policy::{self, Notification};
 use tauri::{AppHandle, WebviewWindow};
 use tauri_plugin_clipboard_manager::ClipboardExt;
 use tauri_plugin_opener::OpenerExt;
@@ -20,11 +20,7 @@ pub async fn desktop_clipboard_read(
         .clipboard()
         .read_text()
         .map_err(|error| error.to_string())?;
-    integration_policy::bounded(
-        &text,
-        integration_policy::MAX_CLIPBOARD_BYTES,
-        "clipboard text",
-    )?;
+    policy::bounded(&text, policy::MAX_CLIPBOARD_BYTES, "clipboard text")?;
     Ok(text)
 }
 
@@ -35,23 +31,19 @@ pub async fn desktop_clipboard_write(
     text: String,
 ) -> Result<(), String> {
     main_window(&window)?;
-    integration_policy::bounded(
-        &text,
-        integration_policy::MAX_CLIPBOARD_BYTES,
-        "clipboard text",
-    )?;
+    policy::bounded(&text, policy::MAX_CLIPBOARD_BYTES, "clipboard text")?;
     app.clipboard()
         .write_text(text)
         .map_err(|error| error.to_string())
 }
 
 pub fn open_external(app: &AppHandle, value: &str) -> Result<(), String> {
-    let url = integration_policy::external_url(value)?;
+    let url = policy::external_url(value)?;
     app.opener()
         .open_url(url.as_str(), None::<&str>)
         .map_err(|error| error.to_string())?;
     #[cfg(feature = "e2e")]
-    crate::integration_acceptance::record("external", url.as_str());
+    crate::acceptance::integration::record("external", url.as_str());
     Ok(())
 }
 
@@ -95,7 +87,7 @@ pub async fn desktop_notify(
             .await
             .map_err(|error| error.to_string())?;
         #[cfg(feature = "e2e")]
-        crate::integration_acceptance::record("notification", &notification.id);
+        crate::acceptance::integration::record("notification", &notification.id);
         Ok(())
     }
     #[cfg(not(target_os = "macos"))]

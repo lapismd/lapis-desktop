@@ -38,11 +38,11 @@ test("progress recognizes requirement IDs from every selected canonical chapter"
 
 test("M5 filesystem implementations and acceptance retain a mapped file contract", () => {
   for (const path of [
-    "src-tauri/src/file_commands.rs",
-    "src-tauri/src/system_actions/mod.rs",
-    "src-tauri/src/system_actions/macos.rs",
+    "src-tauri/src/host/vault/files.rs",
+    "src-tauri/src/vault/system_actions/mod.rs",
+    "src-tauri/src/vault/system_actions/macos.rs",
     "src-tauri/src/vault/action_targets.rs",
-    "src-tauri/src/action_acceptance.rs",
+    "src-tauri/src/acceptance/actions.rs",
     "src-tauri/tests/system_action_targets.rs",
     "src-tauri/tests/macos_system_actions.rs",
     "tests/desktop/system-file-actions.test.mjs",
@@ -50,10 +50,12 @@ test("M5 filesystem implementations and acceptance retain a mapped file contract
     "src-tauri/src/vault/mutations.rs",
     "src-tauri/src/vault/creates.rs",
     "src-tauri/src/vault/staged.rs",
+    "src-tauri/src/vault/resources.rs",
+    "src-tauri/src/host/vault/mod.rs",
     "src-tauri/tests/vault_creates.rs",
     "src-tauri/src/watch/mod.rs",
     "src-tauri/src/watch/registry.rs",
-    "src-tauri/src/watch_commands.rs",
+    "src-tauri/src/host/vault/watch.rs",
     "src-tauri/tests/vault_mutations.rs",
     "src-tauri/tests/watch_registry.rs",
     "src/lib/native/native-bridge.ts",
@@ -103,4 +105,31 @@ test("M6 profile and native navigation retain their dedicated canonical owner", 
       `${path} must update its navigation contract`,
     );
   }
+});
+
+test("native window and integration features retain their canonical owners", () => {
+  const owners = {
+    "windows.md": [
+      "src-tauri/src/host/windows/mod.rs",
+      "src-tauri/src/host/windows/navigation.rs",
+      "src-tauri/src/host/windows/macos_chrome.rs",
+      "src-tauri/src/acceptance/popouts.rs",
+    ],
+    "integration.md": [
+      "src-tauri/src/host/integration/mod.rs",
+      "src-tauri/src/host/integration/menu.rs",
+      "src-tauri/src/host/integration/services.rs",
+      "src-tauri/src/integration/mod.rs",
+      "src-tauri/src/integration/policy.rs",
+      "src-tauri/src/integration/urls.rs",
+      "src-tauri/src/acceptance/integration.rs",
+    ],
+  };
+  for (const [owner, paths] of Object.entries(owners))
+    for (const path of paths) {
+      const chapters = config.validators.specFirst.rules
+        .filter(({ pattern }) => new RegExp(pattern).test(path))
+        .flatMap((rule) => rule.chapters ?? []);
+      assert.ok(chapters.includes(`spec/src/current/${owner}`), path);
+    }
 });

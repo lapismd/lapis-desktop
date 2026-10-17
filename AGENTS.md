@@ -91,6 +91,52 @@ moves or introduce barrels, aliases or routing frameworks just to organize
 files. Update renderer tests and the native acceptance entry when their imports
 move, and retain historical evidence at its original paths.
 
+## Native source layout
+
+Keep `src-tauri/src` limited to the crate entrypoints `main.rs` and `lib.rs`.
+Group implementation by feature and distinguish reusable services from Tauri
+adapters:
+
+```text
+src-tauri/src/
+  main.rs                  Binary entrypoint and debug acceptance feature gate
+  lib.rs                   Reusable native service module declarations
+  database/                Database connections, registry, SQL guard and frames
+  integration/             URL and desktop-service policy
+  lifecycle/               Leave request state machine
+  plugins/                 Admitted installed-plugin assets
+  terminal/                Vault-scoped terminal policy
+  vault/                   Admission, profiles, file IO, resources, system actions
+  watch/                   Scoped filesystem snapshots and watch ownership
+  host/                    Tauri bootstrap and adapters
+    mod.rs                 Application construction and command registration
+    shell.rs               Shell information and readiness commands
+    state.rs               Owned native resources and blocking access
+    lifecycle.rs           Tauri lifecycle events and guarded leave commands
+    database.rs            Database IPC adapter
+    terminal.rs            Terminal admission and teardown adapter
+    integration/           URL commands, menus, clipboard and notifications
+    vault/                 Vault admission, file and watch IPC adapters
+    windows/               Window creation, navigation policy and macOS chrome
+  acceptance/              Debug e2e-only instrumentation grouped by feature
+```
+
+Place new native code in its owning feature; create a named directory when a
+distinct responsibility needs several modules. Avoid catch-all helpers and flat
+command lists. Service modules must not depend on the binary's `host` or
+`acceptance` modules. Keep transport adapters separate from service policy. Rust
+module declarations belong in each directory's `mod.rs`; update callers directly
+when moving modules, without old-path re-exports or `#[path]` routing.
+
+Preserve the library's unsafe-code prohibition, the binary's unsafe-code denial
+and the sole macOS chrome allowance in `host/windows/macos_chrome.rs`. Compile
+`acceptance` only behind the existing debug e2e gate. Moves must update native
+tests, live script references and canonical spec mappings while leaving
+historical evidence immutable. Run architecture/App ownership audits, Rust tests
+and strict Clippy for normal and e2e targets, and verify both native build
+configurations. The architecture audit rejects implementation files at the
+native source root.
+
 ## Desktop catalog
 
 Keep Storybook configuration in `.storybook`, application stories under

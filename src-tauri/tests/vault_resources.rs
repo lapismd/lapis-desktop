@@ -1,4 +1,4 @@
-use lapis_desktop::{resources, vault::VaultManager};
+use lapis_desktop::vault::{VaultManager, resources};
 use std::fs;
 use tauri::http::{Request, StatusCode};
 use tempfile::tempdir;

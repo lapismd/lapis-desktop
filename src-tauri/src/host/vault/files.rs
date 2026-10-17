@@ -1,4 +1,4 @@
-use crate::native_host::{NativeError, NativeHost, access};
+use crate::host::state::{NativeError, NativeHost, access};
 use lapis_desktop::vault::WriteOptions;
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -111,27 +111,27 @@ pub async fn vault_fs(
             let root = manager.vaults.get(&session_id)?;
             Ok(match request {
                 FileRequest::ToVaultPath { absolute_path } => json!(
-                    lapis_desktop::system_actions::to_relative(root, &absolute_path)?
+                    lapis_desktop::vault::system_actions::to_relative(root, &absolute_path)?
                 ),
                 FileRequest::ResolvePath { path } => {
-                    json!(lapis_desktop::system_actions::resolve(root, &path)?)
+                    json!(lapis_desktop::vault::system_actions::resolve(root, &path)?)
                 }
                 FileRequest::OpenPath { path } => {
-                    lapis_desktop::system_actions::open(root, &path)?;
+                    lapis_desktop::vault::system_actions::open(root, &path)?;
                     #[cfg(feature = "e2e")]
-                    crate::action_acceptance::record("open-path", &path, None);
+                    crate::acceptance::actions::record("open-path", &path, None);
                     Value::Null
                 }
                 FileRequest::RevealPath { path } => {
-                    lapis_desktop::system_actions::reveal(root, &path)?;
+                    lapis_desktop::vault::system_actions::reveal(root, &path)?;
                     #[cfg(feature = "e2e")]
-                    crate::action_acceptance::record("reveal-path", &path, None);
+                    crate::acceptance::actions::record("reveal-path", &path, None);
                     Value::Null
                 }
                 FileRequest::TrashSystem { path } => {
-                    let receipt = lapis_desktop::system_actions::trash(root, &path)?;
+                    let receipt = lapis_desktop::vault::system_actions::trash(root, &path)?;
                     #[cfg(feature = "e2e")]
-                    crate::action_acceptance::record("trash-system", &path, receipt.as_deref());
+                    crate::acceptance::actions::record("trash-system", &path, receipt.as_deref());
                     #[cfg(not(feature = "e2e"))]
                     let _ = receipt;
                     json!(true)

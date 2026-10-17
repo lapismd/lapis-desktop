@@ -40,6 +40,7 @@
   - [Properties and metadata writer intake](history/E-MUTATION-001.md)
   - [E-STATE-001: Settings and hotkey writers](history/E-STATE-001.md)
   - [Renderer source organization](history/E-STRUCTURE-001.md)
+  - [Native source organization](history/E-STRUCTURE-002.md)
   - [Retained plugin writers and admitted creation](history/E-WRITERS-001.md)
   - [Startup recovery and session Safe Mode](history/E-RECOVERY-001.md)
   - [Contained native mutation component](history/E-FILES-001.md)

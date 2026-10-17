@@ -1,5 +1,5 @@
-use crate::native_host::NativeHost;
-use lapis_desktop::terminal_policy;
+use crate::host::state::NativeHost;
+use lapis_desktop::terminal::policy;
 use std::{
     collections::HashMap,
     path::PathBuf,
@@ -38,7 +38,9 @@ fn context(window: &WebviewWindow) -> Result<HostContext, String> {
 }
 fn local(context: &HostContext) -> Result<(), String> {
     let url = url::Url::parse(&context.url).map_err(|_| "Invalid Terminal origin")?;
-    if context.window != "main" || !crate::navigation::allowed(&url, cfg!(debug_assertions)) {
+    if context.window != "main"
+        || !crate::host::windows::navigation::allowed(&url, cfg!(debug_assertions))
+    {
         return Err("Terminal is unavailable to this window".into());
     }
     Ok(())
@@ -102,7 +104,7 @@ impl HostPolicy for DesktopTerminalPolicy {
     }
     fn targets(&self, context: &HostContext) -> Result<Vec<Target>, String> {
         self.authorize(context)?;
-        Ok(vec![terminal_policy::target()])
+        Ok(vec![policy::target()])
     }
     fn resolve(&self, context: &HostContext, id: &str) -> Result<LaunchSpec, String> {
         let admission = self.admission(context)?;
@@ -111,7 +113,7 @@ impl HostPolicy for DesktopTerminalPolicy {
             .0
             .lock()
             .map_err(|_| "Vault owner unavailable")?;
-        terminal_policy::resolve(
+        policy::resolve(
             services
                 .vaults
                 .get(&admission.session)

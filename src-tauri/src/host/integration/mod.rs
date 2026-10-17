@@ -1,4 +1,7 @@
-use lapis_desktop::integration_urls::{AppUrlQueue, AppUrlRequest, supported_scheme};
+pub(crate) mod menu;
+pub(crate) mod services;
+
+use lapis_desktop::integration::urls::{AppUrlQueue, AppUrlRequest, supported_scheme};
 use std::sync::Mutex;
 use tauri::{AppHandle, Emitter, Manager, WebviewWindow};
 
@@ -59,7 +62,7 @@ pub fn desktop_url_ack(app: AppHandle, window: WebviewWindow, id: String) -> Res
         .unwrap()
         .acknowledge(&id)?;
     #[cfg(feature = "e2e")]
-    crate::integration_acceptance::record("url-ack", &id);
+    crate::acceptance::integration::record("url-ack", &id);
     Ok(())
 }
 

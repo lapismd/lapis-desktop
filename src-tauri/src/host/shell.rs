@@ -16,9 +16,9 @@ pub struct ShellInfo {
     process_id: u32,
     ready: bool,
     #[cfg(feature = "e2e")]
-    native_menus: Result<Vec<crate::integration_acceptance::MenuEntry>, String>,
+    native_menus: Result<Vec<crate::acceptance::integration::MenuEntry>, String>,
     #[cfg(feature = "e2e")]
-    native_popouts: Vec<crate::popout_acceptance::ProofWindow>,
+    native_popouts: Vec<crate::acceptance::popouts::ProofWindow>,
     #[cfg(feature = "e2e")]
     popout_proof_mode: Option<&'static str>,
     #[cfg(all(feature = "e2e", target_os = "macos"))]
@@ -33,13 +33,13 @@ pub struct ShellInfo {
 pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
     #[cfg(all(feature = "e2e", target_os = "macos"))]
     let native_visibility = match app.get_webview_window("main") {
-        Some(window) => crate::macos_chrome::visibility(window).await,
+        Some(window) => crate::host::windows::macos_chrome::visibility(window).await,
         None => Err("The native window is unavailable".into()),
     };
     #[cfg(all(feature = "e2e", target_os = "macos"))]
     let native_controls = {
         match app.get_webview_window("main") {
-            Some(window) => crate::macos_chrome::geometry(window).await,
+            Some(window) => crate::host::windows::macos_chrome::geometry(window).await,
             None => Err("The native window is unavailable".into()),
         }
     };
@@ -50,13 +50,13 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
         process_id: std::process::id(),
         ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
         #[cfg(feature = "e2e")]
-        native_menus: crate::integration_acceptance::menus(&app),
+        native_menus: crate::acceptance::integration::menus(&app),
         #[cfg(feature = "e2e")]
-        native_popouts: crate::popout_acceptance::windows(&app).await,
+        native_popouts: crate::acceptance::popouts::windows(&app).await,
         #[cfg(feature = "e2e")]
-        popout_proof_mode: crate::popout_acceptance::mode(),
+        popout_proof_mode: crate::acceptance::popouts::mode(),
         #[cfg(all(feature = "e2e", target_os = "macos"))]
-        native_chrome_observers: crate::macos_chrome::observer_count(),
+        native_chrome_observers: crate::host::windows::macos_chrome::observer_count(),
         #[cfg(all(feature = "e2e", target_os = "macos"))]
         native_controls,
         #[cfg(all(feature = "e2e", target_os = "macos"))]
@@ -77,7 +77,7 @@ pub fn shell_ready(
             window.set_focus().map_err(|error| error.to_string())?;
         }
     }
-    crate::lifecycle::ready(&app).map_err(|error| error.to_string())?;
+    crate::host::lifecycle::ready(&app).map_err(|error| error.to_string())?;
     if !state.ready.swap(true, Ordering::SeqCst) {
         println!("lapis-desktop: renderer ready");
     }

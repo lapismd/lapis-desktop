@@ -1,12 +1,17 @@
+#[cfg(target_os = "macos")]
+#[allow(unsafe_code)]
+pub(crate) mod macos_chrome;
+pub(crate) mod navigation;
+
 use tauri::{
     AppHandle, Emitter, Manager, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
 };
 
 fn route_link(app: &AppHandle, url: &url::Url) {
-    if lapis_desktop::integration_urls::supported_scheme(url.scheme()) {
-        crate::integration::enqueue(app, url.to_string());
+    if lapis_desktop::integration::urls::supported_scheme(url.scheme()) {
+        crate::host::integration::enqueue(app, url.to_string());
     } else if matches!(url.scheme(), "http" | "https")
-        && let Err(error) = crate::desktop_services::open_external(app, url.as_str())
+        && let Err(error) = crate::host::integration::services::open_external(app, url.as_str())
     {
         let _ = app.emit_to("main", "lapis-integration-error", error);
     }
@@ -22,12 +27,12 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
             if request
                 .uri()
                 .path()
-                .starts_with(lapis_desktop::plugin_assets::PREFIX)
+                .starts_with(lapis_desktop::plugins::assets::PREFIX)
             {
-                let host = resources.state::<crate::native_host::NativeHost>();
+                let host = resources.state::<crate::host::state::NativeHost>();
                 let result = match host.0.lock() {
                     Ok(services) => {
-                        lapis_desktop::plugin_assets::response(&services.vaults, &request)
+                        lapis_desktop::plugins::assets::response(&services.vaults, &request)
                     }
                     Err(_) => tauri::http::Response::builder()
                         .status(503)
@@ -40,9 +45,9 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
         .on_navigation(move |url| {
             #[cfg(feature = "e2e")]
             if std::env::var("LAPIS_DESKTOP_POPOUT_PROOF").as_deref() == Ok("1") {
-                crate::integration_acceptance::record("proof-navigation", url.as_str());
+                crate::acceptance::integration::record("proof-navigation", url.as_str());
             }
-            let allowed = crate::navigation::allowed(
+            let allowed = crate::host::windows::navigation::allowed(
                 url,
                 cfg!(debug_assertions) && !cfg!(feature = "custom-protocol"),
             );
@@ -53,7 +58,7 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
         })
         .on_new_window(move |url, _features| {
             #[cfg(feature = "e2e")]
-            if let Some(response) = crate::popout_acceptance::open(&popup, &url, _features) {
+            if let Some(response) = crate::acceptance::popouts::open(&popup, &url, _features) {
                 return response;
             }
             route_link(&popup, &url);
@@ -62,7 +67,7 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
         .on_page_load(|window, payload| {
             if payload.event() == tauri::webview::PageLoadEvent::Finished {
                 #[cfg(target_os = "macos")]
-                crate::macos_chrome::align(&window);
+                crate::host::windows::macos_chrome::align(&window);
             }
         })
         .build()
@@ -80,9 +85,9 @@ pub fn chrome_events(window: &WebviewWindow) {
                     | tauri::WindowEvent::Resized(_)
                     | tauri::WindowEvent::Moved(_)
             ) {
-                crate::macos_chrome::align(&chrome);
+                crate::host::windows::macos_chrome::align(&chrome);
             }
         });
-        crate::macos_chrome::align(window);
+        crate::host::windows::macos_chrome::align(window);
     }
 }

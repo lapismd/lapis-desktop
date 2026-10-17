@@ -170,3 +170,9 @@ Native portable plugin teardown joins the existing guarded Notes leave boundary:
 all loaded plugin instances release their resources before the database and
 vault close. Safe Mode skips configured optional installations without changing
 saved enabled choices.
+
+Native file/watch IPC lives under `host/vault`; reusable resources and OS
+actions live under `vault/resources.rs` and `vault/system_actions`. Acceptance
+receipts live under debug-only `acceptance/actions.rs`. Relocation preserves
+admission, locking, command identities and the file contract's spec-first
+coverage.

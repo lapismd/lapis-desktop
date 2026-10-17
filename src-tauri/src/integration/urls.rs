@@ -1,4 +1,4 @@
-use crate::integration_policy::bounded;
+use crate::integration::policy::bounded;
 use serde::Serialize;
 use std::collections::VecDeque;
 

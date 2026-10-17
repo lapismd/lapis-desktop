@@ -1,4 +1,4 @@
-use crate::native_host::{NativeError, NativeHost, access};
+use crate::host::state::{NativeError, NativeHost, access};
 use lapis_desktop::watch::WatchBatch;
 use tauri::ipc::Channel;
 

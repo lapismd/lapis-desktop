@@ -1,4 +1,7 @@
-use crate::native_host::{NativeError, NativeHost as VaultHost, access};
+pub(crate) mod files;
+pub(crate) mod watch;
+
+use crate::host::state::{NativeError, NativeHost as VaultHost, access};
 use lapis_desktop::vault::VaultDescriptor;
 use serde_json::{Value, json};
 use std::io;
@@ -160,5 +163,6 @@ pub async fn vault_close(
         manager.close_vault(&closing)
     })
     .await?;
-    crate::terminal::close_vault(&app, &session_id).map_err(|error| io::Error::other(error).into())
+    crate::host::terminal::close_vault(&app, &session_id)
+        .map_err(|error| io::Error::other(error).into())
 }

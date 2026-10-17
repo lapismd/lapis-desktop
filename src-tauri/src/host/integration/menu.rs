@@ -105,13 +105,13 @@ pub fn build(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
 
 pub fn dispatch(app: &AppHandle, id: &str) {
     #[cfg(feature = "e2e")]
-    crate::integration_acceptance::record("menu", id);
+    crate::acceptance::integration::record("menu", id);
     let result = match id {
         "open-vault" | "undo" | "redo" => app
             .emit_to("main", "lapis-menu-action", id)
             .map_err(|error| error.to_string()),
-        "reload" => crate::lifecycle::lifecycle_reload(app.clone()),
-        "learn-more" => crate::desktop_services::open_external(app, LEARN_MORE),
+        "reload" => crate::host::lifecycle::lifecycle_reload(app.clone()),
+        "learn-more" => crate::host::integration::services::open_external(app, LEARN_MORE),
         "devtools" | "renderer-errors" => {
             if let Some(window) = app.get_webview_window("main") {
                 if id == "devtools" && window.is_devtools_open() {

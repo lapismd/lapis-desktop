@@ -31,6 +31,31 @@ test("source budgets count CSS universal selectors and reject oversized files", 
     "LD-SOURCE-SIZE",
   );
 });
+test("native source root contains only crate entrypoints", () => {
+  for (const file of [
+    "src-tauri/src/commands.rs",
+    "src-tauri/src/new_service.rs",
+  ])
+    assert.ok(
+      auditSources([file], () => "").some(
+        (finding) => finding.code === "LD-NATIVE-LAYOUT",
+      ),
+      file,
+    );
+  assert.deepEqual(
+    auditSources(
+      [
+        "src-tauri/src/main.rs",
+        "src-tauri/src/lib.rs",
+        "src-tauri/src/host/vault/files.rs",
+        "src-tauri/src/vault/resources.rs",
+        "src-tauri/src/acceptance/actions.rs",
+      ],
+      () => "",
+    ),
+    [],
+  );
+});
 test("production cannot import fixtures or use Deno and utility styles", () => {
   for (const source of [
     "import x from '../tests/fixture.ts'",

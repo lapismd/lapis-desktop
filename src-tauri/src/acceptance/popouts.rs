@@ -19,7 +19,7 @@ pub fn open(
     features: NewWindowFeatures,
 ) -> Option<NewWindowResponse<tauri::Wry>> {
     let enabled = mode() == Some("allow");
-    crate::integration_acceptance::record("popup-request", &format!("{url};enabled={enabled}"));
+    crate::acceptance::integration::record("popup-request", &format!("{url};enabled={enabled}"));
     if url.as_str() != "about:blank" || !enabled {
         return None;
     }
@@ -38,10 +38,10 @@ pub fn open(
             .on_new_window(|_, _| NewWindowResponse::Deny)
             .on_page_load(|window, _| {
                 #[cfg(target_os = "macos")]
-                crate::macos_chrome::align(&window);
+                crate::host::windows::macos_chrome::align(&window);
             })
             .build()
-            .inspect(crate::window::chrome_events)
+            .inspect(crate::host::windows::chrome_events)
     });
     Some(match result {
         Ok(window) => NewWindowResponse::Create { window },
@@ -78,7 +78,7 @@ pub async fn windows(app: &AppHandle) -> Vec<ProofWindow> {
             width: size.width,
             height: size.height,
             #[cfg(target_os = "macos")]
-            controls: crate::macos_chrome::geometry(window).await,
+            controls: crate::host::windows::macos_chrome::geometry(window).await,
         });
     }
     result

@@ -50,22 +50,20 @@ The product name is Lapis Notes Preview and the application identifier is
 port 1431. Production loads bundled assets through Tauri's local application
 protocol and permits no network connection except native IPC.
 
-## Renderer organization
+## Source organization
 
 `src/main.ts` calls `src/lib/desktop/bootstrap.ts` for startup and host styles.
-The e2e entry reuses it with public App options; ordinary startup uses defaults.
-Components under `src/components` group `views`, `vaults` and `files` by
-composition, launcher and conflict presentation. Feature logic under `src/lib`
-groups desktop startup/lifecycle, launcher appearance, Notes sessions/profile,
-and native transport with its `database` directory. Native adapters remain
-independent of Notes orchestration and local UI components.
+The e2e entry reuses it with public App options. Components and logic group by
+feature under `src/components` and `src/lib`; adapters stay independent of Notes
+orchestration and local UI. Global host CSS lives in `src/styles`; component
+styles stay scoped. Use direct relative imports and avoid catch-all helpers.
 
-`src/styles` contains application-wide host CSS. Component-specific styles stay
-scoped with their component. Add future code to its owning feature instead of
-flattening the source root or creating catch-all helpers. Use direct relative
-imports and preserve these boundaries when moving code. This organization does
-not change the shared components, native permissions, state policy or migration
-gates.
+Only `main.rs` and `lib.rs` remain at `src-tauri/src` root. Features own
+reusable services; `host` owns Tauri adapters. `acceptance` compiles only with
+the existing debug e2e gate. The library forbids unsafe code; the binary denies
+it except its audited macOS chrome module. `AGENTS.md` defines the layout;
+architecture checks reject root implementations. Moves preserve permissions,
+state, registration and milestone gates.
 
 ## Native shell presentation
 

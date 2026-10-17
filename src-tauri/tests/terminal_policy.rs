@@ -1,5 +1,5 @@
 use lapis_desktop::{
-    terminal_policy::{TARGET, resolve},
+    terminal::policy::{TARGET, resolve},
     vault::VaultRoot,
 };
 use std::fs;

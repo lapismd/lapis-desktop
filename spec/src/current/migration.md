@@ -205,3 +205,7 @@ M10.2 chat-controller and presentation restoration is separately recorded in
 E-AI-012. Retained catalog interactions and policy suites do not substitute for
 bundled production registration, settings/history, native context/skill
 integration or durable turn recovery. Its original aggregate gate stays open.
+
+Native source organization is maintenance selected under M10.2; it does not
+complete or change any AI or distribution gate. The retained chat checkpoint
+remains separate while native paths and future placement guidance are qualified.

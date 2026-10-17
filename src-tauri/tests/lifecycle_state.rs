@@ -1,4 +1,4 @@
-use lapis_desktop::lifecycle_state::{LeaveAction, Lifecycle};
+use lapis_desktop::lifecycle::{LeaveAction, Lifecycle};
 
 #[test]
 fn close_waits_for_listener_readiness_and_a_matching_acknowledgement() {

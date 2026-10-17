@@ -1,5 +1,5 @@
-use lapis_desktop::system_actions;
 use lapis_desktop::vault::VaultRoot;
+use lapis_desktop::vault::system_actions;
 use std::{fs, io};
 use tempfile::tempdir;
 

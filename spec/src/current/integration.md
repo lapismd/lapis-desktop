@@ -80,3 +80,8 @@ its development fixture. Each actual native app process still receives only
 Terminal adds three exact main-window grants for its scoped public session API
 and desktop admission/release commands. Clipboard, notification, URL and menu
 contracts remain unchanged; plugins do not receive general shell execution.
+
+`host/integration` owns Tauri URL commands, menus and desktop services;
+`integration` owns reusable policy and URL queues. Their spec-first ownership
+follows both directories, with passive receipts in debug-only
+`acceptance/integration.rs`. Module moves preserve all existing command names.

@@ -33,7 +33,7 @@ fn resources() -> Result<PathBuf> {
 impl HostPolicy for Policy {
     fn authorize(&self, context: &HostContext) -> Result<String> {
         let url = url::Url::parse(&context.url).map_err(|_| Error("denied"))?;
-        if context.window != "main" || !crate::navigation::allowed(&url, false) {
+        if context.window != "main" || !crate::host::windows::navigation::allowed(&url, false) {
             return Err(Error("denied"));
         }
         root()?;

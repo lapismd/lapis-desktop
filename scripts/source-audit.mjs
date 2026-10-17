@@ -48,6 +48,12 @@ export function auditSources(files, read, { appOnly = false } = {}) {
         "Receive App explicitly; ambient App access is prohibited.",
       );
     if (appOnly) continue;
+    if (/^src-tauri\/src\/(?!main\.rs$|lib\.rs$)[^/]+$/u.test(file))
+      report(
+        file,
+        "LD-NATIVE-LAYOUT",
+        "Keep only crate entrypoints at the native source root; group implementation by feature.",
+      );
     const limit = /(?:^tests\/|\.(?:test|spec)\.)/u.test(file)
       ? 500
       : /\.stories\./u.test(file)

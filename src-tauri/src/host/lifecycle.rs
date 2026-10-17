@@ -1,4 +1,4 @@
-use lapis_desktop::lifecycle_state::{LeaveAction, LeaveRequest, Lifecycle};
+use lapis_desktop::lifecycle::{LeaveAction, LeaveRequest, Lifecycle};
 use std::sync::Mutex;
 use tauri::{AppHandle, Emitter, Manager, RunEvent, WindowEvent};
 
@@ -49,13 +49,13 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             label,
             event: WindowEvent::Destroyed,
             ..
-        } => crate::macos_chrome::release(&label),
+        } => crate::host::windows::macos_chrome::release(&label),
         #[cfg(target_os = "macos")]
         RunEvent::Opened { urls } => {
             for url in urls {
-                crate::integration::enqueue(app, url.to_string());
+                crate::host::integration::enqueue(app, url.to_string());
             }
-            crate::integration::raise(app);
+            crate::host::integration::raise(app);
         }
         RunEvent::WindowEvent {
             label,
@@ -75,7 +75,7 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
         }
         RunEvent::Exit => {
             #[cfg(target_os = "macos")]
-            crate::macos_chrome::shutdown();
+            crate::host::windows::macos_chrome::shutdown();
         }
         _ => {}
     }
