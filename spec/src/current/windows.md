@@ -61,3 +61,7 @@ Detached windows last for the current session only. Native cross-window drag
 transfer, independent-vault windows and restart restoration remain deferred. M8
 remains paused. Signing, publication and other-platform qualification retain
 their original deferred gates.
+
+The main window’s bundled-origin resource hook validates installed plugin assets
+under the existing vault admission. This adds no popup admission or window
+permission; ordinary popup integration remains M7.3.

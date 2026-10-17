@@ -8,6 +8,27 @@ importers:
 
   .:
     dependencies:
+      '@codemirror/autocomplete':
+        specifier: ^6.20.3
+        version: 6.20.3
+      '@codemirror/commands':
+        specifier: ^6.11.1
+        version: 6.11.1
+      '@codemirror/language':
+        specifier: ^6.13.1
+        version: 6.13.1
+      '@codemirror/lint':
+        specifier: ^6.9.7
+        version: 6.9.7
+      '@codemirror/search':
+        specifier: ^6.7.2
+        version: 6.7.2
+      '@codemirror/state':
+        specifier: ^6.7.6
+        version: 6.7.6
+      '@codemirror/view':
+        specifier: ^6.43.14
+        version: 6.43.14
       '@lapis-notes/api':
         specifier: ^0.1.4
         version: 0.1.4(3fd137acdf37ebe81cfa8d6ffd24f4ed)
@@ -53,6 +74,15 @@ importers:
       '@lapismd/terminal':
         specifier: link:../lapis-terminal/packages/terminal
         version: link:../lapis-terminal/packages/terminal
+      '@lezer/common':
+        specifier: ^1.5.3
+        version: 1.5.3
+      '@lezer/highlight':
+        specifier: ^1.2.5
+        version: 1.2.5
+      '@lezer/lr':
+        specifier: ^1.4.11
+        version: 1.4.11
       '@tauri-apps/api':
         specifier: ~2.12.4
         version: 2.12.4

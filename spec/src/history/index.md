@@ -80,3 +80,5 @@ by the task ledger, not inferred from this list.
 
 - [Bundled Terminal qualification](E-TERMINAL-001.md)
 - [Web desktop-service retirement](E-WEB-001.md)
+- [Portable native plugin qualification](E-PORTABLE-001.md)
+- [Final portable plugin qualification](E-PORTABLE-002.md)

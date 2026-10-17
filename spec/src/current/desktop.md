@@ -8,7 +8,7 @@ settings recovery and metadata qualification governed by `navigation.md`.
 M0.1 establishes the shell; M2 adds admitted folder access and the launcher. M3
 integrates the public Notes workspace and App over native storage.
 
-Terminal lifecycle follows [plugins](plugins.md).
+Plugin assets and Terminal follow [plugins](plugins.md).
 
 ## Requirements
 

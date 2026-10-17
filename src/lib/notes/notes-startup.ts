@@ -1,6 +1,7 @@
 import type { App } from "@lapis-notes/api";
 import { DEFAULT_APP_STATE_DIRECTORY } from "@lapis-notes/api/path";
 import type { WorkspaceStartupTask } from "@lapismd/design-core/workspace/startup";
+import { pluginLoadOptions } from "./plugin-policy.ts";
 import { desktopNotesPlugins } from "./notes-plugins.ts";
 
 export function startupTasks(): WorkspaceStartupTask[] {
@@ -53,10 +54,7 @@ export async function startNotes(
     });
     await phase("plugins", () =>
       app.plugins.loadPlugins({
-        communityPlugins: "disabled",
-        optionalCorePlugins: app.safeMode.disableOptionalCorePlugins
-          ? "disabled"
-          : "configured",
+        ...pluginLoadOptions(app.safeMode),
         onProgress: ({ name }) =>
           options.setTask("plugins", "active", `Loading ${name}`),
       }),

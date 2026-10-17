@@ -32,6 +32,7 @@ for (const marker of [
   "TAURI_WEBDRIVER_PORT",
   "wdioTauri",
   "__wdio_mocks__",
+  "__lapisPluginAcceptance",
   "LAPIS_DESKTOP_ACCEPTANCE_",
   "__lapisNativeDatabaseAcceptance",
   "__lapisConditionalWriteAcceptance",

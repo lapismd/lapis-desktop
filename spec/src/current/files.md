@@ -160,3 +160,8 @@ remains confined to the selected admitted root. See `integration.md`.
 Terminal launch uses the same admitted physical vault. Successful vault closure
 releases its scoped shells, except a confirmed reload suspension; failed guarded
 persistence never reaches this teardown. File/watch contracts remain unchanged.
+
+Native portable plugin teardown joins the existing guarded Notes leave boundary:
+all loaded plugin instances release their resources before the database and
+vault close. Safe Mode skips configured optional installations without changing
+saved enabled choices.

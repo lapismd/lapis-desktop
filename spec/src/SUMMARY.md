@@ -83,3 +83,5 @@
 
 - [Bundled Terminal qualification](history/E-TERMINAL-001.md)
   - [Web desktop-service retirement](history/E-WEB-001.md)
+  - [Portable native plugin qualification](history/E-PORTABLE-001.md)
+  - [Final portable plugin qualification](history/E-PORTABLE-002.md)

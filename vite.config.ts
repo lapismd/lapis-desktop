@@ -1,5 +1,9 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import {
+  pluginHostInputs,
+  pluginHostModules,
+} from "./scripts/plugin-host-modules.ts";
 import { fileURLToPath } from "node:url";
 
 const catalogRoots = ["./catalog/", "./.storybook/"].map((directory) =>
@@ -9,6 +13,7 @@ const catalogRoots = ["./catalog/", "./.storybook/"].map((directory) =>
 export default defineConfig(({ mode }) => ({
   plugins: [
     svelte(),
+    pluginHostModules(),
     {
       name: "production-catalog-boundary",
       generateBundle() {
@@ -39,8 +44,39 @@ export default defineConfig(({ mode }) => ({
         ]
       : []),
   ],
-  resolve: { dedupe: ["svelte", "@lapis-notes/api", "@lapismd/design-core"] },
+  resolve: {
+    dedupe: [
+      "svelte",
+      "@lapis-notes/api",
+      "@lapismd/design-core",
+      "@codemirror/autocomplete",
+      "@codemirror/commands",
+      "@codemirror/language",
+      "@codemirror/lint",
+      "@codemirror/search",
+      "@codemirror/state",
+      "@codemirror/view",
+      "@lezer/common",
+      "@lezer/highlight",
+      "@lezer/lr",
+    ],
+  },
   server: { host: "127.0.0.1", port: 1431, strictPort: true },
   clearScreen: false,
-  build: { target: "safari16" },
+  build: {
+    target: "safari16",
+    rollupOptions: {
+      preserveEntrySignatures: "strict",
+      input: {
+        index: fileURLToPath(new URL("./index.html", import.meta.url)),
+        ...pluginHostInputs,
+      },
+      output: {
+        entryFileNames: (chunk) =>
+          chunk.name.startsWith("plugin-host-")
+            ? "[name].js"
+            : "assets/[name]-[hash].js",
+      },
+    },
+  },
 }));

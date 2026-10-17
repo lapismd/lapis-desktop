@@ -158,3 +158,10 @@ Terminal runtime qualification remains separate from catalog evidence.
 M8.1 Terminal is qualified in E-TERMINAL-001. M8.2 Web retirement now records
 its source-policy, data-preservation and cold browser checks separately in
 E-WEB-001; it does not alter frozen Deno desktop source.
+
+M8.3 implements admitted native assets and explicit Tauri ESM selection. Focused
+native checks cover all seven portable plugins and real workers/WASM. Final
+qualification includes a shared Core Settings correction retaining App Shell
+controls and live-locator restoration acceptance; the original gate is
+unchanged. M9 installer regressions are captured separately before
+implementation.

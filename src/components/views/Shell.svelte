@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount, tick } from "svelte";
   import VaultLauncher from "../vaults/VaultLauncher.svelte";
+  import { createNativePluginAssetServer } from "../../lib/native/plugin-assets.ts";
   import NotesWorkspace from "./NotesWorkspace.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
@@ -175,6 +176,10 @@
       {session}
       {urlDelivery}
       {safeMode}
+      pluginAssetServer={createNativePluginAssetServer(
+        session.vaultAdapter,
+        selected!.resourceToken,
+      )}
       createTerminal={(app) => createNativeTerminal(app, selected!)}
       onRestart={restartNotes}
       onBack={back}

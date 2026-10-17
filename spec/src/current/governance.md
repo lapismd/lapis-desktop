@@ -275,3 +275,18 @@ next/acknowledge/enqueue. The fail-closed capability audit lists those grants
 explicitly and still rejects extra generic plugin permissions. Opener automatic
 JavaScript link injection stays disabled; only the bounded host route may open
 an external address. Native menu snapshots and passive receipts are e2e-only.
+
+Portable plugin resources use Tauri’s bundled-origin response hook and the
+existing opaque vault-resource admission. The Rust SHA-256 dependency pins the
+public asset fingerprint contract; CSP admits same-origin asset reads, workers
+and WASM compilation without arbitrary JavaScript evaluation or new IPC grants.
+
+The desktop declares its portable editor/Lezer shared modules explicitly through
+registry semver ranges and deduplicates them alongside API and Svelte.
+Build-owned entries reuse that graph instead of resolving private dependency
+paths.
+
+Portable native acceptance observes plugin-owned Apps through a weak reference
+and wraps worker creation/termination only in the e2e renderer entry. Normal
+bundle audits reject its marker. Fixture seeding independently verifies local
+test-signed public archives and signed files; actual installation remains M9.

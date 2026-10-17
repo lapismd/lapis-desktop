@@ -72,3 +72,47 @@ identities, removes dedicated obsolete connection tokens after configuration
 load and retains conversations, plugin data, enabled choices and layout. The Web
 product graph excludes service bridges, clients, settings and environment
 attachment; development-only catalog helpers retain their separate owner.
+
+## Portable plugin asset admission
+
+M8.3 reuses the public Notes asset-server contract and explicit Tauri execution
+selection. A Tauri session selects the portable workspace ESM entry; Electron,
+Node and CommonJS compatibility entries cannot execute. Supported portable
+plugins remain dynamically installed rather than entering the static profile.
+
+Bundled-origin assets use
+`/__lapis/plugins/<admission>/<plugin>/<version>/<fingerprint>/<path>`. Rust
+resolves the opaque resource admission through the existing physical vault
+capability, reads the installed record and validates version, installation
+fingerprint, declared size and SHA-256 before returning bytes. Relative chunks
+share the same installation identity. Paths remain confined to that plugin;
+unknown records, unsupported MIME, traversal, queries, stale metadata, changed
+bytes and revoked admissions fail closed. GET and HEAD are the only methods.
+Worker and WASM assets use the production origin with their correct MIME types;
+no Node/Deno runtime, unrestricted file URL or global filesystem grant is added.
+Signature verification remains owned by the existing installation pipeline.
+
+The build-owned initial import map exposes only approved portable API, Markdown
+embed, editor and exact Svelte renderer contracts through the same Vite graph.
+Configured installations load after static plugins; bundled identities retain
+precedence. Notes teardown disables every loaded instance after guarded saves.
+The native asset route is a bundled-production-origin capability; Vite
+development startup reports it unavailable rather than exposing vault files
+through Node.
+
+Until the M10 bundled replacement is registered, external `ai` installations are
+unavailable under the App-owned host policy. Preserved conversations and
+disabled preferences do not activate the retired controller integration.
+Terminal already retains its qualified bundled precedence.
+
+Native Notes reuses the public Workspace plugin Settings pages for installed
+plugin control and diagnostics. The Core page retains all App Shell and Lapis
+managed sources through their owning lifecycle. The existing signed distribution
+client may fetch HTTPS registry metadata and artifacts; no broad native network
+or process permission is introduced.
+
+Harper’s existing signed runtime creates a production-origin Blob module worker
+and embeds its WASM as a data URL in a signed JavaScript chunk. Native CSP
+admits that worker and embedded binary fetch, alongside ordinary fingerprinted
+worker and WASM assets. Acceptance distinguishes those existing packaging forms
+and requires real Harper diagnostics and owned worker termination.

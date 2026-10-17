@@ -53,7 +53,17 @@
     "@lapismd/mira-plugin-mermaid": "~0.0.2",
     "@tauri-apps/api": "~2.12.4",
     "svelte": "5.56.10",
-    "@lapismd/terminal": "link:../lapis-terminal/packages/terminal"
+    "@lapismd/terminal": "link:../lapis-terminal/packages/terminal",
+    "@codemirror/autocomplete": "^6.20.3",
+    "@codemirror/commands": "^6.11.1",
+    "@codemirror/language": "^6.13.1",
+    "@codemirror/lint": "^6.9.7",
+    "@codemirror/search": "^6.7.2",
+    "@codemirror/state": "^6.7.6",
+    "@codemirror/view": "^6.43.14",
+    "@lezer/common": "^1.5.3",
+    "@lezer/highlight": "^1.2.5",
+    "@lezer/lr": "^1.4.11"
   },
   "devDependencies": {
     "@lapismd/spec-validator": "^0.1.4",

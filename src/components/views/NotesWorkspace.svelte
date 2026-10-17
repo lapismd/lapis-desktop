@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { PluginAssetServer } from "@lapis-notes/api/plugin-assets";
   import { onMount, tick, untrack } from "svelte";
   import {
     App,
@@ -10,6 +11,7 @@
   } from "@lapis-notes/api";
   import {
     WorkspaceShell,
+    registerPluginManagementSettings,
     DesktopWorkspaceStartup,
     DesktopRecoveryBanner,
   } from "@lapis-notes/workspace";
@@ -23,6 +25,7 @@
     startupTasks,
     StartupPhaseError,
   } from "../../lib/notes/notes-startup.ts";
+  import { unavailableDesktopPlugins } from "../../lib/notes/plugin-policy.ts";
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
   import { leaveWithStoppedWatching } from "../../lib/notes/notes-leave.ts";
@@ -40,6 +43,7 @@
 
   let {
     session,
+    pluginAssetServer,
     createTerminal,
     onBack,
     onReady,
@@ -48,6 +52,7 @@
     urlDelivery,
   }: {
     session: VaultSession;
+    pluginAssetServer?: PluginAssetServer;
     createTerminal?: TerminalFactory;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
@@ -60,6 +65,8 @@
       new App({
         version: "0.1.0",
         session,
+        pluginAssetServer,
+        unavailablePlugins: unavailableDesktopPlugins,
         safeMode,
         workspaceShell: { notifications: true },
         markdownRenderer: async () => {},
@@ -72,6 +79,7 @@
   provideApplicationState(app);
   const releaseCompatibility = installApplicationCompatibility(app);
   const sync = takeHostSyncService(app);
+  const disposePluginSettings = registerPluginManagementSettings(app);
   let ready = $state(false);
   let busy = $state(true);
   let error = $state("");
@@ -199,9 +207,10 @@
               await app.workspace.disposeWorkspaceHost();
               stopMetadataTracking?.();
               await app.metadataCache.dispose();
-              for (const plugin of [...app.plugins.corePlugins].reverse())
+              for (const plugin of [...app.plugins.plugins.values()].reverse())
                 await plugin.disable();
               await sync.dispose();
+              disposePluginSettings();
               coreDisposed = true;
             });
           },

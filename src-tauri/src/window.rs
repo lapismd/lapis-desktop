@@ -1,4 +1,6 @@
-use tauri::{AppHandle, Emitter, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse};
+use tauri::{
+    AppHandle, Emitter, Manager, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
+};
 
 fn route_link(app: &AppHandle, url: &url::Url) {
     if lapis_desktop::integration_urls::supported_scheme(url.scheme()) {
@@ -14,7 +16,27 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     let configuration = &app.config().app.windows[0];
     let navigation = app.clone();
     let popup = app.clone();
+    let resources = app.clone();
     WebviewWindowBuilder::from_config(app, configuration)?
+        .on_web_resource_request(move |request, response| {
+            if request
+                .uri()
+                .path()
+                .starts_with(lapis_desktop::plugin_assets::PREFIX)
+            {
+                let host = resources.state::<crate::native_host::NativeHost>();
+                let result = match host.0.lock() {
+                    Ok(services) => {
+                        lapis_desktop::plugin_assets::response(&services.vaults, &request)
+                    }
+                    Err(_) => tauri::http::Response::builder()
+                        .status(503)
+                        .body(Vec::new())
+                        .unwrap(),
+                };
+                *response = result.map(std::borrow::Cow::Owned);
+            }
+        })
         .on_navigation(move |url| {
             #[cfg(feature = "e2e")]
             if std::env::var("LAPIS_DESKTOP_POPOUT_PROOF").as_deref() == Ok("1") {

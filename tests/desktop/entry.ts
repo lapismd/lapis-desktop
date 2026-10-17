@@ -12,6 +12,8 @@ await init();
 const platformOpen = window.open.bind(window);
 const { installPopoutProof } = await import("./popout-entry.ts");
 installPopoutProof(platformOpen);
+const { installPluginAcceptance } = await import("./plugin-entry.ts");
+installPluginAcceptance();
 await import("../../src/main.ts");
 await import("./watch-entry.ts");
 
