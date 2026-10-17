@@ -2,7 +2,7 @@
   import { MergeEditor } from "@lapismd/design-core/diff";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import FileCheckIcon from "@lucide/svelte/icons/file-check";
-  import HardDriveDownloadIcon from "@lucide/svelte/icons/hard-drive-download";
+  import ConflictReviewControls from "./ConflictReviewControls.svelte";
   import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import type {
     ConflictReviewState,
@@ -16,6 +16,12 @@
   const conflict = $derived(
     model.entries.find((entry) => entry.path === selection.path),
   );
+  let options = $state({
+    wrap: false,
+    ignoreWhitespace: false,
+    ignoreCase: false,
+    syncHorizontalScroll: true,
+  });
   const disabled = $derived(model.disabled() || model.busy !== null);
 </script>
 
@@ -26,16 +32,32 @@
     aria-busy={model.busy === conflict.path}
   >
     <div class="comparison">
-      <MergeEditor
-        path={conflict.path}
-        left={conflict.local}
-        base={conflict.baseline ?? ""}
-        right={conflict.external ?? ""}
-        leftLabel="Your version"
-        baseLabel="Last saved version"
-        rightLabel="Disk version"
-        readOnly
-      />
+      {#key conflict}
+        {@const seed = selection.seed(conflict)}
+        <MergeEditor
+          path={conflict.path}
+          left={conflict.local}
+          base={seed}
+          right={conflict.external ?? ""}
+          leftLabel="Your version"
+          baseLabel="Merged version"
+          rightLabel="Disk version"
+          readOnly={disabled || conflict.external === undefined}
+          editable
+          editableSides={["base"]}
+          wrap={options.wrap}
+          ignoreWhitespace={options.ignoreWhitespace}
+          ignoreCase={options.ignoreCase}
+          syncHorizontalScroll={options.syncHorizontalScroll}
+          onResolvedChange={({ content }) => {
+            selection.result = content;
+          }}
+        >
+          {#snippet headerCenter()}
+            <ConflictReviewControls bind:options {disabled} />
+          {/snippet}
+        </MergeEditor>
+      {/key}
     </div>
     <footer>
       <div class="explanation">
@@ -47,23 +69,22 @@
         {:else if conflict.external === null}
           <p>The file was deleted from disk.</p>
         {:else}
-          <p>Your draft is kept until you choose which version to use.</p>
+          <p>
+            Edit the centre or accept changes from either side, then save the
+            merged version.
+          </p>
         {/if}
       </div>
       <div class="actions">
         <Button
           variant="outline"
-          disabled={disabled || conflict.external === undefined}
-          onclick={() => model.recover(conflict.path, "keep-local")}
+          disabled={disabled ||
+            conflict.external === undefined ||
+            selection.result === undefined}
+          onclick={() =>
+            model.recover(conflict.path, undefined, selection.result)}
         >
-          <FileCheckIcon aria-hidden="true" />Keep my version
-        </Button>
-        <Button
-          variant="outline"
-          disabled={disabled || conflict.external === undefined}
-          onclick={() => model.recover(conflict.path, "use-external")}
-        >
-          <HardDriveDownloadIcon aria-hidden="true" />Use disk version
+          <FileCheckIcon aria-hidden="true" />Save merged version
         </Button>
         <Button
           variant="ghost"
@@ -87,6 +108,8 @@
     background: var(--ui-workspace-view-background, var(--background));
   }
   .comparison {
+    --ui-diff-frame-border: 0;
+    --ui-diff-frame-radius: 0;
     flex: 1;
     min-height: 0;
     overflow: hidden;

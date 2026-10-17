@@ -49,12 +49,17 @@ async function retained(canvasElement: HTMLElement) {
   await expect(
     within(conflict).getByRole("region", { name: "Your version", exact: true }),
   ).toHaveTextContent("# My unsaved draft");
-  await expect(
-    within(conflict).getByRole("region", {
-      name: "Last saved version",
-      exact: true,
-    }),
-  ).toHaveTextContent("# Original note");
+  const editable = within(conflict).queryByRole("textbox", {
+    name: "Edit Merged version",
+  });
+  if (editable) await expect(editable).toHaveValue("# Original note\n");
+  else
+    await expect(
+      within(conflict).getByRole("region", {
+        name: "Merged version",
+        exact: true,
+      }),
+    ).toHaveTextContent("# Original note");
   return { canvas, conflict };
 }
 export const ProblemsList: Story = {
@@ -95,10 +100,7 @@ export const UnreadableDisk: Story = {
       "The note is read-only",
     );
     await expect(
-      canvas.getByRole("button", { name: "Keep my version" }),
-    ).toBeDisabled();
-    await expect(
-      canvas.getByRole("button", { name: "Use disk version" }),
+      canvas.getByRole("button", { name: "Save merged version" }),
     ).toBeDisabled();
     await expect(
       canvas.getByRole("button", { name: "Check disk again" }),
@@ -110,7 +112,12 @@ export const FailedRecovery: Story = {
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
     await userEvent.click(
-      canvas.getByRole("button", { name: "Keep my version" }),
+      canvas.getByRole("button", {
+        name: "Accept All Incoming Changes from Left",
+      }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Save merged version" }),
     );
     await expect(await canvas.findByRole("alert")).toHaveTextContent(
       "The note is read-only",
@@ -125,18 +132,14 @@ export const RecoveryInProgress: Story = {
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
     await userEvent.click(
-      canvas.getByRole("button", { name: "Use disk version" }),
+      canvas.getByRole("button", { name: "Save merged version" }),
     );
     await waitFor(() =>
       expect(
         canvas.getByRole("region", { name: "File conflict: Note.md" }),
       ).toHaveAttribute("aria-busy", "true"),
     );
-    for (const name of [
-      "Keep my version",
-      "Use disk version",
-      "Check disk again",
-    ])
+    for (const name of ["Save merged version", "Check disk again"])
       await expect(canvas.getByRole("button", { name })).toBeDisabled();
   },
 };
@@ -144,7 +147,12 @@ export const KeepMyVersion: Story = {
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
     await userEvent.click(
-      canvas.getByRole("button", { name: "Keep my version" }),
+      canvas.getByRole("button", {
+        name: "Accept All Incoming Changes from Left",
+      }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Save merged version" }),
     );
     await waitFor(() =>
       expect(
@@ -160,7 +168,12 @@ export const UseDiskVersion: Story = {
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
     await userEvent.click(
-      canvas.getByRole("button", { name: "Use disk version" }),
+      canvas.getByRole("button", {
+        name: "Accept All Incoming Changes from Right",
+      }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Save merged version" }),
     );
     await waitFor(() =>
       expect(
@@ -198,7 +211,12 @@ export const StaleDecision: Story = {
     const fixture = conflictFixture(canvasElement);
     await fixture.adapter.write("Note.md", "# Changed again\n");
     await userEvent.click(
-      canvas.getByRole("button", { name: "Keep my version" }),
+      canvas.getByRole("button", {
+        name: "Accept All Incoming Changes from Left",
+      }),
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Save merged version" }),
     );
     await expect(await canvas.findByRole("alert")).toHaveTextContent(
       "File changed on disk",
@@ -215,14 +233,46 @@ export const LeavingWorkspace: Story = {
   parameters: { leaving: true },
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
-    for (const name of [
-      "Keep my version",
-      "Use disk version",
-      "Check disk again",
-    ])
+    for (const name of ["Save merged version", "Check disk again"])
       await expect(canvas.getByRole("button", { name })).toBeDisabled();
     await expect(canvasElement.querySelector(".shell")).toHaveAttribute(
       "inert",
     );
+  },
+};
+
+export const EditedMergeResult: Story = {
+  play: async ({ canvasElement }) => {
+    const { canvas } = await retained(canvasElement);
+    const input = canvas.getByRole("textbox", { name: "Edit Merged version" });
+    await userEvent.clear(input);
+    await userEvent.type(
+      input,
+      "# Reviewed merged note\nIncludes both changes.\n",
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Save merged version" }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("region", { name: "File conflict: Note.md" }),
+      ).toBeNull(),
+    );
+    await expect(
+      await conflictFixture(canvasElement).adapter.read("Note.md"),
+    ).toBe("# Reviewed merged note\nIncludes both changes.\n");
+  },
+};
+export const MergeEditorSettings: Story = {
+  play: async ({ canvasElement }) => {
+    const { canvas } = await retained(canvasElement);
+    for (const name of ["Wrap text", "Ignore whitespace", "Ignore case"]) {
+      const toggle = canvas.getByRole("button", { name, exact: true });
+      await userEvent.click(toggle);
+      await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    }
+    await expect(
+      canvas.getByRole("textbox", { name: "Edit Merged version" }),
+    ).toHaveValue("# Original note\n");
   },
 };

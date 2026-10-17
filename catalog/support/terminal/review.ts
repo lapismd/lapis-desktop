@@ -7,7 +7,7 @@ export type TerminalReview = {
   close(): Promise<void>;
   disable(): Promise<void>;
   exit(): Promise<void>;
-  resize(): void;
+  resize(): Promise<void>;
   inspect(): Promise<{
     sessions: number;
     inputs: string;

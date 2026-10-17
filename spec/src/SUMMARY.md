@@ -140,3 +140,5 @@
   - [Native admitted history and vault lifetime](history/E-REPO-002.md)
 
 - [Desktop shell presentation review](history/E-CATALOG-003.md)
+
+- [Editable merge and catalog cleanup](history/E-CATALOG-004.md)

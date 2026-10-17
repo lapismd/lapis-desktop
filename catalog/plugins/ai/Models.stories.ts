@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { aiReviewAction } from "../../support/ai/review.ts";
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, fn, waitFor, within } from "storybook/test";
@@ -108,7 +109,6 @@ export const SettingsHarnessModelRefresh: Story = {
     Component: AiChatDemo,
     props: {
       showRuntimeSelection: true,
-      showSettingsSelection: true,
       loadModels: async (agent: string) => [
         {
           provider: agent,
@@ -122,9 +122,7 @@ export const SettingsHarnessModelRefresh: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
-    await clickHarnessControl(
-      canvas.getByRole("button", { name: "Choose Cursor in Settings" }),
-    );
+    await aiReviewAction(canvasElement, "Choose Cursor in Settings");
     await waitForHarnessCatalog(canvasElement, "cursor", "acp");
     await clickHarnessControl(
       canvas.getByRole("button", { name: "Effort and model" }),

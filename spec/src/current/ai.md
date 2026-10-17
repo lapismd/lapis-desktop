@@ -1,5 +1,10 @@
 # Desktop AI and optional compute
 
+AI catalog scenes expose product presentation only. Fixture observations, fault
+injection, settings changes and lifetime controls use owned review ports outside
+the visible DOM, retaining their existing story assertions. This shell review
+does not resume native AI qualification; its suites remain deferred.
+
 E-REPO-002 retains LD-AI-001 execution authority: repository history admission
 cannot admit AI or select a target. The existing cold AI admission case passes
 alongside the new independent history case. NativeServices test construction

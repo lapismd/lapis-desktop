@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { registerAiReview } from "./review.ts";
   import { onMount, untrack } from "svelte";
   import { WorkspaceSettingsSurface } from "@lapismd/design-core/workspace/settings";
   import {
@@ -15,6 +16,7 @@
   let calls = $state("");
   let notifications = $state("");
   let registered = $state(true);
+  let root = $state<HTMLDivElement>();
   let extra: { dispose(): void } | undefined;
   async function inspect() {
     await fixture.plugin.settings.settle();
@@ -33,6 +35,38 @@
       controller.configuration.optionSources.resolve("ai.models.codex"),
     );
   }
+  $effect(() => {
+    if (!root) return;
+    return registerAiReview(root, {
+      read: (name) => {
+        const values: Record<string, string> = {
+          "Saved AI data": persisted,
+          "Flat app settings": flat,
+          "Model catalog requests": calls,
+          "AI notifications": notifications,
+          "AI model source registered": String(registered),
+        };
+        return values[name] ?? "";
+      },
+      actions: {
+        "Inspect saved settings": inspect,
+        "Fail next settings write": () => {
+          fixture.plugin.failNextSave = true;
+        },
+        "Register temporary tool": () => {
+          extra ??= fixture.plugin.registerTool("temporary_tool", "community");
+        },
+        "Unregister temporary tool": () => {
+          extra?.dispose();
+          extra = undefined;
+        },
+        "Disable AI settings": async () => {
+          await fixture.plugin.disable();
+          await inspect();
+        },
+      },
+    });
+  });
   onMount(() => {
     let disposed = false;
     void fixture.ready
@@ -52,43 +86,17 @@
   });
 </script>
 
-<div class="settings-demo" data-settings-ready={ready}>
+<div
+  bind:this={root}
+  data-ai-review
+  class="settings-demo"
+  data-settings-ready={ready}
+>
   {#if ready}<WorkspaceSettingsSurface
       controller={controller.settings}
       app={controller}
     />{/if}
   {#if failure}<p role="alert">{failure}</p>{/if}
-  <div role="group" aria-label="Settings fixture controls">
-    <button onclick={inspect}>Inspect saved settings</button>
-    <button
-      onclick={() => {
-        fixture.plugin.failNextSave = true;
-      }}>Fail next settings write</button
-    >
-    <button
-      onclick={() => {
-        extra ??= fixture.plugin.registerTool("temporary_tool", "community");
-      }}>Register temporary tool</button
-    >
-    <button
-      onclick={() => {
-        extra?.dispose();
-        extra = undefined;
-      }}>Unregister temporary tool</button
-    >
-    <button
-      onclick={async () => {
-        await fixture.plugin.disable();
-        await inspect();
-      }}>Disable AI settings</button
-    >
-    <output aria-label="Saved AI data">{persisted}</output>
-    <output aria-label="Flat app settings">{flat}</output>
-    <output aria-label="Model catalog requests">{calls}</output>
-    <output aria-label="AI notifications">{notifications}</output>
-    <output aria-label="AI model source registered">{String(registered)}</output
-    >
-  </div>
 </div>
 
 <style>

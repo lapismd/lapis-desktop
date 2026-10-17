@@ -1,3 +1,4 @@
+import { aiReviewAction } from "../../support/ai/review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import CommandRefreshDemo from "../../support/ai/CommandRefreshDemo.svelte";
@@ -25,18 +26,14 @@ async function ready(canvasElement: HTMLElement) {
 export const ExternalChanges: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Add external command" }),
-    );
+    await aiReviewAction(canvasElement, "Add external command");
     await userEvent.click(
       await canvas.findByRole("treeitem", { name: /^\/capture$/u }, observed),
     );
     await expect(
       await canvas.findByText("New external capture command", {}, observed),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Edit external command" }),
-    );
+    await aiReviewAction(canvasElement, "Edit external command");
     await expect(
       await canvas.findByText(
         "Externally updated review command",
@@ -44,9 +41,7 @@ export const ExternalChanges: Story = {
         observed,
       ),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Delete external command" }),
-    );
+    await aiReviewAction(canvasElement, "Delete external command");
     await waitFor(
       () =>
         expect(canvas.queryByText("New external capture command")).toBeNull(),
@@ -57,16 +52,12 @@ export const ExternalChanges: Story = {
 export const UnreadableRecovery: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Make commands unreadable" }),
-    );
+    await aiReviewAction(canvasElement, "Make commands unreadable");
     await expect(
       await canvas.findByText("Review commands are unreadable", {}, observed),
     ).toBeVisible();
     await expect(canvas.getByText("Original review command")).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Make commands readable" }),
-    );
+    await aiReviewAction(canvasElement, "Make commands readable");
     await expect(
       await canvas.findByText(
         "Recovered external review command",

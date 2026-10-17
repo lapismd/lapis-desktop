@@ -148,9 +148,11 @@ Consume prepared public archives through the ignored development overlay;
 portable dependency ranges and the registry lock resolution remain tracked. This
 review intake has no publication or native qualification claim.
 
-Catalog previews show only product presentation. Terminal fixtures keep their
-observations outside the DOM and start with both sidebars collapsed. Recovery
-banners use opaque theme tokens and meaningful action icons. File conflicts open
-Problems and use the shared three-way comparison in a workspace view. The user
-has deferred suites and native builds for this presentation slice; retain
-visual-pending and the pending verification ledger.
+Catalog previews show only product presentation. Terminal and AI fixtures keep
+observations and fault/lifetime controls outside the product DOM. Terminal
+starts with both sidebars collapsed and restores full viewport height after its
+temporary resize observation. Recovery banners use opaque theme tokens and
+meaningful action icons. File conflicts open Problems and use the shared
+editable three-way comparison in a workspace view. The user has deferred suites
+and native builds for this presentation slice; retain visual-pending and the
+pending verification ledger.

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { registerAiReview } from "./review.ts";
   import { untrack } from "svelte";
   import { onMount } from "svelte";
   import { AppSlashCommandRegistry } from "@lapis-notes/api/agent-skills";
@@ -46,7 +47,6 @@
     enableMemoryRecall = false,
     enableMarkdown = false,
     showRuntimeSelection = false,
-    showSettingsSelection = false,
   }: {
     requireApproval?: boolean;
     rejectApproval?: boolean;
@@ -66,7 +66,6 @@
     enableMemoryRecall?: boolean;
     enableMarkdown?: boolean;
     showRuntimeSelection?: boolean;
-    showSettingsSelection?: boolean;
   } = $props();
   let openedTick = $state(0);
   let recallCalls = $state(0);
@@ -209,9 +208,28 @@
       description: file.path,
     }));
   }
+  let root = $state<HTMLDivElement>();
+  $effect(() => {
+    if (root)
+      return registerAiReview(root, {
+        actions: {
+          "Unload extension command": () => skillHarness?.unloadExtension(),
+          "Choose Cursor in Settings": () => {
+            settings = {
+              ...settings,
+              acpAgent: "cursor",
+              defaultRuntime: "acp",
+              defaultModel: "",
+            };
+          },
+        },
+      });
+  });
 </script>
 
 <div
+  bind:this={root}
+  data-ai-review
   class="ai-chat-demo"
   class:ai-chat-demo--seeded={seedItems.length > 0}
   style:--ai-chat-demo-seeded-height={seededHeight}
@@ -221,29 +239,6 @@
   data-selected-runtime={settings.defaultRuntime}
   data-selected-agent={settings.acpAgent}
 >
-  {#if enableSkills}
-    <button
-      type="button"
-      class="visually-hidden"
-      data-testid="ai-chat-unload-extension"
-      onclick={() => skillHarness?.unloadExtension()}
-    >
-      Unload extension command
-    </button>
-  {/if}
-  {#if showSettingsSelection}
-    <button
-      type="button"
-      onclick={() => {
-        settings = {
-          ...settings,
-          acpAgent: "cursor",
-          defaultRuntime: "acp",
-          defaultModel: "",
-        };
-      }}>Choose Cursor in Settings</button
-    >
-  {/if}
   {#if fixtureReady}
     <AiChatPanel
       app={panelApp}
@@ -267,13 +262,6 @@
 </div>
 
 <style>
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    clip-path: inset(50%);
-    overflow: hidden;
-  }
   .ai-chat-demo {
     display: flex;
     flex-direction: column;

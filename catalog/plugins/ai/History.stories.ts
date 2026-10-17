@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { aiReviewAction } from "../../support/ai/review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import PanelDemo from "../../support/ai/PanelDemo.svelte";
@@ -25,9 +26,7 @@ export const CreationFailureAndRetry: Story = {
   play: async ({ canvasElement }) => {
     const panel = await readyPanel(canvasElement, "ai-conversation-history");
     const canvas = within(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Fail next panel action" }),
-    );
+    await aiReviewAction(canvasElement, "Fail next panel action");
     await userEvent.click(
       panel.getByRole("button", { name: "New chat in Notes" }),
     );
@@ -117,9 +116,7 @@ export const StaleSearchAndUnmount: Story = {
   play: async ({ canvasElement }) => {
     const panel = await readyPanel(canvasElement, "ai-conversation-history");
     const canvas = within(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Hold next panel refresh" }),
-    );
+    await aiReviewAction(canvasElement, "Hold next panel refresh");
     await userEvent.type(
       panel.getByRole("searchbox", { name: "Search conversations" }),
       "parser",
@@ -133,18 +130,14 @@ export const StaleSearchAndUnmount: Story = {
         name: /^Summarize project notes(?:\s|$)/,
       }),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Release held panel refresh" }),
-    );
+    await aiReviewAction(canvasElement, "Release held panel refresh");
     await waitFor(async () =>
       expect((await inspectPanel(canvasElement)).pending).toBe(false),
     );
     expect(
       panel.getByRole("button", { name: /^Summarize project notes(?:\s|$)/ }),
     ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Unmount panel" }),
-    );
+    await aiReviewAction(canvasElement, "Unmount panel");
     expect(canvas.queryByTestId("ai-conversation-history")).toBeNull();
   },
 };

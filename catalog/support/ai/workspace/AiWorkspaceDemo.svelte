@@ -11,12 +11,10 @@
     kind = "ai-history",
     layout = "right-sidebar",
     scenario = "normal",
-    controls = false,
   }: {
     kind?: AiPanelKind;
     layout?: AiPanelLayout;
     scenario?: AiWorkspaceScenario;
-    controls?: boolean;
   } = $props();
   const fixture = untrack(() =>
     createAiWorkspaceFixture(kind, layout, scenario),
@@ -27,7 +25,6 @@
   });
   let status = $state("booting");
   let failure = $state("");
-  let inspection = $state("");
   onMount(() => {
     let disposed = false;
     void fixture.ready
@@ -57,39 +54,6 @@
     {/if}
   </div>
   {#if failure}<p role="alert">{failure}</p>{/if}
-  {#if controls}
-    <div role="group" aria-label="AI workspace fixture controls">
-      <button onclick={async () => (inspection = await fixture.inspect())}
-        >Inspect AI ownership</button
-      >
-      <button
-        onclick={async () => {
-          await fixture.app.plugins.disablePlugin("ai");
-        }}>Disable AI</button
-      >
-      <button
-        onclick={async () => {
-          await fixture.app.plugins.enablePlugin("ai");
-        }}>Enable AI</button
-      >
-      <button
-        onclick={async () => {
-          await fixture.app.commands.executeCommand("ai:open-chat");
-        }}>Open Chat command</button
-      >
-      <button
-        onclick={async () => {
-          await fixture.app.commands.executeCommand("ai:open-history");
-        }}>Open History command</button
-      >
-      <button
-        onclick={async () => {
-          await fixture.app.commands.executeCommand("ai:open-catalog");
-        }}>Open Catalog command</button
-      >
-    </div>
-    <output aria-label="AI ownership state">{inspection}</output>
-  {/if}
 </div>
 
 <style>
@@ -110,9 +74,6 @@
     width: 100%;
     height: 100%;
     min-height: 0;
-  }
-  output {
-    overflow-wrap: anywhere;
   }
   :global(html:has(.ai-workspace-demo)),
   :global(body:has(.ai-workspace-demo)) {

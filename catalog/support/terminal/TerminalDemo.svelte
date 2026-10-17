@@ -52,7 +52,7 @@
       : normalRecovery(),
   );
   let fixtureRoot = $state<HTMLDivElement>();
-  let generation = 0;
+
   function plugin(): TerminalPlugin | undefined {
     return fixture.app?.plugins.corePlugins.find(
       (value) => value instanceof TerminalPlugin,
@@ -100,9 +100,18 @@
         const [info] = await fixture.transport.list();
         if (info) fixture.transport.exit(info.id);
       },
-      resize() {
+      async resize() {
         const panel = root.querySelector<HTMLElement>(".notes-demo");
-        if (panel) panel.style.height = ++generation % 2 ? "520px" : "760px";
+        if (!panel) return;
+        const previous = panel.style.height;
+        try {
+          panel.style.height = "520px";
+          await new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          );
+        } finally {
+          panel.style.height = previous;
+        }
       },
       async inspect() {
         return {

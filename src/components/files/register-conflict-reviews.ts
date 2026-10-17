@@ -57,8 +57,10 @@ export function registerConflictReviews(
     if (!entries.length) model.error = "";
     const current = new Set(entries.map((entry) => entry.path));
     for (const path of paths)
-      if (!current.has(path))
+      if (!current.has(path)) {
         collection.delete({ uri: prefix + encodeURIComponent(path) });
+        model.results.delete(path);
+      }
     for (const entry of entries) {
       collection.set(
         {

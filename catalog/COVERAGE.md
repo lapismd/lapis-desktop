@@ -205,3 +205,11 @@ shared opaque banner and icon actions. Terminal stories retain observations
 through a private fixture port while showing product UI only, with both sidebars
 collapsed. Current Design Core 0.5.1 intake and deferred acceptance are
 documented in E-CATALOG-003; all changed stories remain visual-pending.
+
+The follow-up review makes the conflict centre editable and preserves captured
+conditional writes for merged results. Icon-only header settings use the shared
+MergeEditor slot and public frame tokens. AI Settings, Catalog/History,
+workspace, lifetime, model, command and user-command stories now use an
+out-of-DOM fixture port for observations/actions. Existing assertions remain
+authored; reruns are deferred by request. Terminal restores its pre-resize
+viewport height.

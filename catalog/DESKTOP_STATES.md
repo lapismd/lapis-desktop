@@ -62,3 +62,10 @@ Existing deletion, unreadable, failure, busy, stale-snapshot, leaving and
 whole-version decision stories use the same production review. Terminal stories
 start with both sidebars collapsed and contain no visible fixture telemetry.
 Suites/native acceptance for these changes are deferred; visual-pending remains.
+
+The conflict review centre is editable, with icon-only comparison settings and
+an explicit Save merged version action. `EditedMergeResult` and
+`MergeEditorSettings` cover the requested result/editing controls. Terminal's
+resize fixture restores its original height. All AI fixture actions and JSON
+observations remain outside product DOM through the owned review port. Automated
+source/catalog and native acceptance remain deferred.

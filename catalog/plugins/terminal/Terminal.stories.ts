@@ -112,6 +112,15 @@ export const InputResizeAndScroll: Story = {
       expect((await inspect(canvasElement)).scrolls).not.toContain("[]");
     });
     expect((await inspect(canvasElement)).dimensions).not.toContain("[]");
+    await waitFor(() => {
+      const shell = canvasElement.querySelector<HTMLElement>(".notes-session")!;
+      expect(
+        Math.abs(
+          shell.getBoundingClientRect().height -
+            canvasElement.ownerDocument.defaultView!.innerHeight,
+        ),
+      ).toBeLessThan(2);
+    });
     await terminalReview(canvasElement).disable();
     await waitFor(async () =>
       expect((await inspect(canvasElement)).sessions).toBe(0),

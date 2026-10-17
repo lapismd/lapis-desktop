@@ -1,5 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <script lang="ts">
+  import { registerAiReview } from "../review.ts";
   import { onMount, tick, untrack } from "svelte";
   import { App, MemoryAppDatabase, MemoryVaultAdapter } from "@lapis-notes/api";
   import AiHistoryPanel from "../../../../src/components/ai/history/AiHistoryPanel.svelte";
@@ -129,34 +130,49 @@
       void cleanup().catch(console.error);
     };
   });
+  let root = $state<HTMLDivElement>();
+  $effect(() => {
+    if (root)
+      return registerAiReview(root, {
+        read: () =>
+          JSON.stringify({
+            started,
+            readFinished,
+            disposalObserved,
+            databaseClosed,
+            failure,
+            operations,
+          }),
+        actions: {
+          "Close panel and database": () => {
+            void closeResources().catch((error) => {
+              failure = String(error);
+            });
+          },
+          "Release pending read": () => release(),
+        },
+      });
+  });
 </script>
 
-<button
-  onclick={() => {
-    void closeResources().catch((error) => {
-      failure = String(error);
-    });
-  }}>Close panel and database</button
->
-<button onclick={() => release()}>Release pending read</button>
-<output aria-label="Pending panel lifetime"
-  >{JSON.stringify({
-    started,
-    readFinished,
-    disposalObserved,
-    databaseClosed,
-    failure,
-    operations,
-  })}</output
->
-{#if ready && visible}
-  {#if kind === "history"}<AiHistoryPanel {...history} />
-  {:else if kind === "chat"}<AiChatPanel
-      {runtime}
-      {repository}
-      {initialLocation}
-      {...chatCallbacks}
-      onControllerDispose={onDispose}
-    />
-  {:else}<AiCatalogPanel {...catalog} />{/if}
-{/if}
+<div bind:this={root} data-ai-review class="ai-lifetime-review">
+  {#if ready && visible}
+    {#if kind === "history"}<AiHistoryPanel {...history} />
+    {:else if kind === "chat"}<AiChatPanel
+        {runtime}
+        {repository}
+        {initialLocation}
+        {...chatCallbacks}
+        onControllerDispose={onDispose}
+      />
+    {:else}<AiCatalogPanel {...catalog} />{/if}
+  {/if}
+</div>
+
+<style>
+  .ai-lifetime-review {
+    height: 100vh;
+    width: 100%;
+    min-height: 0;
+  }
+</style>

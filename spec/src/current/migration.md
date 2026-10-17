@@ -1,9 +1,10 @@
 # Migration inventory and progress
 
 The requested M8.5 shell/story review consumes local Design Core 0.5.1 while
-preserving existing desktop contracts. It adds Problems-based conflict review,
-shared recovery presentation and product-only Terminal previews. Test suites and
-native builds are deferred explicitly; AI work remains paused for this review.
+preserving existing desktop contracts. It adds editable Problems-based conflict
+review, shared recovery presentation and product-only Terminal previews. Test
+suites and native builds are deferred explicitly; AI work remains paused for
+this review.
 
 E-REPO-002 completes M13.1's original native admission gate. M13 and M13.2
 remain In progress; visible Notes history/diffs and recoverable JJ-backed chat

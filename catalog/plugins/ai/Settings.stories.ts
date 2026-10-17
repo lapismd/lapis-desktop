@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { aiReviewAction, aiReviewValue } from "../../support/ai/review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import SettingsDemo from "../../support/ai/SettingsDemo.svelte";
@@ -30,11 +31,8 @@ async function settled(element: HTMLElement) {
   );
 }
 async function saved(element: HTMLElement) {
-  const canvas = within(element);
-  await userEvent.click(
-    canvas.getByRole("button", { name: "Inspect saved settings" }),
-  );
-  return JSON.parse(canvas.getByLabelText("Saved AI data").textContent ?? "{}");
+  await aiReviewAction(element, "Inspect saved settings");
+  return JSON.parse(aiReviewValue(element, "Saved AI data"));
 }
 async function choose(element: HTMLElement, label: string, option: string) {
   const canvas = within(element);
@@ -70,14 +68,12 @@ export const ControlledPreferences: Story = {
     const data = await saved(canvasElement);
     expect(data.sessions).toEqual([{ id: "retained-controller-history" }]);
     expect(data.futureValue).toEqual({ retained: true });
-    const flat = JSON.parse(
-      canvas.getByLabelText("Flat app settings").textContent ?? "{}",
-    );
+    const flat = JSON.parse(aiReviewValue(canvasElement, "Flat app settings"));
     expect(flat).not.toHaveProperty("ai.defaultModel");
     expect(flat).not.toHaveProperty("ai.thinking");
     expect(
-      canvas.getByLabelText("Model catalog requests"),
-    ).not.toHaveTextContent("native");
+      aiReviewValue(canvasElement, "Model catalog requests"),
+    ).not.toContain("native");
   },
 };
 
@@ -127,40 +123,32 @@ export const ToolRegistryAndCleanup: Story = {
         ["community_count"],
       ),
     );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Register temporary tool" }),
-    );
+    await aiReviewAction(canvasElement, "Register temporary tool");
     expect(
       await canvas.findByRole("switch", {
         name: "temporary_tool",
       }),
     ).not.toBeChecked();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Unregister temporary tool" }),
-    );
+    await aiReviewAction(canvasElement, "Unregister temporary tool");
     await waitFor(() =>
       expect(
         canvas.queryByRole("switch", { name: "temporary_tool" }),
       ).toBeNull(),
     );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Disable AI settings" }),
-    );
+    await aiReviewAction(canvasElement, "Disable AI settings");
     expect(
       canvas.queryByRole("combobox", { name: "Default runtime" }),
     ).toBeNull();
-    expect(
-      canvas.getByLabelText("AI model source registered"),
-    ).toHaveTextContent("false");
+    expect(aiReviewValue(canvasElement, "AI model source registered")).toBe(
+      "false",
+    );
   },
 };
 
 export const SaveFailureAndRetry: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Fail next settings write" }),
-    );
+    await aiReviewAction(canvasElement, "Fail next settings write");
     await userEvent.click(
       canvas.getByRole("switch", {
         name: "Automatic memory recall",
@@ -201,7 +189,7 @@ export const UnavailableModelCatalog: Story = {
     expect((await saved(canvasElement)).settings.defaultModels.codex).toBe(
       "codex-saved",
     );
-    expect(canvas.getByLabelText("AI notifications")).toHaveTextContent(
+    expect(aiReviewValue(canvasElement, "AI notifications")).toContain(
       "Fixture provider unavailable",
     );
   },

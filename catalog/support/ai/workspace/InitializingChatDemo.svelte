@@ -1,5 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <script lang="ts">
+  import { registerAiReview } from "../review.ts";
   import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
   import { FakeAgentRuntime } from "../../../../tests/ai/support/fake-runtime.ts";
   import type { AppToolBridgeCoordinator } from "../../../../src/lib/ai/tools/app-tool-bridge.ts";
@@ -21,25 +22,39 @@
     },
     close: async () => {},
   };
+  let root = $state<HTMLDivElement>();
+  $effect(() => {
+    if (root)
+      return registerAiReview(root, {
+        read: () => JSON.stringify({ subscriptions, closed }),
+        actions: {
+          "Unmount initializing chat": () => {
+            visible = false;
+          },
+        },
+      });
+  });
 </script>
 
-<button
-  onclick={() => {
-    visible = false;
-  }}>Unmount initializing chat</button
->
-<output aria-label="Initializing chat lifetime"
-  >{JSON.stringify({ subscriptions, closed })}</output
->
-{#if visible}
-  <AiChatPanel
-    {runtime}
-    initializing={true}
-    appToolBridge={bridge}
-    onControllerDispose={(operation) => {
-      void operation.then(() => {
-        closed = true;
-      });
-    }}
-  />
-{/if}
+<div bind:this={root} data-ai-review class="ai-lifetime-review">
+  {#if visible}
+    <AiChatPanel
+      {runtime}
+      initializing={true}
+      appToolBridge={bridge}
+      onControllerDispose={(operation) => {
+        void operation.then(() => {
+          closed = true;
+        });
+      }}
+    />
+  {/if}
+</div>
+
+<style>
+  .ai-lifetime-review {
+    height: 100vh;
+    width: 100%;
+    min-height: 0;
+  }
+</style>

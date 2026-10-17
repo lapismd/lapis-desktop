@@ -235,8 +235,8 @@ does not waive M4's close/save/conflict/session-restoration gate.
 Startup reports actual awaited vault, configuration, plugin, layout and metadata
 operations through the existing shared startup component. No simulated time or
 minimum delays are added. Design Core owns progress bars, tasks and semantics.
-Recovery uses the shared themed banner. Conflict decisions retain the writer
-guard (`files.md`).
+Recovery uses the shared themed banner. Editable merges retain the writer guard
+(`files.md`).
 
 ## Safe lifecycle and restoration (M4)
 

@@ -1,4 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
+import { aiReviewAction } from "../../support/ai/review.ts";
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -47,7 +48,7 @@ export const SkillsAndSlash: Story = {
     await waitFor(() => {
       expect(canvas.getByText("/open-daily-note")).toBeInTheDocument();
     });
-    await userEvent.click(canvas.getByTestId("ai-chat-unload-extension"));
+    await aiReviewAction(canvasElement, "Unload extension command");
     await userEvent.type(input, "/open-daily-note");
     await userEvent.keyboard("{Enter}");
     await waitFor(() => {

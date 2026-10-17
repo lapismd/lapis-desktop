@@ -9,13 +9,14 @@ import {
 export const CONFLICT_REVIEW_VIEW = "desktop:file-conflict";
 
 export class ConflictReviewView extends View {
-  readonly selection = new ConflictSelection();
+  readonly selection: ConflictSelection;
   #component?: ReturnType<typeof mount>;
   constructor(
     leaf: WorkspaceLeaf,
     private readonly model: ConflictReviewState,
   ) {
     super(leaf);
+    this.selection = new ConflictSelection(model.results);
   }
   getViewType(): string {
     return CONFLICT_REVIEW_VIEW;
@@ -32,7 +33,8 @@ export class ConflictReviewView extends View {
     return { path: this.selection.path };
   }
   async setState(state: Record<string, unknown>): Promise<void> {
-    this.selection.path = typeof state.path === "string" ? state.path : "";
+    const path = typeof state.path === "string" ? state.path : "";
+    this.selection.path = path;
     await super.setState(state);
   }
   protected async onOpen(): Promise<void> {}
