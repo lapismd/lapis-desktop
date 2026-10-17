@@ -220,3 +220,6 @@ AI Settings moves into desktop ownership through the existing public controlled
 Settings surface. E-AI-014 records persistence, provider/model and tool-control
 qualification separately from production bundled AI registration. Historical
 preferences stay inert; no native runtime is restored by Settings intake.
+
+History/Catalog panel behavior and policy retain their original coverage; six
+workspace placements and bundled native AI admission remain the M10.2 next step.

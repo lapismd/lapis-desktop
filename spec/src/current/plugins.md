@@ -304,3 +304,24 @@ Registered tool controls retain first-party defaults, explicit community opt-in
 and legacy owner migration. Tool/settings subscriptions and option sources
 belong to the registering plugin and are disposed with it. Settings catalog
 qualification alone does not mount the bundled AI plugin or admit execution.
+
+## Retained History and Catalog panels
+
+History retains local-first conversation search, folder scope, active selection,
+archive/restore/delete and unavailable-record diagnostics. Catalog retains owner
+grouping, reserved commands, skill precedence, filtering, explicit tool opt-ins
+and source-file navigation. Both reuse the existing tree, toolbar and workspace
+presentation, with plugin-owned subscriptions and stale-result fences. Action
+failures retain current content and report through the owning App; unmount
+releases listeners and prevents late refresh publication.
+
+Indexed History hits require a current local record and retain local metadata;
+index-only text matches remain visible. Index failure falls back to local
+folder, title and transcript matches without resurrecting deleted records.
+Tree/action labels include visible timestamps, archive status, tool effects and
+skill-shadowing status. Conversation menu actions use the public selection
+event.
+
+Panel intake does not restore controller execution or admit native processes.
+Native integration and full bundled-plugin registration keep their original
+M10.2 gates.

@@ -69,6 +69,32 @@ test("production cannot import fixtures or use Deno and utility styles", () => {
     );
   }
 });
+test("catalog feature imports stay production-owned while fixture imports reject", () => {
+  const file = "src/components/ai/catalog/Panel.svelte";
+  for (const source of [
+    'import type { Group } from "../../../lib/ai/catalog/types.ts";',
+    'export { catalog } from "../../../lib/ai/catalog/inventory.ts";',
+    'const catalog = import("../../../lib/ai/catalog/inventory.ts");',
+  ])
+    assert.deepEqual(
+      auditSources([file], () => source),
+      [],
+      source,
+    );
+  for (const source of [
+    'import { fixture } from "../../../../catalog/support/fixture.ts";',
+    'export { fixture } from "../../../../catalog/support/fixture.ts";',
+    'const fixture = import("../../../../catalog/support/fixture.ts");',
+    'import { fixture } from "../../../lib/ai/fixtures/store.ts";',
+    'import { fixture } from "../../../lib/ai/catalog/store.test.ts";',
+  ])
+    assert.ok(
+      auditSources([file], () => source).some(
+        (finding) => finding.code === "LD-SOURCE-TEST-IMPORT",
+      ),
+      source,
+    );
+});
 test("package and permission audits reject source links, broad native grants and automation", () => {
   const config = {
     app: {

@@ -1,4 +1,4 @@
-import { resolve } from "node:path";
+import { posix, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { repositoryFiles, readRepositoryFile } from "./repository-files.mjs";
 
@@ -28,6 +28,21 @@ export function ambientApp(source) {
       source,
     )
   );
+}
+function importsTestCode(file, source) {
+  for (const [, specifier] of source.matchAll(
+    /(?:from\s*|import\s*\(?\s*)["']([^"']+)["']/gu,
+  )) {
+    const target = specifier.startsWith(".")
+      ? posix.normalize(posix.join(posix.dirname(file), specifier))
+      : specifier;
+    if (
+      /(?:^|\/)(?:tests|fixtures)\/|\.(?:test|spec|stories)\./u.test(target) ||
+      /^(?:\.\.\/)*catalog\//u.test(target)
+    )
+      return true;
+  }
+  return false;
 }
 export function auditSources(files, read, { appOnly = false } = {}) {
   const findings = [];
@@ -65,12 +80,7 @@ export function auditSources(files, read, { appOnly = false } = {}) {
         "LD-SOURCE-SIZE",
         `Split this responsibility: exceeds ${limit} counted lines.`,
       );
-    if (
-      production &&
-      /(?:from\s*|import\s*\(?\s*)["'][^"']*(?:catalog\/|tests\/|fixtures\/|\.test\.|\.spec\.|\.stories\.)/u.test(
-        source,
-      )
-    )
+    if (production && importsTestCode(file, source))
       report(
         file,
         "LD-SOURCE-TEST-IMPORT",

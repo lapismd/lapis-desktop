@@ -95,3 +95,24 @@ and asserts error delivery through the existing App notification service. Only
 catalog clients and persistence faults are injected; no production fake runtime
 or custom Settings screen is added. All five stories remain visual-pending.
 History/Catalog, placements and native AI keep separate gates.
+
+## Retained History and Catalog panels
+
+Source: `lapis-plugins` `ee20d366`,
+`stories/plugins/ai/panels/{History,Catalog}.stories.ts`. Desktop
+`plugins/ai/{History,Catalog}.stories.ts` mount the production panels with
+disposable real Apps, Vault-backed conversations and public registries. The
+original behavior plays are retained in `support/ai/*-assertions.ts`: History
+scope, local search/highlights, archive switch, tooltips, expansion, creation
+scope, toolbar centering below 8px and count alignment below 2px; Catalog
+owner/kind hierarchy, disclosure, tool selection, filtering and actual
+source-file navigation. Queries follow complete visible accessible names.
+
+Panel-only tool selection inspects the injected settings callback, rather than
+claiming a bundled AiPlugin instance. Additional stories cover creation/toggle/
+inventory failures, App notifications, archive/restore/delete, stale refreshes
+and unmount during pending work. All remain visual-pending.
+
+**Pending:** all six original placements for History, Catalog and Chat, their
+real WorkspaceShell geometry/paint and documentation examples. Standalone panel
+stories qualify retained behavior only; original source registrations remain.

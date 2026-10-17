@@ -122,3 +122,13 @@ The settings fields and change semantics derive from current plugin
 `settings/register-ai-settings.ts` at `ee20d366`; these behavioral tests replace
 source-string assumptions with owned policy and real public tool registries.
 They do not qualify native process admission or complete M10.2.
+
+## History and Catalog policy
+
+The eight original cases in `history/conversation-history-tree.test.ts` and
+`catalog/{filter,tree,inventory}.test.ts` retain lapis-plugins `ee20d366`.
+`history/search.test.ts` adds local-index failure, deleted-index ghosts,
+authoritative local metadata and retained index-only text hits. Real-App browser
+panel stories separately exercise errors, tool rollback, archive/restore/delete,
+stale refreshes and owned cleanup. Six workspace placements and production
+bundled registration remain pending; these focused fixtures do not replace them.

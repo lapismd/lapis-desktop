@@ -16,9 +16,12 @@ catalog, bundled plugins, dynamic installation and native AI/compute contracts.
 The task ledger keeps their detailed stage gates alongside original milestones.
 
 The desktop catalog uses `.storybook`, `catalog/plugins` and `catalog/support`.
-Catalog Vite/Vitest configs map to `plugins.md`; production source audits reject
-catalog imports. Generated static catalog and browser artifacts are excluded
-from repository-source traversal, formatting and commits.
+Import audits resolve relative paths before distinguishing the repository's
+development catalog from production AI catalog features; test and fixture
+imports remain prohibited, including re-exports and dynamic imports. Catalog
+Vite/Vitest configs map to `plugins.md`; production source audits reject catalog
+imports. Generated static catalog and browser artifacts are excluded from
+repository-source traversal, formatting and commits.
 
 ## Requirements
 

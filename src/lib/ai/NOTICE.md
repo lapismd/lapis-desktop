@@ -61,3 +61,10 @@ policy retain lapis-plugins revision ee20d366609209392ed83d73068a1b8519bcb0a0,
 value admission and persistence by responsibility. Controlled plugin data,
 serialized durable writes, stale-result fencing and deferred-runtime handling
 are desktop adaptations; the public Workspace Settings renderer is reused.
+
+History/Catalog panel markup, paint, helpers and eight policy cases retain
+lapis-plugins ee20d366, `packages/ai/src/lib/{history,catalog}`. Desktop splits
+panels by responsibility, resolves index hits against current local records,
+fences disposed refreshes, reports action failures and retains complete visible
+accessible names. Catalog fixtures retain the original panel behavior plays; the
+six real workspace placements and bundled plugin handover remain separate.

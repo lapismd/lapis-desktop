@@ -339,5 +339,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-AI follows [plugin contracts](plugins.md), including controlled Settings with
-plugin-owned data and cleanup.
+AI follows [plugin contracts](plugins.md), including controlled Settings and
+History/Catalog with plugin-owned data and cleanup.

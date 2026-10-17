@@ -114,3 +114,4 @@
   - [Retained chat catalog qualification](history/E-AI-013.md)
 
   - [Retained controlled AI Settings](history/E-AI-014.md)
+  - [E-AI-015: Retained History and Catalog panels](history/E-AI-015.md)
