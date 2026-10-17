@@ -154,3 +154,7 @@ Application signing/publication and other-platform distribution remain deferred.
 M8.0 is committed. M8.1 integrates the unpublished local Terminal public build
 without publishing a release; its temporary private-app link is explicit.
 Terminal runtime qualification remains separate from catalog evidence.
+
+M8.1 Terminal is qualified in E-TERMINAL-001. M8.2 Web retirement now records
+its source-policy, data-preservation and cold browser checks separately in
+E-WEB-001; it does not alter frozen Deno desktop source.

@@ -63,3 +63,12 @@ Terminal settings use the public controlled plugin-settings definition: plugin
 data owns shell/cwd values, subscription cleanup follows plugin disable and the
 workspace does not create a second application-configuration writer. New-shell
 commands drain admitted data operations before reading native launch policy.
+
+## Web retirement
+
+M8.2 applies App-owned compatibility restrictions in the Notes API before
+external manifest indexing and evaluation. The Web host chooses the retired
+identities, removes dedicated obsolete connection tokens after configuration
+load and retains conversations, plugin data, enabled choices and layout. The Web
+product graph excludes service bridges, clients, settings and environment
+attachment; development-only catalog helpers retain their separate owner.

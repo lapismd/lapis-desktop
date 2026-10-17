@@ -79,3 +79,4 @@ by the task ledger, not inferred from this list.
 - [Desktop catalog foundation](E-CATALOG-001.md)
 
 - [Bundled Terminal qualification](E-TERMINAL-001.md)
+- [Web desktop-service retirement](E-WEB-001.md)

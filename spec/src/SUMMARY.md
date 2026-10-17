@@ -82,3 +82,4 @@
 - [Desktop catalog foundation](history/E-CATALOG-001.md)
 
 - [Bundled Terminal qualification](history/E-TERMINAL-001.md)
+  - [Web desktop-service retirement](history/E-WEB-001.md)
