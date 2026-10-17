@@ -270,3 +270,19 @@ claiming a successful reply. Selected question options expose pressed state and
 retain contrast. Migrated catalog scenarios use disposable in-memory Apps and
 test-only clients. Catalog qualification does not mount the production AI plugin
 or qualify native admission, context/skills execution or durable recovery.
+
+Shared error-label contrast and Search result naming are repaired in their
+source packages, then consumed through verified local public archives. Desktop
+stories use the complete visible filename/path as the Search hit's accessible
+name; no consumer styling override or alternate result component is introduced.
+
+Tool disclosure names include their complete visible metadata and collapsed
+latest-call summaries; status is an accessible description. The source component
+owns the label references, with per-instance IDs preserving repeated call
+identities. Desktop queries follow those complete names without suppressing axe.
+
+The isolated Chromium catalog collects discarded test graphs after each file,
+using a test-only exposed collector. Missing collector support fails the run.
+This resource policy retains fixture teardown, test isolation, all four
+theme/viewport lanes, accessibility rules and unhandled-error reporting. It does
+not expose collection in the application or change native lifecycle gates.

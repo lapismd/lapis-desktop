@@ -21,7 +21,9 @@ export default defineConfig({
     browser: {
       enabled: true,
       headless: true,
-      provider: playwright(),
+      provider: playwright({
+        launchOptions: { args: ["--js-flags=--expose-gc"] },
+      }),
       viewport:
         process.env.LAPIS_CATALOG_VIEWPORT === "narrow"
           ? { width: 420, height: 800 }

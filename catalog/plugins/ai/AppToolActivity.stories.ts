@@ -25,7 +25,7 @@ export const AppToolReadTranscript: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for read",
+      name: "Show details for read Notes/alpha.md",
     });
     await userEvent.click(trigger);
     expect(canvas.getAllByText(/Notes\/alpha\.md/).length).toBeGreaterThan(0);
@@ -65,10 +65,14 @@ export const AppToolSessionGrant: Story = {
     const canvas = within(canvasElement);
     await expect(await canvas.findByText(/Approval approved/)).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Expand 2 tool calls" }),
+      canvas.getByRole("button", {
+        name: "Expand edit Notes/beta.md 2 tool calls",
+      }),
     );
     expect(
-      canvas.getAllByRole("button", { name: "Show details for edit" }),
+      canvas.getAllByRole("button", {
+        name: /^Show details for edit Notes\/(?:alpha|beta)\.md$/,
+      }),
     ).toHaveLength(2);
     expect(canvas.queryByRole("button", { name: /Allow once/ })).toBeNull();
   },

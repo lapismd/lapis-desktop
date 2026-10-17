@@ -207,5 +207,11 @@ bundled production registration, settings/history, native context/skill
 integration or durable turn recovery. Its original aggregate gate stays open.
 
 Native source organization is maintenance selected under M10.2; it does not
-complete or change any AI or distribution gate. The retained chat checkpoint
-remains separate while native paths and future placement guidance are qualified.
+complete or change any AI or distribution gate. E-STRUCTURE-002 qualifies the
+feature layout, placement guidance and enforced native source boundaries.
+
+The retained chat checkpoint keeps its original policy and presentation evidence
+immutable. E-AI-013 qualifies its retained chat catalog through source-owned
+accessibility fixes, verified public archives and all four catalog lanes.
+Settings/history, native admission, context, skills, recovery, app tools and
+compute retain their gates.

@@ -49,7 +49,7 @@ export const ToolRunning: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for shell.execute",
+      name: "Show details for shell.execute local workspace",
     });
     await expect(
       trigger.querySelector('[data-ui-part="detail-chevron"]'),
@@ -70,7 +70,7 @@ export const SuccessfulToolCall: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for shell.execute",
+      name: "Show details for shell.execute local workspace",
     });
     const chevron = trigger.querySelector('[data-ui-part="detail-chevron"]');
     await expect(chevron).toHaveAttribute("data-direction", "right");

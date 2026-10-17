@@ -109,3 +109,5 @@ by the task ledger, not inferred from this list.
 - [Retained application-tool policy](E-AI-011.md)
 
 - [Retained AI chat presentation and controller](E-AI-012.md)
+
+- [Retained chat catalog qualification](E-AI-013.md)

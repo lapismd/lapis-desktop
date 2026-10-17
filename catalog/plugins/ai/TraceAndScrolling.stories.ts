@@ -137,7 +137,7 @@ export const AgentTrace: Story = {
       expect(canvas.queryByText("available commands updated (75)")).toBeNull();
     });
     const readTrigger = canvas.getByRole("button", {
-      name: "Show details for vault.read",
+      name: "Show details for vault.read Notes/alpha.md",
     });
     const readCall = readTrigger.closest('[data-ui-part="call"]');
     expect(readCall).not.toBeNull();

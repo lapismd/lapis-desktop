@@ -70,10 +70,12 @@ export const SearchToolHits: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for notes_search",
+      name: "Show details for notes_search OAuth",
     });
     await userEvent.click(trigger);
-    const hit = await canvas.findByRole("button", { name: "Open auth.md" });
+    const hit = await canvas.findByRole("button", {
+      name: "Open auth.md Projects/auth.md",
+    });
     await expect(hit).toBeVisible();
     await expect(canvas.getByText("OAuth tokens")).toBeVisible();
     await userEvent.click(hit);

@@ -36,7 +36,7 @@ export const FailedToolCall: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for shell.execute",
+      name: "Show details for shell.execute local workspace",
     });
     await expect(
       trigger.querySelector(

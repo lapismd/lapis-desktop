@@ -72,3 +72,8 @@ Other input and fresh secret questions. `ReplyErrors.stories.ts` retains pending
 requests after rejected replies and checks selected question accessibility.
 `Cancellation.stories.ts` verifies pending approval cancellation and settled
 working state. All AI stories stay visual-pending; no baselines change.
+
+Disclosure queries follow the source-owned complete visible names: tool name,
+target and rendered metadata; collapsed groups name their visible latest call
+and count. Status is an accessible description. Every original geometry,
+keyboard, navigation, detail and approval assertion is retained.
