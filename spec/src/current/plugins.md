@@ -164,3 +164,13 @@ Legacy schema versions remain readable offline; invalid committed records fail
 with isolated diagnostics, and only an unterminated final JSON fragment may be
 ignored. Derived titles, pin/archive state, provenance deduplication, redaction
 and vault-trash deletion retain their established behavior.
+
+App-owned handoff restores the pre-controller full/delta/summary-tail projection
+with verified transcript hashes, explicit target bindings and bounded evidence.
+Private reasoning is excluded and tool output is labeled untrusted. Handoff
+never resumes a provider or changes the stored authored messages.
+
+Handoff budgets must be finite whole token counts and cannot exceed the default
+maximum. Tiny excerpts stay bounded. Stored summaries must match the selected
+conversation and fit actual-content as well as recorded-estimate limits before
+their transcript hash is checked. Invalid summaries fall back to full evidence.

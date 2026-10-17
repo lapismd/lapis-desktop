@@ -193,3 +193,7 @@ under its unchanged gate.
 
 E-AI-004 adds retained conversation persistence, validation and scoped-history
 evidence. The production chat UI and original M10.2 gate remain pending.
+
+E-AI-005 records restored context handoff and its audited bounds. M10.2 remains
+in progress until the current AI views and complete story coverage are
+connected.

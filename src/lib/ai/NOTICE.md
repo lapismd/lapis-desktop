@@ -13,3 +13,6 @@ Context projection is adapted for separate native text/context fields.
 
 Conversation storage, validation, durable redaction and tool identity helpers
 retain the current plugin at 56b5d6c1. Validation is split by record family.
+
+Handoff projection is restored from 27c1427a3aa3 with desktop-owned bounds and
+summary admission; no controller implementation is imported.

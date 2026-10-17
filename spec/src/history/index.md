@@ -91,3 +91,5 @@ by the task ledger, not inferred from this list.
 - [Desktop AI contract foundation](E-AI-003.md)
 
 - [Retained AI conversation persistence](E-AI-004.md)
+
+- [App-owned conversation handoff](E-AI-005.md)

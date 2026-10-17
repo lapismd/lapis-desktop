@@ -95,3 +95,5 @@
   - [Desktop AI contract foundation](history/E-AI-003.md)
 
   - [Retained AI conversation persistence](history/E-AI-004.md)
+
+  - [App-owned conversation handoff](history/E-AI-005.md)

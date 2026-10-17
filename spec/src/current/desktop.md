@@ -341,4 +341,4 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-M10.2 retains AI conversation storage; the shell is unchanged.
+AI handoff retains the shell contract.
