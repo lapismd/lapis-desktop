@@ -20,3 +20,6 @@ summary admission; no controller implementation is imported.
 The ACP runtime/session/event seam adapts the pre-controller design to the
 public lapis-ai client and raw control-v3 observations. Legacy semantic-option
 fallbacks and JavaScript host execution are not restored.
+
+Skill discovery, parsing, snapshots, manifest generation and bundled seeding,
+with their applicable original policy regression suites, retain 56b5d6c1.

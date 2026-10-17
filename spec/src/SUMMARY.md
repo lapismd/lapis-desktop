@@ -99,3 +99,5 @@
   - [App-owned conversation handoff](history/E-AI-005.md)
 
   - [Desktop ACP runtime adaptation](history/E-AI-006.md)
+
+  - [Retained skills and policy suites](history/E-AI-007.md)

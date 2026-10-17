@@ -201,3 +201,7 @@ connected.
 E-AI-006 qualifies the adapted app-owned runtime seam through built public
 clients and deterministic transport. Production admission, retained UI, skills,
 memory and complete migrated stories still require the original M10.2 gate.
+
+E-AI-007 carries retained skill discovery and the original applicable policy
+suites into desktop ownership. The unit coverage map does not replace the
+remaining current-UI, native-admission, memory or catalog gates.

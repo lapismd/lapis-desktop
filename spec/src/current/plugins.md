@@ -189,3 +189,8 @@ outcomes block that session without replay. Detach preserves the native worker;
 close releases it. Failed startup locates its original request for cleanup and
 retains cleanup errors. Resume, skills, restricted maintenance and arbitrary MCP
 declarations remain unavailable until their admitted application integration.
+
+Retained skill parsing, discovery precedence, immutable snapshots and bundled
+seeding remain application-owned and Vault-scoped. The migrated policy test lane
+uses original applicable regression suites with public in-memory App/Vault APIs.
+It is independent of Storybook and requires no native process or credential.

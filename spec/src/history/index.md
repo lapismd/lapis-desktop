@@ -95,3 +95,5 @@ by the task ledger, not inferred from this list.
 - [App-owned conversation handoff](E-AI-005.md)
 
 - [Desktop ACP runtime adaptation](E-AI-006.md)
+
+- [Retained skills and policy suites](E-AI-007.md)

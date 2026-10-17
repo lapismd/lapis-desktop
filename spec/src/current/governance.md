@@ -317,3 +317,8 @@ Retained AI metadata uses the declared registry YAML codec. Its Vault-backed
 Node acceptance loads public built API exports with the existing tsx dev loader;
 no loader or test state enters production. The verified archive cohort is
 retained.
+
+`pnpm test:ai` runs retained AI policy suites with the isolated Node Vitest
+configuration and joins normal `pnpm test`. Test fixtures/configuration map to
+the AI contract; the public dependency graph and catalog configuration are
+retained.
