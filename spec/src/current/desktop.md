@@ -341,5 +341,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-AI retains UI, JSONL and cleanup under [AI contract](ai.md). Bounded command
-polling and native scope gates stay owned; intake does not admit execution.
+AI keeps UI, JSONL and cleanup under [AI](ai.md); [repository](repository.md)
+admission is independent. Native scope gates retain execution authority.

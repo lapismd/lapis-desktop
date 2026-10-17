@@ -1,7 +1,7 @@
 # Governance
 
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
-Execution, JJ publication and distribution retain their existing gates.
+The repository topic owns versioned JJ source reuse; distribution stays gated.
 
 App watch startup/leave integration and native reconciliation acceptance map
 explicitly to the M5 file contract. The source-owned public archive supplies
@@ -17,8 +17,8 @@ bundle audits reject its startup capture marker.
 
 The canonical registry separates `plugins.md` for catalog, bundled plugins and
 dynamic installation from `ai.md` for direct ACP, native AI and optional
-compute. The task ledger keeps their detailed stage gates alongside original
-milestones.
+compute. `repository.md` owns JJ reuse. The task ledger keeps their stage gates
+alongside original milestones.
 
 The desktop catalog uses `.storybook`, `catalog/plugins` and `catalog/support`.
 Import audits resolve relative paths before distinguishing the repository's

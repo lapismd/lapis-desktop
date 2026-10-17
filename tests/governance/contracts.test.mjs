@@ -171,3 +171,28 @@ test("native window and integration features retain their canonical owners", () 
       assert.ok(chapters.includes(`spec/src/current/${owner}`), path);
     }
 });
+
+test("repository source authority has its own canonical contract", () => {
+  assert.ok(
+    new RegExp(config.validators.specFirst.canonicalPattern).test(
+      "spec/src/current/repository.md",
+    ),
+  );
+  assert.ok(
+    config.documentRoles.some(
+      ({ pattern, role }) =>
+        role === "contract" &&
+        new RegExp(pattern).test("current/repository.md"),
+    ),
+  );
+  for (const path of [
+    "src-tauri/src/repository/mod.rs",
+    "src-tauri/src/host/repository/policy.rs",
+    "src-tauri/tests/repository_admission.rs",
+  ]) {
+    const chapters = config.validators.specFirst.rules
+      .filter(({ pattern }) => new RegExp(pattern).test(path))
+      .flatMap(({ chapters }) => chapters ?? []);
+    assert.ok(chapters.includes("spec/src/current/repository.md"), path);
+  }
+});

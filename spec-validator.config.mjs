@@ -53,6 +53,11 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^(?:src-tauri/src/(?:repository/|host/repository/)|src-tauri/tests/repository_.*\\.rs$|src/lib/native/repository/|src/components/repository/|tests/(?:desktop|renderer)/repository-)",
+            chapters: ["spec/src/current/repository.md"],
+          },
+          {
+            pattern:
               "^(?:src/(?:lib/ai/|components/ai/|lib/native/ai/)|src-tauri/(?:src/(?:ai/|host/ai/)|tests/ai_.*\\.rs$)|tests/(?:ai/|renderer/ai-|fixtures/ai/|desktop/(?:ai-|acp-))|catalog/(?:plugins/ai/|support/ai/)|vitest\\.ai\\.config\\.mjs$)",
             chapters: ["spec/src/current/ai.md"],
           },

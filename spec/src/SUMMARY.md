@@ -6,6 +6,7 @@
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
+  - [Repository history and conversations](current/repository.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
@@ -135,3 +136,4 @@
   - [E-AI-024: Injectable conversation persistence](history/E-AI-024.md)
 
   - [E-AI-025: shared native vault admission](history/E-AI-025.md)
+  - [Physical repository admission](history/E-REPO-001.md)

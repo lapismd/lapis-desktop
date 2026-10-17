@@ -271,3 +271,8 @@ E-AI-025 shares native physical-vault admission without adding a repository
 command or completing M10.2. Independent service registries preserve separate
 activation and retirement. JJ history, durable capture and conversation backend
 integration retain their own remaining gates.
+
+Repository reuse consumes owned jj-store discovery and history libraries for an
+existing Git-backed JJ vault. This separate M13 workstream adds no conversion,
+source snapshot, code mutation or automatic metadata synchronization. M10 AI
+execution and persistence gates remain independently selected.

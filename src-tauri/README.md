@@ -9,6 +9,9 @@ Native services take explicit vault/session authority. The shared
 `vault::admission::VaultAdmissions` registry supplies physical-root checks and
 two-phase window transitions; each consuming service owns a separate instance. A
 successful discovery or stored identity grants no live service authority.
+`repository::RepositoryAdmissions` additionally pins existing JJ/Git source
+identity and native generations; hosts drain readers before completing new
+admission or vault closure. It has no renderer command or AI execution grant.
 
 Use the repository's development and acceptance commands from its root. Native
 service tests use `cargo test --manifest-path src-tauri/Cargo.toml --locked`;

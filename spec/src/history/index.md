@@ -133,3 +133,4 @@ by the task ledger, not inferred from this list.
 - [E-AI-024: Injectable conversation persistence](E-AI-024.md)
 
 - [E-AI-025: shared native vault admission](E-AI-025.md)
+- [Physical repository admission](E-REPO-001.md)

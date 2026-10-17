@@ -20,33 +20,37 @@ The Deno desktop is superseded and frozen. Signing and publication remain
 deferred to their distribution gates. Plugin delivery follows the current tasks
 below.
 
-| Task  | Status      | Next action                                              |
-| ----- | ----------- | -------------------------------------------------------- |
-| M0.0  | Done        | Complete                                                 |
-| M0.1  | Done        | Complete                                                 |
-| M1    | Done        | Complete; proceed to M2 native vault access              |
-| M2    | Done        | Complete; proceed to the M3 native database gate         |
-| M3    | Done        | Complete; proceed to M4 safe everyday-use qualification  |
-| M4    | Done        | Complete                                                 |
-| M5    | Done        | Complete                                                 |
-| M6    | Done        | Complete                                                 |
-| M7    | Done        | Complete                                                 |
-| M7.1  | Done        | Complete; proof retained                                 |
-| M7.2  | Done        | Complete; native ordinary integration remains M7.3       |
-| M7.3  | Planned     | After M10.4: qualify ordinary native popouts             |
-| M8    | Done        | Complete; continue to M9.1                               |
-| M9    | Done        | Complete; continue to M10.1 native ACP adapter           |
-| M10   | In progress | Continue native AI and persistence qualification         |
-| M11   | Planned     | Qualify signed distribution and each additional platform |
-| M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop    |
-| M8.0  | Done        | Complete; continue to M8.1 Terminal                      |
-| M8.1  | Done        | Complete; continue to M8.2 Web retirement                |
-| M8.2  | Done        | Complete; continue to M8.3 portable plugins              |
-| M8.3  | Done        | Complete; continue to M9.1                               |
-| M9.1  | Done        | Complete; continue to M10.1 native ACP adapter           |
-| M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI             |
-| M10.2 | In progress | Qualify injected persistence and native chat recovery    |
-| M10.3 | Planned     | Implement and qualify native tools and credentials       |
-| M10.4 | Planned     | Integrate optional compute last                          |
-| M0.2  | Done        | Complete; native qualification remains explicit          |
-| M8.4  | Done        | Complete; extend inventory with new desktop UI           |
+| Task  | Status      | Next action                                                |
+| ----- | ----------- | ---------------------------------------------------------- |
+| M0.0  | Done        | Complete                                                   |
+| M0.1  | Done        | Complete                                                   |
+| M1    | Done        | Complete; proceed to M2 native vault access                |
+| M2    | Done        | Complete; proceed to the M3 native database gate           |
+| M3    | Done        | Complete; proceed to M4 safe everyday-use qualification    |
+| M4    | Done        | Complete                                                   |
+| M5    | Done        | Complete                                                   |
+| M6    | Done        | Complete                                                   |
+| M7    | Done        | Complete                                                   |
+| M7.1  | Done        | Complete; proof retained                                   |
+| M7.2  | Done        | Complete; native ordinary integration remains M7.3         |
+| M7.3  | Planned     | After M10.4: qualify ordinary native popouts               |
+| M8    | Done        | Complete; continue to M9.1                                 |
+| M9    | Done        | Complete; continue to M10.1 native ACP adapter             |
+| M10   | In progress | Continue native AI and persistence qualification           |
+| M11   | Planned     | Qualify signed distribution and each additional platform   |
+| M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop      |
+| M13   | In progress | Integrate native history and durable conversation adapters |
+| M13.1 | In progress | Qualify native caller and history drain integration        |
+| M13.2 | Planned     | Integrate native transport and Design Core                 |
+| M13.3 | Planned     | Integrate native durable conversation backend              |
+| M8.0  | Done        | Complete; continue to M8.1 Terminal                        |
+| M8.1  | Done        | Complete; continue to M8.2 Web retirement                  |
+| M8.2  | Done        | Complete; continue to M8.3 portable plugins                |
+| M8.3  | Done        | Complete; continue to M9.1                                 |
+| M9.1  | Done        | Complete; continue to M10.1 native ACP adapter             |
+| M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI               |
+| M10.2 | In progress | Qualify injected persistence and native chat recovery      |
+| M10.3 | Planned     | Implement and qualify native tools and credentials         |
+| M10.4 | Planned     | Integrate optional compute last                            |
+| M0.2  | Done        | Complete; native qualification remains explicit            |
+| M8.4  | Done        | Complete; extend inventory with new desktop UI             |
