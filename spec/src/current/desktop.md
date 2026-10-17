@@ -277,7 +277,7 @@ before the original M4 gate can complete.
 
 The Notes host consumes the App-owned conflict registry, including retired
 writers. Problems opens the shared editable three-way review; its settings use
-theme-aware selected Toggles. Saving uses the captured guarded writer;
+compact, theme-aware Toggles. Saving uses the captured guarded writer;
 whole-version decisions remain conditional and revalidate disk bytes before
 discarding drafts. Check disk again refreshes snapshots without resolving.
 Failed/stale decisions retain conflicts and block shutdown. Desktop adds no

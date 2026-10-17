@@ -144,3 +144,5 @@
 - [Editable merge and catalog cleanup](history/E-CATALOG-004.md)
 
 - [Selected merge settings](history/E-CATALOG-005.md)
+
+- [Compact merge settings](history/E-CATALOG-006.md)

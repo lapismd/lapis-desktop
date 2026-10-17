@@ -141,3 +141,5 @@ by the task ledger, not inferred from this list.
 - [E-CATALOG-004: Editable merge and catalog cleanup](E-CATALOG-004.md)
 
 - [E-CATALOG-005: Selected merge settings](E-CATALOG-005.md)
+
+- [E-CATALOG-006: Compact merge settings](E-CATALOG-006.md)

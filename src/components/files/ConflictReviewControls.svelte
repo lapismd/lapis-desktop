@@ -57,6 +57,7 @@
 
 <style>
   .merge-controls {
+    --spacing: 0.1875rem;
     --muted: color-mix(in srgb, var(--primary) 22%, var(--background));
     display: flex;
     align-items: center;
