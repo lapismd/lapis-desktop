@@ -175,3 +175,10 @@ tests, 259 catalog cases and 13 Web/server cases pass. Desktop consumes five
 refreshed public archives with all 14 routes verified. The original M9/M9.1
 gates pass in E-INSTALL-001: all 113 native cases, 84 desktop catalog cases and
 the ordinary ARM64 bundle audit pass. Continue to M10.1.
+
+M10.1 starts with the source-owned ACP session adapter committed in `lapis-ai`
+as `4fcfff74`. Its Rust correlation, bounded reconnect and process-lifecycle
+qualification is recorded separately from the still-pending Tauri transport,
+renderer client and cold packaged WebView gate. M10/M10.1 are in progress; the
+source result alone does not complete either desktop gate. E-AI-001 retains the
+remaining work. The installed M9 archive cohort is unchanged.
