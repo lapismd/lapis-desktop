@@ -174,34 +174,23 @@ M9 source lifecycle safety is committed in Notes as `2b7ee095`; 1,734 source
 tests, 259 catalog cases and 13 Web/server cases pass. Desktop consumes five
 refreshed public archives with all 14 routes verified. The original M9/M9.1
 gates pass in E-INSTALL-001: all 113 native cases, 84 desktop catalog cases and
-the ordinary ARM64 bundle audit pass. Continue to M10.1.
+the ordinary ARM64 bundle audit pass.
 
-M10.1 starts with the source-owned ACP session adapter committed in `lapis-ai`
-as `4fcfff74`. Its Rust correlation, bounded reconnect and process-lifecycle
-qualification is recorded separately from the still-pending Tauri transport,
-renderer client and cold packaged WebView gate. M10/M10.1 are in progress; the
-source result alone does not complete either desktop gate. E-AI-001 retains the
-remaining work. The installed M9 archive cohort is unchanged.
+M10.1 is complete. E-AI-001 retains the source session foundation and E-AI-002
+records the qualified reusable Rust/Tauri transport, built public renderer
+client and cold packaged WebView acceptance. Source and consumer qualification
+remain distinct. The installed fourteen-archive cohort is retained.
 
-M10.1 source transport slices are qualified separately from the cold packaged
-consumer gate. E-AI-002 records the current consumer checks without changing the
-original completion criterion or the remaining M10.2–M10.4 product gates.
+M10.2 remains in progress. Desktop-owned policy now includes context/events and
+transcript contracts (E-AI-003), conversation persistence (E-AI-004), bounded
+handoff (E-AI-005), the adapted native-client runtime seam (E-AI-006), retained
+skill discovery and original policy tests (E-AI-007), and command/bootstrap
+policy with a legacy-runtime audit (E-AI-008). The unit coverage inventory is
+`tests/ai/COVERAGE.md`. These modules are not yet mounted in production AI
+views.
 
-M10.2 is in progress. E-AI-003 records app-owned context, event and transcript
-foundations only; retained UI, native orchestration and migrated stories remain
-under its unchanged gate.
-
-E-AI-004 adds retained conversation persistence, validation and scoped-history
-evidence. The production chat UI and original M10.2 gate remain pending.
-
-E-AI-005 records restored context handoff and its audited bounds. M10.2 remains
-in progress until the current AI views and complete story coverage are
-connected.
-
-E-AI-006 qualifies the adapted app-owned runtime seam through built public
-clients and deterministic transport. Production admission, retained UI, skills,
-memory and complete migrated stories still require the original M10.2 gate.
-
-E-AI-007 carries retained skill discovery and the original applicable policy
-suites into desktop ownership. The unit coverage map does not replace the
-remaining current-UI, native-admission, memory or catalog gates.
+Retained current UI, memory, activation, production native admission, the native
+user-global command port and complete migrated stories retain the unchanged
+M10.2 gate. Native application tools/credentials and optional compute remain
+M10.3 and M10.4. The ledger alone owns completion; existing catalog passes
+cannot qualify the still-unmigrated AI stories or native product behavior.

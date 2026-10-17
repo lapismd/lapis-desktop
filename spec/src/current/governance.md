@@ -322,3 +322,9 @@ retained.
 configuration and joins normal `pnpm test`. Test fixtures/configuration map to
 the AI contract; the public dependency graph and catalog configuration are
 retained.
+
+The renderer source audit rejects controller/ai-host imports, Node execution
+modules and legacy ACP bridge/Node-user-store paths. Public lapis-ai clients
+remain admitted. This guard runs in ordinary and canonical specification checks.
+The isolated policy runner also transforms the public UI helper exports through
+Vite.

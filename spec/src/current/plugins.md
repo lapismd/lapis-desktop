@@ -194,3 +194,10 @@ Retained skill parsing, discovery precedence, immutable snapshots and bundled
 seeding remain application-owned and Vault-scoped. The migrated policy test lane
 uses original applicable regression suites with public in-memory App/Vault APIs.
 It is independent of Storybook and requires no native process or credential.
+
+Command parsing, discovery, precedence, reserved local actions and bootstrap
+formatting remain app-owned. Unknown commands stay local errors; literal slash
+escapes and explicit skill/tool routing retain their source behavior. Bootstrap
+reads admitted vault-relative folder instructions with bounds and omits host
+paths. User-global command persistence is an injected host port; the legacy Node
+implementation and runtime-only loader are not migrated.

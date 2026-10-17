@@ -79,6 +79,18 @@ export function auditSources(files, read, { appOnly = false } = {}) {
       );
     if (
       file.startsWith("src/") &&
+      /@lapismd\/(?:ai-controller|ai-host)\b|(?:from\s*|import\s*\(?\s*)["'](?:node:|acpx(?:\/|["']))|user-agents-node|desktop_agent_acp_/u.test(
+        source,
+      )
+    )
+      report(
+        file,
+        "LD-AI-HOST-RUNTIME",
+        "Keep AI execution in the admitted Rust host and use public lapis-ai clients.",
+        "LD-AI-001",
+      );
+    if (
+      file.startsWith("src/") &&
       /class(?:Name)?\s*=\s*["'][^"']*(?:\b(?:flex|grid|items-|gap-|p-\d|m-\d|text-|bg-|rounded-))/u.test(
         source,
       )

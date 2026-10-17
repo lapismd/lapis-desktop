@@ -18,8 +18,17 @@ inventory does not qualify native product behavior or migrated UI stories.
 | conversations/approval-grants.test.ts         | conversations/approval-grants.test.ts         |
 | conversations/redaction.test.ts               | conversations/redaction.test.ts               |
 | conversations/context-handoff.test.ts         | conversations/context-handoff.test.ts         |
+| commands/agent.test.ts                        | commands/agent.test.ts                        |
+| commands/discovery.test.ts                    | commands/discovery.test.ts                    |
+| commands/inspect.test.ts                      | commands/inspect.test.ts                      |
+| commands/markdown.test.ts                     | commands/markdown.test.ts                     |
+| commands/parser.test.ts                       | commands/parser.test.ts                       |
+| commands/router.test.ts                       | commands/router.test.ts                       |
+| commands/seed.test.ts                         | commands/seed.test.ts                         |
+| bootstrap/build.test.ts                       | bootstrap/build.test.ts                       |
 
-The Node Vitest lane transforms the built public API as Vite does in the app; it
-adds no source alias, replacement package or production loader. It mounts no UI,
-starts no model, reads no credentials and uses disposable in-memory vaults.
-Original story coverage remains a separate gate in `catalog/COVERAGE.md`.
+The Node Vitest lane transforms the built public API and UI helpers as Vite does
+in the app; it adds no source alias, replacement package or production loader.
+It mounts no UI, starts no model, reads no credentials and uses disposable
+in-memory vaults. Original story coverage remains a separate gate in
+`catalog/COVERAGE.md`.

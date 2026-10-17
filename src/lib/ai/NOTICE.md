@@ -23,3 +23,6 @@ fallbacks and JavaScript host execution are not restored.
 
 Skill discovery, parsing, snapshots, manifest generation and bundled seeding,
 with their applicable original policy regression suites, retain 56b5d6c1.
+
+Command policy, bootstrap and their applicable original regression suites retain
+56b5d6c1. The old Node user-agents implementation and loader are excluded.

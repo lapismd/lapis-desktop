@@ -117,3 +117,28 @@ test("only authorized private native-client public-build links are admitted duri
       ),
     );
 });
+
+test("desktop AI cannot restore controller, Node or legacy execution imports", () => {
+  for (const source of [
+    'export { Context } from "@lapismd/ai-controller/memory/lapis";',
+    'import { host } from "@lapismd/ai-host";',
+    'import fs from "node:fs";',
+    'const module = "./user-agents-node.js"; import(module);',
+    'import { run } from "acpx/runtime";',
+    'bridge.call("desktop_agent_acp_start", {});',
+  ]) {
+    assert.ok(
+      auditSources(["src/lib/ai/example.ts"], () => source).some(
+        (finding) => finding.code === "LD-AI-HOST-RUNTIME",
+      ),
+      source,
+    );
+  }
+  assert.deepEqual(
+    auditSources(
+      ["src/lib/ai/example.ts"],
+      () => 'import { createTauriAcpClient } from "@lapismd/ai/tauri";',
+    ),
+    [],
+  );
+});

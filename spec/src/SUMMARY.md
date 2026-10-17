@@ -101,3 +101,5 @@
   - [Desktop ACP runtime adaptation](history/E-AI-006.md)
 
   - [Retained skills and policy suites](history/E-AI-007.md)
+
+  - [Retained AI commands and bootstrap](history/E-AI-008.md)

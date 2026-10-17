@@ -97,3 +97,5 @@ by the task ledger, not inferred from this list.
 - [Desktop ACP runtime adaptation](E-AI-006.md)
 
 - [Retained skills and policy suites](E-AI-007.md)
+
+- [Retained AI commands and bootstrap](E-AI-008.md)
