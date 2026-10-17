@@ -105,3 +105,5 @@
   - [Retained AI commands and bootstrap](history/E-AI-008.md)
 
   - [Retained chat state and native uncertainty](history/E-AI-009.md)
+
+  - [Retained desktop memory policy](history/E-AI-010.md)

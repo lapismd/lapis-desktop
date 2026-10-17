@@ -30,3 +30,10 @@ Command policy, bootstrap and their applicable original regression suites retain
 Chat state, settings/session data and transcript projection retain 56b5d6c1.
 Projection is split by read/write responsibility. The retained fake runtime is
 test-only; Design Core presentation functions remain imported public contracts.
+
+Memory ingestion, capture, consolidation, ranking, scheduling and record policy
+retain the Lapis implementation extracted at ea4fc89b31d7, with later fixes from
+ai-controller 89b5c6f1. Vault adapters, app tools and retained memory suites use
+lapis-plugins 56b5d6c1. These are now desktop-owned modules; no controller
+package is linked or imported. Shared hashes use the owned conversation
+implementation.

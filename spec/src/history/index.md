@@ -101,3 +101,5 @@ by the task ledger, not inferred from this list.
 - [Retained AI commands and bootstrap](E-AI-008.md)
 
 - [Retained chat state and native uncertainty](E-AI-009.md)
+
+- [Retained desktop memory policy](E-AI-010.md)

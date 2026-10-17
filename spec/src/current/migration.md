@@ -195,3 +195,8 @@ user-global command port and complete migrated stories retain the unchanged
 M10.2 gate. Native application tools/credentials and optional compute remain
 M10.3 and M10.4. The ledger alone owns completion; existing catalog passes
 cannot qualify the still-unmigrated AI stories or native product behavior.
+
+M10.2's restored memory policy retains original service/storage/scheduler
+suites; its standalone app-tool-host case remains pending. Memory unit
+qualification does not complete mounted AI views, stories or durable native turn
+recovery.

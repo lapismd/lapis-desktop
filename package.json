@@ -65,7 +65,8 @@
     "@lezer/common": "^1.5.3",
     "@lezer/highlight": "^1.2.5",
     "@lezer/lr": "^1.4.11",
-    "yaml": "^2.9.1"
+    "yaml": "^2.9.1",
+    "@lapismd/agent-redaction": "^0.1.0"
   },
   "devDependencies": {
     "@lapismd/spec-validator": "^0.1.4",

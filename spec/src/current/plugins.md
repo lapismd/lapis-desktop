@@ -211,3 +211,23 @@ Live and restored approval presentation follows the selected advertised option
 kind, never an ID prefix. Unadvertised live choices reject; historical unknown
 choices remain visible with neutral answered status. This display projection
 cannot dispatch a permission or infer approval from an unknown option.
+
+Memory policy remains desktop-owned: episodic ingestion, deterministic candidate
+promotion, evidence verification, bounded owner-only automatic recall, explicit
+forget exclusions and leased maintenance reuse public AppDatabase and Vault
+contracts. Portable capture sanitizes derived reads/writes and fails closed on
+omission or changed execution locations. Native credential-detector admission
+remains part of M10.3; portable capture alone cannot qualify it.
+
+Authoritative schema-1 Markdown/YAML records, exact revision preimages,
+conversation hashes and opaque evidence refs retain their formats. Only
+disposable synthetic index segments escape literal tildes before percent
+escapes; catch-up rebuild removes obsolete paths without rewriting source
+records. Cancelled maintenance cannot start after cancellation during runtime
+selection or send after cancellation during startup. Restricted model
+maintenance remains unavailable in the native adapter until its admitted
+integration is implemented.
+
+Record IDs must be strings, and serialization must fit the reader's 512 KiB
+limit before any history/preimage mutation. Rejected records leave the current
+revision and revision history unchanged.

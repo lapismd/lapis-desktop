@@ -328,3 +328,7 @@ modules and legacy ACP bridge/Node-user-store paths. Public lapis-ai clients
 remain admitted. This guard runs in ordinary and canonical specification checks.
 The isolated policy runner also transforms the public UI helper exports through
 Vite.
+
+Memory capture uses the registry `@lapismd/agent-redaction` portable root only.
+Its Node/Deno/secretlint execution exports do not enter the renderer graph.
+Dependency installation retains the same 14 verified ignored archive routes.
