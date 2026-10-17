@@ -139,3 +139,5 @@ by the task ledger, not inferred from this list.
 - [E-CATALOG-003: Desktop shell presentation review](E-CATALOG-003.md)
 
 - [E-CATALOG-004: Editable merge and catalog cleanup](E-CATALOG-004.md)
+
+- [E-CATALOG-005: Selected merge settings](E-CATALOG-005.md)

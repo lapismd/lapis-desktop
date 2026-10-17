@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Button } from "@lapismd/design-core/shadcn/button";
+  import { Toggle } from "@lapismd/design-core/shadcn/toggle";
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import WrapText from "@lucide/svelte/icons/wrap-text";
   import Space from "@lucide/svelte/icons/space";
@@ -36,18 +36,17 @@
       <Tooltip.Root>
         <Tooltip.Trigger>
           {#snippet child({ props })}
-            <Button
+            <Toggle
               {...props}
-              variant="ghost"
-              size="icon-sm"
+              size="sm"
               {disabled}
               aria-label={action.label}
-              aria-pressed={options[action.key]}
-              onclick={() =>
-                (options = { ...options, [action.key]: !options[action.key] })}
+              pressed={options[action.key]}
+              onPressedChange={(pressed) =>
+                (options = { ...options, [action.key]: pressed })}
             >
               <action.icon aria-hidden="true" />
-            </Button>
+            </Toggle>
           {/snippet}
         </Tooltip.Trigger>
         <Tooltip.Content side="bottom">{action.label}</Tooltip.Content>
@@ -58,6 +57,7 @@
 
 <style>
   .merge-controls {
+    --muted: color-mix(in srgb, var(--primary) 22%, var(--background));
     display: flex;
     align-items: center;
     gap: 0.125rem;

@@ -275,13 +275,13 @@ race OS operations; this is not a cross-process filesystem transaction. Editor
 document baselines, visible conflicts and explicit recovery remain required
 before the original M4 gate can complete.
 
-The Notes host consumes the public App-owned text-conflict registry. Recovery
-shows each original path, local text and the observed disk version, including
-retired writers. Keep my version conditionally replaces only the displayed
-external version; Use disk version revalidates before discarding local text.
-Check disk again refreshes an unavailable or superseded snapshot without
-resolving it. Failed or stale decisions retain the conflict and keep lifecycle
-shutdown blocked. The desktop must not implement a parallel editor save path.
+The Notes host consumes the App-owned conflict registry, including retired
+writers. Problems opens the shared editable three-way review; its settings use
+theme-aware selected Toggles. Saving uses the captured guarded writer;
+whole-version decisions remain conditional and revalidate disk bytes before
+discarding drafts. Check disk again refreshes snapshots without resolving.
+Failed/stale decisions retain conflicts and block shutdown. Desktop adds no
+parallel save path.
 
 Editable Markdown previews bind their captured Mira session to the original
 App's editing registry and the public API FileTextPersistence contract. Each

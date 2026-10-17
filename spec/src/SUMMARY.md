@@ -142,3 +142,5 @@
 - [Desktop shell presentation review](history/E-CATALOG-003.md)
 
 - [Editable merge and catalog cleanup](history/E-CATALOG-004.md)
+
+- [Selected merge settings](history/E-CATALOG-005.md)

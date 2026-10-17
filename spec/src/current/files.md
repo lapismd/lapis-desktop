@@ -60,8 +60,9 @@ in the App-owned presentation state. No separate save pipeline or native grant
 is added. Resolving clears the diagnostic and review; closing only the view
 retains the conflict. Unreadable disk state and guarded leave disable edits and
 saves. Icon-only header controls toggle wrap, whitespace/case comparison and
-horizontal scroll sync. Embedded comparison frames use public border/radius
-tokens.
+horizontal scroll sync. Each setting uses the shared Toggle's selected
+background, with a scoped semantic accent that remains distinct from the toolbar
+in both themes. Embedded comparison frames use public border/radius tokens.
 
 ## Authority and boundaries
 
