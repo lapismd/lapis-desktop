@@ -87,3 +87,5 @@ by the task ledger, not inferred from this list.
 - [Native ACP session foundation](E-AI-001.md)
 
 - [Reusable ACP Tauri transport](E-AI-002.md)
+
+- [Desktop AI contract foundation](E-AI-003.md)

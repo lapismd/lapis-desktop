@@ -147,3 +147,13 @@ uncertain outcomes, isolated workers, revocation and process cleanup.
 This transport gate does not qualify desktop AI UI, conversation/context/memory
 migration, application tools, native credentials, a real model or compute. Those
 retain M10.2–M10.4 gates. The application adds no replacement screens.
+
+## Desktop AI handover foundation
+
+M10.2 restores app-owned runtime/event, conversation and memory contracts before
+mounting retained panels. Data shapes retain the current plugin's fields and
+schema versions; historical controller identifiers remain stored data and do not
+become native provider bindings. Transcript hashes preserve their existing
+canonical JSON and UTF-8 rules. Native turns carry authored text and injected
+context separately, and context admission is checked around asynchronous
+preparation. No controller client/runtime dependency enters production.

@@ -186,3 +186,7 @@ remaining work. The installed M9 archive cohort is unchanged.
 M10.1 source transport slices are qualified separately from the cold packaged
 consumer gate. E-AI-002 records the current consumer checks without changing the
 original completion criterion or the remaining M10.2–M10.4 product gates.
+
+M10.2 is in progress. E-AI-003 records app-owned context, event and transcript
+foundations only; retained UI, native orchestration and migrated stories remain
+under its unchanged gate.

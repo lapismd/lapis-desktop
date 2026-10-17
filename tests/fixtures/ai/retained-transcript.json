@@ -1,0 +1,33 @@
+{
+  "entries": [
+    {
+      "schemaVersion": 1,
+      "id": "old-user",
+      "createdAt": "2026-09-15T12:00:00.000Z",
+      "agentBindingId": "binding-before-migration",
+      "type": "message",
+      "role": "user",
+      "text": "# Authored café\n"
+    },
+    {
+      "schemaVersion": 3,
+      "id": "new-assistant",
+      "createdAt": "2026-10-16T12:00:00.000Z",
+      "parentId": "old-user",
+      "agentBindingId": "controller-thread-before-migration",
+      "type": "message",
+      "role": "assistant",
+      "text": "Retained response",
+      "source": {
+        "sessionId": "old-controller-session",
+        "runId": "old-controller-turn",
+        "sequence": 4
+      }
+    }
+  ],
+  "hashes": [
+    "bd4906d739b68fb41a033b9ebaa317f66f4ccd0a25c73607e9e1e0d284509a44",
+    "82e36c40800deacb4a139aaca0659eb43ebab5ebb9cc75026cb18ed4a6ac919a"
+  ],
+  "rangeHash": "6409f85e4c79c6a43c08a024b777eed6b54d9c1d850f2829aa11ff46a5312e97"
+}

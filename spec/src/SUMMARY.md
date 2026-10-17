@@ -89,4 +89,7 @@
   - [Signed native plugin lifecycle](history/E-INSTALL-001.md)
 
 - [Native ACP session foundation](history/E-AI-001.md)
+
   - [Reusable ACP Tauri transport](history/E-AI-002.md)
+
+  - [Desktop AI contract foundation](history/E-AI-003.md)

@@ -52,6 +52,10 @@ export default defineConfig(
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
           {
+            pattern: "^(?:src/lib/ai/|tests/(?:renderer/ai-|fixtures/ai/))",
+            chapters: ["spec/src/current/plugins.md"],
+          },
+          {
             pattern:
               "^(?:\\.storybook/|catalog/|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
             chapters: ["spec/src/current/plugins.md"],
