@@ -3,6 +3,7 @@
 import { SvelteSet } from "svelte/reactivity";
 import type { AiCatalogProps } from "./props.ts";
 import type { CatalogGroup, CatalogToolRow } from "./types.ts";
+import { OwnedAiWork } from "../core/owned-work.ts";
 import { filterCatalogGroups } from "./filter.ts";
 import {
   collectCatalogExpandableKeys,
@@ -10,6 +11,7 @@ import {
   isCatalogFolderKey,
 } from "./tree.ts";
 export function createCatalogState(props: AiCatalogProps) {
+  const work = new OwnedAiWork();
   const { app, loadCatalog, onToggleTool, onOpenSkill, subscribeSettings } =
     props;
   let groups = $state<CatalogGroup[]>([]);
@@ -65,7 +67,10 @@ export function createCatalogState(props: AiCatalogProps) {
       source: "ai",
     });
   }
-  async function refresh(): Promise<void> {
+  function refresh(): Promise<void> {
+    return work.run(loadGroups);
+  }
+  async function loadGroups(): Promise<void> {
     if (!active) return;
     const generation = ++refreshGeneration;
     loading = true;
@@ -116,10 +121,14 @@ export function createCatalogState(props: AiCatalogProps) {
       app.vault.offref(renamed);
       app.workspace.offref(activeLeaf);
       unsubscribeSettings?.();
+      props.onDispose?.(work.settle());
     };
   }
 
-  async function openCatalogFile(path: string): Promise<void> {
+  function openCatalogFile(path: string): Promise<void> {
+    return work.run(() => openFile(path));
+  }
+  async function openFile(path: string): Promise<void> {
     if (!active) return;
     error = null;
     try {
@@ -129,7 +138,10 @@ export function createCatalogState(props: AiCatalogProps) {
       report(cause);
     }
   }
-  async function toggleTool(
+  function toggleTool(tool: CatalogToolRow, enabled: boolean): Promise<void> {
+    return work.run(() => saveTool(tool, enabled));
+  }
+  async function saveTool(
     tool: CatalogToolRow,
     enabled: boolean,
   ): Promise<void> {

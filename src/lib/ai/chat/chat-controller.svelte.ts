@@ -96,8 +96,10 @@ export class AiChatController extends AiChatControllerState {
   _confirmCancelledNotice = _confirmCancelledNotice;
   cancelAndSwitch = cancelAndSwitch;
   close = close;
-  _consume = _consume;
-  _consumeAppToolEvent = _consumeAppToolEvent;
+  _consume = (...args: Parameters<typeof _consume>) =>
+    this._backgroundWork.run(() => _consume.apply(this, args));
+  _consumeAppToolEvent = (...args: Parameters<typeof _consumeAppToolEvent>) =>
+    this._backgroundWork.run(() => _consumeAppToolEvent.apply(this, args));
   _executeSlash = _executeSlash;
   _applyAgentCommand = _applyAgentCommand;
   _applyScopeCommand = _applyScopeCommand;
@@ -135,13 +137,17 @@ export class AiChatController extends AiChatControllerState {
   constructor(...args: ConstructorParameters<typeof AiChatControllerState>) {
     super(...args);
     this._unsubscribeAppToolEvents = this._appToolBridge?.subscribe((event) => {
-      void this._consumeAppToolEvent(event);
+      if (this._disposed) return;
+      void this._consumeAppToolEvent(event).catch((error) => {
+        if (!this._disposed)
+          this.error = error instanceof Error ? error.message : String(error);
+      });
     });
   }
   get activeBindingId(): string | undefined {
     return this._activeBindingId;
   }
   _isAbandoned(turnId?: number): boolean {
-    return turnId !== undefined && this._turnId !== turnId;
+    return this._disposed || (turnId !== undefined && this._turnId !== turnId);
   }
 }

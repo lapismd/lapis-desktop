@@ -22,8 +22,11 @@ export function observeChatPanel(
     untrack(() => {
       void perform(() => controller.restore());
     });
+  });
+  onMount(() => {
     return () => {
-      void perform(() => controller.close());
+      const closing = perform(() => controller.close());
+      getProps().onControllerDispose?.(closing);
     };
   });
   $effect(() => {

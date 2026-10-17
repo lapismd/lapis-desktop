@@ -85,7 +85,8 @@ Desktop-owned AI plugin → app-owned AgentRuntime / adapted ACP runtime
   → lapis-acp control-v3 → provider ACP agent
 ```
 
-The `lapis-ai` Tauri adapter remains planned, not a qualified existing service.
+The reusable `lapis-ai` Tauri adapter has passed M10.1; see the task ledger and
+`spec/src/history/E-AI-002.md`. Ordinary desktop admission remains M10.2 work.
 Its Rust `crates/lapis-ai-runtime/src/acp.rs` client starts
 `serve --control-version 3` and exposes command submission and raw events. The
 host adapter must supply correlation, event ordering, ownership and lifecycle.

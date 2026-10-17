@@ -8,4 +8,5 @@ export type AiCatalogProps = {
   onToggleTool: (tool: CatalogToolRow, enabled: boolean) => Promise<void>;
   onOpenSkill: (path: string) => Promise<void>;
   subscribeSettings?: (listener: () => void) => () => void;
+  onDispose?: (pending: Promise<void>) => void;
 };

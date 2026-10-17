@@ -174,19 +174,30 @@ export async function cancelAndSwitch(
 }
 
 export async function close(this: AiChatController): Promise<void> {
+  this._disposed = true;
   this._turnId += 1;
+  this._unsubscribeAppToolEvents?.();
+  this._unsubscribeAppToolEvents = undefined;
   this._activeRecallAbort?.abort();
   this._activeRecallAbort = undefined;
   const interrupted = this.busy;
-  if (interrupted) await this.session?.cancel?.().catch(() => undefined);
+  const sessions = new Set(this._sessionContexts.keys());
+  if (this.session) sessions.add(this.session);
   this.busy = false;
   this.commandWorking = false;
   if (interrupted) this.items = interruptPendingInteractions(this.items);
-  await this._persist(interrupted);
-  await this._closeAppToolBinding();
-  await this.session?.close();
+  const results = await Promise.allSettled([
+    this._persist(interrupted),
+    this._closeAppToolBinding(),
+    ...[...sessions].map(async (session) => {
+      this._cancelledSessions.add(session);
+      if (interrupted) await session.cancel?.().catch(() => undefined);
+      await session.close();
+    }),
+  ]);
   this.session = null;
   this.busy = false;
+  await this._backgroundWork.settle();
   for (const binding of this.bindings) {
     this._slashRouter?.catalog.clearNativeCommands(binding.id);
   }
@@ -194,5 +205,9 @@ export async function close(this: AiChatController): Promise<void> {
     this._slashRouter?.catalog.clearNativeCommands(this._activeBindingId);
   }
   this._skillSnapshots.clear();
-  this._unsubscribeAppToolEvents?.();
+  const failures = results.flatMap((result) =>
+    result.status === "rejected" ? [result.reason] : [],
+  );
+  if (failures.length)
+    throw new AggregateError(failures, "AI controller cleanup failed");
 }

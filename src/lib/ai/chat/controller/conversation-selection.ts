@@ -102,7 +102,7 @@ export async function followDirectoryScope(
   scopeDir: string,
   options: { force?: boolean } = {},
 ): Promise<void> {
-  if (!this.repository) return;
+  if (this._disposed || !this.repository) return;
   const scope = normalizeConversationScope(scopeDir);
   this._desiredFollowScope = scope;
   if (!options.force && (this.busy || this.conversationPinned)) return;
@@ -114,7 +114,7 @@ export async function followDirectoryScope(
     await this.repository.listAll(),
     scope,
   );
-  if (generation !== this._followGeneration) return;
+  if (this._disposed || generation !== this._followGeneration) return;
   if (matches.length === 0) {
     this.pickerEntries = [];
     if (this.location) await this._clearOpenConversation();

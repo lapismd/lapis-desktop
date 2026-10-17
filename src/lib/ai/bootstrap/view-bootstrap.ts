@@ -28,12 +28,15 @@ export async function prepareAiViewBootstrap(
   host: AiViewHost,
   initialLocation: ConversationLocation | null,
   mcpServers: McpServerContribution[],
+  signal?: AbortSignal,
 ): Promise<AiViewBootstrap> {
+  signal?.throwIfAborted();
   let settings = host.getSettings();
   const conversation = initialLocation
     ? host.conversations.read(initialLocation)
     : Promise.resolve(null);
   const snapshot = await conversation.catch(() => null);
+  signal?.throwIfAborted();
 
   if (snapshot) {
     const binding = snapshot.agents.find(
@@ -68,6 +71,7 @@ export async function prepareAiViewBootstrap(
   const [selectedCatalog] = await Promise.allSettled([
     host.models.listModels(settings.acpAgent, settings.defaultRuntime),
   ]);
+  signal?.throwIfAborted();
   const models =
     selectedCatalog?.status === "fulfilled" ? selectedCatalog.value : [];
   let modelCatalogError: string | null = null;
@@ -84,6 +88,7 @@ export async function prepareAiViewBootstrap(
     const model = (agentModels.find((entry) => entry.isDefault) ??
       agentModels[0])!;
     await host.updateSettings({ defaultModel: model.model });
+    signal?.throwIfAborted();
     settings = host.getSettings();
   }
 
@@ -102,11 +107,13 @@ export async function prepareAiViewBootstrap(
           ? undefined
           : { runtime: settings.defaultRuntime },
     });
+    signal?.throwIfAborted();
     unavailableReason =
       settings.defaultRuntime === "fake"
         ? null
         : host.liveRuntimeUnavailableReason();
   } catch (error) {
+    signal?.throwIfAborted();
     runtime = host.fallbackRuntime();
     unavailableReason = errorMessage(error);
   }

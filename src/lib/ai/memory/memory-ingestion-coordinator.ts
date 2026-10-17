@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis memory policy; see ../NOTICE.md.
+import { OwnedAiWork } from "../core/owned-work.ts";
 import type {
   ConversationRepository,
   ConversationRepositoryChange,
@@ -23,6 +24,7 @@ export type MemoryIngestionErrorHandler = (
 ) => void;
 
 export class MemoryIngestionCoordinator {
+  readonly #work = new OwnedAiWork();
   readonly #pending = new Map<string, PendingAction>();
   #timer: ReturnType<typeof setTimeout> | undefined;
   #unsubscribe: (() => void) | undefined;
@@ -40,6 +42,7 @@ export class MemoryIngestionCoordinator {
   }
 
   handleRepositoryChange(change: ConversationRepositoryChange): void {
+    if (this.#disposed) return;
     if (change.type === "delete") {
       this.#pending.clear();
       this.#pending.set("rebuild", { type: "rebuild" });
@@ -54,6 +57,7 @@ export class MemoryIngestionCoordinator {
   }
 
   handleVaultChange(path: string, oldPath?: string): void {
+    if (this.#disposed) return;
     const current = conversationLocationFromSourcePath(path);
     const previous = oldPath
       ? conversationLocationFromSourcePath(oldPath)
@@ -75,11 +79,18 @@ export class MemoryIngestionCoordinator {
   }
 
   startCatchUp(): void {
+    if (this.#disposed) return;
     this.#pending.set("rebuild", { type: "rebuild" });
     this.schedule();
   }
 
-  async flush(): Promise<void> {
+  flush(): Promise<void> {
+    return this.#work.run(() => this.#flush());
+  }
+  settle(): Promise<void> {
+    return this.#work.settle();
+  }
+  async #flush(): Promise<void> {
     if (this.#timer) clearTimeout(this.#timer);
     this.#timer = undefined;
     const actions = [...this.#pending.values()];
@@ -93,6 +104,7 @@ export class MemoryIngestionCoordinator {
           !action.requireTerminal ||
           (await this.hasTerminalTranscriptBoundary(action.location))
         ) {
+          if (this.#disposed) return;
           await this.memory.ingestConversation(action.location);
         }
       } catch (error) {

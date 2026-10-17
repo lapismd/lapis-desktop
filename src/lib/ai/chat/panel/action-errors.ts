@@ -1,9 +1,19 @@
 // SPDX-License-Identifier: Apache-2.0
+import { untrack } from "svelte";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import type { AiChatPanelProps } from "./props.ts";
 
 /** Keep recoverable UI failures visible without claiming an acknowledged reply. */
-export async function runChatAction(
+export function runChatAction(
+  getProps: () => AiChatPanelProps,
+  controller: AiChatController,
+  operation: () => unknown | Promise<unknown>,
+): Promise<void> {
+  const pending = performChatAction(getProps, controller, operation);
+  untrack(() => getProps().onOperation?.(pending));
+  return pending;
+}
+async function performChatAction(
   getProps: () => AiChatPanelProps,
   controller: AiChatController,
   operation: () => unknown | Promise<unknown>,

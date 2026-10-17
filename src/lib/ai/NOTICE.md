@@ -67,4 +67,9 @@ lapis-plugins ee20d366, `packages/ai/src/lib/{history,catalog}`. Desktop splits
 panels by responsibility, resolves index hits against current local records,
 fences disposed refreshes, reports action failures and retains complete visible
 accessible names. Catalog fixtures retain the original panel behavior plays; the
-six real workspace placements and bundled plugin handover remain separate.
+six real workspace placements and owned plugin composition now retain the same
+revision's `ai-plugin.ts`, view registration and panel fixture/examples. Desktop
+uses only ACP runtime ports and awaits owned lifecycle work. The old controller
+host, native-mode execution and original broad fixture's unrelated plugins are
+excluded. JSONL preview and the complete bundled native handover remain
+separate.

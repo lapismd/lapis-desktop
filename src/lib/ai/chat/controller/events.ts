@@ -95,9 +95,13 @@ export async function _consume(
           ]);
         }
       }
-      void this._handoffSummaries
-        ?.afterTerminal(context.location)
-        .catch(() => undefined);
+      if (!this._disposed && this._handoffSummaries) {
+        const summaries = this._handoffSummaries;
+        const location = context.location;
+        void this._backgroundWork
+          .run(() => summaries.afterTerminal(location))
+          .catch(() => undefined);
+      }
     } else {
       await this._persist(false, agentBindingId);
     }

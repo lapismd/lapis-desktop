@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis AI orchestration; see ../NOTICE.md.
+import { OwnedAiWork } from "../core/owned-work.ts";
 import { conversationLocationFromSourcePath } from "./source-path.ts";
 import type { ConversationLocation } from "./types.ts";
 
@@ -24,6 +25,8 @@ function locationKey(location: ConversationLocation): string {
 }
 
 export class ConversationIndexCoordinator {
+  readonly #work = new OwnedAiWork();
+  #disposed = false;
   readonly #pending = new Map<string, PendingIndexAction>();
   #timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -34,6 +37,7 @@ export class ConversationIndexCoordinator {
   ) {}
 
   handleVaultChange(path: string, oldPath?: string): void {
+    if (this.#disposed) return;
     const next = conversationLocationFromSourcePath(path);
     const previous = oldPath
       ? conversationLocationFromSourcePath(oldPath)
@@ -55,12 +59,20 @@ export class ConversationIndexCoordinator {
     }, this.delay);
   }
 
-  async flush(): Promise<void> {
+  flush(): Promise<void> {
+    return this.#work.run(() => this.#flush());
+  }
+  settle(): Promise<void> {
+    return this.#work.settle();
+  }
+  async #flush(): Promise<void> {
+    if (this.#disposed) return;
     if (this.#timer) clearTimeout(this.#timer);
     this.#timer = undefined;
     const actions = [...this.#pending.values()];
     this.#pending.clear();
     for (const action of actions) {
+      if (this.#disposed) return;
       if (action.type === "delete") {
         await this.#delete(action.location);
         continue;
@@ -68,6 +80,7 @@ export class ConversationIndexCoordinator {
       try {
         await this.index.sync(action.location);
       } catch (error) {
+        if (this.#disposed) return;
         this.onError("sync", action.location, error);
         await this.#delete(action.location);
       }
@@ -75,6 +88,7 @@ export class ConversationIndexCoordinator {
   }
 
   dispose(): void {
+    this.#disposed = true;
     if (this.#timer) clearTimeout(this.#timer);
     this.#timer = undefined;
     this.#pending.clear();

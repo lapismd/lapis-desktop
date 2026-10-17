@@ -325,3 +325,39 @@ event.
 Panel intake does not restore controller execution or admit native processes.
 Native integration and full bundled-plugin registration keep their original
 M10.2 gates.
+
+## Owned AI workspace integration
+
+The desktop plugin retains the `ai` identity, view IDs, command access and
+compatible plugin data. A fresh owned application scope is created per enable;
+disabled/Safe Mode startup cannot allocate native clients. Runtime/model ports
+are bound to the owning App. Missing admission reports the existing unavailable
+state; production never falls back to a fake provider or a deferred native mode.
+
+Chat bootstrapping fences disposed results and synchronizes availability and
+composer defaults before accepting input. The first durable location assignment
+does not remount the panel. Explicit conversation changes serialize panel
+replacement. Disable awaits panel, settings, indexing, memory and service
+cleanup before the owner may close its database. Scheduled work cannot restart
+after disposal. An explicit first location replaces an unbound panel; the
+controller's first durable assignment uses the base state setter and retains its
+own live panel. Controller cleanup also runs when a chat is removed during
+bootstrap. History and Catalog drain started reads and actions after detaching
+their subscriptions; their owning view forwards that drain to plugin shutdown.
+Closing scopes reject new conversation creation, navigation and settings writes;
+registered command callbacks become inert while asynchronous disable drains.
+Chat drains started actions and transcript checkpoints. Late saved-session reads
+cannot start resume after closure; late resume acknowledgements release their
+returned session without attaching it. Closing prevents new bridge events and
+summary work while retaining checkpoints already in progress.
+Operation-ownership callbacks do not become reactive effect dependencies.
+Disable/re-enable scenarios use the public plugin manager so saved views restore
+through its normal missing-view recovery path.
+
+Chat, History and Catalog placements use the same production plugin/view
+registration in real disposable WorkspaceShell Apps. Their six original
+placement, paint, geometry, interaction and public example assertions remain;
+catalog clients do not qualify native execution or authenticated tool IPC.
+Shells mount after plugin and layout boot, matching the original App fixture.
+The catalog pre-optimizes the portable redaction and schema dependencies before
+loading plugin stories so cold startup cannot reload an active test mid-import.

@@ -46,8 +46,9 @@ Visual baselines remain pending approval.
 
 Source: `lapis-plugins` tree `56b5d6c1`, `stories/plugins/ai/AiChat.stories.ts`.
 Original plays retain their assertions, with explicit adaptations below. The
-following production chat stories do not yet qualify the bundled plugin, six
-workspace placements, History/Catalog, Settings or native ACP/tool behavior.
+following leaf stories qualify retained chat presentation. Owned workspace
+placements, plugin lifecycle and Settings have separate coverage below; native
+ACP/tool acceptance remains required.
 
 | Source cases                                                     | Desktop destination under `plugins/ai` |
 | ---------------------------------------------------------------- | -------------------------------------- |
@@ -113,6 +114,27 @@ claiming a bundled AiPlugin instance. Additional stories cover creation/toggle/
 inventory failures, App notifications, archive/restore/delete, stale refreshes
 and unmount during pending work. All remain visual-pending.
 
-**Pending:** all six original placements for History, Catalog and Chat, their
-real WorkspaceShell geometry/paint and documentation examples. Standalone panel
-stories qualify retained behavior only; original source registrations remain.
+## Owned AI workspace views
+
+Source: `lapis-plugins` `ee20d366`, `packages/ai/src/lib/ai-plugin.ts`, its
+view/bootstrap/memory integration and `stories/plugins/ai/panels`. Desktop owns
+the plugin composition; public Notes and Design Core packages keep shared UI.
+
+| Original family | Destination under `plugins/ai/placements` | Retained checks                                                                                                                   |
+| --------------- | ----------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Chat            | `Chat.stories.ts`                         | Six placements, empty composer, exact host, full viewport, surface paint and public examples; no unrelated document               |
+| History         | `History.stories.ts`                      | Six placements, real Markdown context, original behavior, 8px toolbar centering, 2px count alignment, geometry/paint and examples |
+| Catalog         | `Catalog.stories.ts`                      | Six placements, real Markdown context, original behavior, tool persistence, source navigation, geometry/paint and examples        |
+
+`Admission.stories.ts` covers disabled/Safe Mode zero client allocation,
+installed-copy precedence, explicit disabling/data retention and unavailable
+execution. `Plugin.stories.ts` covers production registration and rejected new
+work after scope closure. `WorkspaceLifecycle.stories.ts` covers lazy start,
+first durable location without remount, explicit replacement, main-conversation
+reuse and manager-driven disable/re-enable. `Lifetime.stories.ts` and
+`PanelLifetime.stories.ts` cover chat bootstrap cleanup and draining pending
+Chat/History/Catalog reads before database closure.
+
+All remain visual-pending. JSONL preview, unique retained source scenarios and
+production native admission/recovery retain M10.2 gates. Original standalone
+source registrations remain until full handover qualifies.

@@ -32,6 +32,8 @@ export type AiChatPanelProps = {
   selectRuntime?: (request: AgentRequest) => Promise<AgentRuntime>;
   unavailableReason?: string | null;
   initializing?: boolean;
+  onControllerDispose?: (operation: Promise<void>) => void;
+  onOperation?: (operation: Promise<void>) => void;
   workspace?: string;
   mcpServers?: McpServerContribution[];
   appToolBridge?: AppToolBridgeCoordinator;

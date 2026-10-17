@@ -1,0 +1,109 @@
+// SPDX-License-Identifier: Apache-2.0
+import type { Meta, StoryObj } from "@storybook/svelte-vite";
+import { expect, userEvent, waitFor, within } from "storybook/test";
+import AiWorkspaceDemo from "../../support/ai/workspace/AiWorkspaceDemo.svelte";
+import { aiWorkspaceFixture } from "../../support/ai/workspace/fixture.ts";
+import { cleanupCatalog } from "../../support/lifecycle.ts";
+const meta = {
+  title: "Desktop/AI/Workspace lifecycle",
+  component: AiWorkspaceDemo,
+  beforeEach: () => cleanupCatalog,
+  tags: ["visual-pending", "!autodocs"],
+  args: { kind: "ai-chat" },
+} satisfies Meta<typeof AiWorkspaceDemo>;
+export default meta;
+type Story = StoryObj<typeof meta>;
+async function chat(element: HTMLElement) {
+  const canvas = within(element);
+  const panel = await canvas.findByTestId("ai-chat-panel");
+  await waitFor(() =>
+    expect(panel).toHaveAttribute("data-initializing", "false"),
+  );
+  return { canvas, panel, fixture: aiWorkspaceFixture(element) };
+}
+export const LazyStartAndFirstLocation: Story = {
+  play: async ({ canvasElement }) => {
+    const { fixture, canvas, panel } = await chat(canvasElement);
+    const inspect = async () => JSON.parse(await fixture.inspect());
+    expect(await inspect()).toMatchObject({
+      clients: 1,
+      released: 0,
+      sessions: [],
+    });
+    const input = canvas.getByRole("combobox", { name: "Message" });
+    await userEvent.type(
+      input,
+      "Keep this controller through the first durable location",
+    );
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() =>
+      expect(
+        canvas.getByRole("article", { name: "Message from assistant" }),
+      ).toHaveTextContent("Keep this controller"),
+    );
+    const plugin = fixture.plugin()!;
+    await plugin.application.operations.settle();
+    expect(canvas.getByTestId("ai-chat-panel")).toBe(panel);
+    expect(canvas.getByRole("combobox", { name: "Message" })).toBe(input);
+    const sent = await inspect();
+    expect(sent.sessions).toHaveLength(1);
+    expect(sent.sessions[0].prompts).toEqual([
+      "Keep this controller through the first durable location",
+    ]);
+    const former = plugin.application;
+    expect(await fixture.app.plugins.disablePlugin("ai")).toBe(true);
+    expect((await inspect()).released).toBe(1);
+    expect(
+      (await inspect()).sessions.every(
+        (session: { closed: boolean }) => session.closed,
+      ),
+    ).toBe(true);
+    expect(await fixture.app.plugins.enablePlugin("ai")).toBe(true);
+    expect(plugin.application).not.toBe(former);
+    await fixture.app.commands.executeCommand("ai:open-chat");
+    await plugin.application.operations.settle();
+    await chat(canvasElement);
+    expect(await inspect()).toMatchObject({ clients: 2, released: 1 });
+    expect(
+      fixture.app.commands
+        .getAllCommands()
+        .filter((command) => command.id === "ai:open-chat"),
+    ).toHaveLength(1);
+  },
+};
+export const ExplicitConversationReplacement: Story = {
+  play: async ({ canvasElement }) => {
+    const { fixture, canvas, panel } = await chat(canvasElement);
+    const host = fixture.plugin()!.application;
+    const entries = await host.conversations.listAll();
+    const first = entries.find(
+      (entry) => entry.metadata?.title === "Summarize project notes",
+    )!;
+    const second = entries.find(
+      (entry) => entry.metadata?.title === "Fix parser errors",
+    )!;
+    const leaf = fixture.app.workspace.getLeavesOfType("ai")[0];
+    await leaf.view.setState({ ...first.location });
+    await waitFor(() => {
+      expect(canvas.getByTestId("ai-chat-panel")).not.toBe(panel);
+      expect(
+        canvas.getByRole("article", { name: "Message from user" }),
+      ).toHaveTextContent("Summarize project notes");
+    });
+    const replacement = canvas.getByTestId("ai-chat-panel");
+    await leaf.view.setState({ ...second.location });
+    await waitFor(() => {
+      expect(canvas.getByTestId("ai-chat-panel")).not.toBe(replacement);
+      expect(
+        canvas.getByRole("article", { name: "Message from user" }),
+      ).toHaveTextContent("Fix parser errors");
+    });
+    expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);
+    await host.openAiConversation(second.location);
+    const count = fixture.app.workspace.getLeavesOfType("ai").length;
+    const active = fixture.app.workspace.activeLeaf;
+    await host.openAiConversation(second.location);
+    expect(fixture.app.workspace.getLeavesOfType("ai")).toHaveLength(count);
+    expect(fixture.app.workspace.activeLeaf).toBe(active);
+  },
+};

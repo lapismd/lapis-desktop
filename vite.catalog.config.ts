@@ -18,6 +18,8 @@ export default defineConfig({
   resolve: { dedupe: ["svelte", "@lapis-notes/api", "@lapismd/design-core"] },
   optimizeDeps: {
     include: [
+      "@lapismd/agent-redaction",
+      "@cfworker/json-schema",
       "@storybook/addon-a11y > axe-core",
       "@lapis-notes/api > eventemitter3",
       "@lapis-notes/api > @codemirror/state",

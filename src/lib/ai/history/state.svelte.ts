@@ -15,7 +15,9 @@ import {
   conversationHistoryFolderPaths,
 } from "./conversation-history-tree.ts";
 import { loadHistoryEntries } from "./search.ts";
+import { OwnedAiWork } from "../core/owned-work.ts";
 export function createHistoryState(props: AiHistoryProps) {
+  const work = new OwnedAiWork();
   const {
     app,
     repository,
@@ -100,7 +102,10 @@ export function createHistoryState(props: AiHistoryProps) {
     openScopes = allFoldersOpen ? new Set() : new Set(folderPaths);
   }
 
-  async function refresh(followActiveScope = false): Promise<void> {
+  function refresh(followActiveScope = false): Promise<void> {
+    return work.run(() => loadEntries(followActiveScope));
+  }
+  async function loadEntries(followActiveScope: boolean): Promise<void> {
     if (!active) return;
     const version = ++refreshVersion;
     const nextScope = getScope();
@@ -142,7 +147,12 @@ export function createHistoryState(props: AiHistoryProps) {
     }
   }
 
-  async function runAction(action: () => void | Promise<void>): Promise<void> {
+  function runAction(action: () => void | Promise<void>): Promise<void> {
+    return work.run(() => performAction(action));
+  }
+  async function performAction(
+    action: () => void | Promise<void>,
+  ): Promise<void> {
     if (!active) return;
     error = null;
     try {
@@ -214,6 +224,7 @@ export function createHistoryState(props: AiHistoryProps) {
       app.vault.offref(deleted);
       app.vault.offref(modified);
       app.vault.offref(renamed);
+      props.onDispose?.(work.settle());
     };
   }
   return {

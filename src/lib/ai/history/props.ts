@@ -13,4 +13,5 @@ export type AiHistoryProps = {
   onNewConversation: (scopeDir: string) => void | Promise<void>;
   listConversationFolders: () => string[];
   searchAllConversations: (query: string) => Promise<ConversationListEntry[]>;
+  onDispose?: (pending: Promise<void>) => void;
 };

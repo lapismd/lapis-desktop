@@ -1,9 +1,17 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained lapis-plugins panel assertions; see src/lib/ai/NOTICE.md.
-import { expect, userEvent, waitFor } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { readyPanel, inspectPanel } from "./panel-interactions.ts";
-export async function catalogAssertions(canvasElement: HTMLElement) {
-  const panel = await readyPanel(canvasElement, "ai-catalog");
+export async function catalogAssertions(
+  canvasElement: HTMLElement,
+  prepared?: ReturnType<typeof within>,
+  readState?: () => Promise<{
+    settings: { disabledAppToolNames: string[] };
+    opened?: string;
+  }>,
+) {
+  const inspect = readState ?? (() => inspectPanel(canvasElement));
+  const panel = prepared ?? (await readyPanel(canvasElement, "ai-catalog"));
   expect(panel.getByRole("tree", { name: "AI catalog" })).toBeVisible();
   expect(panel.getByRole("treeitem", { name: "Search" })).toBeVisible();
   expect(panel.getByRole("treeitem", { name: "AI" })).toBeVisible();
@@ -27,9 +35,9 @@ export async function catalogAssertions(canvasElement: HTMLElement) {
   expect(checkbox).toHaveAttribute("data-state", "checked");
   await userEvent.click(checkbox);
   await waitFor(async () => {
-    expect(
-      (await inspectPanel(canvasElement)).settings.disabledAppToolNames,
-    ).toContain("notes_search");
+    expect((await inspect()).settings.disabledAppToolNames).toContain(
+      "notes_search",
+    );
   });
 
   await userEvent.type(panel.getByLabelText("Filter catalog"), "daily");
@@ -45,7 +53,7 @@ export async function catalogAssertions(canvasElement: HTMLElement) {
 
   await userEvent.click(panel.getByRole("button", { name: "Open daily" }));
   await waitFor(async () => {
-    expect((await inspectPanel(canvasElement)).opened).toBe(
+    expect((await inspect()).opened).toBe(
       "Notes/.agents/skills/daily/SKILL.md",
     );
   });

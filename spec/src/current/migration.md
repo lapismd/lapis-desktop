@@ -221,5 +221,8 @@ Settings surface. E-AI-014 records persistence, provider/model and tool-control
 qualification separately from production bundled AI registration. Historical
 preferences stay inert; no native runtime is restored by Settings intake.
 
-History/Catalog panel behavior and policy retain their original coverage; six
-workspace placements and bundled native AI admission remain the M10.2 next step.
+History/Catalog behavior retains its original coverage. E-AI-016 adds all six
+Chat/History/Catalog workspace placements and owned plugin lifecycle scenarios.
+JSONL preview, unique source scenarios and ordinary bundled native AI admission,
+context/skills and recovery still require M10.2 qualification. M10.3 native
+tools/credentials and M10.4 optional compute remain in the authorized scope.

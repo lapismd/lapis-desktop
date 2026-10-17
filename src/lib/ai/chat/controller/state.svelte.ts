@@ -32,9 +32,12 @@ import {
 } from "../../skills/registry.ts";
 import type { SkillDiscoveryContext } from "../../skills/types.ts";
 import { SlashCommandRouter } from "../../commands/router.ts";
+import { OwnedAiWork } from "../../core/owned-work.ts";
 import type { ConversationListEntry } from "../../conversations/transcript-store.ts";
 import type { AcpAgentId } from "../../settings/acp-agents.ts";
 export class AiChatControllerState {
+  _disposed = false;
+  readonly _backgroundWork = new OwnedAiWork();
   items = $state.raw<AiChatItem[]>([]);
   busy = $state(false);
   commandWorking = $state(false);

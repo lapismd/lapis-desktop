@@ -227,6 +227,10 @@ describe("AiChatController", () => {
   });
 
   it("settles leftover spinners immediately and posts a cancelled notice after cancel confirms", async () => {
+    let releaseEvents!: () => void;
+    const eventsClosed = new Promise<void>((resolve) => {
+      releaseEvents = resolve;
+    });
     let releaseCancel!: () => void;
     const cancelGate = new Promise<void>((resolve) => {
       releaseCancel = resolve;
@@ -249,14 +253,16 @@ describe("AiChatController", () => {
               name: "notes_search",
               input: { query: "vault" },
             };
-            await new Promise(() => {});
+            await eventsClosed;
           },
           async send() {},
           async respondToApproval() {},
           async cancel() {
             await cancelGate;
           },
-          async close() {},
+          async close() {
+            releaseEvents();
+          },
         };
       },
     };

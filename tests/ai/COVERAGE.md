@@ -130,5 +130,19 @@ The eight original cases in `history/conversation-history-tree.test.ts` and
 `history/search.test.ts` adds local-index failure, deleted-index ghosts,
 authoritative local metadata and retained index-only text hits. Real-App browser
 panel stories separately exercise errors, tool rollback, archive/restore/delete,
-stale refreshes and owned cleanup. Six workspace placements and production
-bundled registration remain pending; these focused fixtures do not replace them.
+stale refreshes and owned cleanup. Real workspace placement coverage lives in
+the desktop catalog; ordinary production admission remains pending.
+
+## Owned plugin lifetime
+
+`plugin/{maintenance-lifetime,preferences,services}.test.ts` covers draining
+started maintenance, disabled/data preferences, App-scoped service factories and
+rejection of deferred execution modes. Bootstrap adds cancellation during a
+pending model catalog. `chat/controller/disposal.test.ts` covers late saved
+reads, late resume acknowledgements and an in-flight transcript checkpoint. The
+retained cancellation fixture now ends its event stream on close, preserving
+every original spinner, cancellation and unknown-outcome assertion.
+
+Real Chat/History/Catalog read drains, zero-allocation startup, first-location
+stability, explicit replacement and manager-driven re-enable are catalog gates.
+They do not qualify ordinary native ACP execution or complete M10.2.

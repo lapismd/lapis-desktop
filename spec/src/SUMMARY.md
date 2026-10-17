@@ -115,3 +115,4 @@
 
   - [Retained controlled AI Settings](history/E-AI-014.md)
   - [E-AI-015: Retained History and Catalog panels](history/E-AI-015.md)
+  - [E-AI-016: Owned AI workspace integration](history/E-AI-016.md)

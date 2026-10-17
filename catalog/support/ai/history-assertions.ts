@@ -1,9 +1,13 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained lapis-plugins panel assertions; see src/lib/ai/NOTICE.md.
-import { expect, userEvent, waitFor } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import { readyPanel, inspectPanel } from "./panel-interactions.ts";
-export async function historyAssertions(canvasElement: HTMLElement) {
-  const panel = await readyPanel(canvasElement, "ai-conversation-history");
+export async function historyAssertions(
+  canvasElement: HTMLElement,
+  prepared?: ReturnType<typeof within>,
+) {
+  const panel =
+    prepared ?? (await readyPanel(canvasElement, "ai-conversation-history"));
   const panelElement = canvasElement.querySelector<HTMLElement>(
     '[data-testid="ai-conversation-history"]',
   );

@@ -4,6 +4,7 @@ import type {
   AppDatabase,
   AppDatabaseMemoryJobRecord,
 } from "@lapis-notes/api/app-database";
+import { OwnedAiWork } from "../core/owned-work.ts";
 import { sha256ConversationText as sha256Text } from "../conversations/hashes.ts";
 
 import { memoryScopeKey } from "./paths.ts";
@@ -31,6 +32,7 @@ export type MemorySchedulerOptions = {
 };
 
 export class MemoryMaintenanceScheduler {
+  readonly #work = new OwnedAiWork();
   readonly #ownerId: string;
   readonly #idleMs: number;
   readonly #dailyMs: number;
@@ -57,7 +59,11 @@ export class MemoryMaintenanceScheduler {
 
   start(): void {
     if (this.#disposed || this.#dailyTimer) return;
-    this.#dailyTimer = setTimeout(() => void this.runDaily(), this.#dailyMs);
+    this.#dailyTimer = setTimeout(() => {
+      void this.runDaily().catch((error) =>
+        this.#onError("consolidate", { kind: "workspace" }, error),
+      );
+    }, this.#dailyMs);
   }
 
   noteActivity(scope: MemoryScope): void {
@@ -70,20 +76,29 @@ export class MemoryMaintenanceScheduler {
       key,
       setTimeout(() => {
         this.#idleTimers.delete(key);
-        void this.run(scope);
+        void this.run(scope).catch((error) =>
+          this.#onError("consolidate", scope, error),
+        );
       }, this.#idleMs),
     );
   }
 
-  async run(scope: MemoryScope): Promise<ConsolidationResult | null> {
+  run(scope: MemoryScope): Promise<ConsolidationResult | null> {
+    return this.#work.run(() => this.#run(scope));
+  }
+  settle(): Promise<void> {
+    return this.#work.settle();
+  }
+  async #run(scope: MemoryScope): Promise<ConsolidationResult | null> {
     if (this.#disposed) return null;
     const preview = await this.memory.previewConsolidation(scope);
-    if (preview.proposals === 0) return null;
+    if (this.#disposed || preview.proposals === 0) return null;
     const now = this.#now();
     const scopeKey = memoryScopeKey(scope);
     const candidateFingerprint = (
       await sha256Text([...preview.candidateIds].sort().join("\n"))
     ).slice(0, 16);
+    if (this.#disposed) return null;
     const job: AppDatabaseMemoryJobRecord = {
       id: `consolidate:${scopeKey}:${new Date(now).toISOString().slice(0, 10)}:${candidateFingerprint}`,
       kind: "consolidate",
@@ -100,18 +115,35 @@ export class MemoryMaintenanceScheduler {
       leaseMs: this.#leaseMs,
     });
     if (!claimed) return null;
+    if (this.#disposed) {
+      await this.database.updateMemoryJob({
+        jobId: job.id,
+        ownerId: this.#ownerId,
+        now: this.#now(),
+        patch: {
+          status: "failed",
+          finishedAt: this.#now(),
+          errorCode: "maintenance-cancelled",
+        },
+      });
+      return null;
+    }
     const renew = setInterval(
       () => {
         const renewedAt = this.#now();
-        void this.database.updateMemoryJob({
-          jobId: job.id,
-          ownerId: this.#ownerId,
-          now: renewedAt,
-          patch: {
-            status: "running",
-            leaseUntil: renewedAt + this.#leaseMs,
-          },
-        });
+        void this.#work
+          .run(() =>
+            this.database.updateMemoryJob({
+              jobId: job.id,
+              ownerId: this.#ownerId,
+              now: renewedAt,
+              patch: {
+                status: "running",
+                leaseUntil: renewedAt + this.#leaseMs,
+              },
+            }),
+          )
+          .catch((error) => this.#onError("consolidate", scope, error));
       },
       Math.max(1_000, Math.floor(this.#leaseMs / 2)),
     );
@@ -151,7 +183,10 @@ export class MemoryMaintenanceScheduler {
     this.#scopes.clear();
   }
 
-  private async runDaily(): Promise<void> {
+  private runDaily(): Promise<void> {
+    return this.#work.run(() => this.#runDaily());
+  }
+  async #runDaily(): Promise<void> {
     this.#dailyTimer = undefined;
     if (this.#disposed) return;
     for (const candidate of await this.database.queryMemoryCandidates({
@@ -167,7 +202,11 @@ export class MemoryMaintenanceScheduler {
           : { kind: candidate.candidate.scopeKind };
       this.#scopes.set(memoryScopeKey(scope), scope);
     }
-    for (const scope of this.#scopes.values()) await this.run(scope);
+    if (this.#disposed) return;
+    for (const scope of this.#scopes.values()) {
+      if (this.#disposed) return;
+      await this.run(scope);
+    }
     this.start();
   }
 }

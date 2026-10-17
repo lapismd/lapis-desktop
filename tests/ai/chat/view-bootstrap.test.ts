@@ -251,3 +251,29 @@ it("preserves durable composer defaults during unrelated Settings notifications"
   );
   expect(changed.defaultModel).toBe(current.defaultModels.codex);
 });
+
+it("does not persist defaults or select a runtime after the view owner aborts", async () => {
+  const { host, listModels, selectRuntime } = createHost();
+  const abort = new AbortController();
+  let release!: () => void;
+  let entered!: () => void;
+  const started = new Promise<void>((resolve) => {
+    entered = resolve;
+  });
+  const blocked = new Promise<void>((resolve) => {
+    release = resolve;
+  });
+  listModels.mockImplementation(async (provider) => {
+    entered();
+    await blocked;
+    return [{ provider, model: "replacement-model", isDefault: true }];
+  });
+  const save = vi.spyOn(host, "updateSettings");
+  const prepared = prepareAiViewBootstrap(host, null, [], abort.signal);
+  await started;
+  abort.abort();
+  release();
+  await expect(prepared).rejects.toMatchObject({ name: "AbortError" });
+  expect(save).not.toHaveBeenCalled();
+  expect(selectRuntime).not.toHaveBeenCalled();
+});
