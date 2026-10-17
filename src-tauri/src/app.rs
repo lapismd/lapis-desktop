@@ -49,7 +49,11 @@ pub fn run() -> tauri::Result<()> {
         .plugin(state.build());
     #[cfg(feature = "e2e")]
     let builder = {
-        let builder = builder.plugin(tauri_plugin_wdio::init());
+        let policy = crate::acp_acceptance::Policy::default();
+        let builder = builder
+            .manage(policy.clone())
+            .plugin(tauri_plugin_lapis_ai::Builder::new(policy).build())
+            .plugin(tauri_plugin_wdio::init());
         // The embedded driver's WKUIDelegate replaces Wry's popup callback.
         // This dedicated proof uses console receipts and retains the real delegate.
         if crate::popout_acceptance::mode().is_some() {
@@ -60,6 +64,8 @@ pub fn run() -> tauri::Result<()> {
     };
     builder
         .invoke_handler(tauri::generate_handler![
+            #[cfg(feature = "e2e")]
+            crate::acp_acceptance::acp_acceptance_control,
             crate::terminal::desktop_terminal_admit,
             crate::terminal::desktop_terminal_release,
             crate::commands::shell_info,

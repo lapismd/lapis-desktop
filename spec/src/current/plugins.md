@@ -132,3 +132,18 @@ registration. They compose the existing public Workspace `PluginsView` and
 `openPluginBrowser` boundary before layout restoration. The same App owns
 Settings, signed distribution and view teardown; no replacement installer or
 desktop-specific Plugins screen is introduced.
+
+## Reusable ACP transport qualification
+
+M10.1 consumes `lapis-ai`'s built private `@lapismd/ai` root/Tauri exports and
+Rust adapter through an explicit temporary local development prerequisite.
+Record its exact source revision and public-build checks separately from the
+consumer. The acceptance-only host policy admits isolated native roots and
+compiled Rust providers; it cannot enter ordinary bundles or grant production
+launch authority. Real packaged WebView tests cover command capabilities,
+ordered channel delivery, exact permission IDs, cancellation, reconnect,
+uncertain outcomes, isolated workers, revocation and process cleanup.
+
+This transport gate does not qualify desktop AI UI, conversation/context/memory
+migration, application tools, native credentials, a real model or compute. Those
+retain M10.2–M10.4 gates. The application adds no replacement screens.

@@ -2,6 +2,8 @@
 #[cfg(all(feature = "e2e", not(debug_assertions)))]
 compile_error!("The e2e feature is restricted to debug acceptance artifacts");
 #[cfg(feature = "e2e")]
+mod acp_acceptance;
+#[cfg(feature = "e2e")]
 mod action_acceptance;
 mod app;
 mod application_menu;

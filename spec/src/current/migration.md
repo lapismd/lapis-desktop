@@ -182,3 +182,7 @@ qualification is recorded separately from the still-pending Tauri transport,
 renderer client and cold packaged WebView gate. M10/M10.1 are in progress; the
 source result alone does not complete either desktop gate. E-AI-001 retains the
 remaining work. The installed M9 archive cohort is unchanged.
+
+M10.1 source transport slices are qualified separately from the cold packaged
+consumer gate. E-AI-002 records the current consumer checks without changing the
+original completion criterion or the remaining M10.2–M10.4 product gates.

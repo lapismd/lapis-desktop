@@ -14,7 +14,7 @@
           "identifier": "acceptance",
           "description": "Selected only by the native acceptance configuration",
           "local": true,
-          "windows": ["main"],
+          "windows": ["main", "acp-other"],
           "permissions": [
             "wdio:default",
             "wdio-webdriver:default",
@@ -26,13 +26,19 @@
             "core:window:allow-close",
             "core:event:allow-listen",
             "core:event:allow-unlisten",
-            "core:window:allow-set-focus"
+            "core:window:allow-set-focus",
+            "lapis-ai:acp-session",
+            "allow-acp-acceptance-control"
           ]
         }
       ]
     }
   },
   "bundle": {
-    "active": true
+    "active": true,
+    "resources": {
+      "../.local/acp/native/lapis-acp": "native/lapis-acp",
+      "../.local/acp/native/lapis-acp-native-fixture": "native/lapis-acp-native-fixture"
+    }
   }
 }

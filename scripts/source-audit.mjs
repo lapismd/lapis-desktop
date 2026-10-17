@@ -110,8 +110,10 @@ export function auditManifest(manifest, capabilities, normalConfig) {
         /^(?:file:|link:|workspace:|git|https?:|\/|\.\.)/u.test(version) &&
         !(
           manifest.private === true &&
-          name === "@lapismd/terminal" &&
-          version === "link:../lapis-terminal/packages/terminal"
+          ((name === "@lapismd/terminal" &&
+            version === "link:../lapis-terminal/packages/terminal") ||
+            (name === "@lapismd/ai" &&
+              version === "link:../lapis-ai/packages/ai"))
         )
       )
         report(

@@ -85,7 +85,7 @@ test("desktop integration retains exact local grants and rejects additional plug
   }
 });
 
-test("only the authorized private Terminal public-build link is admitted during migration", () => {
+test("only authorized private native-client public-build links are admitted during migration", () => {
   const capabilities = JSON.parse(
     readFileSync("src-tauri/capabilities/main.json", "utf8"),
   );
@@ -99,10 +99,17 @@ test("only the authorized private Terminal public-build link is admitted during 
     },
   };
   assert.deepEqual(auditManifest(terminal, capabilities, configuration), []);
+  const ai = {
+    private: true,
+    devDependencies: { "@lapismd/ai": "link:../lapis-ai/packages/ai" },
+  };
+  assert.deepEqual(auditManifest(ai, capabilities, configuration), []);
   for (const manifest of [
     { ...terminal, private: false },
     { private: true, dependencies: { "@lapismd/terminal": "link:../other" } },
     { private: true, dependencies: { other: "link:../other" } },
+    { ...ai, private: false },
+    { private: true, dependencies: { "@lapismd/ai": "link:../other" } },
   ])
     assert.ok(
       auditManifest(manifest, capabilities, configuration).some(

@@ -85,3 +85,5 @@ by the task ledger, not inferred from this list.
 - [Signed native plugin lifecycle](E-INSTALL-001.md)
 
 - [Native ACP session foundation](E-AI-001.md)
+
+- [Reusable ACP Tauri transport](E-AI-002.md)

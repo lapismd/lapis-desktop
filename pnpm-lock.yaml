@@ -90,6 +90,9 @@ importers:
         specifier: 5.56.10
         version: 5.56.10
     devDependencies:
+      '@lapismd/ai':
+        specifier: link:../lapis-ai/packages/ai
+        version: link:../lapis-ai/packages/ai
       '@lapismd/spec-validator':
         specifier: ^0.1.4
         version: 0.1.4

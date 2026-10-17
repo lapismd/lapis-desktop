@@ -5,11 +5,12 @@ edition = "2024"
 rust-version = "1.99"
 license = "Apache-2.0"
 publish = false
+default-run = "lapis-desktop"
 
 [features]
 default = []
 custom-protocol = ["tauri/custom-protocol"]
-e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
+e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver", "dep:tauri-plugin-lapis-ai"]
 
 [dependencies]
 cap-std = "=4.0.3"
@@ -37,6 +38,8 @@ uuid = { version = "1", features = ["v4", "serde"] }
 
 tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin-lapis-terminal" }
 
+tauri-plugin-lapis-ai = { path = "../../lapis-ai/crates/tauri-plugin-lapis-ai", optional = true }
+
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-usernotifications = { version = "=0.3.1", default-features = false }
 objc2 = "=0.6.5"
@@ -55,3 +58,8 @@ debug = 0
 
 [profile.test]
 debug = 0
+
+[[bin]]
+name = "lapis-acp-native-fixture"
+path = "tests/fixtures/acp-provider.rs"
+required-features = ["e2e"]

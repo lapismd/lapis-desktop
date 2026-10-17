@@ -95,3 +95,11 @@ Use `pnpm spec:validate`, `pnpm spec:first` and `pnpm spec:check` for the
 published Node spec-validator. `pnpm progress:generate` refreshes the root
 status summary from the task ledger; `pnpm check:progress` checks evidence and
 gates. See the [asset and reference provenance](docs/provenance.json).
+
+The M10.1 native ACP acceptance lane also requires a clean, verified `lapis-ai`
+checkout. Build its public outputs first with `pnpm -C ../lapis-ai build`.
+Desktop consumes the private `@lapismd/ai` built exports and optional Rust
+plugin; no package publication is required. `pnpm test:desktop` stages the
+actual ACP binary and an isolated compiled Rust provider only into the
+acceptance bundle. The ordinary application excludes that policy, provider and
+test driver.

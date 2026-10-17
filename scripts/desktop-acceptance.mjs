@@ -37,6 +37,7 @@ async function acceptance() {
   mkdirSync(vault);
   writeFileSync(join(vault, "Welcome.md"), "# A native vault\n");
   copyFileSync("src-tauri/icons/icon.png", join(vault, "café.png"));
+  await run(process.execPath, ["scripts/prepare-acp-acceptance.mjs"]);
   await run("pnpm", [
     "exec",
     "tauri",
@@ -80,6 +81,7 @@ async function acceptance() {
       "tests/desktop/lifecycle.test.mjs",
       "tests/desktop/notes-lifecycle.test.mjs",
       "tests/desktop/terminal-lifecycle.test.mjs",
+      "tests/desktop/acp-transport.test.mjs",
       "tests/desktop/plugin-assets.test.mjs",
       "tests/desktop/plugin-distribution.test.mjs",
       "tests/desktop/plugin-distribution-recovery.test.mjs",

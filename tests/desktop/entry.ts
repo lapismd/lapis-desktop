@@ -9,6 +9,7 @@ import {
 } from "@lapis-notes/api";
 
 await init();
+await import("./acp-entry.ts");
 const platformOpen = window.open.bind(window);
 const { installPopoutProof } = await import("./popout-entry.ts");
 installPopoutProof(platformOpen);
