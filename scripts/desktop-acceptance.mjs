@@ -10,6 +10,7 @@ import {
 import { resolve, join } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { prepareDistributionFixtures } from "../tests/desktop/distribution-fixtures.mjs";
 
 export async function run(command, args, env = process.env) {
   return new Promise((resolveRun, reject) => {
@@ -29,6 +30,7 @@ export async function run(command, args, env = process.env) {
 async function acceptance() {
   if (process.platform !== "darwin" || process.arch !== "arm64")
     throw new Error("M0.1 native acceptance requires macOS ARM64.");
+  prepareDistributionFixtures();
   mkdirSync(".local/native-test", { recursive: true });
   const directory = mkdtempSync(resolve(".local/native-test/run-"));
   const vault = join(directory, "vault-笔记 café");
@@ -79,6 +81,8 @@ async function acceptance() {
       "tests/desktop/notes-lifecycle.test.mjs",
       "tests/desktop/terminal-lifecycle.test.mjs",
       "tests/desktop/plugin-assets.test.mjs",
+      "tests/desktop/plugin-distribution.test.mjs",
+      "tests/desktop/plugin-distribution-recovery.test.mjs",
       "tests/desktop/portable-plugins.test.mjs",
       "tests/desktop/portable-workers.test.mjs",
       "tests/desktop/portable-database.test.mjs",

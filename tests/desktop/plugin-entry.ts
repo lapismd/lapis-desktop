@@ -1,4 +1,5 @@
 import { Plugin, type App } from "@lapis-notes/api";
+import { installDistributionAcceptance } from "./distribution-entry.ts";
 
 /** Passive ownership/worker observation confined to the compiled e2e entry. */
 export function installPluginAcceptance(): void {
@@ -47,6 +48,7 @@ export function installPluginAcceptance(): void {
     if (!owned) throw new Error("No live plugin-owned acceptance App");
     return owned;
   }
+  installDistributionAcceptance(application);
   Object.assign(globalThis, {
     __lapisPluginAcceptance: {
       async open(path: string) {

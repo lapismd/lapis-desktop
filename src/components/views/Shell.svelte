@@ -11,7 +11,11 @@
     readRecovery,
     storeRecovery,
   } from "../../lib/notes/startup-recovery.ts";
-  import type { VaultSession, AppSafeModeState } from "@lapis-notes/api";
+  import type {
+    VaultSession,
+    AppSafeModeState,
+    AppPluginDistributionOptions,
+  } from "@lapis-notes/api";
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
   import type {
     VaultClient,
@@ -20,7 +24,12 @@
   let {
     client,
     urlDelivery,
-  }: { client: VaultClient; urlDelivery: DesktopUrlDelivery } = $props();
+    pluginDistributionOptions,
+  }: {
+    client: VaultClient;
+    urlDelivery: DesktopUrlDelivery;
+    pluginDistributionOptions?: AppPluginDistributionOptions;
+  } = $props();
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
@@ -176,6 +185,7 @@
       {session}
       {urlDelivery}
       {safeMode}
+      {pluginDistributionOptions}
       pluginAssetServer={createNativePluginAssetServer(
         session.vaultAdapter,
         selected!.resourceToken,

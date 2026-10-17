@@ -14,7 +14,9 @@ const { installPopoutProof } = await import("./popout-entry.ts");
 installPopoutProof(platformOpen);
 const { installPluginAcceptance } = await import("./plugin-entry.ts");
 installPluginAcceptance();
-await import("../../src/main.ts");
+const { distributionOptions } = await import("./distribution-entry.ts");
+const { bootstrapDesktop } = await import("../../src/lib/desktop/bootstrap.ts");
+await bootstrapDesktop(distributionOptions);
 await import("./watch-entry.ts");
 
 const databases = new Map<string, AppDatabase>();

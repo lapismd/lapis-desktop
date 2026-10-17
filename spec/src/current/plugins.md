@@ -116,3 +116,19 @@ and embeds its WASM as a data URL in a signed JavaScript chunk. Native CSP
 admits that worker and embedded binary fetch, alongside ordinary fingerprinted
 worker and WASM assets. Acceptance distinguishes those existing packaging forms
 and requires real Harper diagnostics and owned worker termination.
+
+## Signed installation qualification
+
+The desktop bootstrap passes optional host-owned distribution options through
+the existing public App constructor. Ordinary startup uses the SDK's embedded
+trust and transport defaults. Only the separately compiled native acceptance
+entry supplies ephemeral public test keys and fixture transport; no private
+manager fields, installer replacements or test trust enter ordinary builds.
+Acceptance installs signed bundles through `App.pluginDistribution` and native
+vault IO. Seeded installations alone cannot qualify M9.
+
+Desktop owns the Plugins ribbon, command, protocol navigation and view
+registration. They compose the existing public Workspace `PluginsView` and
+`openPluginBrowser` boundary before layout restoration. The same App owns
+Settings, signed distribution and view teardown; no replacement installer or
+desktop-specific Plugins screen is introduced.

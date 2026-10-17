@@ -1,5 +1,10 @@
 # File management (M5)
 
+Signed plugin installation uses the existing admitted native filesystem port
+with relative vault paths. SDK staging, replacement and retained plugin data add
+no native grant and do not change the file writer, watch or teardown contracts
+below. See LD-INSTALL-002 for plugin lifecycle qualification.
+
 The desktop catalog confirms the existing file/view lifecycle through an
 in-memory Notes session. Its accessibility-only wrapper grouping change does not
 alter watch admission, reconciliation, guarded saves or teardown below.

@@ -290,3 +290,10 @@ Portable native acceptance observes plugin-owned Apps through a weak reference
 and wraps worker creation/termination only in the e2e renderer entry. Normal
 bundle audits reject its marker. Fixture seeding independently verifies local
 test-signed public archives and signed files; actual installation remains M9.
+
+M9 native acceptance injects ephemeral public signing keys and fixture transport
+only through the App constructor in its separately compiled entry. Test fixture
+private keys are held only in producer memory. Ordinary binary and renderer
+audits reject the fixture trust, origin and distribution-hook markers.
+Production startup retains embedded SDK trust and the existing native permission
+set.

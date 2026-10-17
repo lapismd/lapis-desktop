@@ -163,5 +163,15 @@ M8.3 implements admitted native assets and explicit Tauri ESM selection. Focused
 native checks cover all seven portable plugins and real workers/WASM. Final
 qualification includes a shared Core Settings correction retaining App Shell
 controls and live-locator restoration acceptance; the original gate is
-unchanged. M9 installer regressions are captured separately before
-implementation.
+unchanged. M9 installer regressions and final native acceptance are recorded
+separately in E-INSTALL-001.
+
+M9.1 qualifies source-owned static identity, replacement, uninstall and restart
+recovery through actual signed packaged installation and the retained public
+Plugins/Settings UI. M8 fixture seeding remains separate from this proof.
+
+M9 source lifecycle safety is committed in Notes as `2b7ee095`; 1,734 source
+tests, 259 catalog cases and 13 Web/server cases pass. Desktop consumes five
+refreshed public archives with all 14 routes verified. The original M9/M9.1
+gates pass in E-INSTALL-001: all 113 native cases, 84 desktop catalog cases and
+the ordinary ARM64 bundle audit pass. Continue to M10.1.

@@ -6,8 +6,8 @@
 [Inventory](spec/migration-inventory.json) ·
 [Evidence](spec/src/history/index.md)
 
-Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M8.0, M8.1,
-M8.2, M8.3.
+Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M8.0,
+M8.1, M8.2, M8.3, M9.1.
 
 Current work: M7.3 — Separate ordinary popup integration, not an M8 dependency
 
@@ -33,7 +33,7 @@ below.
 | M7.2  | Done    | Complete; native ordinary integration remains M7.3        |
 | M7.3  | Planned | Separate ordinary popup integration, not an M8 dependency |
 | M8    | Done    | Complete; continue to M9.1                                |
-| M9    | Planned | After M8, implement and qualify M9.1                      |
+| M9    | Done    | Complete; continue to M10.1 native ACP adapter            |
 | M10   | Planned | After M9, implement M10.1–M10.4 through optional compute  |
 | M11   | Planned | Qualify signed distribution and each additional platform  |
 | M12   | Planned | Qualify Tauri coverage and remove frozen Deno desktop     |
@@ -41,7 +41,7 @@ below.
 | M8.1  | Done    | Complete; continue to M8.2 Web retirement                 |
 | M8.2  | Done    | Complete; continue to M8.3 portable plugins               |
 | M8.3  | Done    | Complete; continue to M9.1                                |
-| M9.1  | Planned | Qualify dynamic distribution and existing loader          |
+| M9.1  | Done    | Complete; continue to M10.1 native ACP adapter            |
 | M10.1 | Planned | Implement lapis-ai adapter before desktop AI              |
 | M10.2 | Planned | Port retained plugin policy and application stories       |
 | M10.3 | Planned | Implement and qualify native tools and credentials        |

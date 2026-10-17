@@ -52,14 +52,13 @@ protocol and permits no network connection except native IPC.
 
 ## Renderer organization
 
-`src/main.ts` owns renderer bootstrap. Feature components live in
-`src/components`: `views` composes the shell and Notes workspace, `vaults`
-contains launcher presentation, and `files` contains conflict presentation.
-Non-visual code lives in feature directories under `src/lib`: `desktop` owns
-startup and window lifecycle, `launcher` owns appearance preferences, `notes`
-constructs sessions and the plugin profile, and `native` owns the transport
-adapters with a dedicated `database` subdirectory. Native adapters do not depend
-on Notes orchestration or local UI components.
+`src/main.ts` calls `src/lib/desktop/bootstrap.ts` for startup and host styles.
+The e2e entry reuses it with public App options; ordinary startup uses defaults.
+Components under `src/components` group `views`, `vaults` and `files` by
+composition, launcher and conflict presentation. Feature logic under `src/lib`
+groups desktop startup/lifecycle, launcher appearance, Notes sessions/profile,
+and native transport with its `database` directory. Native adapters remain
+independent of Notes orchestration and local UI components.
 
 `src/styles` contains application-wide host CSS. Component-specific styles stay
 scoped with their component. Add future code to its owning feature instead of

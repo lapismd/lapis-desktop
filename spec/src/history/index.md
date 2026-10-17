@@ -82,3 +82,4 @@ by the task ledger, not inferred from this list.
 - [Web desktop-service retirement](E-WEB-001.md)
 - [Portable native plugin qualification](E-PORTABLE-001.md)
 - [Final portable plugin qualification](E-PORTABLE-002.md)
+- [Signed native plugin lifecycle](E-INSTALL-001.md)

@@ -8,6 +8,7 @@
     takeHostSyncService,
     type VaultSession,
     type AppSafeModeState,
+    type AppPluginDistributionOptions,
   } from "@lapis-notes/api";
   import {
     WorkspaceShell,
@@ -26,6 +27,7 @@
     StartupPhaseError,
   } from "../../lib/notes/notes-startup.ts";
   import { unavailableDesktopPlugins } from "../../lib/notes/plugin-policy.ts";
+  import { registerDesktopPluginBrowser } from "../../lib/notes/notes-plugin-browser.ts";
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
   import { leaveWithStoppedWatching } from "../../lib/notes/notes-leave.ts";
@@ -44,6 +46,7 @@
   let {
     session,
     pluginAssetServer,
+    pluginDistributionOptions,
     createTerminal,
     onBack,
     onReady,
@@ -53,6 +56,7 @@
   }: {
     session: VaultSession;
     pluginAssetServer?: PluginAssetServer;
+    pluginDistributionOptions?: AppPluginDistributionOptions;
     createTerminal?: TerminalFactory;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
@@ -66,6 +70,7 @@
         version: "0.1.0",
         session,
         pluginAssetServer,
+        pluginDistributionOptions,
         unavailablePlugins: unavailableDesktopPlugins,
         safeMode,
         workspaceShell: { notifications: true },
@@ -80,6 +85,7 @@
   const releaseCompatibility = installApplicationCompatibility(app);
   const sync = takeHostSyncService(app);
   const disposePluginSettings = registerPluginManagementSettings(app);
+  const disposePluginBrowser = registerDesktopPluginBrowser(app);
   let ready = $state(false);
   let busy = $state(true);
   let error = $state("");
@@ -211,6 +217,7 @@
                 await plugin.disable();
               await sync.dispose();
               disposePluginSettings();
+              disposePluginBrowser();
               coreDisposed = true;
             });
           },

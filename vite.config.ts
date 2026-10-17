@@ -5,12 +5,22 @@ import {
   pluginHostModules,
 } from "./scripts/plugin-host-modules.ts";
 import { fileURLToPath } from "node:url";
+import { readFileSync } from "node:fs";
 
 const catalogRoots = ["./catalog/", "./.storybook/"].map((directory) =>
   fileURLToPath(new URL(directory, import.meta.url)),
 );
 
 export default defineConfig(({ mode }) => ({
+  define:
+    mode === "native-test"
+      ? {
+          __LAPIS_DISTRIBUTION_FIXTURE__: readFileSync(
+            new URL("./.local/native-install/public.json", import.meta.url),
+            "utf8",
+          ),
+        }
+      : {},
   plugins: [
     svelte(),
     pluginHostModules(),
