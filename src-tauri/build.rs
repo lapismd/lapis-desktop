@@ -11,6 +11,7 @@ fn main() {
         "acp_acceptance_control",
         "desktop_terminal_admit",
         "desktop_terminal_release",
+        "desktop_ai_user_commands",
         "shell_info",
         "shell_ready",
         "desktop_clipboard_read",

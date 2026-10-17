@@ -121,3 +121,8 @@
   - [E-AI-018: Retained AI shell scenarios](history/E-AI-018.md)
 
   - [E-AI-019: Committed native AI dependency intake](history/E-AI-019.md)
+
+  - [E-AI-020: Native user-wide AI command files](history/E-AI-020.md)
+
+  - [Quiet desktop test entrypoints](history/E-TEST-001.md)
+  - [Desktop state review coverage](history/E-CATALOG-002.md)

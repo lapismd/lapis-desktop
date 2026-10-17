@@ -1,3 +1,4 @@
+pub(crate) mod ai;
 pub(crate) mod database;
 pub(crate) mod integration;
 pub(crate) mod lifecycle;
@@ -79,6 +80,7 @@ pub fn run() -> tauri::Result<()> {
             crate::acceptance::acp::acp_acceptance_control,
             crate::host::terminal::desktop_terminal_admit,
             crate::host::terminal::desktop_terminal_release,
+            crate::host::ai::user_commands::desktop_ai_user_commands,
             crate::host::shell::shell_info,
             crate::host::shell::shell_ready,
             crate::host::integration::services::desktop_clipboard_read,

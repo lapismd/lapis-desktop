@@ -1,7 +1,10 @@
 # Desktop catalog coverage
 
 The complete AI source-family inventory and remaining unique scenarios are
-tracked in [AI migration coverage](AI_MIGRATION.md).
+tracked in [AI migration coverage](AI_MIGRATION.md). Desktop-specific visible
+states are mapped in the [desktop review inventory](DESKTOP_STATES.md),
+including loading, failure, Safe Mode, file conflicts and both desktop-only
+plugins.
 
 The canonical task ledger owns completion status. This maps application surfaces
 to their real component stories; migrated plugin stages extend it with source

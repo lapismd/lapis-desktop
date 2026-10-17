@@ -153,6 +153,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "lapis-terminal:session",
     "allow-desktop-terminal-admit",
     "allow-desktop-terminal-release",
+    "allow-desktop-ai-user-commands",
     "core:event:allow-listen",
     "core:event:allow-unlisten",
     "allow-shell-info",

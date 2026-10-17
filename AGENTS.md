@@ -147,6 +147,11 @@ clients and own in-memory Apps; production code cannot import catalog code.
 Await App/service cleanup between examples. Add copied-story source/destination
 coverage to `catalog/COVERAGE.md` and retain license attribution.
 
+Every desktop-specific visible state and desktop-only plugin needs a mapped
+review story using production components and the smallest real shell required.
+Include applicable loading, empty, disabled, failure and recovery states; keep
+the inventory current when adding behavior. Do not create replacement screens.
+
 Use `pnpm storybook` (port 7480), `pnpm build-storybook` and
 `pnpm test:storybook`. The test command runs desktop and narrow viewports
 sequentially, with light/dark stories and accessibility failures enabled. Visual
@@ -156,7 +161,11 @@ review remains pending; never update baselines without explicit approval.
 
 `pnpm dev` starts Tauri with the loopback Vite renderer. `pnpm build` emits the
 renderer and `pnpm desktop:bundle` creates the current-platform application.
-`pnpm test:desktop` builds and exercises an isolated actual native WebView. Use
+`pnpm test:desktop` defaults to quiet headless renderer/catalog and
+native-service checks. `pnpm test:desktop:headless` makes that choice explicit;
+`pnpm test:desktop:headed` builds and exercises the actual native WebView/window
+and OS suite. Both modes are also available as `--headless`/`--headed` on the
+default script. Headless success cannot qualify a native product gate. Use
 `pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation qualification.
 Do not publish, replace installed applications, or reuse a user's profile for
 tests.

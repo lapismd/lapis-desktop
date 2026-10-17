@@ -1,9 +1,8 @@
 # Desktop plugins and catalog
 
-The delivery sequence is root `PLUGIN_MIGRATION.md`. M8–M10 are authorized;
-their original aggregate gates remain in the task ledger. Ordinary popup
-admission remains the separate M7.3 task. Local dependency links retain public
-package boundaries and owning-repository validation.
+`PLUGIN_MIGRATION.md` authorizes M8–M10 under the original ledger gates.
+Ordinary popup admission remains M7.3. Local links retain public package
+boundaries and owning-repository validation.
 
 ## Requirements
 
@@ -11,6 +10,7 @@ package boundaries and owning-repository validation.
 | -------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LD-CAT-001     | Desktop MUST own a standalone Svelte/Vite Storybook with documentation, light/dark controls, desktop typography, narrow layouts, static build and browser interaction/accessibility commands. Stories MUST render production components through public dependencies.                                                                                                                                                        |
 | LD-CAT-002     | Default catalog execution MUST require no native process, sibling service or credential. App-backed fixtures MUST own disposable in-memory Apps and injectable clients, clean up resources and remain excluded from application bundles.                                                                                                                                                                                    |
+| LD-CAT-003     | Every implemented desktop-only user-visible state and plugin MUST have a discoverable Storybook scenario using its production surface and the smallest real shell needed. Coverage MUST include loading, empty, failure, recovery, disabled and normal states where applicable, remain mapped in the catalog inventory, and expand with new desktop behavior. Fixtures MUST remain disposable and native gates separate.    |
 | LD-PLUG-001    | AI and Terminal MUST be bundled desktop-owned plugins retaining `ai` and `terminal` identities, commands, settings, views, conversations and explicit disabled preferences. Safe Mode MUST prevent optional activation. Bundled implementations MUST take precedence over installed copies without duplicate registration.                                                                                                  |
 | LD-TERM-001    | Terminal MUST use lapis-terminal's public viewport, rendered-frame client and Tauri adapter. Rust MUST resolve opaque targets into admitted executable, environment and working-directory policy; the renderer MUST NOT submit arbitrary launch specifications. Native services MUST start lazily.                                                                                                                          |
 | LD-TERM-002    | Moving, hiding or detaching a Terminal view MUST retain its shell. Reload MUST reconnect retained sessions. Explicit tab closure, plugin disable, vault closure, admission revocation and actual exit MUST release affected shells; cancelled close MUST retain them. Scoped teardown MUST NOT stop another window's sessions.                                                                                              |
@@ -380,9 +380,7 @@ disabling cancels publication and drains owned work. Previewing stored data
 never starts or resumes an ACP session. This does not qualify ordinary bundled
 native AI admission or its recovery gate.
 
-`catalog/AI_MIGRATION.md` compares all 56 maintained plugin and 49 Notes AI
-scenario exports, including differing plays. Remaining shell/native cases stay
-explicit; additional desktop regression counts cannot replace them.
+`catalog/AI_MIGRATION.md` maps source differences and pending native cases.
 
 Retained shell checks cover model preparation with a disabled, stable composer,
 conversation menus and offline recovery, provider attribution and scope follow.
@@ -393,6 +391,10 @@ gates remain catalog-owned. Fixtures own definite viewport heights; full-window
 geometry checks also apply to unnamed test canvases. Ordinary native execution
 keeps its separate gate.
 
-Native dependency intake records qualified `lapis-ai` source independently of
-runtime admission. Locked normal/e2e checks remain required; source changes do
-not grant production capabilities.
+Native dependency intake preserves the separate admission gate.
+
+User-wide command files use the native `~/.lapis/agents/commands` directory. An
+admitted local main window may list, check, create missing files or replace one
+named Markdown command. Names retain the public slash-command grammar; writes
+stage/sync atomically, seeds never overwrite existing commands, and IPC cannot
+choose directories or follow escaping symlinks. AI execution stays gated.

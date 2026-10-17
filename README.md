@@ -71,11 +71,22 @@ pnpm check
 pnpm test
 pnpm spec:check
 pnpm test:desktop
+pnpm test:desktop:headed
 pnpm desktop:bundle --debug
 pnpm check:bundle
 ```
 
-Desktop acceptance builds a separate feature/configuration, starts the actual
+`pnpm test:desktop` (or `pnpm test:desktop:headless`) runs renderer tests,
+native Rust service tests and the complete Storybook catalog in headless
+Chromium. It opens no native app and does not use the session clipboard. Use
+`pnpm test:desktop -- --headless` or `--headed` to choose a mode explicitly.
+
+`pnpm test:desktop:headed` retains full native acceptance. Hidden macOS WebViews
+stop animation frames even with background scheduling enabled, so the quiet
+browser/service lane cannot substitute for real native UI qualification. CI
+explicitly retains the headed native acceptance step.
+
+Headed acceptance builds a separate feature/configuration, starts the actual
 macOS ARM64 WebView in a UI session and two cold lifecycle launches with
 isolated state, and retains logs under ignored `.local/native-test`. Its launch
 PATH contains no Deno. M2 additionally verifies real temporary-folder file
@@ -84,6 +95,11 @@ revocable attachment URLs. The debug-only picker queue replaces the OS selection
 UI during repeatable automation; native keyboard/picker input is recorded
 separately. Normal application builds include no desktop automation plugin,
 permissions or frontend hook.
+
+For UI review, run `pnpm storybook` at <http://localhost:7480>. The
+[desktop state inventory](catalog/DESKTOP_STATES.md) maps production shell,
+startup/recovery, vault and conflict scenes plus desktop-only plugin coverage.
+Each uses disposable state and the smallest required shell.
 
 The local debug application is emitted under
 `src-tauri/target/debug/bundle/macos/Lapis Notes Preview.app`. Signed public
@@ -99,7 +115,7 @@ gates. See the [asset and reference provenance](docs/provenance.json).
 The M10.1 native ACP acceptance lane also requires a clean, verified `lapis-ai`
 checkout. Build its public outputs first with `pnpm -C ../lapis-ai build`.
 Desktop consumes the private `@lapismd/ai` built exports and optional Rust
-plugin; no package publication is required. `pnpm test:desktop` stages the
-actual ACP binary and an isolated compiled Rust provider only into the
+plugin; no package publication is required. `pnpm test:desktop:headed` stages
+the actual ACP binary and an isolated compiled Rust provider only into the
 acceptance bundle. The ordinary application excludes that policy, provider and
 test driver.

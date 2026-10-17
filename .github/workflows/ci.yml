@@ -41,7 +41,7 @@ jobs:
       - run: pnpm desktop:bundle --debug
       - run: pnpm check:bundle
       - name: Native ARM64 acceptance
-        run: pnpm test:desktop
+        run: pnpm test:desktop:headed
       - uses: actions/upload-artifact@v4
         if: always()
         with:

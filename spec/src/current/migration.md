@@ -231,3 +231,10 @@ M10.4 optional compute remain in the authorized scope.
 
 E-AI-019 separately qualifies the committed native dependency graph before
 ordinary AI admission. Dependency intake cannot complete a product gate.
+
+E-AI-020 adds the admitted native user-command storage prerequisite. The AI
+factory, external command watching and native conversation recovery remain open.
+
+The requested M0.2 quiet default and M8.4 desktop-state catalog are independent
+review-workflow additions. They preserve every original native product gate and
+the ongoing M10.2–M10.4 delivery scope.

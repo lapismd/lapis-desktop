@@ -10,6 +10,7 @@ export interface UserAgentsCommandStore {
   list(): Promise<UserAgentsCommandFile[]>;
   exists(name: string): Promise<boolean>;
   write(name: string, content: string): Promise<void>;
+  createIfMissing?(name: string, content: string): Promise<boolean>;
   subscribe?(listener: () => void): () => void;
 }
 

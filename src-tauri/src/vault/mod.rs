@@ -7,7 +7,7 @@ mod creates;
 mod files;
 mod mutations;
 mod profiles;
-mod staged;
+pub(crate) mod staged;
 mod writes;
 
 pub use action_targets::ActionTarget;

@@ -9,6 +9,28 @@ import { seedReservedCommands } from "../../../src/lib/ai/commands/seed.ts";
 import { MemoryUserAgentsStore } from "../../../src/lib/ai/commands/user-agents.ts";
 
 describe("seedReservedCommands", () => {
+  it("uses atomic missing-file creation when the native store supplies it", async () => {
+    const created: string[] = [];
+    const store = {
+      list: async () => [],
+      exists: async () => {
+        throw new Error(
+          "Do not race an existence check with default publication",
+        );
+      },
+      write: async () => {
+        throw new Error("Default seeding must not replace a file");
+      },
+      createIfMissing: async (name: string) => {
+        created.push(name);
+        return false;
+      },
+    };
+    await seedReservedCommands(store);
+    expect(created).toEqual(
+      RESERVED_SLASH_COMMANDS.map((command) => command.name),
+    );
+  });
   it("writes reserved host files only when missing and overwrites those names on update", async () => {
     const store = new MemoryUserAgentsStore();
     await seedReservedCommands(store);

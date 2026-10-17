@@ -11,6 +11,13 @@ export async function seedReservedCommands(
   options: { overwrite?: boolean } = {},
 ): Promise<void> {
   for (const command of RESERVED_SLASH_COMMANDS) {
+    if (!options.overwrite && store.createIfMissing) {
+      await store.createIfMissing(
+        command.name,
+        reservedCommandMarkdown(command),
+      );
+      continue;
+    }
     if (!options.overwrite && (await store.exists(command.name))) continue;
     await store.write(command.name, reservedCommandMarkdown(command));
   }

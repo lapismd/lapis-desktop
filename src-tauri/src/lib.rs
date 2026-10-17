@@ -1,5 +1,6 @@
 #![forbid(unsafe_code)]
 
+pub mod ai;
 pub mod database;
 pub mod integration;
 pub mod lifecycle;

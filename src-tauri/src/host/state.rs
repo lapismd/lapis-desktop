@@ -78,6 +78,7 @@ impl From<io::Error> for NativeError {
 }
 
 pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+    crate::host::ai::user_commands::initialize(app);
     #[cfg(not(feature = "e2e"))]
     let profile = app.path().app_data_dir()?;
     #[cfg(feature = "e2e")]

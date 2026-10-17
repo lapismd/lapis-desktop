@@ -156,3 +156,8 @@ base file view's reactive data/path; workspace save remains inert. Real-App
 catalog checks separately retain the original shell-preview assertions and
 exercise reopen, guarded refresh/rename, disable/re-enable and pending initial
 read cleanup. These do not admit ordinary native AI execution.
+
+Native user-command storage adds four renderer transport/lifetime cases and an
+atomic default-seeding regression alongside the original seed case. Rust file
+policy and cold named-IPC acceptance remain separate evidence in E-AI-020.
+Ordinary AI activation and external user-command watching remain M10.2 work.

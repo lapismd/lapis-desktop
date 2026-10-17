@@ -38,7 +38,7 @@ pub(super) fn rename_exclusive(
     }
 }
 
-pub(super) struct StagedFile<'a> {
+pub(crate) struct StagedFile<'a> {
     parent: &'a Dir,
     name: String,
     pub file: File,
@@ -72,6 +72,11 @@ impl<'a> StagedFile<'a> {
             self.parent,
             destination,
         )?;
+        self.published = true;
+        Ok(())
+    }
+    pub fn replace(mut self, destination: &OsStr) -> io::Result<()> {
+        self.parent.rename(&self.name, self.parent, destination)?;
         self.published = true;
         Ok(())
     }

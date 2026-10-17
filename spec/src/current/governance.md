@@ -35,6 +35,7 @@ repository-source traversal, formatting and commits.
 | LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, except the explicitly authorized unpublished Terminal public-build link in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                              |
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                            |
 | LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006. |
+| LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit headed option MUST retain the complete native WebView/window/OS suite. Headless success MUST NOT substitute for a native acceptance gate; invalid mode flags MUST reject before launching children.                                                                                    |
 
 The user authorized local pnpm archive consumption and deferred package
 publication to the final release gate. An ignored local install overlay verifies
@@ -356,3 +357,12 @@ verification and records each source repair before consumer qualification.
 Native dependency refresh records the clean owning source revision and its
 qualification separately from consumer checks. Update only required lock graph
 edges; locked checks and packaged ACP acceptance must retain existing gates.
+
+AI user-command IO adds only its named main-window operation. Rust chooses the
+user directory; acceptance uses its existing isolated root. Default seeding uses
+exclusive publication, and ordinary AI execution remains unavailable.
+
+The local desktop default is the quiet renderer/native-service/catalog lane.
+Native acceptance in CI explicitly selects the headed runner; changing a local
+default must not silently remove the original native gate. macOS hidden WebKit
+stops animation frames, so browser/service success is separately labelled.

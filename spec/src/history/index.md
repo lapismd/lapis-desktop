@@ -120,3 +120,8 @@ by the task ledger, not inferred from this list.
 - [E-AI-018: Retained AI shell scenarios](E-AI-018.md)
 
 - [E-AI-019: Committed native AI dependency intake](E-AI-019.md)
+
+- [E-AI-020: Native user-wide AI command files](E-AI-020.md)
+
+- [E-TEST-001: Quiet desktop test entrypoints](E-TEST-001.md)
+- [E-CATALOG-002: Desktop state review coverage](E-CATALOG-002.md)

@@ -176,3 +176,7 @@ actions live under `vault/resources.rs` and `vault/system_actions`. Acceptance
 receipts live under debug-only `acceptance/actions.rs`. Relocation preserves
 admission, locking, command identities and the file contract's spec-first
 coverage.
+
+The crate-owned staged-file helper also supports the named AI user-command
+store's explicit replacements. Vault creation still uses exclusive publication;
+collisions, cleanup, containment and watch behavior remain unchanged.

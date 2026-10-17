@@ -21,7 +21,7 @@
     "format:check": "prettier --check . && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check",
     "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
     "test": "node --test tests/governance/*.test.mjs tests/renderer/*.test.mjs && pnpm test:ai && cargo test --manifest-path src-tauri/Cargo.toml --locked",
-    "test:desktop": "node scripts/desktop-acceptance.mjs",
+    "test:desktop": "node scripts/desktop-tests.mjs",
     "desktop:bundle": "tauri build --bundles app",
     "spec:validate": "spec-validator validate",
     "spec:first": "spec-validator first",
@@ -35,7 +35,9 @@
     "storybook": "storybook dev --host 127.0.0.1 --port 7480 --no-open --disable-telemetry",
     "build-storybook": "storybook build --disable-telemetry",
     "test:storybook": "node scripts/catalog-tests.mjs",
-    "test:ai": "vitest run --config vitest.ai.config.mjs"
+    "test:ai": "vitest run --config vitest.ai.config.mjs",
+    "test:desktop:headless": "node scripts/desktop-tests.mjs --headless",
+    "test:desktop:headed": "node scripts/desktop-tests.mjs --headed"
   },
   "dependencies": {
     "@lapis-notes/api": "^0.1.4",

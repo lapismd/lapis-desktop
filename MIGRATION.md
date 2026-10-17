@@ -7,7 +7,7 @@
 [Evidence](spec/src/history/index.md)
 
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M8.0,
-M8.1, M8.2, M8.3, M9.1, M10.1.
+M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
 Current work: M10.2 — Qualify native admission, context and recovery
 
@@ -49,3 +49,5 @@ below.
 | M10.2 | In progress | Qualify native admission, context and recovery            |
 | M10.3 | Planned     | Implement and qualify native tools and credentials        |
 | M10.4 | Planned     | Integrate optional compute last                           |
+| M0.2  | Done        | Complete; native qualification remains explicit           |
+| M8.4  | Done        | Complete; extend inventory with new desktop UI            |
