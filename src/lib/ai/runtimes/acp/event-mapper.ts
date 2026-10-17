@@ -63,7 +63,9 @@ export function mapAcpActivity(
             error:
               update.status === "failed"
                 ? (update.rawOutput ?? update.content ?? "Agent tool failed")
-                : undefined,
+                : update.status === "cancelled"
+                  ? "Agent tool cancelled"
+                  : undefined,
           }
         : { type: "tool.start", ...fields },
     );
@@ -100,7 +102,15 @@ export function mapAcpActivity(
   ) {
     return extend({
       type: "usage",
-      usage: { used: update.used, limit: update.size },
+      usage: {
+        used: update.used,
+        limit: update.size,
+        ...(typeof update.cost === "number" &&
+        Number.isFinite(update.cost) &&
+        update.cost >= 0
+          ? { cost: update.cost }
+          : {}),
+      },
     });
   }
   if (kind === "plan" && Array.isArray(update.entries)) {

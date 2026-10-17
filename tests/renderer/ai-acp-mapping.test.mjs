@@ -160,3 +160,32 @@ test("terminal failure or unknown outcomes never become fabricated completion", 
     );
   }
 });
+
+test("provider-confirmed tool cancellation cannot become successful completion", () => {
+  const event = mapAcpActivity(
+    {
+      sessionUpdate: "tool_call_update",
+      toolCallId: "cancelled-tool",
+      status: "cancelled",
+    },
+    source,
+  );
+  assert.equal(event.type, "tool.end");
+  assert.match(String(event.error), /cancelled/i);
+});
+
+test("finite reported cost survives usage normalization alongside original observation", () => {
+  const observation = {
+    sessionUpdate: "usage_update",
+    used: 12,
+    size: 100,
+    cost: 0.25,
+  };
+  const event = mapAcpActivity(observation, source);
+  assert.equal(event.usage.cost, 0.25);
+  assert.equal(event.observation, observation);
+  assert.equal(
+    mapAcpActivity({ ...observation, cost: NaN }, source).usage.cost,
+    undefined,
+  );
+});

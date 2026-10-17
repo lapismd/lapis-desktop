@@ -341,4 +341,4 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-AI command policy retains the shell contract.
+AI chat state retains the shell contract.

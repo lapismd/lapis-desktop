@@ -103,3 +103,5 @@
   - [Retained skills and policy suites](history/E-AI-007.md)
 
   - [Retained AI commands and bootstrap](history/E-AI-008.md)
+
+  - [Retained chat state and native uncertainty](history/E-AI-009.md)

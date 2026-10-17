@@ -185,9 +185,10 @@ M10.2 remains in progress. Desktop-owned policy now includes context/events and
 transcript contracts (E-AI-003), conversation persistence (E-AI-004), bounded
 handoff (E-AI-005), the adapted native-client runtime seam (E-AI-006), retained
 skill discovery and original policy tests (E-AI-007), and command/bootstrap
-policy with a legacy-runtime audit (E-AI-008). The unit coverage inventory is
-`tests/ai/COVERAGE.md`. These modules are not yet mounted in production AI
-views.
+policy with a legacy-runtime audit (E-AI-008), and chat state/transcript
+projection with exact-choice and interrupted-work recovery (E-AI-009). The unit
+coverage inventory is `tests/ai/COVERAGE.md`. These modules are not yet mounted
+in production AI views.
 
 Retained current UI, memory, activation, production native admission, the native
 user-global command port and complete migrated stories retain the unchanged

@@ -99,3 +99,5 @@ by the task ledger, not inferred from this list.
 - [Retained skills and policy suites](E-AI-007.md)
 
 - [Retained AI commands and bootstrap](E-AI-008.md)
+
+- [Retained chat state and native uncertainty](E-AI-009.md)

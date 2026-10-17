@@ -96,3 +96,20 @@ export type ApprovalCapabilities = {
   granularPermissions: boolean;
   policyAmendments: boolean;
 };
+
+/** Presentation follows advertised meaning; opaque IDs never imply approval. */
+export function approvalChoiceStatus(
+  option: ApprovalOption | undefined,
+): "approved" | "rejected" | "answered" {
+  switch (option?.kind) {
+    case "allow-once":
+    case "allow-session":
+    case "allow-always":
+      return "approved";
+    case "deny-once":
+    case "deny-always":
+      return "rejected";
+    default:
+      return "answered";
+  }
+}

@@ -26,3 +26,7 @@ with their applicable original policy regression suites, retain 56b5d6c1.
 
 Command policy, bootstrap and their applicable original regression suites retain
 56b5d6c1. The old Node user-agents implementation and loader are excluded.
+
+Chat state, settings/session data and transcript projection retain 56b5d6c1.
+Projection is split by read/write responsibility. The retained fake runtime is
+test-only; Design Core presentation functions remain imported public contracts.
