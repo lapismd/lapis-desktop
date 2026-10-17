@@ -11,9 +11,10 @@ redirect; unverified local paths and file-based peer ranges remain rejected.
 Native readiness regressions cover receipts split across chunks and receipts
 followed by large driver-log batches without extending the startup deadline.
 
-The canonical chapter registry includes `plugins.md` for authorized M8–M10
-catalog, bundled plugins, dynamic installation and native AI/compute contracts.
-The task ledger keeps their detailed stage gates alongside original milestones.
+The canonical registry separates `plugins.md` for catalog, bundled plugins and
+dynamic installation from `ai.md` for direct ACP, native AI and optional
+compute. The task ledger keeps their detailed stage gates alongside original
+milestones.
 
 The desktop catalog uses `.storybook`, `catalog/plugins` and `catalog/support`.
 Import audits resolve relative paths before distinguishing the repository's

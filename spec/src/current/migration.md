@@ -239,3 +239,6 @@ mounted native conversation recovery remain open.
 The requested M0.2 quiet default and M8.4 desktop-state catalog are independent
 review-workflow additions. They preserve every original native product gate and
 the ongoing M10.2–M10.4 delivery scope.
+
+E-STRUCTURE-003 separates the AI/compute contract without changing requirement
+text or original task gates. Contract organization cannot qualify execution.

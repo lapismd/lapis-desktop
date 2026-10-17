@@ -5,6 +5,7 @@
   - [Desktop shell](current/desktop.md)
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
+  - [Desktop AI and optional compute](current/ai.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
@@ -127,3 +128,4 @@
   - [Quiet desktop test entrypoints](history/E-TEST-001.md)
   - [Desktop state review coverage](history/E-CATALOG-002.md)
   - [E-AI-021: External user-command refresh](history/E-AI-021.md)
+  - [E-STRUCTURE-003: Dedicated AI contract](history/E-STRUCTURE-003.md)

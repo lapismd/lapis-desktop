@@ -3,6 +3,44 @@ import assert from "node:assert/strict";
 import config from "../../spec-validator.config.mjs";
 import { progressFindings } from "../../scripts/progress.mjs";
 
+test("AI is a canonical contract in document roles and specification-first", () => {
+  assert.ok(
+    new RegExp(config.validators.specFirst.canonicalPattern).test(
+      "spec/src/current/ai.md",
+    ),
+  );
+  assert.ok(
+    config.documentRoles.some(
+      ({ pattern, role }) =>
+        role === "contract" && new RegExp(pattern).test("current/ai.md"),
+    ),
+  );
+});
+
+test("AI policy, transport, views and catalog retain their dedicated owner", () => {
+  for (const path of [
+    "src/lib/ai/plugin/application.ts",
+    "src/lib/native/ai/user-commands.ts",
+    "src/components/ai/views/catalog-view.ts",
+    "src-tauri/src/ai/admission.rs",
+    "src-tauri/src/host/ai/policy.rs",
+    "src-tauri/tests/ai_admission.rs",
+    "tests/ai/commands/native-watch.test.ts",
+    "tests/renderer/ai-acp-runtime.test.mjs",
+    "tests/desktop/acp-transport.test.mjs",
+    "catalog/plugins/ai/UserCommands.stories.ts",
+    "catalog/support/ai/command-refresh.ts",
+  ]) {
+    const chapters = config.validators.specFirst.rules
+      .filter(({ pattern }) => new RegExp(pattern).test(path))
+      .flatMap(({ chapters }) => chapters ?? []);
+    assert.ok(
+      chapters.includes("spec/src/current/ai.md"),
+      `${path} must retain its AI contract`,
+    );
+  }
+});
+
 test("file management is a governed contract in both document roles and spec-first", () => {
   const contracts = config.documentRoles.filter(
     (role) => role.role === "contract",

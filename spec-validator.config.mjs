@@ -46,15 +46,15 @@ export default defineConfig(
         mode: "mapped",
         canonicalPattern: canonicalContractPattern("spec/src/"),
         protected: [
-          "^(?:\\.storybook/|catalog/|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
+          "^(?:\\.storybook/|catalog/(?!plugins/ai/|support/ai/)|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
           "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|POPOUT_PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
         ],
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
           {
             pattern:
-              "^(?:src/(?:lib|components)/ai/|tests/(?:ai/|renderer/ai-|fixtures/ai/)|vitest\\.ai\\.config\\.mjs$)",
-            chapters: ["spec/src/current/plugins.md"],
+              "^(?:src/(?:lib/ai/|components/ai/|lib/native/ai/)|src-tauri/(?:src/(?:ai/|host/ai/)|tests/ai_.*\\.rs$)|tests/(?:ai/|renderer/ai-|fixtures/ai/|desktop/(?:ai-|acp-))|catalog/(?:plugins/ai/|support/ai/)|vitest\\.ai\\.config\\.mjs$)",
+            chapters: ["spec/src/current/ai.md"],
           },
           {
             pattern:

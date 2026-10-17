@@ -11,6 +11,7 @@ gates.
 - [Desktop integration](integration.md)
 - [Native workspace windows](windows.md)
 - [Desktop plugins and catalog](plugins.md)
+- [Desktop AI and optional compute](ai.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)
 - [Milestones and next actions](progress/milestones.md)

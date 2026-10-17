@@ -6,6 +6,7 @@ const chapters = [
   "integration",
   "windows",
   "plugins",
+  "ai",
   "governance",
   "migration",
 ];

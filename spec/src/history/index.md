@@ -126,3 +126,4 @@ by the task ledger, not inferred from this list.
 - [E-TEST-001: Quiet desktop test entrypoints](E-TEST-001.md)
 - [E-CATALOG-002: Desktop state review coverage](E-CATALOG-002.md)
 - [E-AI-021: External user-command refresh](E-AI-021.md)
+- [E-STRUCTURE-003: Dedicated AI contract](E-STRUCTURE-003.md)
