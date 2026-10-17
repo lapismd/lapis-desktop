@@ -54,3 +54,10 @@ provider acknowledgement, explicit option kinds, failure reporting and fresh
 question clearing are desktop repairs. Components live under
 src/components/ai/chat. Catalog fixtures reuse the test-only fake runtime and
 own disposable in-memory Apps; no fake provider enters production.
+
+AI Settings field identities, descriptions, tool controls and model-selection
+policy retain lapis-plugins revision ee20d366609209392ed83d73068a1b8519bcb0a0,
+`packages/ai/src/lib/settings`. Desktop splits registration, field definitions,
+value admission and persistence by responsibility. Controlled plugin data,
+serialized durable writes, stale-result fencing and deferred-runtime handling
+are desktop adaptations; the public Workspace Settings renderer is reused.

@@ -215,3 +215,8 @@ immutable. E-AI-013 qualifies its retained chat catalog through source-owned
 accessibility fixes, verified public archives and all four catalog lanes.
 Settings/history, native admission, context, skills, recovery, app tools and
 compute retain their gates.
+
+AI Settings moves into desktop ownership through the existing public controlled
+Settings surface. E-AI-014 records persistence, provider/model and tool-control
+qualification separately from production bundled AI registration. Historical
+preferences stay inert; no native runtime is restored by Settings intake.

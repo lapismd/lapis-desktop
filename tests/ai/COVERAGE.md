@@ -112,3 +112,13 @@ explicit unknown outcome in place of falsely completed tools. `/help` retains
 its assertions and additionally requires stable binding/session reuse;
 submission now preserves implicit request defaults for local command dispatch.
 The policy runner compiles Svelte runes normally; no runtime rune shim is used.
+
+## Controlled AI Settings
+
+`settings/{settings-store,model-options,setting-values}.test.ts` adds desktop
+coverage for serialized durable writes, failure recovery, retained source data,
+provider-specific defaults, community opt-ins and closed/stale model inventory.
+The settings fields and change semantics derive from current plugin
+`settings/register-ai-settings.ts` at `ee20d366`; these behavioral tests replace
+source-string assumptions with owned policy and real public tool registries.
+They do not qualify native process admission or complete M10.2.

@@ -112,3 +112,5 @@
   - [Retained application-tool policy](history/E-AI-011.md)
   - [Retained AI chat presentation and controller](history/E-AI-012.md)
   - [Retained chat catalog qualification](history/E-AI-013.md)
+
+  - [Retained controlled AI Settings](history/E-AI-014.md)

@@ -77,3 +77,21 @@ Disclosure queries follow the source-owned complete visible names: tool name,
 target and rendered metadata; collapsed groups name their visible latest call
 and count. Status is an accessible description. Every original geometry,
 keyboard, navigation, detail and approval assertion is retained.
+
+## Retained AI Settings
+
+Source: `lapis-plugins` revision `ee20d366`,
+`packages/ai/src/lib/settings/{register-ai-settings,ai-settings-tab,app-tool-setting-rows}.ts`.
+`plugins/ai/Settings.stories.ts` renders the existing public Workspace Settings
+surface with the production desktop registration and a disposable real App.
+
+ControlledPreferences retains provider/model/thinking controls and independent
+saved models. HistoricalRuntimePreferences keeps deferred choices readable and
+inert until explicitly replaced with ACP. ToolRegistryAndCleanup retains tool
+defaults, community opt-in, live registry changes and plugin-owned disposal.
+SaveFailureAndRetry covers durable failure recovery through the existing field
+error UI. UnavailableModelCatalog retains the visible saved choice and its data,
+and asserts error delivery through the existing App notification service. Only
+catalog clients and persistence faults are injected; no production fake runtime
+or custom Settings screen is added. All five stories remain visual-pending.
+History/Catalog, placements and native AI keep separate gates.

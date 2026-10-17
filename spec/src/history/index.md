@@ -111,3 +111,5 @@ by the task ledger, not inferred from this list.
 - [Retained AI chat presentation and controller](E-AI-012.md)
 
 - [Retained chat catalog qualification](E-AI-013.md)
+
+- [Retained controlled AI Settings](E-AI-014.md)

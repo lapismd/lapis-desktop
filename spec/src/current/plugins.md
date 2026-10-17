@@ -286,3 +286,21 @@ using a test-only exposed collector. Missing collector support fails the run.
 This resource policy retains fixture teardown, test isolation, all four
 theme/viewport lanes, accessibility rules and unhandled-error reporting. It does
 not expose collection in the application or change native lifecycle gates.
+
+## Retained AI settings
+
+AI reuses the existing declarative Settings fields and controlled plugin-data
+source. Durable writes serialize, retain historical payloads and independent
+provider models, and publish only after persistence succeeds. Settings do not
+create flat application-configuration values. New runtime choices are ACP-only;
+deferred historical preferences remain readable without becoming execution
+authority or being silently rewritten by an unrelated edit.
+
+Provider model sources retain saved choices on unavailable catalogs, reject
+cross-provider entries and fence stale or disposed asynchronous results.
+Fallbacks read the latest durable model, and failed inventory/default writes
+preserve that choice and report through the existing notification service.
+Registered tool controls retain first-party defaults, explicit community opt-in
+and legacy owner migration. Tool/settings subscriptions and option sources
+belong to the registering plugin and are disposed with it. Settings catalog
+qualification alone does not mount the bundled AI plugin or admit execution.
