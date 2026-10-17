@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-024 preserves LD-DESK-003; injected persistence drains before native scope
-release.
+E-AI-024/025 preserve LD-DESK-003: owned persistence drains and shared vault
+admission remain native.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on

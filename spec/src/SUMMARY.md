@@ -133,3 +133,5 @@
   - [E-AI-023: Notes-owned native AI services](history/E-AI-023.md)
   - [E-STARTUP-002: Shared progress before shell import](history/E-STARTUP-002.md)
   - [E-AI-024: Injectable conversation persistence](history/E-AI-024.md)
+
+  - [E-AI-025: shared native vault admission](history/E-AI-025.md)

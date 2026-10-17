@@ -1,5 +1,5 @@
 use crate::host::state::{NativeHost, NativeServices};
-use lapis_desktop::ai::admission::{AiLease, RetiredAdmission};
+use lapis_desktop::vault::admission::{RetiredAdmission, VaultLease};
 use std::{
     io,
     sync::{Arc, OnceLock, Weak},
@@ -42,7 +42,7 @@ impl DesktopAiPolicy {
             .set(Arc::downgrade(workers))
             .map_err(|_| io::Error::other("AI worker owner is already initialized"))
     }
-    fn current(&self, context: &HostContext) -> Result<AiLease> {
+    fn current(&self, context: &HostContext) -> Result<VaultLease> {
         local(context)?;
         let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
         let result = {

@@ -266,3 +266,8 @@ the ongoing M10.2–M10.4 delivery scope.
 
 E-STRUCTURE-003 separates the AI/compute contract without changing requirement
 text or original task gates. Contract organization cannot qualify execution.
+
+E-AI-025 shares native physical-vault admission without adding a repository
+command or completing M10.2. Independent service registries preserve separate
+activation and retirement. JJ history, durable capture and conversation backend
+integration retain their own remaining gates.

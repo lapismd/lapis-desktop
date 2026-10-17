@@ -1,7 +1,7 @@
 use super::DesktopAiPolicy;
 use crate::host::state::{NativeHost, NativeServices};
 use lapis_desktop::{
-    ai::admission::AiAdmissions, database::NativeDatabases, vault::VaultManager,
+    database::NativeDatabases, vault::VaultManager, vault::admission::VaultAdmissions,
     watch::WatchRegistry,
 };
 use std::sync::{Arc, Mutex};
@@ -26,7 +26,7 @@ fn fixture() -> Fixture {
         .unwrap()
         .session_id;
     let host = NativeHost(Arc::new(Mutex::new(NativeServices {
-        ai: AiAdmissions::default(),
+        ai: VaultAdmissions::default(),
         vaults,
         databases: NativeDatabases::new(profile.path().join("databases")),
         watches: WatchRegistry::default(),

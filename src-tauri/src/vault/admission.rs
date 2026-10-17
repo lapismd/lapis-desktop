@@ -7,16 +7,22 @@ use std::{
 use uuid::Uuid;
 
 #[derive(Clone, Debug)]
-pub struct AiLease {
+pub struct VaultLease {
     generation: String,
     session: String,
     profile: String,
     root: PathBuf,
     identity: (u64, u64),
 }
-impl AiLease {
+impl VaultLease {
     pub fn generation(&self) -> &str {
         &self.generation
+    }
+    pub fn session(&self) -> &str {
+        &self.session
+    }
+    pub fn profile(&self) -> &str {
+        &self.profile
     }
     pub fn root(&self) -> &Path {
         &self.root
@@ -29,7 +35,7 @@ impl AiLease {
 pub struct AdmissionPlan {
     window: String,
     ticket: Uuid,
-    lease: AiLease,
+    lease: VaultLease,
     preserve: bool,
 }
 impl AdmissionPlan {
@@ -56,17 +62,17 @@ enum State {
     Suspended,
 }
 struct Entry {
-    lease: AiLease,
+    lease: VaultLease,
     state: State,
 }
 
 /// Native-only transitions; no renderer-supplied root or generation.
 #[derive(Default)]
-pub struct AiAdmissions {
+pub struct VaultAdmissions {
     entries: HashMap<String, Entry>,
     closing: HashMap<String, Vec<RetiredAdmission>>,
 }
-impl AiAdmissions {
+impl VaultAdmissions {
     pub fn prepare(
         &mut self,
         vaults: &VaultManager,
@@ -79,7 +85,7 @@ impl AiAdmissions {
             || (!self.entries.contains_key(window) && self.entries.len() >= 16)
             || self.closing.contains_key(session)
         {
-            return Err(denied("AI admission is unavailable"));
+            return Err(denied("Vault admission is unavailable"));
         }
         let mut lease = current(vaults, session, Uuid::new_v4().to_string())?;
         let previous = self.entries.get(window);
@@ -105,12 +111,16 @@ impl AiAdmissions {
         })
     }
     /// Required worker retirement must succeed before this phase.
-    pub fn complete(&mut self, vaults: &VaultManager, plan: &AdmissionPlan) -> io::Result<AiLease> {
+    pub fn complete(
+        &mut self,
+        vaults: &VaultManager,
+        plan: &AdmissionPlan,
+    ) -> io::Result<VaultLease> {
         let matches = self.entries.get(&plan.window).is_some_and(
             |entry| matches!(entry.state, State::Pending(ticket) if ticket == plan.ticket),
         );
         if !matches || self.closing.contains_key(&plan.lease.session) {
-            return Err(denied("AI admission transition is stale"));
+            return Err(denied("Vault admission transition is stale"));
         }
         let verified = current(vaults, &plan.lease.session, plan.lease.generation.clone());
         match verified {
@@ -122,7 +132,7 @@ impl AiAdmissions {
                 self.entries.remove(&plan.window);
                 Err(result
                     .err()
-                    .unwrap_or_else(|| denied("AI vault identity changed")))
+                    .unwrap_or_else(|| denied("Vault folder identity changed")))
             }
         }
     }
@@ -130,10 +140,10 @@ impl AiAdmissions {
         &mut self,
         vaults: &VaultManager,
         window: &str,
-    ) -> Result<AiLease, AdmissionFailure> {
+    ) -> Result<VaultLease, AdmissionFailure> {
         let unavailable = || AdmissionFailure {
             retired: None,
-            error: denied("AI is disabled or suspended"),
+            error: denied("Vault scope is disabled or suspended"),
         };
         let entry = self
             .entries
@@ -157,7 +167,7 @@ impl AiAdmissions {
                     }),
                     error: result
                         .err()
-                        .unwrap_or_else(|| denied("AI vault identity changed")),
+                        .unwrap_or_else(|| denied("Vault folder identity changed")),
                 })
             }
         }
@@ -199,11 +209,11 @@ impl AiAdmissions {
         self.closing.remove(session);
     }
 }
-fn current(vaults: &VaultManager, session: &str, generation: String) -> io::Result<AiLease> {
+fn current(vaults: &VaultManager, session: &str, generation: String) -> io::Result<VaultLease> {
     let root = vaults.get(session)?;
     root.verify_physical_root()?;
     let descriptor = vaults.descriptor(session)?;
-    Ok(AiLease {
+    Ok(VaultLease {
         generation,
         session: session.into(),
         profile: descriptor.profile_id.clone(),

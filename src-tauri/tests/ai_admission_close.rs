@@ -1,7 +1,7 @@
-use lapis_desktop::{ai::admission::AiAdmissions, vault::VaultManager};
+use lapis_desktop::{vault::VaultManager, vault::admission::VaultAdmissions};
 use tempfile::tempdir;
 
-fn activate(registry: &mut AiAdmissions, vaults: &VaultManager, session: &str) -> String {
+fn activate(registry: &mut VaultAdmissions, vaults: &VaultManager, session: &str) -> String {
     let plan = registry.prepare(vaults, "main", session).unwrap();
     registry
         .complete(vaults, &plan)
@@ -20,7 +20,7 @@ fn failed_vault_worker_retirement_can_be_retried_until_closure_finishes() {
         .unwrap()
         .unwrap()
         .session_id;
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let original = activate(&mut registry, &vaults, &closing);
     let first = registry.begin_close_vault(&closing);
     assert_eq!(first.len(), 1);

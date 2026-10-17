@@ -189,3 +189,8 @@ coverage.
 The crate-owned staged-file helper also supports the named AI user-command
 store's explicit replacements. Vault creation still uses exclusive publication;
 collisions, cleanup, containment and watch behavior remain unchanged.
+
+The shared native vault-admission registry preserves the existing physical-root
+proof and two-phase transition. Independent service registries do not grant one
+another access. Native vault closure still waits for each owned service's
+retirement before releasing the underlying folder admission.

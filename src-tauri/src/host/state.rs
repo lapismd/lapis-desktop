@@ -7,7 +7,7 @@ use std::{
 use tauri::Manager;
 
 pub struct NativeServices {
-    pub ai: lapis_desktop::ai::admission::AiAdmissions,
+    pub ai: lapis_desktop::vault::admission::VaultAdmissions,
     pub vaults: VaultManager,
     pub databases: NativeDatabases,
     pub watches: WatchRegistry,
@@ -88,7 +88,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
     let profile =
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
-        ai: lapis_desktop::ai::admission::AiAdmissions::default(),
+        ai: lapis_desktop::vault::admission::VaultAdmissions::default(),
         vaults: VaultManager::new(&profile)?,
         databases: NativeDatabases::new(profile.join("databases")),
         watches: WatchRegistry::default(),

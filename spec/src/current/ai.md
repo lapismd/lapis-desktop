@@ -321,3 +321,10 @@ choose directories or follow escaping symlinks. AI execution stays gated.
 Subscribed stores poll bounded admitted inventories every second without
 overlapping reads or repeated errors. Last unsubscribe stops polling; closure
 drains reads and fences late results. File commands have no duplicate app rows.
+
+Native physical-vault admission is shared service code under `vault/admission`.
+AI and repository consumers retain separate registry instances: enabling or
+revoking one never grants or releases another. The AI adapter retains its
+original two-phase ticket, generation, reload, close and worker-retirement
+rules; no command, event, permission or prompt behavior changes with this
+refactor.

@@ -131,3 +131,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-023: Notes-owned native AI services](E-AI-023.md)
 - [E-STARTUP-002: Shared progress before shell import](E-STARTUP-002.md)
 - [E-AI-024: Injectable conversation persistence](E-AI-024.md)
+
+- [E-AI-025: shared native vault admission](E-AI-025.md)

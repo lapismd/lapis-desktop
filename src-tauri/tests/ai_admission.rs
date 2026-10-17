@@ -1,5 +1,5 @@
 use lapis_desktop::{
-    ai::admission::AiAdmissions,
+    vault::admission::VaultAdmissions,
     vault::{VaultDescriptor, VaultManager},
 };
 use std::{fs, io};
@@ -26,7 +26,7 @@ fn vaults() -> Vaults {
         selected,
     }
 }
-fn activate(registry: &mut AiAdmissions, vaults: &Vaults, window: &str) -> String {
+fn activate(registry: &mut VaultAdmissions, vaults: &Vaults, window: &str) -> String {
     let plan = registry
         .prepare(&vaults.manager, window, &vaults.selected.session_id)
         .unwrap();
@@ -40,7 +40,7 @@ fn activate(registry: &mut AiAdmissions, vaults: &Vaults, window: &str) -> Strin
 #[test]
 fn admission_requires_a_live_vault_and_a_completed_native_transition() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     assert!(registry.authorize(&vaults.manager, "main").is_err());
     assert!(
         registry
@@ -67,7 +67,7 @@ fn admission_requires_a_live_vault_and_a_completed_native_transition() {
 #[test]
 fn reload_retains_only_the_same_physical_vault_under_a_new_vault_token() {
     let mut vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let generation = activate(&mut registry, &vaults, "main");
     assert!(registry.leave("main", true));
     assert!(
@@ -103,7 +103,7 @@ fn reload_retains_only_the_same_physical_vault_under_a_new_vault_token() {
 #[test]
 fn explicit_disable_requires_retirement_and_never_resurrects_its_generation() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let original = activate(&mut registry, &vaults, "main");
     assert!(!registry.leave("main", false));
     assert!(
@@ -126,7 +126,7 @@ fn explicit_disable_requires_retirement_and_never_resurrects_its_generation() {
 #[test]
 fn an_obsolete_async_transition_cannot_activate_or_remove_the_newer_scope() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let first = registry
         .prepare(&vaults.manager, "main", &vaults.selected.session_id)
         .unwrap();
@@ -148,7 +148,7 @@ fn an_obsolete_async_transition_cannot_activate_or_remove_the_newer_scope() {
 #[test]
 fn invalid_replacement_cannot_evict_a_valid_scope() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let generation = activate(&mut registry, &vaults, "main");
     assert!(
         registry
@@ -167,7 +167,7 @@ fn invalid_replacement_cannot_evict_a_valid_scope() {
 #[test]
 fn reload_cannot_reuse_a_generation_after_the_physical_root_is_replaced() {
     let mut vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let generation = activate(&mut registry, &vaults, "main");
     let profile = vaults.selected.profile_id.clone();
     registry.leave("main", true);
@@ -198,7 +198,7 @@ fn reload_cannot_reuse_a_generation_after_the_physical_root_is_replaced() {
 #[test]
 fn physical_replacement_during_a_transition_fails_closed() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let plan = registry
         .prepare(&vaults.manager, "main", &vaults.selected.session_id)
         .unwrap();
@@ -214,7 +214,7 @@ fn physical_replacement_during_a_transition_fails_closed() {
 #[test]
 fn stale_live_roots_return_the_exact_retired_generation_once() {
     let mut vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let generation = activate(&mut registry, &vaults, "main");
     vaults.manager.close(&vaults.selected.session_id).unwrap();
     let failure = registry.authorize(&vaults.manager, "main").unwrap_err();
@@ -233,7 +233,7 @@ fn stale_live_roots_return_the_exact_retired_generation_once() {
 #[test]
 fn changing_vaults_requires_retirement_and_leaves_other_windows_admitted() {
     let mut vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     let main = activate(&mut registry, &vaults, "main");
     let other = activate(&mut registry, &vaults, "other");
     let next = tempdir().unwrap();
@@ -268,7 +268,7 @@ fn changing_vaults_requires_retirement_and_leaves_other_windows_admitted() {
 #[test]
 fn closing_a_vault_fences_new_transitions_until_native_closure_finishes() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     activate(&mut registry, &vaults, "main");
     let plan = registry
         .prepare(&vaults.manager, "other", &vaults.selected.session_id)
@@ -293,7 +293,7 @@ fn closing_a_vault_fences_new_transitions_until_native_closure_finishes() {
 #[test]
 fn invalid_window_labels_and_unbounded_admissions_cannot_grow_state() {
     let vaults = vaults();
-    let mut registry = AiAdmissions::default();
+    let mut registry = VaultAdmissions::default();
     for label in ["", "bad\nwindow", &"x".repeat(257)] {
         assert!(
             registry
