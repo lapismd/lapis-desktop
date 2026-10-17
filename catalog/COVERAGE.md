@@ -1,5 +1,8 @@
 # Desktop catalog coverage
 
+The complete AI source-family inventory and remaining unique scenarios are
+tracked in [AI migration coverage](AI_MIGRATION.md).
+
 The canonical task ledger owns completion status. This maps application surfaces
 to their real component stories; migrated plugin stages extend it with source
 revision, source story, destination story and retained assertions before
@@ -135,6 +138,20 @@ reuse and manager-driven disable/re-enable. `Lifetime.stories.ts` and
 `PanelLifetime.stories.ts` cover chat bootstrap cleanup and draining pending
 Chat/History/Catalog reads before database closure.
 
-All remain visual-pending. JSONL preview, unique retained source scenarios and
-production native admission/recovery retain M10.2 gates. Original standalone
-source registrations remain until full handover qualifies.
+All remain visual-pending. Unique retained source scenarios and production
+native admission/recovery retain M10.2 gates. Original standalone source
+registrations remain until full handover qualifies.
+
+## JSONL file preview
+
+Source `lapis-plugins` `ee20d366`, `lib/jsonl` and Shell.JsonlPreview, maps to
+`plugins/ai/Jsonl.stories.ts`. Transcript retains the original default editor
+association, one file-only view, exact path, user/assistant/tool/reasoning
+timeline, absent composer and hidden dock assertions. It also checks unchanged
+bytes on save and zero runtime sessions. AgentEvents retains durable binding
+validation; StructuredRefreshAndRename covers generic records, repeated open,
+guarded writes, schema selection on rename and manager-driven disable/re-enable.
+InterruptedAppend, MalformedRecord and EmptyFile retain readable diagnostics.
+DisableDuringFileRead verifies late initial IO cannot mount after disabling and
+that owned closure waits for that load. All run with the actual desktop plugin
+and WorkspaceShell; no baseline or source registration is retired here.

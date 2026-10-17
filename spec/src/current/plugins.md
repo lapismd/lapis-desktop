@@ -359,5 +359,27 @@ registration in real disposable WorkspaceShell Apps. Their six original
 placement, paint, geometry, interaction and public example assertions remain;
 catalog clients do not qualify native execution or authenticated tool IPC.
 Shells mount after plugin and layout boot, matching the original App fixture.
-The catalog pre-optimizes the portable redaction and schema dependencies before
-loading plugin stories so cold startup cannot reload an active test mid-import.
+The catalog pre-optimizes portable redaction, schema and JSONL icon imports
+before loading plugin stories so cold startup cannot reload an active test
+mid-import.
+
+## Retained JSONL file preview
+
+Enabled AI retains the file-only `ai-jsonl` view and default `.jsonl`
+association. Validated transcripts reuse the durable chat projection; validated
+agent events retain their timeline and structured records. Other JSONL retains
+line-numbered records. Interrupted final appends preserve prior records with a
+warning; terminated malformed records remain readable errors.
+
+The preview has no composer or editing actions and never saves file content.
+Vault changes refresh it through the existing file-view lifecycle. Filename
+changes update schema selection after guarded writes/renames settle. Mounting
+uses the retained file-view content host so reopening preserves the surface.
+Pending view loads and component teardown belong to the AI scope; closing or
+disabling cancels publication and drains owned work. Previewing stored data
+never starts or resumes an ACP session. This does not qualify ordinary bundled
+native AI admission or its recovery gate.
+
+`catalog/AI_MIGRATION.md` compares all 56 maintained plugin and 49 Notes AI
+scenario exports, including differing plays. Remaining shell/native cases stay
+explicit; additional desktop regression counts cannot replace them.

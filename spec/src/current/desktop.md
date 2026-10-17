@@ -339,5 +339,6 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-AI follows [plugin contracts](plugins.md): owned ACP views, Settings,
-History/Catalog and awaited cleanup. Catalog clients do not admit execution.
+AI follows [plugin contracts](plugins.md): owned views, Settings,
+History/Catalog, read-only JSONL and awaited cleanup. Catalogs do not admit
+execution.

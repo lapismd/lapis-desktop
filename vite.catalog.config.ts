@@ -20,6 +20,7 @@ export default defineConfig({
     include: [
       "@lapismd/agent-redaction",
       "@cfworker/json-schema",
+      "@lucide/svelte/icons/file-json",
       "@storybook/addon-a11y > axe-core",
       "@lapis-notes/api > eventemitter3",
       "@lapis-notes/api > @codemirror/state",

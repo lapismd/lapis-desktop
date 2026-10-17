@@ -146,3 +146,13 @@ every original spinner, cancellation and unknown-outcome assertion.
 Real Chat/History/Catalog read drains, zero-allocation startup, first-location
 stability, explicit replacement and manager-driven re-enable are catalog gates.
 They do not qualify ordinary native ACP execution or complete M10.2.
+
+## JSONL preview
+
+`jsonl/preview.test.ts` retains all five source parser cases from lapis-plugins
+`ee20d366`. `jsonl/view.test.ts` retains the two view cases and adds owned read/
+unmount drainage, cancelled publication and closed admission. Live props use the
+base file view's reactive data/path; workspace save remains inert. Real-App
+catalog checks separately retain the original shell-preview assertions and
+exercise reopen, guarded refresh/rename, disable/re-enable and pending initial
+read cleanup. These do not admit ordinary native AI execution.

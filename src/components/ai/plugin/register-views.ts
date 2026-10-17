@@ -4,10 +4,12 @@ import type { AiApplication } from "../../../lib/ai/plugin/application.ts";
 import { AiView } from "../views/ai-view.ts";
 import { AiHistoryView } from "../views/history-view.ts";
 import { AiCatalogView } from "../views/catalog-view.ts";
+import { AiJsonlView } from "../views/jsonl-view.ts";
 import {
   AI_VIEW,
   AI_HISTORY_VIEW,
   AI_CATALOG_VIEW,
+  AI_JSONL_VIEW,
 } from "../../../lib/ai/plugin/view-types.ts";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import {
@@ -16,6 +18,18 @@ import {
   conversationPaletteItem,
 } from "../../../lib/ai/conversations/conversation-palette.ts";
 export function registerAiViews(plugin: Plugin, host: AiApplication): void {
+  plugin.registerView(AI_JSONL_VIEW, (leaf) => new AiJsonlView(leaf, host), {
+    kind: "file",
+  });
+  plugin.registerEditorView({
+    id: AI_JSONL_VIEW,
+    viewType: AI_JSONL_VIEW,
+    label: "AI JSONL",
+    description: "Read-only chat and event preview for JSON Lines files.",
+    filenamePatterns: [".jsonl", "*.jsonl"],
+    priority: "default",
+  });
+  plugin.registerExtensions(["jsonl"], AI_JSONL_VIEW);
   const perform = (action: () => Promise<void>) => {
     if (!host.active) return;
     void host.operations.track(action()).catch((error) => host.report(error));

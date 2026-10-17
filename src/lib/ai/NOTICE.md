@@ -71,5 +71,11 @@ six real workspace placements and owned plugin composition now retain the same
 revision's `ai-plugin.ts`, view registration and panel fixture/examples. Desktop
 uses only ACP runtime ports and awaits owned lifecycle work. The old controller
 host, native-mode execution and original broad fixture's unrelated plugins are
-excluded. JSONL preview and the complete bundled native handover remain
-separate.
+excluded. The complete bundled native handover remains separate.
+
+JSONL preview, file-view identity, original parser/view cases and shell-preview
+assertions retain lapis-plugins ee20d366, `lib/jsonl` and
+`shell/Shell.stories.ts`. Desktop uses the public file content host, owned
+change subscriptions, guarded refresh, awaited unmount and an inert save method.
+Shared Markdown/Chat/CodeBlock presentation remains imported through public
+package exports.
