@@ -143,3 +143,5 @@ by the task ledger, not inferred from this list.
 - [E-CATALOG-005: Selected merge settings](E-CATALOG-005.md)
 
 - [E-CATALOG-006: Compact merge settings](E-CATALOG-006.md)
+
+- [E-CATALOG-007: Lapis reading-view sizing](E-CATALOG-007.md)

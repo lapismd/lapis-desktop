@@ -42,3 +42,37 @@ export const EditNote: Story = {
   },
 };
 export const Dark: Story = { ...EditNote, globals: { colorMode: "dark" } };
+
+export const ReadingNote: Story = {
+  play: async (context) => {
+    await EditNote.play?.(context);
+    const canvas = within(context.canvasElement);
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: /Current view: editing.*Click to read/s,
+      }),
+    );
+    await waitFor(() => {
+      const root = context.canvasElement.querySelector(
+        '[data-ui-component="markdown-mira-preview"]',
+      );
+      const preview = root?.querySelector(".mira-markdown-preview");
+      const viewport = root?.querySelector(
+        '[data-ui-part="scroll-area-viewport"]',
+      );
+      expect(preview).not.toBeNull();
+      expect(viewport).not.toBeNull();
+      expect(preview).not.toBeUndefined();
+      expect(viewport).not.toBeUndefined();
+      const bounds = preview!.getBoundingClientRect();
+      const available = viewport!.getBoundingClientRect();
+      expect(bounds.top).toBeLessThanOrEqual(available.top + 1);
+      expect(bounds.bottom).toBeGreaterThanOrEqual(available.bottom - 1);
+      expect(getComputedStyle(preview!).overflowY).toBe("visible");
+    });
+  },
+};
+export const ReadingNoteDark: Story = {
+  ...ReadingNote,
+  globals: { colorMode: "dark" },
+};

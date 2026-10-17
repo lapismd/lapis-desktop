@@ -146,3 +146,5 @@
 - [Selected merge settings](history/E-CATALOG-005.md)
 
 - [Compact merge settings](history/E-CATALOG-006.md)
+
+- [Lapis reading-view sizing](history/E-CATALOG-007.md)

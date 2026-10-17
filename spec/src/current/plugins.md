@@ -156,3 +156,8 @@ meaningful action icons. File conflicts open Problems and use the shared
 editable three-way comparison in a workspace view. The user has deferred suites
 and native builds for this presentation slice; retain visual-pending and the
 pending verification ledger.
+
+Notes workspace ReadingNote and ReadingNoteDark review the actual Markdown
+reading surface through its public source-owned archive. Short notes fill the
+available pane; long-document scrolling remains owned by the existing shared
+Scroll Area. Source stories cover short/long notes in both themes separately.

@@ -4,8 +4,8 @@ The requested M8.5 shell/story review consumes local Design Core 0.5.1 while
 preserving existing desktop contracts. It adds editable Problems-based conflict
 review, shared recovery presentation and product-only Terminal previews. Merge
 settings use compact controls with selected backgrounds (E-CATALOG-005/006).
-Test suites and native builds remain deferred; AI work stays paused for this
-review.
+Reading previews now fill their pane through the source-owned Markdown adapter
+(E-CATALOG-007). Suites and native builds stay deferred; AI remains paused.
 
 E-REPO-002 completes M13.1's original native admission gate. M13 and M13.2
 remain In progress; visible Notes history/diffs and recoverable JJ-backed chat
