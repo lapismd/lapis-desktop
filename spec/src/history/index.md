@@ -118,3 +118,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-017: Retained JSONL file preview](E-AI-017.md)
 
 - [E-AI-018: Retained AI shell scenarios](E-AI-018.md)
+
+- [E-AI-019: Committed native AI dependency intake](E-AI-019.md)

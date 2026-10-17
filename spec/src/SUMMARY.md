@@ -119,3 +119,5 @@
   - [E-AI-017: Retained JSONL file preview](history/E-AI-017.md)
 
   - [E-AI-018: Retained AI shell scenarios](history/E-AI-018.md)
+
+  - [E-AI-019: Committed native AI dependency intake](history/E-AI-019.md)

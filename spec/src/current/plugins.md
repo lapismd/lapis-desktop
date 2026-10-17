@@ -392,3 +392,7 @@ where its story names match maintained plugin cases. Test clients and timing
 gates remain catalog-owned. Fixtures own definite viewport heights; full-window
 geometry checks also apply to unnamed test canvases. Ordinary native execution
 keeps its separate gate.
+
+Native dependency intake records qualified `lapis-ai` source independently of
+runtime admission. Locked normal/e2e checks remain required; source changes do
+not grant production capabilities.

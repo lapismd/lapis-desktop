@@ -352,3 +352,7 @@ it supplies no rune shim. Desktop pins Svelte 5.57.2 to match the linked
 Terminal's public component types, preventing duplicate snippet identities.
 Registry icon imports remain portable. Local archive refresh retains payload
 verification and records each source repair before consumer qualification.
+
+Native dependency refresh records the clean owning source revision and its
+qualification separately from consumer checks. Update only required lock graph
+edges; locked checks and packaged ACP acceptance must retain existing gates.

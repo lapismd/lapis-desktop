@@ -339,6 +339,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-AI follows [plugin contracts](plugins.md): owned views, Settings, JSONL and
-awaited cleanup. Retained shell/Docs use disposable Apps; native admission stays
-unavailable.
+AI follows [plugin contracts](plugins.md). UI, JSONL and cleanup are retained;
+native dependency qualification does not admit production execution.
