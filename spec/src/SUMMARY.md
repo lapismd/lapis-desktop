@@ -107,3 +107,5 @@
   - [Retained chat state and native uncertainty](history/E-AI-009.md)
 
   - [Retained desktop memory policy](history/E-AI-010.md)
+
+  - [Retained application-tool policy](history/E-AI-011.md)

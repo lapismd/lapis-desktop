@@ -103,3 +103,5 @@ by the task ledger, not inferred from this list.
 - [Retained chat state and native uncertainty](E-AI-009.md)
 
 - [Retained desktop memory policy](E-AI-010.md)
+
+- [Retained application-tool policy](E-AI-011.md)

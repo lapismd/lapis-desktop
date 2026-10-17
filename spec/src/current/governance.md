@@ -332,3 +332,8 @@ Vite.
 Memory capture uses the registry `@lapismd/agent-redaction` portable root only.
 Its Node/Deno/secretlint execution exports do not enter the renderer graph.
 Dependency installation retains the same 14 verified ignored archive routes.
+
+App-tool schema interpretation uses the registry @cfworker/json-schema public
+root and standard draft-7 meta-schema data with attribution. Tests run with
+string code generation disabled; no unsafe-eval CSP grant, JavaScript runtime
+service or legacy bridge is added. The same 14 verified archive routes remain.

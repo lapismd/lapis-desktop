@@ -231,3 +231,18 @@ integration is implemented.
 Record IDs must be strings, and serialization must fit the reader's 512 KiB
 limit before any history/preimage mutation. Rejected records leave the current
 revision and revision history unchanged.
+
+Retained application-tool policy snapshots the App-owned registry, verifies its
+registration identity before dispatch, confines execution to its conversation
+scope and keeps local write/external approvals. Unregister cancels affected
+active invocations and pending approvals; the original unavailable-tool outcome
+is preserved. Pre-cancelled requests cannot invoke callbacks. Cancellation after
+mutating dispatch records an unknown effect rather than claiming failure.
+
+Input/output schemas are admitted against the standard draft-7 meta-schema, with
+supported dialects and self-contained resolvable references. A portable
+interpreter validates them without string code generation. Owned schema clones
+preserve frozen registrations and reject forged interpreter annotations. The
+retained policy suites and V8 no-code-generation probe do not qualify native
+WebKit CSP, authenticated Rust tool IPC or durable effect reconciliation; those
+remain M10.3 gates.

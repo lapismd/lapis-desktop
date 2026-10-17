@@ -63,10 +63,9 @@ recovery expectation; it does not waive an existing functional check.
 | memory-scheduler.test.ts                                   | memory-scheduler.test.ts               |
 | runtime-consolidation-provider.test.ts                     | runtime-consolidation-provider.test.ts |
 
-All 17 service cases are retained. The separate **one-case memory app-tools
-describe remains pending** until the owned AppToolHost is ported and qualified;
-it is not skipped, counted as passing or covered by direct service calls. The
-source registry authorization/assertions must still run through that host.
+All 17 service cases and the separate one-case memory app-tools describe are
+retained. `memory-tools.test.ts` runs the original provider-independent snapshot
+and cross-binding result assertions through the owned AppToolHost.
 
 `ai-controller` 89b5c6f1's capture-boundary regression is retained in
 `memory-capture.test.ts`. Its separate ingestion/recall/forget fixture is
@@ -77,3 +76,21 @@ selection/startup. No durable schema, transcript hash or opaque ref is renamed.
 
 `memory-record-validation.test.ts` additionally rejects non-string IDs and
 oversized writes before either current state or revision preimages change.
+
+## Application-tool policy
+
+`tools/app-tool-host.test.ts` retains all 13 source cases in the same
+destination path. Imports target separate errors, contracts, approvals and
+schema modules. The original unloaded-during-approval assertion still requires
+`tool_unavailable` and no execution. New lifetime cases additionally require
+immediate signal cancellation on unregister, no pre-cancelled dispatch and an
+unknown checkpoint outcome when cancellation wins after mutating dispatch.
+
+`app-tool-schema.test.ts` covers full draft-7 meta-schema validation,
+unavailable references, supported dialects, frozen registration integrity and
+structured results. Its two initially invalid root-schema fixtures were
+corrected to exercise nested invalid schemas past the public registry's
+object-root guard; no admission assertion was removed. `app-tool-csp.test.ts`
+uses a fresh Node subprocess with string code generation disabled. That is
+interpreter evidence, not native WebKit CSP acceptance or Rust IPC
+qualification.

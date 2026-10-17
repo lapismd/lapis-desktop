@@ -37,3 +37,12 @@ ai-controller 89b5c6f1. Vault adapters, app tools and retained memory suites use
 lapis-plugins 56b5d6c1. These are now desktop-owned modules; no controller
 package is linked or imported. Shared hashes use the owned conversation
 implementation.
+
+Application-tool policy and its original 13-case suite retain lapis-plugins
+56b5d6c1. The old controller/Deno bridge is excluded. Runtime AJV code
+generation is replaced by the public portable @cfworker/json-schema interpreter.
+The unmodified draft-7 meta-schema data is from
+https://json-schema.org/draft-07/schema, retrieved 2026-10-17; its specification
+license is retained in tools/schema/LICENSE.md (JSON Schema Specification
+Authors, BSD-3-Clause / Academic Free License 3.0). This is declarative standard
+schema data rather than a vendored validation implementation.

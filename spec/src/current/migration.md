@@ -197,6 +197,6 @@ M10.3 and M10.4. The ledger alone owns completion; existing catalog passes
 cannot qualify the still-unmigrated AI stories or native product behavior.
 
 M10.2's restored memory policy retains original service/storage/scheduler
-suites; its standalone app-tool-host case remains pending. Memory unit
-qualification does not complete mounted AI views, stories or durable native turn
-recovery.
+suites; its app-tool-host case now runs through the retained owned policy.
+Memory unit qualification does not complete mounted AI views, stories or durable
+native turn recovery.
