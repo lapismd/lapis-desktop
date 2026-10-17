@@ -16,6 +16,8 @@ pub struct ShellInfo {
     process_id: u32,
     ready: bool,
     #[cfg(feature = "e2e")]
+    background_api: bool,
+    #[cfg(feature = "e2e")]
     native_menus: Result<Vec<crate::acceptance::integration::MenuEntry>, String>,
     #[cfg(feature = "e2e")]
     native_popouts: Vec<crate::acceptance::popouts::ProofWindow>,
@@ -50,6 +52,8 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
         process_id: std::process::id(),
         ready: app.state::<ShellState>().ready.load(Ordering::SeqCst),
         #[cfg(feature = "e2e")]
+        background_api: crate::acceptance::background::enabled(),
+        #[cfg(feature = "e2e")]
         native_menus: crate::acceptance::integration::menus(&app),
         #[cfg(feature = "e2e")]
         native_popouts: crate::acceptance::popouts::windows(&app).await,
@@ -70,7 +74,7 @@ pub fn shell_ready(
     state: tauri::State<'_, ShellState>,
 ) -> Result<(), String> {
     #[cfg(all(feature = "e2e", target_os = "macos"))]
-    {
+    if !crate::acceptance::background::enabled() {
         app.show().map_err(|error| error.to_string())?;
         if let Some(window) = app.get_webview_window("main") {
             window.show().map_err(|error| error.to_string())?;

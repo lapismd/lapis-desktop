@@ -136,6 +136,37 @@ test("desktop integration retains exact local grants and rejects additional plug
   }
 });
 
+test("AI admission grants never include ACP execution authority", () => {
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  const capabilities = JSON.parse(
+    readFileSync("src-tauri/capabilities/main.json", "utf8"),
+  );
+  const config = JSON.parse(readFileSync("src-tauri/tauri.conf.json", "utf8"));
+  const admitted = {
+    ...capabilities,
+    permissions: [
+      ...new Set([
+        ...capabilities.permissions,
+        "allow-desktop-ai-admit",
+        "allow-desktop-ai-release",
+      ]),
+    ],
+  };
+  assert.deepEqual(auditManifest(manifest, admitted, config), []);
+  for (const permission of [
+    "lapis-ai:acp-session",
+    "lapis-ai:allow-open",
+    "lapis-ai:allow-submit",
+  ])
+    assert.ok(
+      auditManifest(
+        manifest,
+        { ...admitted, permissions: [...admitted.permissions, permission] },
+        config,
+      ).some(({ code }) => code === "LD-CAPABILITY-SCOPE"),
+    );
+});
+
 test("only authorized private native-client public-build links are admitted during migration", () => {
   const capabilities = JSON.parse(
     readFileSync("src-tauri/capabilities/main.json", "utf8"),

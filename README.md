@@ -72,6 +72,7 @@ pnpm test
 pnpm spec:check
 pnpm test:desktop
 pnpm test:desktop:headed
+pnpm test:desktop:api
 pnpm desktop:bundle --debug
 pnpm check:bundle
 ```
@@ -85,6 +86,12 @@ Chromium. It opens no native app and does not use the session clipboard. Use
 stop animation frames even with background scheduling enabled, so the quiet
 browser/service lane cannot substitute for real native UI qualification. CI
 explicitly retains the headed native acceptance step.
+
+`pnpm test:desktop:api` is an optional macOS ARM64 native IPC lane. It builds a
+separate e2e bundle, keeps its WebView hidden and prohibits application
+activation. It checks AI admission and cold restart without requiring animation
+frames. It refuses a running acceptance app and does not qualify visible UI or
+OS actions. The default command stays browser/service-only.
 
 Headed acceptance builds a separate feature/configuration, starts the actual
 macOS ARM64 WebView in a UI session and two cold lifecycle launches with

@@ -37,7 +37,8 @@
     "test:storybook": "node scripts/catalog-tests.mjs",
     "test:ai": "vitest run --config vitest.ai.config.mjs",
     "test:desktop:headless": "node scripts/desktop-tests.mjs --headless",
-    "test:desktop:headed": "node scripts/desktop-tests.mjs --headed"
+    "test:desktop:headed": "node scripts/desktop-tests.mjs --headed",
+    "test:desktop:api": "node scripts/desktop-api-tests.mjs"
   },
   "dependencies": {
     "@lapis-notes/api": "^0.1.4",

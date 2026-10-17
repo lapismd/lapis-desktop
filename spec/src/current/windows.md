@@ -29,6 +29,12 @@ windows and nonblank navigation. It receives no new IPC capability grant. The
 ordinary renderer and native callback keep denying popup creation until M7.3
 supplies safe admission and shared close coordination.
 
+Explicit background API acceptance creates only the hidden, unfocused main
+window and prohibits macOS activation. Its launcher removes popup-proof opt-in
+and real-picker flags. This debug-only IPC lane cannot qualify visible popup
+hosting, control geometry or window movement; ordinary window configuration and
+the headed proof stay unchanged.
+
 Native chrome observers belong to individual windows and are removed on window
 destruction or host exit. No raw native pointer survives its live main-thread
 callback. The original 40px strip and y=20 native-control centers remain

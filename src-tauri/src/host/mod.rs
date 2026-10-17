@@ -9,6 +9,7 @@ pub(crate) mod vault;
 pub(crate) mod windows;
 
 use tauri::Manager;
+use tauri_plugin_lapis_ai::AiExt;
 
 pub fn run() -> tauri::Result<()> {
     let state = tauri_plugin_window_state::Builder::default();
@@ -20,7 +21,9 @@ pub fn run() -> tauri::Result<()> {
         state.with_filename(path)
     };
     let terminal = crate::host::terminal::DesktopTerminalPolicy::default();
+    let ai = crate::host::ai::policy::DesktopAiPolicy::default();
     let builder = tauri::Builder::default()
+        .manage(ai.clone())
         .manage(terminal.clone())
         .plugin(tauri_plugin_lapis_terminal::Builder::new(terminal).build())
         .plugin(tauri_plugin_single_instance::init(|app, args, _| {
@@ -59,13 +62,19 @@ pub fn run() -> tauri::Result<()> {
             }
         })
         .plugin(state.build());
+    #[cfg(not(feature = "e2e"))]
+    let builder = builder.plugin(tauri_plugin_lapis_ai::Builder::new(ai.clone()).build());
     #[cfg(feature = "e2e")]
     let builder = {
-        let policy = crate::acceptance::acp::Policy::default();
-        let builder = builder
-            .manage(policy.clone())
-            .plugin(tauri_plugin_lapis_ai::Builder::new(policy).build())
-            .plugin(tauri_plugin_wdio::init());
+        let builder = if crate::acceptance::background::enabled() {
+            builder.plugin(tauri_plugin_lapis_ai::Builder::new(ai.clone()).build())
+        } else {
+            let policy = crate::acceptance::acp::Policy::default();
+            builder
+                .manage(policy.clone())
+                .plugin(tauri_plugin_lapis_ai::Builder::new(policy).build())
+        };
+        let builder = builder.plugin(tauri_plugin_wdio::init());
         // The embedded driver's WKUIDelegate replaces Wry's popup callback.
         // This dedicated proof uses console receipts and retains the real delegate.
         if crate::acceptance::popouts::mode().is_some() {
@@ -81,6 +90,8 @@ pub fn run() -> tauri::Result<()> {
             crate::host::terminal::desktop_terminal_admit,
             crate::host::terminal::desktop_terminal_release,
             crate::host::ai::user_commands::desktop_ai_user_commands,
+            crate::host::ai::admission::desktop_ai_admit,
+            crate::host::ai::admission::desktop_ai_release,
             crate::host::shell::shell_info,
             crate::host::shell::shell_ready,
             crate::host::integration::services::desktop_clipboard_read,
@@ -106,8 +117,18 @@ pub fn run() -> tauri::Result<()> {
             crate::host::database::vault_db_execute,
             crate::host::database::vault_db_close
         ])
-        .setup(|app| {
+        .setup(move |app| {
+            #[cfg(all(feature = "e2e", target_os = "macos"))]
+            if crate::acceptance::background::enabled() {
+                app.set_activation_policy(tauri::ActivationPolicy::Prohibited);
+            }
             crate::host::state::initialize(app.handle())?;
+            ai.initialize(
+                app.state::<crate::host::state::NativeHost>()
+                    .inner()
+                    .clone(),
+                &app.ai(),
+            )?;
             app.set_menu(crate::host::integration::menu::build(app.handle())?)?;
             crate::host::windows::build(app.handle())?;
             crate::host::integration::arguments(app.handle(), std::env::args().skip(1));

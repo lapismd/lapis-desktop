@@ -12,6 +12,8 @@ fn main() {
         "desktop_terminal_admit",
         "desktop_terminal_release",
         "desktop_ai_user_commands",
+        "desktop_ai_admit",
+        "desktop_ai_release",
         "shell_info",
         "shell_ready",
         "desktop_clipboard_read",

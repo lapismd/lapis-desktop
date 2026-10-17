@@ -22,7 +22,14 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
     let navigation = app.clone();
     let popup = app.clone();
     let resources = app.clone();
-    WebviewWindowBuilder::from_config(app, configuration)?
+    let builder = WebviewWindowBuilder::from_config(app, configuration)?;
+    #[cfg(feature = "e2e")]
+    let builder = if crate::acceptance::background::enabled() {
+        builder.visible(false).focused(false)
+    } else {
+        builder
+    };
+    builder
         .on_web_resource_request(move |request, response| {
             if request
                 .uri()

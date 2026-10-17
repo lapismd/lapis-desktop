@@ -94,6 +94,9 @@ pub async fn acp_acceptance_control(
     if window.label() != "main" {
         return Err("denied".into());
     }
+    if crate::acceptance::background::enabled() {
+        return Err("Background API checks do not admit fixture control".into());
+    }
     let host = app.ai();
     match operation.as_str() {
         "disable" => host.disable().await,

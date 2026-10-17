@@ -10,7 +10,7 @@ default-run = "lapis-desktop"
 [features]
 default = []
 custom-protocol = ["tauri/custom-protocol"]
-e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver", "dep:tauri-plugin-lapis-ai"]
+e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
 cap-std = "=4.0.3"
@@ -38,7 +38,7 @@ uuid = { version = "1", features = ["v4", "serde"] }
 
 tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin-lapis-terminal" }
 
-tauri-plugin-lapis-ai = { path = "../../lapis-ai/crates/tauri-plugin-lapis-ai", optional = true }
+tauri-plugin-lapis-ai = { path = "../../lapis-ai/crates/tauri-plugin-lapis-ai" }
 
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-usernotifications = { version = "=0.3.1", default-features = false }

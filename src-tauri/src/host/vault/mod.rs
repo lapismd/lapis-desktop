@@ -159,6 +159,7 @@ pub async fn vault_close(
     session_id: String,
 ) -> Result<(), NativeError> {
     let closing = session_id.clone();
+    crate::host::ai::admission::close_vault(&app, host.inner().clone(), &session_id).await?;
     access(host.inner().clone(), move |manager| {
         manager.close_vault(&closing)
     })

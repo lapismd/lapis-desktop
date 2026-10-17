@@ -7,6 +7,7 @@ use std::{
 use tauri::Manager;
 
 pub struct NativeServices {
+    pub ai: lapis_desktop::ai::admission::AiAdmissions,
     pub vaults: VaultManager,
     pub databases: NativeDatabases,
     pub watches: WatchRegistry,
@@ -25,7 +26,9 @@ impl NativeServices {
         // A watcher never acquires the services lock. Do not hold fs_gate here:
         // joining a worker waiting to snapshot would otherwise deadlock.
         self.watches.close_session(session_id)?;
-        self.with_files(|services| services.vaults.close(session_id))
+        self.with_files(|services| services.vaults.close(session_id))?;
+        self.ai.finish_close_vault(session_id);
+        Ok(())
     }
 
     pub fn with_files<T>(
@@ -85,6 +88,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
     let profile =
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
+        ai: lapis_desktop::ai::admission::AiAdmissions::default(),
         vaults: VaultManager::new(&profile)?,
         databases: NativeDatabases::new(profile.join("databases")),
         watches: WatchRegistry::default(),

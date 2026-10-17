@@ -26,6 +26,12 @@ repository-source traversal, formatting and commits.
 
 ## Requirements
 
+Native AI admission adds only named main-window admit/release frames. Ordinary
+ACP renderer execution stays denied. The linked Rust adapter is compiled into
+ordinary builds but its policy exposes no targets or executable selection.
+Actual mounted admission/recovery qualification remains required before Notes
+service binding is enabled; the existing e2e transport fixture is independent.
+
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                                                                                                                                                                                                                                  |
@@ -367,3 +373,19 @@ The local desktop default is the quiet renderer/native-service/catalog lane.
 Native acceptance in CI explicitly selects the headed runner; changing a local
 default must not silently remove the original native gate. macOS hidden WebKit
 stops animation frames, so browser/service success is separately labelled.
+
+## Native acceptance modes
+
+Cold-process acceptance matches the complete Rust readiness output before
+retaining a bounded tail. A listening driver socket alone cannot prove IPC
+readiness; early evaluation can lose replies during navigation. Keep the bounded
+startup deadline.
+
+The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
+checks with macOS activation prohibited. It verifies native caller/frame policy,
+vault lifetime and cold admission reset without visible UI or animation claims.
+It never invokes foreground recovery, real pickers or popup proofs, refuses a
+running acceptance application and checks its binary's background-mode marker
+before launch. Background controls compile only in debug e2e artifacts. The
+quiet default remains browser/catalog plus native services; the headed lane
+retains the complete native UI/OS gate.

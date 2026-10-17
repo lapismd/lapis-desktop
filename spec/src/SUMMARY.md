@@ -129,3 +129,4 @@
   - [Desktop state review coverage](history/E-CATALOG-002.md)
   - [E-AI-021: External user-command refresh](history/E-AI-021.md)
   - [E-STRUCTURE-003: Dedicated AI contract](history/E-STRUCTURE-003.md)
+  - [E-AI-022: Native AI admission and quiet IPC acceptance](history/E-AI-022.md)

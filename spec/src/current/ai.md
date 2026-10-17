@@ -4,6 +4,28 @@
 Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).
 
+Native AI admission uses a two-phase, window-owned transition over an existing
+live vault token. Pending transitions cannot authorize ACP. A new root retires
+the affected window's workers before activation; reload preserves a generation
+only for the same profile and physical root. Explicit disable rotates it.
+Completion revalidates the physical root and rejects stale tickets. Vault close
+fences new transitions before cleanup, while suspended reload scopes remain
+retained. Invalid active roots identify exactly their retired generation for
+scoped cleanup. Native caller/origin checks and target policy remain host-owned;
+the renderer cannot choose a root, executable, environment or generation.
+
+Ordinary builds register the native ACP host with no targets and no renderer
+ACP-session grant. The two exact admit/release commands accept only a vault
+token or reload flag, reject surplus authority fields and derive window/origin
+from Tauri. Pending scopes stay unavailable until prior worker cleanup succeeds.
+Failed cleanup remains retryable; root failure retires only its old generation.
+Vault closure retains exact generation-scoped cleanup targets across retries, so
+delayed old-vault cleanup cannot revoke a newer window admission. Destroyed
+windows invalidate pending admissions before they can publish late. The isolated
+e2e transport policy remains separate. Production target selection, Notes
+service binding and actual mounted native recovery keep their M10.2 gate;
+registering the host alone cannot enable ordinary AI execution.
+
 ## Requirements
 
 | ID          | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                 |

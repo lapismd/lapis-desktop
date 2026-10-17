@@ -35,6 +35,8 @@
     "lapis-terminal:session",
     "allow-desktop-terminal-admit",
     "allow-desktop-terminal-release",
-    "allow-desktop-ai-user-commands"
+    "allow-desktop-ai-user-commands",
+    "allow-desktop-ai-admit",
+    "allow-desktop-ai-release"
   ]
 }

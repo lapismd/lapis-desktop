@@ -103,11 +103,6 @@ application version. `shell_ready` acknowledges renderer readiness. Native
 state, rather than a DOM marker alone, confirms that handshake. These commands
 confer no vault or process authority.
 
-Cold-process acceptance matches the complete Rust readiness output before
-retaining a bounded tail. A listening driver socket alone cannot prove IPC
-readiness; early evaluation can lose replies during navigation. Keep the bounded
-startup deadline.
-
 Native acceptance launches its separately identified macOS application bundle
 and brings the real WebView forward before interactions. Hidden WebKit pages
 suspend animation frames and cannot qualify menu completion. Focus permission
@@ -129,9 +124,9 @@ MouseEvents and cannot establish AppKit titlebar dragging. Physical native input
 and persisted window positions must qualify that boundary separately; synthetic
 pointer results cannot waive it.
 
-E2E readiness unhides the application and shows/focuses its window before the
-handshake; setting focus alone cannot unhide a background macOS process. This
-activation code is excluded from ordinary bundles. An e2e-only native probe
+Headed e2e readiness unhides the application and shows/focuses its window before
+the handshake; setting focus alone cannot unhide a background macOS process.
+This activation code is excluded from ordinary bundles. An e2e-only native probe
 distinguishes visibility, minimization, active-Space membership, occlusion and
 key-window state when foreground qualification fails. The original
 visible-document guard and its deadline remain mandatory. While its original
@@ -140,6 +135,9 @@ Tauri's focus request for a hidden document. macOS can decline the first request
 while a preceding cold process is leaving its Space. The driver must observe
 actual visibility and a real animation frame before interacting. No Space,
 window-level or stacking override is applied.
+
+[Governance](governance.md#native-acceptance-modes) defines the separate hidden
+IPC acceptance mode and cold readiness policy.
 
 ## Native vault access (M2)
 
@@ -340,4 +338,4 @@ Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
 AI retains UI, JSONL and cleanup under [AI contract](ai.md). Bounded command
-polling is owned; dependency qualification does not admit execution.
+polling and native scope gates stay owned; intake does not admit execution.

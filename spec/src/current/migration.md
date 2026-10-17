@@ -9,6 +9,14 @@ slice and continue without an automatic review pause. M7.3 remains a separate
 ordinary-window integration task, while M11 distribution and M12 cutover remain
 later work.
 
+Quiet desktop checks and the mapped minimal-shell state catalog are complete
+(M0.2/M8.4). Native AI admission groundwork is selected under M10.2: caller and
+vault lifetime checks have a separate hidden-WebView API lane. Ordinary builds
+still expose no AI execution targets or ACP-session grants. Bind the admitted
+Notes services and qualify mounted context/skills/recovery next. Full native UI
+qualification remains explicit headed work; both corrected Search consumer
+regressions pass in E-AI-022.
+
 M7.2 qualifies retained live popup projection, guarded shared close and browser
 header clearance through source-owned public archives. Its browser evidence does
 not admit ordinary Tauri windows or replace M7.3 native qualification.

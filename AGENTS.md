@@ -101,6 +101,7 @@ adapters:
 src-tauri/src/
   main.rs                  Binary entrypoint and debug acceptance feature gate
   lib.rs                   Reusable native service module declarations
+  ai/                      Native AI admission and user-command policy
   database/                Database connections, registry, SQL guard and frames
   integration/             URL and desktop-service policy
   lifecycle/               Leave request state machine
@@ -110,6 +111,7 @@ src-tauri/src/
   watch/                   Scoped filesystem snapshots and watch ownership
   host/                    Tauri bootstrap and adapters
     mod.rs                 Application construction and command registration
+    ai/                    ACP policy and named admission/data adapters
     shell.rs               Shell information and readiness commands
     state.rs               Owned native resources and blocking access
     lifecycle.rs           Tauri lifecycle events and guarded leave commands
@@ -166,6 +168,9 @@ native-service checks. `pnpm test:desktop:headless` makes that choice explicit;
 `pnpm test:desktop:headed` builds and exercises the actual native WebView/window
 and OS suite. Both modes are also available as `--headless`/`--headed` on the
 default script. Headless success cannot qualify a native product gate. Use
-`pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation qualification.
-Do not publish, replace installed applications, or reuse a user's profile for
-tests.
+`pnpm test:desktop:api` for opt-in macOS ARM64 IPC checks in a hidden native
+WebView. This e2e-only mode prohibits activation and tests no animation or OS
+UI; it is separate from the quiet default and refuses a running acceptance app.
+Use `pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation
+qualification. Do not publish, replace installed applications, or reuse a user's
+profile for tests.

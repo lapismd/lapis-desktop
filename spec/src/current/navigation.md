@@ -5,6 +5,12 @@ Their public views, controls, settings and command openers remain authoritative;
 the host adds the plugin profile and native qualification. Do not create a
 replacement Search, metadata panel, graph or navigation implementation.
 
+E-AI-022 revalidates the two E-AI-020 native Search regressions with the
+corrected public source archive: disk recovery updates live settings before
+another write, and indexing/navigation retains the query after cold restart.
+Both original cases pass unchanged; hidden API and browser checks remain
+separate evidence.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                             |

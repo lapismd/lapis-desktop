@@ -44,12 +44,15 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
         .unwrap()
         .approved_exit();
     match event {
-        #[cfg(target_os = "macos")]
         RunEvent::WindowEvent {
             label,
             event: WindowEvent::Destroyed,
             ..
-        } => crate::host::windows::macos_chrome::release(&label),
+        } => {
+            crate::host::ai::admission::window_destroyed(app, &label);
+            #[cfg(target_os = "macos")]
+            crate::host::windows::macos_chrome::release(&label);
+        }
         #[cfg(target_os = "macos")]
         RunEvent::Opened { urls } => {
             for url in urls {

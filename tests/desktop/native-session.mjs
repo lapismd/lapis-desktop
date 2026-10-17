@@ -1,4 +1,4 @@
-import { spawn } from "node:child_process";
+import { spawn, execFileSync } from "node:child_process";
 import { createWriteStream } from "node:fs";
 import { createServer } from "node:net";
 import { resolve, join } from "node:path";
@@ -8,6 +8,10 @@ import assert from "node:assert/strict";
 import { focusNativeWindow } from "./native-visibility.mjs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
 import { rendererReadiness } from "./native-readiness.mjs";
+import {
+  nativeSessionMode,
+  assertBackgroundAvailability,
+} from "./native-session-mode.mjs";
 
 async function availablePort() {
   const server = createServer();
@@ -26,12 +30,20 @@ export async function nativeSession(
     "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
   ),
   args = [],
+  options = {},
 ) {
+  const mode = nativeSessionMode(options);
+  const executable = acceptanceBinary(executablePath, mode.requiredMarkers);
+  if (mode.background)
+    assertBackgroundAvailability(
+      executable,
+      execFileSync("/bin/ps", ["-axo", "pid=,comm="], { encoding: "utf8" }),
+    );
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
-  const child = spawn(acceptanceBinary(executablePath), args, {
+  const child = spawn(executable, args, {
     env: {
-      ...process.env,
+      ...mode.environment,
       PATH: "/usr/bin:/bin",
       TAURI_WEBDRIVER_PORT: String(port),
       LAPIS_DESKTOP_ACCEPTANCE_ROOT: root,
@@ -102,7 +114,7 @@ export async function nativeSession(
         ),
       { timeout: 10000 },
     );
-    await focusNativeWindow(browser);
+    if (!mode.background) await focusNativeWindow(browser);
     async function requestClose(quit = false) {
       await browser.execute((quit) => {
         setTimeout(() => {
