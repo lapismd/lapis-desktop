@@ -33,3 +33,35 @@ These service methods supply no renderer origin policy, IPC grant, query cache,
 reader drain or UI by themselves. Native transport integration must supply and
 qualify those boundaries separately. The repository specification and M13 ledger
 retain the complete history and recoverable conversation gates.
+
+## Tauri composition
+
+The native binary now installs `tauri-plugin-jj-store` with a policy backed by
+its separate `RepositoryAdmissions` instance. The exact main-window capability
+adds `jj-store:local-history` plus `desktop_repository_admit` and
+`desktop_repository_release`. No default, individual, wildcard or remote plugin
+permission is granted.
+
+Admit with `{ request: { sessionId } }` using the live native vault token. The
+command derives the current window/origin, prepares source authority, drains old
+work if needed and only then completes its ticket. Readers receive no native
+roots, cache policy or registration generation as input. The plugin's public
+`heads`, `open`, `status`, `read` and `close` carry bounded versioned JSON text.
+Every read rechecks its retained grant at entry and completion.
+
+Release with `{ request: { reload } }`. Reload suspends source authority and
+retains a verified base generation, but all handles drain and must be reopened.
+The transition guard also covers vault closure and database opening. An existing
+database blocks closure without changing history/AI authority; an opening that
+loses the close race waits, then rejects the closed admission with EACCES.
+
+Native window destruction invalidates pending tickets before plugin cleanup. The
+plugin owns final cancellation/drain at window destruction, exit and drop. A
+delayed old-vault closure skips a newer active grant because replacement could
+only activate after its predecessor drained. Failures retain unavailable scopes
+for explicit retry.
+
+The hidden native API lane exercises real stock-JJ history/diffs, source-byte
+preservation, external head advancement with retained pins, malformed frames, AI
+independence, database/close races, reload, physical replacement and cold
+restart. It does not establish a visible history panel or durable AI chat.

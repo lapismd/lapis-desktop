@@ -221,3 +221,22 @@ fn changed_or_symlinked_witnesses_reject_before_completion() {
     assert!(repo.authorize(&vaults, "main", &session).is_err());
     assert!(repo.prepare(&vaults, "main", &session).is_err());
 }
+
+#[test]
+fn delayed_retirement_cannot_select_a_newer_active_grant() {
+    let (root, mut vaults, session) = fixture(true);
+    let mut repo = RepositoryAdmissions::default();
+    let plan = repo.prepare(&vaults, "main", &session).unwrap();
+    repo.complete(&vaults, &plan).unwrap();
+    let retired = repo.begin_close_vault(&session);
+    assert!(repo.retirement_is_current(&retired[0]));
+    let next = root.path().join("Another vault");
+    std::fs::create_dir(&next).unwrap();
+    jj(&next, &["git", "init", "--colocate"]);
+    let next = vaults.select(Some(next), None).unwrap().unwrap().session_id;
+    let plan = repo.prepare(&vaults, "main", &next).unwrap();
+    let current = repo.complete(&vaults, &plan).unwrap();
+    assert!(!repo.retirement_is_current(&retired[0]));
+    repo.finish_close_vault(&session);
+    repo.check(&vaults, &current).unwrap();
+}

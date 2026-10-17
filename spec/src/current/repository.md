@@ -43,3 +43,27 @@ with actual caller frames and exact permission grants. Presentation uses
 released Design Core Chat/Diff exports with production component stories. A
 recoverable one-agent conversation completes the first usable milestone only
 after actual native persistence and restart acceptance.
+
+## Native history transport
+
+The named main-window admit/release commands accept only a live vault session or
+explicit reload mode. Tauri supplies caller window and URL; the host checks the
+bundled origin or exact development origin. The history plugin receives only
+`jj-store:local-history`; default, wildcard, remote and mutation grants remain
+absent. History is available independently of AI admission or targets.
+
+Every retained reader checks its exact native repository grant at entry and
+completion. The host supplies bounded defaults and a private profile cache; e2e
+acceptance uses its isolated temporary cache. The public versioned JSON text
+transport preserves full-width values and strict request frames.
+
+A shared native transition guard serializes replacement, release and vault
+closure through actual read/preparation drain. A failed drain leaves admission
+unavailable and retryable. Database blockers are checked before any vault-close
+fence. Database opening shares this guard, so it cannot invalidate a successful
+close preflight during reader drain. A delayed old-vault close skips a newer
+admitted generation because the replacement already drained its predecessor.
+Destroyed windows invalidate pending tickets immediately; plugin
+destruction/exit drains the reader owner. Reload suspends native authority and
+drains handles; verified re-admission may retain its registration generation but
+must obtain new handles.

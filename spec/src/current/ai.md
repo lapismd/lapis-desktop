@@ -1,5 +1,10 @@
 # Desktop AI and optional compute
 
+E-REPO-002 retains LD-AI-001 execution authority: repository history admission
+cannot admit AI or select a target. The existing cold AI admission case passes
+alongside the new independent history case. NativeServices test construction
+adds the separate registry without changing AI policy or raw-event ownership.
+
 `PLUGIN_MIGRATION.md` and the original M10 task gates remain authoritative.
 Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).

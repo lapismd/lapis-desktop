@@ -32,6 +32,11 @@ await run(
 );
 await run(
   process.execPath,
-  ["--test", "--test-concurrency=1", "tests/desktop/ai-admission.test.mjs"],
+  [
+    "--test",
+    "--test-concurrency=1",
+    "tests/desktop/ai-admission.test.mjs",
+    "tests/desktop/repository-admission.test.mjs",
+  ],
   environment,
 );

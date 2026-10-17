@@ -11,8 +11,10 @@ pub struct ConnectionAdmission {
 #[tauri::command]
 pub async fn vault_db_open(
     host: tauri::State<'_, NativeHost>,
+    repository: tauri::State<'_, crate::host::repository::RepositoryHost>,
     session_id: String,
 ) -> Result<ConnectionAdmission, NativeError> {
+    let _transition = repository.transitions.lock().await;
     access(host.inner().clone(), move |services| {
         let profile_id = services.vaults.descriptor(&session_id)?.profile_id.clone();
         let connection_id =

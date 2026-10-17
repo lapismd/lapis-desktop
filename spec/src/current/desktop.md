@@ -342,4 +342,4 @@ Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
 AI keeps UI, JSONL and cleanup under [AI](ai.md); [repository](repository.md)
-admission is independent. Native scope gates retain execution authority.
+admission owns history. Native scope gates retain execution authority.

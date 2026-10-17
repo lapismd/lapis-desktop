@@ -1,5 +1,10 @@
 # Migration inventory and progress
 
+E-REPO-002 completes M13.1's original native admission gate. M13 and M13.2
+remain In progress; visible Notes history/diffs and recoverable JJ-backed chat
+remain required. The shared delivery checklist in jj-store reports these slices
+without replacing this ledger or promoting fixture previews to product gates.
+
 The reusable workflow implementation resumes after the earlier review
 checkpoint. M10.2 adds a lazy conversation-persistence injection seam while
 retaining its original native-chat gate. Legacy vault-file conversations keep

@@ -66,7 +66,7 @@ importers:
         specifier: link:../lapis-ai/packages/ai
         version: link:../lapis-ai/packages/ai
       '@lapismd/design-core':
-        specifier: ^0.4.0
+        specifier: ^0.4.0 || ^0.5.1
         version: 0.4.0(svelte@5.57.2)(tailwindcss@4.3.3)
       '@lapismd/mira':
         specifier: ~0.0.5

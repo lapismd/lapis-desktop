@@ -230,3 +230,32 @@ test("desktop AI cannot restore controller, Node or legacy execution imports", (
     [],
   );
 });
+
+test("repository history uses only its exact local main-window permission set", () => {
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  const capabilities = JSON.parse(
+    readFileSync("src-tauri/capabilities/main.json", "utf8"),
+  );
+  const config = JSON.parse(readFileSync("src-tauri/tauri.conf.json", "utf8"));
+  assert.deepEqual(
+    capabilities.permissions.filter((p) => p.startsWith("jj-store:")),
+    ["jj-store:local-history"],
+  );
+  assert.deepEqual(auditManifest(manifest, capabilities, config), []);
+  for (const permission of [
+    "jj-store:default",
+    "jj-store:allow-heads",
+    "jj-store:allow-read",
+    "jj-store:allow-checkout",
+  ])
+    assert.ok(
+      auditManifest(
+        manifest,
+        {
+          ...capabilities,
+          permissions: [...capabilities.permissions, permission],
+        },
+        config,
+      ).some((e) => e.code === "LD-CAPABILITY-SCOPE"),
+    );
+});

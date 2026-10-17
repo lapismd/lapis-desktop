@@ -194,3 +194,10 @@ The shared native vault-admission registry preserves the existing physical-root
 proof and two-phase transition. Independent service registries do not grant one
 another access. Native vault closure still waits for each owned service's
 retirement before releasing the underlying folder admission.
+
+Native history closure shares the vault leave boundary. Database blockers reject
+before AI or repository fences; history replacement/release/close serialize
+through actual reader drain before the vault is released. Delayed old-vault
+cleanup cannot revoke a newer repository generation. Database opening uses the
+same transition guard; it cannot race a successful close preflight. See
+`repository.md`.

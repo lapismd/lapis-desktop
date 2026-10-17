@@ -38,6 +38,9 @@
     "allow-desktop-ai-user-commands",
     "allow-desktop-ai-admit",
     "allow-desktop-ai-release",
-    "lapis-ai:acp-session"
+    "lapis-ai:acp-session",
+    "allow-desktop-repository-admit",
+    "allow-desktop-repository-release",
+    "jj-store:local-history"
   ]
 }

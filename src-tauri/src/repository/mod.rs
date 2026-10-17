@@ -155,6 +155,13 @@ impl RepositoryAdmissions {
         }
         retired
     }
+    /// A replacement can activate only after the host drained its predecessor.
+    /// Delayed closure must therefore leave a newer active generation intact.
+    pub fn retirement_is_current(&self, retired: &RetiredAdmission) -> bool {
+        self.grants
+            .get(&retired.window)
+            .is_none_or(|grant| grant.vault_generation == retired.generation)
+    }
     pub fn finish_close_vault(&mut self, session: &str) {
         self.vault.finish_close_vault(session);
     }

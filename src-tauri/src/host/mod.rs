@@ -2,6 +2,7 @@ pub(crate) mod ai;
 pub(crate) mod database;
 pub(crate) mod integration;
 pub(crate) mod lifecycle;
+pub(crate) mod repository;
 pub(crate) mod shell;
 pub(crate) mod state;
 pub(crate) mod terminal;
@@ -92,6 +93,8 @@ pub fn run() -> tauri::Result<()> {
             crate::host::ai::user_commands::desktop_ai_user_commands,
             crate::host::ai::admission::desktop_ai_admit,
             crate::host::ai::admission::desktop_ai_release,
+            crate::host::repository::commands::desktop_repository_admit,
+            crate::host::repository::commands::desktop_repository_release,
             crate::host::shell::shell_info,
             crate::host::shell::shell_ready,
             crate::host::integration::services::desktop_clipboard_read,
@@ -123,6 +126,7 @@ pub fn run() -> tauri::Result<()> {
                 app.set_activation_policy(tauri::ActivationPolicy::Prohibited);
             }
             crate::host::state::initialize(app.handle())?;
+            crate::host::repository::initialize(app.handle())?;
             ai.initialize(
                 app.state::<crate::host::state::NativeHost>()
                     .inner()

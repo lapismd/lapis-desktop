@@ -27,6 +27,7 @@ fn fixture() -> Fixture {
         .session_id;
     let host = NativeHost(Arc::new(Mutex::new(NativeServices {
         ai: VaultAdmissions::default(),
+        repository: lapis_desktop::repository::RepositoryAdmissions::default(),
         vaults,
         databases: NativeDatabases::new(profile.path().join("databases")),
         watches: WatchRegistry::default(),

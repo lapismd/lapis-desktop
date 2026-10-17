@@ -7,6 +7,7 @@ use std::{
 use tauri::Manager;
 
 pub struct NativeServices {
+    pub repository: lapis_desktop::repository::RepositoryAdmissions,
     pub ai: lapis_desktop::vault::admission::VaultAdmissions,
     pub vaults: VaultManager,
     pub databases: NativeDatabases,
@@ -28,6 +29,7 @@ impl NativeServices {
         self.watches.close_session(session_id)?;
         self.with_files(|services| services.vaults.close(session_id))?;
         self.ai.finish_close_vault(session_id);
+        self.repository.finish_close_vault(session_id);
         Ok(())
     }
 
@@ -89,6 +91,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
         ai: lapis_desktop::vault::admission::VaultAdmissions::default(),
+        repository: lapis_desktop::repository::RepositoryAdmissions::default(),
         vaults: VaultManager::new(&profile)?,
         databases: NativeDatabases::new(profile.join("databases")),
         watches: WatchRegistry::default(),

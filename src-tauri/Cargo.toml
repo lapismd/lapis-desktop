@@ -13,6 +13,10 @@ custom-protocol = ["tauri/custom-protocol"]
 e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
+async-trait = "0.1"
+tokio = { version = "1", features = ["rt", "sync"] }
+tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", version = "0.1.0", features = ["tauri"] }
+
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
 jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1.0" }
 

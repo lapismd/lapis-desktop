@@ -11,7 +11,9 @@ two-phase window transitions; each consuming service owns a separate instance. A
 successful discovery or stored identity grants no live service authority.
 `repository::RepositoryAdmissions` additionally pins existing JJ/Git source
 identity and native generations; hosts drain readers before completing new
-admission or vault closure. It has no renderer command or AI execution grant.
+admission or vault closure. The binary now connects it to a private history
+cache and the read-only JJ Tauri plugin through exact admit/release commands. It
+grants no AI execution.
 
 Use the repository's development and acceptance commands from its root. Native
 service tests use `cargo test --manifest-path src-tauri/Cargo.toml --locked`;

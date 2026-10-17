@@ -14,6 +14,8 @@ fn main() {
         "desktop_ai_user_commands",
         "desktop_ai_admit",
         "desktop_ai_release",
+        "desktop_repository_admit",
+        "desktop_repository_release",
         "shell_info",
         "shell_ready",
         "desktop_clipboard_read",

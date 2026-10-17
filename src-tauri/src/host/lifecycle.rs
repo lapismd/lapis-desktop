@@ -50,6 +50,7 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             ..
         } => {
             crate::host::ai::admission::window_destroyed(app, &label);
+            crate::host::repository::commands::window_destroyed(app, &label);
             #[cfg(target_os = "macos")]
             crate::host::windows::macos_chrome::release(&label);
         }

@@ -1,7 +1,7 @@
 # Governance
 
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
-The repository topic owns versioned JJ source reuse; distribution stays gated.
+The repository topic owns versioned JJ reuse and exact history grants.
 
 App watch startup/leave integration and native reconciliation acceptance map
 explicitly to the M5 file contract. The source-owned public archive supplies

@@ -158,8 +158,12 @@ pub async fn vault_close(
     host: tauri::State<'_, VaultHost>,
     session_id: String,
 ) -> Result<(), NativeError> {
+    let repository = app.state::<crate::host::repository::RepositoryHost>();
+    let _transition = repository.transitions.lock().await;
     let closing = session_id.clone();
     crate::host::ai::admission::close_vault(&app, host.inner().clone(), &session_id).await?;
+    crate::host::repository::commands::close_vault(&repository, host.inner().clone(), &session_id)
+        .await?;
     access(host.inner().clone(), move |manager| {
         manager.close_vault(&closing)
     })
