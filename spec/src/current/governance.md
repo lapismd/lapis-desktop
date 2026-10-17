@@ -1,5 +1,8 @@
 # Governance
 
+E-AI-024 records injected-persistence source and catalog evidence. Native
+execution, JJ publication and distribution retain their existing gates.
+
 App watch startup/leave integration and native reconciliation acceptance map
 explicitly to the M5 file contract. The source-owned public archive supplies
 tree and view behavior; the host retains only startup and teardown policy.

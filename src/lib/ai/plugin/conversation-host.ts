@@ -3,7 +3,7 @@
 import type { App, WorkspaceLeaf } from "@lapis-notes/api";
 import type { ComposerTriggerItem } from "@lapismd/design-core/ai/chat";
 import { ConversationRepository } from "../conversations/conversation-repository.ts";
-import { VaultTranscriptStore } from "../conversations/vault-transcript-store.ts";
+import { ownedConversationPersistence } from "./conversation-persistence.ts";
 import { AiConversationIndex } from "../conversations/conversation-index.ts";
 import { ConversationScopeResolver } from "../conversations/scope-resolver.ts";
 import { hasHiddenApplicationSegment } from "../conversations/paths.ts";
@@ -27,6 +27,7 @@ export function conversationLocationFromLeaf(
 export class AiConversationHost {
   active = true;
   readonly operations = new AiOperations();
+  readonly persistence;
   readonly conversations: ConversationRepository;
   readonly conversationIndex: AiConversationIndex;
   readonly scopeResolver = new ConversationScopeResolver();
@@ -36,9 +37,8 @@ export class AiConversationHost {
     readonly app: App,
     readonly settings: AiSettingsStore,
   ) {
-    this.conversations = new ConversationRepository(
-      new VaultTranscriptStore(app.vault),
-    );
+    this.persistence = ownedConversationPersistence(app);
+    this.conversations = new ConversationRepository(this.persistence.store);
     this.conversationIndex = new AiConversationIndex(
       this.conversations,
       app.appDatabase,

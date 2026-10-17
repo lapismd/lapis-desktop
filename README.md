@@ -124,7 +124,11 @@ checkout. Build its public outputs first with `pnpm -C ../lapis-ai build`.
 Desktop consumes the private `@lapismd/ai` public build as a runtime dependency
 and its Rust plugin; no package publication is required. Notes binds the bundled
 AI views and user command store lazily. No ordinary execution target is enabled
-yet; native chat, context and recovery retain M10.2 qualification.
+yet; native chat, context and recovery retain M10.2 qualification. Hosts can
+inject App-owned conversation persistence before plugin loading; see the
+[persistence guide](docs/ai-conversation-persistence.md). Existing vault-file
+conversations retain their backend, and a failed injected backend never falls
+back to a second writer. The JJ adapter remains a separate implementation gate.
 `pnpm test:desktop:headed` stages the actual ACP binary and an isolated compiled
 Rust provider only into the acceptance bundle. The ordinary application excludes
 that policy, provider and test driver.

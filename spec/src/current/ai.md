@@ -80,6 +80,14 @@ with isolated diagnostics, and only an unterminated final JSON fragment may be
 ignored. Derived titles, pin/archive state, provenance deduplication, redaction
 and vault-trash deletion retain their established behavior.
 
+The owning App may lazily inject one conversation persistence backend before AI
+plugin loading. Existing installations select the legacy vault-file backend;
+injected allocation or publication failures never fall back to another writer.
+An AI application retains its selected backend for its whole lifetime. Close
+drains view and maintenance work, then persistence, before releasing runtime
+authority. A failed drain retains the backend and makes close retryable. This
+seam does not itself qualify a JJ backend or native capture ownership.
+
 App-owned handoff restores the pre-controller full/delta/summary-tail projection
 with verified transcript hashes, explicit target bindings and bounded evidence.
 Private reasoning is excluded and tool output is labeled untrusted. Handoff

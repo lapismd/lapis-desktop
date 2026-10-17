@@ -167,6 +167,19 @@ export class AiApplication extends AiConversationHost {
         this.operations.settle(),
       ])),
     );
+    // Keep native authority while durable persistence needs recovery. A later
+    // close retries the same backend's drain before releasing the runtime.
+    try {
+      await this.persistence.drain();
+    } catch (error) {
+      const earlier = results.flatMap((result) =>
+        result.status === "rejected" ? [result.reason] : [],
+      );
+      throw new AggregateError(
+        [...earlier, error],
+        "AI persistence cleanup failed",
+      );
+    }
     results.push(
       ...(await Promise.allSettled([
         this.services.close(aiLeaveMode(this.app, this.leaveMode)),

@@ -1,5 +1,11 @@
 # Migration inventory and progress
 
+The reusable workflow implementation resumes after the earlier review
+checkpoint. M10.2 adds a lazy conversation-persistence injection seam while
+retaining its original native-chat gate. Legacy vault-file conversations keep
+their existing backend. A receipt-aware JJ backend and native capture ownership
+still require implementation and separate downstream acceptance.
+
 The task ledger alone owns current statuses and selected completion evidence.
 Root `MIGRATION.md` is its generated projection; `PLAN.md` retains every
 original milestone gate. Component success, bookkeeping and screenshots cannot
