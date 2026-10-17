@@ -79,3 +79,10 @@ assertions retain lapis-plugins ee20d366, `lib/jsonl` and
 change subscriptions, guarded refresh, awaited unmount and an inert save method.
 Shared Markdown/Chat/CodeBlock presentation remains imported through public
 package exports.
+
+Full-shell fixtures and retained Shell/Registry behavior plays derive from
+lapis-plugins ee20d366, compared with Notes 77ae5c13. Desktop splits fixtures
+and stories by responsibility, injects catalog-only ACP clients and documents
+source differences in catalog/AI_MIGRATION.md. Public examples derive from
+actual seeds/layouts. Notes Catalog's command navigation and expansion checks
+are retained in addition to skill navigation.

@@ -116,3 +116,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-015: Retained History and Catalog panels](E-AI-015.md)
 - [E-AI-016: Owned AI workspace integration](E-AI-016.md)
 - [E-AI-017: Retained JSONL file preview](E-AI-017.md)
+
+- [E-AI-018: Retained AI shell scenarios](E-AI-018.md)

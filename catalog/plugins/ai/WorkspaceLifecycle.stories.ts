@@ -72,6 +72,7 @@ export const LazyStartAndFirstLocation: Story = {
   },
 };
 export const ExplicitConversationReplacement: Story = {
+  args: { layout: "middle-top-tabs" },
   play: async ({ canvasElement }) => {
     const { fixture, canvas, panel } = await chat(canvasElement);
     const host = fixture.plugin()!.application;
@@ -83,7 +84,9 @@ export const ExplicitConversationReplacement: Story = {
       (entry) => entry.metadata?.title === "Fix parser errors",
     )!;
     const leaf = fixture.app.workspace.getLeavesOfType("ai")[0];
-    await leaf.view.setState({ ...first.location });
+    await host.openAiConversation(first.location);
+    expect(fixture.app.workspace.getLeavesOfType("ai")).toEqual([leaf]);
+    expect(fixture.app.workspace.activeLeaf).toBe(leaf);
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-panel")).not.toBe(panel);
       expect(

@@ -383,3 +383,12 @@ native AI admission or its recovery gate.
 `catalog/AI_MIGRATION.md` compares all 56 maintained plugin and 49 Notes AI
 scenario exports, including differing plays. Remaining shell/native cases stay
 explicit; additional desktop regression counts cannot replace them.
+
+Retained shell checks cover model preparation with a disabled, stable composer,
+conversation menus and offline recovery, provider attribution and scope follow.
+Catalog controls retain explicit expand/collapse and source navigation for both
+commands and skills. The Notes copy's additional assertions remain required even
+where its story names match maintained plugin cases. Test clients and timing
+gates remain catalog-owned. Fixtures own definite viewport heights; full-window
+geometry checks also apply to unnamed test canvases. Ordinary native execution
+keeps its separate gate.

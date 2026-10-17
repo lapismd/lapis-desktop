@@ -55,6 +55,10 @@ export async function expectAiPlacement(
   const viewport = canvasElement.ownerDocument.documentElement;
   const demoBox = demo.getBoundingClientRect();
   const rootBox = storyRoot.getBoundingClientRect();
+  await expect(Math.abs(demoBox.height - viewport.clientHeight)).toBeLessThan(
+    1,
+  );
+  await expect(Math.abs(demoBox.width - viewport.clientWidth)).toBeLessThan(1);
   await expect(Math.abs(demoBox.width - rootBox.width)).toBeLessThan(1);
   await expect(Math.abs(demoBox.height - rootBox.height)).toBeLessThan(1);
   if (storyRoot.id === "storybook-root") {

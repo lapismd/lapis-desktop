@@ -9,7 +9,7 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M8.0,
 M8.1, M8.2, M8.3, M9.1, M10.1.
 
-Current work: M10.2 — Retain unique shell stories, then qualify native AI
+Current work: M10.2 — Qualify native admission, context and recovery
 
 Oldest pending gate: M7.3 — Separate ordinary popup integration, not an M8
 dependency
@@ -46,6 +46,6 @@ below.
 | M8.3  | Done        | Complete; continue to M9.1                                |
 | M9.1  | Done        | Complete; continue to M10.1 native ACP adapter            |
 | M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI              |
-| M10.2 | In progress | Retain unique shell stories, then qualify native AI       |
+| M10.2 | In progress | Qualify native admission, context and recovery            |
 | M10.3 | Planned     | Implement and qualify native tools and credentials        |
 | M10.4 | Planned     | Integrate optional compute last                           |

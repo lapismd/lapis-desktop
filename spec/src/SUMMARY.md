@@ -117,3 +117,5 @@
   - [E-AI-015: Retained History and Catalog panels](history/E-AI-015.md)
   - [E-AI-016: Owned AI workspace integration](history/E-AI-016.md)
   - [E-AI-017: Retained JSONL file preview](history/E-AI-017.md)
+
+  - [E-AI-018: Retained AI shell scenarios](history/E-AI-018.md)

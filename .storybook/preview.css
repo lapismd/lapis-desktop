@@ -12,3 +12,7 @@ body,
 #storybook-root {
   --ui-workspace-window-controls-overlay-inline-start: 80px;
 }
+
+.ai-shell-docs-canvas .docs-story .sb-story {
+  padding: 0;
+}

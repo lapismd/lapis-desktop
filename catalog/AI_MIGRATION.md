@@ -27,28 +27,40 @@ Compared sources:
 | Chat, History, Catalog: six placements each                            | `plugins/ai/placements/{Chat,History,Catalog}.stories.ts` | E-AI-016; all 18 retain geometry, paint, behavior and public examples                              |
 | Shell: JsonlPreview                                                    | `plugins/ai/Jsonl.stories.ts`                             | E-AI-017; original association/timeline/read-only assertions plus refresh and lifetime regressions |
 
-These are 42 of the 56 named source cases. New desktop admission, error,
-Settings, maintenance and lifetime regressions are additional evidence; their
-passing counts do not replace any source scenario below.
+The browser mapping now covers 54 of the 56 named source cases. New desktop
+admission, error, Settings, maintenance and lifetime regressions are additional
+evidence; their passing counts do not replace retained source scenarios.
 
-## Remaining unique shell and native scenarios
+## Retained shell compositions and native replacements
 
-| Source case                         | Required retained behavior / next destination                                                                                                              |
-| ----------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Shell.Desktop                       | Full shell, Explorer/ribbon, retained collapsed Search, one main Chat, composer stacking/message clearance, typography and controlled Settings persistence |
-| Shell.CommunityToolOptIn            | Real Settings defaults, named first-party/community tools, explicit opt-in and durable tool list without obsolete owner settings                           |
-| Shell.Mobile                        | Applicable narrow-shell navigation and open-tabs interaction; retain the stronger plugin-source play when comparing the older Notes copy                   |
-| Shell.ImmediateInitializingComposer | Preparing status, disabled input/model action, and the same composer becoming ready after delayed preparation; unmount-only coverage is insufficient       |
-| Shell.LocalConversations            | Menu reachability/typography, History reveal, archive/restore/delete, selected creation scope, main-leaf reuse and retained sidebar Chat                   |
-| Shell.AgentSwitching                | Offline Codex/Cursor/Codex attribution, full/delta handoffs, configuration audit records, context usage and no injected context in authored messages       |
-| Shell.Recovery                      | Durable content before resume, interrupted append, visible host failure, enabled retry and explicit unavailable-resume diagnostics                         |
-| Shell.FollowScope                   | Near/remote folder discovery, vault scope selection, Explorer synchronization and pin/unpin follow behavior                                                |
-| LiveHost.ManualAttach               | Replace controller attachment with native admitted ACP chat/cancel/approval/read/edit acceptance, not a browser service connector                          |
-| LiveHost.ReloadResume               | Native detach/reconnect, durable recovery, no uncertain replay, isolation and process cleanup                                                              |
-| Registry.ChatWithToolActivity       | Full main Chat trace, tool result and assistant response with collapsed left sidebar                                                                       |
-| Registry.Overview                   | Simultaneous Chat, History and Catalog through the actual plugin and shell                                                                                 |
-| Registry.History                    | Source-specific History shell composition and retained visible seeded content                                                                              |
-| Registry.Catalog                    | Source-specific Catalog shell composition and retained visible inventory                                                                                   |
+| Source case                         | Desktop destination / qualification                                                                                                                               |
+| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Shell.Desktop                       | `shell/Desktop.stories.ts`: full shell, Explorer/ribbon, collapsed Search, one main Chat, stacking/clearance, typography and durable Settings                     |
+| Shell.CommunityToolOptIn            | `shell/CommunityToolOptIn.stories.ts`: real Settings defaults, tool names, explicit opt-in and durable tool list                                                  |
+| Shell.Mobile                        | `shell/Mobile.stories.ts`: narrow-shell navigation and stronger plugin-source open-tabs interaction                                                               |
+| Shell.ImmediateInitializingComposer | `shell/ImmediateInitializingComposer.stories.ts`: preparation, disabled actions and same composer after readiness; minimal isolated case also retained            |
+| Shell.LocalConversations            | `shell/LocalConversations.stories.ts`: menu geometry/typography, History, archive/restore/delete, Notes creation scope, main-leaf reuse and retained sidebar Chat |
+| Shell.AgentSwitching                | `shell/AgentSwitching.stories.ts`: offline attribution, full/delta handoffs, audits, usage and authored/context separation                                        |
+| Shell.Recovery                      | `shell/Recovery.stories.ts`: durable content, interrupted append, host failure, enabled retry and explicit unavailable-resume diagnostics                         |
+| Shell.FollowScope                   | `shell/FollowScope.stories.ts`: near/remote discovery, vault scope, Explorer synchronization and pin/unpin follow                                                 |
+| Registry.ChatWithToolActivity       | `shell/Compositions.stories.ts`: actual main Chat, collapsed left sidebar, tool trace/result and assistant response                                               |
+| Registry.Overview                   | `shell/Compositions.stories.ts`: simultaneous production Chat, History and Catalog                                                                                |
+| Registry.History                    | `placements/History.stories.ts`, RightSidebar: strict superset of original ready-shell/panel-existence checks, plus content, geometry, paint and interaction      |
+| Registry.Catalog                    | `placements/Catalog.stories.ts`, RightSidebar: strict superset of original ready-shell/panel-existence checks, plus inventory, geometry, paint and interaction    |
+| LiveHost.ManualAttach               | Pending native admitted ACP chat/cancel/approval/read/edit acceptance; no browser controller connector                                                            |
+| LiveHost.ReloadResume               | Pending native detach/reconnect, durable recovery, no uncertain replay, isolation and cleanup                                                                     |
+
+E-AI-018 records shell/Notes qualification separately from native acceptance.
+Public Docs render the actual WorkspaceShell and derive source examples from the
+same seeds/layouts. Only catalog clients inject fake ACP; compositions start no
+workers. Original >500px panel and viewport checks remain enforced.
+
+LocalConversations explicitly starts Chat in the sidebar, matching its retained
+sidebar-preservation assertions. The former source fixture placed it in main;
+correct propagation of followed conversation identity now binds that leaf, so
+creating another conversation must preserve it. The sidebar fixture retains the
+original one-then-two main-leaf counts and matching-conversation reuse. The
+separate WorkspaceLifecycle case also proves unbound-main reuse directly.
 
 Registry composition checks do not authorize marketing-media generation,
 publication or baseline updates. All migrated surfaces remain visual-pending.
@@ -58,14 +70,13 @@ publication or baseline updates. All migrated surfaces remain visual-pending.
 The maintained plugin adds three Chat model/harness cases missing from Notes;
 all three are retained in desktop. Search naming follows the source-owned
 accessible filename/path contract. Notes's Catalog play adds real source-command
-navigation and explicit expand/collapse checks. Desktop currently retains
-skill-file navigation and the visible expand control; those extra command and
-expand/collapse assertions remain pending beyond the 14 named cases above. The
-newer Notes shell stores settings under `.lapis`, while the older plugin fixture
-still reads `.obsidian`; desktop keeps the application-wide `.lapis` contract
-and compatible AI plugin data.
+navigation and explicit expand/collapse checks. Desktop retains both skill-file
+and command-file navigation plus explicit expand/collapse assertions in panel
+and all six placement cases. The newer Notes shell stores settings under
+`.lapis`, while the older plugin fixture still reads `.obsidian`; desktop keeps
+the application-wide `.lapis` contract and compatible AI plugin data.
 
 The Notes Mobile play omits tab-sheet interaction that remains in the plugin
 source. Its LocalConversations play also differs in selected creation scope and
-visible labels. Keep these differences explicit during the remaining shell
-migration instead of treating either complete file as the only source.
+visible labels. Desktop retains the stronger mobile play and Notes-scoped
+creation; both source comparisons remain explicit.

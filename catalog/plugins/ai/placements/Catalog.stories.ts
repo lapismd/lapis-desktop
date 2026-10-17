@@ -44,10 +44,15 @@ function placement(layout: AiPanelLayout): Story {
       const plugin = fixture.plugin();
       expect(plugin).toBeInstanceOf(AiPlugin);
       if (!plugin) throw new Error("Missing production AI plugin");
-      await catalogAssertions(canvasElement, panel, async () => ({
-        settings: plugin.getSettings(),
-        opened: fixture.app.workspace.getActiveFile()?.path,
-      }));
+      await catalogAssertions(
+        canvasElement,
+        panel,
+        async () => ({
+          settings: plugin.getSettings(),
+          opened: fixture.app.workspace.getActiveFile()?.path,
+        }),
+        () => plugin.application.revealAiCatalog(),
+      );
       expectAiExample(parameters, kind, layout);
     },
   };

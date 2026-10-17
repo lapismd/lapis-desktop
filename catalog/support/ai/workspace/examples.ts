@@ -42,6 +42,8 @@ import { bindAi, type AiFactory } from "./src/lib/ai/plugin/services.ts";
 
 // Supply the desktop's admitted service factory; stories inject test clients.
 export async function openAiPanel(target: HTMLElement, createServices: AiFactory) {
+  const previousHostStyle = target.style.cssText;
+  Object.assign(target.style, { width: "100%", height: "100vh", minHeight: "0", overflow: "hidden" });
   const database = new MemoryAppDatabase(crypto.randomUUID());
   const app = new App({ version: "0.1.0", configPath: ".lapis/app.json",
     adapter: new MemoryVaultAdapter({ "Notes/Welcome.md": "# Welcome" }),
@@ -68,6 +70,7 @@ export async function openAiPanel(target: HTMLElement, createServices: AiFactory
     await app.metadataCache.dispose();
     await database.close();
     release(); compatibility();
+    target.style.cssText = previousHostStyle;
   } };
 }`,
       },

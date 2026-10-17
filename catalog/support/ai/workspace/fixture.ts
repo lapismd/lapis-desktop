@@ -33,12 +33,18 @@ export type AiWorkspaceScenario =
   | "safe-mode"
   | "installed-disabled"
   | "installed-copy"
+  | "initializing"
   | "unavailable";
 export function createAiWorkspaceFixture(
   kind: AiPanelKind,
   layout: AiPanelLayout,
   scenario: AiWorkspaceScenario,
 ) {
+  let releaseModels!: () => void;
+  const modelReady = new Promise<void>((resolve) => {
+    releaseModels = resolve;
+  });
+  if (scenario !== "initializing") releaseModels();
   const seed: Record<string, string> = { ...files };
   if (scenario === "disabled")
     seed[".lapis/core-plugins.json"] = JSON.stringify({
@@ -93,9 +99,10 @@ export function createAiWorkspaceFixture(
     return {
       runtime,
       models: {
-        listModels: async (provider) => [
-          { provider, model: "fixture-model", isDefault: true },
-        ],
+        listModels: async (provider) => {
+          await modelReady;
+          return [{ provider, model: "fixture-model", isDefault: true }];
+        },
       },
       unavailableReason: () =>
         scenario === "unavailable" ? "Fixture native AI is unavailable" : null,
@@ -154,6 +161,7 @@ export function createAiWorkspaceFixture(
   let shutdown: Promise<void> | undefined;
   const close = () =>
     (shutdown ??= (async () => {
+      releaseModels();
       try {
         await ready;
       } finally {
@@ -173,6 +181,7 @@ export function createAiWorkspaceFixture(
     app,
     ready,
     plugin,
+    releaseModels,
     async inspect() {
       const ai = plugin();
       if (ai?.loaded) await ai.settings.settle();

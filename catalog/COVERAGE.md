@@ -155,3 +155,22 @@ InterruptedAppend, MalformedRecord and EmptyFile retain readable diagnostics.
 DisableDuringFileRead verifies late initial IO cannot mount after disabling and
 that owned closure waits for that load. All run with the actual desktop plugin
 and WorkspaceShell; no baseline or source registration is retired here.
+
+## Retained AI shell
+
+Source: `lapis-plugins` `ee20d366`, `shell/Shell.stories.ts` and
+`RegistryScreenshots.stories.ts`, compared with Notes `77ae5c13`.
+`plugins/ai/shell` retains Desktop, CommunityToolOptIn, Mobile,
+ImmediateInitializingComposer, LocalConversations, AgentSwitching, Recovery and
+FollowScope, with their complete behavior plays and public Docs examples.
+Compositions retains ChatWithToolActivity and Overview; the existing right
+sidebar placements cover every original Registry History/Catalog assertion.
+`AI_MIGRATION.md` records all 54 browser mappings, the sidebar-fixture
+adaptation and the two pending native Live Host replacements. E-AI-018 records
+results.
+
+The Notes Catalog's extra command-file navigation and explicit expand/collapse
+checks now run in the leaf panel and every placement. Fixed viewport hosts and
+unconditional viewport assertions cover unnamed browser-test canvases too. All
+stories remain visual-pending; native admission and authenticated tools are
+separate from fake-client browser evidence.

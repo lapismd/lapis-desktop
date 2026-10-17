@@ -9,6 +9,7 @@ export async function catalogAssertions(
     settings: { disabledAppToolNames: string[] };
     opened?: string;
   }>,
+  revealPanel?: () => Promise<void>,
 ) {
   const inspect = readState ?? (() => inspectPanel(canvasElement));
   const panel = prepared ?? (await readyPanel(canvasElement, "ai-catalog"));
@@ -28,6 +29,15 @@ export async function catalogAssertions(
   expect(panel.getByText(/Search the user's Lapis Notes/i)).toBeVisible();
 
   expect(panel.getByRole("button", { name: "Expand all" })).toBeVisible();
+  await userEvent.click(panel.getByRole("button", { name: "Expand all" }));
+  await waitFor(() =>
+    expect(panel.getByRole("button", { name: "Collapse all" })).toBeVisible(),
+  );
+  await userEvent.click(panel.getByRole("button", { name: "Collapse all" }));
+  await waitFor(() =>
+    expect(panel.getByRole("button", { name: "Expand all" })).toBeVisible(),
+  );
+  await userEvent.click(panel.getByRole("button", { name: "Expand all" }));
 
   const checkbox = panel.getByRole("checkbox", {
     name: "Enable notes_search for the next chat",
@@ -57,4 +67,12 @@ export async function catalogAssertions(
       "Notes/.agents/skills/daily/SKILL.md",
     );
   });
+  await revealPanel?.();
+  await userEvent.clear(panel.getByLabelText("Filter catalog"));
+  const review = await panel.findByRole("button", { name: "Open review" });
+  expect(review).toBeVisible();
+  await userEvent.click(review);
+  await waitFor(async () =>
+    expect((await inspect()).opened).toBe("Notes/.agents/commands/review.md"),
+  );
 }

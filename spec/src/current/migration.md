@@ -223,7 +223,8 @@ preferences stay inert; no native runtime is restored by Settings intake.
 
 History/Catalog behavior retains its original coverage. E-AI-016 adds all six
 Chat/History/Catalog workspace placements and owned plugin lifecycle scenarios.
-E-AI-017 retains JSONL preview separately. Unique source scenarios and ordinary
-bundled native AI admission, context/skills and recovery still require M10.2
-qualification. M10.3 native tools/credentials and M10.4 optional compute remain
-in the authorized scope.
+E-AI-017 retains JSONL preview separately. E-AI-018 qualifies retained Shell and
+Notes Catalog scenarios, with 54 browser source mappings. The two Live Host
+replacements and ordinary bundled native AI admission, context/skills and
+recovery still require M10.2 qualification. M10.3 native tools/credentials and
+M10.4 optional compute remain in the authorized scope.
