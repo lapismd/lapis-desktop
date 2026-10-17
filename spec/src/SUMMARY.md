@@ -93,3 +93,5 @@
   - [Reusable ACP Tauri transport](history/E-AI-002.md)
 
   - [Desktop AI contract foundation](history/E-AI-003.md)
+
+  - [Retained AI conversation persistence](history/E-AI-004.md)

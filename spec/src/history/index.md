@@ -89,3 +89,5 @@ by the task ledger, not inferred from this list.
 - [Reusable ACP Tauri transport](E-AI-002.md)
 
 - [Desktop AI contract foundation](E-AI-003.md)
+
+- [Retained AI conversation persistence](E-AI-004.md)

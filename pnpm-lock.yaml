@@ -89,6 +89,9 @@ importers:
       svelte:
         specifier: 5.56.10
         version: 5.56.10
+      yaml:
+        specifier: ^2.9.1
+        version: 2.9.1
     devDependencies:
       '@lapismd/ai':
         specifier: link:../lapis-ai/packages/ai

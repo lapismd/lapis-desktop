@@ -190,3 +190,6 @@ original completion criterion or the remaining M10.2–M10.4 product gates.
 M10.2 is in progress. E-AI-003 records app-owned context, event and transcript
 foundations only; retained UI, native orchestration and migrated stories remain
 under its unchanged gate.
+
+E-AI-004 adds retained conversation persistence, validation and scoped-history
+evidence. The production chat UI and original M10.2 gate remain pending.

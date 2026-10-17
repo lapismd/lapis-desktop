@@ -341,4 +341,4 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-M10.2 adds app-owned AI contracts; the shell is unchanged.
+M10.2 retains AI conversation storage; the shell is unchanged.

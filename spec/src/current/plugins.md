@@ -157,3 +157,10 @@ become native provider bindings. Transcript hashes preserve their existing
 canonical JSON and UTF-8 rules. Native turns carry authored text and injected
 context separately, and context admission is checked around asynchronous
 preparation. No controller client/runtime dependency enters production.
+
+Conversation persistence retains scoped `.lapis/agents/sessions/<id>` YAML
+metadata and append-only agent/transcript JSONL through the existing Vault API.
+Legacy schema versions remain readable offline; invalid committed records fail
+with isolated diagnostics, and only an unterminated final JSON fragment may be
+ignored. Derived titles, pin/archive state, provenance deduplication, redaction
+and vault-trash deletion retain their established behavior.

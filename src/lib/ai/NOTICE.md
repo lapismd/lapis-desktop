@@ -10,3 +10,6 @@ controller client, runtime or memory implementation is imported into the desktop
 dependency graph. The desktop owns these contracts.
 
 Context projection is adapted for separate native text/context fields.
+
+Conversation storage, validation, durable redaction and tool identity helpers
+retain the current plugin at 56b5d6c1. Validation is split by record family.
