@@ -285,6 +285,9 @@ export const SettingsSource: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
     await userEvent.click(
+      canvas.getByRole("button", { name: "Open left sidebar" }),
+    );
+    await userEvent.click(
       canvas.getByRole("button", { name: "Open settings" }),
     );
     await userEvent.click(

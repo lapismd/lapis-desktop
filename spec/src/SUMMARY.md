@@ -138,6 +138,7 @@
   - [E-AI-025: shared native vault admission](history/E-AI-025.md)
   - [Physical repository admission](history/E-REPO-001.md)
   - [Native admitted history and vault lifetime](history/E-REPO-002.md)
+  - [Visible history UI and public-package qualification](history/E-REPO-003.md)
 
 - [Desktop shell presentation review](history/E-CATALOG-003.md)
 

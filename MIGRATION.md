@@ -42,7 +42,7 @@ below.
 | M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop                               |
 | M13   | In progress | Integrate native history and durable conversation adapters                          |
 | M13.1 | Done        | Complete; continue visible history and durable chat                                 |
-| M13.2 | In progress | Integrate visible Design Core history/diff UI                                       |
+| M13.2 | In progress | Qualify cold visible history and restored operation pins                            |
 | M13.3 | Planned     | Integrate native durable conversation backend                                       |
 | M8.0  | Done        | Complete; continue to M8.1 Terminal                                                 |
 | M8.1  | Done        | Complete; continue to M8.2 Web retirement                                           |

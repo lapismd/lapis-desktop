@@ -213,3 +213,23 @@ workspace, lifetime, model, command and user-command stories now use an
 out-of-DOM fixture port for observations/actions. Existing assertions remain
 authored; reruns are deferred by request. Terminal restores its pre-resize
 viewport height.
+
+## Native repository history presentation
+
+`plugins/repository/History.stories.ts` mounts the production bundled Repository
+History plugin, Notes workspace and public Design Core Diff through an injected
+history reader. These are application-owned scenarios, with no copied source
+family or native IO claim.
+
+PinnedHistoryAndDiff and UnifiedDiff cover both layouts.
+RetainsHistoricalSelection, MultipleHeads and MergeParentSelection retain exact
+operation and comparison choices. RestoresHistoricalOperation verifies an
+explicit historical pin reaches the first owned reader rather than the current
+head. RootRevision, UnchangedRevision, NoRevisions and Empty distinguish valid
+empty states. Preparing and UnavailableBinary keep incomplete or unsupported
+content explicit. FailureAndRecovery, ReadFailureRetainsPin,
+RevisionFailureAndRecovery and ComparisonFailureAndRecovery assert
+notifications, retained selections and recovery. SafeMode verifies optional
+registration stays absent. Each scenario runs in light/dark and desktop/narrow
+configurations; visual review and actual cold native history acceptance remain
+separate gates.

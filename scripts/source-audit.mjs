@@ -141,7 +141,9 @@ export function auditManifest(manifest, capabilities, normalConfig) {
           ((name === "@lapismd/terminal" &&
             version === "link:../lapis-terminal/packages/terminal") ||
             (name === "@lapismd/ai" &&
-              version === "link:../lapis-ai/packages/ai"))
+              version === "link:../lapis-ai/packages/ai") ||
+            (name === "@lapismd/jj-history" &&
+              version === "link:../jj-store/packages/jj-history"))
         )
       )
         report(

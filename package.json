@@ -72,7 +72,8 @@
     "@lapismd/agent-redaction": "^0.1.0",
     "@cfworker/json-schema": "^4.1.1",
     "@lucide/svelte": "^1.57.0",
-    "@lapismd/ai": "link:../lapis-ai/packages/ai"
+    "@lapismd/ai": "link:../lapis-ai/packages/ai",
+    "@lapismd/jj-history": "link:../jj-store/packages/jj-history"
   },
   "devDependencies": {
     "@lapismd/spec-validator": "^0.1.4",

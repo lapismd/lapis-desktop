@@ -161,3 +161,9 @@ Notes workspace ReadingNote and ReadingNoteDark review the actual Markdown
 reading surface through its public source-owned archive. Short notes fill the
 available pane; long-document scrolling remains owned by the existing shared
 Scroll Area. Source stories cover short/long notes in both themes separately.
+
+Repository-history integration qualifies this current review baseline through
+public package artifacts. The catalog pre-bundles statically used conflict-view
+icons so lazy plugin loading cannot replace a live test frame. Role queries use
+the supported full-name matcher; interaction and accessibility rules remain
+enabled. This qualification does not change conflict or persistence semantics.

@@ -12,6 +12,10 @@ remain In progress; visible Notes history/diffs and recoverable JJ-backed chat
 remain required. The shared delivery checklist in jj-store reports these slices
 without replacing this ledger or promoting fixture previews to product gates.
 
+E-REPO-003 implements the admitted history view and its public-package/catalog
+qualification. M13.2 now advances to cold visible native history and restored
+operation pins; its status and original gate remain unchanged.
+
 The reusable workflow implementation resumes after the earlier review
 checkpoint. M10.2 adds a lazy conversation-persistence injection seam while
 retaining its original native-chat gate. Legacy vault-file conversations keep

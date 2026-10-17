@@ -3,6 +3,8 @@
 E-AI-024/025 preserve LD-DESK-003: owned persistence drains and shared vault
 admission remain native.
 
+E-REPO-003 adds admitted history UI; native gates remain open.
+
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on
 failure (LD-FILE-002/003). M6 registers public Search and Graph with native

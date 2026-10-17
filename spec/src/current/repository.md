@@ -44,6 +44,33 @@ released Design Core Chat/Diff exports with production component stories. A
 recoverable one-agent conversation completes the first usable milestone only
 after actual native persistence and restart acceptance.
 
+## Notes history view
+
+The optional bundled Repository History plugin uses the public history client
+and an injected, App-owned reader. Its native factory retains the admitted vault
+token; renderer state cannot supply paths, cache policy or generations. History
+is independent of AI. Opening a view admits read access lazily and never
+initializes a repository or captures dirty working files.
+
+The view names its exact operation pin and revision comparison. Refresh observes
+heads without moving an existing selection; multiple initial heads require an
+explicit choice. Bounded commit and changed-path pages remain within that pin.
+Merge revisions require an explicit parent comparison. Binary, conflict,
+structural and bounded-content refusals stay unavailable, never empty diffs.
+Design Core owns diff rendering. Requests retain their selection identities and
+stale responses cannot replace a newer selection. Preparation polling is bounded
+and stops on selection changes or closure; failed reads require explicit retry.
+
+View/plugin teardown fences new work, drains pending requests and closes owned
+handles before native release. Failed cleanup remains retryable. Reload obtains
+fresh handles through the existing native admission transition. Operational
+failures use App notifications and recovery retains the selected pin.
+
+Restored repository-view state retains its explicit operation before starting
+history preparation. Initial controller state must not replace a restored pin
+with the current head. Reopening a view obtains fresh admitted handles for that
+same historical operation.
+
 ## Native history transport
 
 The named main-window admit/release commands accept only a live vault session or

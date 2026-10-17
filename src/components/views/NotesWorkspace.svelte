@@ -37,6 +37,7 @@
 
   import type { TerminalFactory } from "../../lib/terminal/terminal-binding.ts";
   import type { AiFactory } from "../../lib/ai/plugin/services.ts";
+  import type { RepositoryFactory } from "../../lib/repository/services.ts";
   import { notesBundledPlugins } from "./notes-bundled-plugins.ts";
 
   let {
@@ -45,6 +46,7 @@
     pluginDistributionOptions,
     createTerminal,
     createAi,
+    createRepository,
     onBack,
     onReady,
     onRestart,
@@ -56,6 +58,7 @@
     pluginDistributionOptions?: AppPluginDistributionOptions;
     createTerminal?: TerminalFactory;
     createAi?: AiFactory;
+    createRepository?: RepositoryFactory;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
     onRestart(mode: AppSafeModeState): Promise<void>;
@@ -76,7 +79,7 @@
       }),
   );
   const bundled = untrack(() =>
-    notesBundledPlugins(app, createTerminal, createAi),
+    notesBundledPlugins(app, createTerminal, createAi, createRepository),
   );
   provideApplicationState(app);
   const releaseCompatibility = installApplicationCompatibility(app);

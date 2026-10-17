@@ -13,18 +13,21 @@
 
   import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
   import type { AiFactory } from "../../src/lib/ai/plugin/services";
+  import type { RepositoryFactory } from "../../src/lib/repository/services.ts";
   import type { AppSafeModeState } from "@lapis-notes/api";
 
   let {
     class: className = "",
     createTerminal,
     createAi,
+    createRepository,
     files = {},
     safeMode,
   }: {
     class?: string;
     createTerminal?: TerminalFactory;
     createAi?: AiFactory;
+    createRepository?: RepositoryFactory;
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
   } = $props();
@@ -91,6 +94,7 @@
       {session}
       {createTerminal}
       {createAi}
+      {createRepository}
       safeMode={safeMode ?? normalRecovery()}
       urlDelivery={urls}
       onReady={async () => {

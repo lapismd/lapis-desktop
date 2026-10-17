@@ -139,4 +139,7 @@
   [role="alert"] {
     color: var(--destructive);
   }
+  :global(.dark) [role="alert"] {
+    color: color-mix(in srgb, var(--destructive) 60%, var(--foreground));
+  }
 </style>

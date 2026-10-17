@@ -192,11 +192,20 @@ test("only authorized private native-client public-build links are admitted duri
     devDependencies: { "@lapismd/ai": "link:../lapis-ai/packages/ai" },
   };
   assert.deepEqual(auditManifest(ai, capabilities, configuration), []);
+  const history = {
+    private: true,
+    dependencies: {
+      "@lapismd/jj-history": "link:../jj-store/packages/jj-history",
+    },
+  };
+  assert.deepEqual(auditManifest(history, capabilities, configuration), []);
   for (const manifest of [
     { ...terminal, private: false },
     { private: true, dependencies: { "@lapismd/terminal": "link:../other" } },
     { private: true, dependencies: { other: "link:../other" } },
     { ...ai, private: false },
+    { ...history, private: false },
+    { private: true, dependencies: { "@lapismd/jj-history": "link:../other" } },
     { private: true, dependencies: { "@lapismd/ai": "link:../other" } },
   ])
     assert.ok(

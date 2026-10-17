@@ -36,6 +36,11 @@ aggregate milestone while end-of-M7 full qualification remains deferred.
 
 ## Requirements
 
+Conflict recovery errors retain their alert semantics and readable text in both
+themes. The desktop-owned review styles may mix existing semantic foreground
+colors for small dark-theme error text; guarded writes, drafts and public Design
+Core component styles remain unchanged.
+
 | ID          | Requirement                                                                                                                                                                                                                                                                                                                                                       |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LD-FILE-001 | Native rename, move, copy, file removal and directory removal MUST remain within the live admitted root, reject root/parent/symlink escapes, and preserve existing destinations on collisions. A failed operation MUST report a portable error and MUST NOT project success into the vault tree.                                                                  |

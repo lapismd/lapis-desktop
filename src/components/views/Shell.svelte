@@ -6,6 +6,7 @@
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
   import { createNativeAi } from "../../lib/native/ai/services.ts";
+  import { createNativeRepository } from "../../lib/native/repository/services.ts";
   import type { AiServices } from "../../lib/ai/plugin/services.ts";
   import { openNotesSession } from "../../lib/notes/notes-session.ts";
   import {
@@ -199,6 +200,7 @@
       )}
       createTerminal={(app) => createNativeTerminal(app, selected!)}
       createAi={(app) => createAi(app, selected!)}
+      createRepository={() => createNativeRepository(selected!)}
       onRestart={restartNotes}
       onBack={back}
       onReady={async () => {
