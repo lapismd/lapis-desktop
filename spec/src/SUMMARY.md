@@ -97,3 +97,5 @@
   - [Retained AI conversation persistence](history/E-AI-004.md)
 
   - [App-owned conversation handoff](history/E-AI-005.md)
+
+  - [Desktop ACP runtime adaptation](history/E-AI-006.md)

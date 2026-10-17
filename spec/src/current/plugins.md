@@ -174,3 +174,18 @@ Handoff budgets must be finite whole token counts and cannot exceed the default
 maximum. Tiny excerpts stay bounded. Stored summaries must match the selected
 conversation and fit actual-content as well as recorded-estimate limits before
 their transcript hash is checked. Invalid summaries fall back to full evidence.
+
+The desktop ACP seam consumes raw control-v3 through public typed clients. It
+retains provider observations and event provenance, maps known activity once,
+and preserves unknown extensions. Permission options retain exact IDs and
+unknown semantic kinds; no default options or automatic approval are invented.
+Interrupted or uncertain terminal outcomes remain explicit failures.
+
+The adapted ACP runtime attaches before configuration and never submits its
+request prompt during startup. It confirms the requested approval mode and
+selected configuration before allowing a turn. Preparation belongs to the active
+turn, so cancel/close can fence late dispatch. Unknown submission or unusable
+outcomes block that session without replay. Detach preserves the native worker;
+close releases it. Failed startup locates its original request for cleanup and
+retains cleanup errors. Resume, skills, restricted maintenance and arbitrary MCP
+declarations remain unavailable until their admitted application integration.

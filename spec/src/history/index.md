@@ -93,3 +93,5 @@ by the task ledger, not inferred from this list.
 - [Retained AI conversation persistence](E-AI-004.md)
 
 - [App-owned conversation handoff](E-AI-005.md)
+
+- [Desktop ACP runtime adaptation](E-AI-006.md)

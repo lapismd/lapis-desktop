@@ -197,3 +197,7 @@ evidence. The production chat UI and original M10.2 gate remain pending.
 E-AI-005 records restored context handoff and its audited bounds. M10.2 remains
 in progress until the current AI views and complete story coverage are
 connected.
+
+E-AI-006 qualifies the adapted app-owned runtime seam through built public
+clients and deterministic transport. Production admission, retained UI, skills,
+memory and complete migrated stories still require the original M10.2 gate.

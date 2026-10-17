@@ -82,6 +82,7 @@ export interface AgentSession {
     input: AgentSessionConfiguration,
   ): Promise<AgentSessionConfigurationResult>;
   respondToApproval(requestId: string, optionId: string): Promise<void>;
+  cancelApproval?(requestId: string): Promise<void>;
   respondToQuestion?(
     requestId: string,
     answers: UserInputAnswers,
