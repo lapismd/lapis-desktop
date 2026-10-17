@@ -1,0 +1,198 @@
+import { requireApprovalOption } from "../../core/approvals.ts";
+// SPDX-License-Identifier: Apache-2.0
+// Retained Lapis chat orchestration; see ../../NOTICE.md.
+import type { AgentRequest, AgentSession } from "../../core/runtime.ts";
+import type { UserInputAnswers } from "../../core/approvals.ts";
+import { interruptPendingInteractions } from "../../sessions/session-store.ts";
+import { createChatItemId, type AiChatItem } from "../chat-items.ts";
+import { markApprovalResponse, markQuestionResponse } from "../chat-trace.ts";
+import type { AiChatController } from "../chat-controller.svelte.ts";
+const CANCELLED_NOTICE = "Agent turn cancelled";
+
+export async function respondToApproval(
+  this: AiChatController,
+  requestId: string,
+  optionId: string,
+): Promise<void> {
+  const pending = this.items.find(
+    (candidate) =>
+      candidate.type === "approval" && candidate.request.id === requestId,
+  );
+  if (pending?.type !== "approval" || pending.status !== "pending")
+    throw new Error(`Unknown application approval: ${requestId}`);
+  requireApprovalOption(pending.request, optionId);
+  const session = this.session;
+  const location = this.location;
+  const turnId = this._turnId;
+  if (pending.request.origin === "app-tool") {
+    if (!this._appToolBridge?.respondToApproval(requestId, optionId))
+      throw new Error(`Unknown application-tool approval: ${requestId}`);
+  } else {
+    if (!session)
+      throw new Error("The active runtime cannot answer approvals.");
+    await session.respondToApproval(requestId, optionId);
+    if (
+      this.session !== session ||
+      this._turnId !== turnId ||
+      this.location?.conversationId !== location?.conversationId ||
+      this.location?.scopeDir !== location?.scopeDir
+    )
+      return;
+  }
+  const current = this.items.find(
+    (candidate) =>
+      candidate.type === "approval" && candidate.request.id === requestId,
+  );
+  if (
+    current?.type !== "approval" ||
+    current.request !== pending.request ||
+    current.status !== "pending"
+  )
+    return;
+  this.items = markApprovalResponse(this.items, requestId, optionId);
+  await this._rememberPersistentDecision(pending.request, optionId);
+  const item = this.items.find(
+    (candidate) =>
+      candidate.type === "approval" && candidate.request.id === requestId,
+  );
+  if (this.repository && this.location && item)
+    await this._appendDurableItems(
+      this.location,
+      [item],
+      this._activeBindingId,
+    );
+  else await this._persist();
+}
+
+export async function respondToQuestion(
+  this: AiChatController,
+  requestId: string,
+  answers: UserInputAnswers,
+): Promise<void> {
+  const session = this.session;
+  if (!session?.respondToQuestion)
+    throw new Error("The active runtime cannot answer agent questions.");
+  const pending = this.items.find(
+    (candidate) =>
+      candidate.type === "question" && candidate.request.id === requestId,
+  );
+  if (pending?.type !== "question" || pending.status !== "pending")
+    throw new Error(`Unknown agent question: ${requestId}`);
+  const location = this.location;
+  const turnId = this._turnId;
+  await session.respondToQuestion(requestId, answers);
+  if (
+    this.session !== session ||
+    this._turnId !== turnId ||
+    this.location?.conversationId !== location?.conversationId ||
+    this.location?.scopeDir !== location?.scopeDir
+  )
+    return;
+  const current = this.items.find(
+    (candidate) =>
+      candidate.type === "question" && candidate.request.id === requestId,
+  );
+  if (
+    current?.type !== "question" ||
+    current.request !== pending.request ||
+    current.status !== "pending"
+  )
+    return;
+  this.items = markQuestionResponse(this.items, requestId);
+  const item = this.items.find(
+    (candidate) =>
+      candidate.type === "question" && candidate.request.id === requestId,
+  );
+  if (this.repository && this.location && item)
+    await this._appendDurableItems(
+      this.location,
+      [item],
+      this._activeBindingId,
+    );
+  else await this._persist();
+}
+
+export async function cancel(this: AiChatController): Promise<void> {
+  this._turnId += 1;
+  this._activeRecallAbort?.abort();
+  this._activeRecallAbort = undefined;
+  const session = this.session;
+  if (session) this._cancelledSessions.add(session);
+  this.busy = false;
+  this.commandWorking = false;
+  this.items = interruptPendingInteractions(this.items);
+  void this._confirmCancelledNotice(session);
+  await this._persist(true);
+}
+
+export async function _confirmCancelledNotice(
+  this: AiChatController,
+  session: AgentSession | null,
+): Promise<void> {
+  if (session) {
+    try {
+      await session.cancel?.();
+    } catch {
+      return;
+    }
+    if (!this._cancelledSessions.has(session)) return;
+    if (this.session !== session && this.session) return;
+  }
+  if (
+    this.items.some(
+      (item) => item.type === "status" && item.text === CANCELLED_NOTICE,
+    )
+  ) {
+    return;
+  }
+  const item: AiChatItem = {
+    id: createChatItemId("status", this.items.length + 1),
+    type: "status",
+    text: CANCELLED_NOTICE,
+    createdAt: new Date().toISOString(),
+    agentBindingId: this._activeBindingId,
+  };
+  this.items = [...this.items, item];
+  if (this.repository && this.location) {
+    await this._appendDurableItems(
+      this.location,
+      [item],
+      this._activeBindingId,
+    );
+    return;
+  }
+  await this._persist(false, this._activeBindingId);
+}
+
+export async function cancelAndSwitch(
+  this: AiChatController,
+  request: Omit<AgentRequest, "prompt">,
+): Promise<void> {
+  if (this.busy) await this.cancel();
+  this.error = null;
+  await this._prepareSession({ ...this.request, ...request });
+}
+
+export async function close(this: AiChatController): Promise<void> {
+  this._turnId += 1;
+  this._activeRecallAbort?.abort();
+  this._activeRecallAbort = undefined;
+  const interrupted = this.busy;
+  if (interrupted) await this.session?.cancel?.().catch(() => undefined);
+  this.busy = false;
+  this.commandWorking = false;
+  if (interrupted) this.items = interruptPendingInteractions(this.items);
+  await this._persist(interrupted);
+  await this._closeAppToolBinding();
+  await this.session?.close();
+  this.session = null;
+  this.busy = false;
+  for (const binding of this.bindings) {
+    this._slashRouter?.catalog.clearNativeCommands(binding.id);
+  }
+  if (this._activeBindingId) {
+    this._slashRouter?.catalog.clearNativeCommands(this._activeBindingId);
+  }
+  this._skillSnapshots.clear();
+  this._unsubscribeAppToolEvents?.();
+}

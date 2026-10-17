@@ -246,3 +246,27 @@ preserve frozen registrations and reject forged interpreter annotations. The
 retained policy suites and V8 no-code-generation probe do not qualify native
 WebKit CSP, authenticated Rust tool IPC or durable effect reconciliation; those
 remain M10.3 gates.
+
+## Retained chat presentation and controller
+
+The owned chat panel retains the source composer, permission/question cards,
+conversation folder picker, timeline, tool-result views, mentions, skills, model
+selection and error/retry presentation. Responsibility-specific components and
+reactive state modules retain the original behavior within source limits. New
+composer menus offer ACP choices only; historical native-mode labels remain
+readable without enabling those deferred execution paths.
+
+Permission replies validate advertised IDs before dispatch, await provider
+acknowledgement and derive persistent grants from the advertised kind. Automatic
+replies forward the exact matching advertised ID and remain fenced against
+inactive/cancelled sessions. Rejected replies leave requests pending and create
+no durable grant. Question answers become answered only after acknowledgement
+and active session/turn/location/request checks; answer values remain absent
+from durable state. Fresh questions clear transient old answers.
+
+Recoverable presentation actions report through the existing composer error
+surface and owning App notifications, without unhandled promise rejections or
+claiming a successful reply. Selected question options expose pressed state and
+retain contrast. Migrated catalog scenarios use disposable in-memory Apps and
+test-only clients. Catalog qualification does not mount the production AI plugin
+or qualify native admission, context/skills execution or durable recovery.

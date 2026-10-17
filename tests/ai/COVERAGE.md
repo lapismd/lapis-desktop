@@ -94,3 +94,21 @@ object-root guard; no admission assertion was removed. `app-tool-csp.test.ts`
 uses a fresh Node subprocess with string code generation disabled. That is
 interpreter evidence, not native WebKit CSP acceptance or Rust IPC
 qualification.
+
+## Controller, bootstrap and conversation navigation
+
+| Source under `packages/ai/src/lib`                                                                                                                                                                | Destination under `tests/ai`                         |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| chat/chat-controller.test.ts                                                                                                                                                                      | chat/controller/chat-controller-{1–5}.test.ts        |
+| chat/chat-controller.follow.test.ts                                                                                                                                                               | chat/controller/chat-controller.follow-1.test.ts     |
+| chat/chat-controller.skills.test.ts                                                                                                                                                               | chat/controller/chat-controller.skills-{1–3}.test.ts |
+| chat/ai-view-bootstrap.test.ts                                                                                                                                                                    | chat/view-bootstrap.test.ts                          |
+| conversations/{conversation-index,conversation-index-coordinator,conversation-locator,conversation-palette,handoff-summary,history-creation-scope,reveal-scope,scope-resolver,scope-tree}.test.ts | conversations/ with the same test filenames          |
+
+All 56 original controller, eight bootstrap and 31 conversation cases remain.
+Desktop additions cover five acknowledgement/opaque-option safety cases and one
+question acknowledgement case. The cancellation expectation requires error plus
+explicit unknown outcome in place of falsely completed tools. `/help` retains
+its assertions and additionally requires stable binding/session reuse;
+submission now preserves implicit request defaults for local command dispatch.
+The policy runner compiles Svelte runes normally; no runtime rune shim is used.

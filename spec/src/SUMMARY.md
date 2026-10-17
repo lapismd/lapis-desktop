@@ -109,3 +109,4 @@
   - [Retained desktop memory policy](history/E-AI-010.md)
 
   - [Retained application-tool policy](history/E-AI-011.md)
+  - [Retained AI chat presentation and controller](history/E-AI-012.md)

@@ -13,6 +13,7 @@ export const MAX_CONVERSATION_APPROVAL_GRANTS = 64;
 
 const LAPIS_TOOLS_PREFIX = /^lapis-tools[-_]/iu;
 
+/** Normalize stored semantic values, never provider option IDs. */
 export function persistentDecisionFromOption(
   optionId: string,
 ): ConversationApprovalDecision | undefined {

@@ -105,3 +105,5 @@ by the task ledger, not inferred from this list.
 - [Retained desktop memory policy](E-AI-010.md)
 
 - [Retained application-tool policy](E-AI-011.md)
+
+- [Retained AI chat presentation and controller](E-AI-012.md)

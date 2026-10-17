@@ -46,3 +46,11 @@ https://json-schema.org/draft-07/schema, retrieved 2026-10-17; its specification
 license is retained in tools/schema/LICENSE.md (JSON Schema Specification
 Authors, BSD-3-Clause / Academic Free License 3.0). This is declarative standard
 schema data rather than a vendored validation implementation.
+
+Chat controller, bootstrap, conversation navigation and handoff orchestration,
+request cards, chat-panel DOM/CSS and retained catalog cases derive from
+lapis-plugins tree 56b5d6c1. The controller/panel are split by responsibility;
+provider acknowledgement, explicit option kinds, failure reporting and fresh
+question clearing are desktop repairs. Components live under
+src/components/ai/chat. Catalog fixtures reuse the test-only fake runtime and
+own disposable in-memory Apps; no fake provider enters production.

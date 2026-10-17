@@ -53,7 +53,7 @@ export default defineConfig(
         rules: [
           {
             pattern:
-              "^(?:src/lib/ai/|tests/(?:ai/|renderer/ai-|fixtures/ai/)|vitest\\.ai\\.config\\.mjs$)",
+              "^(?:src/(?:lib|components)/ai/|tests/(?:ai/|renderer/ai-|fixtures/ai/)|vitest\\.ai\\.config\\.mjs$)",
             chapters: ["spec/src/current/plugins.md"],
           },
           {

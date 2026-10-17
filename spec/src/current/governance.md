@@ -337,3 +337,10 @@ App-tool schema interpretation uses the registry @cfworker/json-schema public
 root and standard draft-7 meta-schema data with attribution. Tests run with
 string code generation disabled; no unsafe-eval CSP grant, JavaScript runtime
 service or legacy bridge is added. The same 14 verified archive routes remain.
+
+Retained AI components and policy modules map to the plugins chapter. The
+isolated policy runner compiles normal Svelte runes with the Svelte Vite plugin;
+it supplies no rune shim. Desktop pins Svelte 5.57.2 to match the linked
+Terminal's public component types, preventing duplicate snippet identities.
+Registry icon imports remain portable. Local archive refresh retains payload
+verification and records each source repair before consumer qualification.

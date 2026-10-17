@@ -200,3 +200,8 @@ M10.2's restored memory policy retains original service/storage/scheduler
 suites; its app-tool-host case now runs through the retained owned policy.
 Memory unit qualification does not complete mounted AI views, stories or durable
 native turn recovery.
+
+M10.2 chat-controller and presentation restoration is separately recorded in
+E-AI-012. Retained catalog interactions and policy suites do not substitute for
+bundled production registration, settings/history, native context/skill
+integration or durable turn recovery. Its original aggregate gate stays open.

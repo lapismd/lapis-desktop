@@ -41,3 +41,34 @@ through plugin data, without a second flat application-configuration writer.
 
 Cold native acceptance remains separate from fake-client catalog evidence.
 Visual baselines remain pending approval.
+
+## Retained AI chat
+
+Source: `lapis-plugins` tree `56b5d6c1`, `stories/plugins/ai/AiChat.stories.ts`.
+Original plays retain their assertions, with explicit adaptations below. The
+following production chat stories do not yet qualify the bundled plugin, six
+workspace placements, History/Catalog, Settings or native ACP/tool behavior.
+
+| Source cases                                                     | Desktop destination under `plugins/ai` |
+| ---------------------------------------------------------------- | -------------------------------------- |
+| SendAndComplete, AutomaticMemoryRecall, OpenCodeHarnessChoices   | Conversation.stories.ts                |
+| SkillsAndSlash, SearchToolHits, ValidationAndEmptyState          | CommandsAndResults.stories.ts          |
+| PermissionRequested, PermissionAccepted, QuestionAsked           | TurnRequests.stories.ts                |
+| QuestionAnswered, ToolRunning, SuccessfulToolCall                | ToolActivity.stories.ts                |
+| AppToolReadTranscript, AppToolPatchApproval, AppToolSessionGrant | AppToolActivity.stories.ts             |
+| AppToolHostUpgradeRequired, FailedToolCall, FileMentions         | ErrorsAndMentions.stories.ts           |
+| AgentTrace, FailedMessageAndRetry, ScrollRecovery                | TraceAndScrolling.stories.ts           |
+| HarnessModelRefresh, SettingsHarnessModelRefresh                 | Models.stories.ts                      |
+
+OpenCode selection and model refresh exercise ACP choices rather than deferred
+Native modes. AgentTrace waits for its real disposable App to finish startup;
+its content, layout, clipboard, typography and tool assertions remain. Search
+hit naming follows the upstream accessible filename/path repair. The fixture
+uses real App/Vault/database instances and awaits owned cleanup; no fake App
+object or production fake provider is added.
+
+New `Requests.stories.ts` verifies opaque permission IDs, disabled replies,
+Other input and fresh secret questions. `ReplyErrors.stories.ts` retains pending
+requests after rejected replies and checks selected question accessibility.
+`Cancellation.stories.ts` verifies pending approval cancellation and settled
+working state. All AI stories stay visual-pending; no baselines change.
