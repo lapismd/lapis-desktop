@@ -181,3 +181,4 @@
 - [Retained native transcript continuation](history/E-AI-038.md)
 
 - [Stacked operation card and file diff](history/E-REPO-010.md)
+- [Command View parent comparison and owned-runtime preview reload](history/E-REPO-011.md)

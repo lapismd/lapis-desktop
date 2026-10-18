@@ -1,9 +1,7 @@
 # Desktop shell
 
-E-AI-036/037/038 preserve LD-DESK-003: native capture, conversation reads and
-retained continuation keep owned drains and vault admission.
-
-E-REPO-010 aligns log cards; native gates stay explicit.
+E-AI-036/037/038 retain native admission/drains (LD-DESK-003). E-REPO-011 adds
+pinned parent cards without changing native lifetime contracts.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on

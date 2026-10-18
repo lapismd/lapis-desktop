@@ -343,3 +343,11 @@ A fixture review story opens JJ Log and Op Log in separate production workspace
 tabs. Each retains its independent pin, expanded files and selected diff while
 the user switches between them. Whole-view parity and visual approval remain
 separate from this comparison preview.
+
+Parent comparisons use the source Command View/Popover commit picker with
+author/avatar, relative time, exact Git/JJ identifiers and native tag details.
+Only exact recorded parents are selectable. Missing parent cards load through
+the same pinned commit reader, bounded to 64 missing records; stale or
+substituted replies cannot replace the current comparison. Metadata failures
+retain selection and use App notifications with explicit retry. Selected-file
+statistics remain labelled separately from complete comparison totals.

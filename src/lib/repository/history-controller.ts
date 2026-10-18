@@ -1,3 +1,5 @@
+import { HistoryGraph } from "./history-graph.ts";
+import { parentCandidates } from "./parent-candidates.ts";
 import type { Handle, LocalGraphCommit } from "@lapismd/jj-history";
 import type { HistoryReader } from "./history-reader.ts";
 import {
@@ -12,6 +14,7 @@ export class HistoryController {
   #state = initialHistoryState();
   #listeners = new Set<(state: HistoryState) => void>();
   readonly #lifetime: HistoryLifetime;
+  readonly #graph: HistoryGraph;
   readonly reader: HistoryReader;
   readonly feedback: { report(error: unknown): void; recovered(): void };
   readonly wait: typeof pause;
@@ -32,6 +35,15 @@ export class HistoryController {
     this.feedback = feedback;
     this.wait = wait;
     this.#lifetime = new HistoryLifetime(reader);
+    this.#graph = new HistoryGraph(
+      reader,
+      () => ({
+        handle: this.#handle,
+        state: this.#state,
+        closed: this.#closed,
+      }),
+      (patch) => this.#set(patch),
+    );
   }
   get state(): HistoryState {
     return this.#state;
@@ -81,7 +93,7 @@ export class HistoryController {
         else if (this.#state.operation && !this.#state.snapshot)
           await this.#selectOperation(this.#state.operation);
         else if (this.#state.operation && !this.#state.commitsReady)
-          await this.#commits(false);
+          await this.#graph.load(false);
         else if (!this.#state.operation && heads.heads.length === 1)
           await this.#selectOperation(heads.heads[0]);
       }),
@@ -125,44 +137,10 @@ export class HistoryController {
     check(snapshot.operation === operation);
     if (selection !== this.#selection || this.#closed) return;
     this.#set({ snapshot, phase: "ready" });
-    await this.#commits(false);
+    await this.#graph.load(false);
   }
   moreCommits(): Promise<void> {
-    return this.#run(() => this.#action(() => this.#commits(true)));
-  }
-  async #commits(append: boolean): Promise<void> {
-    const handle = this.#handle,
-      operation = this.#state.operation;
-    if (!handle || !operation || (append && !this.#state.next)) return;
-    const response = await this.reader.read(handle, {
-      kind: "graph",
-      query: [
-        {
-          graph: "log",
-          revset: "all()",
-          user_email: "",
-          at_time_millis: Date.now(),
-        },
-        { limit: 50, after: append ? this.#state.next : null },
-      ],
-    });
-    if (this.#handle !== handle || this.#closed) return;
-    check(
-      response.kind === "graph" &&
-        response.data.operation === operation &&
-        response.data.data.graph === "log",
-    );
-    const commits = response.data.data.nodes.map((node) => node.commit);
-    const retained = append ? this.#state.commits : [];
-    check(
-      !commits.some((commit) => retained.some((item) => item.id === commit.id)),
-    );
-    const combined = [...retained, ...commits].slice(0, 200);
-    this.#set({
-      commits: combined,
-      commitsReady: true,
-      next: combined.length < 200 ? response.data.next : null,
-    });
+    return this.#run(() => this.#action(() => this.#graph.load(true)));
   }
   clearRevision(): Promise<void> {
     this.#comparison++;
@@ -179,6 +157,27 @@ export class HistoryController {
         this.#set({ ...resetHistoryComparison(), revision });
         if (revision.parents.length === 1)
           await this.#paths(revision.parents[0], false);
+      }),
+    );
+  }
+  loadParents(): Promise<void> {
+    return this.#run(() =>
+      this.#action(async () => {
+        const handle = this.#handle,
+          revision = this.#state.revision,
+          generation = this.#comparison;
+        if (!handle || !revision) return;
+        const parentCommits = await parentCandidates(
+          this.reader,
+          handle,
+          revision.parents,
+          [...this.#state.commits, ...this.#state.parentCommits],
+          () =>
+            !this.#closed &&
+            handle === this.#handle &&
+            generation === this.#comparison,
+        );
+        if (parentCommits) this.#set({ parentCommits });
       }),
     );
   }

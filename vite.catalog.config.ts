@@ -1,10 +1,11 @@
 import { defineConfig } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
+import { ownedRuntimeReload } from "./.storybook/owned-runtime-reload.mjs";
 
 // The catalog owns its compiler without importing native application startup.
 export default defineConfig({
   // Match the Notes catalog's supported inline component-CSS compilation path.
-  plugins: [svelte({ emitCss: false })],
+  plugins: [ownedRuntimeReload(), svelte({ emitCss: false })],
   server: {
     watch: {
       ignored: [

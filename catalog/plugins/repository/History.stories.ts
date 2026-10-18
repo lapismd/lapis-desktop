@@ -149,29 +149,6 @@ export const MultipleHeads: Story = {
     ).toBeVisible();
   },
 };
-export const MergeParentSelection: Story = {
-  parameters: { scenario: "merge" },
-  play: async ({ canvasElement }) => {
-    const canvas = await open(canvasElement);
-    await userEvent.click(
-      await canvas.findByRole("button", {
-        name: /Keep repository history beside the notes/,
-      }),
-    );
-    const base = canvas.getByRole("combobox", { name: "Compare with parent" });
-    await expect(base).toHaveValue("");
-    await expect(
-      canvas.queryByRole("button", { name: "Welcome.md" }),
-    ).toBeNull();
-    await userEvent.selectOptions(base, parent);
-    await userEvent.click(
-      await canvas.findByRole("button", { name: "Welcome.md" }),
-    );
-    await expect(
-      await canvas.findByRole("region", { name: "Changes to Welcome.md" }),
-    ).toHaveTextContent("History is retained");
-  },
-};
 export const RootRevision: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await open(canvasElement);

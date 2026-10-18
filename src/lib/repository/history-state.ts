@@ -17,6 +17,7 @@ export interface HistoryState {
   next?: LocalCodeObjectKey | null;
   revision?: LocalGraphCommit;
   base?: string;
+  parentCommits: LocalGraphCommit[];
   paths: LocalFileDiffChange[];
   pathsReady: boolean;
   nextPath?: string | null;
@@ -30,6 +31,7 @@ export const initialHistoryState = (): HistoryState => ({
   headsReady: false,
   commits: [],
   commitsReady: false,
+  parentCommits: [],
   paths: [],
   pathsReady: false,
   operation: undefined,
@@ -67,6 +69,7 @@ export function diffText(
 export function resetHistoryComparison(): Partial<HistoryState> {
   return {
     revision: undefined,
+    parentCommits: [],
     base: undefined,
     paths: [],
     pathsReady: false,

@@ -1,3 +1,4 @@
+import { commitDetail } from "./commit-detail.ts";
 import type { HistoryReader } from "../../../src/lib/repository/history-reader.ts";
 import type {
   LocalGraphCommit,
@@ -50,7 +51,9 @@ export function historyFixture(scenario = "ready") {
   let sequence = 0;
   const handles = new Map<string, string>();
   const latest = commit();
-  if (scenario === "merge") latest.parents.push("33".repeat(20));
+  if (scenario === "merge" || scenario === "parent-details-failure")
+    latest.parents.push("33".repeat(20));
+  if (scenario === "parent-details-failure") faults.add("commit");
   const change = {
     path: "Welcome.md",
     before: [],
@@ -107,8 +110,31 @@ export function historyFixture(scenario = "ready") {
             ? "The revision history could not be read"
             : query.kind === "diff_paths"
               ? "The revision comparison failed"
-              : "The file comparison failed",
+              : query.kind === "commit"
+                ? "The parent details could not be read"
+                : "The file comparison failed",
         );
+      if (query.kind === "commit") {
+        const value = commit(query.query.commit);
+        if (query.query.commit === "33".repeat(20)) {
+          value.description = "Second recorded parent";
+          value.author = {
+            ...value.author,
+            name: "Grace",
+            email: "grace@example.test",
+          };
+          value.bookmarks = [
+            {
+              name: "topic",
+              remote: null,
+              added: true,
+              removed: false,
+              conflicted: false,
+            },
+          ];
+        }
+        return commitDetail(value);
+      }
       if (query.kind === "graph")
         return {
           kind: "graph",

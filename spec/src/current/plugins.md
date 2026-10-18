@@ -13,6 +13,13 @@ boundaries and owning-repository validation.
 
 ## Requirements
 
+The development catalog retains component/style HMR and reconstructs its owned
+App/controller instances after runtime-script or fixture changes. Those changes
+must trigger a full preview reload; retained old class/state shapes cannot be
+treated as current implementation. Reload scope stays within this checkout's
+`src` runtime scripts and `catalog/support` fixtures. Generated outputs and
+sibling repositories do not trigger this lifecycle policy.
+
 | ID             | Requirement                                                                                                                                                                                                                                                                                                                                                                                                              |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | LD-CAT-001     | Desktop MUST own a standalone Svelte/Vite Storybook with documentation, light/dark controls, desktop typography, narrow layouts, static build and browser interaction/accessibility commands. Stories MUST render production components through public dependencies.                                                                                                                                                     |

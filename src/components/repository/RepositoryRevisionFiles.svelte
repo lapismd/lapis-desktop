@@ -1,4 +1,7 @@
 <script lang="ts">
+  import RepositoryCommitPicker from "./RepositoryCommitPicker.svelte";
+  import { FileChangeStats } from "@lapismd/design-core/diff";
+  import { changeStats } from "../../lib/repository/history-files.ts";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import type { HistoryController } from "../../lib/repository/history-controller.ts";
   import type { HistoryState } from "../../lib/repository/history-state.ts";
@@ -18,19 +21,31 @@
 
 <div class="revision-files">
   {#if state.revision?.parents.length}
-    <label
-      >Compare with parent
-      <select
-        aria-label="Compare with parent"
-        value={state.base ?? ""}
-        onchange={(event) => controller.selectBase(event.currentTarget.value)}
-      >
-        <option value="" disabled>Choose a parent</option>
-        {#each state.revision.parents as parent (parent)}<option value={parent}
-            >{parent}</option
-          >{/each}
-      </select>
-    </label>
+    <RepositoryCommitPicker
+      parents={state.revision.parents}
+      revisions={[...state.commits, ...state.parentCommits]}
+      target={state.base}
+      loading={state.busy}
+      onOpen={() => void controller.loadParents()}
+      onSelect={(id) => void controller.selectBase(id)}
+    >
+      {#snippet statistics()}
+        <div
+          class="comparison-statistics"
+          aria-label="Selected comparison statistics"
+        >
+          {#if state.base && state.pathsReady}<span
+              >{state.paths.length}{state.nextPath ? "+" : ""}
+              {state.paths.length === 1 && !state.nextPath ? "file" : "files"} in
+              selected comparison</span
+            >{/if}
+          {#if state.path && changeStats(state.diff)}<span
+              >Selected file: {state.path}
+              <FileChangeStats {...changeStats(state.diff)} /></span
+            >{/if}
+        </div>
+      {/snippet}
+    </RepositoryCommitPicker>
     {#if state.base}
       {#if state.pathsReady || state.busy}<RepositoryChangedFiles
           {files}
@@ -65,21 +80,14 @@
     padding: 0 0.5rem 0.5rem;
     font-size: 0.8125rem;
   }
-  label {
+  .comparison-statistics {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .comparison-statistics > span {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.375rem;
-    margin-bottom: 0.5rem;
-  }
-  select {
-    min-width: 0;
-    flex: 1;
-    width: 100%;
-    padding: 0.375rem;
-    background: var(--background);
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
   }
 </style>

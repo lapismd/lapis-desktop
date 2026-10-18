@@ -125,6 +125,30 @@
         }
       ],
       "use": "Adapted stacked operation/file cards, disclosure, compact author/time/ID metadata rail, exact parent navigation, spacing and empty-state metrics. Uses public Design Core components and HTML host styling only; native operation changes remain a secondary disclosure. Notes owns pin, reader, clipboard/toast and navigation authority. The application-owned author fallback copies the original name seed, initials, seven-color palette and 32px/14px/700 geometry. Profile lookup and agent presence/runtime state are excluded; this is presentation, not a replacement for a dependency defect."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "5b11966779de92a60876e619c30c5575cef011ac",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-mutations/StoreMutationCommitPicker.svelte",
+          "destination": "src/components/repository/RepositoryCommitPicker.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-mutations/StoreMutationCommitPicker.svelte",
+          "destination": "src/components/repository/repository-commit-picker.css"
+        },
+        {
+          "source": "web/src/lib/ui/store-mutations/StoreMutationCommitTarget.svelte",
+          "destination": "src/components/repository/RepositoryCommitTarget.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-mutations/commit-tags.ts",
+          "destination": "src/lib/repository/commit-cards.ts"
+        }
+      ],
+      "use": "Adapted public Command View/Popover composition, searchable commit metadata, avatar/time/Git/JJ identifier cards and native tag preview. Notes restricts candidates to recorded parents and loads missing cards through the existing operation-pinned exact commit reader. Keyboard focus, stale-response fences, notifications and separately labelled comparison/selected-file statistics remain application-owned. Public Design Core formatter supplies non-interactive time text within options; no dependency-internal selectors or source imports."
     }
   ]
 }

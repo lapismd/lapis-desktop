@@ -229,17 +229,16 @@ history reader. Source graph/row/column geometry is adapted from jj-store;
 Apache-2.0 lineage. No runtime/source dependency or native IO claim is added.
 
 PinnedHistoryAndDiff and UnifiedDiff cover both layouts.
-RetainsHistoricalSelection, MultipleHeads and MergeParentSelection retain exact
-operation and comparison choices. RestoresHistoricalOperation verifies an
-explicit historical pin reaches the first owned reader rather than the current
-head. RootRevision, UnchangedRevision, NoRevisions and Empty distinguish valid
-empty states. Preparing and UnavailableBinary keep incomplete or unsupported
-content explicit. FailureAndRecovery, ReadFailureRetainsPin,
-RevisionFailureAndRecovery and ComparisonFailureAndRecovery assert
-notifications, retained selections and recovery. SafeMode verifies optional
-registration stays absent. Each scenario runs in light/dark and desktop/narrow
-configurations; visual review and actual cold native history acceptance remain
-separate gates.
+RetainsHistoricalSelection and MultipleHeads retain exact operation choices.
+RestoresHistoricalOperation verifies an explicit historical pin reaches the
+first owned reader rather than the current head. RootRevision,
+UnchangedRevision, NoRevisions and Empty distinguish valid empty states.
+Preparing and UnavailableBinary keep incomplete or unsupported content explicit.
+FailureAndRecovery, ReadFailureRetainsPin, RevisionFailureAndRecovery and
+ComparisonFailureAndRecovery assert notifications, retained selections and
+recovery. SafeMode verifies optional registration stays absent. Each scenario
+runs in light/dark and desktop/narrow configurations; visual review and actual
+cold native history acceptance remain separate gates.
 
 PinnedHistoryAndDiff closes only its disposable Files/Outline sidebars using the
 mounted controls. Desktop acceptance requires adjacent log/diff columns and the
@@ -289,3 +288,12 @@ views as separate workspace tabs over the same fixture. JJ Log retains its
 expanded file and split diff when switching to Op Log and back; Op Log retains
 its stacked operation/file cards and exact independent pin. Both themes and
 widths remain visual-pending. This is fixture review, not native capture proof.
+
+`plugins/repository/ParentPicker.stories.ts` uses the production Command View
+parent picker. It covers keyboard selection, rich author/time/Git/JJ cards,
+search by exact full ID and author email, native tag preview, no matches,
+unloaded parents, metadata failure/toast and explicit retry, and separate
+comparison-file/selected-file statistics. Both themes and widths remain
+visual-pending. MergeParentSelection moved here from History with its exact
+comparison/diff acceptance retained. Source attribution is in
+docs/provenance.json.

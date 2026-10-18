@@ -179,3 +179,4 @@ by the task ledger, not inferred from this list.
 - [Retained native transcript continuation](E-AI-038.md)
 
 - [Stacked operation card and file diff](E-REPO-010.md)
+- [Command View parent comparison and owned-runtime preview reload](E-REPO-011.md)

@@ -1,7 +1,7 @@
 # Governance
 
-E-AI-037/038 and E-REPO-009/010 retain separate native/UI gates. Column Canvas
-source attribution lives in `docs/provenance.json`.
+E-REPO-011 records attributed parent cards and owned-runtime catalog reload.
+Native/UI gates stay separate; `docs/provenance.json` retains source ownership.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
