@@ -11,9 +11,9 @@ conversations explicitly prepare capture targets; the ordinary factory composes
 native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
-The [transcript delivery review](ai-presentation.md) precedes live adoption.
-E-AI-040 corrects footer parity. Catalog fixture controls and observations stay
-in owned review ports outside the visible DOM. Native AI gates remain separate.
+The [transcript plan](ai-presentation.md) has standing implementation approval.
+E-AI-041 adopts shared UI and vault presentation preferences after footer
+repair. Catalog fixtures stay isolated; native AI gates remain separate.
 
 E-REPO-002 retains LD-AI-001 execution authority: repository history admission
 cannot admit AI or select a target. The existing cold AI admission case passes

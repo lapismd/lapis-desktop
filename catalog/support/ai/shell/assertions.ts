@@ -17,62 +17,48 @@ export function releaseAiInitialization(element: HTMLElement) {
   shellFixture(element).releaseModels();
 }
 export function assertStackedComposer(panel: HTMLElement): void {
-  const layout = panel.querySelector(
-    '[data-ui-component="ai-chat-layout"]',
-  ) as HTMLElement | null;
-  const dock = panel.querySelector(
-    '[data-ui-part="composer-dock"]',
-  ) as HTMLElement | null;
-  const shell = panel.querySelector(
-    '[data-ui-part="scroll-shell"]',
-  ) as HTMLElement | null;
-  const composerBody = panel.querySelector(
-    '[data-ui-component="ai-chat-composer"] [data-ui-part="body"]',
-  ) as HTMLElement | null;
-  const empty = panel.querySelector(
-    '[data-ui-part="empty-state"]',
-  ) as HTMLElement | null;
-  expect(layout).not.toBeNull();
-  expect(dock).not.toBeNull();
-  expect(shell).not.toBeNull();
-  expect(composerBody).not.toBeNull();
-  expect(empty).not.toBeNull();
-  expect(getComputedStyle(dock!).position).toBe("relative");
-  expect(parseFloat(getComputedStyle(panel).paddingBottom)).toBe(0);
-  const panelBox = panel.getBoundingClientRect();
-  const layoutBox = layout!.getBoundingClientRect();
-  const dockBox = dock!.getBoundingClientRect();
-  const shellBox = shell!.getBoundingClientRect();
-  const emptyBox = empty!.getBoundingClientRect();
-  expect(layoutBox.height).toBeGreaterThan(panelBox.height * 0.8);
-  expect(shellBox.height).toBeGreaterThanOrEqual(
-    layoutBox.height - dockBox.height - 2,
+  const surface = panel.querySelector<HTMLElement>(
+    '[data-ui-component="transcript"]',
   );
-  expect(emptyBox.height).toBeGreaterThan(shellBox.height * 0.7);
-  expect(shellBox.bottom).toBeLessThanOrEqual(dockBox.top + 2);
+  const footer = panel.querySelector<HTMLElement>(
+    '[data-ui-component="transcript-footer"]',
+  );
+  const viewport = panel.querySelector<HTMLElement>(
+    '.ui-transcript-viewport > [data-ui-part="scroll-area-viewport"]',
+  );
+  const composer = panel.querySelector<HTMLElement>(
+    "[data-transcript-composer]",
+  );
+  expect(surface).not.toBeNull();
+  expect(footer).not.toBeNull();
+  expect(viewport).not.toBeNull();
+  expect(composer).not.toBeNull();
+  expect(surface!.getBoundingClientRect().height).toBeGreaterThan(
+    panel.clientHeight * 0.7,
+  );
+  expect(viewport!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+    footer!.getBoundingClientRect().top + 2,
+  );
+  const clearance = parseFloat(
+    getComputedStyle(
+      panel.querySelector<HTMLElement>('[data-testid="ai-transcript-panel"]')!,
+    ).paddingBottom,
+  );
   expect(
-    dockBox.bottom - composerBody!.getBoundingClientRect().bottom,
-  ).toBeGreaterThanOrEqual(20);
-  expect(dockBox.bottom).toBeLessThanOrEqual(panelBox.bottom + 2);
-  expect(dockBox.top).toBeGreaterThan(panelBox.top + panelBox.height * 0.4);
+    Math.abs(
+      footer!.getBoundingClientRect().bottom +
+        clearance -
+        panel.getBoundingClientRect().bottom,
+    ),
+  ).toBeLessThan(2);
+  expect(footer!.getBoundingClientRect().height).toBe(48);
+  expect(surface!.scrollHeight).toBeLessThanOrEqual(surface!.clientHeight);
 }
 
 export function assertNoMessageOverlap(panel: HTMLElement): void {
-  const dock = panel.querySelector(
-    '[data-ui-part="composer-dock"]',
-  ) as HTMLElement | null;
-  const viewport = panel.querySelector(
-    '[data-ui-part="scroll-area-viewport"]',
-  ) as HTMLElement | null;
+  assertStackedComposer(panel);
   const messages = panel.querySelectorAll(
-    '[data-ui-component="ai-chat-message"]',
+    '[data-chat-item][data-kind="message"]',
   );
-  const last = messages[messages.length - 1] as HTMLElement | undefined;
-  expect(dock).not.toBeNull();
-  expect(viewport).not.toBeNull();
-  expect(last).toBeDefined();
-  expect(viewport!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
-    dock!.getBoundingClientRect().top + 2,
-  );
-  expect(getComputedStyle(viewport!).overflowY).toMatch(/auto|scroll/);
+  expect(messages.length).toBeGreaterThan(0);
 }

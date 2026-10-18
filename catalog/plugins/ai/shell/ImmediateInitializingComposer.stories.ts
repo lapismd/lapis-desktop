@@ -31,22 +31,22 @@ export const ImmediateInitializingComposer: Story = {
       ),
     );
     const panel = await canvas.findByTestId("ai-chat-panel");
-    const composer = within(panel).getByRole("combobox", { name: "Message" });
     expect(panel).toHaveAttribute("data-initializing", "true");
-    await expect(
-      within(panel).getByRole("status", { name: "" }),
-    ).toHaveTextContent("Preparing AI…");
-    await expect(composer).toHaveAttribute("aria-disabled", "true");
-    await expect(composer).toHaveAttribute("contenteditable", "false");
-    await expect(
-      within(panel).getByRole("button", { name: "Effort and model" }),
-    ).toBeDisabled();
-
+    expect(
+      panel.querySelectorAll('[data-ui-component="skeleton"]').length,
+    ).toBeGreaterThan(4);
+    expect(
+      within(panel).queryByRole("textbox", { name: /^Message$/ }),
+    ).toBeNull();
+    expect(
+      within(panel).queryByRole("button", { name: /^Send message$/ }),
+    ).toBeNull();
     releaseAiInitialization(canvasElement);
     await waitFor(() => {
       expect(panel).toHaveAttribute("data-initializing", "false");
-      expect(composer).toHaveAttribute("aria-disabled", "false");
-      expect(composer).toHaveAttribute("contenteditable", "true");
+      expect(
+        within(panel).getByRole("textbox", { name: /^Message$/ }),
+      ).toHaveAttribute("contenteditable", "true");
     });
   },
 };

@@ -210,3 +210,5 @@
 - [Document and classic AI transcript review](history/E-AI-039.md)
 
 - [Compact transcript footer and inline formatting](history/E-AI-040.md)
+
+- [Shared AI transcript adoption and vault presentation](history/E-AI-041.md)

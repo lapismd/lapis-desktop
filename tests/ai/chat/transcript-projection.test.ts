@@ -86,4 +86,38 @@ describe("AI transcript presentation projection", () => {
     ).toBe("Question answered");
     expect(source[0]).toMatchObject({ status: "pending" });
   });
+  it("retains agent transitions and never groups tools across bindings", () => {
+    const bindings = ["codex", "cursor"].map((agent) => ({
+      schemaVersion: 1 as const,
+      type: "binding.created" as const,
+      id: agent,
+      agent,
+      runtime: "acp",
+      createdAt: "2026-10-18T10:00:00Z",
+      model: { provider: agent, model: `${agent}-model` },
+    }));
+    const call = (id: string, agentBindingId: string): AiChatItem => ({
+      id,
+      agentBindingId,
+      type: "tool",
+      toolId: id,
+      name: "read",
+      state: "completed",
+    });
+    const projected = projectAiTranscript(
+      [
+        call("one", "codex"),
+        call("two", "cursor"),
+        call("three", "cursor"),
+        call("four", "codex"),
+      ],
+      bindings,
+    );
+    expect(projected.map((item) => item.dayLabel)).toEqual([
+      "Codex ACP · codex-model",
+      "Cursor ACP · cursor-model",
+      "Codex ACP · codex-model",
+    ]);
+    expect(projected.map((item) => item.tools?.length)).toEqual([1, 2, 1]);
+  });
 });

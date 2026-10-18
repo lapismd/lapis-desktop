@@ -311,3 +311,12 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+@container transcript-footer (max-width: 24rem) {
+  [data-ui-component="ai-chat-panel"]
+    .ai-chat-panel__scope-path[data-inline]
+    .ai-chat-panel__scope-button
+    span {
+    display: none;
+  }
+}

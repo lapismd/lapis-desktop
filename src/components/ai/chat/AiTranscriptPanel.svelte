@@ -7,6 +7,8 @@
   } from "@lapismd/design-core/chat";
   import { SegmentedControl } from "@lapismd/design-core/forms";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import { Button } from "@lapismd/design-core/shadcn/button";
+  import CopyIcon from "@lucide/svelte/icons/copy";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import SparklesIcon from "@lucide/svelte/icons/sparkles";
   import {
@@ -33,8 +35,17 @@
     actions,
   } = $derived(panel);
   let view = $state<"document" | "classic">(
-    untrack(() => panelProps.initialTranscriptView ?? "document"),
+    untrack(
+      () =>
+        panelProps.initialTranscriptView ??
+        panelProps.settings?.transcriptView ??
+        "document",
+    ),
   );
+  $effect(() => {
+    const preference = panelProps.settings?.transcriptView;
+    if (preference && !panelProps.initialTranscriptView) view = preference;
+  });
   let documentActions = $state<Snippet>();
   const items = $derived(
     projectAiTranscript(controller.items, controller.bindings),
@@ -64,6 +75,20 @@
         : { publication: "published", batchId: snapshot.id };
     },
   }));
+  async function chooseView(next: "document" | "classic") {
+    view = next;
+    try {
+      await panelProps.onSettingsChange?.({ transcriptView: next });
+    } catch (error) {
+      panelProps.app?.notifications.notify({
+        id: "ai-presentation-error",
+        source: "ai",
+        severity: "error",
+        title: "Conversation view",
+        message: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }
   async function send() {
     const value = composerState.draft;
     if (
@@ -80,12 +105,6 @@
 
 <div class="transcript-panel" data-testid="ai-transcript-panel">
   <div class="transcript-toolbar">
-    <ChatConversationPicker
-      {panelProps}
-      {controller}
-      {conversationsState}
-      {actions}
-    />
     <span class="transcript-title">Conversation</span>
     <SegmentedControl
       value={view}
@@ -93,7 +112,9 @@
       labels={{ document: "Document", classic: "Classic" }}
       ariaLabel="Conversation view"
       onChange={(next) => {
-        if (next === "document" || next === "classic") view = next;
+        if (next !== "document" && next !== "classic") return;
+        const pending = chooseView(next);
+        panelProps.onOperation?.(pending);
       }}
     />
   </div>
@@ -108,6 +129,28 @@
       reactionsDisabled
       authorPopover={{ interaction: "hover" }}
     >
+      {#snippet beforeItems()}
+        <div class="transcript-conversations">
+          <ChatConversationPicker
+            {panelProps}
+            {controller}
+            {conversationsState}
+            {actions}
+          />
+        </div>
+      {/snippet}
+      {#snippet metadataSupplement(item)}
+        {@const source = controller.items.find((entry) => entry.id === item.id)}
+        {#if source?.type === "message" && source.role === "assistant"}
+          <Button
+            size="icon-xs"
+            variant="ghost"
+            aria-label="Copy response"
+            onclick={() => void actions.copyResponse(source.text)}
+            ><CopyIcon aria-hidden="true" /></Button
+          >
+        {/if}
+      {/snippet}
       {#snippet customBlock(block)}
         {@const item = transcriptSourceItem(block, controller.items)}
         {#if item}<AiTranscriptBlock {item} {panel} />{/if}
@@ -186,6 +229,8 @@
 
 <style>
   .transcript-panel {
+    box-sizing: border-box;
+    padding-block-end: var(--ui-ai-chat-bottom-clearance);
     display: flex;
     flex-direction: column;
     min-width: 0;
@@ -202,11 +247,15 @@
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid var(--border);
   }
+  .transcript-conversations {
+    padding-inline: 0.75rem;
+  }
   .transcript-title {
     font-size: 0.8125rem;
     color: var(--muted-foreground);
   }
   .transcript-controls {
+    gap: 0.25rem;
     display: flex;
     align-items: center;
   }

@@ -24,25 +24,28 @@ export const ImmediateInitializingComposer: Story = {
       ),
     );
     const panel = await canvas.findByTestId("ai-chat-panel");
-    const composer = within(panel).getByRole("combobox", { name: "Message" });
     expect(panel).toHaveAttribute("data-initializing", "true");
-    expect(within(panel).getByRole("status", { name: "" })).toHaveTextContent(
-      "Preparing AI…",
-    );
-    expect(composer).toHaveAttribute("aria-disabled", "true");
-    expect(composer).toHaveAttribute("contenteditable", "false");
     expect(
-      within(panel).getByRole("button", { name: "Effort and model" }),
-    ).toBeDisabled();
+      panel.querySelectorAll('[data-ui-component="skeleton"]').length,
+    ).toBeGreaterThan(4);
+    expect(
+      within(panel).queryByRole("textbox", { name: /^Message$/ }),
+    ).toBeNull();
+    expect(
+      within(panel).queryByRole("button", { name: /^Send message$/ }),
+    ).toBeNull();
     const fixture = aiWorkspaceFixture(canvasElement);
     fixture.releaseModels();
     await waitFor(() => {
       expect(panel).toHaveAttribute("data-initializing", "false");
-      expect(composer).toHaveAttribute("aria-disabled", "false");
-      expect(composer).toHaveAttribute("contenteditable", "true");
+      expect(
+        within(panel).getByRole("textbox", { name: /^Message$/ }),
+      ).toHaveAttribute("contenteditable", "true");
     });
     expect(canvas.getByTestId("ai-chat-panel")).toBe(panel);
-    expect(canvas.getByRole("combobox", { name: "Message" })).toBe(composer);
+    expect(
+      within(panel).getByRole("textbox", { name: /^Message$/ }),
+    ).toBeVisible();
     expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);
   },
 };

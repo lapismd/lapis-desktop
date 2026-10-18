@@ -271,6 +271,10 @@
     font-size: 0.75rem;
   }
   .transcript-fixture[data-fill] {
+    box-sizing: border-box;
+    padding-block-end: calc(
+      var(--ui-workspace-status-height, 1.5rem) + 0.75rem
+    );
     height: 100%;
     min-height: 0;
   }

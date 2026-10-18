@@ -6,6 +6,7 @@ import type {
 } from "@lapismd/design-core/chat";
 import type { AgentBindingCreatedRecord } from "../conversations/types.ts";
 import type { AiChatItem } from "./chat-items.ts";
+import { bindingLabels } from "./panel/binding-labels.ts";
 import { toolCallStatus } from "./chat-tool-display.ts";
 
 /** Display-only revision. Native source IDs and receipt authority remain untouched. */
@@ -70,10 +71,22 @@ export function projectAiTranscript(
   const agents = new Map(bindings.map((binding) => [binding.id, binding]));
   const items: TranscriptItem[] = [];
   let turn: TranscriptItem["turn"];
+  let previousBinding: string | undefined;
+  const labels = bindingLabels([...bindings]);
   for (const item of source) {
     const binding = item.agentBindingId
       ? agents.get(item.agentBindingId)
       : undefined;
+    if (
+      (item.type === "approval" || item.type === "question") &&
+      item.status === "pending"
+    )
+      continue;
+    const dayLabel =
+      item.agentBindingId && item.agentBindingId !== previousBinding
+        ? labels.get(item.agentBindingId)
+        : undefined;
+    if (dayLabel) previousBinding = item.agentBindingId;
     if (item.type === "message" && item.role === "user") {
       turn = {
         id: item.id,
@@ -87,12 +100,17 @@ export function projectAiTranscript(
     }
     if (item.type === "tool") {
       const previous = items.at(-1);
-      if (previous?.kind === "tools" && previous.turn?.id === turn?.id) {
+      if (
+        previous?.kind === "tools" &&
+        previous.turn?.id === turn?.id &&
+        !dayLabel
+      ) {
         previous.tools = [...(previous.tools ?? []), tool(item)];
       } else {
         items.push({
           id: `tools/${item.id}`,
           kind: "tools",
+          dayLabel,
           label: "Tool activity",
           turn,
           blocks: [],
@@ -101,11 +119,6 @@ export function projectAiTranscript(
       }
       continue;
     }
-    if (
-      (item.type === "approval" || item.type === "question") &&
-      item.status === "pending"
-    )
-      continue;
     const value = text(item);
     const message = item.type === "message";
     const label = message
@@ -140,6 +153,7 @@ export function projectAiTranscript(
           ? "reasoning"
           : "context",
       label,
+      dayLabel,
       role: message ? item.role : undefined,
       author: message
         ? item.role === "user"

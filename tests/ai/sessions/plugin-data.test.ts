@@ -12,6 +12,7 @@ describe("AI plugin data", () => {
       parseAiPluginData({ defaultRuntime: "fake", acpAgent: "codex" }),
     ).toEqual({
       settings: {
+        transcriptView: "document",
         defaultRuntime: "fake",
         acpAgent: "codex",
         defaultModels: { codex: "gpt-5.6-sol", cursor: "", opencode: "" },

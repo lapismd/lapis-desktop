@@ -30,21 +30,23 @@ export const LazyStartAndFirstLocation: Story = {
       released: 0,
       sessions: [],
     });
-    const input = canvas.getByRole("combobox", { name: "Message" });
+    const input = canvas.getByRole("textbox", { name: "Message" });
     await userEvent.type(
       input,
       "Keep this controller through the first durable location",
     );
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Send message$/ }),
+    );
     await waitFor(() =>
       expect(
-        canvas.getByRole("article", { name: "Message from assistant" }),
+        canvas.getByRole("textbox", { name: "Assistant response" }),
       ).toHaveTextContent("Keep this controller"),
     );
     const plugin = fixture.plugin()!;
     await plugin.application.operations.settle();
     expect(canvas.getByTestId("ai-chat-panel")).toBe(panel);
-    expect(canvas.getByRole("combobox", { name: "Message" })).toBe(input);
+    expect(canvas.getByRole("textbox", { name: "Message" })).toBe(input);
     const sent = await inspect();
     expect(sent.sessions).toHaveLength(1);
     expect(sent.sessions[0].prompts).toEqual([
@@ -90,7 +92,7 @@ export const ExplicitConversationReplacement: Story = {
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-panel")).not.toBe(panel);
       expect(
-        canvas.getByRole("article", { name: "Message from user" }),
+        canvas.getByRole("textbox", { name: "Your message" }),
       ).toHaveTextContent("Summarize project notes");
     });
     const replacement = canvas.getByTestId("ai-chat-panel");
@@ -98,7 +100,7 @@ export const ExplicitConversationReplacement: Story = {
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-panel")).not.toBe(replacement);
       expect(
-        canvas.getByRole("article", { name: "Message from user" }),
+        canvas.getByRole("textbox", { name: "Your message" }),
       ).toHaveTextContent("Fix parser errors");
     });
     expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);

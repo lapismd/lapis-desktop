@@ -2,7 +2,7 @@
 // Retained AI registry composition assertions from lapis-plugins ee20d366.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { WorkspaceShell } from "@lapis-notes/workspace";
-import { expect, waitFor, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import AiShellDemo from "../../../support/ai/shell/AiShellDemo.svelte";
 import { shellParameters } from "../../../support/ai/shell/examples.ts";
 import { shellFixture } from "../../../support/ai/shell/fixture.ts";
@@ -37,15 +37,15 @@ export const ChatWithToolActivity: Story = {
         '[data-workspace-surface="left-sidebar"]',
       );
       expect(left?.getBoundingClientRect().width ?? 0).toBeLessThan(2);
-      expect(
-        within(panel).getByText("vault.read", {
-          selector: '[data-ui-part="call-name"]',
-        }),
-      ).toBeVisible();
-      expect(
-        within(panel).getByRole("article", { name: "Message from assistant" }),
-      ).toHaveTextContent("Summary");
     });
+    await expect(
+      within(panel).findByRole("textbox", { name: /^Assistant response$/ }),
+    ).resolves.toHaveTextContent("Summary");
+    await expect(
+      within(panel).getByRole("button", {
+        name: /^Show details for vault.read$/,
+      }),
+    ).toBeVisible();
     expect(
       shellFixture(canvasElement).runtimes.flatMap(
         (runtime) => runtime.sessions,

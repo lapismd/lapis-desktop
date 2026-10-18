@@ -75,6 +75,7 @@
 </script>
 
 <AiChatPanel
+  presentation="transcript"
   {app}
   runtime={bootstrap.runtime}
   selectRuntime={(request) => host.selectRuntime(request)}

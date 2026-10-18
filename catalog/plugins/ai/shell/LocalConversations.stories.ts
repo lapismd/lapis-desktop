@@ -44,6 +44,9 @@ export const LocalConversations: Story = {
     const app = demoApp(canvasElement);
     const sidebarChatLeaf = app.workspace.getLeavesOfType(AiViewType)[0];
     expect(sidebarChatLeaf).toBeDefined();
+    await waitFor(() =>
+      expect(panel).toHaveAttribute("data-initializing", "false"),
+    );
     assertStackedComposer(panel);
     await userEvent.click(
       within(panel).getByRole("button", {
@@ -225,7 +228,7 @@ export const LocalConversations: Story = {
     ) as HTMLElement | null;
     expect(emptyChat).not.toBeNull();
     await expect(
-      within(emptyChat!).getByRole("combobox", { name: "Message" }),
+      within(emptyChat!).getByRole("textbox", { name: "Message" }),
     ).toBeVisible();
 
     await userEvent.click(

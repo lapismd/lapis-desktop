@@ -564,3 +564,10 @@ MessageQueue and Footer exports. Source/destination fixture provenance is in
 `support/ai/transcript/REFERENCE.md` (Apache-2.0). Document/Classic are separate
 review states, independent of the Notes controller adapter. TranscriptReview
 also covers two table-row comments/context and long fenced-code folding.
+
+AI transcript adoption (NOTES-08B/E-AI-041) uses the ordinary `AiViewPanel` in
+`Shell/Transcript adoption`, with no opt-in catalog replacement. Existing Shell
+Desktop, LocalConversations, Initialization and Compositions now assert the
+shared transcript, fixed footer, exact restored context, copy/retry/model
+actions and skeleton loading. Persistence failure has an explicit toast
+assertion.

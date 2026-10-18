@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
-import { expect } from "storybook/test";
+import { expect, waitFor, within } from "storybook/test";
 import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
 import AiWorkspaceDemo from "../../../support/ai/workspace/AiWorkspaceDemo.svelte";
 import { cleanupCatalog } from "../../../support/lifecycle.ts";
@@ -37,8 +37,32 @@ function placement(layout: AiPanelLayout): Story {
         "ai-chat-panel",
         args,
       );
-      expect(panel.getByRole("combobox", { name: "Message" })).toBeVisible();
-      expect(panel.getByText("Ask anything…")).toBeVisible();
+      await expect(
+        panel.findByRole("textbox", { name: /^Message$/ }),
+      ).resolves.toBeVisible();
+      expect(panel.getByText("Ask about your notes…")).toBeVisible();
+      const send = panel.getByRole("button", { name: /^Send message$/ });
+      const status = within(canvasElement).getByLabelText("Workspace status");
+      await waitFor(() => {
+        const chain = [];
+        let node: HTMLElement | null = send;
+        while (node && chain.length < 12) {
+          const box = node.getBoundingClientRect();
+          chain.push({
+            class: node.className,
+            top: box.top,
+            height: box.height,
+            display: getComputedStyle(node).display,
+            flex: getComputedStyle(node).flex,
+            overflow: getComputedStyle(node).overflow,
+          });
+          node = node.parentElement;
+        }
+        expect(
+          send.getBoundingClientRect().bottom,
+          JSON.stringify(chain),
+        ).toBeLessThanOrEqual(status.getBoundingClientRect().top);
+      });
       expect(
         panel.getByRole("button", { name: "Effort and model" }),
       ).toBeVisible();

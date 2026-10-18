@@ -3,6 +3,7 @@
   import type { Snippet } from "svelte";
   import { Avatar } from "@lapismd/design-core/shadcn/avatar";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
+  import ChatContextUsage from "./ChatContextUsage.svelte";
   import ChatComposerDrawer from "./ChatComposerDrawer.svelte";
 
   let {
@@ -29,6 +30,7 @@
 
 <div class="transcript-composer">
   <ChatComposerDrawer {controller} {attachmentsState} {actions} />
+  <ChatContextUsage {controller} {composerState} {actions} />
   <MarkdownComposer
     bind:value={composerState.draft}
     bind:documentActions

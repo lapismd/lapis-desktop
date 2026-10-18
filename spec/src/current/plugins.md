@@ -1,10 +1,10 @@
 # Desktop plugins and catalog
 
-E-AI-039 adds opt-in shared AI transcript review in the real workspace shell,
-with catalog-owned fake clients and closed sidebars. E-AI-040 repairs inline
-footer parity in this review. The native plugin keeps its current presentation
-pending user confirmation; new Lezer parser imports are pre-optimized for stable
-cold Storybook startup.
+E-AI-041 promotes the shared transcript into the ordinary AI plugin under
+standing implementation approval. Vault-owned presentation defaults to Document;
+Classic uses the same controller/readers. Recorded model transitions, usage,
+copy/retry actions and pending requests remain. Source scroll containment keeps
+the footer anchored; native/provider/restart gates remain separate.
 
 E-REPO-025 qualifies working-copy status after visual confirmation. The final
 Storybook Vite hook MUST retain owned watcher exclusions for `.jj`, native build

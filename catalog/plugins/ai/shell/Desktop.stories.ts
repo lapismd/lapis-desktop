@@ -89,10 +89,13 @@ export const Desktop: Story = {
       status.getBoundingClientRect().top - 8,
     );
     expect(getComputedStyle(panel).fontFamily).toMatch(/DM Sans/i);
+    await waitFor(() =>
+      expect(panel).toHaveAttribute("data-initializing", "false"),
+    );
     assertStackedComposer(panel);
-    expect(panel.querySelector('[data-ui-part="empty-state"]')).not.toBeNull();
+    expect(within(panel).getByText("Start a conversation")).toBeVisible();
     expect(
-      within(panel).getByRole("combobox", { name: "Message" }),
+      within(panel).getByRole("textbox", { name: "Message" }),
     ).toBeVisible();
     const body = within(canvasElement.ownerDocument.body);
     await userEvent.click(
@@ -110,41 +113,41 @@ export const Desktop: Story = {
     ).toHaveAttribute("data-state", "checked");
     await userEvent.keyboard("{Escape}");
 
-    const input = within(panel).getByRole("combobox", { name: "Message" });
+    const input = within(panel).getByRole("textbox", { name: "Message" });
     await waitFor(() =>
       expect(getComputedStyle(input).pointerEvents).not.toBe("none"),
     );
     await userEvent.type(input, "Summarize this note");
-    await userEvent.keyboard("{Enter}");
-    await waitFor(() => {
-      expect(
-        panel.querySelector('[data-ui-component="ai-chat-reasoning"]'),
-      ).not.toBeNull();
-      expect(
-        within(panel).getByText("vault.read", {
-          selector: '[data-ui-part="call-name"]',
-        }),
-      ).toBeVisible();
-      expect(
-        within(panel).getByRole("article", { name: "Message from assistant" }),
-      ).toHaveTextContent("Summary");
-    });
+    await userEvent.click(
+      within(panel).getByRole("button", { name: /^Send message$/ }),
+    );
+    await expect(
+      within(panel).findByRole("textbox", { name: /^Assistant response$/ }),
+    ).resolves.toHaveTextContent("Summary");
+    await expect(
+      within(panel).getByRole("button", { name: /^Reasoning$/ }),
+    ).toBeVisible();
+    await expect(
+      within(panel).getByRole("button", {
+        name: /^Show details for vault.read$/,
+      }),
+    ).toBeVisible();
+    await userEvent.click(
+      within(panel).getByRole("button", {
+        name: /^Show details for vault.read$/,
+      }),
+    );
+    await expect(
+      within(panel).getByRole("button", {
+        name: /^Hide details for vault.read$/,
+      }),
+    ).toBeVisible();
     assertNoMessageOverlap(panel);
-    const bubble = panel.querySelector(
-      '[data-ui-component="ai-chat-message-bubble"]',
-    ) as HTMLElement | null;
-    expect(bubble).not.toBeNull();
-    const bubbleStyles = getComputedStyle(bubble!);
-    expect(bubbleStyles.fontFamily).toMatch(/DM Sans/i);
-    expect(bubbleStyles.fontSize).toBe("14px");
-    expect(bubbleStyles.lineHeight).toBe("22px");
-    const heading = bubble!.querySelector("h2");
-    if (heading) {
-      expect(getComputedStyle(heading).fontSize).toBe(bubbleStyles.fontSize);
-      expect(getComputedStyle(heading).fontFamily).toBe(
-        bubbleStyles.fontFamily,
-      );
-    }
+    const response = within(panel).getByRole("textbox", {
+      name: /^Assistant response$/,
+    });
+    expect(getComputedStyle(response).fontFamily).toMatch(/DM Sans/i);
+    expect(getComputedStyle(response).fontSize).toBe("14px");
 
     await userEvent.click(
       await canvas.findByRole("button", { name: "Open settings" }),

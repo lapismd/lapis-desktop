@@ -7,7 +7,8 @@ The 2026-10-18 delivery sequence prioritizes visible, functional slices:
 1. NOTES-08A: review the actual AI components in Storybook, using shared
    Transcript, MarkdownComposer and TranscriptFooter. Document is the default;
    Classic uses the same items, composer and controller. The ordinary plugin
-   keeps its existing presentation until the user confirms the review.
+   uses this shared composition after the final UI corrections under the user's
+   standing implementation approval (2026-10-18).
 2. NOTES-08B: promote the approved composition into the review app and retain
    the per-vault presentation choice, existing conversations and scope controls.
 3. NOTES-07K: connect explicit JJ backend selection, confirmed conversation
@@ -20,15 +21,21 @@ The 2026-10-18 delivery sequence prioritizes visible, functional slices:
 
 The opt-in `AiChatPanel.presentation` selects the shared transcript for review.
 `initialTranscriptView` only chooses its initial document/classic presentation;
-it grants no runtime, storage or native authority. The normal plugin does not
-set either prop in NOTES-08A. Catalog owns all synthetic data and runtime
-clients.
+it grants no runtime, storage or native authority. The ordinary AiViewPanel
+selects the shared transcript in NOTES-08B. Its vault-owned `transcriptView`
+defaults to Document; explicit Classic selection persists through the existing
+acknowledged plugin-settings writer. Legacy embeddings can still omit the
+presentation prop. Catalog owns all synthetic data and runtime clients.
 
 The document footer keeps a single compact row. Formatting expands rightward
 using the jj-store strip (selected trigger, close, separator and actions), with
 local horizontal overflow rather than a second footer row. The folder picker
 uses inline layout without the legacy standalone top margin. Shared footer and
-formatting fixes belong in Design Core and apply to the reference story too.
+formatting fixes belong in Design Core and apply to the reference story too. The
+application reserves its floating status-bar clearance outside the compact
+footer; send and formatting controls remain above the overlay in all placements.
+Conversation discovery stays in the transcript scroll region; it cannot consume
+the fixed header or hide the composer in a short bottom panel.
 
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.
@@ -61,10 +68,15 @@ skeletons; empty content uses shared Empty. Preview controls MUST NOT imply that
 reactions, queues or native tools are enabled without host support.
 
 The first live profile includes chat, supported model configuration, file
-context, cancellation, saved history and restart. Native application-tool reads
-and guarded edits retain M10.3. Current lapis-agent model requests are
-non-streaming: activity follows actual events and text appears as received.
-Incremental fake-client examples qualify rendering only.
+context, cancellation, saved history and restart. The live composition retains
+agent/model transition labels, copy-response actions, retry controls, context
+usage, scope, attachments and exact pending requests. Preference failure retains
+the last saved value and reports through the existing App notification path.
+
+Native application-tool reads and guarded edits retain M10.3. Current
+lapis-agent model requests are non-streaming: activity follows actual events and
+text appears as received. Incremental fake-client examples qualify rendering
+only.
 
 JJ capture has one native raw-event owner. Renderer projection cannot become a
 second writer. Authored messages and application metadata use explicit native
@@ -75,6 +87,8 @@ progress and notifications. Host-selected provider/model configuration resolves
 native credentials at launch; new credential-management UI is deferred.
 
 Each slice records focused source, interaction/accessibility and necessary
-native evidence. UI approval is required before NOTES-08B. Broad catalog,
-provider/platform, release and visual-baseline checks stay deferred; original
-M13/M33 completion gates are unchanged. One child task is Active at a time.
+native evidence. The user gave standing approval to finish the UI and continue
+all subsequent slices on 2026-10-18; NOTES-08B follows focused UI qualification.
+Broad catalog, provider/platform, release and visual-baseline checks stay
+deferred; original M13/M33 completion gates are unchanged. One child task is
+Active at a time.

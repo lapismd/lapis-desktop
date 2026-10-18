@@ -101,3 +101,30 @@ describe("owned AI settings", () => {
     expect(listener).not.toHaveBeenCalled();
   });
 });
+
+describe("transcript presentation preferences", () => {
+  it("defaults to document, restores classic after reload and isolates vaults", async () => {
+    let saved: Record<string, unknown> = {};
+    const one = new AiSettingsStore(async (data) => {
+      saved = structuredClone(data);
+    });
+    const two = new AiSettingsStore(async () => {});
+    expect(one.get().transcriptView).toBe("document");
+    await one.update({ transcriptView: "classic" });
+    const reloaded = new AiSettingsStore(async () => {});
+    reloaded.hydrate(saved);
+    expect(reloaded.get().transcriptView).toBe("classic");
+    expect(two.get().transcriptView).toBe("document");
+  });
+  it("retains the saved preference when persistence fails", async () => {
+    const store = new AiSettingsStore(async () => {
+      throw new Error("Read-only vault");
+    });
+    await expect(store.update({ transcriptView: "classic" })).rejects.toThrow(
+      "Read-only vault",
+    );
+    expect(store.get().transcriptView).toBe("document");
+    store.hydrate({ settings: { transcriptView: "unexpected" } });
+    expect(store.get().transcriptView).toBe("document");
+  });
+});

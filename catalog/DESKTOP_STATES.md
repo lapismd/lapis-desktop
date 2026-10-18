@@ -145,4 +145,11 @@ readable changed-file actions.
 The AI transcript review additionally exposes `TableRowComments` and
 `LongCodeBlock`. `Desktop/AI/Design Core reference` renders the shared recorded
 Document/Classic demo inside the desktop AppShell, with a standalone comparison.
-These remain visual-pending; ordinary plugin adoption awaits user confirmation.
+E-AI-041 adopts the UI under standing implementation approval. These remain
+visual-pending; native-provider/restart acceptance stays separate.
+
+`Desktop/AI/Shell/Transcript adoption` mounts the actual bundled AI plugin,
+checks Document default, retained draft/editor while switching, saved Classic
+after reopening and functional submission. A failed preference save shows an
+App-owned toast and preserves the last saved value. Initialization shows the
+representative transcript skeleton until the real controller can be used.

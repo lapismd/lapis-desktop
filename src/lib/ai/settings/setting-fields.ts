@@ -10,6 +10,7 @@ import {
 } from "./memory-setting-fields.ts";
 
 export const AI_FIELD_IDS = {
+  transcriptView: "ai.transcriptView",
   defaultRuntime: "ai.defaultRuntime",
   acpAgent: "ai.acpAgent",
   defaultModel: "ai.defaultModel",
@@ -38,6 +39,18 @@ export function createAiSettingsSection(
   current: AiPluginSettings,
 ): WorkspaceSettingsSection {
   const fields: NonNullable<WorkspaceSettingsSection["fields"]> = [
+    {
+      id: AI_FIELD_IDS.transcriptView,
+      type: "enum",
+      title: "Conversation view",
+      description:
+        "Document or classic presentation of the same conversation. Saved for this vault.",
+      default: DEFAULT_AI_SETTINGS.transcriptView,
+      options: [
+        { value: "document", label: "Document" },
+        { value: "classic", label: "Classic" },
+      ],
+    },
     {
       id: AI_FIELD_IDS.defaultRuntime,
       type: "enum",

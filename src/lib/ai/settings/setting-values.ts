@@ -24,6 +24,7 @@ const strings = new Set([
   "handoffSummaryModel",
 ]);
 const choices: Partial<Record<AiSettingKey, readonly string[]>> = {
+  transcriptView: ["document", "classic"],
   defaultRuntime: ["auto", "acp"],
   acpAgent: ACP_AGENT_IDS,
   thinking: ["off", "low", "medium", "high"],

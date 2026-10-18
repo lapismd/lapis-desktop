@@ -20,6 +20,7 @@ export type AppToolEnablementRef = {
 };
 
 export type AiPluginSettings = {
+  transcriptView: "document" | "classic";
   defaultRuntime: "auto" | "acp" | "codex-native" | "opencode-native" | "fake";
   acpAgent: AcpAgentId;
   defaultModels: Record<AcpAgentId, string>;
@@ -47,6 +48,7 @@ export type StoredAiSettings = Partial<AiPluginSettings> & {
 };
 
 export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
+  transcriptView: "document",
   defaultRuntime: "auto",
   acpAgent: DEFAULT_ACP_AGENT,
   defaultModels: {
@@ -205,6 +207,8 @@ export function mergeAiSettings(
   };
   const thinking = value?.thinking;
   const merged: AiPluginSettings = {
+    transcriptView:
+      value?.transcriptView === "classic" ? "classic" : "document",
     defaultRuntime: value?.defaultRuntime ?? DEFAULT_AI_SETTINGS.defaultRuntime,
     acpAgent,
     defaultModels,

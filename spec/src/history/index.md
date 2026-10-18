@@ -185,3 +185,5 @@ by the task ledger, not inferred from this list.
 - [Document and classic AI transcript review](E-AI-039.md)
 
 - [Compact transcript footer and inline formatting](E-AI-040.md)
+
+- [Shared AI transcript adoption and vault presentation](E-AI-041.md)
