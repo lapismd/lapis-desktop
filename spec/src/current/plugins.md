@@ -285,3 +285,7 @@ The primary pinned-history preview closes its disposable Files/Outline sidebars
 through their real controls so desktop review shows the log and diff together.
 NarrowPaneInWideShell retains the crowded-pane acceptance; preview choices do
 not change application sidebar preferences. E-REPO-008 records this correction.
+
+Automatic backup stories mount the production status control with owned service
+lifetime, saving skeleton and failure/recovery toast. E-REPO-026 records the
+focused catalog proof; LD-CAT-001/002/003 baseline/release gates are unchanged.

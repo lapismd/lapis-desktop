@@ -13,6 +13,7 @@ custom-protocol = ["tauri/custom-protocol"]
 e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
+jj-vault = { path = "../../jj-store/crates/jj-vault", version = "0.1.0" }
 async-trait = "0.1"
 tempfile = "=3.27.0"
 tokio = { version = "1", features = ["rt", "sync"] }

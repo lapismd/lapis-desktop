@@ -1,6 +1,10 @@
 import { createHash } from "node:crypto";
 
 export const taskPath = "spec/src/current/progress/milestones.md";
+export const taskPaths = [
+  taskPath,
+  "spec/src/current/progress/vault-backup.md",
+];
 export const statuses = new Set([
   "Planned",
   "In progress",

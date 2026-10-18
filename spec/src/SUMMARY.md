@@ -8,6 +8,8 @@
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
   - [AI transcript delivery review](current/ai-presentation.md)
+  - [Automatic vault backup](current/vault-backup.md)
+  - [Vault backup delivery](current/progress/vault-backup.md)
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
@@ -212,3 +214,5 @@
 - [Compact transcript footer and inline formatting](history/E-AI-040.md)
 
 - [Shared AI transcript adoption and vault presentation](history/E-AI-041.md)
+
+- [External vault backup foundation](history/E-REPO-026.md)

@@ -6,6 +6,7 @@ import { nativeError } from "../native-error.ts";
 import type { RepositoryServices } from "../../repository/history-reader.ts";
 import { parseWorkingCopyStatus } from "../../repository/working-copy-status.ts";
 import { PreparationQueue } from "./preparation-queue.ts";
+import { nativeBackup } from "./backup.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
@@ -58,6 +59,7 @@ export function createNativeRepository(
     return job;
   }
   return {
+    backup: nativeBackup(vault.sessionId, call),
     workingCopy: () =>
       run(async () =>
         parseWorkingCopyStatus(

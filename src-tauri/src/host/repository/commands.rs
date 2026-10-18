@@ -104,6 +104,7 @@ pub async fn close_vault(
     host: NativeHost,
     session: &str,
 ) -> Result<(), NativeError> {
+    repository.backups.close(host.clone(), session).await?;
     let session = session.to_owned();
     let retired = access(host.clone(), move |services| {
         services.vaults.get(&session)?;
@@ -133,12 +134,37 @@ pub async fn close_vault(
     Ok(())
 }
 pub fn window_destroyed(app: &AppHandle, window: &str) {
+    if window != "main" {
+        return;
+    }
+    if let Some(repository) = app.try_state::<RepositoryHost>() {
+        repository.backups.fence();
+    }
     if let Some(host) = app.try_state::<NativeHost>()
         && let Ok(mut services) = host.0.lock()
     {
         let NativeServices { repository, .. } = &mut *services;
         repository.leave(window, false);
     }
+    let app = app.clone();
+    let window = window.to_owned();
+    tauri::async_runtime::spawn(async move {
+        let Some(host) = app.try_state::<NativeHost>() else {
+            return;
+        };
+        let Some(repository) = app.try_state::<RepositoryHost>() else {
+            return;
+        };
+        let _transition = repository.transitions.lock().await;
+        if repository
+            .backups
+            .close_window(host.inner().clone(), &window)
+            .await
+            .is_err()
+        {
+            eprintln!("Vault backup shutdown needs recovery on the next open");
+        }
+    });
 }
 #[cfg(test)]
 mod tests {

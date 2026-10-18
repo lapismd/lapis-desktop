@@ -11,6 +11,7 @@ const chapters = [
   "ai-presentation",
   "repository",
   "repository-navigation",
+  "vault-backup",
   "governance",
   "migration",
 ];

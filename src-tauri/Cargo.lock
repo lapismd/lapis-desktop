@@ -4878,6 +4878,7 @@ dependencies = [
  "async-trait",
  "base64 0.22.1",
  "blake2",
+ "cap-std",
  "chrono",
  "etcetera 0.11.0",
  "futures",
@@ -5025,6 +5026,15 @@ dependencies = [
  "serde_json",
  "sha2 0.10.9",
  "thiserror 2.0.21",
+ "tokio",
+]
+
+[[package]]
+name = "jj-vault"
+version = "0.1.0"
+dependencies = [
+ "jj-store-jj",
+ "serde",
  "tokio",
 ]
 
@@ -5412,6 +5422,7 @@ dependencies = [
  "jj-store-jj",
  "jj-store-model",
  "jj-store-service",
+ "jj-vault",
  "libc",
  "mac-usernotifications",
  "mime_guess",

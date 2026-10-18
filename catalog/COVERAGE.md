@@ -1,5 +1,10 @@
 # Desktop catalog coverage
 
+Automatic vault backup: `repository/AutomaticBackup.stories.ts` mounts the real
+plugin, independent native-service adapter boundary and production status
+control for saved, saving and failure/recovery states. Native capture is
+qualified separately; visual approval remains pending.
+
 `Desktop/Repository working copy status` mounts the production plugin in the
 real Notes shell through the public status-item mount API. `DetailsAndRefresh`
 covers totals, refresh, recorded revision navigation and the borderless compact

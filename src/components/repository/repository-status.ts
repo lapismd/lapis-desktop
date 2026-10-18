@@ -4,6 +4,11 @@ import { WorkingCopyController } from "../../lib/repository/working-copy-control
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryWorkingCopyStatus from "./RepositoryWorkingCopyStatus.svelte";
+import RepositoryBackupStatus from "./RepositoryBackupStatus.svelte";
+import {
+  AUTOMATIC_BACKUP_SETTING,
+  automaticBackup,
+} from "./repository-backup.ts";
 
 export const WORKING_COPY_SETTING = "repository-history.showWorkingCopyStatus";
 export function showWorkingCopyStatus(stored: unknown): boolean {
@@ -30,31 +35,52 @@ export class RepositoryStatus {
         id: "repository-history",
         title: "Repository History",
         icon: "git-branch",
-        description: "Working-copy history and status.",
+        description: "Automatic local history and backup status.",
         order: 46,
         navigationGroupId: "core-plugins",
         sourcePluginId: this.plugin.id,
         fields: [
+          ...(this.services.backup
+            ? [
+                {
+                  id: AUTOMATIC_BACKUP_SETTING,
+                  type: "boolean" as const,
+                  title: "Automatic local history",
+                  description:
+                    "Keep recoverable versions of saved files while this vault is open.",
+                  default: true,
+                },
+              ]
+            : []),
           {
             id: WORKING_COPY_SETTING,
             type: "boolean",
             title: "Show working copy status",
             description:
-              "Show changed file and line counts in the status bar, including unsnapshotted files. Hiding it stops background status reads.",
+              "Show repository status in the status bar. Hiding it does not stop automatic backups.",
             default: true,
           },
         ],
       },
       source: {
-        get: () => showWorkingCopyStatus(this.#data),
+        get: (id) =>
+          id === AUTOMATIC_BACKUP_SETTING
+            ? automaticBackup(this.#data)
+            : showWorkingCopyStatus(this.#data),
         set: async (id, value) => {
-          if (id !== WORKING_COPY_SETTING || typeof value !== "boolean")
+          if (
+            ![WORKING_COPY_SETTING, AUTOMATIC_BACKUP_SETTING].includes(id) ||
+            typeof value !== "boolean"
+          )
             throw new Error("Unknown repository setting");
-          await this.plugin.saveData({
-            ...this.#data,
-            showWorkingCopyStatus: value,
-          });
-          this.#data = { ...this.#data, showWorkingCopyStatus: value };
+          const key =
+            id === AUTOMATIC_BACKUP_SETTING
+              ? "automaticBackup"
+              : "showWorkingCopyStatus";
+          await this.plugin.saveData({ ...this.#data, [key]: value });
+          this.#data = { ...this.#data, [key]: value };
+          if (id === AUTOMATIC_BACKUP_SETTING)
+            await this.plugin.backup?.setEnabled(value);
           await this.#apply();
         },
         subscribe: (listener) => {
@@ -78,8 +104,37 @@ export class RepositoryStatus {
   }
   #apply(): Promise<void> {
     return (this.#transition = this.#transition.then(async () => {
+      if (!this.#closed)
+        await this.plugin.backup?.setEnabled(automaticBackup(this.#data));
       if (this.#closed || !showWorkingCopyStatus(this.#data)) {
         await this.#hide();
+        return;
+      }
+      if (this.plugin.backup) {
+        if (this.#remove) return;
+        const controller = this.plugin.backup.controller;
+        this.#remove = this.plugin.app.statusBar.registerItem({
+          id: "repository-history:working-copy",
+          sourcePlugin: this.plugin.id,
+          alignment: "right",
+          priority: 15,
+          mount: (host) => {
+            const component = mount(RepositoryBackupStatus, {
+              target: host,
+              props: {
+                controller,
+                openRevision: (operation, revision) =>
+                  this.plugin
+                    .open(operation, revision)
+                    .catch((error) => this.plugin.report(error)),
+                copyText: (value) => this.plugin.copyIdentifier(value),
+              },
+            });
+            return () => {
+              void unmount(component);
+            };
+          },
+        });
         return;
       }
       if (this.#controller || !this.services.workingCopy) return;

@@ -62,6 +62,43 @@ pub(crate) struct Source {
     witnesses: Vec<Witness>,
 }
 impl Source {
+    /// Both paths come from the admitted native backup owner, never a read frame.
+    pub fn external(root: &Path, state: &Path) -> io::Result<Self> {
+        let metadata = state.join("repo");
+        let record: serde_json::Value =
+            serde_json::from_slice(&std::fs::read(state.join("vault.json"))?)?;
+        if record["version"].as_u64() != Some(1)
+            || record["binding"]["root"].as_str() != root.to_str()
+            || record["binding"]["state"].as_str() != state.to_str()
+        {
+            return Err(super::denied());
+        }
+        let mut witnesses = Vec::new();
+        for path in [
+            root.to_path_buf(),
+            state.to_path_buf(),
+            metadata.clone(),
+            state.join("working_copy"),
+            metadata.join("store"),
+            metadata.join("store/git"),
+        ] {
+            witnesses.push(Witness::capture(path, true)?);
+        }
+        for path in [
+            state.join("vault.json"),
+            state.join("working_copy/type"),
+            metadata.join("store/type"),
+            metadata.join("store/git_target"),
+        ] {
+            witnesses.push(Witness::capture(path, false)?);
+        }
+        let source = Self {
+            metadata,
+            witnesses,
+        };
+        source.verify()?;
+        Ok(source)
+    }
     pub fn fingerprint(&self) -> [u8; 32] {
         use sha2::{Digest, Sha256};
         use std::os::unix::ffi::OsStrExt;

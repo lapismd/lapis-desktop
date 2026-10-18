@@ -9,6 +9,7 @@ mod files;
 mod mutations;
 pub(crate) mod private_profile;
 mod profiles;
+mod registry;
 pub(crate) mod staged;
 mod writes;
 

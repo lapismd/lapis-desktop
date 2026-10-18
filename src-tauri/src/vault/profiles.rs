@@ -34,6 +34,7 @@ struct Admission {
 pub struct VaultManager {
     profile_dir: Dir,
     recents: Vec<RecentVault>,
+    registry: Vec<RecentVault>,
     sessions: HashMap<String, Admission>,
 }
 
@@ -76,6 +77,7 @@ impl VaultManager {
             return Err(invalid("Too many recent vault profiles"));
         }
         Ok(Self {
+            registry: super::registry::load(&profile_dir, &recents)?,
             profile_dir,
             recents,
             sessions: HashMap::new(),
@@ -135,7 +137,7 @@ impl VaultManager {
 
     pub fn open_recent(&mut self, profile_id: &str) -> io::Result<VaultDescriptor> {
         let profile = self
-            .recents
+            .registry
             .iter()
             .find(|profile| profile.id == profile_id)
             .ok_or_else(|| invalid("Unknown recent vault"))?
@@ -161,9 +163,9 @@ impl VaultManager {
             .to_owned();
         let profile_id = id
             .or_else(|| {
-                self.recents
+                self.registry
                     .iter()
-                    .find(|entry| entry.path == path)
+                    .find(|entry| identity(&root).is_ok_and(|value| value == entry.root_identity))
                     .map(|entry| entry.id.clone())
             })
             .unwrap_or_else(|| Uuid::new_v4().to_string());
@@ -184,6 +186,13 @@ impl VaultManager {
                 root_identity: identity(&root)?,
             },
         );
+        let mut registry = self.registry.clone();
+        registry.retain(|entry| entry.id != profile_id);
+        registry.push(recents[0].clone());
+        // Publish durable identity first. A failed recent-list update may leave
+        // a harmless catalog entry but cannot create a new ID on the next open.
+        super::registry::save(&self.profile_dir, &registry)?;
+        self.registry = registry;
         recents.truncate(20);
         let mut staged = TempFile::new(&self.profile_dir)?;
         staged.write_all(&serde_json::to_vec(&recents)?)?;

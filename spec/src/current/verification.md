@@ -99,6 +99,7 @@ deferred pending visual confirmation.
 | LD-REPO-002    | Implemented | [E-REPO-006](../history/E-REPO-006.md): cold native pins/diffs/restart; [M13.2 ledger](progress/milestones.md): transport and presentation history; [E-REPO-016](../history/E-REPO-016.md): background work.                                                                                     |
 | LD-REPO-003    | Planned     | JJ-backed native conversation recovery; M13.3.; [E-AI-036](../history/E-AI-036.md): native factory prerequisite; managed path remains open; [E-AI-037](../history/E-AI-037.md): confirmed native read prerequisite; [E-AI-038](../history/E-AI-038.md): retained native continuation.            |
 | LD-REPO-004    | Implemented | [M13.2 ledger](progress/milestones.md): repository UI history and original gates; [E-REPO-016](../history/E-REPO-016.md): loading progress.                                                                                                                                                      |
+| LD-REPO-005    | Planned     | [E-REPO-026](../history/E-REPO-026.md): foundation proofs; [M14](progress/vault-backup.md) retains restore, search and sync gates.                                                                                                                                                               |
 
 LD-REPO-004 picker sizing preview: [E-REPO-014](../history/E-REPO-014.md).
 

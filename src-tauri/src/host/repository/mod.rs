@@ -1,3 +1,5 @@
+pub(crate) mod backup;
+mod backup_provider;
 pub(crate) mod commands;
 mod policy;
 pub(crate) mod working_copy;
@@ -6,6 +8,7 @@ use std::{io, sync::Arc};
 use tauri::Manager;
 use tauri_plugin_jj_store::{Config, History};
 pub struct RepositoryHost {
+    pub backups: backup::Backups,
     pub history: Arc<History>,
     pub working_tree: jj_store_service::working_tree::Observer,
     pub transitions: tokio::sync::Mutex<()>,
@@ -24,6 +27,17 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
     .map_err(|_| io::Error::other("Repository history is unavailable"))?;
     app.plugin(tauri_plugin_jj_store::Builder::new(history.clone()).build())?;
     if !app.manage(RepositoryHost {
+        backups: backup::Backups::new({
+            #[cfg(not(feature = "e2e"))]
+            {
+                app.path().app_data_dir()?.join("vault-history")
+            }
+            #[cfg(feature = "e2e")]
+            {
+                std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
+                    .join("vault-history")
+            }
+        }),
         history,
         working_tree: jj_store_service::working_tree::Observer::new(
             tauri_plugin_jj_store::local::Executor::new(1)

@@ -10,7 +10,7 @@ import {
   validateProgress,
   inventoryErrors,
   migrationSummary,
-  taskPath,
+  taskPaths,
   markdownProjection,
 } from "./progress-model.mjs";
 
@@ -54,7 +54,7 @@ export function progressFindings(
 ) {
   const files = repositoryFiles(root);
   const read = (file) => readFileSync(resolve(root, file), "utf8");
-  const tasks = parseTasks(read(taskPath));
+  const tasks = taskPaths.flatMap((path) => parseTasks(read(path)));
   const evidenceFiles = files.filter((file) =>
     /^spec\/src\/history\/E-.+\.md$/u.test(file),
   );
@@ -147,7 +147,9 @@ if (
 ) {
   try {
     if (process.argv.includes("--write")) {
-      const tasks = parseTasks(readFileSync(taskPath, "utf8"));
+      const tasks = taskPaths.flatMap((path) =>
+        parseTasks(readFileSync(path, "utf8")),
+      );
       writeFileSync("MIGRATION.md", migrationSummary(tasks));
       console.log("Generated MIGRATION.md.");
     } else {

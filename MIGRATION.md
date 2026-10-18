@@ -9,8 +9,7 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
 M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
-Current work: M8.5 — Review stories; resume deferred source/catalog and native
-acceptance when requested
+Current work: M14.2 — Finish native coordinator lifecycle
 
 Oldest pending gate: M7.3 — After M10.4: qualify ordinary native popouts
 
@@ -56,3 +55,11 @@ below.
 | M0.2  | Done        | Complete; native qualification remains explicit                                     |
 | M8.4  | Done        | Complete; extend inventory with new desktop UI                                      |
 | M8.5  | In progress | Review stories; resume deferred source/catalog and native acceptance when requested |
+| M14   | In progress | Complete the staged plan                                                            |
+| M14.1 | Partial     | Complete native binding and identity proof                                          |
+| M14.2 | In progress | Finish native coordinator lifecycle                                                 |
+| M14.3 | Planned     | Adapt the existing views                                                            |
+| M14.4 | Planned     | Reuse forge account management                                                      |
+| M14.5 | Planned     | Integrate guarded Git transport                                                     |
+| M14.6 | Planned     | Add the disposable projection                                                       |
+| M14.7 | Planned     | Complete advanced storage and providers                                             |

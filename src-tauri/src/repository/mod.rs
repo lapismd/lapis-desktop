@@ -47,11 +47,22 @@ impl Plan {
 }
 #[derive(Default)]
 pub struct RepositoryAdmissions {
+    backup_sources: HashMap<String, Source>,
     vault: VaultAdmissions,
     grants: HashMap<String, Grant>,
     sequence: u64,
 }
 impl RepositoryAdmissions {
+    pub fn bind_backup(
+        &mut self,
+        vaults: &VaultManager,
+        session: &str,
+        state: &Path,
+    ) -> io::Result<()> {
+        let source = Source::external(vaults.get(session)?.path(), state)?;
+        self.backup_sources.insert(session.to_owned(), source);
+        Ok(())
+    }
     pub fn prepare(
         &mut self,
         vaults: &VaultManager,
@@ -62,7 +73,13 @@ impl RepositoryAdmissions {
         // Pending vault admission denies reads throughout discovery and cleanup.
         let root = vaults.get(session)?;
         root.verify_physical_root()?;
-        let source = Source::capture(root.path())?;
+        let source = match self.backup_sources.get(session) {
+            Some(source) => {
+                source.verify()?;
+                source.clone()
+            }
+            None => Source::capture(root.path())?,
+        };
         let descriptor = vaults.descriptor(session)?;
         let mut digest = Sha256::new();
         digest.update(b"lapis-desktop-repository-v1\0");
@@ -163,6 +180,7 @@ impl RepositoryAdmissions {
             .is_none_or(|grant| grant.vault_generation == retired.generation)
     }
     pub fn finish_close_vault(&mut self, session: &str) {
+        self.backup_sources.remove(session);
         self.vault.finish_close_vault(session);
     }
 }

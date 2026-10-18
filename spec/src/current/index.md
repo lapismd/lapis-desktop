@@ -19,3 +19,5 @@ gates.
 - [Migration inventory](migration.md)
 - [Milestones and next actions](progress/milestones.md)
 - [Requirement verification](verification.md)
+
+- [Automatic vault backup](vault-backup.md)

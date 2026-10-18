@@ -1,5 +1,9 @@
 # Repository history and conversations
 
+LD-REPO-005's default automatic local backup and separately admitted writer are
+specified in [Automatic vault backup](vault-backup.md). M14 tracks the delivery;
+immutable reader and M13 conversation contracts retain their original scope.
+
 The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces
 without upstream `jj-lib`. Notes consumes jj-store M33 in verified slices.
 
@@ -9,12 +13,13 @@ owns its read-only authority, lifecycle, setting and presentation contract.
 
 ## Requirements
 
-| ID          | Requirement                                                                                                                                                                                                                                                                                                                                      |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| LD-REPO-001 | Repository reads MUST require current native physical-vault and caller-window admission independent of AI enablement. Roots, metadata/Git witnesses, repository identity, cache location and registration generation MUST remain native-owned. Discovery grants no authority and MUST NOT initialize, snapshot or reconcile a source repository. |
-| LD-REPO-002 | History and diff reads MUST retain exact operation pins and full-width identities through bounded versioned text frames. Replacement, revocation or stale generations MUST reject retained reads. Native close MUST fence new work and drain owned reads/preparations before vault release; database blockers MUST preserve authority.           |
-| LD-REPO-003 | JJ-backed conversations MUST explicitly select AgentStore and ThreadStore persistence with confirmed receipts and unknown-outcome recovery. One native raw event owner MUST sanitize and durably retain before display or acknowledgement. Legacy file conversations retain their explicit backend; unknown prompts MUST NOT replay.             |
-| LD-REPO-004 | History and the separate operation-log view MUST reuse Design Core Column Canvas with jj-store graph/row presentation. Columns MUST adapt to pane width independently of viewport width; selection, refresh, file changes and details MUST remain readable and reachable in narrow panes.                                                        |
+| ID          | Requirement                                                                                                                                                                                                                                                                                                                                                                                                     |
+| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-REPO-001 | Repository reads MUST require current native physical-vault and caller-window admission independent of AI enablement. Roots, metadata/Git witnesses, repository identity, cache location and registration generation MUST remain native-owned. Discovery grants no authority and MUST NOT initialize, snapshot or reconcile a source repository.                                                                |
+| LD-REPO-002 | History and diff reads MUST retain exact operation pins and full-width identities through bounded versioned text frames. Replacement, revocation or stale generations MUST reject retained reads. Native close MUST fence new work and drain owned reads/preparations before vault release; database blockers MUST preserve authority.                                                                          |
+| LD-REPO-003 | JJ-backed conversations MUST explicitly select AgentStore and ThreadStore persistence with confirmed receipts and unknown-outcome recovery. One native raw event owner MUST sanitize and durably retain before display or acknowledgement. Legacy file conversations retain their explicit backend; unknown prompts MUST NOT replay.                                                                            |
+| LD-REPO-004 | History and the separate operation-log view MUST reuse Design Core Column Canvas with jj-store graph/row presentation. Columns MUST adapt to pane width independently of viewport width; selection, refresh, file changes and details MUST remain readable and reachable in narrow panes.                                                                                                                       |
+| LD-REPO-005 | Enabled vault history MUST automatically retain saved internal/external file changes as Git-compatible checkpoints with durable vault identity, external metadata by default, independent exclusions, guarded restoration, historical search and recoverable GitHub/Forgejo synchronization. Capture permissions and lifetime MUST remain separate from immutable history reads and optional status visibility. |
 
 ## Native admission
 
