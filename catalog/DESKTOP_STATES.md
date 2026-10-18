@@ -1,5 +1,8 @@
 # Desktop state review inventory
 
+`Repository comparison/JJLogAndOpLogTabs` previews resting JJ Log and Op Log
+rows matching the AppShell body, with distinct hover and selection styling.
+
 `Repository blame layout review/StickyAttribution` reviews active attribution
 under the header, incoming group replacement and horizontal pinning. The body
 uses public shadcn ScrollArea with shared source/attribution scroll position, a

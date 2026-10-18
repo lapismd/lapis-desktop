@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+E-REPO-021 previews JJ Log and Op Log row bodies on the AppShell `--background`
+surface (white in light mode). Headers, hover and selected states retain their
+existing styling. This catalog-only change awaits confirmation before adoption.
+
 E-REPO-020 refines only the blame review: attribution sticks below the file
 header until the next group pushes it away; one Design Core shadcn ScrollArea
 viewport scrolls both columns. Sample commits include `info@lapis.md` to

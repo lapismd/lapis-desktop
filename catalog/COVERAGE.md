@@ -1,5 +1,10 @@
 # Desktop catalog coverage
 
+E-REPO-021 reviews AppShell-coloured JJ Log and Op Log resting rows in
+`Repository comparison/JJLogAndOpLogTabs`. Public Column Canvas body styling
+retains header, hover and selected surfaces; production adoption awaits
+approval.
+
 E-REPO-020 adapts `src/components/repository/blame/RepositoryBlameRows.svelte`
 at `b2ee7957` into the review-only `ReviewBlameRows.svelte`. Absolute top
 positions preserve sticky coordinates; production rows remain unchanged.

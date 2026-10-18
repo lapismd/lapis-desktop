@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-REPO-019/020 preview blame; live adoption awaits approval. LD-MIG-002
+E-REPO-019/020/021 preview blame/log surfaces pending approval. LD-MIG-002
 ownership and native gates remain unchanged.
 
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
