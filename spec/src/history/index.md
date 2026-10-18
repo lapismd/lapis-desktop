@@ -181,3 +181,5 @@ by the task ledger, not inferred from this list.
 
 - [Stacked operation card and file diff](E-REPO-010.md)
 - [Command View parent comparison and owned-runtime preview reload](E-REPO-011.md)
+
+- [Document and classic AI transcript review](E-AI-039.md)

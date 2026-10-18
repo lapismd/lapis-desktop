@@ -12,7 +12,7 @@ export async function submit(
   this: AiChatController,
   prompt: string,
   request: Omit<AgentRequest, "prompt"> = {},
-): Promise<void> {
+): Promise<boolean | undefined> {
   try {
     await this._syncSlashCatalog();
   } catch (error) {
@@ -39,7 +39,7 @@ export async function submit(
   }
   const text =
     resolution?.kind === "literal" ? resolution.text.trim() : prompt.trim();
-  if (!text || this.busy) return;
+  if ((!text && !request.contextBlocks?.length) || this.busy) return;
   this.error = null;
   const userItem: AiChatItem = {
     id: this.repository
@@ -48,6 +48,9 @@ export async function submit(
     type: "message",
     role: "user",
     text,
+    ...(request.contextBlocks?.length
+      ? { contextBlocks: structuredClone(request.contextBlocks) }
+      : {}),
     createdAt: new Date().toISOString(),
   };
   this.items = [...this.items, userItem];
@@ -168,7 +171,11 @@ export async function submit(
         if (recallAbort.signal.aborted || !authorized())
           throw new Error("Conversation preparation was cancelled.");
         this._pendingHandoffs.delete(session);
-        return [...(handoff ? [handoff.block] : []), ...(recalledBlocks ?? [])];
+        return [
+          ...(handoff ? [handoff.block] : []),
+          ...(recalledBlocks ?? []),
+          ...(effectiveRequest.contextBlocks ?? []),
+        ];
       } finally {
         signal.removeEventListener("abort", abort);
         if (this._activeRecallAbort === recallAbort)
@@ -186,6 +193,7 @@ export async function submit(
       await session.send(text, { contextBlocks: blocks });
     }
     if (!this.repository) await this._persist();
+    return true;
   } catch (error) {
     if (this._isAbandoned(turnId)) return;
     const failedSession = this.session;

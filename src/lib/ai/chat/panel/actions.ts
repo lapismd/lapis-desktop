@@ -18,7 +18,10 @@ export function createChatPanelActions(
   composer: ComposerState,
   attachmentState: AttachmentsState,
 ) {
-  async function submit(prompt: string): Promise<void> {
+  async function submit(
+    prompt: string,
+    contextBlocks?: import("../../core/context.ts").AgentContextBlock[],
+  ): Promise<boolean | undefined> {
     const { initializing = false, workspace, mcpServers = [] } = getProps();
 
     if (initializing || composer.catalogState?.loading) return;
@@ -29,7 +32,8 @@ export function createChatPanelActions(
     const extra = attachmentState.attachments.map((file) => file.path);
     attachmentState.attachments = [];
     attachmentState.drawerCollapsed = false;
-    await controller.submit(prompt, {
+    return controller.submit(prompt, {
+      contextBlocks,
       workspace,
       mcpServers,
       agent: composer.selectedAgent,
@@ -92,7 +96,20 @@ export function createChatPanelActions(
     runChatAction(getProps, controller, operation);
   return {
     perform,
-    submit: (prompt: string) => perform(() => submit(prompt)),
+    submit: (
+      prompt: string,
+      contextBlocks?: import("../../core/context.ts").AgentContextBlock[],
+    ) => perform(() => submit(prompt, contextBlocks)),
+    submitTranscript: async (
+      prompt: string,
+      contextBlocks: import("../../core/context.ts").AgentContextBlock[],
+    ) => {
+      let acknowledged = false;
+      await perform(async () => {
+        acknowledged = (await submit(prompt, contextBlocks)) === true;
+      });
+      return acknowledged;
+    },
     copyResponse: (text: string) => perform(() => copyResponse(text)),
     promptForError,
     formatTokenCount,

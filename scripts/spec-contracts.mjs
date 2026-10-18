@@ -8,6 +8,7 @@ const chapters = [
   "windows",
   "plugins",
   "ai",
+  "ai-presentation",
   "repository",
   "repository-navigation",
   "governance",

@@ -47,6 +47,7 @@ export type AppToolSessionDescriptor = {
 
 export type AgentRequest = {
   prompt: string;
+  contextBlocks?: import("./context.ts").AgentContextBlock[];
   workspace?: string;
   agent?: string;
   model?: ModelRef;

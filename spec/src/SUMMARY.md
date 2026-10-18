@@ -7,6 +7,7 @@
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
+  - [AI transcript delivery review](current/ai-presentation.md)
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
@@ -205,3 +206,5 @@
 - [Plugin-owned working-copy status and compact split control](history/E-REPO-024.md)
 
 - [Working-copy status qualification and catalog watcher isolation](history/E-REPO-025.md)
+
+- [Document and classic AI transcript review](history/E-AI-039.md)

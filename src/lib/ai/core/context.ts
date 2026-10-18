@@ -29,7 +29,13 @@ export type ConversationHandoffContextBlock = {
 
 export type AgentContextBlock =
   | MemoryRecallContextBlock
-  | ConversationHandoffContextBlock;
+  | ConversationHandoffContextBlock
+  | {
+      kind: "transcript-comments";
+      id: string;
+      content: string;
+      metadata: { submissionId: string };
+    };
 
 export type AgentTurnOptions = {
   /** Called by the desktop when this turn is eligible for dispatch. */

@@ -27,6 +27,9 @@ import type { AppToolHost } from "../../tools/app-tool-host.ts";
 import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
+  /** Opt-in shared transcript; the ordinary plugin keeps its current UI until review. */
+  presentation?: "transcript";
+  initialTranscriptView?: "document" | "classic";
   app?: App;
   runtime: AgentRuntime;
   selectRuntime?: (request: AgentRequest) => Promise<AgentRuntime>;

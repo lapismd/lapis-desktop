@@ -123,6 +123,16 @@ Visual baselines remain pending approval.
 
 ## Retained AI chat
 
+`Desktop/AI/Transcript review` adds opt-in production Transcript composition:
+document/classic, retained draft, empty/loading/interrupted, permission/question
+and comments-as-context scenarios. Public Design Core Transcript, composer,
+footer, author profile and tool-result components are reused; the original
+ordinary plugin stays selected pending visual approval. Comments-only dispatch
+retains exact anchors separately from authored text. Fixtures own all fake
+runtime/session data and await teardown. E-AI-039 records focused evidence. The
+code/table scenario selects exact text in both readers and submits both quotes
+as comments-only context without editing the capture.
+
 Source: `lapis-plugins` tree `56b5d6c1`, `stories/plugins/ai/AiChat.stories.ts`.
 Original plays retain their assertions, with explicit adaptations below. The
 following leaf stories qualify retained chat presentation. Owned workspace
@@ -547,3 +557,10 @@ log/details/files/diff/conflict reads and asserts representative production
 skeletons; application progress remains independent and closure releases pending
 fixture work. Visual review stays pending; native annotation and ordinary
 desktop acceptance have separate evidence.
+
+AI reference comparison: `DesignCoreReference.stories.ts` renders Design Core's
+recorded full-conversation demo through public Transcript, MarkdownComposer,
+MessageQueue and Footer exports. Source/destination fixture provenance is in
+`support/ai/transcript/REFERENCE.md` (Apache-2.0). Document/Classic are separate
+review states, independent of the Notes controller adapter. TranscriptReview
+also covers two table-row comments/context and long fenced-code folding.

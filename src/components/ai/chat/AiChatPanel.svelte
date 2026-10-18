@@ -15,6 +15,7 @@
   import ChatScopeFooter from "./ChatScopeFooter.svelte";
   import ChatComposer from "./ChatComposer.svelte";
   import ChatTimeline from "./ChatTimeline.svelte";
+  import AiTranscriptPanel from "./AiTranscriptPanel.svelte";
   import "./panel.css";
 
   const panelProps: AiChatPanelProps = $props();
@@ -50,38 +51,47 @@
   data-initializing={panelProps.initializing ?? false}
   data-model-catalog-loading={composerState.catalogState?.loading ?? false}
 >
-  <Chat.Layout
-    density="compact"
-    isEmpty={conversationsState.isEmpty}
-    aria-label="AI chat"
-  >
-    {#snippet emptyState()}
-      <Empty.Root
-        ><Empty.Header
-          ><Empty.Media variant="icon"
-            ><SparklesIcon aria-hidden="true" /></Empty.Media
-          >
-          <Empty.Title>Start a conversation</Empty.Title><Empty.Description
-            >Ask a question or describe the change you want to make.</Empty.Description
-          >
-        </Empty.Header></Empty.Root
-      >
-      <ChatScopeFooter
-        {panelProps}
-        {controller}
-        {conversationsState}
-        {actions}
-      />
-    {/snippet}
-    {#snippet composer()}
-      <ChatComposer
-        {panelProps}
-        {controller}
-        {composerState}
-        {attachmentsState}
-        {actions}
-      />
-    {/snippet}
-    <ChatTimeline {panelProps} {controller} {conversationsState} {actions} />
-  </Chat.Layout>
+  {#if panelProps.presentation === "transcript"}
+    <AiTranscriptPanel
+      {panelProps}
+      {controller}
+      {composerState}
+      {attachmentsState}
+      {conversationsState}
+      {actions}
+    />
+  {:else}<Chat.Layout
+      density="compact"
+      isEmpty={conversationsState.isEmpty}
+      aria-label="AI chat"
+    >
+      {#snippet emptyState()}
+        <Empty.Root
+          ><Empty.Header
+            ><Empty.Media variant="icon"
+              ><SparklesIcon aria-hidden="true" /></Empty.Media
+            >
+            <Empty.Title>Start a conversation</Empty.Title><Empty.Description
+              >Ask a question or describe the change you want to make.</Empty.Description
+            >
+          </Empty.Header></Empty.Root
+        >
+        <ChatScopeFooter
+          {panelProps}
+          {controller}
+          {conversationsState}
+          {actions}
+        />
+      {/snippet}
+      {#snippet composer()}
+        <ChatComposer
+          {panelProps}
+          {controller}
+          {composerState}
+          {attachmentsState}
+          {actions}
+        />
+      {/snippet}
+      <ChatTimeline {panelProps} {controller} {conversationsState} {actions} />
+    </Chat.Layout>{/if}
 </div>

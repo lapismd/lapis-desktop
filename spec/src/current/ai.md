@@ -11,10 +11,10 @@ conversations explicitly prepare capture targets; the ordinary factory composes
 native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
-AI catalog scenes expose product presentation only. Fixture observations, fault
-injection, settings changes and lifetime controls use owned review ports outside
-the visible DOM, retaining their existing story assertions. This shell review
-does not resume native AI qualification; its suites remain deferred.
+The [transcript delivery review](ai-presentation.md) stages document/classic UI
+before live adoption. AI catalog scenes expose product presentation; fixture
+controls and observations stay in owned review ports outside the visible DOM.
+Native AI qualification retains its separate gates.
 
 E-REPO-002 retains LD-AI-001 execution authority: repository history admission
 cannot admit AI or select a target. The existing cold AI admission case passes

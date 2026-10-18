@@ -1,5 +1,13 @@
 # Desktop state review inventory
 
+`Desktop/AI/Transcript review` previews Document by default and shared Classic,
+long Markdown with a real table, tools/context, retained drafts, skeletal
+loading, empty/interrupted content and pending permission/question controls.
+Anchored comments contribute separate context, including comments-only turns.
+Code and table cells expose immutable cursor readers for exact quote selection.
+These are opt-in production components awaiting visual confirmation before live
+adoption.
+
 `Desktop/Repository working copy status` maps ready details/refresh/navigation,
 loading, clean, binary-without-line-counts, unavailable/toast recovery and
 settings/disable to the production plugin in Notes. The compact split status
@@ -133,3 +141,8 @@ actual WebView acceptance stays in M13.2. Source and destination details are in
 NarrowPaneInWideShell additionally verifies that the history comparison adapts
 to its own pane width within a wider browser, with reachable controls and
 readable changed-file actions.
+
+The AI transcript review additionally exposes `TableRowComments` and
+`LongCodeBlock`. `Desktop/AI/Design Core reference` renders the shared recorded
+Document/Classic demo inside the desktop AppShell, with a standalone comparison.
+These remain visual-pending; ordinary plugin adoption awaits user confirmation.

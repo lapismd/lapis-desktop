@@ -21,6 +21,7 @@ export default defineConfig({
   optimizeDeps: {
     include: [
       "@lapismd/agent-redaction",
+      "@lapismd/design-core > @lezer/markdown",
       "@cfworker/json-schema",
       "@lucide/svelte/icons/file-json",
       "@lucide/svelte/icons/file-clock",
