@@ -1,10 +1,15 @@
 # Desktop plugins and catalog
 
+E-REPO-023 adopts E-REPO-019–022 after user confirmation. Blame stories now
+render production presentation with injected fixture statistics; duplicate
+review components and row CSS overrides are removed. Editor actions, commit
+navigation, shared scrolling and row surfaces retain separate native evidence.
+
 E-REPO-021/022 preview JJ Log and Op Log resting rows on the AppShell
 `--background` surface (white in light mode), including regular plugin views
 opened inside any story. Catalog CSS targets only application-owned graph hosts;
-headers, hover and selected states retain their styling. Adoption awaits
-approval.
+headers, hover and selected states retain their styling. E-REPO-023 records
+production adoption.
 
 E-REPO-020 refines only the blame review: attribution sticks below the file
 header until the next group pushes it away; one Design Core shadcn ScrollArea
@@ -25,11 +30,10 @@ catalog-owned copies remove the inner title/operation line, align source
 separators and end the divider at the last row's bottom border. Preview-only
 FileView actions use `git-merge-conflict`; commit title hover/focus shows a
 two-line-clamped subject with sample diff counts. No native blame fields or
-shipping registrations change. The user requires visual confirmation before
-production adoption or desktop changes; shipping blame and its existing
-production stories remain unchanged. The large preview uses local controller
-source with twelve synthetic commits, six authors and varied group sizes;
-virtual scrolling retains the final border.
+shipping registrations changed in that preview. E-REPO-023 records subsequent
+user-authorized adoption. The large preview uses local controller source with
+twelve synthetic commits, six authors and varied group sizes; virtual scrolling
+retains the final border.
 
 E-REPO-018 adds recorded file blame, sidebar Empty/icon states, aligned header
 and representative repository loading skeletons. Production stories retain

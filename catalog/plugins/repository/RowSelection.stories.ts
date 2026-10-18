@@ -13,6 +13,10 @@ const meta: Meta = {
 export default meta;
 
 async function checkRow(graph: HTMLElement) {
+  const panel = graph.closest(".repository-panel, .repository-operations")!;
+  expect(getComputedStyle(graph).backgroundColor).toBe(
+    getComputedStyle(panel).backgroundColor,
+  );
   const row = graph.querySelector<HTMLElement>(".repository-graph-row")!;
   const select = row.querySelector<HTMLButtonElement>(
     ".repository-graph-select",

@@ -201,3 +201,4 @@
 - [Blame scrolling and compact attribution preview](history/E-REPO-020.md)
 - [AppShell log row background preview](history/E-REPO-021.md)
 - [Regular log row preview and verified Gravatar fixture](history/E-REPO-022.md)
+- [Production blame adoption and native review update](history/E-REPO-023.md)

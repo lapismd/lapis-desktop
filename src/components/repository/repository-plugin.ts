@@ -14,6 +14,7 @@ import { FileHistoryController } from "../../lib/repository/file-history-control
 import { registerFileHistoryView } from "./file-history-view.ts";
 import { BlameController } from "../../lib/repository/blame-controller.ts";
 import { BlameView } from "./blame/blame-view.ts";
+import { registerBlameEditorActions } from "./blame/editor-actions.ts";
 type RepositoryController =
   | HistoryController
   | OperationController
@@ -115,6 +116,7 @@ export class RepositoryPlugin extends Plugin {
     this.#closing = undefined;
     this.#services = ownedRepository(this.app);
     registerFileHistoryView(this);
+    registerBlameEditorActions(this);
     this.registerView(
       "repository-file-blame",
       (leaf) => new BlameView(leaf, this),

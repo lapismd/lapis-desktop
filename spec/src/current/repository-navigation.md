@@ -43,3 +43,15 @@ editor bytes (LD-REPO-002/004).
 Changing or clearing the editor file MUST clear its recorded blame anchor before
 admission starts; an unavailable or empty scope cannot reuse the previous file's
 anchor or enable its Blame action.
+
+E-REPO-023 adopts the reviewed blame presentation into the plugin: filename-only
+inner header, content-boundary separators, compact line numbers, shared Design
+Core ScrollArea and sticky attribution directly below the header. Commit title
+hover/focus shows its first subject line clamped to two visual lines, recorded
+committer/profile and time; diff counts appear only when explicitly provided.
+Its subject link opens the recorded commit in JJ Log at the same operation pin.
+Enabled plugins contribute a `git-merge-conflict` editor title action, removed
+on disable. The action reads the current file through an owned status-tracked
+controller, then opens recorded blame. JJ Log and Op Log resting rows use the
+AppShell background; selected/hover states remain distinct. Native identity,
+annotation, pinning and authorization contracts are unchanged.

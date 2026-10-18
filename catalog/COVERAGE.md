@@ -1,5 +1,13 @@
 # Desktop catalog coverage
 
+E-REPO-023 promotes reviewed blame components into production. All blame
+layout/large-file/sticky stories render production Panel/View/Rows/Group and
+CommitTitle with catalog-only statistics and source data. `EditorBlameAction`
+tests the plugin contribution, navigation and cleanup on disable. Commit-card
+subject navigation opens real JJ Log. `RowSelection` checks the production
+AppShell surface; `OperationLayout` checks quiet collapsible titles. Catalog CSS
+no longer supplies row colours. Original attribution stays in provenance.
+
 E-REPO-021/022 review AppShell-coloured JJ Log and Op Log resting rows in
 `Repository comparison/JJLogAndOpLogTabs` and regular plugin tabs opened from
 `Repository blame layout review/LargeFile`. Only catalog CSS changes regular
@@ -24,13 +32,13 @@ the compact header, content-height divider, aligned source group separators and
 final-row bottom border. `TitleBarAction` proposes the public FileView
 `git-merge-conflict` action; `CommitDetails` reviews title hover/focus,
 first-line subject, author/avatar, relative time, fixture diff counts and commit
-navigation. The counts are catalog data, not native blame fields. This preview
-awaits approval before live adoption. Original jj-store source/license
-attribution remains in `docs/provenance.json`. `LargeFile` and the default
-`CommitDetails` use real local controller source text with twelve synthetic
-commits, six authors, varied group lengths, long messages, timestamps and diff
-counts. The virtual viewport scrolls to the final row and back; this remains
-fixture attribution, not live repository history.
+navigation. The counts are catalog data, not native blame fields. E-REPO-023
+adopts this reviewed presentation into production. Original jj-store
+source/license attribution remains in `docs/provenance.json`. `LargeFile` and
+the default `CommitDetails` use real local controller source text with twelve
+synthetic commits, six authors, varied group lengths, long messages, timestamps
+and diff counts. The virtual viewport scrolls to the final row and back; this
+remains fixture attribution, not live repository history.
 
 `plugins/repository/RowSelection.stories.ts` checks graph/padding/tag selection,
 independent author/copy controls and keyboard selection on both logs.

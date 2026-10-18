@@ -3,8 +3,8 @@
   import { FileChangeStats } from "@lapismd/design-core/diff";
   import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
   import GitCommitHorizontal from "@lucide/svelte/icons/git-commit-horizontal";
-  import RepositoryAuthorAvatar from "../../../../src/components/repository/RepositoryAuthorAvatar.svelte";
-  import type { BlameCommit } from "../../../../src/lib/repository/blame-model.ts";
+  import RepositoryAuthorAvatar from "../RepositoryAuthorAvatar.svelte";
+  import type { BlameCommit } from "../../../lib/repository/blame-model.ts";
   let {
     commit,
     continued = false,
@@ -21,10 +21,15 @@
   const title = $derived(
     commit.description.split(/\r?\n/u)[0] || "(no description)",
   );
+  let open = $state(false);
+  function openCommit() {
+    open = false;
+    onOpen?.(commit.id);
+  }
 </script>
 
 <span class="commit-title">
-  <HoverCard.Root openDelay={250} closeDelay={150}>
+  <HoverCard.Root bind:open openDelay={250} closeDelay={150}>
     <HoverCard.Trigger>
       {#snippet child({ props })}
         <button
@@ -32,7 +37,7 @@
           type="button"
           class="commit-title__trigger"
           aria-label={`${title} — ${commit.author.name}${continued ? " (continued)" : ""}`}
-          onclick={() => onOpen?.(commit.id)}>{title}</button
+          onclick={openCommit}>{title}</button
         >
       {/snippet}
     </HoverCard.Trigger>
@@ -46,7 +51,13 @@
         <div class="commit-card__summary">
           <GitCommitHorizontal aria-hidden="true" />
           <div class="commit-card__message">
-            <strong>{title}</strong>
+            <button
+              type="button"
+              class="commit-card__title"
+              aria-label={`Open commit details: ${title}`}
+              disabled={!onOpen}
+              onclick={openCommit}>{title}</button
+            >
             {#if stats}
               <div class="commit-card__stats">
                 <FileChangeStats
@@ -139,7 +150,14 @@
     flex: 1;
     min-width: 0;
   }
-  strong {
+  .commit-card__title {
+    appearance: none;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--primary);
+    text-align: left;
+    cursor: pointer;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
@@ -149,6 +167,13 @@
     font-family: var(--font-mono, monospace);
     font-size: 1rem;
     line-height: 1.4;
+    font-weight: 600;
+  }
+  .commit-card__title:hover {
+    text-decoration: underline;
+  }
+  .commit-card__title:focus-visible {
+    outline: 2px solid var(--ring);
   }
   .commit-card__stats {
     display: flex;

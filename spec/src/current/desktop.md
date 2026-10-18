@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-REPO-018 adds file blame via public shell parts. LD-DESK-003 native
-IPC/lifetime and LD-HOST-001 public-archive contracts stay unchanged.
+E-REPO-023 admits `https://www.gravatar.com` for avatars; other image, IPC and
+navigation restrictions remain (LD-DESK-003, LD-HOST-001).
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on

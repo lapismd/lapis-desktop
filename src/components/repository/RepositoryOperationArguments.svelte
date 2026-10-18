@@ -1,8 +1,11 @@
 <script lang="ts">
   import TerminalIcon from "@lucide/svelte/icons/terminal";
+  import { operationCommandLabel } from "../../lib/repository/operation-command.ts";
   let { attributes }: { attributes: Readonly<Record<string, string>> } =
     $props();
-  const command = $derived(attributes.args);
+  const command = $derived(
+    attributes.args ? operationCommandLabel(attributes.args) : undefined,
+  );
 </script>
 
 {#if command?.trim()}

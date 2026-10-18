@@ -3,9 +3,10 @@ import { mount, unmount } from "svelte";
 import type { RepositoryPlugin } from "../../../../src/components/repository/repository-plugin.ts";
 import type { BlameController } from "../../../../src/lib/repository/blame-controller.ts";
 import type { BlameSelection } from "../../../../src/lib/repository/blame-model.ts";
-import ReviewBlamePanel from "./ReviewBlamePanel.svelte";
+import RepositoryBlamePanel from "../../../../src/components/repository/blame/RepositoryBlamePanel.svelte";
+import { reviewCommitStats } from "./commit-stats.ts";
 
-/** Preview registration only; shipping BlameView remains unchanged. */
+/** Catalog-owned native reader and optional statistics; production presentation. */
 export class BlameReviewView extends View {
   #selection?: BlameSelection;
   #controller?: BlameController;
@@ -45,10 +46,11 @@ export class BlameReviewView extends View {
   protected async onClose() {}
   onload() {
     const controller = (this.#controller = this.plugin.createBlameController());
-    this.#component = mount(ReviewBlamePanel, {
+    this.#component = mount(RepositoryBlamePanel, {
       target: this.containerEl,
       props: {
         controller,
+        commitStats: reviewCommitStats,
         copyText: (value: string) => this.plugin.copyIdentifier(value),
         onOpen: (commit: string) => {
           const operation = controller.state.selection?.operation;

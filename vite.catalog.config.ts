@@ -25,6 +25,7 @@ export default defineConfig({
       "@lucide/svelte/icons/file-clock",
       "@lucide/svelte/icons/folder-git-2",
       "@lucide/svelte/icons/git-merge",
+      "@lucide/svelte/icons/git-merge-conflict",
       "@lucide/svelte/icons/git-branch",
       "@lucide/svelte/icons/undo-2",
       "@lucide/svelte/icons/file-check-2",

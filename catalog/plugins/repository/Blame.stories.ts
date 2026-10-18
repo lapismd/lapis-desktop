@@ -3,6 +3,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import { historyContext } from "../../support/repository/context.ts";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
+import { FileView } from "@lapis-notes/api";
 const meta: Meta = {
   title: "Desktop/Repository file blame",
   component: RepositoryDemo,
@@ -40,6 +41,11 @@ export const BlameFromFileHistory: StoryObj = {
     const view = await openBlame(canvasElement),
       canvas = within(canvasElement);
     await expect(await view.findByText("History is retained")).toBeVisible();
+    expect(view.queryByText(/^Operation /)).toBeNull();
+    expect(view.queryByText("Blame", { exact: true })).toBeNull();
+    expect(
+      view.getByRole("region", { name: "Blame for Welcome.md" }),
+    ).toHaveAttribute("data-ui-component", "scroll-area");
     await expect(
       view.getByRole("button", { name: /Copy JJ Change ID p{32}$/ }),
     ).toBeVisible();
@@ -62,6 +68,38 @@ export const BlameFromFileHistory: StoryObj = {
         log.getByRole("button", { name: /Start the vault/ }),
       ).toHaveAttribute("aria-pressed", "true"),
     );
+  },
+};
+export const EditorBlameAction: StoryObj = {
+  args: { scenario: "blame-progress" },
+  play: async ({ canvasElement }) => {
+    const { canvas } = await openFile(canvasElement);
+    const { app } = historyContext(canvasElement);
+    const editor = app.workspace.activeLeaf!.view;
+    expect(editor).toBeInstanceOf(FileView);
+    if (!(editor instanceof FileView))
+      throw new Error("Expected a file editor");
+    await waitFor(() =>
+      expect(
+        editor.actions.filter((a) => a.title === "Blame file"),
+      ).toHaveLength(1),
+    );
+    expect(editor.actions.find((a) => a.title === "Blame file")?.icon).toBe(
+      "git-merge-conflict",
+    );
+    const header = canvas
+      .getByRole("button", { name: "Rename Welcome.md" })
+      .closest("header")!;
+    await userEvent.click(
+      within(header).getByRole("button", { name: "Blame file" }),
+    );
+    const view = await canvas.findByRole("region", { name: /^File blame$/ });
+    await expect(
+      within(view).findByText("History is retained"),
+    ).resolves.toBeVisible();
+    expect(app.workspace.activeLeaf?.view.getIcon()).toBe("git-merge-conflict");
+    expect(await app.plugins.disablePlugin("repository-history")).toBe(true);
+    expect(editor.actions.some((a) => a.title === "Blame file")).toBe(false);
   },
 };
 export const FailureAndRecovery: StoryObj = {

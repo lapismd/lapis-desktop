@@ -9,11 +9,13 @@
     onSelect,
     copyText,
     onCopyError,
+    textHover = true,
   }: {
     message: string;
     onSelect?(): void;
     copyText(value: string): Promise<void>;
     onCopyError?(error: unknown): void;
+    textHover?: boolean;
   } = $props();
   const parts = $derived(operationMessageParts(message));
   let feedback = $state<{ id: string; failed: boolean }>();
@@ -57,6 +59,7 @@
     {#if part.type === "text"}
       {#if onSelect}<button
           class="message-text"
+          data-quiet={!textHover || undefined}
           type="button"
           onclick={onSelect}>{part.value}</button
         >
@@ -148,7 +151,8 @@
     height: 0.7rem;
     flex: none;
   }
-  button:hover {
+  .message-id:hover,
+  button.message-text:not([data-quiet]):hover {
     background: color-mix(in srgb, var(--foreground) 12%, var(--background));
   }
   button:focus-visible {

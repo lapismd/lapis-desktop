@@ -22,9 +22,11 @@ then initials; operation hosts imply no account/email. Profiles remain separate
 from selection. JJ MarkdownContent bodies use measured nine-rem faded View
 more/less previews on a distinct background; new descriptions reset expansion.
 Selectors retain subjects. Column actions have theme-aware hover/focus. Op
-Details omit Info and show exact nonblank `attributes["args"]` after Comparison
-parent. Focused production adoption and interaction evidence are recorded in
-E-REPO-015; visual baseline approval remains separate.
+Details omit Info and show recorded nonblank `attributes["args"]` after
+Comparison parent. E-REPO-023 presents recognized JJ argument escaping with
+readable quoting; unrecognized formats remain verbatim. The collapsible title
+has no hover fill. Focused production adoption and interaction evidence are
+recorded in E-REPO-015; visual baseline approval remains separate.
 
 Selected JJ revisions expose a History-icon Evo Log action. Its closeable,
 resizable graph retains the main revision/diff/pin and explicit predecessor
@@ -80,3 +82,24 @@ bounded content track. JJ parent and Evo predecessor choices reuse the same
 compact revision option as changed revisions. Full messages remain available to
 title/accessibility metadata; copying still uses full IDs. E-REPO-014 records
 manual geometry only; automated resizing and interaction gates remain pending.
+
+## Production adoption
+
+Reviewed presentation is adopted into production in focused slices, with
+Storybook exercising the same components. Avatar/profile, compact searchable
+selectors, semantic tags, long Markdown messages, operation titles and file
+headers preserve exact native identity and the existing independent readers.
+Fixtures and synthetic evolution/conflict data MUST remain catalog-owned.
+Workspace context MUST use explicit native links and be distinct from operation
+pins. Any unavailable capability remains explicit, never simulated as a save.
+Evo predecessor edges remain distinct from commit parents; unsupported aligned
+comparisons cannot be replaced with ordinary raw diffs. Repository writes retain
+their separate native command/admission gate. The user prioritizes a usable
+plugin with focused tests; broader qualification stays deferred in the
+[repository parity review](repository-review.md).
+
+E-REPO-023 renders JJ's recognized single-quoted transaction argument format
+with readable, shell-safe quoting, preserving literal argument contents. Other
+recorded formats remain verbatim; formatting never executes or mutates commands.
+The expandable Op Log details title retains collapse activation without a hover
+fill; ID copy and other action buttons keep their hover/focus treatments.

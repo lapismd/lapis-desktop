@@ -14,10 +14,14 @@
     controller,
     copyText,
     onOpen,
+    commitStats,
   }: {
     controller: BlameController;
     copyText(value: string): Promise<void>;
     onOpen(commit: string): void;
+    commitStats?: Readonly<
+      Record<string, { additions: number; deletions: number }>
+    >;
   } = $props();
   let state = $state<BlameState>({ status: "loading", busy: false });
   onMount(() =>
@@ -30,7 +34,6 @@
 <RepositoryShell>
   <section class="blame-panel" aria-label="File blame" aria-busy={state.busy}>
     <header>
-      <strong>Blame</strong>
       <span class="file-title"
         ><RepositoryFileTitle path={state.selection?.path} /></span
       >
@@ -51,9 +54,6 @@
         onclick={() => controller.refresh()}><RefreshCwIcon /></Button
       >
     </header>
-    <div class="pin" title={state.selection?.operation}>
-      Operation {state.selection?.operation.slice(0, 8)}…
-    </div>
     {#if state.status === "failed"}<p role="status">
         Blame is unavailable. Refresh to try again.
       </p>{/if}
@@ -68,6 +68,7 @@
           path={state.selection?.path ?? ""}
           view={state}
           {onOpen}
+          {commitStats}
         />
       {/if}
     </div>
@@ -93,13 +94,6 @@
   .file-title {
     flex: 1;
     min-width: 0;
-  }
-  .pin {
-    display: flex;
-    gap: 1rem;
-    padding: 0.375rem 0.75rem;
-    color: var(--muted-foreground);
-    font-size: 0.75rem;
   }
   p {
     padding: 0.75rem;

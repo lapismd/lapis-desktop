@@ -13,10 +13,7 @@
     largeBlamePath,
     largeBlameContents,
   } from "./large-fixture.ts";
-  import {
-    installBlameReviewActions,
-    openBlameReview,
-  } from "./title-actions.ts";
+  import { openBlameReview } from "./title-actions.ts";
 
   let {
     initialView = "blame",
@@ -30,15 +27,12 @@
   let root: HTMLDivElement, app: App | undefined;
   onMount(() => {
     let opened = false;
-    let removeActions: (() => void) | undefined;
     const observer = new MutationObserver(() => {
       if (opened || !app || !root.querySelector('[data-notes-ready="true"]'))
         return;
       opened = true;
       const plugin = app.plugins.plugins.get("repository-history");
       if (!(plugin instanceof RepositoryPlugin)) return;
-      const actions = installBlameReviewActions(plugin);
-      removeActions = actions.dispose;
       if (initialView !== "editor") {
         const owner = app;
         void openBlameReview(owner, {
@@ -65,7 +59,6 @@
     });
     return () => {
       observer.disconnect();
-      removeActions?.();
       app?.workspace.unregisterView("repository-file-blame-review");
     };
   });

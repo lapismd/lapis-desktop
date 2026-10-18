@@ -386,15 +386,5 @@ collapsing operation metadata and compact pane navigation MUST retain the fill
 layout. Unified operation previews retain their content-sized presentation. The
 application sizes its owned hosts through public component contracts.
 
-Reviewed presentation is adopted into production in focused slices, with
-Storybook exercising the same components. Avatar/profile, compact searchable
-selectors, semantic tags, long Markdown messages, operation titles and file
-headers preserve exact native identity and the existing independent readers.
-Fixtures and synthetic evolution/conflict data MUST remain catalog-owned.
-Workspace context MUST use explicit native links and be distinct from operation
-pins. Any unavailable capability remains explicit, never simulated as a save.
-Evo predecessor edges remain distinct from commit parents; unsupported aligned
-comparisons cannot be replaced with ordinary raw diffs. Repository writes retain
-their separate native command/admission gate. The user prioritizes a usable
-plugin with focused tests; broader qualification stays deferred in the
-[repository parity review](repository-review.md).
+Production presentation, command formatting and staged adoption are governed by
+[repository parity review](repository-review.md) (E-REPO-015, E-REPO-023).

@@ -79,8 +79,11 @@ export const TitleBarAction: StoryObj = {
         )?.icon,
       ).toBe("git-merge-conflict"),
     );
-    const button = await canvas.findByRole("button", {
-      name: /^Blame file$/,
+    const header = (
+      await canvas.findByRole("button", { name: "Rename Welcome.md" })
+    ).closest("header")!;
+    const button = await within(header).findByRole("button", {
+      name: "Blame file",
     });
     expect(button.closest("header")).not.toBeNull();
     expect(button.querySelector("svg")).not.toBeNull();
@@ -97,7 +100,7 @@ export const TitleBarAction: StoryObj = {
     expect(editorTab).toBeDefined();
     host.revealLeaf(editorTab!);
     await expect(
-      await canvas.findByRole("button", { name: /^Blame file$/ }),
+      await within(header).findByRole("button", { name: /^Blame file$/ }),
     ).toBeVisible();
   },
 };
@@ -121,8 +124,23 @@ export const CommitDetails: StoryObj = {
     await expect(within(card).getByText("-15")).toBeVisible();
     expect(card.getBoundingClientRect().width).toBeLessThanOrEqual(440);
     expect(card.textContent).not.toContain("Keep each read attached");
-    const heading = card.querySelector("strong")!;
+    const heading = card.querySelector(".commit-card__title")!;
     expect(getComputedStyle(heading).webkitLineClamp).toBe("2");
+    await userEvent.click(
+      within(card).getByRole("button", {
+        name: "Open commit details: Keep repository history beside the notes",
+      }),
+    );
+    const log = within(
+      await canvas.findByRole("region", { name: "Repository history" }),
+    );
+    await waitFor(() =>
+      expect(
+        log.getByRole("button", {
+          name: /Keep repository history beside the notes/,
+        }),
+      ).toHaveAttribute("aria-pressed", "true"),
+    );
   },
 };
 export const LargeFile: StoryObj = {

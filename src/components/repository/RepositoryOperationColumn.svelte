@@ -68,6 +68,7 @@
               <ChevronDownIcon aria-hidden="true" />
             </button>
             <RepositoryOperationMessage
+              textHover={false}
               message={snapshot.selected.description || "No description"}
               {copyText}
               onSelect={() => (expanded = !expanded)}

@@ -4,7 +4,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as ScrollArea from "@lapismd/design-core/shadcn/scroll-area";
   import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
-  import GitCommitVerticalIcon from "@lucide/svelte/icons/git-commit-vertical";
+  import GitMergeConflictIcon from "@lucide/svelte/icons/git-merge-conflict";
   import FileClockIcon from "@lucide/svelte/icons/file-clock";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import type {
@@ -57,7 +57,7 @@
       aria-label="Blame file"
       title="Blame file"
       disabled={!state?.path || !state.workspaceCommit || state.busy}
-      onclick={onBlame}><GitCommitVerticalIcon /></Button
+      onclick={onBlame}><GitMergeConflictIcon /></Button
     >
     <Button
       variant="ghost"

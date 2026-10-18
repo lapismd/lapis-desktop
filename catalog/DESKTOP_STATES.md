@@ -1,5 +1,9 @@
 # Desktop state review inventory
 
+E-REPO-023 adopts reviewed blame layout, editor action, commit navigation and
+log row surfaces into production. Earlier preview-only descriptions below record
+their review origin; synthetic data/diff counts remain catalog-owned.
+
 `Repository comparison/JJLogAndOpLogTabs` previews resting JJ Log and Op Log
 rows matching the AppShell body, with distinct hover and selection styling. The
 same preview applies to regular plugin tabs opened from the blame story.
@@ -20,9 +24,9 @@ source group separators and a bottom border under the final row. The vertical
 divider ends with the content. `TitleBarAction` reviews the proposed
 `git-merge-conflict` editor action/tab icon. `CommitDetails` shows a small title
 hover/focus card with the first-line subject, author/avatar, time and sample
-diff counts. These catalog-owned copies await user confirmation; shipping Blame
-remains unchanged. `LargeFile` uses real controller source with sample
-multi-author history to review virtual scrolling and varied attribution groups.
+diff counts. E-REPO-023 adopts these presentations; stories now mount production
+components. `LargeFile` uses real controller source with sample multi-author
+history to review virtual scrolling and varied attribution groups.
 
 `Desktop/Repository file history` reviews default right-sidebar registration, an
 absent editor, active-file revisions, empty path history, busy/disabled refresh,

@@ -5,6 +5,7 @@
   import RepositoryAuthorAvatar from "../RepositoryAuthorAvatar.svelte";
   import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
   import type { BlameChunk } from "../../../lib/repository/blame-chunks.ts";
+  import RepositoryBlameCommitTitle from "./RepositoryBlameCommitTitle.svelte";
   let {
     chunk,
     lines,
@@ -13,6 +14,7 @@
     now,
     pending,
     onOpen,
+    stats,
   }: {
     chunk: BlameChunk;
     lines: string[];
@@ -21,13 +23,19 @@
     now?: number;
     pending: boolean;
     onOpen?: (commit: string) => void;
+    stats?: { additions: number; deletions: number };
   } = $props();
-  const description = $derived(
-    commit?.description.split(/\r?\n/u)[0] || "(no description)",
-  );
 </script>
 
-<div class="blame-group" data-continued={chunk.continued || undefined}>
+<div
+  class="blame-group"
+  data-continued={chunk.continued || undefined}
+  data-first={chunk.start === 1 || undefined}
+>
+  {#if chunk.end === lines.length + 1}<div
+      class="blame-group__end-divider"
+      aria-hidden="true"
+    ></div>{/if}
   <div class="blame-group__gutter">
     <div
       class="blame-group__origin"
@@ -42,13 +50,13 @@
         <span class="blame-group__author" title={commit.author.name}
           >{commit.author.name}</span
         >
-        <button
-          type="button"
-          class="blame-group__description"
-          title={description}
-          aria-label={`${description} — ${commit.author.name}${chunk.continued ? " (continued)" : ""}`}
-          onclick={() => onOpen?.(commit.id)}>{description}</button
-        >
+        <RepositoryBlameCommitTitle
+          {commit}
+          {stats}
+          {now}
+          {onOpen}
+          continued={chunk.continued}
+        />
         <span class="blame-group__time"
           ><RelativeTime
             timestamp={Number(commit.author.timestamp.millis)}
@@ -90,15 +98,24 @@
 
 <style>
   .blame-group {
+    position: relative;
     display: grid;
     grid-template-columns: min(22rem, 45cqw) minmax(0, 1fr);
+  }
+  .blame-group__end-divider {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    z-index: 2;
+    border-bottom: 1px solid var(--border);
+    pointer-events: none;
   }
   .blame-group__gutter {
     position: sticky;
     left: 0;
     z-index: 1;
     background: var(--background);
-    border-right: 1px solid var(--border);
+    box-shadow: inset 0 1px 0 var(--border);
     font-family: var(--font-sans, sans-serif);
   }
   .blame-group__origin {
@@ -108,8 +125,17 @@
     align-items: center;
     gap: 0.4rem;
     height: 28px;
+    box-sizing: border-box;
     padding: 0 0.5rem;
-    border-top: 1px solid var(--border);
+  }
+  .blame-group__source {
+    box-shadow: inset 0 1px 0 var(--border);
+  }
+  .blame-group[data-first] .blame-group__gutter {
+    box-shadow: none;
+  }
+  .blame-group[data-first] .blame-group__source {
+    box-shadow: none;
   }
   .blame-group__author {
     max-width: 4.5rem;
@@ -117,21 +143,6 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 0.75rem;
-  }
-  .blame-group__description {
-    appearance: none;
-    border: 0;
-    padding: 0;
-    color: inherit;
-    background: transparent;
-    text-align: left;
-    font: inherit;
-    cursor: pointer;
-    min-width: 0;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
   .blame-group__time {
     flex: none;
@@ -153,10 +164,10 @@
     white-space: pre;
   }
   .blame-group__number {
-    width: 5rem;
+    width: max(3rem, calc(var(--blame-line-digits, 3) * 1ch + 1rem));
     flex: none;
     text-align: right;
-    padding-right: 1rem;
+    padding-right: 0.75rem;
     color: var(--muted-foreground);
     user-select: none;
   }
@@ -164,11 +175,5 @@
     font: inherit;
     tab-size: 4;
     padding-right: 1rem;
-  }
-  button:focus-visible {
-    outline: 2px solid var(--ring);
-  }
-  button:hover {
-    text-decoration: underline;
   }
 </style>

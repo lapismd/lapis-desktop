@@ -10,7 +10,7 @@
     row,
   }: {
     rows: readonly Row[];
-    viewport?: HTMLElement;
+    viewport?: HTMLElement | null;
     getKey: (row: Row) => string;
     estimateSize: (row: Row | undefined) => number;
     row: Snippet<[Row]>;
@@ -47,10 +47,7 @@
   {#each $virtualizer.getVirtualItems() as virtualRow (virtualRow.key)}
     {@const item = rows[virtualRow.index]}
     {#if item}
-      <div
-        class="blame-virtual-row"
-        style:transform={`translateY(${virtualRow.start}px)`}
-      >
+      <div class="blame-virtual-row" style:top={`${virtualRow.start}px`}>
         {@render row(item)}
       </div>
     {/if}
@@ -64,7 +61,6 @@
   }
   .blame-virtual-row {
     position: absolute;
-    inset-block-start: 0;
     inset-inline: 0;
     width: 100%;
   }

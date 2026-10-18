@@ -149,6 +149,7 @@
 
 <style>
   .repository-graph {
+    background: var(--background);
     list-style: none;
     margin: 0;
     padding: 0;

@@ -138,7 +138,7 @@
             onSelect={(operation) => controller.selectOperation(operation)}
             onRefresh={() => controller.refresh()}
           />
-          <ColumnCanvas.Body style="background:var(--background)">
+          <ColumnCanvas.Body>
             {#if snapshot.phase === "loading"}<RepositorySkeleton
                 label="Preparing repository history…"
               />

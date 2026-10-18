@@ -111,7 +111,7 @@
             onSelect={(operation) => controller.selectPin(operation)}
             onRefresh={() => controller.refresh()}
           />
-          <ColumnCanvas.Body style="background:var(--background)">
+          <ColumnCanvas.Body>
             {#if snapshot.phase === "loading"}<RepositorySkeleton
                 label="Preparing operation log…"
               />

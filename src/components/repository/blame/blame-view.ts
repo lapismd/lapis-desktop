@@ -22,7 +22,7 @@ export class BlameView extends View {
     return this.#selection ? `Blame · ${this.#selection.path}` : "File blame";
   }
   getIcon() {
-    return "git-commit-vertical";
+    return "git-merge-conflict";
   }
   getState(): Record<string, unknown> {
     return { ...this.#selection };

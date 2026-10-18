@@ -105,6 +105,14 @@ export const StackedOperationAndDiff: StoryObj = {
       name: "Selected operation",
     });
     const card = within(operationCard);
+    const title = operationCard.querySelector<HTMLButtonElement>(
+      "button.message-text",
+    )!;
+    expect(title).toHaveAttribute("data-quiet", "true");
+    const resting = getComputedStyle(title).backgroundColor;
+    await userEvent.hover(title);
+    expect(getComputedStyle(title).backgroundColor).toBe(resting);
+    await userEvent.unhover(title);
     await expect(
       card.getByRole("region", { name: "Selected operation metadata" }),
     ).toBeVisible();
