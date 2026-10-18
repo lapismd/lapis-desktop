@@ -71,10 +71,14 @@ observations remain outside product DOM through the owned review port. Automated
 source/catalog and native acceptance remain deferred.
 
 `Desktop/Repository history` adds the production repository plugin and Design
-Core unified/split diff presentation. Its seventeen scenarios cover pinned and
+Core unified/split diff presentation. Its eighteen scenarios cover pinned and
 historical selections, restored historical view state, multiple operation heads,
 merge-parent choice, root and unchanged revisions, empty operation/revision
 lists, preparation, unavailable binary content, read failures with notification
 recovery and Safe Mode. The fixture reader grants no native authority; cold
 actual WebView acceptance stays in M13.2. Source and destination details are in
 `COVERAGE.md`.
+
+NarrowPaneInWideShell additionally verifies that the history comparison adapts
+to its own pane width within a wider browser, with reachable controls and
+readable changed-file actions.

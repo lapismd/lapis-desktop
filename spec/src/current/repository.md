@@ -11,6 +11,7 @@ the Notes consumer of jj-store M33 in independently verified slices.
 | LD-REPO-001 | Repository reads MUST require current native physical-vault and caller-window admission independent of AI enablement. Roots, metadata/Git witnesses, repository identity, cache location and registration generation MUST remain native-owned. Discovery grants no authority and MUST NOT initialize, snapshot or reconcile a source repository. |
 | LD-REPO-002 | History and diff reads MUST retain exact operation pins and full-width identities through bounded versioned text frames. Replacement, revocation or stale generations MUST reject retained reads. Native close MUST fence new work and drain owned reads/preparations before vault release; database blockers MUST preserve authority.           |
 | LD-REPO-003 | JJ-backed conversations MUST explicitly select AgentStore and ThreadStore persistence with confirmed receipts and unknown-outcome recovery. One native raw event owner MUST sanitize and durably retain before display or acknowledgement. Legacy file conversations retain their explicit backend; unknown prompts MUST NOT replay.             |
+| LD-REPO-004 | History presentation MUST adapt to its available workspace pane width independently of the browser viewport. Revision selection, refresh, changed-file controls and diff content MUST remain readable and reachable in narrow panes within a wide shell.                                                                                         |
 
 ## Native admission
 

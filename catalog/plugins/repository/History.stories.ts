@@ -1,4 +1,8 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
+import {
+  openHistory as open,
+  openHistoryFile as file,
+} from "../../support/repository/interactions.ts";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import RepositoryPanel from "../../../src/components/repository/RepositoryPanel.svelte";
@@ -23,35 +27,6 @@ const meta: Meta = {
 };
 export default meta;
 type Story = StoryObj;
-async function open(element: HTMLElement) {
-  const canvas = within(element);
-  await waitFor(
-    () =>
-      expect(element.querySelector('[data-notes-ready="true"]')).not.toBeNull(),
-    { timeout: 30_000 },
-  );
-  await userEvent.click(
-    await canvas.findByRole("button", {
-      name: "Repository History",
-    }),
-  );
-  const panel = await canvas.findByRole("region", {
-    name: "Repository history",
-  });
-  return within(panel);
-}
-async function file(element: HTMLElement) {
-  const canvas = await open(element);
-  await userEvent.click(
-    await canvas.findByRole("button", {
-      name: /Keep repository history beside the notes/,
-    }),
-  );
-  await userEvent.click(
-    await canvas.findByRole("button", { name: "Welcome.md" }),
-  );
-  return canvas;
-}
 export const PinnedHistoryAndDiff: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await file(canvasElement);

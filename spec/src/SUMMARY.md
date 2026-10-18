@@ -140,6 +140,7 @@
   - [Native admitted history and vault lifetime](history/E-REPO-002.md)
   - [Visible history UI and public-package qualification](history/E-REPO-003.md)
   - [Cold visible native history qualification](history/E-REPO-004.md)
+  - [History layout within narrow workspace panes](history/E-REPO-005.md)
 
 - [Desktop shell presentation review](history/E-CATALOG-003.md)
 

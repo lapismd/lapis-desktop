@@ -93,7 +93,7 @@
     font-size: 0.75rem;
     color: var(--muted-foreground);
   }
-  @media (max-width: 640px) {
+  @container repository-history (max-width: 640px) {
     .repository-revisions {
       max-height: 16rem;
       border-right: 0;

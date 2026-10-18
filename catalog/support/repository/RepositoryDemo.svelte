@@ -4,7 +4,10 @@
   import { historyFixture } from "./fixture.ts";
   import { bindHistoryFixture } from "./context.ts";
   import { normalRecovery } from "../../../src/lib/notes/startup-recovery.ts";
-  let { scenario = "ready" }: { scenario?: string } = $props();
+  let {
+    scenario = "ready",
+    maxWidth,
+  }: { scenario?: string; maxWidth?: number } = $props();
   const fixture = untrack(() => historyFixture(scenario));
   const safeMode = untrack(() =>
     scenario === "safe-mode"
@@ -14,7 +17,12 @@
   let root: HTMLDivElement;
 </script>
 
-<div bind:this={root} data-repository-fixture class="repository-demo">
+<div
+  bind:this={root}
+  data-repository-fixture
+  class="repository-demo"
+  style:max-width={maxWidth ? `${maxWidth}px` : undefined}
+>
   <NotesDemo
     {safeMode}
     createRepository={(app) => {

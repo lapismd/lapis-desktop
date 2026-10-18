@@ -20,6 +20,9 @@ E-REPO-004 keeps the new actual-window history scenario pending while its
 unresolved native focus condition prevents headed interaction. Compilation and
 the 692-check catalog pass do not substitute for this original native gate.
 
+E-REPO-005 adds pane-relative history presentation qualification under
+LD-REPO-004. It keeps the separate visible native/restoration gate unchanged.
+
 The reusable workflow implementation resumes after the earlier review
 checkpoint. M10.2 adds a lazy conversation-persistence injection seam while
 retaining its original native-chat gate. Legacy vault-file conversations keep

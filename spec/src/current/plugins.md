@@ -167,3 +167,8 @@ public package artifacts. The catalog pre-bundles statically used conflict-view
 icons so lazy plugin loading cannot replace a live test frame. Role queries use
 the supported full-name matcher; interaction and accessibility rules remain
 enabled. This qualification does not change conflict or persistence semantics.
+
+History layout regression stories constrain the real shell while leaving the
+browser wide. They assert actual pane-relative stacking, control bounds and
+usable file-button width; viewport-only checks cannot prove narrow-pane use.
+Shared interaction helpers retain the production ribbon and reader workflow.

@@ -143,6 +143,7 @@
 
 <style>
   .repository-panel {
+    container: repository-history / inline-size;
     height: 100%;
     min-height: 0;
     display: flex;
@@ -153,6 +154,7 @@
   }
   .repository-toolbar {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 0.75rem 1rem;
@@ -222,9 +224,9 @@
     gap: 0.25rem;
     padding-block: 0.5rem;
   }
-  @media (max-width: 640px) {
+  @container repository-history (max-width: 640px) {
     .repository-columns {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

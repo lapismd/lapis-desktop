@@ -233,3 +233,9 @@ notifications, retained selections and recovery. SafeMode verifies optional
 registration stays absent. Each scenario runs in light/dark and desktop/narrow
 configurations; visual review and actual cold native history acceptance remain
 separate gates.
+
+`plugins/repository/HistoryLayout.stories.ts` adds NarrowPaneInWideShell through
+the same real Notes shell. Its bounded fixture leaves the browser wide and
+asserts pane-relative revision/comparison stacking, contained refresh controls
+and readable changed-file buttons. The shared helpers retain the original
+ribbon/revision/file interactions for both story files.
