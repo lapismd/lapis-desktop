@@ -119,6 +119,11 @@ impl BackendCall {
         Ok(())
     }
     /// Native-only path, still subject to current admission and physical witnesses.
+    pub fn workspace_root(&self) -> io::Result<PathBuf> {
+        self.check()?;
+        Ok(self.owner.context.lease.root().into())
+    }
+    /// Native-only path, still subject to current admission and physical witnesses.
     pub fn repository_metadata(&self) -> io::Result<Option<PathBuf>> {
         self.check()?;
         Ok(self.owner.source.as_ref().map(|s| s.metadata.clone()))

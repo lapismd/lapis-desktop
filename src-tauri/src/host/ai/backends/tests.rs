@@ -1,6 +1,11 @@
 mod cancellation;
+mod capture_cases;
+mod capture_guards;
+mod capture_lifetime;
+mod capture_privacy;
 mod conversation_cancel;
 mod conversations;
+mod factory;
 mod ownership;
 mod processing;
 use super::{NativeBackends, commands::dispatch};

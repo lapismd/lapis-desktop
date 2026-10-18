@@ -10,7 +10,7 @@ use std::io;
 use uuid::Uuid;
 
 pub(super) const LIMIT: usize = 16 * 1024;
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, PartialEq, Eq)]
 #[serde(deny_unknown_fields)]
 pub(super) struct Record {
     pub schema: u8,

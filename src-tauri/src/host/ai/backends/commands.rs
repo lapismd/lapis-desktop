@@ -59,6 +59,18 @@ pub(super) async fn dispatch(
                     lapis_desktop::ai::conversations::status(call, request_id),
                 )?)
             }
+            Operation::PrepareCapture {
+                handle,
+                request_id,
+                conversation_request_id,
+            } => Reply::Capture(owner.prepare_capture(
+                &host,
+                &context,
+                &request.session_id,
+                handle,
+                request_id,
+                conversation_request_id,
+            )?),
             Operation::Close { .. } => return Err(denied()),
         };
         reply.encode()

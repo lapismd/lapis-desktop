@@ -23,6 +23,13 @@ processing without fallback. This adapter alone does not select a Notes backend
 or enable execution. The debug acceptance profile uses synthetic policy and
 private fixture records, separately from production privacy/JJ adoption.
 
+For explicitly selected JJ conversations, the ordinary host can prepare an
+opaque native capture target and construct the real AgentStore/ThreadStore
+processor with native privacy and a private receipt journal. This is separate
+from executable admission and renderer chat integration. See
+[`native backend profiles`](../docs/native-backend-profiles.md) for the command
+and ownership details.
+
 Use the repository's development and acceptance commands from its root. Native
 service tests use `cargo test --manifest-path src-tauri/Cargo.toml --locked`;
 the actual WebView/platform lanes are separate. Full contracts and documentation

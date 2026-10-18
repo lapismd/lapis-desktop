@@ -129,6 +129,30 @@ test("hidden ordinary native command prepares a JJ conversation and recovers its
   assert.match(companion.trim(), /^[a-f0-9]{40}$/);
   assert.deepEqual(await backend(first, vault, request), prepared);
   assert.equal(readFileSync(stateRef, "utf8"), companion);
+  const captureRequest = {
+    type: "prepareCapture",
+    handle: opened.data.handle,
+    requestId: id(10),
+    conversationRequestId: id(3),
+  };
+  const capture = await backend(first, vault, captureRequest);
+  assert.equal(capture.type, "capture");
+  assert.match(capture.data.targetId, /^[a-f0-9-]{36}$/);
+  assert.equal(capture.data.requestId, id(10));
+  assert.equal(capture.data.conversationRequestId, id(3));
+  assert.deepEqual(await backend(first, vault, captureRequest), capture);
+  assert.ok(
+    (
+      await call(first, vault, {
+        ...captureRequest,
+        conversationRequestId: id(9),
+      })
+    ).failure,
+  );
+  assert.ok(
+    (await call(first, vault, { ...captureRequest, root: vaultPath })).failure,
+  );
+  assert.equal(readFileSync(stateRef, "utf8"), companion);
   assert.ok(
     (
       await call(first, vault, {
@@ -167,6 +191,13 @@ test("hidden ordinary native command prepares a JJ conversation and recovers its
     await backend(cold, restored, { ...request, handle: fresh.data.handle }),
     prepared,
   );
+  const renewedCapture = await backend(cold, restored, {
+    ...captureRequest,
+    handle: fresh.data.handle,
+  });
+  assert.notEqual(renewedCapture.data.targetId, capture.data.targetId);
+  assert.equal(renewedCapture.data.conversationRequestId, id(3));
+  assert.ok((await call(cold, restored, captureRequest)).failure);
   assert.ok((await call(cold, restored, request)).failure);
   assert.equal(readFileSync(stateRef, "utf8"), companion);
   assert.equal(

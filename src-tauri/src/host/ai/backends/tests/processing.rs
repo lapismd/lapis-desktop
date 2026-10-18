@@ -78,8 +78,8 @@ fn a_capture_permit_requires_an_explicit_backend_and_matches_every_native_bindin
         assert!(f.policy.authorize_processing(&context, &original).is_err());
         assert!(f.workers.targets(&context).unwrap().is_empty());
         assert!(f.workers.list(&context).unwrap().is_empty());
-        // Until the real store processor exists, construction must drop its
-        // temporary permit and fail rather than select a raw fallback.
+        // A retained permit cannot substitute for a prepared conversation target.
+        // Rejected construction must never select a raw fallback.
         assert_eq!(
             f.policy.processor(&context, &original).err().unwrap().0,
             "capture_backend_not_admitted"

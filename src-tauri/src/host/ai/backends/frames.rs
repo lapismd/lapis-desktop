@@ -40,6 +40,11 @@ pub enum Operation {
         handle: Uuid,
         request_id: RequestId,
     },
+    PrepareCapture {
+        handle: Uuid,
+        request_id: RequestId,
+        conversation_request_id: RequestId,
+    },
     Close {
         handle: Uuid,
     },
@@ -75,6 +80,7 @@ pub enum Reply {
     Receipt(Option<SelectionReceipt>),
     Opened(Opened),
     Conversation(Option<lapis_desktop::ai::conversations::Conversation>),
+    Capture(super::capture::Prepared),
     Closed,
 }
 impl Reply {

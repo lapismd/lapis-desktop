@@ -1,6 +1,8 @@
+mod capture;
 pub(crate) mod commands;
 mod conversations;
 mod frames;
+mod privacy;
 mod processing;
 mod retirement;
 use crate::host::state::NativeHost;
@@ -31,6 +33,7 @@ struct Owner {
     opened: Opened,
     scope: Arc<BackendScope>,
     rebindable: bool,
+    captures: HashMap<RequestId, capture::Plan>,
 }
 pub struct NativeBackends {
     profile: Dir,
@@ -39,6 +42,7 @@ pub struct NativeBackends {
     workers: OnceLock<Weak<tauri_plugin_lapis_ai::AcpHost>>,
     destroyed: AtomicBool,
     processing: Mutex<HashMap<String, Weak<processing::Authority>>>,
+    privacy: OnceLock<privacy::Roots>,
 }
 fn denied() -> io::Error {
     io::Error::new(
@@ -54,6 +58,11 @@ fn busy() -> io::Error {
 }
 pub fn initialize(app: &tauri::AppHandle, profile: &Path) -> io::Result<()> {
     let owner = NativeBackends::new(Dir::open_ambient_dir(profile, ambient_authority())?);
+    let home = app.path().home_dir().map_err(|_| denied())?;
+    owner
+        .privacy
+        .set(privacy::Roots::new(home, std::env::temp_dir())?)
+        .map_err(|_| denied())?;
     if !app.manage(Arc::new(owner)) {
         return Err(busy());
     }
@@ -68,6 +77,7 @@ impl NativeBackends {
             workers: OnceLock::new(),
             destroyed: AtomicBool::new(false),
             processing: Mutex::new(HashMap::new()),
+            privacy: OnceLock::new(),
         }
     }
     fn profiles(
@@ -155,6 +165,7 @@ impl NativeBackends {
                 opened: opened.clone(),
                 scope: scope.clone(),
                 rebindable: false,
+                captures: HashMap::new(),
             },
         );
         scope.begin()?.check()?;

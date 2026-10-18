@@ -223,6 +223,32 @@ preparation work after caller cancellation; closure fences new work and drains
 its counted call before releasing the lease. Renderer selection, actual capture
 construction and managed restart remain separate.
 
+## Prepared native capture
+
+An explicit capture preparation binds an opaque native target to an original
+confirmed conversation under the current JJ owner. Repeated requests retain the
+same target and exact conversation intent; another intent cannot claim that
+request. Preparations are bounded and belong to their backend owner. They retain
+no counted backend call while idle, so closure can drain and release the owner.
+Preparing capture grants neither an executable nor a prompt.
+
+The ordinary native processor factory MUST require the matching prepared target,
+active reattached owner and exact native worker/open/window/generation binding.
+It MUST recheck the original private preparation, actor and source, construct
+the selected Agent/Thread participants, and retain a private journal and the
+real transcript policy. Native home/temporary roots and a native-created private
+scanner cache remain outside renderer authority. The cache and exact processing
+permit survive through supervised worker teardown. A missing preparation,
+unknown receipt, replaced source or privacy failure MUST reject construction.
+
+Each callback checks retained authority before and after receipt-fenced capture.
+Sanitized candidates and original provider confirmations precede safe output;
+unknown writes cannot fall back or re-execute. Renderer suspension may retain an
+existing exact processor; a new factory still needs active admission and the
+reattached owner. Close fences callbacks and drains the retained call before
+releasing its lease. Executable/credential admission, ordinary runtime dispatch,
+renderer transcript adoption and managed chat/restart retain separate gates.
+
 ## Commit and operation-log columns
 
 The bundled Repository History plugin registers independent history and Op Log

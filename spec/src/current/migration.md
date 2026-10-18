@@ -1,5 +1,10 @@
 # Migration inventory and progress
 
+E-AI-036 records NOTES-07H ordinary selected-store processor construction,
+native privacy/journal ownership and real Agent/Thread receipts. Executable and
+credential admission, runtime dispatch, renderer persistence and managed
+chat/restart retain their original open gates. M13/M13.3 stay In progress.
+
 E-AI-035 records NOTES-07G ordinary native conversation preparation and exact
 receipt recovery. Managed processor, renderer persistence and chat/restart
 remain NOTES-07; M13/M13.3 and original gates remain unchanged.

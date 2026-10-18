@@ -10,7 +10,7 @@ use tauri_plugin_lapis_ai::{HostContext, SessionBinding};
 pub(super) struct Authority {
     context: HostContext,
     binding: SessionBinding,
-    call: BackendCall,
+    call: Arc<BackendCall>,
 }
 pub struct CapturePermit {
     owner: Weak<NativeBackends>,
@@ -56,6 +56,7 @@ impl NativeBackends {
                 .get(&context.window)
                 .filter(|owner| {
                     owner.generation == binding.admission
+                        && !owner.rebindable
                         && owner.session == lease.session()
                         && owner.opened.selection.revision > 0
                 })
@@ -74,7 +75,7 @@ impl NativeBackends {
         let authority = Arc::new(Authority {
             context: context.clone(),
             binding: binding.clone(),
-            call,
+            call: Arc::new(call),
         });
         {
             let mut captures = self.processing.lock().map_err(|_| denied())?;
@@ -117,6 +118,9 @@ impl NativeBackends {
     }
 }
 impl CapturePermit {
+    pub(super) fn call(&self) -> Arc<BackendCall> {
+        self.authority.call.clone()
+    }
     pub fn check(&self) -> io::Result<()> {
         let owner = self.owner.upgrade().ok_or_else(denied)?;
         owner

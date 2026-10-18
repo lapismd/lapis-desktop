@@ -171,3 +171,5 @@
 - [Repository canvas preview and shell surface correction](history/E-REPO-008.md)
 
 - [Native conversation preparation and original receipt recovery](history/E-AI-035.md)
+
+- [Ordinary native selected-store capture factory](history/E-AI-036.md)

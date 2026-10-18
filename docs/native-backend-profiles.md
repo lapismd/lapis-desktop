@@ -120,10 +120,11 @@ and new factories remain denied until active admission; a new factory also needs
 the renderer's reattached backend owner. Non-preserving replacement, disable,
 physical failure and native-window destruction revoke old authority.
 
-This is a native lifetime prerequisite. The ordinary factory still refuses the
-missing real store processor; targets remain empty. Permits grant neither a
-prompt nor repository publication, and service proof does not qualify actual
-managed capture or packaged conversation restart.
+The ordinary factory now requires an explicitly prepared, confirmed conversation
+and composes its actual selected-store processor. Missing preparation or privacy
+still refuses construction. Targets remain empty; preparation grants no prompt
+or executable. Managed dispatch and packaged conversation restart remain
+separate.
 
 ## Preparing a JJ conversation
 
@@ -170,3 +171,40 @@ adapter retains its transition through blocking work if the IPC wait disappears.
 Close drains these calls before releasing the backend. This prepares a durable
 conversation; renderer transcript adoption and managed capture/restart remain
 separate M13.3 work.
+
+## Preparing native capture
+
+After confirmed conversation preparation, the same current JJ owner accepts:
+
+```ts
+const operation = {
+  type: "prepareCapture",
+  handle,
+  requestId,
+  conversationRequestId,
+};
+```
+
+The reply is
+`{ type: "capture", data: { requestId, conversationRequestId, targetId } }`.
+`targetId` is an opaque native UUID for capture preparation, not an executable
+or persisted agent identity. Exact retries within that owner return the same
+target; another intent cannot claim its request. An owner keeps at most 64 plans
+without retaining idle counted calls. A new owner after cold restart creates a
+fresh target from the original confirmed conversation.
+
+The ordinary Rust factory rechecks original private preparation, source, actor,
+current admission and exact native worker binding. It constructs the selected
+Agent/Thread participants, real transcript policy and exclusive private journal.
+Sanitized candidates and original provider receipts precede emitted frames.
+Native home/temporary roots and an owner-private scanner cache stay outside
+renderer control; cached policies remain scoped to each workspace and native
+credential set. An existing processor may survive verified renderer suspension;
+new construction still requires reattachment. Closure fences callbacks and
+drains their ownership before releasing the backend.
+
+`ai::conversations::PreparedConversation` is the native library entrypoint.
+Loading a proof retains no counted call while idle. Processor construction
+requires a fresh admitted call, the exact binding, native privacy and an
+admission callback. Native executable/credential policy, ordinary runtime
+dispatch, renderer transcript adoption and managed chat/restart are later gates.

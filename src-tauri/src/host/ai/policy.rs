@@ -117,14 +117,14 @@ impl HostPolicy for DesktopAiPolicy {
             return Err(Error("admission_revoked"));
         }
         let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
-        let _permit = self
+        let processor = self
             .0
             .backends
             .get()
             .ok_or(Error("host_unavailable"))?
-            .register_processing(host, context, binding)
+            .processor(host, context, binding)
             .map_err(|_| Error("capture_backend_not_admitted"))?;
-        Err(Error("capture_backend_not_admitted"))
+        Ok(Some(processor))
     }
     fn resolve(
         &self,

@@ -34,7 +34,7 @@ pub(super) fn prepare(handle: &Value, request: u8) -> Value {
 pub(super) fn status(handle: &Value, request: u8) -> Value {
     json!({"type":"conversationStatus","handle":handle,"requestId":id(request)})
 }
-fn private(f: &Fixture) -> PathBuf {
+pub(super) fn private(f: &Fixture) -> PathBuf {
     std::fs::read_dir(f._root.path().join("profile/ai-backends-v1"))
         .unwrap()
         .next()
@@ -43,13 +43,13 @@ fn private(f: &Fixture) -> PathBuf {
         .path()
         .join("conversations-v1")
 }
-fn record(f: &Fixture, request: u8) -> Value {
+pub(super) fn record(f: &Fixture, request: u8) -> Value {
     serde_json::from_slice(
         &std::fs::read(private(f).join(format!("{}.json", id(request)))).unwrap(),
     )
     .unwrap()
 }
-fn replace(f: &Fixture, request: u8, value: &Value) {
+pub(super) fn replace(f: &Fixture, request: u8, value: &Value) {
     use std::os::unix::fs::PermissionsExt;
     let path = private(f).join(format!("{}.json", id(request)));
     std::fs::write(&path, serde_json::to_vec(value).unwrap()).unwrap();

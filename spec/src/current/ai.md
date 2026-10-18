@@ -5,11 +5,11 @@ reload under a counted backend permit. Renderer admission remains independent;
 [the repository contract](repository.md#native-backend-ownership-and-transport)
 owns the lifetime, revocation and pending-adoption details.
 
-The native backend profile service retains exact private selection receipts and
-an exclusive owner lease. Selection alone grants no execution or renderer
-writer. Closing fences calls immediately and drains their original ownership;
-native host transitions own the lease. Processor construction, the renderer
-persistence bridge and packaged-app chat adoption remain separate.
+The native backend retains exact private receipts and an exclusive owner lease.
+Confirmed conversations may explicitly prepare a native capture target; the
+ordinary factory composes native privacy, journal and Agent/Thread stores.
+Closing fences and drains ownership. Executable/credential admission, renderer
+persistence and packaged-app chat/restart remain separate (E-AI-036).
 
 AI catalog scenes expose product presentation only. Fixture observations, fault
 injection, settings changes and lifetime controls use owned review ports outside
