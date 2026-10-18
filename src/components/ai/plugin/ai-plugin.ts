@@ -54,9 +54,6 @@ export class AiPlugin extends Plugin {
       this.settings,
     ));
     try {
-      await seedBundledSkills(this.app.vault);
-      if (host.userAgents) await seedReservedCommands(host.userAgents);
-      await host.refreshFileCommands();
       registerAiSettings(this);
       for (const tool of createVaultFileAppTools(this.app.vault))
         this.registerAgentTool(tool);
@@ -72,7 +69,20 @@ export class AiPlugin extends Plugin {
         this.registerAgentResultView({ command, component: AiInventoryResult });
       registerAiViews(this, host);
       registerAiCommands(this, host);
-      host.maintenance.start();
+      // Discovery is optional background work, not a gate on workspace input.
+      void host.operations
+        .track(
+          host.background
+            .run("Preparing AI commands", async () => {
+              await seedBundledSkills(this.app.vault);
+              if (host.userAgents) await seedReservedCommands(host.userAgents);
+              await host.refreshFileCommands();
+            })
+            .finally(() => {
+              if (host.active) host.maintenance.start();
+            }),
+        )
+        .catch((error) => host.report(error));
       await this.settings.settle();
     } catch (error) {
       await host.close();

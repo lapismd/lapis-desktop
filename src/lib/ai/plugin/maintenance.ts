@@ -15,16 +15,23 @@ export class AiMaintenance {
     this.index = new ConversationIndexCoordinator(
       host.conversationIndex,
       report,
+      150,
+      (run) => host.background.run("Indexing AI conversations", run),
     );
     this.ingestion = new MemoryIngestionCoordinator(
       host.conversations,
       host.memory,
       report,
+      150,
+      (run) => host.background.run("Updating AI memory", run),
     );
     this.scheduler = new MemoryMaintenanceScheduler(
       host.app.appDatabase,
       host.memory,
-      { onError: report },
+      {
+        onError: report,
+        activity: (run) => host.background.run("Maintaining AI memory", run),
+      },
     );
   }
   start(): void {

@@ -12,6 +12,7 @@ import {
 import { reservedSlashCommandNames } from "./reserved.ts";
 import type { SlashCommandSource } from "./types.ts";
 import type { UserAgentsCommandStore } from "./user-agents.ts";
+import { CommandWorkerError, type CommandParser } from "./parser-port.ts";
 
 export type CommandFileSource = "folder" | "vault" | "user";
 
@@ -40,6 +41,7 @@ export interface DiscoveredCommands {
 export interface CommandDiscoveryOptions {
   vault: Vault;
   userAgents?: UserAgentsCommandStore;
+  parse?: CommandParser;
 }
 
 const SOURCE_RANK: Record<CommandFileSource, number> = {
@@ -100,7 +102,7 @@ export class CommandDiscovery {
         continue;
       }
       try {
-        const parsed = parseCommandMarkdown(
+        const parsed = await (this.options.parse ?? parseCommandMarkdown)(
           await this.options.vault.cachedRead(file),
           file.path,
           name,
@@ -116,6 +118,7 @@ export class CommandDiscovery {
           dispatch: commandFileDispatch(parsed),
         });
       } catch (error) {
+        if (error instanceof CommandWorkerError) throw error;
         diagnostics.push({
           path: file.path,
           message:
@@ -138,7 +141,11 @@ export class CommandDiscovery {
         ? `${store.root.replace(/\/$/u, "")}/${file.name}.md`
         : `${file.name}.md`;
       try {
-        const parsed = parseCommandMarkdown(file.content, path, file.name);
+        const parsed = await (this.options.parse ?? parseCommandMarkdown)(
+          file.content,
+          path,
+          file.name,
+        );
         collected.push({
           name: parsed.name,
           description: parsed.description,
@@ -149,6 +156,7 @@ export class CommandDiscovery {
           dispatch: commandFileDispatch(parsed),
         });
       } catch (error) {
+        if (error instanceof CommandWorkerError) throw error;
         diagnostics.push({
           path,
           message:

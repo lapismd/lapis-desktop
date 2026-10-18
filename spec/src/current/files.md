@@ -1,5 +1,9 @@
 # File management (M5)
 
+E-REPO-016 adds status progress to Notes startup. LD-FILE-002/003 admission,
+watch ownership and drained writer/close behavior remain unchanged; operations
+stay on existing native workers. See [background activity](background.md).
+
 Native vault closure first fences new AI admissions and retires active/pending
 scopes before releasing the vault. An open database still blocks that closure
 without changing AI authority. Suspended reload scopes retain their generation

@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 import { nativeError } from "../native-error.ts";
 import type { RepositoryServices } from "../../repository/history-reader.ts";
+import { PreparationQueue } from "./preparation-queue.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
@@ -20,6 +21,7 @@ export function createNativeRepository(
         throw nativeError(error);
       }
     });
+  const preparation = new PreparationQueue(reader);
   let activation: Promise<void> | undefined;
   let attempted = false;
   let closed = false;
@@ -57,14 +59,15 @@ export function createNativeRepository(
   return {
     reader: {
       heads: () => run(() => reader.heads()),
-      open: (operation: string) => run(() => reader.open(operation)),
+      open: (operation: string) => run(() => preparation.open(operation)),
       status: (handle: Handle) => run(() => reader.status(handle)),
       read: (handle: Handle, query: Query) =>
         run(() => reader.read(handle, query)),
-      close: (handle: Handle) => run(() => reader.close(handle)),
+      close: (handle: Handle) => run(() => preparation.close(handle)),
     },
     close(mode) {
       closed = true;
+      preparation.stop();
       return (closing ??= (async () => {
         while (pending.size) await Promise.allSettled([...pending]);
         if (attempted)

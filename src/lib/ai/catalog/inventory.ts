@@ -10,6 +10,7 @@ import type { RegisteredAppTool } from "@lapis-notes/api/agent-tools";
 import { SlashCommandCatalog } from "../commands/catalog.ts";
 import { CommandDiscovery } from "../commands/discovery.ts";
 import type { UserAgentsCommandStore } from "../commands/user-agents.ts";
+import type { CommandParser } from "../commands/parser-port.ts";
 import {
   isAppToolEnabled,
   type AiPluginSettings,
@@ -42,6 +43,7 @@ export interface CollectAiCatalogInput {
   settings: AiPluginSettings;
   pluginLabel: (pluginId: string) => string;
   userAgents?: UserAgentsCommandStore;
+  parseCommand?: CommandParser;
   scopeDir?: string;
 }
 
@@ -83,6 +85,7 @@ export async function collectAiCatalog(
   const discoveredCommands = await new CommandDiscovery({
     vault: input.vault,
     userAgents: input.userAgents,
+    parse: input.parseCommand,
   }).discover(input.scopeDir ?? "");
   const catalog = new SlashCommandCatalog();
   catalog.replaceFileCommands(

@@ -53,6 +53,11 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^(?:src/lib/desktop/background-work\\.ts$|tests/(?:workers/|renderer/background-work\\.test\\.mjs$)|vitest\\.workers\\.config\\.ts$|catalog/(?:plugins|support)/background/)",
+            chapters: ["spec/src/current/background.md"],
+          },
+          {
+            pattern:
               "^(?:src-tauri/src/(?:repository/|host/repository/)|src-tauri/tests/repository_.*\\.rs$|src/lib/native/repository/|src/components/repository/|tests/(?:desktop|renderer)/repository-)",
             chapters: ["spec/src/current/repository.md"],
           },

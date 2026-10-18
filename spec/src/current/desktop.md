@@ -13,6 +13,8 @@ integrates the public Notes workspace and App over native storage.
 
 Plugin assets and Terminal follow [plugins](plugins.md).
 
+See [background activity](background.md).
+
 ## Requirements
 
 | ID             | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                     |

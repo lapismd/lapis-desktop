@@ -23,6 +23,7 @@ import { collectAiCatalog } from "../catalog/inventory.ts";
 import type { CatalogToolRow } from "../catalog/types.ts";
 import { AiMemory } from "./memory.ts";
 import { AiMaintenance } from "./maintenance.ts";
+import { BackgroundWork } from "../../desktop/background-work.ts";
 export class AiApplication extends AiConversationHost {
   readonly appToolHost: AppToolHost;
   readonly services;
@@ -36,10 +37,13 @@ export class AiApplication extends AiConversationHost {
   readonly memoryOwner: AiMemory;
   readonly maintenance: AiMaintenance;
   readonly lifetime = new AbortController();
+  readonly background: BackgroundWork;
   leaveMode: AiLeaveMode = "close";
   #closing?: Promise<void>;
+  #commandRefresh = 0;
   constructor(app: App, settings: AiSettingsStore) {
     super(app, settings);
+    this.background = new BackgroundWork(app.notifications, "ai");
     this.appToolHost = new AppToolHost(app.agentTools, () =>
       this.getSettings(),
     );
@@ -98,28 +102,35 @@ export class AiApplication extends AiConversationHost {
     scopeDir = this.currentConversationScope(),
   ): Promise<void> {
     if (!this.active) return;
-    const next = await new CommandDiscovery({
-      vault: this.app.vault,
-      userAgents: this.userAgents,
-    }).discover(scopeDir);
-    if (this.active)
+    const generation = ++this.#commandRefresh;
+    const next = await this.background.run("Discovering AI commands", () =>
+      new CommandDiscovery({
+        vault: this.app.vault,
+        userAgents: this.userAgents,
+        parse: this.services.parseCommand,
+      }).discover(scopeDir),
+    );
+    if (this.active && generation === this.#commandRefresh)
       this.slashCatalog.replaceFileCommands(next.commands, next.overlays);
   }
   loadAiCatalog() {
     if (!this.active) return Promise.resolve([]);
     return this.operations.track(
-      collectAiCatalog({
-        tools: this.app.agentTools.list(),
-        commands: this.app.agentSlashCommands.list(),
-        registeredSkills: this.app.agentSkills.list(),
-        vault: this.app.vault,
-        bundled: BUNDLED_APP_SKILLS,
-        settings: this.getSettings(),
-        pluginLabel: (id) =>
-          this.app.plugins.plugins.get(id)?.manifest.name?.trim() || id,
-        userAgents: this.userAgents,
-        scopeDir: this.currentConversationScope(),
-      }),
+      this.background.run("Loading AI catalog", () =>
+        collectAiCatalog({
+          tools: this.app.agentTools.list(),
+          commands: this.app.agentSlashCommands.list(),
+          registeredSkills: this.app.agentSkills.list(),
+          vault: this.app.vault,
+          bundled: BUNDLED_APP_SKILLS,
+          settings: this.getSettings(),
+          pluginLabel: (id) =>
+            this.app.plugins.plugins.get(id)?.manifest.name?.trim() || id,
+          userAgents: this.userAgents,
+          parseCommand: this.services.parseCommand,
+          scopeDir: this.currentConversationScope(),
+        }),
+      ),
     );
   }
   setCatalogToolEnabled(tool: CatalogToolRow, enabled: boolean) {

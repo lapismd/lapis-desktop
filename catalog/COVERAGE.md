@@ -1,5 +1,11 @@
 # Desktop catalog coverage
 
+`plugins/background/Work.stories.ts` mounts the production Notes workspace,
+Repository History and native AI factory. Its owned delayed ports qualify
+interactive startup during command discovery, repository loading progress and
+worker failure feedback. `tests/workers/command-parser.test.ts` separately
+exercises the actual bundled module worker; fixtures do not qualify native IO.
+
 The complete AI source-family inventory and remaining unique scenarios are
 tracked in [AI migration coverage](AI_MIGRATION.md). Desktop-specific visible
 states are mapped in the [desktop review inventory](DESKTOP_STATES.md),

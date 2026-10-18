@@ -1,5 +1,9 @@
 # Desktop state review inventory
 
+`Desktop/Background work` holds optional AI discovery and repository reads while
+the real workspace remains interactive. It covers status progress, command
+palette input during pending work, completion cleanup and parser failure toasts.
+
 Use the Storybook sidebar names below to review production UI without starting
 the native app. Every scene uses disposable state. Native effects and acceptance
 remain separate; these browser examples do not qualify native IO or processes.

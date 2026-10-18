@@ -10,6 +10,7 @@ import { AdmittedAiTransport } from "./admitted-transport.ts";
 import { NativeAiModels } from "./model-catalog.ts";
 import { NativeUserAgentsStore } from "./user-commands.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../../ai/bootstrap/runtime-unavailable.ts";
+import { NativeCommandParser } from "./command-parser.ts";
 
 export type NativeAiPorts = {
   call?: NativeCall;
@@ -41,6 +42,7 @@ export function createNativeAi(
     release: (reload) => native("desktop_ai_release", { request: { reload } }),
   });
   const models = new NativeAiModels(scope);
+  const parser = new NativeCommandParser();
   const userAgents = new NativeUserAgentsStore(
     vault.sessionId,
     async (command, args) => {
@@ -63,6 +65,7 @@ export function createNativeAi(
     scope.fence();
     return (closing ??= (async () => {
       await Promise.all([models.close(), userAgents.close()]);
+      parser.close();
       await scope.dispose(mode === "reload");
     })().catch((error) => {
       closing = undefined;
@@ -73,6 +76,7 @@ export function createNativeAi(
     runtime,
     models,
     userAgents,
+    parseCommand: parser.parse,
     workspace: vault.profileId,
     unavailableReason: () =>
       !allowed()

@@ -1,5 +1,10 @@
 # Desktop plugins and catalog
 
+E-REPO-016 qualifies delayed startup work and worker-failure toasts through real
+production hosts. LD-CAT-001/002/003 fixtures remain disposable; actual workers
+and ordinary native startup have separate evidence. See
+[background](background.md).
+
 E-REPO-015 promotes reviewed repository presentation to production.
 LD-CAT-001/002/003 retain public dependency ownership and disposable injected
 fixtures. Rich picker rows use accessible grids; source AppShell hosts keep

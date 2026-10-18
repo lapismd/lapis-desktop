@@ -1,5 +1,8 @@
 # Migration inventory and progress
 
+E-REPO-016 records the focused [responsiveness slice](background.md). LD-MIG-002
+and original M13/M10.2 gates and statuses remain unchanged.
+
 E-REPO-015 qualifies reviewed production UI (NOTES-05I2B/2C/3B/6). LD-MIG-002
 progress and original M13 gates stay unchanged. Native queries, evolution/writes
 and managed conversation/restart remain separate. Broader qualification and

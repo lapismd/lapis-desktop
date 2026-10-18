@@ -128,3 +128,62 @@ test("a denied vault never reaches the history reader and an unused scope releas
   await unused.close("close");
   assert.deepEqual(f.calls, []);
 });
+test("restored history and op-log views queue behind the single preparation worker", async () => {
+  const f = setup();
+  const prepared = deferred();
+  const opened = [];
+  let preparing = false;
+  f.client.open = async (operation) => {
+    if (preparing) throw new Error("Repository history busy");
+    opened.push(operation);
+    preparing = true;
+    return operation;
+  };
+  f.client.status = async () => {
+    await prepared.promise;
+    preparing = false;
+    return { state: "ready", data: {} };
+  };
+  const service = createNativeRepository(vault, f.call, f.client);
+  await service.reader.open("jj-log");
+  const second = service.reader.open("op-log");
+  // Observe rejection immediately so the before-state has no unhandled promise.
+  const result = second.then(
+    (value) => ({ value }),
+    (error) => ({ error }),
+  );
+  await new Promise((resolve) => setImmediate(resolve));
+  assert.deepEqual(opened, ["jj-log"]);
+  prepared.resolve();
+  assert.deepEqual(await result, { value: "op-log" });
+  assert.deepEqual(opened, ["jj-log", "op-log"]);
+  await service.close("close");
+});
+test("closing fences queued preparations without opening another handle", async () => {
+  const f = setup();
+  const service = createNativeRepository(vault, f.call, f.client);
+  await service.reader.open("jj-log");
+  const queued = service.reader.open("op-log");
+  const rejected = assert.rejects(queued, /closed/);
+  await new Promise((resolve) => setImmediate(resolve));
+  await service.close("close");
+  await rejected;
+  assert.deepEqual(
+    f.reads.filter((entry) => Array.isArray(entry) && entry[0] === "open"),
+    [["open", "jj-log"]],
+  );
+});
+test("failed preparation frees the queue and an unknown open is never replayed", async () => {
+  const f = setup();
+  f.client.status = async () => ({ state: "failed" });
+  const service = createNativeRepository(vault, f.call, f.client);
+  await service.reader.open("jj-log");
+  let attempts = 0;
+  f.client.open = async () => {
+    attempts++;
+    throw new Error("lost open reply");
+  };
+  await assert.rejects(service.reader.open("op-log"), /lost open reply/);
+  assert.equal(attempts, 1);
+  await service.close("close");
+});

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis AI orchestration; see ../NOTICE.md.
-import { OwnedAiWork } from "../core/owned-work.ts";
+import { OwnedAiWork, type AiWorkRunner } from "../core/owned-work.ts";
 import { conversationLocationFromSourcePath } from "./source-path.ts";
 import type { ConversationLocation } from "./types.ts";
 
@@ -25,7 +25,7 @@ function locationKey(location: ConversationLocation): string {
 }
 
 export class ConversationIndexCoordinator {
-  readonly #work = new OwnedAiWork();
+  readonly #work: OwnedAiWork;
   #disposed = false;
   readonly #pending = new Map<string, PendingIndexAction>();
   #timer: ReturnType<typeof setTimeout> | undefined;
@@ -34,7 +34,10 @@ export class ConversationIndexCoordinator {
     private readonly index: ConversationIndexWriter,
     private readonly onError: ConversationIndexErrorHandler = () => {},
     private readonly delay = 150,
-  ) {}
+    activity?: AiWorkRunner,
+  ) {
+    this.#work = new OwnedAiWork(activity);
+  }
 
   handleVaultChange(path: string, oldPath?: string): void {
     if (this.#disposed) return;

@@ -3,6 +3,7 @@ import { DEFAULT_APP_STATE_DIRECTORY } from "@lapis-notes/api/path";
 import type { WorkspaceStartupTask } from "@lapismd/design-core/workspace/startup";
 import { pluginLoadOptions } from "./plugin-policy.ts";
 import { desktopNotesPlugins } from "./notes-plugins.ts";
+import { BackgroundWork } from "../desktop/background-work.ts";
 
 export function startupTasks(): WorkspaceStartupTask[] {
   return [
@@ -35,10 +36,14 @@ export async function startNotes(
   },
 ): Promise<void> {
   let activeTask = "vault";
+  const background = new BackgroundWork(app.notifications, "desktop");
   async function phase(id: string, run: () => Promise<unknown>): Promise<void> {
     activeTask = id;
     options.setTask(id, "active");
-    await run();
+    await background.run(
+      startupTasks().find((task) => task.id === id)!.label,
+      run,
+    );
     options.setTask(id, "complete");
   }
   try {

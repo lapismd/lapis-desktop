@@ -5,6 +5,7 @@ import type { AiModelCatalog } from "../settings/model-options.ts";
 import type { AppToolBridgeCoordinator } from "../tools/app-tool-bridge.ts";
 import type { AppToolHost } from "../tools/app-tool-host.ts";
 import type { UserAgentsCommandStore } from "../commands/user-agents.ts";
+import type { CommandParser } from "../commands/parser-port.ts";
 import { ACP_APPROVAL_CAPABILITIES } from "../core/approvals.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../bootstrap/runtime-unavailable.ts";
 export type AiLeaveMode = "close" | "reload";
@@ -13,6 +14,7 @@ export interface AiServices {
   models: AiModelCatalog;
   workspace?: string;
   userAgents?: UserAgentsCommandStore;
+  parseCommand?: CommandParser;
   appToolBridge?: AppToolBridgeCoordinator;
   unavailableReason(): string | null;
   close(mode: AiLeaveMode): Promise<void>;

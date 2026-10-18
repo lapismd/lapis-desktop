@@ -1,15 +1,15 @@
 # Desktop AI and optional compute
 
-Native capture retains an exact binding and physical witness through renderer
-reload under a counted backend permit. Renderer admission remains independent;
+Native capture retains exact binding/witnesses across reload under counted
+backend permits. Renderer admission is independent;
 [the repository contract](repository.md#native-backend-ownership-and-transport)
-owns the lifetime, revocation and pending-adoption details.
+owns lifetime/revocation. E-REPO-016 qualifies [background work](background.md)
+under LD-AI-002; provider authority and durable capture gates are unchanged.
 
-The native backend retains exact private receipts and an exclusive owner lease.
-Confirmed conversations may explicitly prepare a native capture target; the
-ordinary factory composes native privacy, journal and Agent/Thread stores. Close
-drains ownership. E-AI-037/038 cover native reads and retained continuation;
-execution, renderer adoption and managed restart remain open.
+Native backend receipts and an exclusive owner lease remain exact. Confirmed
+conversations explicitly prepare capture targets; the ordinary factory composes
+native privacy, journal and Agent/Thread stores and drains ownership on close.
+E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 AI catalog scenes expose product presentation only. Fixture observations, fault
 injection, settings changes and lifetime controls use owned review ports outside

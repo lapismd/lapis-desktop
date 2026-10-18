@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis memory policy; see ../NOTICE.md.
-import { OwnedAiWork } from "../core/owned-work.ts";
+import { OwnedAiWork, type AiWorkRunner } from "../core/owned-work.ts";
 import type {
   ConversationRepository,
   ConversationRepositoryChange,
@@ -24,7 +24,7 @@ export type MemoryIngestionErrorHandler = (
 ) => void;
 
 export class MemoryIngestionCoordinator {
-  readonly #work = new OwnedAiWork();
+  readonly #work: OwnedAiWork;
   readonly #pending = new Map<string, PendingAction>();
   #timer: ReturnType<typeof setTimeout> | undefined;
   #unsubscribe: (() => void) | undefined;
@@ -35,7 +35,9 @@ export class MemoryIngestionCoordinator {
     private readonly memory: MemoryService,
     private readonly onError: MemoryIngestionErrorHandler = () => {},
     private readonly delay = 150,
+    activity?: AiWorkRunner,
   ) {
+    this.#work = new OwnedAiWork(activity);
     this.#unsubscribe = repository.subscribe((change) =>
       this.handleRepositoryChange(change),
     );

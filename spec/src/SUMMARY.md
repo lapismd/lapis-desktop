@@ -191,3 +191,6 @@
   - [Shrinking repository picker titles](history/E-REPO-014.md)
 
   - [Reviewed repository UI: production adoption](history/E-REPO-015.md)
+
+- [Background activity and responsiveness](current/background.md)
+- [Visible background work and responsive repository startup](history/E-REPO-016.md)

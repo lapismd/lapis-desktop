@@ -67,6 +67,13 @@ Design Core owns diff rendering. Requests retain their selection identities and
 stale responses cannot replace a newer selection. Preparation polling is bounded
 and stops on selection changes or closure; failed reads require explicit retry.
 
+Restored JJ and operation-log views share one bounded preparation queue over the
+native worker. A second view waits for the prior preparation's terminal status
+or drained close before opening its own handle. Queueing never retries an
+unknown open outcome or changes a selected operation. Closure fences queued
+work. Each view publishes its complete loading lifetime through App status
+progress, including time waiting for that worker (LD-REPO-002/004).
+
 View/plugin teardown fences new work, drains pending requests and closes owned
 handles before native release. Failed cleanup remains retryable. Reload obtains
 fresh handles through the existing native admission transition. Operational

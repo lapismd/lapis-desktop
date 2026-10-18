@@ -6,6 +6,7 @@ gates.
 
 - [Governance](governance.md)
 - [Desktop shell](desktop.md)
+- [Background activity and responsiveness](background.md)
 - [File management](files.md)
 - [Find and navigate](navigation.md)
 - [Desktop integration](integration.md)

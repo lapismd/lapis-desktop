@@ -4,7 +4,7 @@ import type {
   AppDatabase,
   AppDatabaseMemoryJobRecord,
 } from "@lapis-notes/api/app-database";
-import { OwnedAiWork } from "../core/owned-work.ts";
+import { OwnedAiWork, type AiWorkRunner } from "../core/owned-work.ts";
 import { sha256ConversationText as sha256Text } from "../conversations/hashes.ts";
 
 import { memoryScopeKey } from "./paths.ts";
@@ -19,6 +19,7 @@ const DEFAULT_DAILY_MS = 24 * 60 * 60 * 1_000;
 const DEFAULT_LEASE_MS = 5 * 60 * 1_000;
 
 export type MemorySchedulerOptions = {
+  activity?: AiWorkRunner;
   ownerId?: string;
   idleMs?: number;
   dailyMs?: number;
@@ -32,7 +33,7 @@ export type MemorySchedulerOptions = {
 };
 
 export class MemoryMaintenanceScheduler {
-  readonly #work = new OwnedAiWork();
+  readonly #work: OwnedAiWork;
   readonly #ownerId: string;
   readonly #idleMs: number;
   readonly #dailyMs: number;
@@ -49,6 +50,7 @@ export class MemoryMaintenanceScheduler {
     private readonly memory: MemoryService,
     options: MemorySchedulerOptions = {},
   ) {
+    this.#work = new OwnedAiWork(options.activity);
     this.#ownerId = options.ownerId ?? crypto.randomUUID();
     this.#idleMs = options.idleMs ?? DEFAULT_IDLE_MS;
     this.#dailyMs = options.dailyMs ?? DEFAULT_DAILY_MS;

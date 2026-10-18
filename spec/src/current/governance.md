@@ -350,10 +350,10 @@ Node acceptance loads public built API exports with the existing tsx dev loader;
 no loader or test state enters production. The verified archive cohort is
 retained.
 
-`pnpm test:ai` runs retained AI policy suites with the isolated Node Vitest
-configuration and joins normal `pnpm test`. Test fixtures/configuration map to
-the AI contract; the public dependency graph and catalog configuration are
-retained.
+`pnpm test:ai` retains its Node policy lane in normal `pnpm test`.
+`vitest.workers.config.ts` and `tests/workers` map to
+[background](background.md) for browser scheduling. E-REPO-016 retains
+dependency/source ownership and the original native/catalog qualification gates.
 
 The renderer source audit rejects controller/ai-host imports, Node execution
 modules and legacy ACP bridge/Node-user-store paths. Public lapis-ai clients

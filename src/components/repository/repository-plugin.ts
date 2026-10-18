@@ -9,10 +9,12 @@ import type { RepositoryServices } from "../../lib/repository/history-reader.ts"
 import { OperationController } from "../../lib/repository/operation-controller.ts";
 import { OperationView } from "./operation-view.ts";
 import { RepositoryView } from "./repository-view.ts";
+import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 
 export class RepositoryPlugin extends Plugin {
   #services?: RepositoryServices;
   #controllers = new Set<HistoryController | OperationController>();
+  #activities = new Map<HistoryController | OperationController, () => void>();
   #closing?: Promise<void>;
   constructor(app: App) {
     super(app, {
@@ -54,6 +56,13 @@ export class RepositoryPlugin extends Plugin {
     const feedback = this.feedback();
     const controller = new HistoryController(this.#services!.reader, feedback);
     this.#controllers.add(controller);
+    this.#activities.set(
+      controller,
+      new BackgroundWork(this.app.notifications, "repository-history").follow(
+        "Loading JJ Log",
+        controller,
+      ),
+    );
     return controller;
   }
   createOperationController(): OperationController {
@@ -63,12 +72,21 @@ export class RepositoryPlugin extends Plugin {
       feedback,
     );
     this.#controllers.add(controller);
+    this.#activities.set(
+      controller,
+      new BackgroundWork(this.app.notifications, "repository-history").follow(
+        "Loading Op Log",
+        controller,
+      ),
+    );
     return controller;
   }
   async release(
     controller: HistoryController | OperationController,
   ): Promise<void> {
     await controller.close();
+    this.#activities.get(controller)?.();
+    this.#activities.delete(controller);
     this.#controllers.delete(controller);
   }
   async onload(): Promise<void> {
@@ -178,6 +196,8 @@ export class RepositoryPlugin extends Plugin {
       );
       // Full native release proves closure even after an unknown per-handle outcome.
       await this.#services?.close(repositoryLeaveMode(this.app));
+      for (const dispose of this.#activities.values()) dispose();
+      this.#activities.clear();
       this.#controllers.clear();
       this.#services = undefined;
     })().catch((error) => {
