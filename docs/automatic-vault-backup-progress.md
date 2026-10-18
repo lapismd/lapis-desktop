@@ -9,8 +9,8 @@ listed below. Changes integrate back into the main workspaces after completion.
 | Stage                                  | Status  | Acceptance                                                                                     |
 | -------------------------------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | 1. Vault identity and external storage | Partial | Ordinary folder has durable history without in-vault JJ/Git metadata; reopen/relink retains it |
-| 2. Capture coordinator                 | Active  | Internal/external changes, bounded debounce/reconciliation and crash/close recovery work       |
-| 3. Local history and restore           | Pending | Timeline, guarded file/vault restore, live history and optional status work                    |
+| 2. Capture coordinator                 | Partial | Internal/external changes, bounded debounce/reconciliation and crash/close recovery work       |
+| 3. Local history and restore           | Active  | Timeline, guarded file/vault restore, live history and optional status work                    |
 | 4. GitHub integration                  | Pending | Sign-in, remote setup and fresh-device restore work                                            |
 | 5. Automatic two-way synchronization   | Pending | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
 | 6. Historical search                   | Pending | Find and restore past text, paths and metadata through exact checkpoint anchors                |
@@ -58,3 +58,31 @@ listed below. Changes integrate back into the main workspaces after completion.
   deferred scope.
 - Nothing has been integrated into the main workspaces yet. Existing review app
   and ordinary vault data remain in their original locations.
+
+## Local restore and live follow
+
+- [x] Guarded retained-file preview and restore with a preceding safety
+      checkpoint.
+- [x] Durable restore receipts recover a lost response without overwriting later
+      edits.
+- [x] Editor writers stay protected across preview and apply; failures use App
+      toasts.
+- [x] Native worker dispatch, main-window permissions and production
+      diff-toolbar action.
+- [x] Live JJ/Op Log and file-history views follow completed checkpoints while
+      retaining explicit selections.
+- [x] Initial capture reports progress without holding plugin/shell startup.
+- [x] Focused evidence: three source restore tests, six coordinator/native
+      worker tests, 50 renderer/governance tests, strict types, native
+      command-frame test, six stories in four width/theme runs (24
+      interaction/accessibility executions).
+- [ ] Whole-vault restore and complete actual-WebView backup/restore lifecycle
+      acceptance.
+- [ ] Existing repository source selector, GitHub/Forgejo, synchronization and
+      search.
+
+First Storybook restore attempts exposed a Vite dependency-optimization reload
+and an assertion racing dialog animation. The exact stories pass after the
+dependency cache settled and visibility is awaited. One inherited pin regression
+and a source-size violation were corrected without weakening the original
+assertions.

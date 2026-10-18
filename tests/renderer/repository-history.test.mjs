@@ -32,6 +32,25 @@ function deferred() {
   });
   return { promise, resolve, reject };
 }
+test("automatic checkpoint follow advances only unselected live history", async () => {
+  const f = setup();
+  await f.controller.refresh();
+  f.advance();
+  await f.controller.checkpointChanged(otherOperation);
+  assert.equal(f.controller.state.operation, otherOperation);
+  await f.controller.selectOperation(operation);
+  await f.controller.checkpointChanged(otherOperation);
+  assert.equal(f.controller.state.operation, operation);
+  await f.controller.close();
+  const selected = setup();
+  await selected.controller.refresh();
+  await selected.controller.selectRevision(selected.latest);
+  selected.advance();
+  await selected.controller.checkpointChanged(otherOperation);
+  assert.equal(selected.controller.state.operation, operation);
+  assert.equal(selected.controller.state.revision.id, selected.latest.id);
+  await selected.controller.close();
+});
 
 test("history pins one operation across refresh and exact revision/path comparisons", async () => {
   const f = setup();

@@ -1,8 +1,8 @@
 # Repository history and conversations
 
-LD-REPO-005's default automatic local backup and separately admitted writer are
-specified in [Automatic vault backup](vault-backup.md). M14 tracks the delivery;
-immutable reader and M13 conversation contracts retain their original scope.
+LD-REPO-005's automatic backup, guarded restore and live follow are specified in
+[Automatic vault backup](vault-backup.md). M14 tracks delivery (E-REPO-027).
+Immutable reader and M13 conversation contracts retain their original scope.
 
 The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces
 without upstream `jj-lib`. Notes consumes jj-store M33 in verified slices.

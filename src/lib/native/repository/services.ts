@@ -7,6 +7,7 @@ import type { RepositoryServices } from "../../repository/history-reader.ts";
 import { parseWorkingCopyStatus } from "../../repository/working-copy-status.ts";
 import { PreparationQueue } from "./preparation-queue.ts";
 import { nativeBackup } from "./backup.ts";
+import { nativeRestore } from "./restore.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
@@ -24,6 +25,16 @@ export function createNativeRepository(
       }
     });
   const preparation = new PreparationQueue(reader);
+  const backupTransport = nativeBackup(vault.sessionId, call);
+  let initialBackup: Promise<unknown> | undefined;
+  const backup: typeof backupTransport = {
+    ...backupTransport,
+    start(changed) {
+      return (initialBackup = backupTransport.start(changed)) as ReturnType<
+        typeof backupTransport.start
+      >;
+    },
+  };
   let activation: Promise<void> | undefined;
   let attempted = false;
   let closed = false;
@@ -44,6 +55,10 @@ export function createNativeRepository(
       return Promise.reject(new Error("Repository history is closed"));
     const job = (async () => {
       attempted = true;
+      // Restored views wait for native source binding, while the rest of the
+      // app remains usable and reports the initial capture through status.
+      if (initialBackup) await initialBackup;
+      if (closed) throw new Error("Repository history is closed");
       activation ??= native("desktop_repository_admit", {
         request: { sessionId: vault.sessionId },
       }).catch((error) => {
@@ -59,7 +74,8 @@ export function createNativeRepository(
     return job;
   }
   return {
-    backup: nativeBackup(vault.sessionId, call),
+    restore: nativeRestore(vault.sessionId, call),
+    backup,
     workingCopy: () =>
       run(async () =>
         parseWorkingCopyStatus(

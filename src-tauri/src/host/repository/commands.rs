@@ -31,7 +31,16 @@ pub async fn desktop_repository_admit(
     })?;
     let _transition = repository.transitions.lock().await;
     let owner = context.window.clone();
+    let backup_root = repository.backups.state_path("");
     let plan = access(host.inner().clone(), move |services| {
+        // Existing backup history remains readable when capture is paused.
+        // Discovery only verifies its saved binding; it never initializes JJ.
+        let state = backup_root.join(&services.vaults.descriptor(&request.session_id)?.profile_id);
+        if state.join("vault.json").is_file() {
+            services
+                .repository
+                .bind_backup(&services.vaults, &request.session_id, &state)?;
+        }
         services
             .repository
             .prepare(&services.vaults, &owner, &request.session_id)

@@ -33,9 +33,11 @@ export class RepositoryBackup {
           }),
         ),
     });
-    await this.setEnabled(
-      automaticBackup((await this.plugin.loadData()) ?? {}),
-    );
+    const enabled = automaticBackup((await this.plugin.loadData()) ?? {});
+    // Admit the worker now; its first scan must not hold plugin/shell startup.
+    if (enabled)
+      void this.controller.start().catch((error) => this.plugin.report(error));
+    else await this.controller.pause();
   }
   async setEnabled(enabled: boolean) {
     if (enabled) await this.controller.start();

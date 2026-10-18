@@ -4,6 +4,9 @@ import type { HistoryController } from "../../lib/repository/history-controller.
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryPanel from "./RepositoryPanel.svelte";
 import { openHistoryRevision } from "../../lib/repository/open-history-revision.ts";
+import { RestoreController } from "../../lib/repository/restore.ts";
+import { BackgroundWork } from "../../lib/desktop/background-work.ts";
+import { followBackup } from "../../lib/repository/backup-follow.ts";
 
 export class RepositoryView extends View {
   #controller?: HistoryController;
@@ -13,6 +16,9 @@ export class RepositoryView extends View {
   #unsubscribe?: () => void;
   #initialLoad?: Promise<void>;
   #stateRequest = 0;
+  #restore?: RestoreController;
+  #restoreActivity?: () => void;
+  #live?: () => void;
   constructor(
     leaf: WorkspaceLeaf,
     private readonly plugin: RepositoryPlugin,
@@ -29,7 +35,14 @@ export class RepositoryView extends View {
     return "git-branch";
   }
   getState(): Record<string, unknown> {
-    return { operation: this.#controller?.state.operation ?? this.#operation };
+    return this.#controller
+      ? {
+          operation: this.#controller.pinned
+            ? this.#controller.state.operation
+            : undefined,
+          revision: this.#controller.state.revision?.id,
+        }
+      : { operation: this.#operation, revision: this.#revision };
   }
   async setState(state: Record<string, unknown>): Promise<void> {
     const request = ++this.#stateRequest;
@@ -52,6 +65,25 @@ export class RepositoryView extends View {
   protected async onClose(): Promise<void> {}
   onload(): void {
     this.#controller = this.plugin.createController();
+    if (this.plugin.restoreService) {
+      this.#restore = new RestoreController(
+        this.plugin.restoreService,
+        (path, action) => this.app.fileEditingSessions.guard(path, action),
+        this.plugin.feedback("Restore file"),
+      );
+      this.#restoreActivity = new BackgroundWork(
+        this.app.notifications,
+        this.plugin.id,
+      ).follow("Restoring file history", {
+        subscribe: (listener) =>
+          this.#restore!.subscribe((state) =>
+            listener({
+              busy: state.busy,
+              phase: state.open ? "restoring" : "ready",
+            }),
+          ),
+      });
+    }
     this.#unsubscribe = this.#controller.subscribe((state) => {
       if (
         state.operation !== undefined &&
@@ -65,10 +97,18 @@ export class RepositoryView extends View {
       }
     });
     this.#initialLoad = this.#controller.refresh(this.#operation);
+    void this.#initialLoad.then(() => {
+      if (this.#controller)
+        this.#live = followBackup(
+          this.plugin.backup?.controller,
+          this.#controller,
+        );
+    });
     this.#component = mount(RepositoryPanel, {
       target: this.containerEl,
       props: {
         controller: this.#controller,
+        restore: this.#restore,
         initialOperation: this.#operation,
         initialRevision: this.#revision,
         initialLoad: this.#initialLoad,
@@ -77,6 +117,9 @@ export class RepositoryView extends View {
     });
   }
   onunload(): void {
+    this.#live?.();
+    this.#restore?.close();
+    this.#restoreActivity?.();
     this.#stateRequest++;
     this.#unsubscribe?.();
     if (this.#component) void unmount(this.#component);

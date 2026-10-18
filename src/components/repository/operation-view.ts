@@ -3,12 +3,14 @@ import { mount, unmount } from "svelte";
 import type { OperationController } from "../../lib/repository/operation-controller.ts";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryOperations from "./RepositoryOperations.svelte";
+import { followBackup } from "../../lib/repository/backup-follow.ts";
 
 export class OperationView extends View {
   #controller?: OperationController;
   #component?: ReturnType<typeof mount>;
   #operation?: string;
   #unsubscribe?: () => void;
+  #live?: () => void;
   constructor(
     leaf: WorkspaceLeaf,
     private readonly plugin: RepositoryPlugin,
@@ -25,7 +27,13 @@ export class OperationView extends View {
     return "git-pull-request-arrow";
   }
   getState(): Record<string, unknown> {
-    return { operation: this.#controller?.state.operation ?? this.#operation };
+    return {
+      operation: this.#controller
+        ? this.#controller.pinned
+          ? this.#controller.state.operation
+          : undefined
+        : this.#operation,
+    };
   }
   async setState(state: Record<string, unknown>): Promise<void> {
     this.#operation =
@@ -42,6 +50,7 @@ export class OperationView extends View {
   protected async onClose(): Promise<void> {}
   onload(): void {
     this.#controller = this.plugin.createOperationController();
+    this.#live = followBackup(this.plugin.backup?.controller, this.#controller);
     this.#unsubscribe = this.#controller.subscribe((state) => {
       if (
         state.operation !== undefined &&
@@ -68,6 +77,7 @@ export class OperationView extends View {
     });
   }
   onunload(): void {
+    this.#live?.();
     this.#unsubscribe?.();
     if (this.#component) void unmount(this.#component);
     this.#component = undefined;

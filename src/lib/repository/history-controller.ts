@@ -26,6 +26,7 @@ export class HistoryController {
   #request = 0;
   #abort = new AbortController();
   #closed = false;
+  #pinned = false;
   #closing?: Promise<void>;
   constructor(
     reader: HistoryReader,
@@ -58,6 +59,9 @@ export class HistoryController {
   get state(): HistoryState {
     return this.#state;
   }
+  get pinned() {
+    return this.#pinned || !!this.#state.revision;
+  }
   subscribe(listener: (state: HistoryState) => void): () => void {
     this.#listeners.add(listener);
     listener(this.#state);
@@ -88,6 +92,7 @@ export class HistoryController {
     }
   }
   refresh(preferred?: string): Promise<void> {
+    if (preferred) this.#pinned = true;
     return this.#run(() =>
       this.#action(async () => {
         const selection = this.#selection;
@@ -110,6 +115,19 @@ export class HistoryController {
     );
   }
   selectOperation(operation: string): Promise<void> {
+    this.#pinned = true;
+    return this.#run(() =>
+      this.#action(() => this.#selectOperation(operation)),
+    );
+  }
+  checkpointChanged(operation: string): Promise<void> {
+    if (
+      this.#closed ||
+      this.#pinned ||
+      this.#state.revision ||
+      this.#state.operation === operation
+    )
+      return Promise.resolve();
     return this.#run(() =>
       this.#action(() => this.#selectOperation(operation)),
     );

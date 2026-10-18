@@ -25,6 +25,9 @@ type RepositoryController =
 
 export class RepositoryPlugin extends Plugin {
   backup?: RepositoryBackup;
+  get restoreService() {
+    return this.#services?.restore;
+  }
   #services?: RepositoryServices;
   #status?: RepositoryStatus;
   #controllers = new Set<RepositoryController>();

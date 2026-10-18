@@ -216,3 +216,5 @@
 - [Shared AI transcript adoption and vault presentation](history/E-AI-041.md)
 
 - [External vault backup foundation](history/E-REPO-026.md)
+
+- [Guarded file restore and live backup follow](history/E-REPO-027.md)

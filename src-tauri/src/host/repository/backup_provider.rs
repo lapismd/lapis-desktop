@@ -1,4 +1,4 @@
-use jj_vault::{Capture, NativeRepository, Repository};
+use jj_vault::{Capture, NativeRepository, Repository, RestorePreview, RestoreRequest};
 use std::sync::{
     Arc, Mutex,
     atomic::{AtomicBool, Ordering},
@@ -13,6 +13,20 @@ pub(super) struct Provider {
 }
 impl Repository for Provider {
     fn capture(&mut self) -> Result<Capture, String> {
+        self.with_native(|native| native.capture())
+    }
+    fn preview_restore(&mut self, checkpoint: &str, path: &str) -> Result<RestorePreview, String> {
+        self.with_native(|native| native.preview_restore(checkpoint, path))
+    }
+    fn restore(&mut self, request: &RestoreRequest) -> Result<Capture, String> {
+        self.with_native(|native| native.restore(request))
+    }
+}
+impl Provider {
+    fn with_native<T>(
+        &mut self,
+        action: impl FnOnce(&mut NativeRepository) -> Result<T, String>,
+    ) -> Result<T, String> {
         if !self.active.load(Ordering::Acquire) {
             return Err("Vault backup admission is closed".into());
         }
@@ -27,6 +41,6 @@ impl Repository for Provider {
             .binding
             .relink()
             .map_err(|error| error.to_string())?;
-        self.native.capture()
+        action(&mut self.native)
     }
 }

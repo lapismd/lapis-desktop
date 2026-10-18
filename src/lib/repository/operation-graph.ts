@@ -2,6 +2,7 @@ import type { Handle } from "@lapismd/jj-history";
 import type { HistoryReader } from "./history-reader.ts";
 import type { OperationState } from "./operation-state.ts";
 import { check } from "./history-selection.ts";
+import { workspaceCommits } from "./operation-metadata.ts";
 type Scope = { handle?: Handle; state: OperationState; closed: boolean };
 export class OperationGraph {
   readonly reader: HistoryReader;
@@ -46,5 +47,16 @@ export class OperationGraph {
       ready: true,
       next: nodes.length < 200 ? response.data.next : null,
     });
+  }
+  async workspaces(): Promise<void> {
+    const { handle, state } = this.scope();
+    if (!handle || !state.operation) return;
+    const commits = await workspaceCommits(
+      this.reader,
+      handle,
+      state.operation,
+    );
+    if (!this.scope().closed && handle === this.scope().handle)
+      this.publish({ workspaceCommits: commits });
   }
 }

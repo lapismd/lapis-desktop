@@ -3,6 +3,7 @@ import { mount, unmount } from "svelte";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 import type { FileHistoryController } from "../../lib/repository/file-history-controller.ts";
 import RepositoryFileHistory from "./RepositoryFileHistory.svelte";
+import { followBackup } from "../../lib/repository/backup-follow.ts";
 
 export class FileHistoryView extends View {
   #controller?: FileHistoryController;
@@ -27,6 +28,7 @@ export class FileHistoryView extends View {
   onload() {
     const controller = (this.#controller =
       this.plugin.createFileHistoryController());
+    this.register(followBackup(this.plugin.backup?.controller, controller));
     const workspace = this.app.workspace;
     const follow = (leaf = workspace.activeLeaf) => {
       let root = false;

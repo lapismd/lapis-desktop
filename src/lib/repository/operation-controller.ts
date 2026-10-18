@@ -1,8 +1,5 @@
 import { OperationGraph } from "./operation-graph.ts";
-import {
-  operationRevisionCards,
-  workspaceCommits,
-} from "./operation-metadata.ts";
+import { operationRevisionCards } from "./operation-metadata.ts";
 import { operationParent, operationParents } from "./operation-parent.ts";
 import { OperationFiles } from "./operation-files.ts";
 import type { Handle, LocalGraphOperationNode } from "@lapismd/jj-history";
@@ -28,6 +25,7 @@ export class OperationController {
   #request = 0;
   #abort = new AbortController();
   #closed = false;
+  #pinned = false;
   #closing?: Promise<void>;
   readonly reader: HistoryReader;
   readonly feedback: { report(error: unknown): void; recovered(): void };
@@ -62,6 +60,9 @@ export class OperationController {
   get state(): OperationState {
     return this.#state;
   }
+  get pinned() {
+    return this.#pinned || !!this.#state.selected;
+  }
   subscribe(listener: (state: OperationState) => void): () => void {
     this.#listeners.add(listener);
     listener(this.#state);
@@ -92,6 +93,7 @@ export class OperationController {
     });
   }
   refresh(preferred?: string): Promise<void> {
+    if (preferred) this.#pinned = true;
     return this.#run(async () => {
       const selection = this.#selection;
       const heads = await this.reader.heads();
@@ -111,6 +113,17 @@ export class OperationController {
     });
   }
   selectPin(operation: string): Promise<void> {
+    this.#pinned = true;
+    return this.#run(() => this.#pin(operation));
+  }
+  checkpointChanged(operation: string): Promise<void> {
+    if (
+      this.#closed ||
+      this.#pinned ||
+      this.#state.selected ||
+      this.#state.operation === operation
+    )
+      return Promise.resolve();
     return this.#run(() => this.#pin(operation));
   }
   async #pin(operation: string): Promise<void> {
@@ -168,14 +181,7 @@ export class OperationController {
     });
   }
   loadWorkspaces(): Promise<void> {
-    return this.#run(async () => {
-      const handle = this.#handle,
-        operation = this.#state.operation;
-      if (!handle || !operation) return;
-      const commits = await workspaceCommits(this.reader, handle, operation);
-      if (!this.#closed && handle === this.#handle)
-        this.#set({ workspaceCommits: commits });
-    });
+    return this.#run(() => this.#graph.workspaces());
   }
   selectWorkspace(workspace: string | null): Promise<void> {
     return this.#run(async () => {

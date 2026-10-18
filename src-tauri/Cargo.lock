@@ -4879,6 +4879,7 @@ dependencies = [
  "base64 0.22.1",
  "blake2",
  "cap-std",
+ "cap-tempfile",
  "chrono",
  "etcetera 0.11.0",
  "futures",

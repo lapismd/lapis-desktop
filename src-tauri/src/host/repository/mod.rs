@@ -1,5 +1,6 @@
 pub(crate) mod backup;
 mod backup_provider;
+pub(crate) mod backup_restore;
 pub(crate) mod commands;
 mod policy;
 pub(crate) mod working_copy;

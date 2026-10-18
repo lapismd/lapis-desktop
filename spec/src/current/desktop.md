@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-026, E-AI-039–041 retain LD-DESK-003/HOST-001; Gravatar uses
+E-REPO-027 retains LD-DESK-003/HOST-001 with guarded restore; Gravatar uses
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.

@@ -35,6 +35,7 @@ export class FileHistoryController {
   #handle?: Handle;
   #workspace?: string;
   #closed = false;
+  #pin?: string;
   #closing?: Promise<void>;
   readonly #lifetime: HistoryLifetime;
   readonly reader: HistoryReader;
@@ -64,10 +65,22 @@ export class FileHistoryController {
   }
   follow(path?: string): Promise<void> {
     if (path === this.#state.path) return Promise.resolve();
+    this.#pin = undefined;
     return this.#load(path);
   }
   refresh(operation?: string): Promise<void> {
+    if (operation) this.#pin = operation;
     return this.#load(this.#state.path, operation ?? this.#state.operation);
+  }
+  checkpointChanged(operation: string): Promise<void> {
+    if (
+      this.#closed ||
+      this.#pin ||
+      !this.#state.path ||
+      this.#state.operation === operation
+    )
+      return Promise.resolve();
+    return this.#load(this.#state.path, operation);
   }
   #load(path?: string, operation?: string): Promise<void> {
     if (this.#closed) return Promise.resolve();

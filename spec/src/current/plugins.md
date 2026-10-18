@@ -289,3 +289,6 @@ not change application sidebar preferences. E-REPO-008 records this correction.
 Automatic backup stories mount the production status control with owned service
 lifetime, saving skeleton and failure/recovery toast. E-REPO-026 records the
 focused catalog proof; LD-CAT-001/002/003 baseline/release gates are unchanged.
+
+E-REPO-027 adds production file-restore and responsive initial-capture stories.
+LD-CAT-001/002/003 teardown, loading, failure-toast and visual gates remain.

@@ -43,6 +43,7 @@
     "allow-desktop-backup-start",
     "allow-desktop-backup-capture",
     "allow-desktop-backup-stop",
+    "allow-desktop-backup-restore",
     "allow-desktop-repository-admit",
     "allow-desktop-repository-release",
     "allow-desktop-repository-working-copy",

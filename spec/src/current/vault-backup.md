@@ -28,6 +28,13 @@ control reports saving, saved, paused or attention; background work uses the
 shared progress API and failures use App toasts. Read-only JJ Log, Op Log,
 file-history and blame queries retain operation pins and never initiate capture.
 
+File restore previews hold the editor writer guard, then pin current disk hashes
+and retained checkpoint bytes. Applying uses the same guard and stable request
+ID. Native safety checkpoints and durable receipts retain unknown outcomes;
+stale previews cannot overwrite later edits. Default history follows completed
+captures until a commit or operation is explicitly selected; restored live tabs
+stay live. The first native scan does not hold up plugin or shell startup.
+
 The delivery adds a simple file-version timeline, safety-checkpoint restore,
 historical text/metadata search and automatic selected-branch Git sync. GitHub
 device sign-in reuses jj-store's public client configuration and native secret

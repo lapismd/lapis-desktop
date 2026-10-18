@@ -5,8 +5,9 @@
   import { bindHistoryFixture } from "./context.ts";
   import { operation, revision, commit } from "./fixture.ts";
   import type { BackupStatus } from "../../../src/lib/repository/backup.ts";
-  let { scenario = "ready" }: { scenario?: "ready" | "saving" | "failed" } =
-    $props();
+  let {
+    scenario = "ready",
+  }: { scenario?: "ready" | "saving" | "failed" | "starting" } = $props();
   const fixture = untrack(() => operationFixture());
   let root: HTMLDivElement;
   let listener: ((state: BackupStatus) => void) | undefined;
@@ -22,9 +23,13 @@
     },
   };
   let stops = 0;
+  let finishStart: (() => void) | undefined;
 </script>
 
 <div bind:this={root} data-repository-fixture class="backup-demo">
+  {#if scenario === "starting"}<button onclick={() => finishStart?.()}
+      >Finish initial backup</button
+    >{/if}
   <NotesDemo
     createRepository={(app) => {
       bindHistoryFixture(root, { app, fixture });
@@ -34,6 +39,10 @@
           async start(changed) {
             listener = changed;
             root.dataset.backupStops = String(stops);
+            if (scenario === "starting")
+              await new Promise<void>((resolve) => {
+                finishStart = resolve;
+              });
             if (scenario === "saving")
               return { phase: "saving", checkpoint: null, error: null };
             if (scenario === "failed")
@@ -49,6 +58,7 @@
             return ready;
           },
           async stop() {
+            finishStart?.();
             stops++;
             if (root) root.dataset.backupStops = String(stops);
           },

@@ -11,6 +11,8 @@
   import RepositoryRevisions from "./RepositoryRevisions.svelte";
   import RepositoryDiffColumn from "./RepositoryDiffColumn.svelte";
   import RepositoryShell from "./RepositoryShell.svelte";
+  import RepositoryRestoreDialog from "./RepositoryRestoreDialog.svelte";
+  import type { RestoreController } from "../../lib/repository/restore.ts";
   import { openHistoryRevision } from "../../lib/repository/open-history-revision.ts";
   let {
     controller,
@@ -18,12 +20,14 @@
     initialRevision,
     initialLoad,
     copyText,
+    restore,
   }: {
     controller: HistoryController;
     initialOperation?: string;
     initialRevision?: string;
     initialLoad?: Promise<void>;
     copyText(value: string): Promise<void>;
+    restore?: RestoreController;
   } = $props();
   let snapshot = $state(initialHistoryState());
   let conflictsOpen = $state(false);
@@ -134,7 +138,13 @@
             {/if}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
-        <RepositoryDiffColumn state={snapshot} {controller} />
+        <RepositoryDiffColumn
+          state={snapshot}
+          {controller}
+          onRestore={restore && snapshot.revision && snapshot.path
+            ? () => restore.prepare(snapshot.revision!.id, snapshot.path!)
+            : undefined}
+        />
       </ColumnCanvas.Root>
     </div>
   </section>
@@ -153,6 +163,7 @@
     {/if}
   {/snippet}
 </RepositoryShell>
+{#if restore}<RepositoryRestoreDialog controller={restore} />{/if}
 
 <style>
   .repository-panel {

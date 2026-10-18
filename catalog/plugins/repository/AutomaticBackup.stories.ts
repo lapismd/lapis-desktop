@@ -58,6 +58,23 @@ export const Saving: StoryObj = {
     );
   },
 };
+export const ResponsiveInitialCapture: StoryObj = {
+  args: { scenario: "starting" },
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    await expect(
+      canvas.getByRole("button", { name: "Vault history: Saving locally" }),
+    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Finish initial backup" }),
+    );
+    await expect(
+      await canvas.findByRole("button", {
+        name: "Vault history: Saved locally",
+      }),
+    ).toBeVisible();
+  },
+};
 export const FailureAndRecovery: StoryObj = {
   args: { scenario: "failed" },
   play: async ({ canvasElement }) => {

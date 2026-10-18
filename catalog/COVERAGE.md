@@ -576,3 +576,9 @@ Desktop, LocalConversations, Initialization and Compositions now assert the
 shared transcript, fixed footer, exact restored context, copy/retry/model
 actions and skeleton loading. Persistence failure has an explicit toast
 assertion.
+
+Automatic vault backup / ResponsiveInitialCapture uses the production Notes
+plugin with an explicitly withheld initial-capture response. Repository restore
+stories use the production diff toolbar, App editor guard, restore dialog and
+notification service; SafetyCheckpoint and LostResponseAndRetry cover success
+and recovery.

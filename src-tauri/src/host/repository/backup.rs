@@ -19,9 +19,9 @@ use tokio::sync::Mutex;
 pub struct Request {
     session_id: String,
 }
-struct Owner {
-    window: String,
-    backup: Backup,
+pub(super) struct Owner {
+    pub window: String,
+    pub backup: Backup,
     watch: String,
     events: Option<tokio::task::JoinHandle<()>>,
 }
@@ -34,6 +34,25 @@ fn error(value: impl std::fmt::Display) -> NativeError {
     io::Error::other(format!("Vault backup: {value}")).into()
 }
 impl Backups {
+    pub(super) fn state_path(&self, vault: &str) -> PathBuf {
+        self.root.join(vault)
+    }
+    pub(super) async fn owner(
+        &self,
+        session: &str,
+        window: &str,
+    ) -> Result<tokio::sync::MappedMutexGuard<'_, Owner>, NativeError> {
+        let entries = self.entries.lock().await;
+        if !entries
+            .get(session)
+            .is_some_and(|owner| owner.window == window)
+        {
+            return Err(error("Backup is closed or belongs to another window"));
+        }
+        Ok(tokio::sync::MutexGuard::map(entries, |entries| {
+            entries.get_mut(session).unwrap()
+        }))
+    }
     pub fn new(root: PathBuf) -> Self {
         Self {
             root,

@@ -12,18 +12,21 @@
   import { changeStats } from "../../lib/repository/history-files.ts";
   import RepositoryDiffControls from "./RepositoryDiffControls.svelte";
   import RepositoryDiff from "./RepositoryDiff.svelte";
+  import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
   let {
     state: snapshot,
     controller,
     columnId = "diff",
     label = "Revision changes",
     closeLabel = "Close Diff column",
+    onRestore,
   }: {
     state: Pick<HistoryState, "path" | "diff" | "busy">;
     controller: { selectPath(path: string): Promise<void> };
     columnId?: string;
     label?: string;
     closeLabel?: string;
+    onRestore?(): void;
   } = $props();
   let viewMode = $state<FileDiffViewMode>("split");
   let wrap = $state(false);
@@ -37,6 +40,14 @@
     >
     <ColumnCanvas.HeaderActions class="repository-review-column-actions">
       {#if stats}<FileChangeStats {...stats} showZero />{/if}
+      {#if onRestore}<Button
+          variant="ghost"
+          size="icon-sm"
+          aria-label="Restore this file version"
+          title="Restore this file version"
+          disabled={snapshot.busy}
+          onclick={onRestore}><RotateCcwIcon /></Button
+        >{/if}
       <RepositoryDiffControls bind:viewMode bind:wrap />
       <ColumnCanvas.Close aria-label={closeLabel} />
     </ColumnCanvas.HeaderActions>
