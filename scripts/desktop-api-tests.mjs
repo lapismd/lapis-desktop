@@ -37,6 +37,7 @@ await run(
     "--test-concurrency=1",
     "tests/desktop/ai-admission.test.mjs",
     "tests/desktop/ai-backends.test.mjs",
+    "tests/desktop/ai-conversations.test.mjs",
     "tests/desktop/repository-admission.test.mjs",
   ],
   environment,

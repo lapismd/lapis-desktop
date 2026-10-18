@@ -59,3 +59,10 @@ Native capture permits retain an exact worker binding and counted backend call
 through renderer reload. The physical witness survives old-token closure;
 renderer commands still need active admission. See the backend guide for
 revocation, drain and remaining real-processor qualification.
+
+`ai::conversations` prepares a ThreadStore conversation through the explicitly
+selected JJ owner. It privately retains native identities and the exact command
+before publication; retries recover the original Git receipt without executing
+again. The app's backend command exposes preparation/status with the current
+opaque owner handle. See the backend guide for usage and unknown outcomes.
+Actual agent capture and renderer transcript selection remain separate adapters.

@@ -350,16 +350,10 @@ original two-phase ticket, generation, reload, close and worker-retirement
 rules; no command, event, permission or prompt behavior changes with this
 refactor.
 
-E-AI-026 refreshes default native ACP compatibility against Lapis AI `6ce65ebb`.
-All six cold packaged transport cases pass with physical foreground assistance.
-LD-AI-001 and M10.1 retain their original gate. The new Rust-only frame
-processor is not yet injected by desktop policy; managed sanitation/durable
-capture and AgentStore/ThreadStore conversation adoption remain M13.3.
-
-E-AI-027 refreshes the same six cold ACP compatibility cases against Lapis AI
-`87958267`, including its host-scoped native processor factory. All pass with
-foreground assistance and unchanged focus assertions. Desktop has not selected a
-Notes capture processor or durable JJ backend; those remain M13.3.
+E-AI-026/027 qualify six cold default ACP compatibility cases against Lapis AI
+`6ce65ebb`/`87958267`, including the native factory, with physical foreground
+assistance and unchanged focus assertions. LD-AI-001/M10.1 retain their original
+gate; actual managed capture and AgentStore/ThreadStore adoption remain M13.3.
 
 The native capture adapter maps the shared capture port to the runtime's
 complete frame-batch callback. Native policy must inject admitted privacy, exact
@@ -398,3 +392,9 @@ write survives a dropped journal future. Private scope records retain opaque
 capture context and a provider fingerprint; raw device paths and credentials are
 excluded. Constructing the journal does not select a Notes conversation backend,
 admit a target or replace the required native callback drain.
+
+Ordinary preparation uses the current JJ owner handle and private native IDs.
+The repository topic governs its single ThreadStore publication and receipt
+recovery. Unknown outcomes cannot enable execution. Cold hidden API acceptance
+covers preparation/restart, separately from managed capture and chat recovery;
+ordinary targets and processor refusal retain their existing gates.

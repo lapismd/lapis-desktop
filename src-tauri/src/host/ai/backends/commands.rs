@@ -43,6 +43,22 @@ pub(super) async fn dispatch(
             Operation::Open { request_id } => {
                 Reply::Opened(owner.open(&host, &context, &request.session_id, request_id)?)
             }
+            Operation::PrepareConversation {
+                handle,
+                request_id,
+                title,
+            } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                Reply::Conversation(Some(tauri::async_runtime::block_on(
+                    lapis_desktop::ai::conversations::prepare(call, request_id, title),
+                )?))
+            }
+            Operation::ConversationStatus { handle, request_id } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                Reply::Conversation(tauri::async_runtime::block_on(
+                    lapis_desktop::ai::conversations::status(call, request_id),
+                )?)
+            }
             Operation::Close { .. } => return Err(denied()),
         };
         reply.encode()

@@ -36,3 +36,10 @@ plus an unregistered detector fixture; all must be sanitized before candidate
 storage and renderer delivery. The scanner cache is a native-owned disposable
 temporary directory retained through processor closure. The synced candidate
 sink remains synthetic and cannot qualify JJ durability or restart recovery.
+
+The hidden native API lane separately qualifies ordinary conversation
+preparation and exact receipt recovery across cold application restart,
+preserving dirty notes and the JJ operation. It invokes the production command
+and real Git ThreadStore without enabling an execution target. This prerequisite
+cannot qualify a managed conversation, its capture processor or chat UI
+recovery.

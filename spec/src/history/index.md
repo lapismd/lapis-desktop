@@ -166,3 +166,5 @@ by the task ledger, not inferred from this list.
 - [Retained native capture authority](E-AI-034.md)
 
 - [Column Canvas History and Op Log](E-REPO-007.md)
+
+- [Native conversation preparation and original receipt recovery](E-AI-035.md)

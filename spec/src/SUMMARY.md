@@ -168,3 +168,5 @@
 - [Retained native capture authority](history/E-AI-034.md)
 
 - [Column Canvas History and Op Log](history/E-REPO-007.md)
+
+- [Native conversation preparation and original receipt recovery](history/E-AI-035.md)

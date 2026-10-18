@@ -18,6 +18,7 @@ pub struct BackendScope {
     source: Option<Source>,
     calls: Mutex<Calls>,
     changed: Notify,
+    preparations: Arc<tokio::sync::Mutex<()>>,
 }
 pub struct BackendCall {
     owner: Arc<BackendScope>,
@@ -36,6 +37,7 @@ impl BackendScope {
             source,
             calls: Mutex::new(Calls::default()),
             changed: Notify::new(),
+            preparations: Arc::new(tokio::sync::Mutex::new(())),
         }
     }
     pub fn selection(&self) -> &Selection {
@@ -84,6 +86,25 @@ impl BackendScope {
     }
 }
 impl BackendCall {
+    pub(crate) async fn preparation_guard(&self) -> io::Result<tokio::sync::OwnedMutexGuard<()>> {
+        let guard = self.owner.preparations.clone().lock_owned().await;
+        self.check()?;
+        Ok(guard)
+    }
+    pub(crate) fn conversation_location(
+        &self,
+    ) -> io::Result<(cap_std::fs::Dir, PathBuf, [u8; 32])> {
+        self.check()?;
+        let source = self.owner.source.as_ref().ok_or_else(storage::denied)?;
+        Ok((
+            self.owner.lease.dir.try_clone()?,
+            self.owner.context.lease.root().into(),
+            source.fingerprint(),
+        ))
+    }
+    pub(crate) fn selection(&self) -> &Selection {
+        &self.owner.selection
+    }
     pub fn check(&self) -> io::Result<()> {
         self.owner.check()?;
         if self

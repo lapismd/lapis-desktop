@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-024/025/031/032/033/034 preserve LD-DESK-003: owned persistence drains and
-vault admission stay native.
+E-AI-024/025/031/032/033/034/035 preserve LD-DESK-003: owned persistence drains
+and vault admission stay native.
 
 E-REPO-007 adds Column Canvas History/Op Log; native gates stay explicit.
 

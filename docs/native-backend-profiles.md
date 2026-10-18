@@ -124,3 +124,49 @@ This is a native lifetime prerequisite. The ordinary factory still refuses the
 missing real store processor; targets remain empty. Permits grant neither a
 prompt nor repository publication, and service proof does not qualify actual
 managed capture or packaged conversation restart.
+
+## Preparing a JJ conversation
+
+An explicitly selected/opened JJ owner accepts two additional operations on
+`desktop_ai_backends`:
+
+```ts
+{
+  type: "prepareConversation", handle, requestId, title;
+}
+{
+  type: "conversationStatus", handle, requestId;
+}
+```
+
+Retain the original request ID and title. Preparation creates native
+conversation and thread identities, plus a private actor when needed. The actor
+and exact preparation stay under the private backend profile; no
+`lapis/actor-v1` is written into the vault. The native service selects only the
+shared Git Agent/Thread participants, and publishes the conversation through
+ThreadStore without snapshotting code. No executable, session, prompt or capture
+processor is started.
+
+Replies use `{ type: "conversation", data }`. Missing data means no retained
+preparation is known. Present data contains `requestId`, `conversationId`,
+`threadId`, optional `repository` and optional `receipt`. A null receipt is an
+unknown outcome, never permission to send or create another conversation. The
+receipt is canonical JSON **text** so full-width native integers survive the
+outer renderer transport. Its actor, intent, repository and result are checked
+against the retained original command before confirmation.
+
+The private schema-1 record is bounded to 16 KiB. It binds the exact source,
+backend revision and actor; publication follows its atomic synced preparation.
+Retrying an existing request only reads its original provider receipt. A lost
+local confirmation can be repaired from that receipt; missing receipts retain
+the unknown preparation without another execution. Changed titles, receipts,
+actors, source witnesses, backend choices and stale owner handles cannot claim
+the original result. Reading an absent status creates neither an actor nor
+companion metadata.
+
+The library entrypoints are `ai::conversations::prepare` and `status`, each
+consuming a counted `BackendCall`. Calls serialize per owner, and the native
+adapter retains its transition through blocking work if the IPC wait disappears.
+Close drains these calls before releasing the backend. This prepares a durable
+conversation; renderer transcript adoption and managed capture/restart remain
+separate M13.3 work.

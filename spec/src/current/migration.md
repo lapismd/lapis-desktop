@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+E-AI-035 records NOTES-07G ordinary native conversation preparation and exact
+receipt recovery. Managed processor, renderer persistence and chat/restart
+remain NOTES-07; M13/M13.3 and original gates remain unchanged.
+
 E-REPO-007 records the requested NOTES-05F Column Canvas History and independent
 Op Log UI slice. Original M13 history/conversation gates are unchanged; real
 store/processor and managed chat/restart remain pending in NOTES-07.

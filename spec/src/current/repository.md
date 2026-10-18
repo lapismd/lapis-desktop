@@ -203,6 +203,26 @@ Ordinary unavailable capture targets remain unavailable until separately
 admitted; selection/opening is not a raw-event processor, prompt grant or
 renderer persistence adapter.
 
+## Native conversation preparation
+
+An explicitly opened JJ backend may prepare a conversation through the same
+bounded native command. Native code generates and retains the conversation,
+thread and private actor identities. The exact original command, selected
+backend revision, physical source fingerprint and optional existing repository
+identity MUST be synced privately before the single ThreadStore publication.
+Only the selected Agent/Thread participants share this publication authority;
+preparation neither snapshots dirty files nor starts an agent.
+
+Repeating a preparation or reading its status MUST recover the original provider
+receipt without executing again. A request ID or current snapshot alone cannot
+prove its intent: the canonical Git receipt must match the retained actor,
+command digest, repository and thread result. Missing or uncertain receipts
+retain the original preparation as unknown. Substituted actors, sources,
+selections, commands or receipts fail closed. Native owner transitions retain
+preparation work after caller cancellation; closure fences new work and drains
+its counted call before releasing the lease. Renderer selection, actual capture
+construction and managed restart remain separate.
+
 ## Commit and operation-log columns
 
 The bundled Repository History plugin registers independent history and Op Log

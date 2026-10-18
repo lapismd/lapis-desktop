@@ -1,4 +1,5 @@
 pub(crate) mod commands;
+mod conversations;
 mod frames;
 mod processing;
 mod retirement;
