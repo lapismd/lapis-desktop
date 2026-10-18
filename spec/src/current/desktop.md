@@ -343,5 +343,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-AI keeps UI, JSONL and cleanup under [AI](ai.md); [repository](repository.md)
-admission owns history. Native scope gates retain execution authority.
+[AI](ai.md) owns UI, JSONL and cleanup; [repository](repository.md) owns history
+admission (E-REPO-006). Native scope gates retain execution authority.

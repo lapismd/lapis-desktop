@@ -81,6 +81,14 @@ async function ready(browser) {
   await browser
     .$('[data-notes-ready="true"]')
     .waitForDisplayed({ timeout: 30000 });
+  assert.deepEqual(
+    await browser.execute(async () => {
+      const info = await globalThis.__TAURI__.core.invoke("shell_info");
+      return info.nativeVisibility;
+    }),
+    { Ok: [true, false, true, true, true] },
+    "Native history requires a visible, unoccluded keyboard window on the current Space",
+  );
 }
 async function choose(session, root, vault) {
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
@@ -125,6 +133,26 @@ async function inspectSecond(browser) {
     (await browser.$(diff).getText()).includes("Second committed text"),
   );
   assert.match(await browser.$(diff).getText(), /First committed text/);
+}
+async function selectOperation(browser, value) {
+  // The embedded driver clicks options with el.click(), which WebKit ignores.
+  // Exercise the mounted select's normal handler, without calling its controller.
+  await browser.execute(
+    (selector, value) => {
+      const select = document.querySelector(selector);
+      if (
+        !(select instanceof HTMLSelectElement) ||
+        select.disabled ||
+        !Array.from(select.options).some((option) => option.value === value)
+      )
+        throw new Error("The visible operation must be selectable");
+      select.value = value;
+      select.dispatchEvent(new Event("input", { bubbles: true }));
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+    },
+    operationSelect,
+    value,
+  );
 }
 
 test("cold visible history preserves dirty source, exact pins and native restart recovery", async (context) => {
@@ -205,7 +233,7 @@ test("cold visible history preserves dirty source, exact pins and native restart
   await pinned(second.browser, original);
   await inspectSecond(second.browser);
   await second.browser.saveScreenshot(join(root, "history-restored.png"));
-  await second.browser.$(operationSelect).selectByAttribute("value", advanced);
+  await selectOperation(second.browser, advanced);
   await pinned(second.browser, advanced);
   assert.equal(
     await second.browser.$(diff).isExisting(),

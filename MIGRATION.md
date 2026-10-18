@@ -7,7 +7,7 @@
 [Evidence](spec/src/history/index.md)
 
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
-M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
+M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
 Current work: M8.5 — Review stories; resume deferred source/catalog and native
 acceptance when requested
@@ -40,9 +40,9 @@ below.
 | M10   | In progress | Continue native AI and persistence qualification                                    |
 | M11   | Planned     | Qualify signed distribution and each additional platform                            |
 | M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop                               |
-| M13   | In progress | Integrate native history and durable conversation adapters                          |
+| M13   | In progress | Integrate native durable conversation adapters                                      |
 | M13.1 | Done        | Complete; continue visible history and durable chat                                 |
-| M13.2 | In progress | Qualify cold visible history and restored operation pins                            |
+| M13.2 | Done        | Complete; continue durable conversations in M13.3                                   |
 | M13.3 | Planned     | Integrate native durable conversation backend                                       |
 | M8.0  | Done        | Complete; continue to M8.1 Terminal                                                 |
 | M8.1  | Done        | Complete; continue to M8.2 Web retirement                                           |

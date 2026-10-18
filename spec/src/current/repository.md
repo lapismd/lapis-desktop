@@ -100,3 +100,11 @@ Destroyed windows invalidate pending tickets immediately; plugin
 destruction/exit drains the reader owner. Reload suspends native authority and
 drains handles; verified re-admission may retain its registration generation but
 must obtain new handles.
+
+E-REPO-006 qualifies cold visible history on macOS ARM64 with real JJ source
+preservation and exact restored pins. Each cold launch received a physical
+foreground click; document focus and the native visible/current-Space/unoccluded
+keyboard-window state remain mandatory. The test drives the mounted operation
+select through standard input/change events because the embedded driver cannot
+select an option through its JavaScript click. Unattended foreground activation
+remains a separate test-infrastructure gap; durable conversations remain M13.3.

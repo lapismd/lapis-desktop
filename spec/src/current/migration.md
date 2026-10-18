@@ -299,3 +299,10 @@ Repository reuse consumes owned jj-store discovery and history libraries for an
 existing Git-backed JJ vault. This separate M13 workstream adds no conversion,
 source snapshot, code mutation or automatic metadata synchronization. M10 AI
 execution and persistence gates remain independently selected.
+
+E-REPO-006 completes M13.2's original cold visible history/diff and restored-pin
+gate on macOS ARM64 with physical foreground assistance. Admission, full-width
+frames and drained lifetime retain E-REPO-002; production presentation retains
+E-REPO-003/005. LD-MIG-002 is unchanged: M13 remains In progress and durable
+AgentStore/ThreadStore conversations stay M13.3. Unattended activation, other
+platforms and distribution are not promoted by the native history result.

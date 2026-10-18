@@ -141,6 +141,7 @@
   - [Visible history UI and public-package qualification](history/E-REPO-003.md)
   - [Cold visible native history qualification](history/E-REPO-004.md)
   - [History layout within narrow workspace panes](history/E-REPO-005.md)
+  - [Cold native pinned history and restart](history/E-REPO-006.md)
 
 - [Desktop shell presentation review](history/E-CATALOG-003.md)
 
