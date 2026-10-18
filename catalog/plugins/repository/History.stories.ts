@@ -30,6 +30,12 @@ type Story = StoryObj;
 export const PinnedHistoryAndDiff: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await file(canvasElement);
+    const shell = within(canvasElement);
+    for (const side of ["left", "right"]) {
+      await userEvent.click(
+        shell.getByRole("button", { name: `Close ${side} sidebar` }),
+      );
+    }
     await expect(
       await canvas.findByRole("region", { name: "Changes to Welcome.md" }),
     ).toHaveTextContent("History is retained");
@@ -43,6 +49,25 @@ export const PinnedHistoryAndDiff: Story = {
     await expect(
       canvas.getByRole("combobox", { name: "Operation" }),
     ).toHaveValue(operation);
+    await waitFor(() => {
+      const columns = canvas.getByRole("region", {
+        name: "Repository history columns",
+      });
+      if (window.innerWidth >= 1000) {
+        expect(columns).toHaveAttribute("data-display-mode", "wide");
+        const log = canvas.getByRole("region", { name: "Revisions" });
+        const diff = canvas.getByRole("region", { name: "Revision changes" });
+        expect(log.getBoundingClientRect().right).toBeLessThanOrEqual(
+          diff.getBoundingClientRect().left,
+        );
+      }
+      const main = canvasElement.querySelector<HTMLElement>(
+        '.repository-shell [data-ui-part="main"]',
+      )!;
+      const style = getComputedStyle(main);
+      expect(parseFloat(style.borderTopWidth)).toBeGreaterThan(0);
+      expect(parseFloat(style.borderTopLeftRadius)).toBeGreaterThan(0);
+    });
   },
 };
 export const UnifiedDiff: Story = {

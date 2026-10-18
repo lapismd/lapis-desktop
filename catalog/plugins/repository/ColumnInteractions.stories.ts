@@ -114,11 +114,13 @@ export const ExpandedFilesAndDiffControls: StoryObj = {
       await canvas.findByRole("region", { name: "Changed files" }),
     ).toBeVisible();
     const pane = canvasElement.querySelector(".repository-panel")!,
-      shell = canvasElement.querySelector(".repository-shell")!;
+      body = canvasElement.querySelector(
+        '.repository-shell [data-ui-part="body"]',
+      )!;
     expect(
       Math.abs(
         pane.getBoundingClientRect().height -
-          shell.getBoundingClientRect().height,
+          body.getBoundingClientRect().height,
       ),
     ).toBeLessThan(2);
   },

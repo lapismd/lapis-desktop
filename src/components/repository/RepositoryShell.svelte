@@ -22,10 +22,6 @@
     min-width: 0;
     min-height: 0;
     --ui-shell-height: 100%;
-    --ui-shell-main-block-inset: 0px;
-    --ui-shell-main-border: 0px;
-    --ui-shell-main-radius: 0px;
-    --ui-shell-main-shadow: none;
   }
   .repository-body-frame {
     display: flex;

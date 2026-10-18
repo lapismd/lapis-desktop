@@ -8,6 +8,9 @@ E-REPO-007 records the requested NOTES-05F Column Canvas History and independent
 Op Log UI slice. Original M13 history/conversation gates are unchanged; real
 store/processor and managed chat/restart remain pending in NOTES-07.
 
+E-REPO-008 corrects the primary review preview and restores public AppShell
+surface tokens. M13.2 stays Done; M13/M13.3 and their original gates stay open.
+
 E-AI-034 records retained physical admission and exact native capture permits
 through renderer reload and old-token closure. This is the NOTES-07F2 lifetime
 prerequisite; M13/M13.3 keep their original gates. The real store processor,

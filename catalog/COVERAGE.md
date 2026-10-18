@@ -235,6 +235,10 @@ registration stays absent. Each scenario runs in light/dark and desktop/narrow
 configurations; visual review and actual cold native history acceptance remain
 separate gates.
 
+PinnedHistoryAndDiff closes only its disposable Files/Outline sidebars using the
+mounted controls. Desktop acceptance requires adjacent log/diff columns and the
+public AppShell border/radius; narrow-pane coverage stays separate below.
+
 `plugins/repository/HistoryLayout.stories.ts` adds NarrowPaneInWideShell through
 the same real Notes shell. Its bounded fixture leaves the browser wide and
 asserts pane-relative Column Canvas compact columns, contained refresh controls

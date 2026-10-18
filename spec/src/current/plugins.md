@@ -178,3 +178,8 @@ jj-store graph/row geometry and independent Op Log registration. The coverage
 inventory maps source provenance, loading, empty, snapshots, parent choice,
 notification failures/recovery and exact History navigation. Native operation
 qualification and visual approval remain separate from catalog evidence.
+
+The primary pinned-history preview closes its disposable Files/Outline sidebars
+through their real controls so desktop review shows the log and diff together.
+NarrowPaneInWideShell retains the crowded-pane acceptance; preview choices do
+not change application sidebar preferences. E-REPO-008 records this correction.

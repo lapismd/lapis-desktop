@@ -251,12 +251,13 @@ states remain distinct from valid empty graphs. Stories exercise production
 views in both themes and widths; native acceptance remains separate.
 
 The embedded public AppShell Root/Main/Body provides the bounded canvas body for
-both independently mounted workspace views. The outer Notes workspace retains
-its existing ownership. Commit rows expose separate full Git SHA and native JJ
-reverse-hex change-ID copy controls, never nested buttons. Clipboard failures
-use App notifications and explicit successful retry clears their exact notice.
-Expanded rows use public FileListing folder/list/package modes. File selection
-opens a matching diff column with change counts, unified/split layout, wrapping,
+both independently mounted workspace views, retaining its public inset, border,
+radius and shadow tokens. The outer Notes workspace retains its existing
+ownership. Commit rows expose separate full Git SHA and native JJ reverse-hex
+change-ID copy controls, never nested buttons. Clipboard failures use App
+notifications and explicit successful retry clears their exact notice. Expanded
+rows use public FileListing folder/list/package modes. File selection opens a
+matching diff column with change counts, unified/split layout, wrapping,
 close/reopen and compact return through the column controls. Expanded rows
 retain measured graph bounds. Collapse/reselection fences previous replies.
 
