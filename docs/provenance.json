@@ -81,6 +81,18 @@
         "license": "Apache-2.0"
       },
       "use": "Copied graph geometry/lanes/SVG with local imports and adapted model; adapted Column Canvas composition, row surfaces and metadata from jj-store CommunityProjectsRepositoryLog, CommunityProjectsRevisionGraph and repository-log-canvas. App/native state remains Notes-owned; no repository source dependency. Adapted identifier styles/accessibility, inline changed files and diff composition from CommunityProjectsRepositoryLogFiles, CommunityProjectsRepositoryLogDiff, CommunityDiffControls and StoreApplicationMain. Embedded AppShell.Root/Main/Body uses public Design Core shell context/tokens; the Notes workspace remains the outer owner. All copy controls use Notes-owned clipboard feedback. These are maintained application ports, not dependency defect workarounds."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "9b1c6ec38229b5dbf3678462dc212cec20f6d53c",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRepositoryLogHeader.svelte",
+          "destination": "src/components/repository/RepositoryLogHeader.svelte"
+        }
+      ],
+      "use": "Adapted public Column Canvas title/count/actions/toggle composition and the body-title omission governed by shared-application.md. Native pin selection and refresh remain Notes-owned; no application state or query capabilities are imported."
     }
   ]
 }

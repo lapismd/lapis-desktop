@@ -216,6 +216,12 @@ viewport height.
 
 ## Native repository history presentation
 
+`plugins/repository/Header.stories.ts` checks that History and Op Log start
+directly with their production Column Canvas header, with compact native pin,
+refresh and collapse controls that fit both widths and themes. Source layout and
+header composition follow jj-store; native identities and admission remain owned
+by Notes. Visual baselines remain pending.
+
 `plugins/repository/History.stories.ts` mounts the production bundled Repository
 History plugin, Notes workspace and public Design Core Diff through an injected
 history reader. Source graph/row/column geometry is adapted from jj-store;

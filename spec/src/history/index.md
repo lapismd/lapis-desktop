@@ -173,3 +173,5 @@ by the task ledger, not inferred from this list.
 - [Ordinary native selected-store capture factory](E-AI-036.md)
 
 - [Confirmed native conversation views](E-AI-037.md)
+
+- [Compact repository column headers](E-REPO-009.md)

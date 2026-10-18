@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+E-REPO-009 maps compact history/Op Log headers to production Column Canvas
+composition. Header review covers narrow panes and both themes; the complete
+repository family retains pin, refresh, loading and recovery coverage.
+
 `PLUGIN_MIGRATION.md` authorizes M8–M10 under the original ledger gates.
 Ordinary popup admission remains M7.3. Local links retain public package
 boundaries and owning-repository validation.

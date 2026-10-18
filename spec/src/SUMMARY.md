@@ -175,3 +175,5 @@
 - [Ordinary native selected-store capture factory](history/E-AI-036.md)
 
 - [Confirmed native conversation views](history/E-AI-037.md)
+
+- [Compact repository column headers](history/E-REPO-009.md)

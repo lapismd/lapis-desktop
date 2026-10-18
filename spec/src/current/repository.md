@@ -305,6 +305,13 @@ matching diff column with change counts, unified/split layout, wrapping,
 close/reopen and compact return through the column controls. Expanded rows
 retain measured graph bounds. Collapse/reselection fences previous replies.
 
+History and Op Log start directly with their Column Canvas headers, matching
+jj-store's omission of redundant body title bars. Native operation selection,
+refresh and collapse controls belong in that compact header; full operation
+identities remain the select values and accessible descriptions. No repeated
+full-width pin block may displace the graph. Header controls remain available
+for loading, empty, multiple-head and unavailable states in narrow panes.
+
 Operation rows expose bounded native change groups after an exact parent delta.
 The user selects the changed revision, then the native exact pair or both sides
 of an explicitly ambiguous pair. Unavailable comparisons never invent endpoints.
