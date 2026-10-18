@@ -1,5 +1,15 @@
 # Desktop catalog coverage
 
+E-REPO-020 adapts `src/components/repository/blame/RepositoryBlameRows.svelte`
+at `b2ee7957` into the review-only `ReviewBlameRows.svelte`. Absolute top
+positions preserve sticky coordinates; production rows remain unchanged.
+`StickyAttribution` covers pinning, push-off, replacement and horizontal
+alignment inside one public Design Core shadcn ScrollArea viewport. `LargeFile`
+checks both-axis ScrollArea, compact line numbers and no attribution/source
+divider. Three sample commits use `info@lapis.md`; live Gravatar currently
+returns404, preserving ordinary initials fallback. Original jj-store/Apache-2.0
+attribution remains in `docs/provenance.json`.
+
 Blame layout proposal: owned production BlamePanel/View/Group at `68b130fb` are
 adapted under `support/repository/blame-review`, using the same controller,
 virtual rows and App shell. `Repository blame layout review/BlameLayout` checks

@@ -198,3 +198,4 @@
 - [Native file history and repository row actions](history/E-REPO-017.md)
 - [File blame and repository loading states](history/E-REPO-018.md)
 - [Storybook blame layout proposal](history/E-REPO-019.md)
+- [Blame scrolling and compact attribution preview](history/E-REPO-020.md)

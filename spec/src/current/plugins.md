@@ -1,5 +1,15 @@
 # Desktop plugins and catalog
 
+E-REPO-020 refines only the blame review: attribution sticks below the file
+header until the next group pushes it away; one Design Core shadcn ScrollArea
+viewport scrolls both columns. Sample commits include `info@lapis.md` to
+exercise the existing Gravatar/profile presentation. Shipping/native behavior is
+unchanged.
+
+The review omits the attribution/source divider and uses a compact line-number
+gutter. Horizontal separators belong to source-group boundaries; sticky labels
+do not add another border beneath the file header.
+
 Blame review stories start with both sidebars collapsed. The editor-action story
 retains its Files sidebar so the action can be exercised.
 

@@ -32,7 +32,10 @@ export const largeBlameCommits: BlameCommit[] = subjects.map(
     const name = authors[index % authors.length]!;
     const signature = {
       name,
-      email: `${name.toLowerCase().replaceAll(" ", ".")}@example.test`,
+      email:
+        index % 4 === 0
+          ? "info@lapis.md"
+          : `${name.toLowerCase().replaceAll(" ", ".")}@example.test`,
       timestamp: {
         millis: Date.now() - (index * 29 + 2) * 3_600_000,
         offset_minutes: 0,

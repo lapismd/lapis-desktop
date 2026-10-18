@@ -1,5 +1,13 @@
 # Desktop state review inventory
 
+`Repository blame layout review/StickyAttribution` reviews active attribution
+under the header, incoming group replacement and horizontal pinning. The body
+uses public shadcn ScrollArea with shared source/attribution scroll position, a
+compact line-number gutter and no vertical attribution/source divider. Sticky
+labels have no top border; horizontal dividers stay at source-group boundaries.
+Several fixture commits exercise the real `info@lapis.md` Gravatar lookup and
+fallback.
+
 Blame review stories start with left/right sidebars collapsed; the editor-action
 example keeps file navigation available.
 

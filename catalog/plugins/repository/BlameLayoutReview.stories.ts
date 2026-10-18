@@ -140,12 +140,21 @@ export const LargeFile: StoryObj = {
       const sidebar = canvas.queryByLabelText(name);
       if (sidebar) expect(sidebar).not.toBeVisible();
     }
-    const viewport = await canvas.findByRole("region", {
+    const body = await canvas.findByRole("region", {
       name: "Blame for src/lib/repository/blame-controller.ts",
     });
+    expect(body).toHaveAttribute("data-ui-component", "scroll-area");
+    expect(body).toHaveAttribute("data-orientation", "both");
+    const viewport = body.querySelector<HTMLElement>(
+      '[data-ui-part="scroll-area-viewport"]',
+    )!;
     await canvas.findAllByRole("button", {
       name: /Keep repository history beside the notes — Ada Chen/,
     });
+    const gutter = viewport.querySelector<HTMLElement>(".blame-group__gutter")!;
+    const number = viewport.querySelector<HTMLElement>(".blame-group__number")!;
+    expect(getComputedStyle(gutter).borderRightWidth).toBe("0px");
+    expect(number.getBoundingClientRect().width).toBeLessThan(60);
     await waitFor(() =>
       expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight * 3),
     );
@@ -157,5 +166,72 @@ export const LargeFile: StoryObj = {
     );
     expect(viewport.querySelector(".store-blame__divider")).toBeNull();
     viewport.scrollTop = 0;
+  },
+};
+export const StickyAttribution: StoryObj = {
+  args: { sample: "large" },
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    await canvas.findByRole("region", {
+      name: "Blame for src/lib/repository/blame-controller.ts",
+    });
+    const viewport =
+      canvasElement.querySelector<HTMLElement>(
+        '.store-blame [data-ui-part="scroll-area-viewport"]',
+      ) ?? canvasElement.querySelector<HTMLElement>(".store-blame")!;
+    const origin = (start: number, end: number) =>
+      viewport.querySelector<HTMLElement>(
+        `[aria-label="Origin for lines ${start}–${end}"]`,
+      )!;
+    const top = () => viewport.getBoundingClientRect().top;
+    viewport.scrollTop = 240;
+    await waitFor(() =>
+      expect(
+        Math.abs(origin(6, 18).getBoundingClientRect().top - top()),
+      ).toBeLessThanOrEqual(1),
+    );
+    expect(getComputedStyle(origin(6, 18)).borderTopWidth).toBe("0px");
+    expect(getComputedStyle(origin(6, 18).parentElement!).boxShadow).toContain(
+      "inset",
+    );
+    const next = origin(19, 25);
+    expect(
+      Math.abs(
+        next.getBoundingClientRect().top -
+          next.closest(".blame-group")!.getBoundingClientRect().top,
+      ),
+    ).toBeLessThanOrEqual(1);
+    viewport.scrollTop = 490;
+    await waitFor(() => {
+      expect(origin(6, 18).getBoundingClientRect().top).toBeLessThan(top());
+      expect(
+        Math.abs(
+          origin(6, 18).getBoundingClientRect().bottom -
+            origin(19, 25).getBoundingClientRect().top,
+        ),
+      ).toBeLessThanOrEqual(1);
+    });
+    viewport.scrollTop = 510;
+    await waitFor(() =>
+      expect(
+        Math.abs(origin(19, 25).getBoundingClientRect().top - top()),
+      ).toBeLessThanOrEqual(1),
+    );
+    viewport.scrollTop = 1006;
+    await waitFor(() =>
+      expect(
+        Math.abs(origin(28, 51).getBoundingClientRect().top - top()),
+      ).toBeLessThanOrEqual(1),
+    );
+    viewport.scrollLeft = 80;
+    await waitFor(() =>
+      expect(
+        Math.abs(
+          origin(28, 51).getBoundingClientRect().left -
+            viewport.getBoundingClientRect().left,
+        ),
+      ).toBeLessThanOrEqual(1),
+    );
+    viewport.scrollLeft = 0;
   },
 };
