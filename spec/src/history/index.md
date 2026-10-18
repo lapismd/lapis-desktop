@@ -136,6 +136,7 @@ by the task ledger, not inferred from this list.
 - [Physical repository admission](E-REPO-001.md)
 - [Native admitted history and vault lifetime](E-REPO-002.md)
 - [Visible history UI and public-package qualification](E-REPO-003.md)
+- [Cold visible native history qualification](E-REPO-004.md)
 
 - [E-CATALOG-003: Desktop shell presentation review](E-CATALOG-003.md)
 

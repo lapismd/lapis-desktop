@@ -44,6 +44,11 @@ released Design Core Chat/Diff exports with production component stories. A
 recoverable one-agent conversation completes the first usable milestone only
 after actual native persistence and restart acceptance.
 
+Visible history acceptance uses the actual native window and ribbon/diff
+controls, preserves dirty source bytes and JJ/Git metadata, observes an external
+operation without moving the pin and restores that pin after cold close/reopen.
+A visible but unfocused window does not qualify the headed interaction gate.
+
 ## Notes history view
 
 The optional bundled Repository History plugin uses the public history client

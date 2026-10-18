@@ -16,6 +16,10 @@ E-REPO-003 implements the admitted history view and its public-package/catalog
 qualification. M13.2 now advances to cold visible native history and restored
 operation pins; its status and original gate remain unchanged.
 
+E-REPO-004 keeps the new actual-window history scenario pending while its
+unresolved native focus condition prevents headed interaction. Compilation and
+the 692-check catalog pass do not substitute for this original native gate.
+
 The reusable workflow implementation resumes after the earlier review
 checkpoint. M10.2 adds a lazy conversation-persistence injection seam while
 retaining its original native-chat gate. Legacy vault-file conversations keep
