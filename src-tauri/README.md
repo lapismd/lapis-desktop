@@ -34,3 +34,10 @@ with host-admitted roots/credentials and an injected sink. Ordinary policy
 rejects missing backend selection and stale admission; it grants no targets. The
 debug-only real-scanner profile uses an owned temporary cache and private
 fixture candidates. Production JJ publication and restart remain separate gates.
+
+`ai::journal::ProfileJournal` supplies the private durable journal for shared
+selected-store capture. Construct it from an admitted profile `Dir`, exact
+capture/provider context and current native admission callback, then inject it
+into `StoreCapture`. It retains an exclusive lease and checked atomic records.
+See the [journal guide](../docs/native-conversation-journal.md) for ownership,
+recovery and the remaining Notes integration gates.

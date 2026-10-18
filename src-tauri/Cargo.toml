@@ -20,7 +20,8 @@ tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", 
 
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
 jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1.0" }
-jj-store-conversations = { path = "../../jj-store/crates/jj-store-conversations", version = "0.1.0", features = ["native-privacy"] }
+jj-store-conversations = { path = "../../jj-store/crates/jj-store-conversations", version = "0.1.0", features = ["native-privacy", "store-capture"] }
+jj-store-core = { path = "../../jj-store/crates/jj-store-core", version = "0.1.0" }
 
 cap-std = "=4.0.3"
 cap-tempfile = "=4.0.3"
@@ -61,6 +62,9 @@ tauri-build = { version = "=2.7.3", features = [] }
 
 [dev-dependencies]
 tempfile = "=3.27.0"
+jj-agent = { path = "../../jj-store/crates/jj-agent", version = "0.1.0" }
+jj-collab = { path = "../../jj-store/crates/jj-collab", version = "0.1.0" }
+jj-store-git = { path = "../../jj-store/crates/jj-store-git", version = "0.1.0" }
 
 [profile.dev]
 debug = 0

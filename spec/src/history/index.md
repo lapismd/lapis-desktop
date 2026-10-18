@@ -159,3 +159,4 @@ by the task ledger, not inferred from this list.
 
 - [E-AI-029: complete native groups in production transcripts](E-AI-029.md)
 - [E-AI-030: Notes-native privacy and explicit backend admission](E-AI-030.md)
+- [E-AI-031: Native private capture journal and JJ receipt recovery](E-AI-031.md)

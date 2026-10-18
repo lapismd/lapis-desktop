@@ -378,3 +378,12 @@ privacy policy with an injected durable sink; it chooses no paths or backend. A
 separate debug-only profile exercises real scanner/path/credential handling
 through native transport with a private fixture sink and owned temporary cache.
 That profile does not admit production targets or qualify JJ publication.
+
+The native service journal implements the shared selected-store capture port
+under an exclusive private profile lease. It retains only checked sanitized
+candidate/preparation/confirmation DTOs, rechecks injected current admission
+around bounded IO and atomically syncs each monotonic transition. No detached
+write survives a dropped journal future. Private scope records retain opaque
+capture context and a provider fingerprint; raw device paths and credentials are
+excluded. Constructing the journal does not select a Notes conversation backend,
+admit a target or replace the required native callback drain.

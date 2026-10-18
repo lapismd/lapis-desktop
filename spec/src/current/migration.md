@@ -1,5 +1,11 @@
 # Migration inventory and progress
 
+E-AI-031 adds the Notes private capture journal prerequisite and verifies shared
+capture against actual JJ Agent/Thread publication, privacy and receipt-only
+recovery. M13/M13.3 stay In progress with their original gates; per-vault
+backend selection, native callback ownership/drain and packaged-app restart
+remain open.
+
 The requested M8.5 shell/story review consumes local Design Core 0.5.1 while
 preserving existing desktop contracts. It adds editable Problems-based conflict
 review, shared recovery presentation and product-only Terminal previews. Merge

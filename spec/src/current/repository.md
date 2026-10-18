@@ -128,3 +128,19 @@ without selecting a writer. Missing backend selection and stale native admission
 must reject processor construction; neither may retain raw event delivery. The
 real-scanner fixture remains separate from AgentStore/ThreadStore sink
 publication and restart recovery.
+
+## Private capture journal
+
+Notes owns the production private journal used by the selected-store capture
+adapter. A host-admitted profile capability, exact capture context, selected
+provider scope and current-admission callback are required before construction.
+Its exclusive OS lease belongs to one source/backend; context and provider
+fingerprints survive reopen without persisting device paths or credentials. Only
+bounded regular owner-private records are admitted. Candidate creation is
+exclusive and atomic; exact preparation and confirmations advance monotonically
+through synced staged replacement and parent-directory sync. Each operation
+rechecks admission before and after IO. Cancelled callers cannot detach a write.
+An incomplete or unknown record is retained and never reclaimed as a new intent.
+This journal grants no execution or publication authority; original provider
+receipt replay remains mandatory. Host/backend selection and native callback
+drain retain their separate integration gates.

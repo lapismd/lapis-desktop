@@ -1,5 +1,9 @@
 # Governance
 
+E-AI-031 qualifies the native capture journal and real JJ provider boundary.
+Cold Rust-process lease proof stays distinct from packaged WebView acceptance;
+M13.3 keeps its original backend, native ownership and restart gates.
+
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
 The repository topic owns JJ reuse and exact history grants. E-REPO-003
 qualifies owned history UI and public packages; native gates remain separate.
