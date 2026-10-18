@@ -154,6 +154,7 @@
         >
           {#snippet actions()}
             <ChatComposerActions
+              compact
               {panelProps}
               {controller}
               {attachmentsState}
@@ -172,6 +173,7 @@
             </div>
           {/snippet}
           {#snippet workspace()}<ChatScopeFooter
+              inline
               {panelProps}
               {controller}
               {conversationsState}

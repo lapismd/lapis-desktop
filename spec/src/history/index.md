@@ -183,3 +183,5 @@ by the task ledger, not inferred from this list.
 - [Command View parent comparison and owned-runtime preview reload](E-REPO-011.md)
 
 - [Document and classic AI transcript review](E-AI-039.md)
+
+- [Compact transcript footer and inline formatting](E-AI-040.md)

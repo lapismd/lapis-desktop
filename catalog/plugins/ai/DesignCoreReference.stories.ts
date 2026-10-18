@@ -1,3 +1,4 @@
+import { reviewInlineFooter } from "../../support/ai/transcript/footer-review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within } from "storybook/test";
 import DesignCoreReferenceDemo from "../../support/ai/transcript/DesignCoreReferenceDemo.svelte";
@@ -13,6 +14,8 @@ type Story = StoryObj<typeof meta>;
 export const DocumentConversation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await canvas.findByRole("group", { name: /^Message\ actions$/ });
+    await reviewInlineFooter(canvasElement);
     await expect(
       canvas.findByRole("log", { name: "Conversation messages" }),
     ).resolves.toBeVisible();

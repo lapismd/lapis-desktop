@@ -16,7 +16,9 @@
     controller,
     actions,
     conversationsState,
+    inline = false,
   }: {
+    inline?: boolean;
     panelProps: AiChatPanelProps;
     controller: AiChatController;
     actions: ChatPanelActions;
@@ -26,7 +28,7 @@
   const repository = $derived(panelProps.repository);
 </script>
 
-<div class="ai-chat-panel__scope-path">
+<div class="ai-chat-panel__scope-path" data-inline={inline || undefined}>
   <Popover.Root
     bind:open={conversationsState.scopePickerOpen}
     onOpenChange={conversationsState.onScopePickerOpenChange}

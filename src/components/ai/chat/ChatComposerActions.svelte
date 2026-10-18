@@ -22,7 +22,9 @@
     controller,
     actions,
     attachmentsState,
+    compact = false,
   }: {
+    compact?: boolean;
     panelProps: AiChatPanelProps;
     controller: AiChatController;
     actions: ChatPanelActions;
@@ -95,7 +97,7 @@
       {#snippet child({ props }: { props: Record<string, unknown> })}
         <Button
           {...props}
-          size="icon"
+          size={compact ? "icon-sm" : "icon"}
           variant="ghost"
           aria-label="Conversation actions"
           data-testid="ai-chat-conversation-menu"

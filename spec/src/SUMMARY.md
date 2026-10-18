@@ -208,3 +208,5 @@
 - [Working-copy status qualification and catalog watcher isolation](history/E-REPO-025.md)
 
 - [Document and classic AI transcript review](history/E-AI-039.md)
+
+- [Compact transcript footer and inline formatting](history/E-AI-040.md)

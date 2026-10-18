@@ -24,6 +24,12 @@ it grants no runtime, storage or native authority. The normal plugin does not
 set either prop in NOTES-08A. Catalog owns all synthetic data and runtime
 clients.
 
+The document footer keeps a single compact row. Formatting expands rightward
+using the jj-store strip (selected trigger, close, separator and actions), with
+local horizontal overflow rather than a second footer row. The folder picker
+uses inline layout without the legacy standalone top margin. Shared footer and
+formatting fixes belong in Design Core and apply to the reference story too.
+
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.
 IME switching MUST defer until composition ends. Display item/block identities
