@@ -152,3 +152,5 @@ by the task ledger, not inferred from this list.
 - [E-REPO-006: cold native pinned history and restart](E-REPO-006.md)
 
 - [E-AI-026: native ACP runtime refresh](E-AI-026.md)
+
+- [E-AI-027: native ACP factory compatibility refresh](E-AI-027.md)

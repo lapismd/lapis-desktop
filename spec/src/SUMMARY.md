@@ -154,3 +154,5 @@
 - [Lapis reading-view sizing](history/E-CATALOG-007.md)
 
   - [Native ACP runtime refresh](history/E-AI-026.md)
+
+  - [Native ACP factory compatibility refresh](history/E-AI-027.md)

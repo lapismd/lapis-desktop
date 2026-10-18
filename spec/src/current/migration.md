@@ -311,3 +311,8 @@ E-AI-026 retains LD-MIG-002 and M10.1's original native ACP transport gate after
 the shared runtime update. Six actual cold WebView cases pass; no fixture result
 substitutes for them. M10/M10.2 and M13 conversation gates remain incomplete.
 Physical foreground assistance is recorded separately from transport behavior.
+
+E-AI-027 retains those gates after the shared Tauri processor factory update.
+Full source qualification and six cold default-path compatibility cases pass.
+NOTES-06B completes in its source scope; Notes privacy, durable capture and
+AgentStore/ThreadStore adoption remain pending.

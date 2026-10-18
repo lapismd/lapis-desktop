@@ -344,3 +344,8 @@ All six cold packaged transport cases pass with physical foreground assistance.
 LD-AI-001 and M10.1 retain their original gate. The new Rust-only frame
 processor is not yet injected by desktop policy; managed sanitation/durable
 capture and AgentStore/ThreadStore conversation adoption remain M13.3.
+
+E-AI-027 refreshes the same six cold ACP compatibility cases against Lapis AI
+`87958267`, including its host-scoped native processor factory. All pass with
+foreground assistance and unchanged focus assertions. Desktop has not selected a
+Notes capture processor or durable JJ backend; those remain M13.3.
