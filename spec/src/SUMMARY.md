@@ -8,6 +8,7 @@
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
   - [AI transcript delivery review](current/ai-presentation.md)
+  - [Local AI turn recovery](current/ai-recovery.md)
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
@@ -213,4 +214,5 @@
 
 - [Shared AI transcript adoption and vault presentation](history/E-AI-041.md)
 
+- [E-AI-043](history/E-AI-043.md)
 - [E-AI-042](history/E-AI-042.md)

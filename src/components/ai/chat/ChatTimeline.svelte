@@ -190,18 +190,20 @@
             status="error"
           >
             {#snippet footer()}
-              <span class="ai-chat-panel__message-actions">
-                <Button
-                  size="icon-xs"
-                  variant="ghost"
-                  aria-label="Retry message"
-                  disabled={initializing || controller.busy || !retryPrompt}
-                  onclick={() =>
-                    retryPrompt && void actions.submit(retryPrompt)}
-                >
-                  <RedoIcon aria-hidden="true" />
-                </Button>
-              </span>
+              {#if retryPrompt}
+                <span class="ai-chat-panel__message-actions">
+                  <Button
+                    size="icon-xs"
+                    variant="ghost"
+                    aria-label="Retry message"
+                    disabled={initializing || controller.busy || !retryPrompt}
+                    onclick={() =>
+                      retryPrompt && void actions.submit(retryPrompt)}
+                  >
+                    <RedoIcon aria-hidden="true" />
+                  </Button>
+                </span>
+              {/if}
             {/snippet}
           </Chat.MessageMetadata>
         {/snippet}

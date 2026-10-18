@@ -198,6 +198,7 @@ export async function close(this: AiChatController): Promise<void> {
   this.session = null;
   this.busy = false;
   await this._backgroundWork.settle();
+  await this._terminalCheckpoint;
   for (const binding of this.bindings) {
     this._slashRouter?.catalog.clearNativeCommands(binding.id);
   }

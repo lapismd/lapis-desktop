@@ -571,3 +571,9 @@ Desktop, LocalConversations, Initialization and Compositions now assert the
 shared transcript, fixed footer, exact restored context, copy/retry/model
 actions and skeleton loading. Persistence failure has an explicit toast
 assertion.
+
+`Transcript review/UnknownLocalTurn` mounts the production local-file recovery
+path in the App shell. It retains the authored prompt, disables Retry in both
+Document and Classic views, starts no provider on restore, and continues only
+from a new authored message. Native interruption/reopen is a separate acceptance
+lane; visual approval remains pending.

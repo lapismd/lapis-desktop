@@ -66,10 +66,16 @@ export class AiChatControllerState {
   _activeBindingId?: string;
   _activeBinding?: EffectiveAgentBinding;
   _usageDirty = false;
+  _recoveredTurn?: import("../../conversations/turn-intent.ts").ConversationTurnIntent;
   readonly _sessionContexts = new Map<
     AgentSession,
     {
       location: ConversationLocation | null;
+      accepted?: boolean;
+      turn?: {
+        intent: import("../../conversations/turn-intent.ts").ConversationTurnIntent;
+        known: boolean;
+      };
       pendingBinding?: AgentBindingCreatedRecord;
       pendingSwitch?: TranscriptEntry;
       pendingActivationBindingId?: string;

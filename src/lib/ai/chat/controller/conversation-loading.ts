@@ -14,6 +14,7 @@ import {
 } from "../chat-session.ts";
 import { type AiChatItem } from "../chat-items.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
+import { restoreTurn } from "./turn-checkpoint.ts";
 export async function restore(this: AiChatController): Promise<void> {
   const turnId = this._turnId;
   if (this._isAbandoned(turnId)) return;
@@ -142,6 +143,12 @@ export async function _restoreConversation(
     );
   this.usage =
     latestUsage?.type === "usage.updated" ? { ...latestUsage.usage } : null;
+  const unconfirmed = await restoreTurn(this);
+  if (this._isAbandoned(turnId)) return;
+  if (unconfirmed) {
+    this.items = interruptPendingInteractions(this.items);
+    return;
+  }
   if (!activeBinding || activeBinding.runtime !== this.runtime.id) {
     await this._interruptUnresumableInteractions();
     return;
@@ -226,5 +233,10 @@ export function namespaceChatItems(
   items: AiChatItem[],
   namespace: string,
 ): AiChatItem[] {
-  return items.map((item) => ({ ...item, id: `${namespace}:${item.id}` }));
+  return items.map((item) =>
+    (item.type === "message" && item.role === "user") ||
+    item.id.startsWith("turn-unknown:")
+      ? item
+      : { ...item, id: `${namespace}:${item.id}` },
+  );
 }

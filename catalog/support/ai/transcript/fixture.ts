@@ -11,6 +11,8 @@ import { createChatApp } from "../app-fixture.ts";
 import { FakeAgentRuntime } from "../../../../tests/ai/support/fake-runtime.ts";
 import { transcriptReviewItems } from "./seeds.ts";
 import { registerCatalogCleanup } from "../../lifecycle.ts";
+import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
+import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 
 export type TranscriptScenario =
   | "conversation"
@@ -20,6 +22,7 @@ export type TranscriptScenario =
   | "approval"
   | "question"
   | "long-code"
+  | "unknown-turn"
   | "failure";
 const type = "ai-transcript-review";
 
@@ -55,6 +58,47 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
     },
   ]);
   const pending = new Set<Promise<unknown>>();
+  const location = {
+    scopeDir: "Notes",
+    conversationId: "123e4567-e89b-42d3-a456-426614174000",
+  };
+  const repository =
+    scenario === "unknown-turn"
+      ? new ConversationRepository(
+          new MemoryTranscriptStore([
+            {
+              location,
+              metadata: {
+                schemaVersion: 1,
+                id: location.conversationId,
+                status: "active",
+                createdAt: "2026-10-19T00:00:00.000Z",
+                updatedAt: "2026-10-19T00:00:00.000Z",
+                title: "An interrupted local turn",
+                pendingTurn: {
+                  version: 1,
+                  id: "interrupted-turn",
+                  userEntryId: "original-user",
+                  agentBindingId: "unconfirmed-binding",
+                  startedAt: "2026-10-19T00:00:00.000Z",
+                },
+              },
+              transcript: [
+                {
+                  schemaVersion: 1,
+                  id: "original-user",
+                  type: "message",
+                  role: "user",
+                  text: "Keep this authored prompt after an interrupted session.",
+                  createdAt: "2026-10-19T00:00:00.000Z",
+                },
+              ],
+              agents: [],
+              warnings: [],
+            },
+          ]),
+        )
+      : undefined;
   function own(operation: Promise<unknown>) {
     pending.add(operation);
     void operation
@@ -91,7 +135,9 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
           initialTranscriptView:
             scenario === "classic" ? "classic" : "document",
           runtime,
-          sessionStore: store,
+          sessionStore: repository ? undefined : store,
+          repository,
+          initialLocation: repository ? location : undefined,
           settings: DEFAULT_AI_SETTINGS,
           models: [{ provider: "codex", model: "gpt-5.6-sol" }],
           initializing: scenario === "loading",

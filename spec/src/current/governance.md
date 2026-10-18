@@ -1,9 +1,9 @@
 # Governance
 
-E-AI-031/032/033 qualify private journal, backend profile and native host
-boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
-acceptance; M13.3 keeps its original backend, native ownership and restart
-gates.
+E-AI-043 retains LD-GOV-001/002/004 gates; `ai-recovery.md` owns local recovery.
+
+E-AI-031/032/033 qualify journal/backend/host boundaries. Cold Rust lease proof
+stays separate from packaged WebView acceptance; original M13.3 gates stay open.
 
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
 The repository topic owns JJ reuse and exact history grants. E-REPO-003

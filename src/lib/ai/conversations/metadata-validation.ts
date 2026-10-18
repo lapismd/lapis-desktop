@@ -5,6 +5,7 @@ import {
   normalizeApprovalGrants,
 } from "./approval-grants.ts";
 import type { ConversationMetadata } from "./types.ts";
+import { validateTurnIntent } from "./turn-intent.ts";
 import { assertConversationId } from "./paths.ts";
 import {
   record,
@@ -66,5 +67,6 @@ export function validateConversationMetadata(
     throw new Error("Conversation metadata.pinned must be a boolean");
   }
   if (data.pinned === false) delete data.pinned;
+  if (data.pendingTurn != null) validateTurnIntent(data.pendingTurn);
   return data as ConversationMetadata;
 }

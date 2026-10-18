@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // App-owned contracts recovered from the pre-controller AI plugin; see NOTICE.md.
 import type { AgentUsage, AiThinkingLevel, ModelRef } from "../core/models.ts";
+import type { ConversationTurnIntent } from "./turn-intent.ts";
 import type {
   ApprovalKind,
   ApprovalOption,
@@ -44,6 +45,7 @@ export type ConversationMetadata = {
   activeAgentBindingId?: string;
   approvalGrants?: ConversationApprovalGrant[];
   pinned?: boolean;
+  pendingTurn?: ConversationTurnIntent;
   status: "active" | "archived";
 };
 

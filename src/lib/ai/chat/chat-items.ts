@@ -60,7 +60,13 @@ export type AiChatItem = (
       inventory?: AiChatInventory;
       createdAt?: string;
     }
-  | { id: string; type: "error"; text: string; createdAt?: string }
+  | {
+      id: string;
+      type: "error";
+      text: string;
+      createdAt?: string;
+      retryable?: boolean;
+    }
   | {
       id: string;
       type: "command";

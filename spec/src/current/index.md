@@ -14,6 +14,7 @@ gates.
 - [Desktop plugins and catalog](plugins.md)
 - [Desktop AI and optional compute](ai.md)
   - [AI transcript delivery review](ai-presentation.md)
+  - [Local AI turn recovery](ai-recovery.md)
 - [Repository history and conversations](repository.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)

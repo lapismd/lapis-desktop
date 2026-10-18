@@ -1,18 +1,16 @@
 # Desktop AI and optional compute
 
-The [repository contract](repository.md#native-backend-ownership-and-transport)
-owns retained native capture and revocation. E-REPO-016 qualifies
-[background work](background.md) under LD-AI-002; provider and capture gates
-stay.
+The [repository contract](repository.md) owns native capture and revocation.
+E-REPO-016 qualifies [background work](background.md) under LD-AI-002; provider
+and capture gates stay open.
 
 Native backend receipts and an exclusive owner lease remain exact. Confirmed
 conversations explicitly prepare capture targets; the ordinary factory composes
 native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
-The [transcript plan](ai-presentation.md) has standing implementation approval.
-E-AI-041 adopts shared UI and vault presentation preferences after footer
-repair. Catalog fixtures stay isolated; native AI gates remain separate.
+The [transcript plan](ai-presentation.md) retains standing approval; E-AI-041
+qualifies shared UI. Catalog fixtures and native AI gates remain distinct.
 
 E-REPO-002 retains separate AI/history admission under LD-AI-001; history cannot
 admit targets. NativeServices preserves raw-event ownership.
@@ -54,6 +52,9 @@ revocation; reload requires successful detach before suspension. Reload retains
 only the native generation; it does not invent resume or replay a prompt. Native
 model catalogs use temporary, non-prompting sessions and release them after
 reading the provider's actual advertised model state.
+
+[Local turn recovery](ai-recovery.md) governs durable dispatch and unknown
+outcomes.
 
 ## Requirements
 

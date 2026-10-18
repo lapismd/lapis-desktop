@@ -36,9 +36,12 @@ application controls; it stays separate from the authored message. Attach up to
 eight files, at most 64 KiB each and 128 KiB total; missing or oversized context
 refuses dispatch. File snapshots are transient context; the existing transcript
 format retains messages and responses. Stop cancels the current turn. Reopen
-saved conversations from AI History. An interrupted or uncertain turn is
-retained without automatic prompt replay. Provider-session resume and the native
-application-tool bridge remain separate capabilities.
+saved conversations from AI History. The authored prompt and a local turn intent
+are saved before dispatch. After an interruption, History shows that exact
+prompt with an unknown-outcome explanation and no Retry action. Reopening is
+read-only; send a new message to continue without replaying the original.
+Provider-session resume and the native application-tool bridge remain separate
+capabilities.
 
 The host chooses the current admitted vault root, executable and environment.
 The renderer cannot override them. Codex retains its native HOME authentication;
@@ -48,4 +51,14 @@ vault drains transcript writes and releases its native workers.
 The [AI contract](../spec/src/current/ai.md) owns requirements and remaining
 native acceptance gates;
 [conversation persistence](ai-conversation-persistence.md) describes the storage
-injection seam.
+injection seam and [turn recovery](../spec/src/current/ai-recovery.md) describes
+the local checkpoint boundary.
+
+The opt-in native recovery check uses isolated test data with the installed
+Codex and its existing authentication. Build the e2e app, then pass the path to
+the device runtime configuration:
+
+```sh
+pnpm exec tauri build --debug --bundles app --features e2e --config src-tauri/tauri.e2e.conf.json
+LAPIS_AI_TEST_RUNTIME_CONFIG=/absolute/path/to/ai-runtime.json node --test tests/desktop/ai-local-recovery.test.mjs
+```

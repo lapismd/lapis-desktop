@@ -113,6 +113,37 @@ export const LongCodeBlock: Story = {
 };
 export const LoadingConversation: Story = { args: { scenario: "loading" } };
 export const InterruptedTurn: Story = { args: { scenario: "failure" } };
+export const UnknownLocalTurn: Story = {
+  args: { scenario: "unknown-turn" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await expect(
+      canvas.findByText(/previous turn's outcome is unknown/),
+    ).resolves.toBeVisible();
+    expect(
+      canvas.getByText(
+        "Keep this authored prompt after an interrupted session.",
+      ),
+    ).toBeVisible();
+    expect(canvas.queryByRole("button", { name: "Retry message" })).toBeNull();
+    expect(aiReviewValue(canvasElement, "sessions")).toBe("[]");
+    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    expect(canvas.queryByRole("button", { name: "Retry message" })).toBeNull();
+    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(editor);
+    await userEvent.keyboard("A new explicitly authored message");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await waitFor(() =>
+      expect(aiReviewValue(canvasElement, "sessions")).toContain(
+        "A new explicitly authored message",
+      ),
+    );
+    expect(aiReviewValue(canvasElement, "sessions")).not.toContain(
+      "Keep this authored prompt",
+    );
+  },
+};
 export const PermissionRequest: Story = {
   args: { scenario: "approval" },
   play: async ({ canvasElement }) => {

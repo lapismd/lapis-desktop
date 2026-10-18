@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-AI-043 retains LD-PLUG-001 ownership: Document and Classic share local
+recovery, with authored messages and unknown outcomes shown without replay.
+
 E-AI-041 promotes the shared transcript into the ordinary AI plugin under
 standing implementation approval. Vault-owned presentation defaults to Document;
 Classic uses the same controller/readers. Recorded model transitions, usage,

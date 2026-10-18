@@ -189,3 +189,5 @@ by the task ledger, not inferred from this list.
 - [Shared AI transcript adoption and vault presentation](E-AI-041.md)
 
 - [E-AI-042](E-AI-042.md)
+
+- [E-AI-043 — Durable local turn recovery](E-AI-043.md)

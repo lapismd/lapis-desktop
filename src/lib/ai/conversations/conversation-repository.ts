@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import { normalizeApprovalGrants } from "./approval-grants.ts";
+import { ConversationTurns } from "./conversation-turns.ts";
 import {
   normalizePortableVaultPath,
   relativePathWithinScope,
@@ -49,10 +50,18 @@ export class ConversationRepository {
     (change: ConversationRepositoryChange) => void
   >();
 
+  readonly turns: ConversationTurns;
   constructor(
     private readonly store: TranscriptStore,
     private readonly sanitization: DurableSanitizationOptions = {},
-  ) {}
+  ) {
+    this.turns = new ConversationTurns(
+      store,
+      this.queue,
+      (location) => this.emit({ type: "upsert", location }),
+      deriveConversationTitle,
+    );
+  }
 
   async create(input: CreateConversationInput): Promise<ConversationSnapshot> {
     const conversationId = input.id ?? crypto.randomUUID();

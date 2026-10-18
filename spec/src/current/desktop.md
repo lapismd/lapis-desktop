@@ -1,8 +1,8 @@
 # Desktop shell
 
-E-AI-042: native-profile Codex; named IPC, isolated E2E config, no renderer
-launch authority (LD-DESK-003/HOST-001). Earlier UI: E-REPO-023/025,
-E-AI-039–041; Gravatar: `https://www.gravatar.com`.
+E-AI-042/043 retain native admission (LD-DESK-003/HOST-001); E-AI-043 changes
+renderer file recovery only. UI: E-REPO-023/025, E-AI-039–041; Gravatar:
+`https://www.gravatar.com`. Native test profiles stay isolated.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on

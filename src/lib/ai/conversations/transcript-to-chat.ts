@@ -127,6 +127,7 @@ export function projectTranscriptToChatItems(
           id: entry.id,
           type: "error",
           text: entry.message,
+          retryable: entry.retryable,
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
         });

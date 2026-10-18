@@ -7,6 +7,7 @@ import { reduceAgentBindings } from "../../conversations/binding-state.ts";
 import { extractMentionPaths, mergeAttachmentPaths } from "../chat-mentions.ts";
 import { type AiChatItem } from "../chat-items.ts";
 import { attachmentContext } from "../attachment-context.ts";
+import { prepareTurn, finishTurn, knownTurnError } from "./turn-checkpoint.ts";
 import { applyAgentEventToChatItems } from "../chat-trace.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 export async function submit(
@@ -94,6 +95,7 @@ export async function submit(
       context.pendingItems.push(
         this.items.find((item) => item.id === userItem.id) ?? userItem,
       );
+      context.accepted = false;
       this._sessionContexts.set(this.session, context);
     } else {
       await this._persist();
@@ -176,6 +178,12 @@ export async function submit(
         );
         if (recallAbort.signal.aborted || !authorized())
           throw new Error("Conversation preparation was cancelled.");
+        await prepareTurn(this, session, userItem);
+        if (recallAbort.signal.aborted || !authorized())
+          throw new DOMException(
+            "Turn preparation was cancelled",
+            "AbortError",
+          );
         this._pendingHandoffs.delete(session);
         return [
           ...(handoff ? [handoff.block] : []),
@@ -208,6 +216,7 @@ export async function submit(
     const failedContext = failedSession
       ? this._sessionContexts.get(failedSession)
       : undefined;
+    if (failedContext?.turn) failedContext.turn.known = knownTurnError(error);
     if (
       failedContext?.pendingBinding ||
       failedContext?.pendingSwitch ||
@@ -233,6 +242,12 @@ export async function submit(
       type: "error",
       error: error instanceof Error ? error : new Error(String(error)),
     });
+    if (failedContext?.turn && !knownTurnError(error))
+      this.items = this.items.map((item, index) =>
+        index === this.items.length - 1 && item.type === "error"
+          ? { ...item, retryable: false }
+          : item,
+      );
     this.session = null;
     this.busy = false;
     await this._closeAppToolBinding(failedBindingId);
@@ -247,6 +262,9 @@ export async function submit(
         );
       } else {
         await this._persist();
+      }
+      if (failedSession && failedContext?.turn) {
+        await finishTurn(this, failedSession);
       }
     } catch (persistError) {
       const persistMessage =

@@ -154,6 +154,7 @@ export async function setPinned(
 export async function _clearOpenConversation(
   this: AiChatController,
 ): Promise<void> {
+  this._recoveredTurn = undefined;
   await this._closeAppToolBinding();
   await this.session?.close().catch(() => undefined);
   this.session = null;

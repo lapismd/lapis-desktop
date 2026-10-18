@@ -57,6 +57,8 @@ export function createChatPanelActions(
     const errorIndex = controller.items.findIndex(
       (item) => item.id === errorId,
     );
+    const error = controller.items[errorIndex];
+    if (error?.type === "error" && error.retryable === false) return null;
     for (let index = errorIndex - 1; index >= 0; index -= 1) {
       const item = controller.items[index];
       if (item?.type === "message" && item.role === "user") {

@@ -50,7 +50,7 @@ below.
 | M8.3  | Done        | Complete; continue to M9.1                                                          |
 | M9.1  | Done        | Complete; continue to M10.1 native ACP adapter                                      |
 | M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI                                        |
-| M10.2 | In progress | Qualify injected persistence and native chat recovery                               |
+| M10.2 | In progress | Qualify remaining AI/tool profiles                                                  |
 | M10.3 | Planned     | Implement and qualify native tools and credentials                                  |
 | M10.4 | Planned     | Integrate optional compute last                                                     |
 | M0.2  | Done        | Complete; native qualification remains explicit                                     |

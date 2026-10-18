@@ -3,6 +3,49 @@ import { AiChatController } from "../../../../src/lib/ai/chat/chat-controller.sv
 import { AcpAgentRuntime } from "../../../../src/lib/ai/runtimes/acp/runtime.ts";
 import type { SkillRegistry } from "../../../../src/lib/ai/skills/registry.ts";
 import { acpFixture } from "../../../fixtures/ai/acp-transport.mjs";
+import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
+import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
+
+it("checkpoints the authored prompt before the shared ACP context-preparation path dispatches", async () => {
+  const fixture = acpFixture();
+  const repository = new ConversationRepository(new MemoryTranscriptStore());
+  const controller = new AiChatController(
+    new AcpAgentRuntime(fixture.backend),
+    null,
+    [],
+    {
+      repository,
+      createConversation: () => ({ scopeDir: "Notes" }),
+      request: { agent: "agent" },
+    },
+  );
+  let observed = false;
+  fixture.onPrompt = async (id: string, requestId: string) => {
+    const saved = await repository.read(controller.location!);
+    expect(saved.metadata.pendingTurn).toBeDefined();
+    expect(saved.transcript).toContainEqual(
+      expect.objectContaining({
+        role: "user",
+        text: "Authored before ACP dispatch",
+      }),
+    );
+    observed = true;
+    fixture.emit(id, "record", requestId, {
+      record: { status: "completed", stopReason: "end_turn" },
+    });
+  };
+  try {
+    await controller.submit("Authored before ACP dispatch");
+    expect(observed).toBe(true);
+    await vi.waitFor(async () =>
+      expect(
+        (await repository.read(controller.location!)).metadata.pendingTurn,
+      ).toBeUndefined(),
+    );
+  } finally {
+    await controller.close();
+  }
+});
 
 it("plain chat works through ACP when the ordinary controller discovers app skills", async () => {
   const fixture = acpFixture();

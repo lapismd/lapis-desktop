@@ -14,6 +14,11 @@ import { APP_TOOL_MCP_SERVER_NAME } from "../../tools/mcp-server-registry.ts";
 import type { AppToolBridgeEvent } from "../../tools/app-tool-bridge.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { waitForNextTask } from "./turn.ts";
+import {
+  finishTurn,
+  knownTurnError,
+  retainUnknownTurn,
+} from "./turn-checkpoint.ts";
 export async function _consume(
   this: AiChatController,
   session: AgentSession,
@@ -27,35 +32,37 @@ export async function _consume(
   let traceItems: AiChatItem[] = [];
   let latestUsage: AgentUsage | null = null;
   const persistCompletedTrace = async () => {
+    traceItems = retainUnknownTurn(this, session, traceItems);
     if (
       traceItems.length === 0 &&
       !latestUsage &&
       !context.pendingBinding &&
       !context.pendingSwitch &&
       !context.pendingConfiguration &&
+      !context.turn &&
       context.pendingItems.length === 0
     ) {
       return;
     }
     await waitForNextTask();
     if (this.repository && context.location) {
-      if (context.pendingBinding) {
+      if (context.accepted && context.pendingBinding) {
         await this.repository.appendAgentRecords(context.location, [
           context.pendingBinding,
         ]);
       }
-      if (context.pendingActivationBindingId) {
+      if (context.accepted && context.pendingActivationBindingId) {
         await this.repository.activateBinding(
           context.location,
           context.pendingActivationBindingId,
           context.pendingSwitch,
         );
-      } else if (context.pendingSwitch) {
+      } else if (context.accepted && context.pendingSwitch) {
         await this.repository.appendTranscript(context.location, [
           context.pendingSwitch,
         ]);
       }
-      if (context.pendingConfiguration) {
+      if (context.accepted && context.pendingConfiguration) {
         await this.repository.appendAgentRecords(context.location, [
           context.pendingConfiguration.agentRecord,
         ]);
@@ -105,6 +112,7 @@ export async function _consume(
     } else {
       await this._persist(false, agentBindingId);
     }
+    await finishTurn(this, session);
     context.pendingBinding = undefined;
     context.pendingSwitch = undefined;
     context.pendingActivationBindingId = undefined;
@@ -168,6 +176,22 @@ export async function _consume(
           }
         }
       }
+      if (
+        [
+          "text",
+          "message_complete",
+          "thinking",
+          "tool.start",
+          "tool.end",
+          "permission.request",
+          "question.request",
+          "completed",
+        ].includes(event.type)
+      )
+        context.accepted = true;
+      if (context.turn && event.type === "completed") context.turn.known = true;
+      if (context.turn && event.type === "error")
+        context.turn.known = knownTurnError(event.error);
       traceItems = applyAgentEventToChatItems(traceItems, event);
       const activeSession = this.session === session;
       const cancelled = this._cancelledSessions.has(session);
@@ -182,7 +206,6 @@ export async function _consume(
       if (event.type === "completed" || event.type === "error") {
         if (event.type === "error" && activeSession) {
           this.error = event.error.message;
-          this.session = null;
         }
       }
       if (
@@ -195,12 +218,14 @@ export async function _consume(
         await checkpointTrace();
       }
       if (event.type === "error") {
+        if (this.session === session) this.session = null;
         await session.close().catch(() => undefined);
         await this._closeAppToolBinding(agentBindingId);
         break;
       }
     }
   } catch (error) {
+    if (context.turn) context.turn.known = knownTurnError(error);
     const normalized =
       error instanceof Error ? error : new Error(String(error));
     const errorEvent = {
@@ -212,9 +237,9 @@ export async function _consume(
       this.error = normalized.message;
       this.items = applyAgentEventToChatItems(this.items, errorEvent);
       this.busy = false;
-      this.session = null;
     }
     await checkpointTrace();
+    if (this.session === session) this.session = null;
     await session.close().catch(() => undefined);
     await this._closeAppToolBinding(agentBindingId);
   } finally {

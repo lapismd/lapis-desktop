@@ -209,7 +209,7 @@ export function projectChatItemsToTranscript(
             id: item.id,
             type: "error",
             message: sanitizeDurableField(item.text, options).text ?? "",
-            retryable: true,
+            retryable: item.retryable !== false,
             provenance: {
               originClass: "system",
               sourceKind: "app-system",
