@@ -1,4 +1,6 @@
 import type { StorybookConfig } from "@storybook/svelte-vite";
+import { mergeConfig } from "vite";
+import catalog from "../vite.catalog.config.ts";
 
 const config: StorybookConfig = {
   stories: ["../catalog/**/*.mdx", "../catalog/**/*.stories.ts"],
@@ -13,10 +15,9 @@ const config: StorybookConfig = {
     options: { builder: { viteConfigPath: "vite.catalog.config.ts" } },
   },
   viteFinal(config) {
-    return {
-      ...config,
-      server: { ...config.server, host: "127.0.0.1" },
-    };
+    return mergeConfig(config, {
+      server: { host: "127.0.0.1", watch: catalog.server?.watch },
+    });
   },
 };
 export default config;

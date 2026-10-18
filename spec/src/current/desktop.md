@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-023/024 retain LD-DESK-003/LD-HOST-001; Gravatar uses
+E-REPO-023/025 retain LD-DESK-003/LD-HOST-001; Gravatar uses
 `https://www.gravatar.com`. Plugin status ownership is in
 `repository-navigation.md`.
 

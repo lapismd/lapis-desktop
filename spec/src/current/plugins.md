@@ -1,5 +1,11 @@
 # Desktop plugins and catalog
 
+E-REPO-025 qualifies working-copy status after visual confirmation. The final
+Storybook Vite hook MUST retain owned watcher exclusions for `.jj`, native build
+outputs and generated artifacts; the builder replaces the file's server block.
+Repository bookkeeping/builds cannot flood the dependency graph. Source changes
+retain live reload. A filesystem watcher regression exercises the final hook.
+
 E-REPO-024 adds the production working-copy status control and six disposable
 review states. The plugin owns its split buttons, popover and setting through
 public status-item mount/dispose contracts. The compact control has no border, a

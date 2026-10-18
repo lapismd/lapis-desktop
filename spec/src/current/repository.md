@@ -3,9 +3,9 @@
 The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces
 without upstream `jj-lib`. Notes consumes jj-store M33 in verified slices.
 
-E-REPO-024 adds the bounded physical working-copy status read and plugin-owned
-status controls. [Repository navigation](repository-navigation.md) owns its
-read-only authority, lifecycle, setting and presentation contract.
+E-REPO-024/025 add the bounded physical working-copy status read and
+plugin-owned status controls. [Repository navigation](repository-navigation.md)
+owns its read-only authority, lifecycle, setting and presentation contract.
 
 ## Requirements
 

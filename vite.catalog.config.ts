@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     watch: {
       ignored: [
+        "**/.jj/**",
         "**/src-tauri/target/**",
         "**/.local/**",
         "**/storybook-static/**",

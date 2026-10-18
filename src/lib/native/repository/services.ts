@@ -63,6 +63,8 @@ export function createNativeRepository(
         parseWorkingCopyStatus(
           await call<string>("desktop_repository_working_copy", {
             request: { sessionId: vault.sessionId },
+          }).catch((error) => {
+            throw nativeError(error);
           }),
         ),
       ),

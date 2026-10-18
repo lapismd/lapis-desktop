@@ -4,6 +4,7 @@
   import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
   import { commit, operation, revision } from "./fixture.ts";
+  import { nativeError } from "../../../src/lib/native/native-error.ts";
   import type { WorkingCopyStatus } from "../../../src/lib/repository/working-copy-status.ts";
   let {
     scenario = "ready",
@@ -17,7 +18,10 @@
     if (scenario === "loading")
       await new Promise((resolve) => setTimeout(resolve, 1500));
     if (scenario === "failed" && attempts === 1)
-      throw new Error("The working copy changed during status reading");
+      throw nativeError({
+        code: "EAGAIN",
+        message: "The working copy changed during status reading",
+      });
     return {
       operation,
       revision,

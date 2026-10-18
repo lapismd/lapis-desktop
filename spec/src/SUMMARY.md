@@ -203,3 +203,5 @@
 - [Regular log row preview and verified Gravatar fixture](history/E-REPO-022.md)
 - [Production blame adoption and native review update](history/E-REPO-023.md)
 - [Plugin-owned working-copy status and compact split control](history/E-REPO-024.md)
+
+- [Working-copy status qualification and catalog watcher isolation](history/E-REPO-025.md)

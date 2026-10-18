@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createNativeRepository } from "../../src/lib/native/repository/services.ts";
+import { WorkingCopyController } from "../../src/lib/repository/working-copy-controller.ts";
 const vault = {
   sessionId: "vault-token",
   path: "/private/not-renderer-authority",
@@ -45,6 +46,33 @@ function setup() {
   };
   return { calls, reads, client, call };
 }
+test("working-copy native error frames retain readable notification text and error codes", async (context) => {
+  const f = setup();
+  const service = createNativeRepository(
+    vault,
+    async (command, args) => {
+      await f.call(command, args);
+      if (command === "desktop_repository_working_copy")
+        throw { code: "EACCES", message: "Working copy access was revoked" };
+    },
+    f.client,
+  );
+  context.after(() => service.close("close"));
+  const errors = [];
+  const controller = new WorkingCopyController(service.workingCopy, {
+    report: (error) => errors.push(error),
+    recovered() {},
+  });
+  context.after(() => controller.close());
+  await controller.refresh();
+  assert.equal(errors.length, 1);
+  assert.ok(
+    errors[0] instanceof Error,
+    "notification receives a normalized native Error",
+  );
+  assert.equal(errors[0].message, "Working copy access was revoked");
+  assert.equal(errors[0].code, "EACCES");
+});
 test("native history lazily admits exactly the opaque vault once and stays independent of AI", async () => {
   const f = setup();
   const service = createNativeRepository(vault, f.call, f.client);

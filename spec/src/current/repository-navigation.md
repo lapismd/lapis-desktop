@@ -78,3 +78,5 @@ popover links the recorded WC revision to JJ Log at its exact operation and
 explains that pending editor buffers appear after save. Background progress
 covers the read; errors use App toasts and obsolete counts disappear. Renderer
 paths, workspace names, generations and operation choices grant no authority.
+Structured native failures MUST retain their message/code as normalized Errors
+before notification; a serialized object cannot become `[object Object]` text.

@@ -174,6 +174,25 @@ test("hidden native history preserves source pins and independent admission thro
   );
   const heads = await history(session, "heads", { vault: selected.sessionId });
   assert.ok(heads.heads.length);
+  const status = JSON.parse(
+    await success(session, "desktop_repository_working_copy", {
+      request: { sessionId: selected.sessionId },
+    }),
+  );
+  assert.equal(status.operation, heads.heads[0]);
+  assert.equal(status.files, 2);
+  assert.deepEqual(status.lines, { additions: 2, deletions: 1 });
+  assert.equal(status.commit.description.trim(), "working described");
+  assert.deepEqual(digest(vault), before, "Status cannot snapshot dirty files");
+  for (const key of ["root", "workspace", "operation", "generation"]) {
+    assert.ok(
+      (
+        await invoke(session, "desktop_repository_working_copy", {
+          request: { sessionId: selected.sessionId, [key]: "outside" },
+        })
+      ).failure,
+    );
+  }
   const handle = await history(session, "open", {
     vault: selected.sessionId,
     operation: heads.heads[0],
@@ -335,6 +354,14 @@ test("hidden native history preserves source pins and independent admission thro
   await success(session, "desktop_repository_release", {
     request: { reload: true },
   });
+  assert.ok(
+    (
+      await invoke(session, "desktop_repository_working_copy", {
+        request: { sessionId: selected.sessionId },
+      })
+    ).failure,
+    "Released admission cannot authorize a physical status scan",
+  );
   assert.ok(
     (
       await invoke(session, "plugin:jj-store|heads", {

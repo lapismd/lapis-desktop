@@ -100,6 +100,7 @@ async function acceptance() {
       "tests/desktop/vault-return.test.mjs",
       "tests/desktop/properties-persistence.test.mjs",
       "tests/desktop/settings-persistence.test.mjs",
+      "tests/desktop/repository-working-copy.test.mjs",
       "tests/desktop/plugin-persistence.test.mjs",
       "tests/desktop/startup-recovery.test.mjs",
       "tests/desktop/file-operations.test.mjs",
