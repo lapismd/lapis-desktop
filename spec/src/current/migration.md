@@ -1,5 +1,8 @@
 # Migration inventory and progress
 
+E-REPO-019 previews blame with closed sidebars; live adoption awaits approval.
+LD-MIG-002 ownership and native gates remain unchanged.
+
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
 LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and
 restart recovery stay pending.

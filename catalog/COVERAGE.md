@@ -1,5 +1,20 @@
 # Desktop catalog coverage
 
+Blame layout proposal: owned production BlamePanel/View/Group at `68b130fb` are
+adapted under `support/repository/blame-review`, using the same controller,
+virtual rows and App shell. `Repository blame layout review/BlameLayout` checks
+the compact header, content-height divider, aligned source group separators and
+final-row bottom border. `TitleBarAction` proposes the public FileView
+`git-merge-conflict` action; `CommitDetails` reviews title hover/focus,
+first-line subject, author/avatar, relative time, fixture diff counts and commit
+navigation. The counts are catalog data, not native blame fields. This preview
+awaits approval before live adoption. Original jj-store source/license
+attribution remains in `docs/provenance.json`. `LargeFile` and the default
+`CommitDetails` use real local controller source text with twelve synthetic
+commits, six authors, varied group lengths, long messages, timestamps and diff
+counts. The virtual viewport scrolls to the final row and back; this remains
+fixture attribution, not live repository history.
+
 `plugins/repository/RowSelection.stories.ts` checks graph/padding/tag selection,
 independent author/copy controls and keyboard selection on both logs.
 `FileHistory.stories.ts` mounts the default right-sidebar production view,

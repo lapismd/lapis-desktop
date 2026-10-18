@@ -1,5 +1,20 @@
 # Desktop plugins and catalog
 
+Blame review stories start with both sidebars collapsed. The editor-action story
+retains its Files sidebar so the action can be exercised.
+
+E-REPO-019 is a Storybook-only blame layout proposal. Commit hover cards show
+only the first message line, clamped to two wrapped lines with ellipsis. Its
+catalog-owned copies remove the inner title/operation line, align source
+separators and end the divider at the last row's bottom border. Preview-only
+FileView actions use `git-merge-conflict`; commit title hover/focus shows a
+two-line-clamped subject with sample diff counts. No native blame fields or
+shipping registrations change. The user requires visual confirmation before
+production adoption or desktop changes; shipping blame and its existing
+production stories remain unchanged. The large preview uses local controller
+source with twelve synthetic commits, six authors and varied group sizes;
+virtual scrolling retains the final border.
+
 E-REPO-018 adds recorded file blame, sidebar Empty/icon states, aligned header
 and representative repository loading skeletons. Production stories retain
 separate native/provider/visual gates; E-REPO-017 owns original file history.

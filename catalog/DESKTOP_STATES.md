@@ -1,5 +1,17 @@
 # Desktop state review inventory
 
+Blame review stories start with left/right sidebars collapsed; the editor-action
+example keeps file navigation available.
+
+`Desktop/Repository blame layout review` previews a filename-only inner header,
+source group separators and a bottom border under the final row. The vertical
+divider ends with the content. `TitleBarAction` reviews the proposed
+`git-merge-conflict` editor action/tab icon. `CommitDetails` shows a small title
+hover/focus card with the first-line subject, author/avatar, time and sample
+diff counts. These catalog-owned copies await user confirmation; shipping Blame
+remains unchanged. `LargeFile` uses real controller source with sample
+multi-author history to review virtual scrolling and varied attribution groups.
+
 `Desktop/Repository file history` reviews default right-sidebar registration, an
 absent editor, active-file revisions, empty path history, busy/disabled refresh,
 toast recovery, rename/deletion and opening the matching JJ Log revision.
