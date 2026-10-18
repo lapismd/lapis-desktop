@@ -338,3 +338,9 @@ revoking one never grants or releases another. The AI adapter retains its
 original two-phase ticket, generation, reload, close and worker-retirement
 rules; no command, event, permission or prompt behavior changes with this
 refactor.
+
+E-AI-026 refreshes default native ACP compatibility against Lapis AI `6ce65ebb`.
+All six cold packaged transport cases pass with physical foreground assistance.
+LD-AI-001 and M10.1 retain their original gate. The new Rust-only frame
+processor is not yet injected by desktop policy; managed sanitation/durable
+capture and AgentStore/ThreadStore conversation adoption remain M13.3.

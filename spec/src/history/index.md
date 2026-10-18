@@ -150,3 +150,5 @@ by the task ledger, not inferred from this list.
 - [E-CATALOG-007: Lapis reading-view sizing](E-CATALOG-007.md)
 
 - [E-REPO-006: cold native pinned history and restart](E-REPO-006.md)
+
+- [E-AI-026: native ACP runtime refresh](E-AI-026.md)
