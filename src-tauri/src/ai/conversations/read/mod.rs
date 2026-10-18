@@ -1,4 +1,5 @@
 //! Bounded immutable conversation views; original receipts authorize no new write.
+mod retained;
 mod streams;
 use super::{invalid, provider, records, reply, unknown};
 use crate::{ai::backend::BackendCall, vault::private_profile as storage};
@@ -9,8 +10,9 @@ use jj_collab::{
 };
 use jj_store_core::{StoreOutcome, ThreadData};
 use jj_store_model::RequestId;
+pub use retained::ReadPin;
 use serde::Serialize;
-use std::{io, sync::Arc};
+use std::{collections::BTreeMap, io, sync::Arc};
 
 #[derive(Serialize)]
 struct View {
@@ -30,9 +32,10 @@ struct Session {
 }
 /// The returned JSON text preserves every native integer. Missing private intent
 /// is explicit absence; an unknown receipt is never converted to an empty view.
-pub async fn read(call: BackendCall, request: RequestId) -> io::Result<Option<String>> {
-    let call = Arc::new(call);
-    let _guard = call.preparation_guard().await?;
+pub(super) async fn confirmed(
+    call: &Arc<BackendCall>,
+    request: RequestId,
+) -> io::Result<Option<(records::Record, jj_store_core::RepositoryStores)>> {
     let (profile, root, source) = call.conversation_location()?;
     let Some(dir) = storage::existing_directory(&profile, "conversations-v1")? else {
         call.check()?;
@@ -53,6 +56,26 @@ pub async fn read(call: BackendCall, request: RequestId) -> io::Result<Option<St
     // Verify the actual original provider proof in memory, without repairing or
     // replacing private records during a read.
     provider::confirm(&mut record, receipt)?;
+    call.check()?;
+    Ok(Some((record, stores)))
+}
+pub async fn read(call: BackendCall, request: RequestId) -> io::Result<Option<String>> {
+    Ok(load(call, request, false).await?.map(|(text, _)| text))
+}
+pub async fn open(call: BackendCall, request: RequestId) -> io::Result<Option<(String, ReadPin)>> {
+    load(call, request, true).await
+}
+async fn load(
+    call: BackendCall,
+    request: RequestId,
+    retain: bool,
+) -> io::Result<Option<(String, ReadPin)>> {
+    let call = Arc::new(call);
+    let _guard = call.preparation_guard().await?;
+    let Some((record, stores)) = confirmed(&call, request).await? else {
+        return Ok(None);
+    };
+    let thread = stores.thread().ok_or_else(invalid)?;
     let threads = thread.snapshot().await.map_err(|_| unknown())?;
     let agent = stores
         .agent()
@@ -106,8 +129,16 @@ pub async fn read(call: BackendCall, request: RequestId) -> io::Result<Option<St
         .transpose()?;
     let messages = messages(&threads.data, &state, conversation.thread_id)?;
     let links = links(&threads.data, &state, conversation.thread_id)?;
-    let sessions = streams::sessions(agent.data.as_ref(), links).await?;
+    let mut cursors = BTreeMap::new();
+    let sessions = streams::sessions(agent.data.as_ref(), links, retain, &mut cursors).await?;
     call.check()?;
+    let pin = ReadPin::new(
+        request,
+        conversation.clone(),
+        threads.selection.clone(),
+        agent.data,
+        cursors,
+    );
     let view = View {
         version: 1,
         conversation,
@@ -119,7 +150,7 @@ pub async fn read(call: BackendCall, request: RequestId) -> io::Result<Option<St
     };
     let encoded = encode(&view)?;
     call.check()?;
-    Ok(Some(encoded))
+    Ok(Some((encoded, pin)))
 }
 fn messages(
     data: &ThreadData,
@@ -168,7 +199,7 @@ fn links(
     }
     Ok(result)
 }
-fn encode(value: &View) -> io::Result<String> {
+fn encode(value: &impl Serialize) -> io::Result<String> {
     struct Output(Vec<u8>);
     impl io::Write for Output {
         fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {

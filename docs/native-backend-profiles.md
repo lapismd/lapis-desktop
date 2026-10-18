@@ -238,8 +238,45 @@ shared 256 KiB payload budget and 2 MiB encoded view. A non-null
 `next_after_sequence` explicitly identifies an incomplete transcript range;
 stream metadata retains its native totals. Overflow or an unreadable stream
 fails instead of yielding an empty or supposedly complete conversation. A
-continuation command and renderer transcript projection remain integration work.
+retained continuation read can fetch the remaining pages. Renderer transcript
+projection remains integration work.
 
 The native library entrypoint is `ai::conversations::read`, consuming a counted
 `BackendCall` through result encoding. It retains no idle read owner and grants
 no executable, prompt, authoring or capture authority.
+
+## Continuing an immutable conversation read
+
+Use `openConversationRead` with the current backend `handle` and original
+preparation `requestId`. Its `conversationRead` reply is either null (no
+retained preparation) or `{ handle, snapshot }`. The new handle owns this read
+only; `snapshot` is the same bounded native JSON text, with an opaque `cursor`
+on each incomplete transcript. Retain the original backend handle separately.
+
+For each incomplete stream, send `readConversationTranscript` with the backend
+`handle`, new `readHandle`, that stream's `cursor` and `afterSequence`. Encode
+the exact returned next sequence as canonical decimal **text**, never a rounded
+JavaScript number. The `transcriptRange` reply contains version-1 JSON text with
+the original publication `selection`, conversation request, session, requested
+sequence and the bounded transcript range. Continue only from its returned next
+sequence; null means this original stream has ended. Unknown/unissued cursors,
+foreign read handles, substituted sources and malformed sequence text fail.
+Repeated page reads return the same immutable data after later capture advances.
+
+At most eight reads can remain open per backend owner; each page retains the
+32-chunk/256 KiB payload and 2 MiB encoded bounds. Close with
+`closeConversationRead`, supplying the backend `handle` and `readHandle`.
+Repeated close is harmless. Backend closure, replacement and verified renderer
+reattachment discard read handles; reopen after restart and obtain fresh
+cursors. No read is silently evicted. Idle reads retain audited immutable Agent
+objects, without holding a counted backend call or writer lease. Every page
+obtains a fresh admitted call and rechecks the exact original private
+intent/provider receipt before reading. These handles grant no prompt or
+publication authority.
+
+Rust hosts can use `ai::conversations::open_read` and `ReadPin::transcript`
+under the same ownership rules. The Tauri adapter supplies the bounded handle
+registry. A cursor is a read capability within its current admitted owner, not a
+durable conversation or agent identity. Native range proof and cold
+handle-lifetime proof remain distinct from renderer adoption and managed
+conversation restart.

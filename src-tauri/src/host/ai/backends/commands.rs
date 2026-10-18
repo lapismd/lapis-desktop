@@ -81,6 +81,32 @@ pub(super) async fn dispatch(
                     lapis_desktop::ai::conversations::read(call, request_id),
                 )?)
             }
+            Operation::OpenConversationRead { handle, request_id } => Reply::ConversationRead(
+                owner.open_read(&host, &context, &request.session_id, handle, request_id)?,
+            ),
+            Operation::ReadConversationTranscript {
+                handle,
+                read_handle,
+                cursor,
+                after_sequence,
+            } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                let read = owner.read_pin(&context.window, handle, read_handle)?;
+                Reply::TranscriptRange(tauri::async_runtime::block_on(read.transcript(
+                    call,
+                    cursor,
+                    after_sequence,
+                ))?)
+            }
+            Operation::CloseConversationRead {
+                handle,
+                read_handle,
+            } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                owner.close_read(&context.window, handle, read_handle)?;
+                call.check()?;
+                Reply::Closed
+            }
             Operation::Close { .. } => return Err(denied()),
         };
         reply.encode()

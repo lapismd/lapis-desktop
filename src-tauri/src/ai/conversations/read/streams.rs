@@ -5,14 +5,18 @@ use jj_agent::{
 use jj_collab::{ThreadLinkTargetV1, ThreadLinkV1};
 use jj_store_core::engine::{AgentReader, AgentSnapshotRead};
 use serde::Serialize;
+use std::collections::BTreeMap;
 use std::io;
+use uuid::Uuid;
 
 #[derive(Serialize)]
 pub(super) struct Transcript {
     manifest: AgentObjectRef,
     stream: TranscriptStreamV1,
     chunks: Vec<Chunk>,
-    next_after_sequence: Option<u64>,
+    pub(super) next_after_sequence: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    cursor: Option<Uuid>,
 }
 #[derive(Serialize)]
 struct Chunk {
@@ -25,6 +29,8 @@ struct Chunk {
 pub(super) async fn sessions(
     snapshot: &dyn AgentSnapshotRead,
     links: Vec<ThreadLinkV1>,
+    retain: bool,
+    cursors: &mut BTreeMap<Uuid, super::retained::Cursor>,
 ) -> io::Result<Vec<Session>> {
     let reader = AgentReader::new(snapshot);
     let mut result = Vec::new();
@@ -66,38 +72,27 @@ pub(super) async fn sessions(
                 if streams > 64 || remaining == 0 {
                     return Err(io::Error::other("Conversation transcript limit exceeded"));
                 }
-                let range = reader
-                    .transcript_range(
-                        *reference,
-                        stream.source_instance_id,
-                        stream.source_generation,
-                        None,
-                        32,
-                        remaining,
-                    )
-                    .await
-                    .map_err(|_| invalid())?;
-                let mut chunks = Vec::new();
-                for chunk in range.chunks {
+                let mut transcript =
+                    range(&reader, *reference, stream, None, remaining, None).await?;
+                for chunk in &transcript.chunks {
                     remaining = remaining
-                        .checked_sub(chunk.payload.bytes().len())
+                        .checked_sub(chunk.text.len())
                         .ok_or_else(invalid)?;
-                    chunks.push(Chunk {
-                        source_instance_id: chunk.source_instance_id,
-                        source_generation: chunk.source_generation,
-                        sequence: chunk.sequence,
-                        media_type: chunk.payload.media_type(),
-                        text: std::str::from_utf8(chunk.payload.bytes())
-                            .map_err(|_| invalid())?
-                            .to_owned(),
-                    });
                 }
-                transcripts.push(Transcript {
-                    manifest: *reference,
-                    stream,
-                    chunks,
-                    next_after_sequence: range.next_after_sequence,
-                });
+                if retain && let Some(after) = transcript.next_after_sequence {
+                    let cursor = Uuid::new_v4();
+                    cursors.insert(
+                        cursor,
+                        super::retained::Cursor::new(
+                            session_id,
+                            *reference,
+                            transcript.stream.clone(),
+                            after,
+                        ),
+                    );
+                    transcript.cursor = Some(cursor);
+                }
+                transcripts.push(transcript);
             }
         }
         result.push(Session {
@@ -107,4 +102,47 @@ pub(super) async fn sessions(
         });
     }
     Ok(result)
+}
+
+pub(super) async fn range(
+    reader: &AgentReader<'_>,
+    manifest: AgentObjectRef,
+    stream: TranscriptStreamV1,
+    after: Option<u64>,
+    bytes: usize,
+    cursor: Option<Uuid>,
+) -> io::Result<Transcript> {
+    let range = reader
+        .transcript_range(
+            manifest,
+            stream.source_instance_id,
+            stream.source_generation,
+            after,
+            32,
+            bytes,
+        )
+        .await
+        .map_err(|_| invalid())?;
+    let chunks = range
+        .chunks
+        .into_iter()
+        .map(|chunk| {
+            Ok(Chunk {
+                source_instance_id: chunk.source_instance_id,
+                source_generation: chunk.source_generation,
+                sequence: chunk.sequence,
+                media_type: chunk.payload.media_type(),
+                text: std::str::from_utf8(chunk.payload.bytes())
+                    .map_err(|_| invalid())?
+                    .to_owned(),
+            })
+        })
+        .collect::<io::Result<Vec<_>>>()?;
+    Ok(Transcript {
+        manifest,
+        stream,
+        chunks,
+        next_after_sequence: range.next_after_sequence,
+        cursor,
+    })
 }

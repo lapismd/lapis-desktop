@@ -6,6 +6,8 @@ mod capture_privacy;
 mod conversation_cancel;
 mod conversation_read_content;
 mod conversation_read_guards;
+mod conversation_read_lifetime;
+mod conversation_read_ranges;
 mod conversation_reads;
 mod conversations;
 mod factory;

@@ -44,6 +44,20 @@ pub enum Operation {
         handle: Uuid,
         request_id: RequestId,
     },
+    OpenConversationRead {
+        handle: Uuid,
+        request_id: RequestId,
+    },
+    ReadConversationTranscript {
+        handle: Uuid,
+        read_handle: Uuid,
+        cursor: Uuid,
+        after_sequence: String,
+    },
+    CloseConversationRead {
+        handle: Uuid,
+        read_handle: Uuid,
+    },
     PrepareCapture {
         handle: Uuid,
         request_id: RequestId,
@@ -85,6 +99,8 @@ pub enum Reply {
     Opened(Opened),
     Conversation(Option<lapis_desktop::ai::conversations::Conversation>),
     ConversationView(Option<String>),
+    ConversationRead(Option<super::reads::OpenedRead>),
+    TranscriptRange(String),
     Capture(super::capture::Prepared),
     Closed,
 }

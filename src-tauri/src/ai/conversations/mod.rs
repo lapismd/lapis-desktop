@@ -9,13 +9,13 @@ pub use capture::PreparedConversation;
 use jj_collab::ThreadId;
 use jj_store_core::{StoreOutcome, StoreRequest};
 use jj_store_model::{RepositoryId, RequestId};
-pub use read::read;
+pub use read::{ReadPin, open as open_read, read};
 use records::Record;
 use serde::Serialize;
 use std::{io, sync::Arc};
 use uuid::Uuid;
 
-#[derive(Debug, Serialize, PartialEq, Eq)]
+#[derive(Clone, Debug, Serialize, PartialEq, Eq)]
 #[serde(rename_all = "camelCase")]
 pub struct Conversation {
     pub request_id: RequestId,

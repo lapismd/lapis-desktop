@@ -140,6 +140,28 @@ test("hidden ordinary native command prepares a JJ conversation and recovers its
   assert.deepEqual(originalSnapshot.conversation, prepared.data);
   assert.equal(originalSnapshot.thread.thread_id, prepared.data.threadId);
   assert.deepEqual(originalSnapshot.sessions, []);
+  const openReadRequest = {
+    type: "openConversationRead",
+    handle: opened.data.handle,
+    requestId: id(3),
+  };
+  const originalRead = await backend(first, vault, openReadRequest);
+  assert.equal(originalRead.type, "conversationRead");
+  assert.match(originalRead.data.handle, /^[a-f0-9-]{36}$/);
+  assert.equal(originalRead.data.snapshot, originalView.data);
+  assert.ok(
+    (await call(first, vault, { ...openReadRequest, selection: "outside" }))
+      .failure,
+  );
+  const oldRange = {
+    type: "readConversationTranscript",
+    handle: opened.data.handle,
+    readHandle: originalRead.data.handle,
+    cursor: "00000000-0000-4000-8000-000000000001",
+    afterSequence: "32",
+  };
+  // This conversation has no transcript stream, so no stream cursor is issued.
+  assert.ok((await call(first, vault, oldRange)).failure);
   assert.equal(
     (await backend(first, vault, { ...readRequest, requestId: id(9) })).data,
     null,
@@ -201,6 +223,23 @@ test("hidden ordinary native command prepares a JJ conversation and recovers its
     requestId: id(4),
   });
   assert.notEqual(fresh.data.handle, opened.data.handle);
+  assert.ok(
+    (await call(cold, restored, { ...oldRange, handle: fresh.data.handle }))
+      .failure,
+  );
+  const coldRead = await backend(cold, restored, {
+    ...openReadRequest,
+    handle: fresh.data.handle,
+  });
+  assert.notEqual(coldRead.data.handle, originalRead.data.handle);
+  assert.equal(coldRead.data.snapshot, originalRead.data.snapshot);
+  const closeRead = {
+    type: "closeConversationRead",
+    handle: fresh.data.handle,
+    readHandle: coldRead.data.handle,
+  };
+  assert.equal((await backend(cold, restored, closeRead)).type, "closed");
+  assert.equal((await backend(cold, restored, closeRead)).type, "closed");
   const recovery = {
     type: "conversationStatus",
     handle: fresh.data.handle,

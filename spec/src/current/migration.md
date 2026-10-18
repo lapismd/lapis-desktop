@@ -3,7 +3,7 @@
 E-REPO-009 records NOTES-05H compact JJ Log/Op Log headers matching jj-store.
 Original history pins and native conversation gates remain unchanged.
 
-E-AI-037 records NOTES-07I bounded native conversation/thread/capture reads with
+E-AI-037/038 record bounded native conversation reads/continuation with
 same-publication selection and lossless integer text. Renderer projection and
 managed execution/chat/restart remain open; M13/M13.3 keep their original gates.
 

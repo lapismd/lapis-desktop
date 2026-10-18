@@ -4,6 +4,7 @@ mod conversations;
 mod frames;
 mod privacy;
 mod processing;
+mod reads;
 mod retirement;
 use crate::host::state::NativeHost;
 use cap_std::{ambient_authority, fs::Dir};
@@ -34,6 +35,7 @@ struct Owner {
     scope: Arc<BackendScope>,
     rebindable: bool,
     captures: HashMap<RequestId, capture::Plan>,
+    reads: HashMap<Uuid, Arc<lapis_desktop::ai::conversations::ReadPin>>,
 }
 pub struct NativeBackends {
     profile: Dir,
@@ -145,6 +147,7 @@ impl NativeBackends {
                         return Err(busy());
                     }
                     owner.opened.handle = Uuid::new_v4();
+                    owner.reads.clear();
                     owner.request = request;
                     owner.rebindable = false;
                     owner.session = session.into();
@@ -170,6 +173,7 @@ impl NativeBackends {
                 scope: scope.clone(),
                 rebindable: false,
                 captures: HashMap::new(),
+                reads: HashMap::new(),
             },
         );
         scope.begin()?.check()?;

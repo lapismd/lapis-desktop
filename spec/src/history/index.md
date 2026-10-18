@@ -175,3 +175,5 @@ by the task ledger, not inferred from this list.
 - [Confirmed native conversation views](E-AI-037.md)
 
 - [Compact repository column headers](E-REPO-009.md)
+
+- [Retained native transcript continuation](E-AI-038.md)

@@ -177,3 +177,5 @@
 - [Confirmed native conversation views](history/E-AI-037.md)
 
 - [Compact repository column headers](history/E-REPO-009.md)
+
+- [Retained native transcript continuation](history/E-AI-038.md)

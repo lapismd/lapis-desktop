@@ -80,3 +80,10 @@ lossless JSON text. Use `readConversation` with the original preparation request
 and current owner handle. It verifies provider proof without publishing or
 repairing private state; see the backend guide for bounds and incomplete
 transcript ranges.
+
+For remaining transcript ranges, `openConversationRead` retains an immutable
+snapshot behind a bounded native read handle. Read its issued stream cursor with
+`readConversationTranscript`, passing the next sequence as exact decimal text;
+close with `closeConversationRead`. Each page rechecks admission and the
+original receipt. Rust hosts use `open_read` and `ReadPin::transcript`. See the
+[backend guide](../docs/native-backend-profiles.md) for lifetime and bounds.

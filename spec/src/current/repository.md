@@ -265,7 +265,17 @@ Schema-1 views admit 64 human messages/256 KiB of bodies, 16 linked sessions, 64
 streams and 2 MiB encoded text. Transcript payloads share a 256 KiB budget with
 at most 32 chunks per stream; native totals and a non-null continuation sequence
 identify incomplete ranges. Refusal MUST NOT masquerade as empty or complete
-data. Continuation transport remains a separate integration step.
+data. Retained conversation reads use native opaque read and stream handles,
+with at most eight open reads per backend owner. Continuation pages retain that
+exact Agent snapshot and its matching Thread selection across later capture.
+Every page revalidates current admission and the original conversation receipt;
+renderer input cannot substitute a session, manifest, source or selection.
+Canonical decimal sequence text preserves full-width cursor values. Pages keep
+32-chunk/256 KiB limits and explicit next sequences. Explicit close is
+idempotent; owner close/replacement and renderer reattachment retire retained
+reads. Idle reads retain immutable read data, never a counted backend call or
+writer lease. Renderer projection, authoring and managed execution retain
+separate gates.
 
 ## Commit and operation-log columns
 

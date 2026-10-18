@@ -8,8 +8,8 @@ owns the lifetime, revocation and pending-adoption details.
 The native backend retains exact private receipts and an exclusive owner lease.
 Confirmed conversations may explicitly prepare a native capture target; the
 ordinary factory composes native privacy, journal and Agent/Thread stores. Close
-drains ownership. E-AI-037 adds pinned native reads; execution, renderer
-adoption and restart remain open.
+drains ownership. E-AI-037/038 cover native reads and retained continuation;
+execution, renderer adoption and managed restart remain open.
 
 AI catalog scenes expose product presentation only. Fixture observations, fault
 injection, settings changes and lifetime controls use owned review ports outside
