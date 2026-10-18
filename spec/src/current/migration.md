@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+E-REPO-010 qualifies NOTES-05I3A operation-card composition with exact parent
+navigation and source-style author metadata. M13.2 stays Done; M13/M13.3,
+whole-view parity and visual approval retain their gates.
+
 E-REPO-009 records NOTES-05H compact JJ Log/Op Log headers matching jj-store.
 Original history pins and native conversation gates remain unchanged.
 

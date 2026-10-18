@@ -286,11 +286,14 @@ widths, with source/license attribution in `docs/provenance.json`. Production
 cannot import either repository's application or catalog state.
 
 History retains its exact operation and revision/file comparison semantics. File
-selection opens the diff column; operation metadata opens through an explicit
-details control. Expanding rows keeps file choices in view. Wide panes provide
-resizable columns and narrow panes use Column Canvas compact navigation,
-including return to the log. The root measures its own pane; no viewport media
-query chooses this behavior.
+selection opens the diff column. Op Log selection opens one comparison column
+with a collapsible operation card above the file diff, matching jj-store's
+header, author rail, parent pills and card spacing. The author fallback retains
+the original initials/palette and short operation diffs fit their content.
+Native delta details remain available through a secondary disclosure. Expanding
+rows keeps file choices in view. Wide panes provide resizable columns and narrow
+panes use Column Canvas compact navigation, including return to the log. The
+root measures its own pane; no viewport media query chooses this behavior.
 
 Op Log has an independent pinned reader and layout state. Its bounded operation
 graph preserves full operation/parent identities, descriptions, actor/host,
@@ -326,5 +329,17 @@ Operation rows expose bounded native change groups after an exact parent delta.
 The user selects the changed revision, then the native exact pair or both sides
 of an explicitly ambiguous pair. Unavailable comparisons never invent endpoints.
 Changed paths and text use that view's existing pinned handle and the same file
-and diff presentation; metadata details remain a separate column. Source refusal
-uses the application notification/retry path without fallback or an empty diff.
+and diff presentation; metadata and diff share a column. Parent navigation
+resolves exact native IDs through qualified pinned operation graph pages,
+including parents beyond the displayed page, without moving the retained pin.
+Lookup admits at most four 50-node pages and rejects repeated continuations;
+exceeding this bound stays explicitly unavailable. Source refusal uses the
+application notification/retry path without fallback or an empty diff.
+
+An operation outside the loaded graph retains reachable comparison/file controls
+without fabricating a graph row.
+
+A fixture review story opens JJ Log and Op Log in separate production workspace
+tabs. Each retains its independent pin, expanded files and selected diff while
+the user switches between them. Whole-view parity and visual approval remain
+separate from this comparison preview.

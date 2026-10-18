@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-REPO-010 maps stacked operation/file cards and unloaded-parent recovery to
+production repository stories. No native plugin capability changes.
+
 E-REPO-009 maps compact history/Op Log headers to production Column Canvas
 composition. Header review covers narrow panes and both themes; the complete
 repository family retains pin, refresh, loading and recovery coverage.

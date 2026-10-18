@@ -32,6 +32,9 @@ async function open(element: HTMLElement) {
   await userEvent.click(
     await canvas.findByRole("button", { name: /describe commit/ }),
   );
+  await userEvent.click(
+    await canvas.findByRole("button", { name: "Close Diff column" }),
+  );
   return canvas;
 }
 async function group(canvas: ReturnType<typeof within>) {

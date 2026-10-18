@@ -274,3 +274,18 @@ selection, exact file/diff comparison, explicit ambiguous pairs, unavailable
 content, revision-load toast recovery and path failures that never appear empty.
 All use production views and remain visual-pending; real native operation-read
 acceptance is separate.
+
+`plugins/repository/OperationLayout.stories.ts` covers the jj-store stacked
+operation/file cards, 12px spacing, author/avatar, exact ID copy, disclosure,
+file selection, split diff, close/reopen and loaded/unloaded parent navigation.
+UnloadedParentFailureAndRecovery and ParentLookupBound assert application toasts
+and retained selection; the former also qualifies explicit retry. Native delta
+details remain accessible from the operation header; no independent metadata
+column remains. Both themes and widths remain visual-pending. Source attribution
+is in docs/provenance.json.
+
+`plugins/repository/Comparison.stories.ts` opens both production repository
+views as separate workspace tabs over the same fixture. JJ Log retains its
+expanded file and split diff when switching to Op Log and back; Op Log retains
+its stacked operation/file cards and exact independent pin. Both themes and
+widths remain visual-pending. This is fixture review, not native capture proof.

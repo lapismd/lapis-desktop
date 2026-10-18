@@ -128,7 +128,7 @@
       No file comparison for the root operation.
     </p>
   {:else if !snapshot.parent}<p>
-      Choose a parent in operation details to compare changes.
+      Choose a comparison parent in the operation card.
     </p>{/if}
 </div>
 

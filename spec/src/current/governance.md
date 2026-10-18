@@ -1,6 +1,6 @@
 # Governance
 
-E-AI-037/038 and E-REPO-009 retain separate native/UI gates. Column Canvas
+E-AI-037/038 and E-REPO-009/010 retain separate native/UI gates. Column Canvas
 source attribution lives in `docs/provenance.json`.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host

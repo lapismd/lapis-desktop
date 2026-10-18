@@ -6,15 +6,21 @@
     change,
     viewMode = "unified",
     wrap = false,
+    compact = false,
   }: {
     change: LocalFileDiffChange;
     viewMode?: FileDiffViewMode;
     wrap?: boolean;
+    compact?: boolean;
   } = $props();
   const content = $derived(diffText(change));
 </script>
 
-<section class="repository-diff" aria-label={`Changes to ${change.path}`}>
+<section
+  class="repository-diff"
+  data-compact={compact || undefined}
+  aria-label={`Changes to ${change.path}`}
+>
   {#if "unavailable" in content}<p role="status">
       Preview unavailable: {content.unavailable}.
     </p>
@@ -33,6 +39,9 @@
     flex-direction: column;
     min-width: 0;
     min-height: 16rem;
+  }
+  .repository-diff[data-compact] {
+    min-height: 0;
   }
   p {
     padding: 1rem;

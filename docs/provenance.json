@@ -93,6 +93,38 @@
         }
       ],
       "use": "Adapted public Column Canvas title/count/actions/toggle composition and the body-title omission governed by shared-application.md. Native pin selection and refresh remain Notes-owned; no application state or query capabilities are imported."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "5b11966779de92a60876e619c30c5575cef011ac",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRepositoryLogDiff.svelte",
+          "destination": "src/components/repository/RepositoryOperationColumn.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/repository-log-diff.css",
+          "destination": "src/components/repository/repository-operation-column.css"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRepositoryLogRail.svelte",
+          "destination": "src/components/repository/RepositoryOperationRail.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsGitAuthorAvatar.svelte",
+          "destination": "src/components/repository/RepositoryAuthorAvatar.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-member-avatar/model.ts",
+          "destination": "src/components/repository/RepositoryAuthorAvatar.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-member-avatar/community-member-avatar.css",
+          "destination": "src/components/repository/RepositoryAuthorAvatar.svelte"
+        }
+      ],
+      "use": "Adapted stacked operation/file cards, disclosure, compact author/time/ID metadata rail, exact parent navigation, spacing and empty-state metrics. Uses public Design Core components and HTML host styling only; native operation changes remain a secondary disclosure. Notes owns pin, reader, clipboard/toast and navigation authority. The application-owned author fallback copies the original name seed, initials, seven-color palette and 32px/14px/700 geometry. Profile lookup and agent presence/runtime state are excluded; this is presentation, not a replacement for a dependency defect."
     }
   ]
 }

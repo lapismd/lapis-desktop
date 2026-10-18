@@ -177,3 +177,5 @@ by the task ledger, not inferred from this list.
 - [Compact repository column headers](E-REPO-009.md)
 
 - [Retained native transcript continuation](E-AI-038.md)
+
+- [Stacked operation card and file diff](E-REPO-010.md)

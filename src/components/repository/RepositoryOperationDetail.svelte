@@ -17,9 +17,6 @@
 <div class="operation-detail">
   {#if state.selected}
     {@const node = state.selected}
-    <h3>{node.description || "No description"}</h3>
-    <code>{node.id}</code>
-    <p>{node.user}@{node.host} · {timestampLabel(node.end.millis)}</p>
     <dl>
       <dt>View</dt>
       <dd><code>{node.view}</code></dd>
@@ -33,22 +30,6 @@
     <Button variant="outline" size="sm" onclick={() => onHistory(node.id)}
       >Inspect in History</Button
     >
-    {#if node.parents.length}
-      <label
-        >Compare with parent
-        <select
-          aria-label="Compare operation with parent"
-          value={state.parent ?? ""}
-          onchange={(event) =>
-            controller.selectParent(event.currentTarget.value)}
-        >
-          <option value="" disabled>Choose a parent</option>
-          {#each node.parents as parent (parent)}<option value={parent}
-              >{parent}</option
-            >{/each}
-        </select>
-      </label>
-    {/if}
     {#if state.detail}
       {@const detail = state.detail}
       {#if detail.status !== "difference"}
@@ -101,7 +82,6 @@
     min-width: 0;
     font-size: 0.875rem;
   }
-  h3,
   h4,
   h5 {
     font-size: 0.875rem;
@@ -124,20 +104,5 @@
   dd {
     margin: 0;
     overflow-wrap: anywhere;
-  }
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    margin-block: 1rem;
-  }
-  select {
-    min-width: 0;
-    width: 100%;
-    padding: 0.375rem;
-    background: var(--background);
-    color: var(--foreground);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
   }
 </style>

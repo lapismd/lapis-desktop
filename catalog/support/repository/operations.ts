@@ -75,7 +75,8 @@ export function operationFixture(scenario = "operation-ready") {
   };
   let failed =
     scenario === "operation-detail-failure" ||
-    scenario === "operation-files-failure";
+    scenario === "operation-files-failure" ||
+    scenario === "operation-parent-failure";
   let graphFailed = scenario === "operation-graph-failure";
   const nodes =
     scenario === "operation-empty"
@@ -83,6 +84,9 @@ export function operationFixture(scenario = "operation-ready") {
       : [operationNode(), operationNode(otherOperation, [])];
   if (scenario === "operation-merge") nodes[0].parents.push("ad".repeat(64));
   if (scenario === "operation-snapshot") nodes[0].is_snapshot = true;
+  if (["operation-parent-failure", "operation-parent-bound"].includes(scenario))
+    nodes[0].parents = ["ad".repeat(64)];
+  let parentPages = 0;
   f.reader.read = async (
     handle: string,
     query: LocalCodeQuery,
@@ -91,6 +95,42 @@ export function operationFixture(scenario = "operation-ready") {
       f.calls.push([handle, query]);
       if (graphFailed)
         throw new Error("The operation history could not be read");
+      const after = query.query[1].after;
+      if (scenario === "operation-parent-bound" && after) {
+        parentPages++;
+        const id = String(parentPages).repeat(128);
+        return {
+          kind: "graph",
+          data: {
+            version: 1,
+            operation: pins.get(handle)!,
+            data: { graph: "operations", nodes: [operationNode(id)] },
+            next: { kind: "operation", id },
+            stats: stats(),
+          },
+        };
+      }
+      if (scenario === "operation-parent-failure" && after) {
+        if (failed) throw new Error("The parent operation could not be read");
+        return {
+          kind: "graph",
+          data: {
+            version: 1,
+            operation: pins.get(handle)!,
+            data: {
+              graph: "operations",
+              nodes: [
+                {
+                  ...operationNode("ad".repeat(64)),
+                  description: "unloaded parent",
+                },
+              ],
+            },
+            next: null,
+            stats: stats(),
+          },
+        };
+      }
       return {
         kind: "graph",
         data: {

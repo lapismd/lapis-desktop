@@ -3,7 +3,7 @@
 E-AI-036/037/038 preserve LD-DESK-003: native capture, conversation reads and
 retained continuation keep owned drains and vault admission.
 
-E-REPO-009 aligns log headers; native gates stay explicit.
+E-REPO-010 aligns log cards; native gates stay explicit.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on

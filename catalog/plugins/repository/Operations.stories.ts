@@ -38,7 +38,9 @@ export const OperationGraphAndChanges: Story = {
       await canvas.findByRole("button", { name: /describe commit/ }),
     );
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Inspect operation details" }),
+      await canvas.findByRole("button", {
+        name: "Inspect native operation changes",
+      }),
     );
     await expect(
       await canvas.findByRole("region", { name: "Operation changes" }),
@@ -59,7 +61,9 @@ export const RootOperation: Story = {
       await canvas.findByRole("button", { name: /initialize repo/ }),
     );
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Inspect operation details" }),
+      await canvas.findByRole("button", {
+        name: "Inspect native operation changes",
+      }),
     );
     await expect(
       await canvas.findByText("This is the root operation."),
@@ -76,9 +80,6 @@ export const MergeParentChoice: Story = {
     await userEvent.click(
       await canvas.findByRole("button", { name: /describe commit/ }),
     );
-    await userEvent.click(
-      await canvas.findByRole("button", { name: "Inspect operation details" }),
-    );
     await expect(
       await canvas.findByText("Choose a parent to compare this operation."),
     ).toBeVisible();
@@ -87,6 +88,9 @@ export const MergeParentChoice: Story = {
     });
     await expect(parent).toHaveValue("");
     await userEvent.selectOptions(parent, otherOperation);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Inspect native operation changes" }),
+    );
     await expect(
       await canvas.findByRole("region", { name: "Operation changes" }),
     ).toBeVisible();
@@ -99,7 +103,9 @@ export const RefreshRetainsPinAndSeparateHistory: Story = {
       await canvas.findByRole("button", { name: /initialize repo/ }),
     );
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Inspect operation details" }),
+      await canvas.findByRole("button", {
+        name: "Inspect native operation changes",
+      }),
     );
     const { fixture } = historyContext(canvasElement);
     fixture.advance();
@@ -136,7 +142,9 @@ export const DetailFailureAndRecovery: Story = {
       await canvas.findByRole("button", { name: /describe commit/ }),
     );
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Inspect operation details" }),
+      await canvas.findByRole("button", {
+        name: "Inspect native operation changes",
+      }),
     );
     const body = within(canvasElement.ownerDocument.body);
     await expect(

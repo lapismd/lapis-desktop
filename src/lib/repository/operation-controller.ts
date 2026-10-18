@@ -1,3 +1,4 @@
+import { operationParent } from "./operation-parent.ts";
 import { OperationFiles } from "./operation-files.ts";
 import type { Handle, LocalGraphOperationNode } from "@lapismd/jj-history";
 import type { HistoryReader } from "./history-reader.ts";
@@ -175,14 +176,38 @@ export class OperationController {
   }
   select(node: LocalGraphOperationNode): Promise<void> {
     return this.#run(async () => {
-      const selected = this.#state.nodes.find((item) => item.id === node.id);
+      const selected =
+        this.#state.selected?.id === node.id
+          ? this.#state.selected
+          : this.#state.nodes.find((item) => item.id === node.id);
       check(selected);
-      this.#detail++;
-      this.files.reset();
-      this.#set({ selected, parent: undefined, detail: undefined });
-      if (selected.parents.length <= 1)
-        await this.#compare(selected.parents[0]);
+      await this.#selectNode(selected);
     });
+  }
+  selectId(id: string): Promise<void> {
+    return this.#run(async () => {
+      const known = this.#state.nodes.find((node) => node.id === id);
+      if (known) return this.#selectNode(known);
+      const handle = this.#handle;
+      check(handle && this.#state.selected?.parents.includes(id));
+      const request = ++this.#detail;
+      const node = await operationParent(
+        this.reader,
+        handle,
+        this.#state.operation!,
+        this.#state.selected!.id,
+        id,
+        () =>
+          !this.#closed && handle === this.#handle && request === this.#detail,
+      );
+      if (node) await this.#selectNode(node);
+    });
+  }
+  async #selectNode(selected: LocalGraphOperationNode): Promise<void> {
+    this.#detail++;
+    this.files.reset();
+    this.#set({ selected, parent: undefined, detail: undefined });
+    if (selected.parents.length <= 1) await this.#compare(selected.parents[0]);
   }
   selectParent(parent: string): Promise<void> {
     return this.#run(async () => {

@@ -215,3 +215,129 @@ test("late operation graph reads cannot overwrite a newer pin", async () => {
   await f.c.close();
   assert.equal(f.closed.length, 2);
 });
+
+test("parent navigation uses only qualified prepared graph pages and retains the exact pin", async () => {
+  const f = setup();
+  await f.c.refresh();
+  const unloaded = "ad".repeat(64),
+    between = "be".repeat(64);
+  f.c.state.nodes[0].parents = [unloaded];
+  await f.c.select(f.c.state.nodes[0]);
+  const read = f.reader.read,
+    pages = [];
+  f.reader.read = async (h, q) => {
+    if (q.kind === "operation") throw new Error("IndexRebuildRequired");
+    if (q.kind !== "graph") return read(h, q);
+    pages.push([h, q]);
+    const after = q.query[1].after;
+    const node = {
+      ...operationNode(unloaded),
+      description: "unloaded parent",
+      user: "Parent author",
+      workspace: "workspace",
+      attributes: { native: "retained" },
+    };
+    return {
+      kind: "graph",
+      data: {
+        version: 1,
+        operation,
+        data: {
+          graph: "operations",
+          nodes: after.id === operation ? [operationNode(between)] : [node],
+        },
+        next:
+          after.id === operation ? { kind: "operation", id: between } : null,
+        stats,
+      },
+    };
+  };
+  await f.c.selectId(unloaded);
+  assert.equal(f.c.state.operation, operation);
+  assert.equal(f.c.state.selected.id, unloaded);
+  assert.equal(f.c.state.selected.user, "Parent author");
+  assert.equal(f.c.state.selected.workspace, "workspace");
+  assert.equal(f.c.state.selected.end.millis, 1792252800001n);
+  assert.deepEqual(f.c.state.selected.attributes, { native: "retained" });
+  assert.deepEqual(
+    pages.map(([, q]) => q.query[1]),
+    [
+      { limit: 50, after: { kind: "operation", id: operation } },
+      { limit: 50, after: { kind: "operation", id: between } },
+    ],
+  );
+  assert.ok(pages.every(([h]) => h === "handle-1"));
+  await f.c.select(f.c.state.selected);
+  assert.deepEqual(f.errors, []);
+  await f.c.close();
+});
+
+test("unloaded parent pages fence stale results and refuse substituted pins or missing IDs", async () => {
+  const f = setup();
+  await f.c.refresh();
+  const unloaded = "ad".repeat(64);
+  f.c.state.nodes[0].parents = [unloaded];
+  await f.c.select(f.c.state.nodes[0]);
+  const read = f.reader.read;
+  let release;
+  f.reader.read = (h, q) =>
+    q.kind === "graph" ? new Promise((r) => (release = r)) : read(h, q);
+  const late = f.c.selectId(unloaded);
+  await f.c.select(f.c.state.nodes[1]);
+  if (release) release({ kind: "wrong" });
+  await late;
+  assert.equal(f.c.state.selected.id, otherOperation);
+  assert.deepEqual(f.errors, []);
+  await f.c.select(f.c.state.nodes[0]);
+  for (const pin of [otherOperation, operation]) {
+    const wrong = f.c.selectId(unloaded);
+    if (release)
+      release({
+        kind: "graph",
+        data: {
+          operation: pin,
+          data: { graph: "operations", nodes: [operationNode(otherOperation)] },
+          next: null,
+        },
+      });
+    await wrong;
+    assert.equal(f.c.state.selected.id, operation);
+  }
+  assert.equal(f.errors.length, 2);
+  await f.c.close();
+});
+
+test("unloaded parent lookup bounds work and rejects repeated graph continuations", async () => {
+  for (const repeated of [false, true]) {
+    const f = setup();
+    await f.c.refresh();
+    f.c.state.nodes[0].parents = ["ad".repeat(64)];
+    await f.c.select(f.c.state.nodes[0]);
+    const read = f.reader.read;
+    let pages = 0;
+    f.reader.read = (h, q) => {
+      if (q.kind !== "graph") return read(h, q);
+      pages++;
+      return Promise.resolve({
+        kind: "graph",
+        data: {
+          operation,
+          data: {
+            graph: "operations",
+            nodes: [operationNode(`${pages}`.repeat(128))],
+          },
+          next: {
+            kind: "operation",
+            id: repeated ? operation : `${pages}`.repeat(128),
+          },
+        },
+      });
+    };
+    await f.c.selectId("ad".repeat(64));
+    assert.equal(pages, repeated ? 1 : 4);
+    assert.equal(f.errors.length, 1);
+    assert.equal(f.c.state.selected.id, operation);
+    assert.equal(f.c.state.operation, operation);
+    await f.c.close();
+  }
+});

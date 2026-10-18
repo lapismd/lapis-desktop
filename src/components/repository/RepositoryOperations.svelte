@@ -8,10 +8,9 @@
   import { operationRows } from "../../lib/repository/graph/model.ts";
   import { createLogCanvas } from "../../lib/repository/log-canvas.ts";
   import RepositoryOperationFiles from "./RepositoryOperationFiles.svelte";
-  import RepositoryDiffColumn from "./RepositoryDiffColumn.svelte";
+  import RepositoryOperationColumn from "./RepositoryOperationColumn.svelte";
   import RepositoryShell from "./RepositoryShell.svelte";
   import RepositoryGraph from "./RepositoryGraph.svelte";
-  import RepositoryOperationDetail from "./RepositoryOperationDetail.svelte";
   let {
     controller,
     initialOperation,
@@ -31,7 +30,7 @@
   const selection = $derived(
     `${state.selected?.id ?? ""}/${state.files.path ?? ""}`,
   );
-  const canvas = createLogCanvas(true);
+  const canvas = createLogCanvas();
   let selectedOperation: string | undefined;
   onDestroy(() => void canvas.dispose());
   $effect(() => {
@@ -43,14 +42,12 @@
       if (id) {
         canvas.select(0, id);
       }
-      if (id !== selectedOperation) {
-        canvas.close("details");
-        selectedOperation = id;
-      }
+      if (id && id !== selectedOperation) canvas.open("diff");
+      selectedOperation = id;
       if (path) {
         canvas.select(1, path);
         canvas.open("diff");
-      } else canvas.close("diff");
+      } else if (!id) canvas.close("diff");
     });
   });
   onMount(() => {
@@ -100,6 +97,17 @@
                   : "No repository operations available."}
               </p>{/if}
             {#if state.snapshot}
+              {#if state.selected && !state.nodes.some((node) => node.id === state.selected?.id)}
+                <section aria-label="Selected operation outside loaded graph">
+                  <p>The selected operation is outside this graph page.</p>
+                  <RepositoryOperationFiles
+                    {state}
+                    {controller}
+                    onOpenDiff={() => canvas.open("diff")}
+                    onOpenDetails={() => canvas.open("diff")}
+                  />
+                </section>
+              {/if}
               {#if !state.ready && !state.busy}<p role="status">
                   Operations are unavailable. Refresh to try again.
                 </p>
@@ -124,7 +132,7 @@
                     {state}
                     {controller}
                     onOpenDiff={() => canvas.open("diff")}
-                    onOpenDetails={() => canvas.open("details")}
+                    onOpenDetails={() => canvas.open("diff")}
                   />{/snippet}
               </RepositoryGraph>
               {#if state.next}<Button
@@ -138,28 +146,11 @@
             {/if}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
-        <ColumnCanvas.Column
-          id="details"
-          columnTitle="Operation details"
-          aria-label="Operation details"
-        >
-          <ColumnCanvas.Header
-            ><ColumnCanvas.Title>Operation details</ColumnCanvas.Title
-            ><ColumnCanvas.Close
-              aria-label="Close operation details column"
-            /></ColumnCanvas.Header
-          >
-          <ColumnCanvas.Body
-            ><RepositoryOperationDetail
-              {state}
-              {controller}
-              {onHistory}
-            /></ColumnCanvas.Body
-          >
-        </ColumnCanvas.Column>
-        <RepositoryDiffColumn
-          state={{ ...state.files, busy: state.busy }}
-          controller={controller.files}
+        <RepositoryOperationColumn
+          {state}
+          {controller}
+          {onHistory}
+          {copyText}
         />
       </ColumnCanvas.Root>
     </div>
