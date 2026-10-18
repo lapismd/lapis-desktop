@@ -153,6 +153,7 @@
 - [Compact merge settings](history/E-CATALOG-006.md)
 
 - [Lapis reading-view sizing](history/E-CATALOG-007.md)
+- [Scoped preview lifecycle and cache maintenance](history/E-CATALOG-008.md)
 
   - [Native ACP runtime refresh](history/E-AI-026.md)
 

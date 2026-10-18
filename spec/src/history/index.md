@@ -148,6 +148,7 @@ by the task ledger, not inferred from this list.
 - [E-CATALOG-006: Compact merge settings](E-CATALOG-006.md)
 
 - [E-CATALOG-007: Lapis reading-view sizing](E-CATALOG-007.md)
+- [Scoped preview lifecycle and cache maintenance](E-CATALOG-008.md)
 
 - [E-REPO-006: cold native pinned history and restart](E-REPO-006.md)
 

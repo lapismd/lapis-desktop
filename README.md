@@ -103,10 +103,37 @@ UI during repeatable automation; native keyboard/picker input is recorded
 separately. Normal application builds include no desktop automation plugin,
 permissions or frontend hook.
 
-For UI review, run `pnpm storybook` at <http://localhost:7480>. The
+For foreground UI review, run `pnpm storybook` at <http://127.0.0.1:7480>. The
 [desktop state inventory](catalog/DESKTOP_STATES.md) maps production shell,
 startup/recovery, vault and conflict scenes plus desktop-only plugin coverage.
 Each uses disposable state and the smallest required shell.
+
+For a retained preview, use the scoped maintenance commands:
+
+```sh
+pnpm storybook:start -- --port 7490
+pnpm storybook:status -- --port 7490
+pnpm storybook:restart -- --port 7490
+pnpm storybook:stop -- --port 7490
+pnpm storybook:clean
+pnpm storybook:clean -- --apply
+```
+
+The default port is 7480; `LAPIS_STORYBOOK_PORT` sets another default. Managed
+commands control their recorded server only. An existing foreground or unrelated
+listener is reported as `foreign` and preserved; stop that launcher before
+starting a managed preview on its port. Logs live in
+`.local/storybook/PORT.log`. `running` means the owned server answers its story
+index; `unready` retains an owned process that does not. UI acceptance is
+separate. Components/styles use HMR; runtime/fixture edits reconstruct the App.
+
+Cache cleaning is checkout-wide and previews its targets by default. Applying it
+requires all checkout Storybook/Vite/Vitest Node consumers to be stopped. It
+removes only `node_modules/.cache/storybook` and `node_modules/.vite`; fixtures,
+native data, logs and static exports remain. Symlinked targets are refused.
+These commands use macOS/Linux `ps` and `lsof`; this slice is qualified on macOS
+ARM64. Verified local package archive replacements still require the documented
+install step and a preview restart.
 
 The local debug application is emitted under
 `src-tauri/target/debug/bundle/macos/Lapis Notes Preview.app`. Signed public

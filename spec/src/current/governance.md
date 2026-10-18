@@ -1,7 +1,7 @@
 # Governance
 
-E-REPO-011 records attributed parent cards and owned-runtime catalog reload.
-Native/UI gates stay separate; `docs/provenance.json` retains source ownership.
+E-CATALOG-008 qualifies scoped preview process/cache tools. Native/UI gates and
+source ownership remain separate.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

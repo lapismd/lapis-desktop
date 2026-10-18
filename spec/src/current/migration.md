@@ -1,9 +1,14 @@
 # Migration inventory and progress
 
+E-CATALOG-008 qualifies NOTES-05I0B managed preview commands and cache
+safeguards, with 18 focused/242 Node and 804 catalog checks. NOTES-05I0A/B
+complete the preview workflow; Op Log endpoints and native conversation, restart
+and visual gates stay open.
+
 E-REPO-011 qualifies NOTES-05I2A JJ parent Command View cards and NOTES-05I0A
-owned-runtime preview reload. Operation/revision selectors and preview
-maintenance remain open. M13.2 stays Done; M13/M13.3, whole-view parity and
-visual approval retain their gates.
+owned-runtime preview reload. Operation/revision selectors remain open; the
+preview workflow is qualified above. M13.2 stays Done; M13/M13.3, whole-view
+parity and visual approval retain their gates.
 
 E-REPO-009 records NOTES-05H compact JJ Log/Op Log headers matching jj-store.
 Original history pins and native conversation gates remain unchanged.

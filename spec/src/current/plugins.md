@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-CATALOG-008 qualifies scoped preview commands, live identity/index checks,
+cache safeguards and actual cold/HMR proof; all 804 catalog checks pass.
+
 E-REPO-010 maps stacked operation/file cards and unloaded-parent recovery to
 production repository stories. No native plugin capability changes.
 
@@ -19,6 +22,23 @@ must trigger a full preview reload; retained old class/state shapes cannot be
 treated as current implementation. Reload scope stays within this checkout's
 `src` runtime scripts and `catalog/support` fixtures. Generated outputs and
 sibling repositories do not trigger this lifecycle policy.
+
+Managed preview commands retain the foreground launcher and use literal loopback
+with an exact selected port. Start/restart preflight installed CLI and
+configuration before stopping an existing managed process. Stop verifies the
+recorded PID, owner, start time, command and checkout directory against live OS
+state; stale records and unowned listeners grant no signal authority. Commands
+serialize through a checkout-owned lease. Startup/stop failures retain unknown
+ownership until confirmed cleanup; unrelated/native processes remain untouched.
+Cache maintenance defaults to a dry run. Applying it requires no detected live
+checkout Storybook/Vite/Vitest Node consumers and admits only the two named
+dependency caches, with no symlink traversal. Native data, fixtures and static
+deliverables remain outside cleanup. Logs and bounded ownership records stay
+ignored.
+
+Status distinguishes a verified listening process whose story index responds
+from an owned but unready process. Unready observations preserve ownership and
+cannot authorize another start; they remain explicitly stoppable.
 
 | ID             | Requirement                                                                                                                                                                                                                                                                                                                                                                                                              |
 | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
