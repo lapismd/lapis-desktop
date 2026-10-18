@@ -1,5 +1,5 @@
 //! Native repository grants independent of AI admission and renderer authority.
-mod source;
+pub(crate) mod source;
 use crate::vault::{
     VaultManager,
     admission::{AdmissionPlan, RetiredAdmission, VaultAdmissions, VaultLease},

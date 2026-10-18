@@ -1,6 +1,6 @@
 //! Profile-owned durable capture records; provider receipts remain authoritative.
 mod scope;
-mod storage;
+use crate::vault::private_profile as storage;
 use cap_std::fs::{Dir, MetadataExt as _};
 use jj_store_conversations::{capture::CaptureError, store_capture::*};
 use jj_store_core::PublicationScope;

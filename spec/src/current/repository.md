@@ -144,3 +144,19 @@ An incomplete or unknown record is retained and never reclaimed as a new intent.
 This journal grants no execution or publication authority; original provider
 receipt replay remains mandatory. Host/backend selection and native callback
 drain retain their separate integration gates.
+
+## Admitted backend profiles
+
+A device profile selects `vault-files` or `jj` for an exact physical vault.
+Reading an absent selection retains the named legacy backend without creating
+repository or profile state. Malformed selections fail; they never choose a
+different writer. JJ selection verifies existing source witnesses without
+initialization. Opaque private source fingerprints are rechecked when opening
+and using an owner. A changed JJ binding requires an explicit new selection.
+Selection requests retain exact identities and original receipts across later
+choices. Atomic synced state includes those receipts; uncertain writes are
+resolved by reading status, not inventing another request. A native owner holds
+an exclusive profile lease so its selected writer cannot change during its
+lifetime. Closing fences new calls, drains admitted calls and retains the lease
+until the final owner/call drops. Abandoned close remains fenced and retryable.
+Native admission, execution and renderer integration remain separate grants.

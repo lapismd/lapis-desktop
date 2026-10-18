@@ -62,6 +62,23 @@ pub(crate) struct Source {
     witnesses: Vec<Witness>,
 }
 impl Source {
+    pub fn fingerprint(&self) -> [u8; 32] {
+        use sha2::{Digest, Sha256};
+        use std::os::unix::ffi::OsStrExt;
+        let mut hash = Sha256::new_with_prefix(b"lapis-desktop/repository-binding/v1\0");
+        for w in &self.witnesses {
+            let path = w.path.as_os_str().as_bytes();
+            hash.update((path.len() as u64).to_be_bytes());
+            hash.update(path);
+            hash.update(w.identity.0.to_be_bytes());
+            hash.update(w.identity.1.to_be_bytes());
+            hash.update([u8::from(w.directory)]);
+            let data = w.contents.as_deref().unwrap_or_default();
+            hash.update((data.len() as u64).to_be_bytes());
+            hash.update(data);
+        }
+        hash.finalize().into()
+    }
     pub fn capture(root: &Path) -> io::Result<Self> {
         let WorkspaceInfo {
             path,

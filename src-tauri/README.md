@@ -41,3 +41,10 @@ capture/provider context and current native admission callback, then inject it
 into `StoreCapture`. It retains an exclusive lease and checked atomic records.
 See the [journal guide](../docs/native-conversation-journal.md) for ownership,
 recovery and the remaining Notes integration gates.
+
+`ai::backend::BackendProfiles` retains the admitted physical vault's explicit
+writer choice and original selection receipts. An opened `BackendScope` pins
+that choice; hold a `BackendCall` through each admitted operation, then drain
+and drop the owner before changing writers. The native host still supplies
+admission and connects its runtime/persistence adapters. See the
+[backend guide](../docs/native-backend-profiles.md).

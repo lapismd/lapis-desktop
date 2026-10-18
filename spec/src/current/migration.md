@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+E-AI-032 qualifies native backend profiles and owner fencing/drain as another
+M13.3 prerequisite. Ordinary host/renderer selection and managed conversation
+capture remain pending; original milestones and gates are unchanged.
+
 E-AI-031 adds the Notes private capture journal prerequisite and verifies shared
 capture against actual JJ Agent/Thread publication, privacy and receipt-only
 recovery. M13/M13.3 stay In progress with their original gates; per-vault

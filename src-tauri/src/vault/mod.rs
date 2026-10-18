@@ -7,6 +7,7 @@ mod conditional;
 mod creates;
 mod files;
 mod mutations;
+pub(crate) mod private_profile;
 mod profiles;
 pub(crate) mod staged;
 mod writes;
