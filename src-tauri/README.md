@@ -15,6 +15,14 @@ admission or vault closure. The binary now connects it to a private history
 cache and the read-only JJ Tauri plugin through exact admit/release commands. It
 grants no AI execution.
 
+`ai::capture::ManagedCapture` adapts an injected
+`jj_store_conversations::capture::NativeCapture` to the shared native runtime.
+The host supplies admitted privacy and a durable receipt sink. Every safe frame
+in a batch is retained for ordered delivery; unknown or mismatched receipts stop
+processing without fallback. This adapter alone does not select a Notes backend
+or enable execution. The debug acceptance profile uses synthetic policy and
+private fixture records, separately from production privacy/JJ adoption.
+
 Use the repository's development and acceptance commands from its root. Native
 service tests use `cargo test --manifest-path src-tauri/Cargo.toml --locked`;
 the actual WebView/platform lanes are separate. Full contracts and documentation

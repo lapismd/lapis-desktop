@@ -19,6 +19,7 @@ tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", 
 
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
 jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1.0" }
+jj-store-conversations = { path = "../../jj-store/crates/jj-store-conversations", version = "0.1.0" }
 
 cap-std = "=4.0.3"
 cap-tempfile = "=4.0.3"

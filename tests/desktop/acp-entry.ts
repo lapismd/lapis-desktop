@@ -8,6 +8,7 @@ import type {
   SessionRequest,
   SessionSnapshot,
 } from "@lapismd/ai";
+import { sessionEventFrames } from "@lapismd/ai";
 
 const client = createTauriAcpClient();
 const transport = createTauriAcpTransport();
@@ -58,6 +59,11 @@ Object.assign(globalThis, {
     },
     events(id: string) {
       return received.get(id) ?? [];
+    },
+    frames(id: string) {
+      return (received.get(id) ?? []).flatMap((snapshot) =>
+        snapshot.events.flatMap(sessionEventFrames),
+      );
     },
     failures: () => failures,
     raw: transport,

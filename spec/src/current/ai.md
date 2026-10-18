@@ -349,3 +349,11 @@ E-AI-027 refreshes the same six cold ACP compatibility cases against Lapis AI
 `87958267`, including its host-scoped native processor factory. All pass with
 foreground assistance and unchanged focus assertions. Desktop has not selected a
 Notes capture processor or durable JJ backend; those remain M13.3.
+
+The native capture adapter maps the shared capture port to the runtime's
+complete frame-batch callback. Native policy must inject admitted privacy, exact
+scope and a durable receipt sink; the adapter selects no path, executable or
+backend. The debug acceptance profile uses synthetic privacy and synced private
+fixture records to exercise actual batch transport and withheld receipt
+outcomes. It cannot enable ordinary Notes execution or qualify
+AgentStore/ThreadStore, power-loss recovery or a production privacy policy.

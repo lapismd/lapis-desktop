@@ -61,6 +61,10 @@ fn main() {
                             "options":[{"optionId":"custom:allow-one","name":"Allow once","kind":"allow_once"},{"optionId":"custom:deny","name":"Deny","kind":"reject_once"}]
                         }}),
                     );
+                } else if text.starts_with("batch:") {
+                    message("A fixture-native-");
+                    message("secret answer");
+                    reply(id, json!({"stopReason":"end_turn"}));
                 } else {
                     message(text);
                     reply(id, json!({"stopReason":"end_turn"}));

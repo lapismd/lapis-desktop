@@ -154,3 +154,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-026: native ACP runtime refresh](E-AI-026.md)
 
 - [E-AI-027: native ACP factory compatibility refresh](E-AI-027.md)
+
+- [E-AI-028: native capture groups and receipt fencing](E-AI-028.md)

@@ -316,3 +316,9 @@ E-AI-027 retains those gates after the shared Tauri processor factory update.
 Full source qualification and six cold default-path compatibility cases pass.
 NOTES-06B completes in its source scope; Notes privacy, durable capture and
 AgentStore/ThreadStore adoption remain pending.
+
+E-AI-028 qualifies the Notes capture adapter and complete native batch transport
+with seven cold ACP cases, including withheld receipt/no-replay recovery. M13.3
+starts implementation but retains its original production privacy, durable JJ
+backend and restart gate. Synced synthetic candidates are not repository
+publication, and production renderer provenance adoption remains pending.

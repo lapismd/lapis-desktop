@@ -43,7 +43,7 @@ below.
 | M13   | In progress | Integrate native durable conversation adapters                                      |
 | M13.1 | Done        | Complete; continue visible history and durable chat                                 |
 | M13.2 | Done        | Complete; continue durable conversations in M13.3                                   |
-| M13.3 | Planned     | Integrate native durable conversation backend                                       |
+| M13.3 | In progress | Inject admitted privacy and durable JJ persistence                                  |
 | M8.0  | Done        | Complete; continue to M8.1 Terminal                                                 |
 | M8.1  | Done        | Complete; continue to M8.2 Web retirement                                           |
 | M8.2  | Done        | Complete; continue to M8.3 portable plugins                                         |

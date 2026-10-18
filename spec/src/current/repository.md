@@ -108,3 +108,10 @@ keyboard-window state remain mandatory. The test drives the mounted operation
 select through standard input/change events because the embedded driver cannot
 select an option through its JavaScript click. Unattended foreground activation
 remains a separate test-infrastructure gap; durable conversations remain M13.3.
+
+The native managed-capture adapter accepts the shared capture port with an
+injected admitted policy and durability sink. It preserves whole ordered frame
+batches and stops on unknown or mismatched receipts. Its synthetic cold native
+acceptance supplies private fixture records, rather than a selected Notes
+AgentStore/ThreadStore backend. Native privacy, durable backend adoption and
+conversation restart recovery remain the M13.3 gate.

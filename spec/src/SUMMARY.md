@@ -2,6 +2,7 @@
 
 - [Current specification](current/index.md)
   - [Governance](current/governance.md)
+    - [Native acceptance modes](current/native-acceptance.md)
   - [Desktop shell](current/desktop.md)
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
@@ -156,3 +157,5 @@
   - [Native ACP runtime refresh](history/E-AI-026.md)
 
   - [Native ACP factory compatibility refresh](history/E-AI-027.md)
+
+  - [Native capture groups and receipt fencing](history/E-AI-028.md)

@@ -4082,6 +4082,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "jj-store-conversations"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "serde_json",
+ "sha2 0.10.9",
+ "thiserror 2.0.21",
+]
+
+[[package]]
 name = "jj-store-core"
 version = "0.1.0"
 dependencies = [
@@ -4346,6 +4356,7 @@ dependencies = [
  "block2",
  "cap-std",
  "cap-tempfile",
+ "jj-store-conversations",
  "jj-store-jj",
  "jj-store-model",
  "libc",

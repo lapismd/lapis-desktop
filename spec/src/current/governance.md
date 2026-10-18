@@ -384,16 +384,5 @@ stops animation frames, so browser/service success is separately labelled.
 
 ## Native acceptance modes
 
-Cold-process acceptance matches the complete Rust readiness output before
-retaining a bounded tail. A listening driver socket alone cannot prove IPC
-readiness; early evaluation can lose replies during navigation. Keep the bounded
-startup deadline.
-
-The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
-checks with macOS activation prohibited. It verifies native caller/frame policy,
-vault lifetime and cold admission reset without visible UI or animation claims.
-It never invokes foreground recovery, real pickers or popup proofs, refuses a
-running acceptance application and checks its binary's background-mode marker
-before launch. Background controls compile only in debug e2e artifacts. The
-quiet default remains browser/catalog plus native services; the headed lane
-retains the complete native UI/OS gate.
+See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
+IPC-only checks, headed windows and capture qualification boundaries.

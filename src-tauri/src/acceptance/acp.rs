@@ -8,8 +8,8 @@ use std::{
 };
 use tauri::Manager;
 use tauri_plugin_lapis_ai::{
-    AiExt, Error, HostContext, HostPolicy, Launch, Result, Target,
-    runtime::{Environment, PreparedLaunch},
+    AiExt, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
+    runtime::{Environment, PreparedLaunch, SessionProcessor},
 };
 
 #[derive(Clone, Default)]
@@ -40,14 +40,20 @@ impl HostPolicy for Policy {
         Ok(format!("acp-acceptance-{}", self.0.load(Ordering::Acquire)))
     }
     fn targets(&self, _: &HostContext) -> Result<Vec<Target>> {
-        Ok(vec![Target {
-            id: "compiled-fixture".into(),
-            label: "Compiled native fixture".into(),
-        }])
+        Ok(vec![
+            Target {
+                id: "compiled-fixture".into(),
+                label: "Compiled native fixture".into(),
+            },
+            Target {
+                id: "compiled-capture-fixture".into(),
+                label: "Compiled capture fixture".into(),
+            },
+        ])
     }
     fn resolve(&self, context: &HostContext, target: &str, resume: Option<&str>) -> Result<Launch> {
         self.authorize(context)?;
-        if target != "compiled-fixture" || resume.is_some() {
+        if !["compiled-fixture", "compiled-capture-fixture"].contains(&target) || resume.is_some() {
             return Err(Error("denied"));
         }
         let root = root()?;
@@ -83,6 +89,18 @@ impl HostPolicy for Policy {
             directory: root,
             resume: None,
         })
+    }
+    fn processor(
+        &self,
+        context: &HostContext,
+        binding: &SessionBinding,
+    ) -> Result<Option<Box<dyn SessionProcessor>>> {
+        self.authorize(context)?;
+        if binding.target_id == "compiled-capture-fixture" {
+            super::capture::processor(context, binding, root()?).map(Some)
+        } else {
+            Ok(None)
+        }
     }
 }
 #[tauri::command]
