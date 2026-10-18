@@ -49,11 +49,22 @@ impl HostPolicy for Policy {
                 id: "compiled-capture-fixture".into(),
                 label: "Compiled capture fixture".into(),
             },
+            Target {
+                id: "compiled-native-privacy-fixture".into(),
+                label: "Compiled native privacy fixture".into(),
+            },
         ])
     }
     fn resolve(&self, context: &HostContext, target: &str, resume: Option<&str>) -> Result<Launch> {
         self.authorize(context)?;
-        if !["compiled-fixture", "compiled-capture-fixture"].contains(&target) || resume.is_some() {
+        if ![
+            "compiled-fixture",
+            "compiled-capture-fixture",
+            "compiled-native-privacy-fixture",
+        ]
+        .contains(&target)
+            || resume.is_some()
+        {
             return Err(Error("denied"));
         }
         let root = root()?;
@@ -98,6 +109,8 @@ impl HostPolicy for Policy {
         self.authorize(context)?;
         if binding.target_id == "compiled-capture-fixture" {
             super::capture::processor(context, binding, root()?).map(Some)
+        } else if binding.target_id == "compiled-native-privacy-fixture" {
+            super::native_privacy::processor(context, binding, root()?).map(Some)
         } else {
             Ok(None)
         }

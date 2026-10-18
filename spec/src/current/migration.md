@@ -326,3 +326,7 @@ publication, and production renderer provenance adoption remains pending.
 E-AI-029 adds production grouped-frame consumption and per-frame transcript
 provenance to M13.3 prerequisites. Original native persistence, recovery and
 M10.2 completion gates remain open.
+
+E-AI-030 extends native capture prerequisites with explicit missing-backend
+refusal and real privacy qualification. Original Notes/JJ persistence and
+complete native recovery gates remain open.

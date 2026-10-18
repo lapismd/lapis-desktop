@@ -122,3 +122,9 @@ and hashes; explicit backend selection and confirmed native durability remain
 required before a JJ-backed conversation is enabled. E-AI-029 qualifies this
 production renderer prerequisite, not AgentStore/ThreadStore publication or cold
 restart recovery.
+
+The Notes native capture adapter can select the shared real privacy policy
+without selecting a writer. Missing backend selection and stale native admission
+must reject processor construction; neither may retain raw event delivery. The
+real-scanner fixture remains separate from AgentStore/ThreadStore sink
+publication and restart recovery.

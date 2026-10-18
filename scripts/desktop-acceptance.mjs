@@ -83,6 +83,7 @@ async function acceptance() {
       "tests/desktop/terminal-lifecycle.test.mjs",
       "tests/desktop/acp-transport.test.mjs",
       "tests/desktop/acp-batches.test.mjs",
+      "tests/desktop/acp-native-privacy.test.mjs",
       "tests/desktop/ai-user-commands.test.mjs",
       "tests/desktop/ai-admission.test.mjs",
       "tests/desktop/ai-notes-binding.test.mjs",

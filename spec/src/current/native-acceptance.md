@@ -29,3 +29,10 @@ adds complete capture-group delivery with withheld-receipt/no-replay checks.
 These cases use compiled synthetic providers and isolated profiles; they do not
 enable ordinary execution or replace production privacy and JJ persistence
 qualification. Foreground readiness remains mandatory.
+
+Real privacy acceptance uses the existing native policy through the production
+capture adapter. Its provider emits split workspace paths and exact credentials,
+plus an unregistered detector fixture; all must be sanitized before candidate
+storage and renderer delivery. The scanner cache is a native-owned disposable
+temporary directory retained through processor closure. The synced candidate
+sink remains synthetic and cannot qualify JJ durability or restart recovery.

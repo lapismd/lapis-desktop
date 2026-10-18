@@ -1,11 +1,22 @@
 //! Native runtime adaptation; the caller injects admitted privacy and durability.
-use jj_store_conversations::capture::{CaptureError, Input, NativeCapture, Publication};
+use jj_store_conversations::{
+    capture::{Binding, CaptureError, DurableCapture, Input, NativeCapture, Publication},
+    native_privacy::TranscriptSanitizer,
+};
+use std::sync::Arc;
 use tauri_plugin_lapis_ai::runtime::{
     BatchProcessorFuture, Error, FrameBatch, FrameInput, FramePublication, SessionProcessor,
 };
 
 pub struct ManagedCapture(NativeCapture);
 impl ManagedCapture {
+    pub fn with_native_privacy(
+        binding: Binding,
+        privacy: Arc<TranscriptSanitizer>,
+        sink: Box<dyn DurableCapture>,
+    ) -> Result<Self, CaptureError> {
+        NativeCapture::with_native_privacy(binding, privacy, sink).map(Self)
+    }
     pub fn new(capture: NativeCapture) -> Self {
         Self(capture)
     }

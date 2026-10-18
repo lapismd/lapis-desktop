@@ -343,5 +343,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-[Native qualification](native-acceptance.md), including E-AI-029 batch
+[Native qualification](native-acceptance.md), including E-AI-029/030 batch
 consumption, retains AI and repository gates.

@@ -76,23 +76,30 @@ pub fn processor(
     root: PathBuf,
 ) -> Result<Box<dyn SessionProcessor>> {
     let capture = NativeCapture::new(
-        Binding {
-            scope: "acceptance-profile".into(),
-            worker: binding.session_id.clone(),
-            request: binding.request_id.clone(),
-            target: binding.target_id.clone(),
-            window: context.window.clone(),
-            admission: binding.admission.clone(),
-        },
+        capture_binding(context, binding),
         "synthetic-native-capture/v1".into(),
         Arc::new(Privacy),
-        Box::new(Sink {
-            root,
-            worker: binding.session_id.clone(),
-        }),
+        sink(root, &binding.session_id),
     )
     .map_err(|_| Error("capture_unavailable"))?;
     Ok(Box::new(lapis_desktop::ai::capture::ManagedCapture::new(
         capture,
     )))
+}
+
+pub(super) fn capture_binding(context: &HostContext, binding: &SessionBinding) -> Binding {
+    Binding {
+        scope: "acceptance-profile".into(),
+        worker: binding.session_id.clone(),
+        request: binding.request_id.clone(),
+        target: binding.target_id.clone(),
+        window: context.window.clone(),
+        admission: binding.admission.clone(),
+    }
+}
+pub(super) fn sink(root: PathBuf, worker: &str) -> Box<dyn DurableCapture> {
+    Box::new(Sink {
+        root,
+        worker: worker.into(),
+    })
 }

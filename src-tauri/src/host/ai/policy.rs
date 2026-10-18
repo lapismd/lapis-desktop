@@ -5,7 +5,10 @@ use std::{
     sync::{Arc, OnceLock, Weak},
 };
 use tauri::WebviewWindow;
-use tauri_plugin_lapis_ai::{AcpHost, Error, HostContext, HostPolicy, Launch, Result, Target};
+use tauri_plugin_lapis_ai::{
+    AcpHost, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
+    runtime::SessionProcessor,
+};
 
 #[derive(Clone, Default)]
 pub struct DesktopAiPolicy(Arc<PolicyState>);
@@ -81,6 +84,17 @@ impl HostPolicy for DesktopAiPolicy {
         self.current(context)?;
         // Executable/credential policy and its native qualification remain gated.
         Ok(vec![])
+    }
+    fn processor(
+        &self,
+        context: &HostContext,
+        binding: &SessionBinding,
+    ) -> Result<Option<Box<dyn SessionProcessor>>> {
+        let current = self.current(context)?;
+        if current.generation() != binding.admission {
+            return Err(Error("admission_revoked"));
+        }
+        Err(Error("capture_backend_not_admitted"))
     }
     fn resolve(
         &self,

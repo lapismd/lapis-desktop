@@ -158,3 +158,4 @@ by the task ledger, not inferred from this list.
 - [E-AI-028: native capture groups and receipt fencing](E-AI-028.md)
 
 - [E-AI-029: complete native groups in production transcripts](E-AI-029.md)
+- [E-AI-030: Notes-native privacy and explicit backend admission](E-AI-030.md)

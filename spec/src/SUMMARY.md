@@ -160,3 +160,4 @@
 
   - [Native capture groups and receipt fencing](history/E-AI-028.md)
   - [Complete native groups in production transcripts](history/E-AI-029.md)
+  - [Notes-native privacy and explicit backend admission](history/E-AI-030.md)

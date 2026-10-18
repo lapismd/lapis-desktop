@@ -61,6 +61,14 @@ fn main() {
                             "options":[{"optionId":"custom:allow-one","name":"Allow once","kind":"allow_once"},{"optionId":"custom:deny","name":"Deny","kind":"reject_once"}]
                         }}),
                     );
+                } else if text.starts_with("privacy:") {
+                    let root = std::env::current_dir().unwrap().canonicalize().unwrap();
+                    let root = root.to_str().unwrap();
+                    let split = root.char_indices().nth(root.chars().count() / 2).unwrap().0;
+                    message(&format!("See {}", &root[..split]));
+                    message(&format!("{}/note.md fixture-", &root[split..]));
+                    message(&format!("native-secret {}", format!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K")));
+                    reply(id, json!({"stopReason":"end_turn"}));
                 } else if text.starts_with("batch:") {
                     message("A fixture-native-");
                     message("secret answer");

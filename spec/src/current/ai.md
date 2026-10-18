@@ -369,3 +369,12 @@ them without inventing provider sequences or native acknowledgements. The SDK
 acknowledges only after the complete consumer callback returns; a coverage
 failure remains unknown. This renderer prerequisite does not select production
 native privacy, admit a target or enable JJ persistence.
+
+Ordinary native policy requires an explicit capture backend for any future
+managed target. Its factory rechecks current physical-vault/window admission and
+exact generation, then refuses an unselected backend instead of returning an
+unprocessed fallback. The library adapter can construct the existing native
+privacy policy with an injected durable sink; it chooses no paths or backend. A
+separate debug-only profile exercises real scanner/path/credential handling
+through native transport with a private fixture sink and owned temporary cache.
+That profile does not admit production targets or qualify JJ publication.

@@ -147,3 +147,35 @@ fn native_ai_policy_owner_cannot_be_rebound_to_another_host() {
     );
     assert_eq!(first.policy.authorize(&caller()).unwrap(), generation);
 }
+
+#[test]
+fn native_capture_requires_current_admission_and_an_explicit_backend() {
+    let fixture = fixture();
+    let generation = activate(&fixture);
+    let mut binding = tauri_plugin_lapis_ai::SessionBinding {
+        session_id: "owned-worker".into(),
+        request_id: "owned-open".into(),
+        target_id: "future-admitted-target".into(),
+        admission: generation,
+    };
+    assert_eq!(
+        fixture
+            .policy
+            .processor(&caller(), &binding)
+            .err()
+            .map(|error| error.0),
+        Some("capture_backend_not_admitted")
+    );
+    binding.admission = "stale-generation".into();
+    assert_eq!(
+        fixture
+            .policy
+            .processor(&caller(), &binding)
+            .err()
+            .map(|error| error.0),
+        Some("admission_revoked")
+    );
+    fixture.host.0.lock().unwrap().ai.leave("main", false);
+    assert!(fixture.policy.processor(&caller(), &binding).is_err());
+    assert!(fixture.workers.list(&caller()).is_err());
+}

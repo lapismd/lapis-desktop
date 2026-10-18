@@ -372,6 +372,10 @@ verification and records each source repair before consumer qualification.
 Native dependency refresh records the clean owning source revision and its
 qualification separately from consumer checks. Update only required lock graph
 edges; locked checks and packaged ACP acceptance must retain existing gates.
+Native privacy uses the shared scanner policy and released transitive versions.
+E-AI-030 records the compatible macro/TOML lock selection, both native profiles
+and the real-policy fixture; no registry patch or synthetic policy substitutes
+for that qualification.
 
 AI user-command IO adds only its named main-window operation. Rust chooses the
 user directory; acceptance uses its existing isolated root. Default seeding uses

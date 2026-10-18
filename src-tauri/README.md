@@ -28,3 +28,9 @@ service tests use `cargo test --manifest-path src-tauri/Cargo.toml --locked`;
 the actual WebView/platform lanes are separate. Full contracts and documentation
 live in [`spec/src/current`](../spec/src/current/index.md) and
 [`docs`](../docs).
+
+`ManagedCapture::with_native_privacy` selects the shared optional native policy
+with host-admitted roots/credentials and an injected sink. Ordinary policy
+rejects missing backend selection and stale admission; it grants no targets. The
+debug-only real-scanner profile uses an owned temporary cache and private
+fixture candidates. Production JJ publication and restart remain separate gates.
