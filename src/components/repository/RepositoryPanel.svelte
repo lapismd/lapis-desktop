@@ -1,21 +1,44 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { onMount, onDestroy, untrack } from "svelte";
+  import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
+  import { createLogCanvas } from "../../lib/repository/log-canvas.ts";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import type { HistoryController } from "../../lib/repository/history-controller.ts";
-  import {
-    initialHistoryState,
-    revisionLabel,
-  } from "../../lib/repository/history-state.ts";
+  import { initialHistoryState } from "../../lib/repository/history-state.ts";
   import RepositoryRevisions from "./RepositoryRevisions.svelte";
-  import RepositoryDiff from "./RepositoryDiff.svelte";
+  import RepositoryDiffColumn from "./RepositoryDiffColumn.svelte";
+  import RepositoryShell from "./RepositoryShell.svelte";
   let {
     controller,
     initialOperation,
-  }: { controller: HistoryController; initialOperation?: string } = $props();
+    copyText,
+  }: {
+    controller: HistoryController;
+    initialOperation?: string;
+    copyText(value: string): Promise<void>;
+  } = $props();
   let state = $state(initialHistoryState());
   const operations = $derived([
     ...new Set([...state.heads, ...(state.operation ? [state.operation] : [])]),
   ]);
+  const canvas = createLogCanvas();
+  onDestroy(() => void canvas.dispose());
+  const selection = $derived(`${state.revision?.id ?? ""}/${state.path ?? ""}`);
+  $effect(() => {
+    selection;
+    const revision = untrack(() => state.revision?.id);
+    const path = untrack(() => state.path);
+    untrack(() => {
+      canvas.clear();
+      if (revision) {
+        canvas.select(0, revision);
+      }
+      if (path) {
+        canvas.select(1, path);
+        canvas.open("diff");
+      } else canvas.close("diff");
+    });
+  });
   onMount(() => {
     const unsubscribe = controller.subscribe((value) => (state = value));
     void controller.refresh(initialOperation);
@@ -23,123 +46,80 @@
   });
 </script>
 
-<section
-  class="repository-panel"
-  aria-label="Repository history"
-  aria-busy={state.busy}
->
-  <header class="repository-toolbar">
-    <h2>Repository history</h2>
-    <Button
-      size="sm"
-      variant="outline"
-      disabled={state.busy}
-      onclick={() => controller.refresh()}>Refresh</Button
-    >
-  </header>
-  <label class="repository-operation"
-    >Operation
-    <select
-      aria-label="Operation"
-      value={state.operation ?? ""}
-      onchange={(event) =>
-        controller.selectOperation(event.currentTarget.value)}
-    >
-      <option value="" disabled>Select an operation</option>
-      {#each operations as operation (operation)}<option value={operation}
-          >{operation}</option
-        >{/each}
-    </select>
-  </label>
-  {#if state.operation}<p class="repository-pin">
-      Pinned operation <code>{state.operation}</code>
-    </p>{/if}
-  {#if state.phase === "loading"}<p role="status">
-      Preparing repository history…
-    </p>
-  {:else if state.phase === "unavailable"}<p role="status">
-      Repository history is unavailable for this vault. Refresh to try again.
-    </p>
-  {:else if !state.headsReady}<p role="status">
-      Loading repository operations…
-    </p>
-  {:else if !state.operation}<p role="status">
-      {state.heads.length > 1
-        ? "Choose an operation to inspect its history."
-        : "No repository operations available."}
-    </p>
-  {/if}
-  {#if state.snapshot}
-    <div class="repository-columns">
-      <RepositoryRevisions {state} {controller} />
-      <section class="repository-comparison" aria-label="Revision changes">
-        {#if state.revision}
-          <h3>{revisionLabel(state.revision)}</h3>
-          <code class="repository-id">{state.revision.id}</code>
-          {#if state.revision.parents.length}
-            <label
-              >Compare with parent
-              <select
-                aria-label="Compare with parent"
-                value={state.base ?? ""}
-                onchange={(event) =>
-                  controller.selectBase(event.currentTarget.value)}
-              >
-                <option value="" disabled>Choose a parent</option>
-                {#each state.revision.parents as parent (parent)}<option
-                    value={parent}>{parent}</option
-                  >{/each}
-              </select>
-            </label>
-          {:else}<p role="status">
-              This revision has no parent comparison.
-            </p>{/if}
-          {#if state.base}
-            <nav aria-label="Changed files">
-              {#each state.paths as change (change.path)}
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  aria-pressed={state.path === change.path}
-                  onclick={() => controller.selectPath(change.path)}
-                  >{change.path}</Button
-                >
-              {/each}
-            </nav>
-            {#if !state.pathsReady && !state.busy}<p role="status">
-                File changes are unavailable.
-              </p>
-              <Button
-                size="sm"
-                onclick={() => controller.selectBase(state.base!)}
-                >Retry comparison</Button
-              >
-            {:else if state.pathsReady && !state.paths.length && !state.busy}<p>
-                No changed files in this comparison.
-              </p>{/if}
-            {#if state.nextPath}<Button
-                size="sm"
-                disabled={state.busy}
-                onclick={() => controller.morePaths()}>More files</Button
-              >{/if}
-            {#if state.paths.length === 500}<p>
-                Showing the first 500 changed files.
-              </p>{/if}
-          {/if}
-          {#if state.diff}<RepositoryDiff change={state.diff} />
-          {:else if state.path}{#if state.busy}<p role="status">
-                Loading file changes…
-              </p>{:else}<p role="status">File preview is unavailable.</p>
-              <Button
-                size="sm"
-                onclick={() => controller.selectPath(state.path!)}
-                >Retry preview</Button
-              >{/if}{/if}
-        {:else}<p>Select a revision to inspect its changes.</p>{/if}
-      </section>
-    </div>
-  {/if}
-</section>
+<RepositoryShell>
+  <section
+    class="repository-panel"
+    aria-label="Repository history"
+    aria-busy={state.busy}
+  >
+    <header class="repository-toolbar">
+      <h2>Repository history</h2>
+      <Button
+        size="sm"
+        variant="outline"
+        disabled={state.busy}
+        onclick={() => controller.refresh()}>Refresh</Button
+      >
+    </header>
+    <label class="repository-operation"
+      >Operation
+      <select
+        aria-label="Operation"
+        value={state.operation ?? ""}
+        onchange={(event) =>
+          controller.selectOperation(event.currentTarget.value)}
+      >
+        <option value="" disabled>Select an operation</option>
+        {#each operations as operation (operation)}<option value={operation}
+            >{operation}</option
+          >{/each}
+      </select>
+    </label>
+    {#if state.operation}<p class="repository-pin">
+        Pinned operation <code>{state.operation}</code>
+      </p>{/if}
+    {#if state.phase === "loading"}<p role="status">
+        Preparing repository history…
+      </p>
+    {:else if state.phase === "unavailable"}<p role="status">
+        Repository history is unavailable for this vault. Refresh to try again.
+      </p>
+    {:else if !state.headsReady}<p role="status">
+        Loading repository operations…
+      </p>
+    {:else if !state.operation}<p role="status">
+        {state.heads.length > 1
+          ? "Choose an operation to inspect its history."
+          : "No repository operations available."}
+      </p>
+    {/if}
+    {#if state.snapshot}
+      <div class="repository-columns">
+        <ColumnCanvas.Root
+          controller={canvas}
+          aria-label="Repository history columns"
+        >
+          <ColumnCanvas.Column
+            id="revisions"
+            title="JJ Log"
+            count={state.commits.length}
+            aria-label="Revisions"
+          >
+            <ColumnCanvas.Body
+              ><RepositoryRevisions
+                {state}
+                {controller}
+                {copyText}
+                onOpenDiff={() => canvas.open("diff")}
+              /></ColumnCanvas.Body
+            >
+          </ColumnCanvas.Column>
+          <RepositoryDiffColumn {state} {controller} />
+        </ColumnCanvas.Root>
+      </div>
+    {/if}
+  </section>
+</RepositoryShell>
 
 <style>
   .repository-panel {
@@ -161,14 +141,10 @@
     border-bottom: 1px solid var(--border);
     gap: 0.5rem;
   }
-  h2,
-  h3 {
+  h2 {
     font-size: 0.95rem;
     font-weight: 600;
     margin: 0;
-  }
-  h3 {
-    padding-bottom: 0.5rem;
   }
   label {
     display: flex;
@@ -202,31 +178,11 @@
     padding: 1rem;
   }
   .repository-columns {
-    display: grid;
-    grid-template-columns: minmax(12rem, 30%) minmax(0, 1fr);
+    display: block;
+    width: 100%;
+    min-width: 0;
     min-height: 0;
     flex: 1;
-    overflow: auto;
-  }
-  .repository-comparison {
-    padding: 0.75rem;
-    min-width: 0;
-  }
-  .repository-id {
-    display: block;
-    overflow-wrap: anywhere;
-    font-size: 0.75rem;
-    margin-bottom: 0.75rem;
-  }
-  nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
-    padding-block: 0.5rem;
-  }
-  @container repository-history (max-width: 640px) {
-    .repository-columns {
-      grid-template-columns: minmax(0, 1fr);
-    }
+    overflow: hidden;
   }
 </style>

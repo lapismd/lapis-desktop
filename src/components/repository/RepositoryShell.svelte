@@ -1,0 +1,39 @@
+<script lang="ts">
+  import { onDestroy, type Snippet } from "svelte";
+  import { AppShell, AppShellController } from "@lapismd/design-core/shell";
+  let { children }: { children: Snippet } = $props();
+  const shell = new AppShellController();
+  onDestroy(() => void shell.dispose());
+</script>
+
+<div class="repository-shell">
+  <AppShell.Root controller={shell} displayMode="desktop">
+    <AppShell.Main>
+      <AppShell.Body layout="regions" element="div">
+        <div class="repository-body-frame">{@render children()}</div>
+      </AppShell.Body>
+    </AppShell.Main>
+  </AppShell.Root>
+</div>
+
+<style>
+  .repository-shell {
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+    --ui-shell-height: 100%;
+    --ui-shell-main-block-inset: 0px;
+    --ui-shell-main-border: 0px;
+    --ui-shell-main-radius: 0px;
+    --ui-shell-main-shadow: none;
+  }
+  .repository-body-frame {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+</style>

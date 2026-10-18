@@ -1,6 +1,10 @@
 import type { Handle, LocalGraphCommit } from "@lapismd/jj-history";
 import type { HistoryReader } from "./history-reader.ts";
-import { initialHistoryState, type HistoryState } from "./history-state.ts";
+import {
+  initialHistoryState,
+  resetHistoryComparison,
+  type HistoryState,
+} from "./history-state.ts";
 import { check, pause, prepared } from "./history-selection.ts";
 import { HistoryLifetime } from "./history-lifetime.ts";
 
@@ -13,16 +17,15 @@ export class HistoryController {
   readonly wait: typeof pause;
   #handle?: Handle;
   #selection = 0;
+  #comparison = 0;
+  #file = 0;
   #request = 0;
   #abort = new AbortController();
   #closed = false;
   #closing?: Promise<void>;
   constructor(
     reader: HistoryReader,
-    feedback: {
-      report(error: unknown): void;
-      recovered(): void;
-    },
+    feedback: HistoryController["feedback"],
     wait = pause,
   ) {
     this.reader = reader;
@@ -91,6 +94,7 @@ export class HistoryController {
   }
   async #selectOperation(operation: string): Promise<void> {
     const selection = ++this.#selection;
+    this.#comparison++;
     this.#abort.abort();
     const abort = (this.#abort = new AbortController());
     const prior = this.#handle;
@@ -160,19 +164,19 @@ export class HistoryController {
       next: combined.length < 200 ? response.data.next : null,
     });
   }
+  clearRevision(): Promise<void> {
+    this.#comparison++;
+    this.#request++;
+    return this.#run(async () =>
+      this.#set({ ...resetHistoryComparison(), busy: false }),
+    );
+  }
   selectRevision(revision: LocalGraphCommit): Promise<void> {
+    this.#comparison++;
     return this.#run(() =>
       this.#action(async () => {
         check(this.#state.commits.some((item) => item.id === revision.id));
-        this.#set({
-          revision,
-          base: undefined,
-          paths: [],
-          pathsReady: false,
-          nextPath: null,
-          path: undefined,
-          diff: undefined,
-        });
+        this.#set({ ...resetHistoryComparison(), revision });
         if (revision.parents.length === 1)
           await this.#paths(revision.parents[0], false);
       }),
@@ -195,6 +199,7 @@ export class HistoryController {
     );
   }
   async #paths(base: string, append: boolean): Promise<void> {
+    const comparison = append ? this.#comparison : ++this.#comparison;
     const handle = this.#handle,
       revision = this.#state.revision;
     if (!handle || !revision) return;
@@ -219,6 +224,7 @@ export class HistoryController {
       },
     });
     if (
+      comparison !== this.#comparison ||
       handle !== this.#handle ||
       revision.id !== this.#state.revision?.id ||
       base !== this.#state.base ||
@@ -243,6 +249,8 @@ export class HistoryController {
   selectPath(path: string): Promise<void> {
     return this.#run(() =>
       this.#action(async () => {
+        const comparison = this.#comparison,
+          file = ++this.#file;
         const handle = this.#handle,
           revision = this.#state.revision,
           base = this.#state.base;
@@ -254,6 +262,8 @@ export class HistoryController {
           query: { from: base, to: revision.id, path, content: true },
         });
         if (
+          comparison !== this.#comparison ||
+          file !== this.#file ||
           handle !== this.#handle ||
           revision.id !== this.#state.revision?.id ||
           base !== this.#state.base ||

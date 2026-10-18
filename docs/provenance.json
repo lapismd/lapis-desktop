@@ -43,5 +43,44 @@
       "use": "Inspected native overlay geometry as a reference. No source copied; Tauri public APIs implement the owned shell.",
       "license": "FSL-1.1-MIT"
     }
+  ],
+  "copies": [
+    {
+      "sourceRepository": "jj-store",
+      "revision": "3f14cf9105d0e5d01ebd26fccc77e34d97c7be77",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/projects/repository-log-graph.ts",
+          "destination": "src/lib/repository/graph/repository-log-graph.ts"
+        },
+        {
+          "source": "web/src/lib/projects/repository-log-lanes.ts",
+          "destination": "src/lib/repository/graph/repository-log-lanes.ts"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRevisionGraphSvg.svelte",
+          "destination": "src/components/repository/RepositoryGraphSvg.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRevisionGraphIds.svelte",
+          "destination": "src/components/repository/RepositoryIdentifiers.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/revision-id.ts",
+          "destination": "src/lib/repository/graph/revision-id.ts"
+        }
+      ],
+      "upstream": {
+        "repository": "lapis-community",
+        "revision": "d859f33a484a9238bb11f974f4ead8e9be729ec6",
+        "paths": [
+          "src/projects/repository-log-graph.ts",
+          "src/components/community-projects/CommunityProjectsRevisionGraph.svelte"
+        ],
+        "license": "Apache-2.0"
+      },
+      "use": "Copied graph geometry/lanes/SVG with local imports and adapted model; adapted Column Canvas composition, row surfaces and metadata from jj-store CommunityProjectsRepositoryLog, CommunityProjectsRevisionGraph and repository-log-canvas. App/native state remains Notes-owned; no repository source dependency. Adapted identifier styles/accessibility, inline changed files and diff composition from CommunityProjectsRepositoryLogFiles, CommunityProjectsRepositoryLogDiff, CommunityDiffControls and StoreApplicationMain. Embedded AppShell.Root/Main/Body uses public Design Core shell context/tokens; the Notes workspace remains the outer owner. All copy controls use Notes-owned clipboard feedback. These are maintained application ports, not dependency defect workarounds."
+    }
   ]
 }

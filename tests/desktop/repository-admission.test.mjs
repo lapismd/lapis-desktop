@@ -137,6 +137,7 @@ test("hidden native history preserves source pins and independent admission thro
   writeFileSync(join(vault, "note.md"), "Second revision\n");
   jj(vault, ["describe", "-m", "second"]);
   jj(vault, ["new", "-m", "working"]);
+  jj(vault, ["describe", "-m", "working described"]);
   writeFileSync(join(vault, "note.md"), "Unsnapshotted draft\n");
   writeFileSync(join(vault, "untracked.txt"), "Preserve me\n");
   const before = digest(vault);
@@ -236,6 +237,83 @@ test("hidden native history preserves source pins and independent admission thro
     (await history(session, "status", { vault: selected.sessionId, handle }))
       .data.operation,
     pinned.operation,
+  );
+  const beforeOperationReads = digest(vault);
+  // The independently registered Op Log uses the same admitted pinned
+  // transport, with native operation ancestry and exact parent deltas.
+  const operations = await history(session, "read", {
+    vault: selected.sessionId,
+    handle,
+    query: { kind: "graph", query: [{ graph: "operations" }, { limit: 100 }] },
+  });
+  assert.equal(operations.kind, "graph");
+  assert.equal(operations.data.operation, pinned.operation);
+  assert.equal(operations.data.data.graph, "operations");
+  const selectedOperation = operations.data.data.nodes.find(
+    (node) => node.id === pinned.operation,
+  );
+  assert.ok(selectedOperation);
+  assert.ok(selectedOperation.parents.length);
+  const operationDelta = await history(session, "read", {
+    vault: selected.sessionId,
+    handle,
+    query: {
+      kind: "operation_diff",
+      query: {
+        operation: selectedOperation.id,
+        parent: selectedOperation.parents[0],
+      },
+    },
+  });
+  assert.equal(operationDelta.kind, "operation_diff");
+  assert.equal(operationDelta.data.data.operation, selectedOperation.id);
+  assert.equal(operationDelta.data.data.parent, selectedOperation.parents[0]);
+  assert.ok(operationDelta.data.data.visible_commits);
+  assert.equal(operationDelta.data.data.status, "difference");
+  const groups = await history(session, "read", {
+    vault: selected.sessionId,
+    handle,
+    query: {
+      kind: "operation_changes",
+      query: {
+        operation: selectedOperation.id,
+        parent: selectedOperation.parents[0],
+        limit: 100,
+        anchor: null,
+        direction: "forward",
+      },
+    },
+  });
+  assert.equal(groups.kind, "operation_changes");
+  assert.equal(groups.data.operation, selectedOperation.id);
+  assert.equal(groups.data.parent, selectedOperation.parents[0]);
+  assert.ok(groups.data.groups.length);
+  const exact = groups.data.groups.find(
+    (group) => group.comparison.status === "exact",
+  );
+  assert.ok(exact, "Native operation supplies an exact revision pair");
+  const paths = await history(session, "read", {
+    vault: selected.sessionId,
+    handle,
+    query: {
+      kind: "diff_paths",
+      query: {
+        from: exact.comparison.from,
+        to: exact.comparison.to,
+        path: "",
+        limit: 100,
+        anchor: null,
+        direction: "forward",
+      },
+    },
+  });
+  assert.equal(paths.kind, "diff_paths");
+  assert.equal(paths.data.from, exact.comparison.from);
+  assert.equal(paths.data.to, exact.comparison.to);
+  assert.deepEqual(
+    digest(vault),
+    beforeOperationReads,
+    "Operation reads cannot snapshot dirty source files or advance the explicit pin",
   );
   const { connectionId } = await success(session, "vault_db_open", {
     sessionId: selected.sessionId,

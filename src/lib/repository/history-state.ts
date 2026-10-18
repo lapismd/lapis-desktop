@@ -62,3 +62,16 @@ export function diffText(
     return { unavailable: "The text exceeds the preview limit" };
   return { oldText, newText };
 }
+
+/** Clears the selected revision and every dependent comparison value. */
+export function resetHistoryComparison(): Partial<HistoryState> {
+  return {
+    revision: undefined,
+    base: undefined,
+    paths: [],
+    pathsReady: false,
+    nextPath: null,
+    path: undefined,
+    diff: undefined,
+  };
+}

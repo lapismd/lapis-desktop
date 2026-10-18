@@ -1,14 +1,14 @@
 <script lang="ts">
   import { untrack } from "svelte";
   import NotesDemo from "../NotesDemo.svelte";
-  import { historyFixture } from "./fixture.ts";
+  import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
   import { normalRecovery } from "../../../src/lib/notes/startup-recovery.ts";
   let {
     scenario = "ready",
     maxWidth,
   }: { scenario?: string; maxWidth?: number } = $props();
-  const fixture = untrack(() => historyFixture(scenario));
+  const fixture = untrack(() => operationFixture(scenario));
   const safeMode = untrack(() =>
     scenario === "safe-mode"
       ? { ...normalRecovery(), active: true, disableOptionalCorePlugins: true }

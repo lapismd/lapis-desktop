@@ -172,3 +172,9 @@ History layout regression stories constrain the real shell while leaving the
 browser wide. They assert actual pane-relative stacking, control bounds and
 usable file-button width; viewport-only checks cannot prove narrow-pane use.
 Shared interaction helpers retain the production ribbon and reader workflow.
+
+E-REPO-007 adds production Column Canvas commit/operation-log stories, borrowed
+jj-store graph/row geometry and independent Op Log registration. The coverage
+inventory maps source provenance, loading, empty, snapshots, parent choice,
+notification failures/recovery and exact History navigation. Native operation
+qualification and visual approval remain separate from catalog evidence.

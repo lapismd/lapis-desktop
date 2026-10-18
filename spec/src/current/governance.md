@@ -1,7 +1,7 @@
 # Governance
 
-E-AI-034 records retained admission/permits under the original M13.3 gates. IPC
-and renderer authority retain their existing boundaries.
+E-AI-034 and E-REPO-007 retain native admission and independent UI gates. Column
+Canvas source attribution lives in `docs/provenance.json`.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

@@ -33,7 +33,7 @@ export const PinnedHistoryAndDiff: Story = {
     await expect(
       await canvas.findByRole("region", { name: "Changes to Welcome.md" }),
     ).toHaveTextContent("History is retained");
-    await userEvent.click(canvas.getByRole("button", { name: "Split" }));
+    await userEvent.click(canvas.getByRole("radio", { name: "Split" }));
     await expect(
       canvas.getByRole("region", { name: "Previous revision" }),
     ).toBeVisible();
@@ -52,8 +52,8 @@ export const UnifiedDiff: Story = {
       await canvas.findByRole("region", { name: "Changes to Welcome.md" }),
     ).toHaveTextContent("History is retained");
     await expect(
-      canvas.getByRole("button", { name: "Unified" }),
-    ).toHaveAttribute("aria-pressed", "true");
+      canvas.getByRole("radio", { name: "Unified" }),
+    ).toHaveAttribute("aria-checked", "true");
   },
 };
 export const RetainsHistoricalSelection: Story = {
@@ -70,7 +70,11 @@ export const RetainsHistoricalSelection: Story = {
         operation,
       ),
     );
-    await expect(canvas.getByText(revision, { exact: true })).toBeVisible();
+    await expect(
+      canvas.getByRole("button", {
+        name: new RegExp(`Copy Git commit SHA ${revision}`),
+      }),
+    ).toBeVisible();
     expect(
       context.fixture.calls.filter(([method]) => method === "open"),
     ).toHaveLength(1);
@@ -92,7 +96,7 @@ export const RetainsHistoricalSelection: Story = {
         canvas.queryByRole("region", { name: "Changes to Welcome.md" }),
       ).toBeNull();
       expect(
-        canvas.getByText("Select a revision to inspect its changes."),
+        canvas.getByRole("list", { name: "Revision graph" }),
       ).toBeVisible();
     });
   },
@@ -301,6 +305,7 @@ export const ComparisonFailureAndRecovery: Story = {
     await expect(
       canvas.queryByText("No changed files in this comparison."),
     ).toBeNull();
+    expect(canvas.queryByRole("region", { name: "Changed files" })).toBeNull();
     historyContext(canvasElement).fixture.recover();
     await userEvent.click(
       canvas.getByRole("button", { name: "Retry comparison" }),

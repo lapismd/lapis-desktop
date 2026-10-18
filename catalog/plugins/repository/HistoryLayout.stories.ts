@@ -28,16 +28,25 @@ export const NarrowPaneInWideShell: StoryObj = {
         .getByRole("region", { name: "Revision changes" })
         .getBoundingClientRect();
       expect(bounds.width).toBeLessThan(640);
-      expect(Math.abs(revisions.left - comparison.left)).toBeLessThan(1);
-      expect(comparison.top).toBeGreaterThanOrEqual(revisions.bottom - 1);
-      expect(comparison.width).toBeGreaterThanOrEqual(bounds.width - 1);
+      const columns = canvas.getByRole("region", {
+        name: "Repository history columns",
+      });
+      expect(columns).toHaveAttribute("data-display-mode", "compact");
+      expect(columns.getBoundingClientRect().width).toBeGreaterThan(
+        bounds.width - 1,
+      );
+      expect(revisions.width).toBeGreaterThan(bounds.width - 30);
+      expect(revisions.width).toBeLessThanOrEqual(bounds.width + 1);
+      expect(comparison.width).toBeLessThanOrEqual(bounds.width + 1);
+      expect(comparison.top).toBeCloseTo(revisions.top, 0);
+      expect(columns.scrollWidth).toBeGreaterThan(columns.clientWidth);
       expect(
         canvas.getByRole("button", { name: "Refresh" }).getBoundingClientRect()
           .right,
       ).toBeLessThanOrEqual(bounds.right + 1);
       expect(
         canvas
-          .getByRole("button", { name: "Welcome.md" })
+          .getByRole("button", { name: /^Welcome\.md(?: |$)/ })
           .getBoundingClientRect().width,
       ).toBeGreaterThan(80);
     });

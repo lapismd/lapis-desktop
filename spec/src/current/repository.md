@@ -11,7 +11,7 @@ the Notes consumer of jj-store M33 in independently verified slices.
 | LD-REPO-001 | Repository reads MUST require current native physical-vault and caller-window admission independent of AI enablement. Roots, metadata/Git witnesses, repository identity, cache location and registration generation MUST remain native-owned. Discovery grants no authority and MUST NOT initialize, snapshot or reconcile a source repository. |
 | LD-REPO-002 | History and diff reads MUST retain exact operation pins and full-width identities through bounded versioned text frames. Replacement, revocation or stale generations MUST reject retained reads. Native close MUST fence new work and drain owned reads/preparations before vault release; database blockers MUST preserve authority.           |
 | LD-REPO-003 | JJ-backed conversations MUST explicitly select AgentStore and ThreadStore persistence with confirmed receipts and unknown-outcome recovery. One native raw event owner MUST sanitize and durably retain before display or acknowledgement. Legacy file conversations retain their explicit backend; unknown prompts MUST NOT replay.             |
-| LD-REPO-004 | History presentation MUST adapt to its available workspace pane width independently of the browser viewport. Revision selection, refresh, changed-file controls and diff content MUST remain readable and reachable in narrow panes within a wide shell.                                                                                         |
+| LD-REPO-004 | History and the separate operation-log view MUST reuse Design Core Column Canvas with jj-store graph/row presentation. Columns MUST adapt to pane width independently of viewport width; selection, refresh, file changes and details MUST remain readable and reachable in narrow panes.                                                        |
 
 ## Native admission
 
@@ -202,3 +202,47 @@ and retains its existing repository/database transition guard through release.
 Ordinary unavailable capture targets remain unavailable until separately
 admitted; selection/opening is not a raw-event processor, prompt grant or
 renderer persistence adapter.
+
+## Commit and operation-log columns
+
+The bundled Repository History plugin registers independent history and Op Log
+workspace views, commands and ribbon actions. Both use public Design Core Column
+Canvas and adapt jj-store-owned graph geometry, row presentation and column
+widths, with source/license attribution in `docs/provenance.json`. Production
+cannot import either repository's application or catalog state.
+
+History retains its exact operation and revision/file comparison semantics. File
+selection opens the diff column; operation metadata opens through an explicit
+details control. Expanding rows keeps file choices in view. Wide panes provide
+resizable columns and narrow panes use Column Canvas compact navigation,
+including return to the log. The root measures its own pane; no viewport media
+query chooses this behavior.
+
+Op Log has an independent pinned reader and layout state. Its bounded operation
+graph preserves full operation/parent identities, descriptions, actor/host,
+timestamps and snapshot markers. Detail reads compare an explicitly selected
+parent; roots and multi-parent operations remain explicit. Added/removed
+revisions and named view changes are shown only from the returned native delta.
+Opening the selected operation in History passes that exact pin. Refresh does
+not move either view's historical selection. Late detail/graph responses cannot
+replace a newer pin or selection. Closing either view drains its own handles;
+plugin/vault release drains both. Loading, unavailable and notification recovery
+states remain distinct from valid empty graphs. Stories exercise production
+views in both themes and widths; native acceptance remains separate.
+
+The embedded public AppShell Root/Main/Body provides the bounded canvas body for
+both independently mounted workspace views. The outer Notes workspace retains
+its existing ownership. Commit rows expose separate full Git SHA and native JJ
+reverse-hex change-ID copy controls, never nested buttons. Clipboard failures
+use App notifications and explicit successful retry clears their exact notice.
+Expanded rows use public FileListing folder/list/package modes. File selection
+opens a matching diff column with change counts, unified/split layout, wrapping,
+close/reopen and compact return through the column controls. Expanded rows
+retain measured graph bounds. Collapse/reselection fences previous replies.
+
+Operation rows expose bounded native change groups after an exact parent delta.
+The user selects the changed revision, then the native exact pair or both sides
+of an explicitly ambiguous pair. Unavailable comparisons never invent endpoints.
+Changed paths and text use that view's existing pinned handle and the same file
+and diff presentation; metadata details remain a separate column. Source refusal
+uses the application notification/retry path without fallback or an empty diff.

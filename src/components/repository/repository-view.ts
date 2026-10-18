@@ -30,6 +30,12 @@ export class RepositoryView extends View {
   async setState(state: Record<string, unknown>): Promise<void> {
     this.#operation =
       typeof state.operation === "string" ? state.operation : undefined;
+    if (
+      this.#controller &&
+      this.#operation &&
+      this.#operation !== this.#controller.state.operation
+    )
+      await this.#controller.selectOperation(this.#operation);
     await super.setState(state);
   }
   protected async onOpen(): Promise<void> {}
@@ -53,6 +59,7 @@ export class RepositoryView extends View {
       props: {
         controller: this.#controller,
         initialOperation: this.#operation,
+        copyText: (value: string) => this.plugin.copyIdentifier(value),
       },
     });
   }

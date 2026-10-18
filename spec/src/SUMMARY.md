@@ -166,3 +166,5 @@
   - [Native backend ownership and text transport](history/E-AI-033.md)
 
 - [Retained native capture authority](history/E-AI-034.md)
+
+- [Column Canvas History and Op Log](history/E-REPO-007.md)

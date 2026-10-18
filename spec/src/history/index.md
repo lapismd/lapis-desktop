@@ -164,3 +164,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-033: Native backend ownership and text transport](E-AI-033.md)
 
 - [Retained native capture authority](E-AI-034.md)
+
+- [Column Canvas History and Op Log](E-REPO-007.md)

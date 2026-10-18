@@ -1,9 +1,9 @@
 # Desktop shell
 
 E-AI-024/025/031/032/033/034 preserve LD-DESK-003: owned persistence drains and
-shared vault admission remain native.
+vault admission stay native.
 
-E-REPO-003/004/005 keep native history qualification explicit.
+E-REPO-007 adds Column Canvas History/Op Log; native gates stay explicit.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on

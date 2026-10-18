@@ -218,8 +218,9 @@ viewport height.
 
 `plugins/repository/History.stories.ts` mounts the production bundled Repository
 History plugin, Notes workspace and public Design Core Diff through an injected
-history reader. These are application-owned scenarios, with no copied source
-family or native IO claim.
+history reader. Source graph/row/column geometry is adapted from jj-store;
+`docs/provenance.json` retains paths, revisions and the original Community
+Apache-2.0 lineage. No runtime/source dependency or native IO claim is added.
 
 PinnedHistoryAndDiff and UnifiedDiff cover both layouts.
 RetainsHistoricalSelection, MultipleHeads and MergeParentSelection retain exact
@@ -236,6 +237,30 @@ separate gates.
 
 `plugins/repository/HistoryLayout.stories.ts` adds NarrowPaneInWideShell through
 the same real Notes shell. Its bounded fixture leaves the browser wide and
-asserts pane-relative revision/comparison stacking, contained refresh controls
+asserts pane-relative Column Canvas compact columns, contained refresh controls
 and readable changed-file buttons. The shared helpers retain the original
 ribbon/revision/file interactions for both story files.
+
+`plugins/repository/Operations.stories.ts` mounts the production independent Op
+Log view through the same Notes shell. OperationGraphAndChanges, RootOperation,
+MergeParentChoice, Snapshot and Empty cover native DTO presentation. The
+RefreshRetainsPinAndSeparateHistory case opens the exact selected operation in
+History without moving the Op Log pin. DetailFailureAndRecovery and
+GraphFailureAndRecovery assert application toasts, retained selection and
+explicit retry. MultipleHeads requires a pin choice. These are borrowed-view
+adaptations, not native provider or managed-chat/restart acceptance. All stories
+retain visual-pending and run light/dark at desktop/narrow widths.
+
+`plugins/repository/ColumnInteractions.stories.ts` covers full SHA/reverse-hex
+clipboard values, hover/focus, copied/failure feedback, toast recovery, row
+expansion/collapse, all file-list modes, wrap and diff close/reopen. Clipboard
+fixtures restore browser state without changing the user's clipboard. Shell
+height and pane-width assertions exercise the embedded public AppShell body.
+ResizingAndCompactReturn checks keyboard resize and expanded-row graph bounds;
+ExpandedRowKeepsFilesInView prevents row expansion from moving to a blank diff.
+
+`plugins/repository/OperationFiles.stories.ts` covers operation changed-revision
+selection, exact file/diff comparison, explicit ambiguous pairs, unavailable
+content, revision-load toast recovery and path failures that never appear empty.
+All use production views and remain visual-pending; real native operation-read
+acceptance is separate.
