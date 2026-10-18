@@ -486,3 +486,15 @@ deferred.
 more/less, semantic local/remote TagList visibility/overflow and file selection.
 Both production log tabs remain available in
 `Repository comparison/ProductionIntegrationComparison`.
+
+`Repository file blame/BlameFromFileHistory`, `FailureAndRecovery`, `Preparing`
+and `SidebarHeaderAlignment` mount the production plugin. Copied jj-store
+StoreBlameView/Group, blame-model and CommunityProjectsVirtualRows at
+172703544540a10897274f584582466b911a803d retain virtualized source, progressive
+attribution and author/origin navigation; provenance is in docs/provenance.json.
+`Repository file history/NoActiveFile` and `NoRevisions` assert the public
+shadcn Empty icon. `Repository loading` holds real
+log/details/files/diff/conflict reads and asserts representative production
+skeletons; application progress remains independent and closure releases pending
+fixture work. Visual review stays pending; native annotation and ordinary
+desktop acceptance have separate evidence.

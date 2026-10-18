@@ -58,6 +58,13 @@ export class FileHistoryView extends View {
       props: {
         controller,
         copyText: (value: string) => this.plugin.copyIdentifier(value),
+        onBlame: () => {
+          const { operation, workspaceCommit: commit, path } = controller.state;
+          if (operation && commit && path)
+            void this.plugin
+              .openBlame(operation, commit, path)
+              .catch((error) => this.plugin.report(error));
+        },
         onOpen: (revision: string) =>
           void this.plugin
             .open(controller.state.operation, revision)

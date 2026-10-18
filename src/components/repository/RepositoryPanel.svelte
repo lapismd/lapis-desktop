@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import RepositoryConflictResolution from "./conflicts/RepositoryConflictResolution.svelte";
   import { repositoryWorkspaces } from "../../lib/repository/workspaces.ts";
   import { onMount, onDestroy, untrack } from "svelte";
@@ -105,16 +106,16 @@
             onRefresh={() => controller.refresh()}
           />
           <ColumnCanvas.Body>
-            {#if snapshot.phase === "loading"}<p role="status">
-                Preparing repository history…
-              </p>
+            {#if snapshot.phase === "loading"}<RepositorySkeleton
+                label="Preparing repository history…"
+              />
             {:else if snapshot.phase === "unavailable"}<p role="status">
                 Repository history is unavailable for this vault. Refresh to try
                 again.
               </p>
-            {:else if !snapshot.headsReady}<p role="status">
-                Loading repository operations…
-              </p>
+            {:else if !snapshot.headsReady}<RepositorySkeleton
+                label="Loading repository operations…"
+              />
             {:else if !snapshot.operation}<p role="status">
                 {snapshot.heads.length > 1
                   ? "Choose an operation to inspect its history."

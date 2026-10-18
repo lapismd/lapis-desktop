@@ -30,8 +30,24 @@ async function sidebar(element: HTMLElement, file?: string) {
 export const NoActiveFile: StoryObj = {
   play: async ({ canvasElement }) => {
     const panel = await sidebar(canvasElement);
+    await expect(panel.getByText("No file selected")).toBeVisible();
+    await expect(
+      panel.getByRole("button", { name: "Blame file" }),
+    ).toBeDisabled();
+    expect(panel.getByRole("status").querySelector("svg")).not.toBeNull();
     await expect(panel.getByText(/Open a file in the editor/)).toBeVisible();
     expect(historyContext(canvasElement).fixture.calls).toHaveLength(0);
+  },
+};
+export const NoRevisions: StoryObj = {
+  args: { files: { "Other.md": "# Another note" } },
+  play: async ({ canvasElement }) => {
+    const panel = await sidebar(canvasElement, "Other.md");
+    await expect(await panel.findByText("No file history")).toBeVisible();
+    expect(panel.getByRole("status").querySelector("svg")).not.toBeNull();
+    await expect(
+      panel.getByText(/No revisions changed this file/),
+    ).toBeVisible();
   },
 };
 export const FollowEditorAndOpenRevision: StoryObj = {
@@ -42,9 +58,10 @@ export const FollowEditorAndOpenRevision: StoryObj = {
     const row = await panel.findByRole("button", {
       name: /Keep repository history beside the notes/,
     });
-    await expect(
-      panel.getByRole("combobox", { name: "File history operation" }),
-    ).toHaveValue(operation);
+    expect(
+      panel.queryByRole("combobox", { name: "File history operation" }),
+    ).toBeNull();
+    expect(panel.queryByRole("button", { name: /About Ada/ })).toBeNull();
     await userEvent.click(canvas.getByRole("tab", { name: "File history" }));
     await expect(row).toBeVisible();
     await userEvent.click(
@@ -74,6 +91,9 @@ export const FollowEditorAndOpenRevision: StoryObj = {
       operation,
     );
     await expect(panel.getByText(/Open a file in the editor/)).toBeVisible();
+    await expect(
+      panel.getByRole("button", { name: "Blame file" }),
+    ).toBeDisabled();
   },
 };
 export const FailureAndRecovery: StoryObj = {
@@ -150,7 +170,9 @@ export const Preparing: StoryObj = {
   args: { scenario: "file-preparing" },
   play: async ({ canvasElement }) => {
     const panel = await sidebar(canvasElement, "Welcome.md");
-    await expect(await panel.findByText("Loading file history…")).toBeVisible();
+    await expect(
+      await panel.findByRole("status", { name: "Loading file history…" }),
+    ).toBeVisible();
     await expect(
       panel.getByRole("button", { name: "Refresh file history" }),
     ).toBeDisabled();

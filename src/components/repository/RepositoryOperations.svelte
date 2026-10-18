@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import { repositoryWorkspaces } from "../../lib/repository/workspaces.ts";
   import { onMount, onDestroy, untrack } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
@@ -88,16 +89,16 @@
             onRefresh={() => controller.refresh()}
           />
           <ColumnCanvas.Body>
-            {#if state.phase === "loading"}<p role="status">
-                Preparing operation log…
-              </p>
+            {#if state.phase === "loading"}<RepositorySkeleton
+                label="Preparing operation log…"
+              />
             {:else if state.phase === "unavailable"}<p role="status">
                 Operation log is unavailable for this vault. Refresh to try
                 again.
               </p>
-            {:else if !state.headsReady}<p role="status">
-                Loading repository operations…
-              </p>
+            {:else if !state.headsReady}<RepositorySkeleton
+                label="Loading repository operations…"
+              />
             {:else if !state.operation}<p role="status">
                 {state.heads.length > 1
                   ? "Choose an operation to inspect its ancestry."

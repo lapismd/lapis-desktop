@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-015 adopts repository UI via public shell parts. LD-DESK-003 native
+E-REPO-018 adds file blame via public shell parts. LD-DESK-003 native
 IPC/lifetime and LD-HOST-001 public-archive contracts stay unchanged.
 
 The Notes composition root starts App-owned watching after metadata/view setup.

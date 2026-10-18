@@ -54,6 +54,21 @@ test("quotes and fileset-looking characters stay literal path data", async () =>
   );
   await f.c.close();
 });
+test("changing file scope clears its blame anchor before admission or an empty editor", async () => {
+  const f = setup();
+  await f.c.follow("Welcome.md");
+  assert.equal(f.c.state.workspaceCommit, revision);
+  await f.c.follow();
+  assert.equal(f.c.state.workspaceCommit, undefined);
+  await f.c.follow("Welcome.md");
+  f.reader.heads = async () => {
+    throw new Error("Read denied");
+  };
+  await f.c.follow("Other.md");
+  assert.equal(f.c.state.workspaceCommit, undefined);
+  assert.equal(f.c.state.phase, "unavailable");
+  await f.c.close();
+});
 test("file switches fence late native query replies and close the prior handle", async () => {
   const f = setup(),
     read = f.reader.read;

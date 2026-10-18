@@ -22,6 +22,7 @@ export default defineConfig({
       "@lapismd/agent-redaction",
       "@cfworker/json-schema",
       "@lucide/svelte/icons/file-json",
+      "@lucide/svelte/icons/file-clock",
       "@lucide/svelte/icons/folder-git-2",
       "@lucide/svelte/icons/git-merge",
       "@lucide/svelte/icons/git-branch",

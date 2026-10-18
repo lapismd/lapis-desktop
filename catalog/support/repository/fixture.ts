@@ -1,3 +1,5 @@
+import { attachBlameFixture } from "./blame.ts";
+import { stats } from "./query-stats.ts";
 import { richCommitMessage } from "./rich-commit.ts";
 import { commitDetail } from "./commit-detail.ts";
 import type { HistoryReader } from "../../../src/lib/repository/history-reader.ts";
@@ -56,7 +58,8 @@ export function historyFixture(scenario = "ready") {
   if (scenario === "merge" || scenario === "parent-details-failure")
     latest.parents.push("33".repeat(20));
   if (scenario === "parent-details-failure") faults.add("commit");
-  if (scenario === "conflicted") latest.conflicted = true;
+  if (scenario === "conflicted" || scenario === "conflicts-preparing")
+    latest.conflicted = true;
   latest.workspaces = ["default"];
   if (scenario === "rich-history") {
     latest.description = richCommitMessage;
@@ -265,6 +268,12 @@ export function historyFixture(scenario = "ready") {
       handles.delete(handle);
     },
   };
+  const blame = attachBlameFixture(
+    reader,
+    { repository, commit: latest, parent: commit(parent) },
+    scenario,
+    calls,
+  );
   return {
     reader,
     calls,
@@ -277,20 +286,11 @@ export function historyFixture(scenario = "ready") {
       failed = true;
     },
     recover() {
+      blame.recover();
       faults.clear();
     },
     async close() {
       for (const handle of [...handles.keys()]) await reader.close(handle);
     },
-  };
-}
-function stats() {
-  return {
-    metadata_nodes: 0,
-    predicate_file_bytes: 0,
-    predicate_lines: 0,
-    object_reads: 0,
-    object_bytes: 0,
-    work: 0,
   };
 }

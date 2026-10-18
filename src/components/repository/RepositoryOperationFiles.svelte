@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import RepositoryRevisionPicker from "./RepositoryRevisionPicker.svelte";
   import UndoIcon from "@lucide/svelte/icons/undo-2";
   import InfoIcon from "@lucide/svelte/icons/info";
@@ -102,13 +103,15 @@
       </Menu.Root>
     </span>
   </div>
-  {#if snapshot.detail?.status === "difference"}
+  {#if snapshot.busy && !snapshot.detail}
+    <RepositorySkeleton kind="operation" label="Loading operation details…" />
+  {:else if snapshot.detail?.status === "difference"}
     {#if !files.ready}
-      <p role="status">
-        {snapshot.busy
-          ? "Loading operation revisions…"
-          : "Operation revisions are unavailable."}
-      </p>
+      {#if snapshot.busy}<RepositorySkeleton
+          kind="files"
+          label="Loading operation revisions…"
+        />
+      {:else}<p role="status">Operation revisions are unavailable.</p>{/if}
       {#if !snapshot.busy}<Button
           size="sm"
           onclick={() => controller.files.retry()}>Retry revisions</Button

@@ -14,6 +14,7 @@ export type FileHistoryState = {
   busy: boolean;
   heads: string[];
   operation?: string;
+  workspaceCommit?: string;
   commits: LocalGraphCommit[];
   next?: LocalCodeObjectKey | null;
 };
@@ -22,6 +23,7 @@ const initial = (): FileHistoryState => ({
   busy: false,
   heads: [],
   commits: [],
+  workspaceCommit: undefined,
 });
 
 /** Independent file scope; new editor selections fence every delayed response. */
@@ -101,6 +103,11 @@ export class FileHistoryController {
         throw new Error(
           "File history requires an existing JJ workspace context.",
         );
+      this.#set({
+        workspaceCommit: workspaces.find((commit) =>
+          commit.workspaces.includes(this.#workspace!),
+        )?.id,
+      });
       await this.#page(generation, false);
     });
   }

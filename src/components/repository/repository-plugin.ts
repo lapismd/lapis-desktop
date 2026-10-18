@@ -12,10 +12,13 @@ import { RepositoryView } from "./repository-view.ts";
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 import { FileHistoryController } from "../../lib/repository/file-history-controller.ts";
 import { registerFileHistoryView } from "./file-history-view.ts";
+import { BlameController } from "../../lib/repository/blame-controller.ts";
+import { BlameView } from "./blame/blame-view.ts";
 type RepositoryController =
   | HistoryController
   | OperationController
-  | FileHistoryController;
+  | FileHistoryController
+  | BlameController;
 
 export class RepositoryPlugin extends Plugin {
   #services?: RepositoryServices;
@@ -113,6 +116,10 @@ export class RepositoryPlugin extends Plugin {
     this.#services = ownedRepository(this.app);
     registerFileHistoryView(this);
     this.registerView(
+      "repository-file-blame",
+      (leaf) => new BlameView(leaf, this),
+    );
+    this.registerView(
       "repository-history",
       (leaf) => new RepositoryView(leaf, this),
       {
@@ -208,6 +215,46 @@ export class RepositoryPlugin extends Plugin {
     }
     if (!workspace.openLeaf("repository-oplog", {}, { active: true }))
       throw new Error("Repository operation log could not be opened");
+  }
+  createBlameController(): BlameController {
+    const controller = new BlameController(
+      this.#services!.reader,
+      this.feedback("File blame"),
+    );
+    this.#controllers.add(controller);
+    this.#activities.set(
+      controller,
+      new BackgroundWork(this.app.notifications, "repository-history").follow(
+        "Loading file blame",
+        {
+          subscribe: (listener) =>
+            controller.subscribe((state) =>
+              listener({
+                busy: state.busy,
+                phase: state.status === "failed" ? "unavailable" : state.status,
+              }),
+            ),
+        },
+      ),
+    );
+    return controller;
+  }
+  async openBlame(
+    operation: string,
+    commit: string,
+    path: string,
+  ): Promise<void> {
+    const workspace = getWorkspaceHostBinding(this.app.workspace).controller
+      .workspace;
+    const state = { operation, commit, path };
+    const existing = workspace.getLeavesOfType("repository-file-blame")[0];
+    if (existing) {
+      await existing.setViewState({ type: "repository-file-blame", state });
+      workspace.revealLeaf(existing);
+    } else if (
+      !workspace.openLeaf("repository-file-blame", state, { active: true })
+    )
+      throw new Error("File blame could not be opened");
   }
   async onunload(): Promise<void> {
     return (this.#closing ??= (async () => {

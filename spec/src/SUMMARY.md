@@ -196,3 +196,4 @@
 - [Background activity and responsiveness](current/background.md)
 - [Visible background work and responsive repository startup](history/E-REPO-016.md)
 - [Native file history and repository row actions](history/E-REPO-017.md)
+- [File blame and repository loading states](history/E-REPO-018.md)

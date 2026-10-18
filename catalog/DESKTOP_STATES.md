@@ -6,6 +6,13 @@ toast recovery, rename/deletion and opening the matching JJ Log revision.
 `Desktop/Repository row selection` covers non-button row areas and independent
 controls. Both use production components and remain visual-pending.
 
+`Desktop/Repository file blame` covers the sidebar action opening recorded
+source/attribution in the main pane, progressive ranges, origin navigation,
+failure/toast recovery, loading skeleton/status and sidebar/editor header
+alignment. File history also has dedicated Empty/icon scenes for no editor and
+no matching revisions. Log, file list, diff, operation and conflict loading
+states use representative production skeletons. Visual approval remains pending.
+
 `Desktop/Background work` holds optional AI discovery and repository reads while
 the real workspace remains interactive. It covers status progress, command
 palette input during pending work, completion cleanup and parser failure toasts.

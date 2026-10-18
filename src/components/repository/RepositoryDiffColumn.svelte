@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import RepositoryFileTitle from "./RepositoryFileTitle.svelte";
   import {
     FileChangeStats,
@@ -46,9 +47,10 @@
         {viewMode}
         {wrap}
       />
-    {:else if snapshot.path}{#if snapshot.busy}<p role="status">
-          Loading file changes…
-        </p>{:else}<p role="status">File preview is unavailable.</p>
+    {:else if snapshot.path}{#if snapshot.busy}<RepositorySkeleton
+          kind="diff"
+          label="Loading file changes…"
+        />{:else}<p role="status">File preview is unavailable.</p>
         <Button size="sm" onclick={() => controller.selectPath(snapshot.path!)}
           >Retry preview</Button
         >{/if}

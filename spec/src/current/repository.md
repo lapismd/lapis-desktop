@@ -51,8 +51,8 @@ A visible but unfocused window does not qualify the headed interaction gate.
 
 ## Notes history view
 
-[Row selection and File history](repository-navigation.md) define pointer hit
-areas, icons and the default editor-following sidebar (LD-REPO-002/004).
+[File history and blame](repository-navigation.md) define row actions, loading,
+empty states and the editor-following sidebar (LD-REPO-002/004; E-REPO-018).
 
 The optional bundled Repository History plugin uses the public history client
 and an injected, App-owned reader. Its native factory retains the admitted vault

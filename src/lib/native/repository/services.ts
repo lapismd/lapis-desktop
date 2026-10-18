@@ -63,6 +63,7 @@ export function createNativeRepository(
       status: (handle: Handle) => run(() => reader.status(handle)),
       read: (handle: Handle, query: Query) =>
         run(() => reader.read(handle, query)),
+      blame: (handle, query) => run(() => reader.blame(handle, query)),
       close: (handle: Handle) => run(() => preparation.close(handle)),
     },
     close(mode) {

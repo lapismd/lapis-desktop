@@ -322,6 +322,30 @@
         }
       ],
       "use": "Production adoption in E-REPO-015: Copied jj-store presentation first, adapted only to native-read/local draft/stage/delete/preview and public Design Core composition. Same header actions, Files/mode browser, nested shell, Left/Resolved/Right editor, sidebar icon and merge settings. Replaces custom approximation. Source internal sizing selectors are replaced by owned measured hosts/public slots; shell is disposed. Settings are memory-only and language adapts the explicit Markdown fixture. Native apply remains disabled, no conflicts are persisted or cleared. Native publication remains unavailable."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "172703544540a10897274f584582466b911a803d",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-blame/StoreBlameView.svelte",
+          "destination": "src/components/repository/blame/RepositoryBlameView.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-blame/StoreBlameGroup.svelte",
+          "destination": "src/components/repository/blame/RepositoryBlameGroup.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-blame/blame-model.ts",
+          "destination": "src/lib/repository/blame-chunks.ts"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsVirtualRows.svelte",
+          "destination": "src/components/repository/blame/RepositoryBlameRows.svelte"
+        }
+      ],
+      "use": "Copied maintained blame groups, sticky author/source grid, line numbers, bounded chunks and virtual-row geometry. Host callbacks replace route ownership; native reader/controller owns pin, source text, status, toast recovery and drain. Generic unused virtual-row controls/appearance integration are omitted; public Design Core author/profile, RelativeTime, Skeleton and async syntax highlighting are reused. No source checkout or internal dependency imports."
     }
   ]
 }

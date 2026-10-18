@@ -24,6 +24,7 @@
     selectedFiles,
     operationTitles = false,
     onCopyError,
+    showAuthor = true,
   }: {
     revisions: RepositoryLogRevision[];
     commits?: readonly LocalGraphCommit[];
@@ -35,6 +36,7 @@
     selectedFiles?: Snippet;
     operationTitles?: boolean;
     onCopyError?(error: unknown): void;
+    showAuthor?: boolean;
   } = $props();
   const id = $props.id();
   const rows = $derived(buildRepositoryLogGraph(revisions));
@@ -87,14 +89,14 @@
           rowHeight={heights[`row:${row.revision.eventId}`] ?? 76}
           graphHeight={heights[`graph:${row.revision.eventId}`] ?? 76}
         />
-        <RepositoryAuthorAvatar
-          name={row.revision.author}
-          email={commit?.author.email}
-          handle={row.revision.host
-            ? `${row.revision.author}@${row.revision.host}`
-            : undefined}
-          size="md"
-        />
+        {#if showAuthor}<RepositoryAuthorAvatar
+            name={row.revision.author}
+            email={commit?.author.email}
+            handle={row.revision.host
+              ? `${row.revision.author}@${row.revision.host}`
+              : undefined}
+            size="md"
+          />{/if}
         <div class="repository-graph-copy">
           {#if operationTitles}<RepositoryOperationMessage
               message={row.revision.message}
@@ -116,9 +118,10 @@
           >
             {#if !operationTitles}<strong>{row.revision.message}</strong>{/if}
             <span class="repository-graph-meta">
-              {row.revision.author}{row.revision.host
-                ? `@${row.revision.host}`
-                : ""} · {timestampLabel(row.revision.millis)}
+              {#if showAuthor}{row.revision.author}{row.revision.host
+                  ? `@${row.revision.host}`
+                  : ""} ·
+              {/if}{timestampLabel(row.revision.millis)}
             </span>
           </button>
           <TagList

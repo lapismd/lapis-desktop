@@ -37,6 +37,7 @@
   const requests = { commit: 0, change: 0 };
   let destroyed = false;
   const compact = $derived(revisionLeadingChars(compactLeadingChars, 4));
+  const single = $derived(!commitId || !changeId);
   const expanded = $derived(
     Math.max(compact, revisionLeadingChars(expandedLeadingChars, 5)),
   );
@@ -113,7 +114,7 @@
           onblur={() => {
             focused = null;
           }}
-          aria-label={`${chip} ${feedback[side] ? (feedback[side] === "copied" ? "Copied" : "Retry") : active === side ? abbreviateRevisionId(value, expanded) : value.slice(0, compact)} · Copy ${label} ${value}`}
+          aria-label={`${chip} ${feedback[side] ? (feedback[side] === "copied" ? "Copied" : "Retry") : active === side || single ? abbreviateRevisionId(value, expanded) : value.slice(0, compact)} · Copy ${label} ${value}`}
           data-copied={feedback[side] === "copied" || undefined}
           data-copy-failed={feedback[side] === "failed" || undefined}
           onclick={(event) => {

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import {
     FileListing,
     FileListingViewModeToggle,
@@ -37,7 +38,10 @@
     ><FileListingViewModeToggle bind:mode />
   </header>
   <div class="file-list">
-    {#if initialLoading}<p role="status">Loading changed files…</p>
+    {#if initialLoading}<RepositorySkeleton
+        kind="files"
+        label="Loading changed files…"
+      />
     {:else}<FileListing
         {files}
         {mode}
@@ -96,9 +100,5 @@
     min-height: 0;
     overflow: auto;
     padding: 0.25rem 0.35rem;
-  }
-  p {
-    font-size: 0.75rem;
-    color: var(--muted-foreground);
   }
 </style>

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "../RepositorySkeleton.svelte";
   import { untrack } from "svelte";
   import { MediaQuery } from "svelte/reactivity";
   import type { LocalConflictDescriptor } from "@lapismd/jj-history";
@@ -86,14 +87,15 @@
       />{/if}
   {/snippet}
   {#if !ready}
-    <p role="status">
-      {busy
-        ? "Loading native conflict details…"
-        : "Conflict details are unavailable."}
-    </p>
-    {#if !busy}<Button variant="outline" size="sm" onclick={onLoad}
+    {#if busy}<RepositorySkeleton
+        kind="conflicts"
+        label="Loading native conflict details…"
+      />
+    {:else}<p role="status">Conflict details are unavailable.</p>
+      <Button variant="outline" size="sm" onclick={onLoad}
         >Retry conflict details</Button
-      >{/if}
+      >
+    {/if}
   {:else if !conflicts.length}<p>
       No conflict descriptors are available for this revision.
     </p>

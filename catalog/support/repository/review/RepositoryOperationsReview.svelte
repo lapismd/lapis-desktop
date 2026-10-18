@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositorySkeleton from "../../../../src/components/repository/RepositorySkeleton.svelte";
   import { onMount, onDestroy, untrack } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import RepositoryLogHeader from "../../../../src/components/repository/RepositoryLogHeader.svelte";
@@ -111,16 +112,16 @@
             onRefresh={() => controller.refresh()}
           />
           <ColumnCanvas.Body>
-            {#if snapshot.phase === "loading"}<p role="status">
-                Preparing operation log…
-              </p>
+            {#if snapshot.phase === "loading"}<RepositorySkeleton
+                label="Preparing operation log…"
+              />
             {:else if snapshot.phase === "unavailable"}<p role="status">
                 Operation log is unavailable for this vault. Refresh to try
                 again.
               </p>
-            {:else if !snapshot.headsReady}<p role="status">
-                Loading repository operations…
-              </p>
+            {:else if !snapshot.headsReady}<RepositorySkeleton
+                label="Loading repository operations…"
+              />
             {:else if !snapshot.operation}<p role="status">
                 {snapshot.heads.length > 1
                   ? "Choose an operation to inspect its ancestry."

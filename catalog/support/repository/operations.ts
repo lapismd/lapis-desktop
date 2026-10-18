@@ -216,6 +216,7 @@ export function operationFixture(scenario = "operation-ready") {
     }
     return read(handle, query);
   };
+  attachLoadingFixture(f.reader, scenario);
   return {
     ...f,
     recover() {
@@ -235,3 +236,4 @@ function stats() {
     work: 0,
   };
 }
+import { attachLoadingFixture } from "./loading.ts";

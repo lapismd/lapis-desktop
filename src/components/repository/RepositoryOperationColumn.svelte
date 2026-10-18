@@ -2,7 +2,7 @@
   import RepositoryFileTitle from "./RepositoryFileTitle.svelte";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
-  import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import {
     FileChangeStats,
     type FileDiffViewMode,
@@ -124,15 +124,10 @@
               {viewMode}
               {wrap}
             />
-          {:else if snapshot.busy}<div
-              class="operation-diff-loading"
-              role="status"
-              aria-label="Loading selected operation comparison"
-            >
-              <Skeleton style="height:1rem;width:75%" /><Skeleton
-                style="height:1rem;width:90%"
-              /><Skeleton style="height:1rem;width:60%" />
-            </div>
+          {:else if snapshot.busy}<RepositorySkeleton
+              kind="diff"
+              label="Loading selected operation comparison"
+            />
           {:else}<Empty.Root class="operation-diff-empty" role="status"
               ><Empty.Header
                 ><Empty.Media variant="icon"><FileSearchIcon /></Empty.Media

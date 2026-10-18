@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-REPO-017 qualifies native file history and row actions (NOTES-05I7).
+E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
 LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and
 restart recovery stay pending.
 

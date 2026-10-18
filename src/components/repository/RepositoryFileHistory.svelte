@@ -1,8 +1,12 @@
 <script lang="ts">
+  import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import { onMount } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as ScrollArea from "@lapismd/design-core/shadcn/scroll-area";
   import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
+  import GitCommitVerticalIcon from "@lucide/svelte/icons/git-commit-vertical";
+  import FileClockIcon from "@lucide/svelte/icons/file-clock";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
   import type {
     FileHistoryController,
     FileHistoryState,
@@ -15,10 +19,12 @@
     controller,
     copyText,
     onOpen,
+    onBlame,
   }: {
     controller: FileHistoryController;
     copyText(value: string): Promise<void>;
     onOpen(revision: string): void;
+    onBlame(): void;
   } = $props();
   let state = $state<FileHistoryState>();
   const rows = $derived(commitRows(state?.commits ?? []));
@@ -48,12 +54,20 @@
     <Button
       variant="ghost"
       size="icon-sm"
+      aria-label="Blame file"
+      title="Blame file"
+      disabled={!state?.path || !state.workspaceCommit || state.busy}
+      onclick={onBlame}><GitCommitVerticalIcon /></Button
+    >
+    <Button
+      variant="ghost"
+      size="icon-sm"
       aria-label="Refresh file history"
       disabled={!state?.path || state.busy}
       onclick={() => controller.refresh()}><RefreshCwIcon /></Button
     >
   </header>
-  {#if state?.path && pins.length}<div class="file-pin">
+  {#if state?.path && !state.operation && pins.length > 1}<div class="file-pin">
       <RepositoryOperationPinPicker
         operations={pins}
         operation={state.operation}
@@ -63,18 +77,28 @@
       />
     </div>{/if}
   <ScrollArea.Root style="flex:1;min-height:0;min-width:0">
-    {#if !state?.path}<p role="status">
-        Open a file in the editor to see its revision history.
-      </p>
+    {#if !state?.path}<Empty.Root role="status">
+        <Empty.Header>
+          <Empty.Media variant="icon"><FileClockIcon /></Empty.Media>
+          <Empty.Title>No file selected</Empty.Title>
+          <Empty.Description
+            >Open a file in the editor to see its revision history.</Empty.Description
+          >
+        </Empty.Header>
+      </Empty.Root>
     {:else}
       <RepositoryGraph
         revisions={rows}
         commits={state.commits}
         label="File revision graph"
         {copyText}
+        showAuthor={false}
         onSelect={onOpen}
       />
-      {#if state.busy}<p role="status">Loading file history…</p>
+      {#if state.busy}<RepositorySkeleton
+          kind="file-history"
+          label="Loading file history…"
+        />
       {:else if state.phase === "unavailable"}<p role="status">
           File history is unavailable. Refresh to try again.
         </p>
@@ -83,9 +107,15 @@
             ? "Choose an operation to inspect this file."
             : "No repository history available."}
         </p>
-      {:else if !state.commits.length}<p role="status">
-          No revisions changed this file at the selected operation.
-        </p>{/if}
+      {:else if !state.commits.length}<Empty.Root role="status">
+          <Empty.Header>
+            <Empty.Media variant="icon"><FileClockIcon /></Empty.Media>
+            <Empty.Title>No file history</Empty.Title>
+            <Empty.Description
+              >No revisions changed this file at the selected operation.</Empty.Description
+            >
+          </Empty.Header>
+        </Empty.Root>{/if}
       {#if state.next}<Button
           variant="outline"
           size="sm"
@@ -114,13 +144,18 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.5rem 0.75rem;
+    box-sizing: border-box;
+    height: var(--ui-workspace-tab-height, 40px);
+    min-height: var(--ui-workspace-tab-height, 40px);
+    flex: 0 0 var(--ui-workspace-tab-height, 40px);
+    padding: 0 0.75rem;
     border-bottom: 1px solid var(--border);
   }
   .file-title {
     flex: 1;
     min-width: 0;
     overflow: hidden;
+    font-size: 0.875rem;
   }
   .file-pin {
     padding: 0.5rem 0.75rem;

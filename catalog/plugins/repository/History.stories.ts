@@ -212,7 +212,9 @@ export const Preparing: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await open(canvasElement);
     await expect(
-      await canvas.findByText("Preparing repository history…"),
+      await canvas.findByRole("status", {
+        name: "Preparing repository history…",
+      }),
     ).toBeVisible();
   },
 };
