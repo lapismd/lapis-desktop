@@ -1,3 +1,4 @@
+import { chooseChangedRevision } from "../../support/repository/picker-interactions.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
@@ -30,7 +31,7 @@ async function open(element: HTMLElement) {
     await outer.findByRole("region", { name: "Repository operation log" }),
   );
   await userEvent.click(
-    await canvas.findByRole("button", { name: /describe commit/ }),
+    await canvas.findByRole("button", { name: /describe commit.*;/ }),
   );
   await userEvent.click(
     await canvas.findByRole("button", { name: "Close Diff column" }),
@@ -38,10 +39,7 @@ async function open(element: HTMLElement) {
   return canvas;
 }
 async function group(canvas: ReturnType<typeof within>) {
-  await userEvent.selectOptions(
-    await canvas.findByRole("combobox", { name: "Changed revision" }),
-    "aa".repeat(16),
-  );
+  await chooseChangedRevision(canvas);
 }
 export const ExpandedOperationFiles: StoryObj = {
   play: async ({ canvasElement }) => {

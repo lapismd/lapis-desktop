@@ -1,6 +1,8 @@
+import { chooseChangedRevision } from "../../support/repository/picker-interactions.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
+import RepositoryReviewDemo from "../../support/repository/review/RepositoryReviewDemo.svelte";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import RepositoryPanel from "../../../src/components/repository/RepositoryPanel.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
@@ -20,6 +22,22 @@ const meta: Meta = {
 export default meta;
 
 export const JJLogAndOpLogTabs: StoryObj = {
+  render: () => ({
+    Component: RepositoryReviewDemo,
+    props: { selected: true, initialTab: "history" },
+  }),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          "Active Storybook-only parity review. Production adoption and automated tests await user confirmation.",
+      },
+    },
+  },
+};
+
+// Retain the earlier production integration scenario for deferred qualification.
+export const ProductionIntegrationComparison: StoryObj = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await waitFor(
@@ -64,12 +82,9 @@ export const JJLogAndOpLogTabs: StoryObj = {
       await canvas.findByRole("region", { name: "Repository operation log" }),
     );
     await userEvent.click(
-      await log.findByRole("button", { name: /describe commit/ }),
+      await log.findByRole("button", { name: /describe commit.*;/ }),
     );
-    await userEvent.selectOptions(
-      await log.findByRole("combobox", { name: "Changed revision" }),
-      "aa".repeat(16),
-    );
+    await chooseChangedRevision(log);
     await userEvent.click(
       await log.findByRole("button", { name: "Welcome.md" }),
     );

@@ -1,81 +1,77 @@
 <script lang="ts">
-  // jj-store's application-owned Git-author fallback palette and name seed.
-  let { name }: { name: string } = $props();
-  const author = $derived(name.trim() || "Unknown user");
-  const initials = $derived(
-    author
-      .split(/\s+/)
-      .slice(0, 2)
-      .map((part) => part[0])
-      .join("")
-      .toUpperCase(),
-  );
-  const tone = $derived.by(() => {
-    const tones = [
-      "blue",
-      "emerald",
-      "amber",
-      "rose",
-      "cyan",
-      "violet",
-      "orange",
-    ];
-    const hash = Array.from(author.toLowerCase()).reduce(
-      (value, character) =>
-        (value * 31 + (character.codePointAt(0) ?? 0)) >>> 0,
-      0,
-    );
-    return tones[hash % tones.length];
+  import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
+  import { avatarInitials } from "@lapismd/design-core/shadcn/avatar";
+  import type {
+    AvatarIdentity,
+    AvatarSize,
+  } from "@lapismd/design-core/shadcn/avatar";
+  import { reviewGravatar } from "../../lib/repository/author.ts";
+  let {
+    name,
+    email = "",
+    avatarUrl,
+    handle,
+    size = "xs",
+  }: {
+    name: string;
+    email?: string;
+    avatarUrl?: string;
+    handle?: string;
+    size?: AvatarSize;
+  } = $props();
+  let gravatar = $state<{ email: string; src: string }>();
+  const normalizedEmail = $derived(email.trim().toLowerCase());
+  const author = $derived<AvatarIdentity>({
+    id: normalizedEmail || handle || name.trim() || "unknown-author",
+    name: name.trim() || email.trim() || "Unknown author",
+    src:
+      avatarUrl ||
+      (gravatar?.email === normalizedEmail ? gravatar.src : undefined),
+  });
+  $effect(() => {
+    const requested = normalizedEmail;
+    let live = true;
+    if (!avatarUrl) {
+      void reviewGravatar(requested)
+        .then((src) => {
+          if (live) gravatar = src ? { email: requested, src } : undefined;
+        })
+        .catch(() => {
+          // Image enrichment is optional; the shared Avatar retains name fallback.
+          if (live) gravatar = undefined;
+        });
+    }
+    return () => {
+      live = false;
+    };
   });
 </script>
 
+<!-- Keep profile activation separate from graph and command-item activation. -->
 <span
-  class="repository-author-avatar"
-  data-tone={tone}
-  role="img"
-  aria-label={author}>{initials}</span
+  class="repository-review-author-avatar"
+  onpointerdown={(event) => event.stopPropagation()}
+  onclick={(event) => event.stopPropagation()}
+  onkeydown={(event) => {
+    if (event.key === "Enter" || event.key === " ") event.stopPropagation();
+  }}
+  role="presentation"
 >
+  <AuthorCard
+    {author}
+    label={`${avatarInitials(author.name)} · About ${author.name}`}
+    {size}
+    handle={email.trim() || handle}
+    interaction="hover"
+  />
+</span>
 
 <style>
-  .repository-author-avatar {
-    display: grid;
-    width: 2rem;
-    height: 2rem;
+  .repository-review-author-avatar {
+    display: inline-flex;
     flex: none;
-    place-items: center;
-    overflow: hidden;
-    border-radius: 50%;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--repository-author-foreground);
-    background: var(--repository-author-background);
-  }
-  [data-tone="blue"] {
-    --repository-author-background: #2563eb;
-    --repository-author-foreground: #fff;
-  }
-  [data-tone="emerald"] {
-    --repository-author-background: #047857;
-    --repository-author-foreground: #fff;
-  }
-  [data-tone="amber"] {
-    --repository-author-background: #fbbf24;
-    --repository-author-foreground: #451a03;
-  }
-  [data-tone="rose"] {
-    --repository-author-background: #e11d48;
-    --repository-author-foreground: #fff;
-  }
-  [data-tone="cyan"] {
-    --repository-author-background: #22d3ee;
-    --repository-author-foreground: #083344;
-  }
-  [data-tone="violet"] {
-    --repository-author-background: #7c3aed;
-    --repository-author-foreground: #fff;
-  }
-  [data-tone="orange"] {
-    --repository-author-background: #c2410c;
-    --repository-author-foreground: #fff;
+    align-items: center;
+    pointer-events: auto;
+    --ui-author-card-avatar-size: 1.75rem;
   }
 </style>

@@ -1,3 +1,4 @@
+import { richCommitMessage } from "./rich-commit.ts";
 import { commitDetail } from "./commit-detail.ts";
 import type { HistoryReader } from "../../../src/lib/repository/history-reader.ts";
 import type {
@@ -54,6 +55,18 @@ export function historyFixture(scenario = "ready") {
   if (scenario === "merge" || scenario === "parent-details-failure")
     latest.parents.push("33".repeat(20));
   if (scenario === "parent-details-failure") faults.add("commit");
+  if (scenario === "conflicted") latest.conflicted = true;
+  latest.workspaces = ["default"];
+  if (scenario === "rich-history") {
+    latest.description = richCommitMessage;
+    latest.bookmarks = [null, "origin"].map((remote) => ({
+      name: "main",
+      remote,
+      added: true,
+      removed: false,
+      conflicted: false,
+    }));
+  }
   const change = {
     path: "Welcome.md",
     before: [],
@@ -114,6 +127,32 @@ export function historyFixture(scenario = "ready") {
                 ? "The parent details could not be read"
                 : "The file comparison failed",
         );
+      if (query.kind === "conflicts")
+        return {
+          kind: "conflicts",
+          data: {
+            version: 1,
+            commit: query.query.commit,
+            change: latest.change_id,
+            conflicts: [
+              {
+                path: "Welcome.md",
+                fingerprint: "ad".repeat(32),
+                terms: [],
+                editor: {
+                  status: "text",
+                  executable: false,
+                  contents: [
+                    "# Notes\nYour version\n",
+                    "# Notes\nBase version\n",
+                    "# Notes\nOther version\n",
+                  ],
+                },
+              },
+            ],
+            stats: stats(),
+          },
+        };
       if (query.kind === "commit") {
         const value = commit(query.query.commit);
         if (query.query.commit === "33".repeat(20)) {

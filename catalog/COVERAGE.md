@@ -297,3 +297,179 @@ comparison-file/selected-file statistics. Both themes and widths remain
 visual-pending. MergeParentSelection moved here from History with its exact
 comparison/diff acceptance retained. Source attribution is in
 docs/provenance.json.
+
+`plugins/repository/Operations.stories.ts` also covers the production operation
+parent Command View, loaded/unloaded metadata, user/host/workspace/time cards,
+keyboard search/selection, exact operation identities, merge choice retention
+and App toast/explicit metadata recovery. Operation parents remain distinct from
+commit/change IDs. Visual approval remains pending.
+
+`plugins/repository/Header.stories.ts` covers JJ Log and Op Log
+operation-snapshot Command View selection, full-ID search, current-pin
+indication, keyboard/focus return, empty disabled state and no native IO while
+searching. This header control selects operations; it is not a workspace
+selector.
+
+`plugins/repository/DiffLayout.stories.ts` uses production History/Op Log views
+to verify short split diffs fill their available column/card and both revision
+panes across both widths/themes, wrapping, operation metadata collapse and
+return to compact unified mode. The shared package is unchanged.
+
+`plugins/repository/ParityReview.stories.ts` is a **review-only prototype** per
+explicit user direction. It uses an owned disposable App and catalog copies of
+the operation/history compositions for a full-width selected-row action bar,
+labelled Inspect/Revisions buttons, non-wrapping copy menu, compact single-row
+JJ parent trigger with copy IDs, source-coloured identifier chips and rich
+Command View options. Both review sidebars start closed on reload.
+`Comparison/JJLogAndOpLogTabs` uses the same review composition; the prior
+production interaction remains in `ProductionIntegrationComparison`. It is not
+qualified production coverage. The user deferred tests and production adoption
+until visual parity confirmation.
+
+The review now shares a muted Comparison parent strip between JJ/Op Log, with
+copy IDs inside selector labels and time at the far right. Revisions uses a
+compact search/close header, a full-width divider and no repeated group heading.
+The action-menu trigger borrows jj-store hover tokens. Tests remain deferred.
+
+Latest review: Git/JJ chips and IDs use the source Source Code Pro family with
+centred text cells. Both diff views use the compact22px control frames/12px
+icons adapted from jj-store CommunityDiffControls. Comparison strips are absent
+when no parent is available, superseding the briefly proposed disabled row.
+
+Operation-parent and Revisions popovers share the same catalog search/close
+header, zero outer padding, full-width divider and untitled options group.
+
+Operation-parent options now use one row for avatar/title, one OP identity-copy
+control and relative time. The ordinary full-ID footer is removed; missing-card
+retry remains explicit. Copy/failure interaction checks stay deferred.
+
+Revision options now match the one-row layout with title, Git/JJ copy controls
+and time. Both review logs use public Design Core Avatar and AuthorCard across
+graphs, parent labels/options and the operation rail. Commit email drives an
+optional Gravatar image; missing images use name initials, and supplied author
+images take priority. Profile details display only available name/email or
+operation user/host. Avatar activation is independent of row selection. Manual
+preview only; image-success, hover timing, keyboard, clipboard and accessibility
+qualification remain deferred with the other automated checks.
+
+`ParityReview/MultilineCommitMessage` opens JJ Log with an expanded multiline
+commit. The shared review fixture preserves the same description in graph,
+commit detail and changed-revision metadata. Public Design Core MarkdownContent
+renders the expanded body, while graph subjects and picker labels stay compact.
+The example includes bold, italics, inline code, two list items, a blockquote
+and a fenced shell command. JJ/Op comparison strips have no bottom border.
+Manual render review only; automated tests and production adoption remain
+deferred.
+
+Op Log parent links now sit at the author row’s far right, with a corner-up
+icon, shortened ID and public shadcn Tooltip. The visible Parent prefix is
+removed; accessible labels and navigation retain the exact native target.
+
+The multiline-commit fixture now exceeds the preview height. Long bodies show a
+nine-rem faded preview and View more/less; their background differs from the
+selected row in light and dark appearances. Rendered height, rather than source
+length, decides whether the action is present. Expanded content retains
+Markdown. Column collapse/close/header and compact diff controls share stronger
+hover and focus feedback through catalog-owned hosts and public tokens. Manual
+preview only; automated interaction/accessibility/type/build checks remain
+deferred.
+
+Op Log's separate native Info disclosure and generic operation-change details
+are removed in the review composition. The labelled Inspect action still opens
+the main operation column. Recorded `attributes["args"]` appear as plain command
+text after Comparison parent, without parsing, execution or an inferred prefix.
+The selected-operation fixture includes CLI args; its root parent omits them. No
+missing-data placeholder is rendered. Production adoption/tests stay deferred.
+
+`ParityReview/TagsAndConflictedCommits` opens JJ Log with its second, conflicted
+revision selected beside a split diff. Both it and MultilineCommitMessage use
+public Design Core TagList for local/remote bookmarks and workspace/status
+chips. Flat tags keep their semantic tones and accessible overflow, without
+redundant descriptions. Neutral bookmarks use the filled secondary variant so
+their shapes remain visible on selected rows. The TagList overflow is separate
+from row selection; picker previews share the same mapping. Manual light/dark
+review only; automated checks and production adoption remain deferred.
+
+Both review headers now use `ReviewLogHeader`/`ReviewOperationPinPicker`,
+adapted from the owned `src/components/repository/RepositoryLogHeader.svelte`
+and `RepositoryOperationPinPicker.svelte`. Select operation shares Revisions'
+bordered search/close header, zero outer padding and untitled options group.
+Single-row options reuse the operation-parent avatar/title/OP-copy/time layout;
+there is no full-ID footer. Exact IDs remain searchable/copyable and current-pin
+checks remain. Available fixture operation metadata is shared with graph reads;
+unknown records retain a neutral label without invented time/author. Opening or
+filtering performs no native lookup. Shipping components remain frozen.
+
+`ParityReview/EvolutionLog` opens JJ Log beside a closeable/resizable Evo Log
+column. The selected-row action uses the source History icon and short label;
+other JJ stories start with evolution closed. The preview adapts jj-store's
+`StoreEvolutionColumn.svelte`, `StoreRepositoryActionsPanel.svelte` and
+`repository-log-canvas.ts` into catalog `ReviewEvolutionColumn`,
+`ReviewRevisionActions` and `review-history-canvas`. Shared graph rows retain
+Design Core avatars/tags and exact Git/JJ copy controls. Explicit typed
+synthetic predecessor records connect rewrite versions; native commit parents
+stay separate. Evolution selection/close leaves the main revision, diff and
+operation pin intact; main selection changes close evolution. Fixture-only
+manual review: native query/pagination, error/empty/incomplete lifecycle and
+automated qualification remain deferred. No shipping integration is claimed.
+
+Evolution now reuses the JJ Log expanded-row composition for Markdown messages,
+avatars/tags, comparison selectors, changed-file list/folder/package modes and a
+separate full-height split/unified diff. Selecting a version expands that row
+without truncating the original predecessor graph or moving the main JJ
+selection. The fixture marks rewrite comparisons Previous version and initial
+versions Comparison parent. Its explicit same-parent predecessor patches match
+that supported JJ inter-diff case; rebased, combined or unknown predecessors
+stay unavailable until native alignment exists. Commit parents are never
+rewritten to make a controller accept a predecessor. The catalog state and
+comparison content are synthetic; no native acceptance is claimed. Product
+tests, native inter-diff/paging/recovery and production adoption remain
+deferred.
+
+Both catalog headers have separate workspace pickers adapted from jj-store's
+`StoreWorkspacePicker`: explicit fixture workspaces, overview, current marker
+and shared search/close composition. Context changes clear selection while
+retaining the operation pin; no native workspace filtering is claimed.
+`ParityReview/OperationMessageIds` demonstrates the copied/adapted operation
+message parsing and inline full-ID copy controls in the graph and details.
+
+`ParityReview/ConflictResolution` and `ShortCommitWithParent` select the
+conflicted short-message row. Resolve conflicts opens copied/adapted jj-store
+`StoreConflictSurface`, `StoreConflictBody`, `StoreConflictText`,
+`StoreConflictHeaderActions`, repository file tree and sidebar toggle, using
+public Design Core parts. Source Files/mode controls, 15rem browser, action
+labels, merge panes and settings are retained. The root-level catalog shell
+surface stays outside inert Main. Draft/selection/preview are memory-only;
+native apply is unavailable. The short-message action strip has one visible
+separator above its comparison parent. All file-diff headers share a file icon.
+`ParityReview/RevertOperation` adds Git-icon Revisions and a Revert confirmation
+preview; the operation inverse is not snapshot restore.
+`EvolutionWithoutComparison` opens a root version with no comparison/file row.
+Root Op Log selections also omit their no-file-comparison row. No automated
+plays/type/build qualification or production adoption is claimed; user visual
+approval remains pending.
+
+E-REPO-014 records shared picker title shrinking across changed revisions,
+operation snapshot/parents, JJ parents and Evo predecessors. Existing Command
+View option hosts now use an explicit one-row minmax grid; shared summaries
+shrink before avatar/IDs/time. JJ and Evo parent choices reuse compact
+ReviewRevisionOption. Full descriptions and IDs remain retained. Manual actual
+popover/label geometry has no horizontal overflow, with visible ellipsis for the
+long operation title. Product resize/keyboard/axe/type/build qualification and
+adoption stay deferred.
+
+Production adoption (E-REPO-015): repository review compositions now import the
+shared production author, message, selector, graph, file/diff and copied
+conflict presentation. `Desktop/Repository live plugin` exercises workspace
+context, exact native conflict inspection with local staging/preview and
+disabled apply, and hydrated operation revision cards/recorded args with
+disabled Revert. Production contains no catalog imports or synthetic predecessor
+records. Evo/revert synthetic demonstrations remain explicitly catalog-owned.
+Focused repository interaction/accessibility results are recorded in E-REPO-015;
+broad release/platform/provider/whole-catalog checks and visual approval are
+deferred.
+
+`Live plugin/MarkdownAndTags` drives the production Markdown preview, View
+more/less, semantic local/remote TagList visibility/overflow and file selection.
+Both production log tabs remain available in
+`Repository comparison/ProductionIntegrationComparison`.

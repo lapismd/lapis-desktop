@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositoryFileTitle from "./RepositoryFileTitle.svelte";
   import {
     FileChangeStats,
     type FileDiffViewMode,
@@ -13,22 +14,30 @@
   let {
     state: snapshot,
     controller,
+    columnId = "diff",
+    label = "Revision changes",
+    closeLabel = "Close Diff column",
   }: {
     state: Pick<HistoryState, "path" | "diff" | "busy">;
     controller: { selectPath(path: string): Promise<void> };
+    columnId?: string;
+    label?: string;
+    closeLabel?: string;
   } = $props();
-  let viewMode = $state<FileDiffViewMode>("unified");
+  let viewMode = $state<FileDiffViewMode>("split");
   let wrap = $state(false);
   const stats = $derived(changeStats(snapshot.diff));
 </script>
 
-<ColumnCanvas.Column id="diff" columnTitle="Diff" aria-label="Revision changes">
+<ColumnCanvas.Column id={columnId} columnTitle="Diff" aria-label={label}>
   <ColumnCanvas.Header>
-    <ColumnCanvas.Title>{snapshot.path ?? "Diff"}</ColumnCanvas.Title>
-    <ColumnCanvas.HeaderActions>
+    <ColumnCanvas.Title
+      ><RepositoryFileTitle path={snapshot.path} /></ColumnCanvas.Title
+    >
+    <ColumnCanvas.HeaderActions class="repository-review-column-actions">
       {#if stats}<FileChangeStats {...stats} showZero />{/if}
       <RepositoryDiffControls bind:viewMode bind:wrap />
-      <ColumnCanvas.Close aria-label="Close Diff column" />
+      <ColumnCanvas.Close aria-label={closeLabel} />
     </ColumnCanvas.HeaderActions>
   </ColumnCanvas.Header>
   <ColumnCanvas.Body orientation="both">

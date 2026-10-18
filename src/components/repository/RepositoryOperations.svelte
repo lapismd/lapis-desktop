@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { repositoryWorkspaces } from "../../lib/repository/workspaces.ts";
   import { onMount, onDestroy, untrack } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import RepositoryLogHeader from "./RepositoryLogHeader.svelte";
@@ -14,13 +15,13 @@
   let {
     controller,
     initialOperation,
-    onHistory,
     copyText,
+    onHistory,
   }: {
     controller: OperationController;
     initialOperation?: string;
-    onHistory(operation: string): void;
     copyText(value: string): Promise<void>;
+    onHistory?(operation: string): void;
   } = $props();
   let state = $state(initialOperationState());
   const pins = $derived([
@@ -71,6 +72,12 @@
           aria-label="Operations"
         >
           <RepositoryLogHeader
+            {copyText}
+            nodes={state.nodes}
+            workspaces={repositoryWorkspaces(state.workspaceCommits)}
+            workspace={state.workspace}
+            onWorkspaceSelect={(next) => void controller.selectWorkspace(next)}
+            onWorkspaceOpen={() => void controller.loadWorkspaces()}
             title="Op Log"
             count={state.nodes.length}
             operations={pins}
@@ -101,6 +108,11 @@
                 <section aria-label="Selected operation outside loaded graph">
                   <p>The selected operation is outside this graph page.</p>
                   <RepositoryOperationFiles
+                    {copyText}
+                    commits={state.commits}
+                    onHistory={onHistory && state.selected
+                      ? () => onHistory?.(state.selected!.id)
+                      : undefined}
                     {state}
                     {controller}
                     onOpenDiff={() => canvas.open("diff")}
@@ -115,6 +127,7 @@
                   No operations in this history.
                 </p>{/if}
               <RepositoryGraph
+                operationTitles
                 {copyText}
                 commitLabel="operation ID"
                 revisions={rows}
@@ -129,6 +142,11 @@
                 }}
               >
                 {#snippet selectedFiles()}<RepositoryOperationFiles
+                    {copyText}
+                    commits={state.commits}
+                    onHistory={onHistory && state.selected
+                      ? () => onHistory?.(state.selected!.id)
+                      : undefined}
                     {state}
                     {controller}
                     onOpenDiff={() => canvas.open("diff")}
@@ -146,12 +164,7 @@
             {/if}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
-        <RepositoryOperationColumn
-          {state}
-          {controller}
-          {onHistory}
-          {copyText}
-        />
+        <RepositoryOperationColumn {state} {controller} {copyText} />
       </ColumnCanvas.Root>
     </div>
   </section>

@@ -11,18 +11,32 @@
     state,
     controller,
     onOpenDiff,
+    copyText,
+    comparisonTargets,
+    comparisonLabel,
+    separateActions = false,
   }: {
     state: HistoryState;
-    controller: HistoryController;
+    controller: Pick<
+      HistoryController,
+      "loadParents" | "selectBase" | "selectPath" | "morePaths"
+    >;
     onOpenDiff(): void;
+    copyText(value: string): Promise<void>;
+    comparisonTargets?: readonly string[];
+    comparisonLabel?: string;
+    separateActions?: boolean;
   } = $props();
   const files = $derived(listingFiles(state.paths, state.diff));
+  const targets = $derived(comparisonTargets ?? state.revision?.parents ?? []);
 </script>
 
-<div class="revision-files">
-  {#if state.revision?.parents.length}
+{#if targets.length}
+  <div class="revision-files" data-after-actions={separateActions || undefined}>
     <RepositoryCommitPicker
-      parents={state.revision.parents}
+      {copyText}
+      parents={targets}
+      {comparisonLabel}
       revisions={[...state.commits, ...state.parentCommits]}
       target={state.base}
       loading={state.busy}
@@ -72,13 +86,16 @@
           Showing the first 500 changed files.
         </p>{/if}
     {/if}
-  {:else}<p role="status">This revision has no parent comparison.</p>{/if}
-</div>
+  </div>
+{/if}
 
 <style>
   .revision-files {
     padding: 0 0.5rem 0.5rem;
     font-size: 0.8125rem;
+  }
+  .revision-files[data-after-actions] {
+    padding-block-start: 0.5rem;
   }
   .comparison-statistics {
     display: grid;

@@ -1,6 +1,10 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
-  import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import type { LocalGraphCommit } from "@lapismd/jj-history";
+  import RepositoryAuthorAvatar from "./RepositoryAuthorAvatar.svelte";
+  import RepositoryOperationMessage from "./RepositoryOperationMessage.svelte";
+  import { TagList } from "@lapismd/design-core/shadcn/tag-list";
+  import { repositoryGraphTags } from "../../lib/repository/tags.ts";
   import type { RepositoryLogRevision } from "../../lib/repository/graph/model.ts";
   import {
     buildRepositoryLogGraph,
@@ -11,21 +15,28 @@
   import RepositoryIdentifiers from "./RepositoryIdentifiers.svelte";
   let {
     revisions,
+    commits = [],
     selectedId,
     label = "Revision graph",
     commitLabel = "commit ID",
     onSelect,
     copyText,
     selectedFiles,
+    operationTitles = false,
+    onCopyError,
   }: {
     revisions: RepositoryLogRevision[];
+    commits?: readonly LocalGraphCommit[];
     selectedId?: string;
     label?: string;
     commitLabel?: string;
     onSelect(id: string): void;
     copyText(value: string): Promise<void>;
     selectedFiles?: Snippet;
+    operationTitles?: boolean;
+    onCopyError?(error: unknown): void;
   } = $props();
+  const id = $props.id();
   const rows = $derived(buildRepositoryLogGraph(revisions));
   const width = $derived(repositoryLogSvgWidth(rows));
   let heights = $state<Record<string, number>>({});
@@ -41,6 +52,11 @@
 
 <ol class="repository-graph" aria-label={label}>
   {#each rows as row (row.revision.eventId)}
+    {@const commit = commits.find(
+      (commit) => commit.id === row.revision.eventId,
+    )}
+    {@const tags = repositoryGraphTags(row.revision, commit)}
+    {@const tagsId = `${id}-tags-${row.revision.eventId}`}
     <li
       class:selected={selectedId === row.revision.eventId}
       use:measure={`graph:${row.revision.eventId}`}
@@ -56,37 +72,46 @@
           rowHeight={heights[`row:${row.revision.eventId}`] ?? 76}
           graphHeight={heights[`graph:${row.revision.eventId}`] ?? 76}
         />
-        <button
-          class="repository-graph-select"
-          aria-pressed={selectedId === row.revision.eventId}
-          aria-expanded={selectedFiles
-            ? selectedId === row.revision.eventId
+        <RepositoryAuthorAvatar
+          name={row.revision.author}
+          email={commit?.author.email}
+          handle={row.revision.host
+            ? `${row.revision.author}@${row.revision.host}`
             : undefined}
-          onclick={() => onSelect(row.revision.eventId)}
-        >
-          <span class="repository-author" aria-hidden="true"
-            >{row.revision.author.slice(0, 2).toUpperCase() || "?"}</span
+          size="md"
+        />
+        <div class="repository-graph-copy">
+          {#if operationTitles}<RepositoryOperationMessage
+              message={row.revision.message}
+              {copyText}
+              {onCopyError}
+              onSelect={() => onSelect(row.revision.eventId)}
+            />{/if}
+          <button
+            class="repository-graph-select"
+            aria-label={operationTitles
+              ? `${row.revision.message}; ${row.revision.author}${row.revision.host ? `@${row.revision.host}` : ""} · ${timestampLabel(row.revision.millis)}`
+              : undefined}
+            aria-pressed={selectedId === row.revision.eventId}
+            aria-describedby={tags.length ? tagsId : undefined}
+            aria-expanded={selectedFiles
+              ? selectedId === row.revision.eventId
+              : undefined}
+            onclick={() => onSelect(row.revision.eventId)}
           >
-          <span class="repository-graph-copy"
-            ><strong>{row.revision.message}</strong>
-            <span class="repository-graph-meta"
-              >{row.revision.author}{row.revision.host
+            {#if !operationTitles}<strong>{row.revision.message}</strong>{/if}
+            <span class="repository-graph-meta">
+              {row.revision.author}{row.revision.host
                 ? `@${row.revision.host}`
-                : ""} · {timestampLabel(row.revision.millis)}</span
-            >
-            <span class="repository-graph-tags">
-              {#if row.revision.reason === "merge"}<Badge variant="secondary"
-                  >Merge</Badge
-                >{/if}
-              {#if row.revision.conflicted}<Badge variant="destructive"
-                  >Conflicted revision</Badge
-                >{/if}
-              {#each row.revision.tags as tag, index (index)}<Badge
-                  variant="secondary">{tag}</Badge
-                >{/each}
+                : ""} · {timestampLabel(row.revision.millis)}
             </span>
-          </span>
-        </button>
+          </button>
+          <TagList
+            {tags}
+            id={tagsId}
+            label={commit ? "Revision tags" : "Operation tags"}
+          />
+        </div>
         <RepositoryIdentifiers
           {copyText}
           changeId={row.changeIdEncoded}
@@ -131,9 +156,10 @@
   }
   .repository-graph-select {
     display: flex;
-    align-items: center;
-    flex: 1 1 12rem;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+    width: 100%;
     padding: 0;
     min-width: 0;
     border: 0;
@@ -147,19 +173,9 @@
     outline: 2px solid var(--ring);
     outline-offset: 2px;
   }
-  .repository-author {
-    display: grid;
-    place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
-    flex-shrink: 0;
-    border-radius: 50%;
-    background: var(--muted);
-    font-size: 0.65rem;
-  }
   .repository-graph-copy {
     display: flex;
-    flex: 1;
+    flex: 1 1 12rem;
     flex-direction: column;
     min-width: 0;
     gap: 0.25rem;
@@ -173,11 +189,6 @@
     font-size: 0.75rem;
     color: var(--muted-foreground);
     overflow-wrap: anywhere;
-  }
-  .repository-graph-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.25rem;
   }
   .repository-inline-files {
     padding-top: 0.5rem;

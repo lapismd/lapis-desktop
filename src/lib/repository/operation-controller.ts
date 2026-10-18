@@ -1,4 +1,9 @@
-import { operationParent } from "./operation-parent.ts";
+import { OperationGraph } from "./operation-graph.ts";
+import {
+  operationRevisionCards,
+  workspaceCommits,
+} from "./operation-metadata.ts";
+import { operationParent, operationParents } from "./operation-parent.ts";
 import { OperationFiles } from "./operation-files.ts";
 import type { Handle, LocalGraphOperationNode } from "@lapismd/jj-history";
 import type { HistoryReader } from "./history-reader.ts";
@@ -6,6 +11,7 @@ import { HistoryLifetime } from "./history-lifetime.ts";
 import { check, pause, prepared } from "./history-selection.ts";
 import {
   initialOperationState,
+  resetOperationSelection,
   type OperationState,
 } from "./operation-state.ts";
 
@@ -13,6 +19,7 @@ import {
 export class OperationController {
   #state = initialOperationState();
   readonly files: OperationFiles;
+  readonly #graph: OperationGraph;
   #listeners = new Set<(state: OperationState) => void>();
   readonly #lifetime: HistoryLifetime;
   #handle?: Handle;
@@ -30,6 +37,15 @@ export class OperationController {
     feedback: OperationController["feedback"],
     wait = pause,
   ) {
+    this.#graph = new OperationGraph(
+      reader,
+      () => ({
+        handle: this.#handle,
+        state: this.#state,
+        closed: this.#closed,
+      }),
+      (patch) => this.#set(patch),
+    );
     this.files = new OperationFiles(
       async (query) => {
         check(this.#handle);
@@ -89,7 +105,7 @@ export class OperationController {
       else if (this.#state.operation && !this.#state.snapshot)
         await this.#pin(this.#state.operation);
       else if (this.#state.operation && !this.#state.ready)
-        await this.#graph(false);
+        await this.#graph.load(false);
       else if (!this.#state.operation && heads.heads.length === 1)
         await this.#pin(heads.heads[0]);
     });
@@ -131,47 +147,48 @@ export class OperationController {
     check(snapshot.operation === operation);
     if (selection !== this.#selection || this.#closed) return;
     this.#set({ snapshot, phase: "ready" });
-    await this.#graph(false);
+    await this.#graph.load(false);
   }
   more(): Promise<void> {
-    return this.#run(() => this.#graph(true));
+    return this.#run(() => this.#graph.load(true));
   }
-  async #graph(append: boolean): Promise<void> {
-    const handle = this.#handle,
-      operation = this.#state.operation;
-    if (!handle || !operation || (append && !this.#state.next)) return;
-    const response = await this.reader.read(handle, {
-      kind: "graph",
-      query: [
-        { graph: "operations" },
-        { limit: 50, after: append ? this.#state.next : null },
-      ],
+  loadRevisions(): Promise<void> {
+    return this.#run(async () => {
+      const handle = this.#handle,
+        detail = this.#detail;
+      if (!handle) return;
+      const commits = await operationRevisionCards(
+        this.reader,
+        handle,
+        this.#state,
+        () =>
+          !this.#closed && this.#handle === handle && this.#detail === detail,
+      );
+      if (commits) this.#set({ commits });
     });
-    if (handle !== this.#handle || this.#closed) return;
-    check(
-      response.kind === "graph" &&
-        response.data.operation === operation &&
-        response.data.data.graph === "operations",
-    );
-    const retained = append ? this.#state.nodes : [];
-    const incoming = response.data.data.nodes;
-    const ids = new Set(retained.map((node) => node.id));
-    for (const node of incoming) {
-      check(!ids.has(node.id));
-      ids.add(node.id);
-    }
-    const nodes = [...retained, ...incoming].slice(0, 200);
-    this.#set({
-      nodes,
-      ready: true,
-      next: nodes.length < 200 ? response.data.next : null,
+  }
+  loadWorkspaces(): Promise<void> {
+    return this.#run(async () => {
+      const handle = this.#handle,
+        operation = this.#state.operation;
+      if (!handle || !operation) return;
+      const commits = await workspaceCommits(this.reader, handle, operation);
+      if (!this.#closed && handle === this.#handle)
+        this.#set({ workspaceCommits: commits });
+    });
+  }
+  selectWorkspace(workspace: string | null): Promise<void> {
+    return this.#run(async () => {
+      this.#detail++;
+      this.files.reset();
+      this.#set({ workspace, ...resetOperationSelection() });
     });
   }
   clearSelection(): Promise<void> {
     return this.#run(async () => {
       this.#detail++;
       this.files.reset();
-      this.#set({ selected: undefined, parent: undefined, detail: undefined });
+      this.#set(resetOperationSelection());
     });
   }
   select(node: LocalGraphOperationNode): Promise<void> {
@@ -206,8 +223,32 @@ export class OperationController {
   async #selectNode(selected: LocalGraphOperationNode): Promise<void> {
     this.#detail++;
     this.files.reset();
-    this.#set({ selected, parent: undefined, detail: undefined });
+    this.#set({
+      selected,
+      parent: undefined,
+      detail: undefined,
+      parentNodes: [],
+    });
     if (selected.parents.length <= 1) await this.#compare(selected.parents[0]);
+  }
+  loadParents(): Promise<void> {
+    return this.#run(async () => {
+      const handle = this.#handle,
+        selected = this.#state.selected,
+        request = this.#detail;
+      if (!handle || !selected) return;
+      const parentNodes = await operationParents(
+        this.reader,
+        handle,
+        this.#state.operation!,
+        selected.id,
+        selected.parents,
+        [...this.#state.nodes, ...this.#state.parentNodes],
+        () =>
+          !this.#closed && handle === this.#handle && request === this.#detail,
+      );
+      if (parentNodes) this.#set({ parentNodes });
+    });
   }
   selectParent(parent: string): Promise<void> {
     return this.#run(async () => {

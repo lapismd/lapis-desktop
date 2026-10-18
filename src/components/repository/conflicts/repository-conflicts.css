@@ -1,0 +1,125 @@
+/* Adapted from jj-store's conflict editor; all selectors target owned hosts. */
+.store-conflict-editor {
+  --ui-shell-surface-layer-inline-end-inset: 0px;
+}
+.store-conflict-editor__header {
+  padding-inline-start: 0.5rem;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.store-conflict-editor__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  font-size: 0.875rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.store-conflict-editor__body-shell {
+  --ui-shell-height: 100%;
+  --ui-shell-main-block-inset: 0px;
+  --ui-shell-main-radius: 0px;
+  --ui-shell-main-shadow: none;
+  --ui-shell-main-border: 0;
+}
+.store-conflict-editor__body {
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+.store-conflict-editor__file-browser {
+  height: 100%;
+}
+.store-conflict-editor__content-body {
+  display: flex;
+  height: 100%;
+  min-width: 0;
+  min-height: 0;
+  box-sizing: border-box;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+.store-conflict-editor__content[hidden] {
+  display: none;
+}
+.store-conflict-editor__path,
+.store-conflict-path {
+  display: flex;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.store-conflict-editor__path[hidden] {
+  display: none;
+}
+.store-conflict-path__editor {
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+}
+.store-conflict-path__unsupported {
+  display: grid;
+  align-content: start;
+  gap: 0.75rem;
+  flex: 1;
+}
+.store-conflict-path__terms,
+.store-conflict-editor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+.store-conflict-editor__staged {
+  color: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.store-conflict-path__error,
+.store-conflict-editor__error {
+  margin: 0;
+  color: var(--destructive);
+  font-size: 0.8125rem;
+}
+@media (max-width: 700px) {
+  .store-conflict-editor__header {
+    padding-inline: 0.5rem;
+    gap: 0.25rem;
+  }
+  .store-conflict-editor__actions {
+    flex-wrap: nowrap;
+    gap: 0.25rem;
+  }
+  .store-conflict-editor__action-label,
+  .store-conflict-editor__staged {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+.store-conflict-editor {
+  --community-text-secondary: 0.75rem;
+}
+.community-projects__file-tree-region {
+  background: var(--background);
+}
+.store-conflict-preview {
+  padding: 1rem;
+  font-size: 0.8125rem;
+}
+.store-conflict-preview h2 {
+  margin: 0;
+  font-size: 0.875rem;
+}
+.store-conflict-preview pre {
+  padding: 1rem;
+  overflow: auto;
+  background: var(--muted);
+}

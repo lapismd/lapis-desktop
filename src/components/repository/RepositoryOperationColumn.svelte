@@ -1,4 +1,5 @@
 <script lang="ts">
+  import RepositoryFileTitle from "./RepositoryFileTitle.svelte";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
@@ -9,28 +10,26 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import FileSearchIcon from "@lucide/svelte/icons/file-search";
-  import InfoIcon from "@lucide/svelte/icons/info";
   import type { OperationState } from "../../lib/repository/operation-state.ts";
   import type { OperationController } from "../../lib/repository/operation-controller.ts";
   import { changeStats } from "../../lib/repository/history-files.ts";
+  import RepositoryOperationParentPicker from "./RepositoryOperationParentPicker.svelte";
   import RepositoryOperationRail from "./RepositoryOperationRail.svelte";
-  import RepositoryOperationDetail from "./RepositoryOperationDetail.svelte";
+  import RepositoryOperationArguments from "./RepositoryOperationArguments.svelte";
+  import RepositoryOperationMessage from "./RepositoryOperationMessage.svelte";
   import RepositoryDiff from "./RepositoryDiff.svelte";
   import RepositoryDiffControls from "./RepositoryDiffControls.svelte";
   import "./repository-operation-column.css";
   let {
     state: snapshot,
     controller,
-    onHistory,
     copyText,
   }: {
     state: OperationState;
     controller: OperationController;
-    onHistory(id: string): void;
     copyText(value: string): Promise<void>;
   } = $props();
-  let expanded = $state(true),
-    nativeDetails = $state(false);
+  let expanded = $state(true);
   let viewMode = $state<FileDiffViewMode>("unified"),
     wrap = $state(false);
   const stats = $derived(changeStats(snapshot.files.diff));
@@ -41,7 +40,6 @@
   $effect(() => {
     operationId;
     expanded = true;
-    nativeDetails = false;
   });
 </script>
 
@@ -52,7 +50,7 @@
   style="border:0;border-radius:0;background:transparent"
 >
   <ColumnCanvas.Body>
-    <div class="operation-diff-stack">
+    <div class="operation-diff-stack" data-view-mode={viewMode}>
       {#if snapshot.selected}
         <section class="operation-card" aria-label="Selected operation">
           <header class="operation-card-header">
@@ -61,21 +59,20 @@
               type="button"
               aria-expanded={expanded}
               aria-controls={panelId}
+              aria-label={expanded
+                ? "Collapse operation details"
+                : "Expand operation details"}
+              style="flex:none;padding:0.25rem"
               onclick={() => (expanded = !expanded)}
             >
               <ChevronDownIcon aria-hidden="true" />
-              <span>{snapshot.selected.description || "No description"}</span>
             </button>
+            <RepositoryOperationMessage
+              message={snapshot.selected.description || "No description"}
+              {copyText}
+              onSelect={() => (expanded = !expanded)}
+            />
             <div class="operation-card-actions">
-              <Button
-                size="icon-sm"
-                variant="ghost"
-                aria-label="Inspect native operation changes"
-                title="Inspect native operation changes"
-                aria-expanded={nativeDetails}
-                onclick={() => (nativeDetails = !nativeDetails)}
-                ><InfoIcon /></Button
-              >
               <ColumnCanvas.Close
                 aria-label="Close Diff column"
                 title="Close Diff"
@@ -89,38 +86,33 @@
                 onSelect={(id) => void controller.selectId(id)}
                 {copyText}
               />
-              {#if snapshot.selected.parents.length > 1}
-                <label class="operation-parent-comparison"
-                  >Compare with parent
-                  <select
-                    aria-label="Compare operation with parent"
-                    value={snapshot.parent ?? ""}
-                    onchange={(event) =>
-                      controller.selectParent(event.currentTarget.value)}
-                  >
-                    <option value="" disabled>Choose a parent</option>
-                    {#each snapshot.selected.parents as parent (parent)}<option
-                        value={parent}>{parent}</option
-                      >{/each}
-                  </select>
-                </label>
+              {#if snapshot.selected.parents.length > 0}
+                <RepositoryOperationParentPicker
+                  {copyText}
+                  parents={snapshot.selected.parents}
+                  nodes={[...snapshot.nodes, ...snapshot.parentNodes]}
+                  target={snapshot.parent}
+                  loading={snapshot.busy}
+                  onOpen={() => void controller.loadParents()}
+                  onSelect={(id) => void controller.selectParent(id)}
+                />
                 {#if !snapshot.parent}<p class="operation-parent-hint">
                     Choose a parent to compare this operation.
                   </p>{/if}
               {/if}
+              <RepositoryOperationArguments
+                attributes={snapshot.selected.attributes}
+              />
             </div>
           {/if}
-          {#if nativeDetails}<RepositoryOperationDetail
-              state={snapshot}
-              {controller}
-              {onHistory}
-            />{/if}
         </section>
       {/if}
       <section class="operation-file-card" aria-label="Selected file diff">
         {#if snapshot.files.path}
           <header class="operation-card-header">
-            <span class="operation-file-path">{snapshot.files.path}</span>
+            <span class="operation-file-path"
+              ><RepositoryFileTitle path={snapshot.files.path} /></span
+            >
             <div class="operation-card-actions">
               {#if stats}<FileChangeStats {...stats} showZero />{/if}
               <RepositoryDiffControls bind:viewMode bind:wrap />

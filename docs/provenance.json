@@ -42,6 +42,31 @@
       ],
       "use": "Inspected native overlay geometry as a reference. No source copied; Tauri public APIs implement the owned shell.",
       "license": "FSL-1.1-MIT"
+    },
+    {
+      "revision": "5b11966779de92a60876e619c30c5575cef011ac",
+      "paths": [
+        "web/src/lib/ui/community-projects/CommunityProjectsRevisionGraph.svelte",
+        "web/src/lib/ui/store-stack-workspace/StoreStackBookmarkCard.svelte",
+        "web/src/lib/ui/store-stack-workspace/stack-workspace.css",
+        "web/src/lib/ui/store-mutations/StoreMutationCommitPicker.svelte",
+        "web/src/lib/ui/store-stack-workspace/StoreStackBookmarkActions.svelte",
+        "web/src/lib/ui/community-projects/revision-graph-ids.css",
+        "web/src/lib/ui/community-chip/CommunityChip.svelte",
+        "web/src/lib/ui/community-diff-controls/CommunityDiffControls.svelte"
+      ],
+      "use": "Reviewed action strips, compact ID chips, parent selectors, menu hover and diff controls copied/adapted into production in E-REPO-015. Source geometry and public Design Core contracts retained. Native identity, pin, permission and read lifecycle remain Notes-owned. Visual baselines and unsupported native write/evolution capabilities remain separate.",
+      "repository": "jj-store",
+      "license": "Apache-2.0"
+    },
+    {
+      "repository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "paths": [
+        "web/src/lib/projects/repository-log-author.ts",
+        "web/src/lib/ui/community-projects/CommunityProjectsGitAuthorAvatar.svelte"
+      ],
+      "use": "Production author metadata adapted from the referenced source. Public Design Core AuthorCard/Avatar owns image and fallback presentation. SHA-256 Gravatar with d=404, supplied image precedence and name initials; no inferred email or account lookup. E-REPO-015 records focused adoption."
     }
   ],
   "copies": [
@@ -141,7 +166,7 @@
         },
         {
           "source": "web/src/lib/ui/store-mutations/StoreMutationCommitTarget.svelte",
-          "destination": "src/components/repository/RepositoryCommitTarget.svelte"
+          "destination": "src/components/repository/RepositoryParentSummary.svelte"
         },
         {
           "source": "web/src/lib/ui/store-mutations/commit-tags.ts",
@@ -149,6 +174,154 @@
         }
       ],
       "use": "Adapted public Command View/Popover composition, searchable commit metadata, avatar/time/Git/JJ identifier cards and native tag preview. Notes restricts candidates to recorded parents and loads missing cards through the existing operation-pinned exact commit reader. Keyboard focus, stale-response fences, notifications and separately labelled comparison/selected-file statistics remain application-owned. Public Design Core formatter supplies non-interactive time text within options; no dependency-internal selectors or source imports."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "5b11966779de92a60876e619c30c5575cef011ac",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-mutations/StoreMutationCommitPicker.svelte",
+          "destination": "src/components/repository/RepositoryOperationParentPicker.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-mutations/StoreMutationCommitTarget.svelte",
+          "destination": "src/components/repository/RepositoryOperationTarget.svelte"
+        }
+      ],
+      "use": "Adapts the same public Command View/Popover rich picker composition to exact recorded operation parents. Native operation user/host/time/workspace/snapshot cards and full 128-hex operation IDs remain distinct from Git/JJ commit identities. Missing cards share bounded qualified pinned graph pages with parent navigation; no new native request or package dependency."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "5b11966779de92a60876e619c30c5575cef011ac",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-application/StoreWorkspacePicker.svelte",
+          "destination": "src/components/repository/RepositoryOperationPinPicker.svelte"
+        }
+      ],
+      "use": "Ports compact trigger, Popover/Command View composition, selected icon and searchable grouped choices. This Notes control selects exact operation snapshots, not workspaces; it retains full operation IDs and existing admission/pin authority. Opening/searching performs no native reads or writes, and no workspace/author metadata is invented."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-diff-controls/CommunityDiffControls.svelte",
+          "destination": "src/components/repository/RepositoryDiffControls.svelte"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Reviewed compact diff chrome adapted through public Toggle/ToggleGroup with owned classes.22px frames,12px icons, joined borders and selected-state colors; Focused production tests recorded in E-REPO-015."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRevisionGraphCopy.svelte",
+          "destination": "src/lib/repository/tags.ts"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Reviewed semantic tag mapping adapted for the existing native LocalGraphCommit fields. Public Design Core TagList owns chip geometry, fitting, overflow and tooltips; no shared component source is copied. Flat local/remote/workspace/conflict tags omit redundant descriptions. Bookmark chips select the public secondary variant to stay visible on selected rows. Graph selection, immutable metadata and reader authority remain Notes-owned. Focused production tests recorded in E-REPO-015."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-application/StoreEvolutionColumn.svelte",
+          "destination": "catalog/support/repository/review/ReviewEvolutionColumn.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-mutations/StoreRepositoryActionsPanel.svelte",
+          "destination": "src/components/repository/RepositoryRevisionActions.svelte"
+        },
+        {
+          "source": "web/src/lib/projects/repository-log-canvas.ts",
+          "destination": "src/lib/repository/history-canvas.ts"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Reviewed selected-revision History-icon action and closeable/resizable graph-column composition. Public Design Core Column Canvas and existing owned graph rows provide rendering. Synthetic LocalGraphEvolutionNode fixtures explicitly supply rewrite predecessors, never normal commit-parent ancestry. No native reader/controller, URL persistence or production adoption is supplied by this preview. Native paging, unknown predecessors, recovery and lifecycle qualification remain separate."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-application/StoreWorkspacePicker.svelte",
+          "destination": "src/components/repository/RepositoryWorkspacePicker.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-application/StoreWorkspaceSectionHeader.svelte",
+          "destination": "src/components/repository/RepositoryLogHeader.svelte"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Reviewed workspace context picker adapted to explicit supplied fixture workspace links. Context selection is separate from exact operation pins; workspace links use retained pinned native reads."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRevisionGraphMessage.svelte",
+          "destination": "src/components/repository/RepositoryOperationMessage.svelte"
+        },
+        {
+          "source": "web/src/lib/projects/repository-log-message.ts",
+          "destination": "src/lib/repository/operation-message.ts"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Reviewed operation title composition and bounded full-hex ID parsing, with abbreviated sibling copy controls retaining the canonical full ID. Owned error feedback and disposed timers; no source or dependency imports."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictSurface.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictSurface.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictBody.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictBody.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictText.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictText.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictHeaderActions.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictActions.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/store-conflicts.css",
+          "destination": "src/components/repository/conflicts/repository-conflicts.css"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/menu-context.ts",
+          "destination": "src/lib/repository/conflict-menu.ts"
+        },
+        {
+          "source": "web/src/lib/ui/community-app-shell/CommunitySidebarToggleIcon.svelte",
+          "destination": "src/components/repository/conflicts/RepositorySidebarToggleIcon.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRepositoryFileTree.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictFileTree.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/repository-file-tree.css",
+          "destination": "src/components/repository/conflicts/repository-conflict-file-tree.css"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Copied jj-store presentation first, adapted only to native-read/local draft/stage/delete/preview and public Design Core composition. Same header actions, Files/mode browser, nested shell, Left/Resolved/Right editor, sidebar icon and merge settings. Replaces custom approximation. Source internal sizing selectors are replaced by owned measured hosts/public slots; shell is disposed. Settings are memory-only and language adapts the explicit Markdown fixture. Native apply remains disabled, no conflicts are persisted or cleared. Native publication remains unavailable."
     }
   ]
 }

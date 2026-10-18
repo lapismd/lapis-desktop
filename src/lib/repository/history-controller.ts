@@ -1,3 +1,4 @@
+import { RevisionComparison } from "./revision-comparison.ts";
 import { HistoryGraph } from "./history-graph.ts";
 import { parentCandidates } from "./parent-candidates.ts";
 import type { Handle, LocalGraphCommit } from "@lapismd/jj-history";
@@ -15,13 +16,13 @@ export class HistoryController {
   #listeners = new Set<(state: HistoryState) => void>();
   readonly #lifetime: HistoryLifetime;
   readonly #graph: HistoryGraph;
+  readonly #files: RevisionComparison;
   readonly reader: HistoryReader;
   readonly feedback: { report(error: unknown): void; recovered(): void };
   readonly wait: typeof pause;
   #handle?: Handle;
   #selection = 0;
   #comparison = 0;
-  #file = 0;
   #request = 0;
   #abort = new AbortController();
   #closed = false;
@@ -35,6 +36,15 @@ export class HistoryController {
     this.feedback = feedback;
     this.wait = wait;
     this.#lifetime = new HistoryLifetime(reader);
+    this.#files = new RevisionComparison(
+      reader,
+      () => ({
+        handle: this.#handle,
+        state: this.#state,
+        closed: this.#closed,
+      }),
+      (patch) => this.#set(patch),
+    );
     this.#graph = new HistoryGraph(
       reader,
       () => ({
@@ -107,6 +117,7 @@ export class HistoryController {
   async #selectOperation(operation: string): Promise<void> {
     const selection = ++this.#selection;
     this.#comparison++;
+    this.#files.reset();
     this.#abort.abort();
     const abort = (this.#abort = new AbortController());
     const prior = this.#handle;
@@ -139,11 +150,22 @@ export class HistoryController {
     this.#set({ snapshot, phase: "ready" });
     await this.#graph.load(false);
   }
+  selectWorkspace(workspace: string | null): Promise<void> {
+    this.#comparison++;
+    this.#files.reset();
+    return this.#run(() =>
+      this.#action(async () => {
+        this.#set({ ...resetHistoryComparison(), workspace });
+        await this.#graph.load(false);
+      }),
+    );
+  }
   moreCommits(): Promise<void> {
     return this.#run(() => this.#action(() => this.#graph.load(true)));
   }
   clearRevision(): Promise<void> {
     this.#comparison++;
+    this.#files.reset();
     this.#request++;
     return this.#run(async () =>
       this.#set({ ...resetHistoryComparison(), busy: false }),
@@ -151,6 +173,7 @@ export class HistoryController {
   }
   selectRevision(revision: LocalGraphCommit): Promise<void> {
     this.#comparison++;
+    this.#files.reset();
     return this.#run(() =>
       this.#action(async () => {
         check(this.#state.commits.some((item) => item.id === revision.id));
@@ -181,6 +204,32 @@ export class HistoryController {
       }),
     );
   }
+  loadConflicts(): Promise<void> {
+    return this.#run(() =>
+      this.#action(async () => {
+        const handle = this.#handle,
+          revision = this.#state.revision,
+          comparison = this.#comparison;
+        if (!handle || !revision?.conflicted) return;
+        const response = await this.reader.read(handle, {
+          kind: "conflicts",
+          query: { commit: revision.id, path: "" },
+        });
+        if (
+          this.#closed ||
+          handle !== this.#handle ||
+          comparison !== this.#comparison
+        )
+          return;
+        check(
+          response.kind === "conflicts" &&
+            response.data.commit === revision.id &&
+            response.data.change === revision.change_id,
+        );
+        this.#set({ conflicts: response.data.conflicts, conflictsReady: true });
+      }),
+    );
+  }
   selectBase(base: string): Promise<void> {
     return this.#run(() =>
       this.#action(async () => {
@@ -198,91 +247,11 @@ export class HistoryController {
     );
   }
   async #paths(base: string, append: boolean): Promise<void> {
-    const comparison = append ? this.#comparison : ++this.#comparison;
-    const handle = this.#handle,
-      revision = this.#state.revision;
-    if (!handle || !revision) return;
-    if (!append)
-      this.#set({
-        base,
-        paths: [],
-        pathsReady: false,
-        nextPath: null,
-        path: undefined,
-        diff: undefined,
-      });
-    const response = await this.reader.read(handle, {
-      kind: "diff_paths",
-      query: {
-        from: base,
-        to: revision.id,
-        path: "",
-        limit: 100,
-        anchor: append ? this.#state.nextPath : null,
-        direction: "forward",
-      },
-    });
-    if (
-      comparison !== this.#comparison ||
-      handle !== this.#handle ||
-      revision.id !== this.#state.revision?.id ||
-      base !== this.#state.base ||
-      this.#closed
-    )
-      return;
-    check(
-      response.kind === "diff_paths" &&
-        response.data.from === base &&
-        response.data.to === revision.id,
-    );
-    const paths = [
-      ...(append ? this.#state.paths : []),
-      ...response.data.changes,
-    ].slice(0, 500);
-    this.#set({
-      paths,
-      nextPath: paths.length < 500 ? response.data.next : null,
-      pathsReady: true,
-    });
+    if (!append) this.#comparison++;
+    await this.#files.paths(base, append);
   }
   selectPath(path: string): Promise<void> {
-    return this.#run(() =>
-      this.#action(async () => {
-        const comparison = this.#comparison,
-          file = ++this.#file;
-        const handle = this.#handle,
-          revision = this.#state.revision,
-          base = this.#state.base;
-        if (!handle || !revision || !base) return;
-        check(this.#state.paths.some((change) => change.path === path));
-        this.#set({ path, diff: undefined });
-        const response = await this.reader.read(handle, {
-          kind: "diff",
-          query: { from: base, to: revision.id, path, content: true },
-        });
-        if (
-          comparison !== this.#comparison ||
-          file !== this.#file ||
-          handle !== this.#handle ||
-          revision.id !== this.#state.revision?.id ||
-          base !== this.#state.base ||
-          path !== this.#state.path ||
-          this.#closed
-        )
-          return;
-        check(
-          response.kind === "diff" &&
-            response.data.from === base &&
-            response.data.to === revision.id &&
-            response.data.path === path,
-        );
-        const change = response.data.changes.find(
-          (change) => change.path === path,
-        );
-        check(change);
-        this.#set({ diff: change });
-      }),
-    );
+    return this.#run(() => this.#action(() => this.#files.selectPath(path)));
   }
   close(): Promise<void> {
     this.#closed = true;

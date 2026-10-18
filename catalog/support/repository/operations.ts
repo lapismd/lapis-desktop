@@ -76,16 +76,24 @@ export function operationFixture(scenario = "operation-ready") {
   let failed =
     scenario === "operation-detail-failure" ||
     scenario === "operation-files-failure" ||
-    scenario === "operation-parent-failure";
+    scenario === "operation-parent-failure" ||
+    scenario === "operation-picker-failure";
   let graphFailed = scenario === "operation-graph-failure";
   const nodes =
     scenario === "operation-empty"
       ? []
       : [operationNode(), operationNode(otherOperation, [])];
-  if (scenario === "operation-merge") nodes[0].parents.push("ad".repeat(64));
+  if (["operation-merge", "operation-picker-failure"].includes(scenario))
+    nodes[0].parents.push("ad".repeat(64));
   if (scenario === "operation-snapshot") nodes[0].is_snapshot = true;
   if (["operation-parent-failure", "operation-parent-bound"].includes(scenario))
     nodes[0].parents = ["ad".repeat(64)];
+  if (scenario === "operation-rich") {
+    nodes[0].description =
+      "describe commit 5ae7211b218e61eae163d39677075f5165c90ce8";
+    nodes[0].attributes.args =
+      "jj describe -r @ -m 'Keep repository history beside the notes'";
+  }
   let parentPages = 0;
   f.reader.read = async (
     handle: string,
@@ -110,7 +118,14 @@ export function operationFixture(scenario = "operation-ready") {
           },
         };
       }
-      if (scenario === "operation-parent-failure" && after) {
+      if (
+        [
+          "operation-parent-failure",
+          "operation-merge",
+          "operation-picker-failure",
+        ].includes(scenario) &&
+        after
+      ) {
         if (failed) throw new Error("The parent operation could not be read");
         return {
           kind: "graph",
@@ -123,6 +138,8 @@ export function operationFixture(scenario = "operation-ready") {
                 {
                   ...operationNode("ad".repeat(64)),
                   description: "unloaded parent",
+                  user: "Grace",
+                  workspace: "review",
                 },
               ],
             },

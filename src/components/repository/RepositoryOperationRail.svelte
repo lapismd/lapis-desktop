@@ -1,7 +1,8 @@
 <script lang="ts">
   import RepositoryAuthorAvatar from "./RepositoryAuthorAvatar.svelte";
   import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
-  import HistoryIcon from "@lucide/svelte/icons/history";
+  import CornerLeftUpIcon from "@lucide/svelte/icons/corner-left-up";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import type { LocalGraphOperationNode } from "@lapismd/jj-history";
   import RepositoryIdentifiers from "./RepositoryIdentifiers.svelte";
   let {
@@ -18,7 +19,11 @@
 <section class="operation-rail" aria-label="Selected operation metadata">
   <div class="operation-meta">
     <span>Author:</span>
-    <RepositoryAuthorAvatar name={operation.user} />
+    <RepositoryAuthorAvatar
+      name={operation.user}
+      handle={`${operation.user}@${operation.host}`}
+      size="md"
+    />
     <span title={`${operation.user}@${operation.host}`}>{operation.user}</span>
     <span aria-hidden="true">•</span>
     <RelativeTime timestamp={Number(operation.end.millis)} />
@@ -31,29 +36,44 @@
     />
   </div>
   <nav class="operation-parents" aria-label="Operation parents">
-    {#each operation.parents as parent (parent)}
-      <button
-        type="button"
-        class="parent-pill"
-        title={parent}
-        onclick={() => onSelect(parent)}
-      >
-        <HistoryIcon aria-hidden="true" />
-        <span>Parent {parent.slice(0, 8)}…{parent.slice(-4)}</span>
-      </button>
-    {:else}<p>Root operation</p>{/each}
+    <Tooltip.Provider delayDuration={0}>
+      {#each operation.parents as parent (parent)}
+        <Tooltip.Root>
+          <Tooltip.Trigger>
+            {#snippet child({ props })}
+              <button
+                {...props}
+                type="button"
+                class="parent-pill"
+                aria-label={`Inspect parent operation ${parent.slice(0, 8)}…${parent.slice(-4)} (${parent})`}
+                onclick={() => onSelect(parent)}
+              >
+                <CornerLeftUpIcon aria-hidden="true" />
+                <code>{parent.slice(0, 8)}…{parent.slice(-4)}</code>
+              </button>
+            {/snippet}
+          </Tooltip.Trigger>
+          <Tooltip.Content side="top" sideOffset={6}
+            >Parent operation</Tooltip.Content
+          >
+        </Tooltip.Root>
+      {:else}<p>Root operation</p>{/each}
+    </Tooltip.Provider>
   </nav>
 </section>
 
 <style>
   .operation-rail {
-    display: grid;
-    gap: 0.55rem;
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 0.75rem;
     padding: 0.85rem 1rem;
     background: var(--background);
   }
   .operation-meta {
     display: flex;
+    flex: 1;
     min-width: 0;
     flex-wrap: wrap;
     align-items: center;
@@ -63,10 +83,14 @@
   }
   .operation-parents {
     display: flex;
+    flex: none;
     min-width: 0;
+    max-width: 50%;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-end;
     gap: 0.35rem;
+    margin-inline-start: auto;
   }
   .parent-pill {
     display: inline-flex;
@@ -95,6 +119,14 @@
     width: 1rem;
     height: 1rem;
     flex: none;
+  }
+  .parent-pill code {
+    min-width: 0;
+    overflow: hidden;
+    font-family: var(--font-mono, monospace);
+    font-size: inherit;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   p {
     margin: 0;

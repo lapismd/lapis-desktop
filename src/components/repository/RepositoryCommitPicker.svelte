@@ -7,12 +7,17 @@
   import { TagList } from "@lapismd/design-core/shadcn/tag-list";
   import CheckIcon from "@lucide/svelte/icons/check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
-  import XIcon from "@lucide/svelte/icons/x";
-  import RepositoryCommitTarget from "./RepositoryCommitTarget.svelte";
+  import RepositoryPickerSearch from "./RepositoryPickerSearch.svelte";
+  import RepositoryRevisionOption from "./RepositoryRevisionOption.svelte";
+  import RepositoryIdentifiers from "./RepositoryIdentifiers.svelte";
+  import { encodeJjChangeId } from "../../lib/repository/graph/repository-log-graph.ts";
+  import RepositoryParentSummary from "./RepositoryParentSummary.svelte";
+  import RepositoryComparisonBar from "./RepositoryComparisonBar.svelte";
+  import RepositoryComparisonTime from "./RepositoryComparisonTime.svelte";
   import {
-    commitCardSearch,
-    commitCardTags,
-  } from "../../lib/repository/commit-cards.ts";
+    repositoryCommitSearch,
+    repositoryCommitTags,
+  } from "../../lib/repository/tags.ts";
   import "./repository-commit-picker.css";
   let {
     parents,
@@ -22,6 +27,8 @@
     onOpen,
     onSelect,
     statistics,
+    copyText,
+    comparisonLabel = "Comparison parent",
   }: {
     parents: readonly string[];
     revisions: readonly LocalGraphCommit[];
@@ -30,6 +37,8 @@
     onOpen(): void;
     onSelect(id: string): void;
     statistics?: Snippet;
+    copyText(value: string): Promise<void>;
+    comparisonLabel?: string;
   } = $props();
   const id = $props.id();
   let open = $state(false),
@@ -48,7 +57,7 @@
   );
   const visible = $derived(
     options.filter((option) =>
-      commitCardSearch(option.id, option.commit).includes(
+      repositoryCommitSearch(option.id, option.commit).includes(
         query.trim().toLocaleLowerCase(),
       ),
     ),
@@ -69,85 +78,103 @@
 </script>
 
 <Popover.Root {open} onOpenChange={handleOpen}>
-  <div class="repository-commit-picker-control">
-    <Popover.Trigger>
-      {#snippet child({ props })}
-        <Button
-          {...props}
-          variant="outline"
-          class="repository-commit-picker-trigger"
-          role="combobox"
-          aria-label="Compare with parent"
-          aria-describedby={`${id}-value`}
-          value={target ?? ""}
-          data-parent={target}
-        >
-          <ChevronDownIcon aria-hidden="true" />
-        </Button>
-      {/snippet}
-    </Popover.Trigger>
-    <div id={`${id}-value`} class="repository-commit-picker-value">
-      <RepositoryCommitTarget target={target ?? ""} commit={selected?.commit} />
+  <RepositoryComparisonBar inset label={comparisonLabel}>
+    <div class="repository-review-parent-selector">
+      <Popover.Trigger>
+        {#snippet child({ props })}
+          <Button
+            {...props}
+            variant="outline"
+            size="xs"
+            class="repository-review-parent-trigger"
+            role="combobox"
+            aria-label={comparisonLabel === "Previous version"
+              ? "Compare with previous version"
+              : "Compare with parent"}
+            aria-describedby={`${id}-value`}
+            value={target ?? ""}
+            data-parent={target}
+          >
+            <ChevronDownIcon data-icon="inline-end" aria-hidden="true" />
+          </Button>
+        {/snippet}
+      </Popover.Trigger>
+      <div class="repository-review-parent-value" id={`${id}-value`}>
+        <RepositoryParentSummary
+          {target}
+          author={selected?.commit?.author.name}
+          email={selected?.commit?.author.email}
+          description={selected?.commit?.description}
+        />
+        <span class="repository-review-parent-identifiers">
+          <RepositoryIdentifiers
+            {copyText}
+            commitId={target ?? ""}
+            changeId={selected?.commit
+              ? encodeJjChangeId(selected.commit.change_id)
+              : ""}
+            placement="inline"
+          />
+        </span>
+        <RepositoryComparisonTime
+          timestamp={selected?.commit
+            ? Number(selected.commit.author.timestamp.millis)
+            : undefined}
+        />
+      </div>
     </div>
-  </div>
+  </RepositoryComparisonBar>
   <Popover.Content
     align="start"
     sideOffset={6}
-    class="repository-commit-picker"
+    class="repository-commit-picker repository-review-identifier-surface"
     role="dialog"
-    aria-label="Choose comparison parent"
+    aria-label={`Choose ${comparisonLabel.toLocaleLowerCase()}`}
     onOpenAutoFocus={(event) => {
       event.preventDefault();
       searchInput?.focus();
     }}
-    style="--ui-popover-width: min(42rem, calc(100vw - 2rem)); --ui-popover-padding: 0.5rem 0.75rem 0.625rem; --ui-popover-gap: 0.25rem"
+    style="--ui-popover-width: min(42rem, calc(100vw - 2rem)); --ui-popover-padding: 0; --ui-popover-gap: 0"
   >
-    <Popover.Header class="repository-commit-picker-header">
-      <Popover.Title>Choose comparison parent</Popover.Title>
-      <Popover.Close
-        >{#snippet child({ props })}<Button
-            {...props}
-            variant="ghost"
-            size="icon-sm"
-            aria-label="Close commit selector"
-            ><XIcon aria-hidden="true" /></Button
-          >{/snippet}</Popover.Close
-      >
-    </Popover.Header>
     <CommandView.Root
+      class="repository-review-picker-options"
       bind:value={highlighted}
-      label="Select comparison parent"
+      label={`Select ${comparisonLabel.toLocaleLowerCase()}`}
       shouldFilter={false}
     >
-      <CommandView.Input
-        bind:ref={searchInput}
-        bind:value={query}
+      <RepositoryPickerSearch
+        grid
+        bind:inputRef={searchInput}
+        bind:query
         placeholder="Find commit"
-        aria-label="Find commit"
+        label={`Select ${comparisonLabel.toLocaleLowerCase()}`}
+        closeLabel="Close commit selector"
       />
-      <CommandView.List>
-        {#if !visible.length}<CommandView.Empty
-            >No matching commits</CommandView.Empty
+      <CommandView.List role="grid">
+        {#if !visible.length}<CommandView.Empty role="row"
+            ><span role="gridcell">No matching commits</span></CommandView.Empty
           >
-        {:else}<CommandView.Group heading="Recorded parents">
+        {:else}<CommandView.Group role="rowgroup">
             {#each visible as option (option.id)}
               <CommandView.Item
+                role="row"
                 value={option.id}
-                keywords={[commitCardSearch(option.id, option.commit)]}
-                aria-label={`Select comparison parent ${option.commit?.description.split("\n")[0] || "Unknown parent"} (${option.id})`}
+                keywords={[repositoryCommitSearch(option.id, option.commit)]}
+                aria-label={`Select ${comparisonLabel.toLocaleLowerCase()} ${option.commit?.description.split("\n")[0] || "Unknown version"} (${option.id})`}
                 data-commit={option.id}
                 class="repository-commit-picker-option"
                 data-current={option.id === target || undefined}
                 onSelect={() => choose(option.id)}
               >
-                <span class="repository-commit-picker-selection"
+                <span role="gridcell" class="repository-commit-picker-selection"
                   >{#if option.id === target}<CheckIcon
                       aria-hidden="true"
                     />{/if}</span
                 >
-                <RepositoryCommitTarget
+                <RepositoryRevisionOption
                   target={option.id}
                   commit={option.commit}
+                  {copyText}
                 />
               </CommandView.Item>
             {/each}
@@ -156,7 +183,7 @@
       <CommandView.Footer>
         <section aria-label="Commit tag preview" data-commit={preview?.id}>
           <TagList
-            tags={commitCardTags(preview?.commit)}
+            tags={repositoryCommitTags(preview?.commit)}
             label="Preview commit tags"
           />
         </section>

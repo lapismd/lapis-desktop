@@ -6,6 +6,7 @@ import { check } from "./history-selection.ts";
 type Scope = { handle?: Handle; state: HistoryState; closed: boolean };
 /** Bounded commit paging; the controller retains its reader/lifetime authority. */
 export class HistoryGraph {
+  #epoch = 0;
   readonly reader: HistoryReader;
   readonly scope: () => Scope;
   readonly publish: (state: Partial<HistoryState>) => void;
@@ -19,6 +20,7 @@ export class HistoryGraph {
     this.publish = publish;
   }
   async load(append: boolean): Promise<void> {
+    const epoch = append ? this.#epoch : ++this.#epoch;
     const { handle, state, closed } = this.scope();
     const operation = state.operation;
     if (closed || !handle || !operation || (append && !state.next)) return;
@@ -28,6 +30,7 @@ export class HistoryGraph {
         {
           graph: "log",
           revset: "all()",
+          workspace: state.workspace,
           user_email: "",
           at_time_millis: Date.now(),
         },
@@ -35,7 +38,8 @@ export class HistoryGraph {
       ],
     });
     const current = this.scope();
-    if (current.handle !== handle || current.closed) return;
+    if (epoch !== this.#epoch || current.handle !== handle || current.closed)
+      return;
     check(
       response.kind === "graph" &&
         response.data.operation === operation &&

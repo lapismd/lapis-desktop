@@ -1,3 +1,4 @@
+import { chooseChangedRevision } from "../../support/repository/picker-interactions.ts";
 import type { LocalCodeQuery } from "@lapismd/jj-history";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -35,10 +36,10 @@ export const UnloadedParentFailureAndRecovery: StoryObj = {
       await outer.findByRole("region", { name: "Repository operation log" }),
     );
     await userEvent.click(
-      await log.findByRole("button", { name: /describe commit/ }),
+      await log.findByRole("button", { name: /describe commit.*;/ }),
     );
     const parent = await log.findByRole("button", {
-      name: "Parent adadadad…adad",
+      name: /^Inspect parent operation adadadad…adad/,
     });
     await userEvent.click(parent);
     const body = within(canvasElement.ownerDocument.body);
@@ -67,10 +68,7 @@ export const UnloadedParentFailureAndRecovery: StoryObj = {
     await userEvent.click(
       log.getByRole("button", { name: "Close Diff column" }),
     );
-    await userEvent.selectOptions(
-      await log.findByRole("combobox", { name: "Changed revision" }),
-      "aa".repeat(16),
-    );
+    await chooseChangedRevision(log);
     await userEvent.click(
       await log.findByRole("button", { name: "Welcome.md" }),
     );
@@ -101,7 +99,7 @@ export const StackedOperationAndDiff: StoryObj = {
       await outer.findByRole("region", { name: "Repository operation log" }),
     );
     await userEvent.click(
-      await log.findByRole("button", { name: /describe commit/ }),
+      await log.findByRole("button", { name: /describe commit.*;/ }),
     );
     const operationCard = await log.findByRole("region", {
       name: "Selected operation",
@@ -110,9 +108,11 @@ export const StackedOperationAndDiff: StoryObj = {
     await expect(
       card.getByRole("region", { name: "Selected operation metadata" }),
     ).toBeVisible();
-    const avatar = card.getByRole("img", { name: "Ada" });
+    const avatar = within(
+      card.getByRole("region", { name: "Selected operation metadata" }),
+    ).getByRole("button", { name: /About Ada/ });
     await expect(avatar).toBeVisible();
-    await expect(avatar).toHaveTextContent(/^A$/);
+    await expect(avatar).toHaveTextContent(/^AD$/);
     await expect(
       card.getByRole("button", {
         name: new RegExp(`Copy full operation ID: ${operation}`),
@@ -130,7 +130,7 @@ export const StackedOperationAndDiff: StoryObj = {
     expect(style.gap).toBe("12px");
     expect(getComputedStyle(operationCard).borderTopWidth).toBe("1px");
     const toggle = card.getByRole("button", {
-      name: "describe commit",
+      name: "Collapse operation details",
     });
     await userEvent.click(toggle);
     await expect(toggle).toHaveAttribute("aria-expanded", "false");
@@ -141,10 +141,7 @@ export const StackedOperationAndDiff: StoryObj = {
     await userEvent.click(
       card.getByRole("button", { name: "Close Diff column" }),
     );
-    await userEvent.selectOptions(
-      await log.findByRole("combobox", { name: "Changed revision" }),
-      "aa".repeat(16),
-    );
+    await chooseChangedRevision(log);
     await userEvent.click(
       await log.findByRole("button", { name: "Welcome.md" }),
     );
@@ -170,7 +167,9 @@ export const StackedOperationAndDiff: StoryObj = {
     ).toBeVisible();
     await userEvent.click(
       within(reopened).getByRole("button", {
-        name: `Parent ${otherOperation.slice(0, 8)}…${otherOperation.slice(-4)}`,
+        name: new RegExp(
+          `^Inspect parent operation ${otherOperation.slice(0, 8)}…${otherOperation.slice(-4)}`,
+        ),
       }),
     );
     await expect(
@@ -197,10 +196,12 @@ export const ParentLookupBound: StoryObj = {
       await outer.findByRole("region", { name: "Repository operation log" }),
     );
     await userEvent.click(
-      await log.findByRole("button", { name: /describe commit/ }),
+      await log.findByRole("button", { name: /describe commit.*;/ }),
     );
     await userEvent.click(
-      await log.findByRole("button", { name: "Parent adadadad…adad" }),
+      await log.findByRole("button", {
+        name: /^Inspect parent operation adadadad…adad/,
+      }),
     );
     const message = "The parent operation is outside the bounded history page";
     await expect(

@@ -34,16 +34,19 @@ export const UnloadedParentSearchAndTags: StoryObj = {
       name: "Select comparison parent",
     });
     await userEvent.type(search, "grace@example.test");
-    const option = await body.findByRole("option", {
+    const option = await body.findByRole("row", {
       name: /Second recorded parent/,
     });
     await expect(
-      within(option).getByRole("img", { name: "Grace" }),
+      within(option).getByRole("button", { name: /About Grace/ }),
     ).toBeVisible();
-    await expect(option).toHaveTextContent("topic");
+    await userEvent.hover(option);
+    await expect(body.getByLabelText("Preview commit tags")).toHaveTextContent(
+      "topic",
+    );
     await expect(option.querySelector("time")).not.toBeNull();
     await expect(
-      body.queryByRole("option", { name: /Start the vault/ }),
+      body.queryByRole("row", { name: /Start the vault/ }),
     ).toBeNull();
     await userEvent.clear(search);
     await userEvent.type(search, "no matching parent");
@@ -52,7 +55,7 @@ export const UnloadedParentSearchAndTags: StoryObj = {
       body.getByRole("dialog", { name: "Choose comparison parent" }),
     );
     await expect(
-      dialog.queryAllByRole("option", { name: /Select comparison parent/ }),
+      dialog.queryAllByRole("row", { name: /Select comparison parent/ }),
     ).toHaveLength(0);
     await userEvent.clear(search);
     const id = "33".repeat(20);
@@ -102,9 +105,7 @@ export const MetadataFailureAndExplicitRecovery: StoryObj = {
     const count = fixture.calls.length;
     await expect(trigger).toHaveValue("");
     await waitFor(() =>
-      expect(
-        body.getByRole("option", { name: /Unknown parent/ }),
-      ).toBeVisible(),
+      expect(body.getByRole("row", { name: /Unknown version/ })).toBeVisible(),
     );
     expect(fixture.calls.length).toBe(count);
     fixture.recover();
@@ -112,7 +113,7 @@ export const MetadataFailureAndExplicitRecovery: StoryObj = {
       body.getByRole("button", { name: "Retry parent details" }),
     );
     await expect(
-      await body.findByRole("option", { name: /Second recorded parent/ }),
+      await body.findByRole("row", { name: /Second recorded parent/ }),
     ).toBeVisible();
     await waitFor(() =>
       expect(
@@ -120,7 +121,7 @@ export const MetadataFailureAndExplicitRecovery: StoryObj = {
       ).toBeNull(),
     );
     await userEvent.click(
-      body.getByRole("option", { name: /Second recorded parent/ }),
+      body.getByRole("row", { name: /Second recorded parent/ }),
     );
     await expect(trigger).toHaveAttribute("data-parent", "33".repeat(20));
   },
@@ -149,9 +150,9 @@ export const ParentMetadataAndKeyboardSelection: StoryObj = {
     );
     expect(command).not.toBeNull();
     await userEvent.type(search, "Start the vault");
-    const option = await body.findByRole("option", { name: /Start the vault/ });
+    const option = await body.findByRole("row", { name: /Start the vault/ });
     await expect(
-      within(option).getByRole("img", { name: "Ada" }),
+      within(option).getByRole("button", { name: /About Ada/ }),
     ).toBeVisible();
     await expect(option).toHaveTextContent("GIT");
     await expect(option).toHaveTextContent("JJ");
@@ -180,7 +181,7 @@ export const MergeParentSelection: StoryObj = {
     ).toBeNull();
     await userEvent.click(base);
     await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("option", {
+      await within(canvasElement.ownerDocument.body).findByRole("row", {
         name: /Start the vault/,
       }),
     );

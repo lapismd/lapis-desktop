@@ -1,5 +1,10 @@
 # Migration inventory and progress
 
+E-REPO-015 qualifies reviewed production UI (NOTES-05I2B/2C/3B/6). LD-MIG-002
+progress and original M13 gates stay unchanged. Native queries, evolution/writes
+and managed conversation/restart remain separate. Broader qualification and
+visual approval are deferred by the user.
+
 E-CATALOG-008 qualifies NOTES-05I0B managed preview commands and cache
 safeguards, with 18 focused/242 Node and 804 catalog checks. NOTES-05I0A/B
 complete the preview workflow; Op Log endpoints and native conversation, restart

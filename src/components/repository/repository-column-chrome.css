@@ -1,0 +1,35 @@
+/* Application-owned contrast treatment for the application-owned column chrome. */
+.repository-shell {
+  --repository-review-column-action-hover: color-mix(
+    in srgb,
+    var(--foreground) 24%,
+    var(--background)
+  );
+  --ui-column-canvas-header-action-hover: var(
+    --repository-review-column-action-hover
+  );
+  --ui-column-canvas-header-action-hover-foreground: var(--foreground);
+  --ui-column-canvas-rail-hover: var(--repository-review-column-action-hover);
+}
+.repository-shell
+  :is(
+    .repository-log-actions,
+    .operation-card-actions,
+    .repository-review-column-actions
+  ) {
+  --accent: var(--repository-review-column-action-hover);
+  --accent-foreground: var(--foreground);
+  --muted: var(--accent);
+  --ui-column-canvas-header-action-hover: var(--accent);
+  --ui-column-canvas-header-action-hover-foreground: var(--foreground);
+}
+.repository-shell
+  :is(
+    .repository-log-actions,
+    .operation-card-actions,
+    .repository-review-column-actions
+  )
+  > button:not(:disabled):is(:hover, :focus-visible) {
+  background: var(--repository-review-column-action-hover);
+  color: var(--foreground);
+}

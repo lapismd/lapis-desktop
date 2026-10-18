@@ -8,6 +8,7 @@
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
   - [Repository history and conversations](current/repository.md)
+    - [Repository Storybook parity review](current/repository-review.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
@@ -183,3 +184,10 @@
 
 - [Stacked operation card and file diff](history/E-REPO-010.md)
 - [Command View parent comparison and owned-runtime preview reload](history/E-REPO-011.md)
+
+- [Operation pickers and split-diff review](history/E-REPO-012.md)
+- [Repository preview controls, commit messages and tags](history/E-REPO-013.md)
+
+  - [Shrinking repository picker titles](history/E-REPO-014.md)
+
+  - [Reviewed repository UI: production adoption](history/E-REPO-015.md)

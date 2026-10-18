@@ -1,7 +1,11 @@
 <script lang="ts">
+  import "./repository-column-chrome.css";
+  import "./repository-review-identifiers.css";
+  import "./repository-picker-options.css";
   import { onDestroy, type Snippet } from "svelte";
   import { AppShell, AppShellController } from "@lapismd/design-core/shell";
-  let { children }: { children: Snippet } = $props();
+  let { children, surface }: { children: Snippet; surface?: Snippet } =
+    $props();
   const shell = new AppShellController();
   onDestroy(() => void shell.dispose());
 </script>
@@ -13,6 +17,7 @@
         <div class="repository-body-frame">{@render children()}</div>
       </AppShell.Body>
     </AppShell.Main>
+    {@render surface?.()}
   </AppShell.Root>
 </div>
 

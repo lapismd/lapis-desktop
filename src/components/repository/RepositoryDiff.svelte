@@ -19,6 +19,7 @@
 <section
   class="repository-diff"
   data-compact={compact || undefined}
+  data-view-mode={viewMode}
   aria-label={`Changes to ${change.path}`}
 >
   {#if "unavailable" in content}<p role="status">
@@ -39,6 +40,11 @@
     flex-direction: column;
     min-width: 0;
     min-height: 16rem;
+  }
+  .repository-diff[data-view-mode="split"] {
+    height: 100%;
+    min-height: 0;
+    flex: 1 1 0;
   }
   .repository-diff[data-compact] {
     min-height: 0;

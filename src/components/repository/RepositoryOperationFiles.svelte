@@ -1,4 +1,10 @@
 <script lang="ts">
+  import RepositoryRevisionPicker from "./RepositoryRevisionPicker.svelte";
+  import UndoIcon from "@lucide/svelte/icons/undo-2";
+  import InfoIcon from "@lucide/svelte/icons/info";
+  import EllipsisIcon from "@lucide/svelte/icons/ellipsis";
+  import CopyIcon from "@lucide/svelte/icons/copy";
+  import * as Menu from "@lapismd/design-core/shadcn/dropdown-menu";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import type { OperationState } from "../../lib/repository/operation-state.ts";
   import type { OperationController } from "../../lib/repository/operation-controller.ts";
@@ -9,11 +15,17 @@
     controller,
     onOpenDiff,
     onOpenDetails,
+    copyText,
+    commits,
+    onHistory,
   }: {
     state: OperationState;
+    onHistory?(): void;
+    commits: import("@lapismd/jj-history").LocalGraphCommit[];
     controller: OperationController;
     onOpenDiff(): void;
     onOpenDetails(): void;
+    copyText(value: string): Promise<void>;
   } = $props();
   const files = $derived(snapshot.files);
   const listing = $derived(listingFiles(files.paths, files.diff));
@@ -28,9 +40,68 @@
 </script>
 
 <div class="operation-files">
-  <Button size="sm" variant="outline" onclick={onOpenDetails}
-    >Inspect operation details</Button
+  <div
+    class="repository-review-operation-actions"
+    role="toolbar"
+    aria-label="Selected operation actions"
   >
+    <Button
+      size="xs"
+      variant="outline"
+      aria-label="Inspect operation details"
+      title="Inspect operation details"
+      onclick={onOpenDetails}
+      ><InfoIcon data-icon="inline-start" aria-hidden="true" />Inspect</Button
+    >
+    <RepositoryRevisionPicker
+      onOpen={() => void controller.loadRevisions()}
+      groups={files.groups}
+      selected={files.group?.change}
+      {commits}
+      {copyText}
+      disabled={!files.ready || !files.groups.length}
+      onSelect={(id) => controller.files.selectGroup(id)}
+    />
+    <Button
+      size="xs"
+      variant="outline"
+      disabled
+      title="Operation revert is unavailable in this read-only repository plugin"
+      ><UndoIcon data-icon="inline-start" aria-hidden="true" />Revert</Button
+    >
+    <span class="repository-review-operation-menu">
+      <Menu.Root>
+        <Menu.Trigger>
+          {#snippet child({ props })}
+            <Button
+              {...props}
+              variant="ghost"
+              size="icon-xs"
+              aria-label="More operation actions"
+              ><EllipsisIcon aria-hidden="true" /></Button
+            >
+          {/snippet}
+        </Menu.Trigger>
+        <Menu.Content
+          align="end"
+          preventScroll={false}
+          style="min-width: 12rem"
+        >
+          <Menu.Group>
+            {#if onHistory}<Menu.Item onSelect={onHistory}
+                >Open in JJ Log</Menu.Item
+              >{/if}
+            <Menu.Item
+              onSelect={() => {
+                if (snapshot.selected)
+                  void copyText(snapshot.selected.id).catch(() => {});
+              }}><CopyIcon aria-hidden="true" />Copy operation ID</Menu.Item
+            >
+          </Menu.Group>
+        </Menu.Content>
+      </Menu.Root>
+    </span>
+  </div>
   {#if snapshot.detail?.status === "difference"}
     {#if !files.ready}
       <p role="status">
@@ -46,20 +117,6 @@
         No revision content changes in this operation.
       </p>
     {:else}
-      <label
-        >Changed revision
-        <select
-          aria-label="Changed revision"
-          value={files.group?.change ?? ""}
-          onchange={(event) =>
-            controller.files.selectGroup(event.currentTarget.value)}
-        >
-          <option value="" disabled>Choose a changed revision</option>
-          {#each files.groups as group (group.change)}<option
-              value={group.change}>{group.change}</option
-            >{/each}
-        </select>
-      </label>
       {#if files.group?.comparison.status === "select"}
         <p>Choose both revisions for this comparison.</p>
         <label
@@ -124,18 +181,43 @@
           Showing the first 500 changed revisions.
         </p>{/if}
     {/if}
-  {:else if snapshot.selected?.parents.length === 0}<p>
-      No file comparison for the root operation.
-    </p>
-  {:else if !snapshot.parent}<p>
+  {:else if snapshot.selected && snapshot.selected.parents.length > 0 && !snapshot.parent}<p
+    >
       Choose a comparison parent in the operation card.
-    </p>{/if}
+    </p>
+  {:else if snapshot.selected && !snapshot.detail && !snapshot.busy}
+    <p role="status">Operation changes are unavailable.</p>
+    <Button
+      size="sm"
+      onclick={() =>
+        snapshot.parent
+          ? controller.selectParent(snapshot.parent)
+          : controller.select(snapshot.selected!)}>Retry operation</Button
+    >
+  {/if}
 </div>
 
 <style>
   .operation-files {
     padding: 0 0.5rem 0.5rem;
     font-size: 0.8125rem;
+  }
+  .repository-review-operation-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    padding-inline-end: 0.5rem;
+    margin: -0.5rem -0.5rem 0.5rem;
+    border-block: 1px solid var(--border);
+    background: color-mix(in srgb, var(--foreground) 4%, var(--background));
+  }
+  .repository-review-operation-menu {
+    display: inline-flex;
+    margin-inline-start: auto;
+    --accent: color-mix(in srgb, var(--foreground) 24%, var(--background));
+    --muted: var(--accent);
+    --ui-column-canvas-header-action-hover: var(--accent);
   }
   label {
     display: flex;

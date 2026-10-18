@@ -73,6 +73,8 @@ export const PinnedHistoryAndDiff: Story = {
 export const UnifiedDiff: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await file(canvasElement);
+    await userEvent.click(canvas.getByRole("radio", { name: "Unified" }));
+    await userEvent.click(canvas.getByRole("radio", { name: "Unified" }));
     await expect(
       await canvas.findByRole("region", { name: "Changes to Welcome.md" }),
     ).toHaveTextContent("History is retained");
@@ -103,9 +105,11 @@ export const RetainsHistoricalSelection: Story = {
     expect(
       context.fixture.calls.filter(([method]) => method === "open"),
     ).toHaveLength(1);
-    await userEvent.selectOptions(
-      canvas.getByRole("combobox", { name: "Operation" }),
-      otherOperation,
+    await userEvent.click(canvas.getByRole("combobox", { name: "Operation" }));
+    await userEvent.click(
+      await within(canvasElement.ownerDocument.body).findByRole("row", {
+        name: `Select operation ${otherOperation}`,
+      }),
     );
     await waitFor(() => expect(context.fixture.closed).toHaveLength(1));
     await waitFor(() => {
@@ -138,9 +142,11 @@ export const MultipleHeads: Story = {
         ([method]) => method === "open",
       ),
     ).toBe(false);
-    await userEvent.selectOptions(
-      canvas.getByRole("combobox", { name: "Operation" }),
-      operation,
+    await userEvent.click(canvas.getByRole("combobox", { name: "Operation" }));
+    await userEvent.click(
+      await within(canvasElement.ownerDocument.body).findByRole("row", {
+        name: `Select operation ${operation}`,
+      }),
     );
     await expect(
       await canvas.findByRole("button", {
@@ -156,8 +162,11 @@ export const RootRevision: Story = {
       await canvas.findByRole("button", { name: /Start the vault/ }),
     );
     await expect(
-      await canvas.findByText("This revision has no parent comparison."),
-    ).toBeVisible();
+      canvas.getByRole("button", { name: /Start the vault/ }),
+    ).toHaveAttribute("aria-expanded", "true");
+    expect(
+      canvas.queryByText("This revision has no parent comparison."),
+    ).toBeNull();
     await expect(
       canvas.queryByRole("combobox", { name: "Compare with parent" }),
     ).toBeNull();

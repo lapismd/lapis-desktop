@@ -60,11 +60,10 @@ export class OperationView extends View {
         controller: this.#controller,
         initialOperation: this.#operation,
         copyText: (value: string) => this.plugin.copyIdentifier(value),
-        onHistory: (operation: string) => {
+        onHistory: (operation: string) =>
           void this.plugin
             .open(operation)
-            .catch((error) => this.plugin.report(error));
-        },
+            .catch((error) => this.plugin.report(error)),
       },
     });
   }

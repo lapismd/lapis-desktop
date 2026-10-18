@@ -1,0 +1,11 @@
+/* Catalog-owned item layout replaces inherited named command grid areas. */
+.repository-commit-picker
+  .repository-review-picker-options
+  .repository-commit-picker-option {
+  grid-template: auto / 1rem minmax(0, 1fr);
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+  gap: 0.5rem;
+}

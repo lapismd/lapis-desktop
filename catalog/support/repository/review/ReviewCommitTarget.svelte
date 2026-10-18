@@ -2,10 +2,11 @@
   import { onMount } from "svelte";
   import type { LocalGraphCommit } from "@lapismd/jj-history";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
+  import { TagList } from "@lapismd/design-core/shadcn/tag-list";
   import { formatRelativeTime } from "@lapismd/design-core/shadcn/relative-time";
-  import RepositoryAuthorAvatar from "./RepositoryAuthorAvatar.svelte";
-  import { encodeJjChangeId } from "../../lib/repository/graph/repository-log-graph.ts";
-  import { commitCardTags } from "../../lib/repository/commit-cards.ts";
+  import ReviewAuthorAvatar from "../../../../src/components/repository/RepositoryAuthorAvatar.svelte";
+  import { encodeJjChangeId } from "../../../../src/lib/repository/graph/repository-log-graph.ts";
+  import { repositoryCommitTags } from "../../../../src/lib/repository/tags.ts";
   let { target, commit }: { target: string; commit?: LocalGraphCommit } =
     $props();
   let now = $state(Date.now());
@@ -20,12 +21,16 @@
       ? formatRelativeTime(Number(commit.author.timestamp.millis), { now })
       : undefined,
   );
-  const tags = $derived(commitCardTags(commit));
+  const tags = $derived(repositoryCommitTags(commit));
   const change = $derived(commit ? encodeJjChangeId(commit.change_id) : "");
 </script>
 
 <div class="commit-target">
-  <RepositoryAuthorAvatar name={commit?.author.name ?? "Unknown author"} />
+  <ReviewAuthorAvatar
+    name={commit?.author.name ?? "Unknown author"}
+    email={commit?.author.email}
+    size="md"
+  />
   <div class="commit-target-body">
     <div class="commit-target-summary">
       <span class="commit-target-message" title={commit?.description}>
@@ -38,12 +43,17 @@
         {#if time}<time datetime={time.datetime} title={time.full}
             >{time.text}</time
           >{/if}
-        {#if tags.length}<span
-            class="commit-target-tags"
-            title={tags.map((tag) => tag.label).join(" · ")}
-            >{tags.map((tag) => tag.label).join(" · ")}</span
-          >{/if}
       </div>
+      <TagList
+        {tags}
+        label="Revision tags"
+        onclick={(event) => event.stopPropagation()}
+        onpointerdown={(event) => event.stopPropagation()}
+        onkeydown={(event) => {
+          if (event.key === "Enter" || event.key === " ")
+            event.stopPropagation();
+        }}
+      />
     </div>
     <div class="commit-target-ids" aria-label="Revision identifiers">
       {#if target}<span title={`Git commit SHA ${target}`}
@@ -98,12 +108,6 @@
     gap: 0.4rem;
     color: var(--muted-foreground);
     font-size: 0.75rem;
-  }
-  .commit-target-tags {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
   }
   time {
     white-space: nowrap;

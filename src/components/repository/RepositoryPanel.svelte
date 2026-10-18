@@ -1,4 +1,6 @@
 <script lang="ts">
+  import RepositoryConflictResolution from "./conflicts/RepositoryConflictResolution.svelte";
+  import { repositoryWorkspaces } from "../../lib/repository/workspaces.ts";
   import { onMount, onDestroy, untrack } from "svelte";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   import { createLogCanvas } from "../../lib/repository/log-canvas.ts";
@@ -17,17 +19,32 @@
     initialOperation?: string;
     copyText(value: string): Promise<void>;
   } = $props();
-  let state = $state(initialHistoryState());
+  let snapshot = $state(initialHistoryState());
+  let conflictsOpen = $state(false);
+  const selectionContext = $derived(
+    `${snapshot.operation ?? ""}/${snapshot.revision?.id ?? ""}`,
+  );
+  $effect(() => {
+    selectionContext;
+    untrack(() => {
+      conflictsOpen = false;
+    });
+  });
   const operations = $derived([
-    ...new Set([...state.heads, ...(state.operation ? [state.operation] : [])]),
+    ...new Set([
+      ...snapshot.heads,
+      ...(snapshot.operation ? [snapshot.operation] : []),
+    ]),
   ]);
   const canvas = createLogCanvas();
   onDestroy(() => void canvas.dispose());
-  const selection = $derived(`${state.revision?.id ?? ""}/${state.path ?? ""}`);
+  const selection = $derived(
+    `${snapshot.revision?.id ?? ""}/${snapshot.path ?? ""}`,
+  );
   $effect(() => {
     selection;
-    const revision = untrack(() => state.revision?.id);
-    const path = untrack(() => state.path);
+    const revision = untrack(() => snapshot.revision?.id);
+    const path = untrack(() => snapshot.path);
     untrack(() => {
       canvas.clear();
       if (revision) {
@@ -40,7 +57,7 @@
     });
   });
   onMount(() => {
-    const unsubscribe = controller.subscribe((value) => (state = value));
+    const unsubscribe = controller.subscribe((value) => (snapshot = value));
     void controller.refresh(initialOperation);
     return unsubscribe;
   });
@@ -50,7 +67,7 @@
   <section
     class="repository-panel"
     aria-label="Repository history"
-    aria-busy={state.busy}
+    aria-busy={snapshot.busy}
   >
     <div class="repository-columns">
       <ColumnCanvas.Root
@@ -63,46 +80,65 @@
           aria-label="Revisions"
         >
           <RepositoryLogHeader
+            {copyText}
+            workspaces={repositoryWorkspaces(snapshot.commits)}
+            workspace={snapshot.workspace}
+            onWorkspaceSelect={(next) => void controller.selectWorkspace(next)}
             title="JJ Log"
-            count={state.commits.length}
+            count={snapshot.commits.length}
             {operations}
-            operation={state.operation}
-            busy={state.busy}
+            operation={snapshot.operation}
+            busy={snapshot.busy}
             onSelect={(operation) => controller.selectOperation(operation)}
             onRefresh={() => controller.refresh()}
           />
           <ColumnCanvas.Body>
-            {#if state.phase === "loading"}<p role="status">
+            {#if snapshot.phase === "loading"}<p role="status">
                 Preparing repository history…
               </p>
-            {:else if state.phase === "unavailable"}<p role="status">
+            {:else if snapshot.phase === "unavailable"}<p role="status">
                 Repository history is unavailable for this vault. Refresh to try
                 again.
               </p>
-            {:else if !state.headsReady}<p role="status">
+            {:else if !snapshot.headsReady}<p role="status">
                 Loading repository operations…
               </p>
-            {:else if !state.operation}<p role="status">
-                {state.heads.length > 1
+            {:else if !snapshot.operation}<p role="status">
+                {snapshot.heads.length > 1
                   ? "Choose an operation to inspect its history."
                   : "No repository operations available."}
               </p>
             {/if}
 
-            {#if state.snapshot}
+            {#if snapshot.snapshot}
               <RepositoryRevisions
-                {state}
+                state={snapshot}
                 {controller}
                 {copyText}
                 onOpenDiff={() => canvas.open("diff")}
+                onResolveConflicts={() => (conflictsOpen = true)}
               />
             {/if}
           </ColumnCanvas.Body>
         </ColumnCanvas.Column>
-        <RepositoryDiffColumn {state} {controller} />
+        <RepositoryDiffColumn state={snapshot} {controller} />
       </ColumnCanvas.Root>
     </div>
   </section>
+  {#snippet surface()}
+    {#if snapshot.revision?.conflicted}
+      {#key snapshot.revision.id}
+        <RepositoryConflictResolution
+          open={conflictsOpen}
+          conflicts={snapshot.conflicts}
+          ready={snapshot.conflictsReady}
+          busy={snapshot.busy}
+          onLoad={() => void controller.loadConflicts()}
+          onClose={() => (conflictsOpen = false)}
+        />
+      {/key}
+    {/if}
+  {/snippet}
 </RepositoryShell>
 
 <style>

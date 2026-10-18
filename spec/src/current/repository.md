@@ -290,10 +290,11 @@ selection opens the diff column. Op Log selection opens one comparison column
 with a collapsible operation card above the file diff, matching jj-store's
 header, author rail, parent pills and card spacing. The author fallback retains
 the original initials/palette and short operation diffs fit their content.
-Native delta details remain available through a secondary disclosure. Expanding
-rows keeps file choices in view. Wide panes provide resizable columns and narrow
-panes use Column Canvas compact navigation, including return to the log. The
-root measures its own pane; no viewport media query chooses this behavior.
+Recorded command arguments appear after the operation comparison, when present.
+The redundant Info disclosure is omitted. Expanding rows keeps file choices in
+view. Wide panes provide resizable columns and narrow panes use Column Canvas
+compact navigation, including return to the log. The root measures its own pane;
+no viewport media query chooses this behavior.
 
 Op Log has an independent pinned reader and layout state. Its bounded operation
 graph preserves full operation/parent identities, descriptions, actor/host,
@@ -345,9 +346,46 @@ the user switches between them. Whole-view parity and visual approval remain
 separate from this comparison preview.
 
 Parent comparisons use the source Command View/Popover commit picker with
-author/avatar, relative time, exact Git/JJ identifiers and native tag details.
-Only exact recorded parents are selectable. Missing parent cards load through
-the same pinned commit reader, bounded to 64 missing records; stale or
-substituted replies cannot replace the current comparison. Metadata failures
+author/avatar, relative time, exact Git/JJ identifiers and native TagList chips.
+Flat local/remote/workspace/conflict tags retain overflow; filled neutral chips
+stay visible on selected rows. Only exact recorded parents are selectable.
+Missing parent cards use the pinned commit reader, bounded to 64 records; stale
+or substituted replies cannot replace the current comparison. Metadata failures
 retain selection and use App notifications with explicit retry. Selected-file
 statistics remain labelled separately from complete comparison totals.
+
+Operation parent comparisons use the same public Command View/Popover pattern.
+Cards retain operation description, user/host, relative time, workspace/snapshot
+metadata and full native operation IDs. They never label an operation as a Git
+commit or JJ change. Only recorded parents are selectable; merge choices remain
+explicit. Missing metadata uses at most four 50-node pinned operation graph
+pages for at most 64 missing cards. Known cards are reused; stale selection,
+comparison, pin and close responses are fenced. Metadata failure preserves the
+comparison and uses an App toast plus explicit retry.
+
+The compact JJ Log and Op Log header selectors choose exact pinned operations,
+not workspaces. Both use public Command View/Popover with ID search, explicit
+selection, current-pin indication, keyboard focus and full operation identities.
+Known operation metadata may enrich a card; missing metadata must not invent
+author or workspace information. Opening/searching the picker performs no
+repository reads or writes. Refresh preserves a historical pin among newly
+observed heads; only an explicit choice replaces the selected snapshot.
+
+Split file diffs MUST fill the bounded remaining vertical space in the History
+column and the Op Log file card, including both revision panes. Changing wrap,
+collapsing operation metadata and compact pane navigation MUST retain the fill
+layout. Unified operation previews retain their content-sized presentation. The
+application sizes its owned hosts through public component contracts.
+
+Reviewed presentation is adopted into production in focused slices, with
+Storybook exercising the same components. Avatar/profile, compact searchable
+selectors, semantic tags, long Markdown messages, operation titles and file
+headers preserve exact native identity and the existing independent readers.
+Fixtures and synthetic evolution/conflict data MUST remain catalog-owned.
+Workspace context MUST use explicit native links and be distinct from operation
+pins. Any unavailable capability remains explicit, never simulated as a save.
+Evo predecessor edges remain distinct from commit parents; unsupported aligned
+comparisons cannot be replaced with ordinary raw diffs. Repository writes retain
+their separate native command/admission gate. The user prioritizes a usable
+plugin with focused tests; broader qualification stays deferred in the
+[repository parity review](repository-review.md).

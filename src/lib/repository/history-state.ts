@@ -1,4 +1,5 @@
 import type {
+  LocalConflictDescriptor,
   LocalCodeSnapshot,
   LocalGraphCommit,
   LocalCodeObjectKey,
@@ -8,6 +9,9 @@ import type {
 export interface HistoryState {
   phase: "idle" | "loading" | "ready" | "unavailable";
   busy: boolean;
+  workspace: string | null;
+  conflicts: LocalConflictDescriptor[];
+  conflictsReady: boolean;
   heads: string[];
   headsReady: boolean;
   operation?: string;
@@ -27,6 +31,9 @@ export interface HistoryState {
 export const initialHistoryState = (): HistoryState => ({
   phase: "idle",
   busy: false,
+  workspace: null,
+  conflicts: [],
+  conflictsReady: false,
   heads: [],
   headsReady: false,
   commits: [],
@@ -68,6 +75,8 @@ export function diffText(
 /** Clears the selected revision and every dependent comparison value. */
 export function resetHistoryComparison(): Partial<HistoryState> {
   return {
+    conflicts: [],
+    conflictsReady: false,
     revision: undefined,
     parentCommits: [],
     base: undefined,

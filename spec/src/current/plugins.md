@@ -1,5 +1,11 @@
 # Desktop plugins and catalog
 
+E-REPO-015 promotes reviewed repository presentation to production.
+LD-CAT-001/002/003 retain public dependency ownership and disposable injected
+fixtures. Rich picker rows use accessible grids; source AppShell hosts keep
+conflict overlays outside inert Main. Focused repository tests qualify UI only;
+native gates stay separate.
+
 E-CATALOG-008 qualifies scoped preview commands, live identity/index checks,
 cache safeguards and actual cold/HMR proof; all 804 catalog checks pass.
 

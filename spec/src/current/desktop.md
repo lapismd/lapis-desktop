@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-036/037/038 retain native admission/drains (LD-DESK-003). E-REPO-011 adds
-pinned parent cards without changing native lifetime contracts.
+E-REPO-015 adopts repository UI via public shell parts. LD-DESK-003 native
+IPC/lifetime and LD-HOST-001 public-archive contracts stay unchanged.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on
