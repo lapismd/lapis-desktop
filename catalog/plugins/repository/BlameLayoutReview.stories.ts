@@ -126,6 +126,7 @@ export const CommitDetails: StoryObj = {
     expect(card.textContent).not.toContain("Keep each read attached");
     const heading = card.querySelector(".commit-card__title")!;
     expect(getComputedStyle(heading).webkitLineClamp).toBe("2");
+    expect(getComputedStyle(heading).color).toBe(getComputedStyle(card).color);
     await userEvent.click(
       within(card).getByRole("button", {
         name: "Open commit details: Keep repository history beside the notes",

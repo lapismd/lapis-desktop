@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 import { nativeError } from "../native-error.ts";
 import type { RepositoryServices } from "../../repository/history-reader.ts";
+import { parseWorkingCopyStatus } from "../../repository/working-copy-status.ts";
 import { PreparationQueue } from "./preparation-queue.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
@@ -57,6 +58,14 @@ export function createNativeRepository(
     return job;
   }
   return {
+    workingCopy: () =>
+      run(async () =>
+        parseWorkingCopyStatus(
+          await call<string>("desktop_repository_working_copy", {
+            request: { sessionId: vault.sessionId },
+          }),
+        ),
+      ),
     reader: {
       heads: () => run(() => reader.heads()),
       open: (operation: string) => run(() => preparation.open(operation)),

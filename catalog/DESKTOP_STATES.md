@@ -1,5 +1,11 @@
 # Desktop state review inventory
 
+`Desktop/Repository working copy status` maps ready details/refresh/navigation,
+loading, clean, binary-without-line-counts, unavailable/toast recovery and
+settings/disable to the production plugin in Notes. The compact split status
+buttons use subtle fills without a border. E-REPO-024 records focused catalog
+checks; ordinary native status review and visual approval remain pending.
+
 E-REPO-023 adopts reviewed blame layout, editor action, commit navigation and
 log row surfaces into production. Earlier preview-only descriptions below record
 their review origin; synthetic data/diff counts remain catalog-owned.

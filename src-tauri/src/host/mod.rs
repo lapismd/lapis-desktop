@@ -96,6 +96,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::ai::backends::commands::desktop_ai_backends,
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
+            crate::host::repository::working_copy::desktop_repository_working_copy,
             crate::host::shell::shell_info,
             crate::host::shell::shell_ready,
             crate::host::integration::services::desktop_clipboard_read,

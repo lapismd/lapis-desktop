@@ -9,5 +9,8 @@ export type HistoryReader = Pick<
 export type RepositoryLeaveMode = "close" | "reload";
 export interface RepositoryServices {
   reader: HistoryReader;
+  workingCopy?: () => Promise<
+    import("./working-copy-status.ts").WorkingCopyStatus
+  >;
   close(mode: RepositoryLeaveMode): Promise<void>;
 }

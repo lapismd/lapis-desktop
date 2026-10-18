@@ -15,6 +15,7 @@ import { registerFileHistoryView } from "./file-history-view.ts";
 import { BlameController } from "../../lib/repository/blame-controller.ts";
 import { BlameView } from "./blame/blame-view.ts";
 import { registerBlameEditorActions } from "./blame/editor-actions.ts";
+import { RepositoryStatus } from "./repository-status.ts";
 type RepositoryController =
   | HistoryController
   | OperationController
@@ -23,6 +24,7 @@ type RepositoryController =
 
 export class RepositoryPlugin extends Plugin {
   #services?: RepositoryServices;
+  #status?: RepositoryStatus;
   #controllers = new Set<RepositoryController>();
   #activities = new Map<RepositoryController, () => void>();
   #closing?: Promise<void>;
@@ -155,6 +157,8 @@ export class RepositoryPlugin extends Plugin {
     this.addRibbonIcon("git-branch", "Repository History", () => {
       void this.open().catch((error) => this.report(error));
     });
+    this.#status = new RepositoryStatus(this, this.#services);
+    await this.#status.start();
   }
   async copyIdentifier(value: string): Promise<void> {
     const id = `repository-copy:${value}`;
@@ -260,6 +264,8 @@ export class RepositoryPlugin extends Plugin {
   }
   async onunload(): Promise<void> {
     return (this.#closing ??= (async () => {
+      await this.#status?.close();
+      this.#status = undefined;
       await Promise.allSettled(
         [...this.#controllers].map((controller) => controller.close()),
       );

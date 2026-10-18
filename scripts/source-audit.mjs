@@ -162,6 +162,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "lapis-ai:acp-session",
     "allow-desktop-repository-admit",
     "allow-desktop-repository-release",
+    "allow-desktop-repository-working-copy",
     "jj-store:local-history",
     "core:event:allow-listen",
     "core:event:allow-unlisten",

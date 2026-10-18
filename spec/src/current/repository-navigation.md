@@ -49,9 +49,32 @@ inner header, content-boundary separators, compact line numbers, shared Design
 Core ScrollArea and sticky attribution directly below the header. Commit title
 hover/focus shows its first subject line clamped to two visual lines, recorded
 committer/profile and time; diff counts appear only when explicitly provided.
-Its subject link opens the recorded commit in JJ Log at the same operation pin.
+Its subject link uses the surrounding text colour at rest and the link colour on
+hover/focus. It opens the recorded commit in JJ Log at the same operation pin.
 Enabled plugins contribute a `git-merge-conflict` editor title action, removed
 on disable. The action reads the current file through an owned status-tracked
 controller, then opens recorded blame. JJ Log and Op Log resting rows use the
 AppShell background; selected/hover states remain distinct. Native identity,
 annotation, pinning and authorization contracts are unchanged.
+
+The plugin contributes an enabled-by-default working-copy status split control:
+file/line totals open a details popover and a separate refresh action re-reads
+current data. A Repository History setting MUST hide/remove that contribution,
+stop scheduled/file-triggered refresh and drain an in-flight read. Re-enabling
+starts a fresh observation; plugin/vault close drains it before native release.
+The plugin owns its controls, popover, styles and settings through the public
+status host; custom controls do not require repository UI in the shell. The
+compact split control has no border, minimal vertical padding and a subtle
+background relative to the status bar; refresh uses a slightly stronger fill.
+
+Native status resolves the current physical root from existing admission and
+observes it on bounded workers. It MUST NOT initialize, snapshot, write a source
+index, reconcile heads or run a shell command. Compare the complete final tree
+with its sole recorded WC parent, including qualified unsnapshotted/ignored and
+sparse semantics. Never sum recorded/dirty deltas or claim partial totals are
+complete. Binary/structural/complexity cases omit line totals; unsupported
+conflicts/merges and stale/revoked/oversized reads remain unavailable. The
+popover links the recorded WC revision to JJ Log at its exact operation and
+explains that pending editor buffers appear after save. Background progress
+covers the read; errors use App toasts and obsolete counts disappear. Renderer
+paths, workspace names, generations and operation choices grant no authority.

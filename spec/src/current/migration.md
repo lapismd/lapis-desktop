@@ -1,7 +1,7 @@
 # Migration inventory and progress
 
-E-REPO-023 adopts reviewed blame/log surfaces. LD-MIG-002 ownership and native
-gates remain unchanged.
+E-REPO-023/024 cover reviewed blame/log surfaces and working-copy status.
+LD-MIG-002 ownership and original native gates remain unchanged.
 
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
 LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and

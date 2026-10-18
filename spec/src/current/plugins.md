@@ -1,5 +1,11 @@
 # Desktop plugins and catalog
 
+E-REPO-024 adds the production working-copy status control and six disposable
+review states. The plugin owns its split buttons, popover and setting through
+public status-item mount/dispose contracts. The compact control has no border, a
+subtle status-bar-relative fill and a slightly stronger refresh fill. Native
+status acceptance and visual approval remain separate from catalog results.
+
 E-REPO-023 adopts E-REPO-019–022 after user confirmation. Blame stories now
 render production presentation with injected fixture statistics; duplicate
 review components and row CSS overrides are removed. Editor actions, commit

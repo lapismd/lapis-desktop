@@ -17,6 +17,7 @@ fn main() {
         "desktop_ai_backends",
         "desktop_repository_admit",
         "desktop_repository_release",
+        "desktop_repository_working_copy",
         "shell_info",
         "shell_ready",
         "desktop_clipboard_read",

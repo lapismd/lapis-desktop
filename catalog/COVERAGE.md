@@ -1,5 +1,14 @@
 # Desktop catalog coverage
 
+`Desktop/Repository working copy status` mounts the production plugin in the
+real Notes shell through the public status-item mount API. `DetailsAndRefresh`
+covers totals, refresh, recorded revision navigation and the borderless compact
+split control. `Loading`, `Clean`, `Binary`, `FailureAndRecovery` and
+`SettingsAndDisable` cover skeletons, unavailable line totals, toast recovery,
+the persisted visibility setting and contribution removal. Fixtures supply only
+read data; upstream native observation and source preservation have separate
+evidence. E-REPO-024 retains visual/native review gaps.
+
 E-REPO-023 promotes reviewed blame components into production. All blame
 layout/large-file/sticky stories render production Panel/View/Rows/Group and
 CommitTitle with catalog-only statistics and source data. `EditorBlameAction`

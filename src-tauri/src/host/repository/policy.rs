@@ -46,9 +46,9 @@ impl Admission for Policy {
         }))
     }
 }
-struct Access {
-    host: NativeHost,
-    grant: Grant,
+pub(super) struct Access {
+    pub(super) host: NativeHost,
+    pub(super) grant: Grant,
 }
 #[async_trait::async_trait]
 impl local::Access for Access {

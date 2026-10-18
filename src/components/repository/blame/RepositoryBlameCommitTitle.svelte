@@ -155,7 +155,7 @@
     border: 0;
     padding: 0;
     background: transparent;
-    color: var(--primary);
+    color: inherit;
     text-align: left;
     cursor: pointer;
     display: -webkit-box;
@@ -170,9 +170,11 @@
     font-weight: 600;
   }
   .commit-card__title:hover {
+    color: var(--primary);
     text-decoration: underline;
   }
   .commit-card__title:focus-visible {
+    color: var(--primary);
     outline: 2px solid var(--ring);
   }
   .commit-card__stats {
