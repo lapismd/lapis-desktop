@@ -1,15 +1,16 @@
 # Desktop state review inventory
 
 `Repository comparison/JJLogAndOpLogTabs` previews resting JJ Log and Op Log
-rows matching the AppShell body, with distinct hover and selection styling.
+rows matching the AppShell body, with distinct hover and selection styling. The
+same preview applies to regular plugin tabs opened from the blame story.
 
 `Repository blame layout review/StickyAttribution` reviews active attribution
 under the header, incoming group replacement and horizontal pinning. The body
 uses public shadcn ScrollArea with shared source/attribution scroll position, a
 compact line-number gutter and no vertical attribution/source divider. Sticky
 labels have no top border; horizontal dividers stay at source-group boundaries.
-Several fixture commits exercise the real `info@lapis.md` Gravatar lookup and
-fallback.
+Several fixture commits load the real `dev@lapis.md` Gravatar image; remaining
+sample authors exercise initials fallback.
 
 Blame review stories start with left/right sidebars collapsed; the editor-action
 example keeps file navigation available.

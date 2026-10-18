@@ -200,3 +200,4 @@
 - [Storybook blame layout proposal](history/E-REPO-019.md)
 - [Blame scrolling and compact attribution preview](history/E-REPO-020.md)
 - [AppShell log row background preview](history/E-REPO-021.md)
+- [Regular log row preview and verified Gravatar fixture](history/E-REPO-022.md)

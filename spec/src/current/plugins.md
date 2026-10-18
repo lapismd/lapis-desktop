@@ -1,12 +1,14 @@
 # Desktop plugins and catalog
 
-E-REPO-021 previews JJ Log and Op Log row bodies on the AppShell `--background`
-surface (white in light mode). Headers, hover and selected states retain their
-existing styling. This catalog-only change awaits confirmation before adoption.
+E-REPO-021/022 preview JJ Log and Op Log resting rows on the AppShell
+`--background` surface (white in light mode), including regular plugin views
+opened inside any story. Catalog CSS targets only application-owned graph hosts;
+headers, hover and selected states retain their styling. Adoption awaits
+approval.
 
 E-REPO-020 refines only the blame review: attribution sticks below the file
 header until the next group pushes it away; one Design Core shadcn ScrollArea
-viewport scrolls both columns. Sample commits include `info@lapis.md` to
+viewport scrolls both columns. Sample commits use `dev@lapis.md` (E-REPO-022) to
 exercise the existing Gravatar/profile presentation. Shipping/native behavior is
 unchanged.
 

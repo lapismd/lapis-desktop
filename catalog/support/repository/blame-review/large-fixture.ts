@@ -34,7 +34,7 @@ export const largeBlameCommits: BlameCommit[] = subjects.map(
       name,
       email:
         index % 4 === 0
-          ? "info@lapis.md"
+          ? "dev@lapis.md"
           : `${name.toLowerCase().replaceAll(" ", ".")}@example.test`,
       timestamp: {
         millis: Date.now() - (index * 29 + 2) * 3_600_000,

@@ -16,3 +16,9 @@ body,
 .ai-shell-docs-canvas .docs-story .sb-story {
   padding: 0;
 }
+
+/* Apply the row-surface review to regular plugin views opened from any story. */
+.repository-panel .repository-graph,
+.repository-operations .repository-graph {
+  background: var(--background);
+}
