@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+E-REPO-017 qualifies the default File history sidebar and shared row hit areas
+through production stories; original native/provider/visual gates stay
+unchanged.
+
 E-REPO-016 qualifies delayed startup work and worker-failure toasts through real
 production hosts. LD-CAT-001/002/003 fixtures remain disposable; actual workers
 and ordinary native startup have separate evidence. See

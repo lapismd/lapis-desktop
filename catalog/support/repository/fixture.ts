@@ -48,6 +48,7 @@ export function historyFixture(scenario = "ready") {
   const faults = new Set<string>();
   if (scenario === "read-failure") faults.add("diff");
   if (scenario === "graph-failure") faults.add("graph");
+  if (scenario === "file-history-failure") faults.add("file-history");
   if (scenario === "paths-failure") faults.add("diff_paths");
   let sequence = 0;
   const handles = new Map<string, string>();
@@ -117,6 +118,30 @@ export function historyFixture(scenario = "ready") {
       query: LocalCodeQuery,
     ): Promise<LocalCodeResponse> {
       calls.push([handle, query]);
+      if (
+        query.kind === "graph" &&
+        query.query[0].graph === "log" &&
+        query.query[0].revset.includes("files(")
+      ) {
+        if (faults.has("file-history"))
+          throw new Error("The file history could not be read");
+        return {
+          kind: "graph",
+          data: {
+            version: 1,
+            operation: handles.get(handle)!,
+            data: {
+              graph: "log",
+              nodes:
+                query.query[0].revset ===
+                'all() & files(root-file:"Welcome.md")'
+                  ? [{ commit: latest, edges: [] }]
+                  : [],
+            },
+            stats: stats(),
+          },
+        };
+      }
       if (faults.has(query.kind))
         throw new Error(
           query.kind === "graph"

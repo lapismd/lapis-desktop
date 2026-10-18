@@ -1,8 +1,7 @@
 # Repository history and conversations
 
-The existing Git-backed JJ vault is the code authority. The desktop consumes
-owned JJ interfaces; it does not import upstream `jj-lib`. This work implements
-the Notes consumer of jj-store M33 in independently verified slices.
+The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces
+without upstream `jj-lib`. Notes consumes jj-store M33 in verified slices.
 
 ## Requirements
 
@@ -51,6 +50,9 @@ operation without moving the pin and restores that pin after cold close/reopen.
 A visible but unfocused window does not qualify the headed interaction gate.
 
 ## Notes history view
+
+[Row selection and File history](repository-navigation.md) define pointer hit
+areas, icons and the default editor-following sidebar (LD-REPO-002/004).
 
 The optional bundled Repository History plugin uses the public history client
 and an injected, App-owned reader. Its native factory retains the admitted vault

@@ -7,7 +7,12 @@
   let {
     scenario = "ready",
     maxWidth,
-  }: { scenario?: string; maxWidth?: number } = $props();
+    files = {},
+  }: {
+    scenario?: string;
+    maxWidth?: number;
+    files?: Record<string, string>;
+  } = $props();
   const fixture = untrack(() => operationFixture(scenario));
   const safeMode = untrack(() =>
     scenario === "safe-mode"
@@ -25,6 +30,7 @@
 >
   <NotesDemo
     {safeMode}
+    {files}
     createRepository={(app) => {
       bindHistoryFixture(root, { app, fixture });
       return { reader: fixture.reader, close: () => fixture.close() };

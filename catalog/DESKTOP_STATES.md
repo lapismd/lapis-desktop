@@ -1,5 +1,11 @@
 # Desktop state review inventory
 
+`Desktop/Repository file history` reviews default right-sidebar registration, an
+absent editor, active-file revisions, empty path history, busy/disabled refresh,
+toast recovery, rename/deletion and opening the matching JJ Log revision.
+`Desktop/Repository row selection` covers non-button row areas and independent
+controls. Both use production components and remain visual-pending.
+
 `Desktop/Background work` holds optional AI discovery and repository reads while
 the real workspace remains interactive. It covers status progress, command
 palette input during pending work, completion cleanup and parser failure toasts.

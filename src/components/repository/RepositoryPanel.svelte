@@ -10,13 +10,18 @@
   import RepositoryRevisions from "./RepositoryRevisions.svelte";
   import RepositoryDiffColumn from "./RepositoryDiffColumn.svelte";
   import RepositoryShell from "./RepositoryShell.svelte";
+  import { openHistoryRevision } from "../../lib/repository/open-history-revision.ts";
   let {
     controller,
     initialOperation,
+    initialRevision,
+    initialLoad,
     copyText,
   }: {
     controller: HistoryController;
     initialOperation?: string;
+    initialRevision?: string;
+    initialLoad?: Promise<void>;
     copyText(value: string): Promise<void>;
   } = $props();
   let snapshot = $state(initialHistoryState());
@@ -57,9 +62,16 @@
     });
   });
   onMount(() => {
+    let mounted = true;
     const unsubscribe = controller.subscribe((value) => (snapshot = value));
-    void controller.refresh(initialOperation);
-    return unsubscribe;
+    void (initialLoad ?? controller.refresh(initialOperation)).then(() => {
+      if (mounted && initialRevision)
+        return openHistoryRevision(controller, initialRevision);
+    });
+    return () => {
+      mounted = false;
+      unsubscribe();
+    };
   });
 </script>
 

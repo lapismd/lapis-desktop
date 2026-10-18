@@ -9,6 +9,7 @@ const chapters = [
   "plugins",
   "ai",
   "repository",
+  "repository-navigation",
   "governance",
   "migration",
 ];

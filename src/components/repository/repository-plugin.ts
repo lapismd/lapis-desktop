@@ -10,11 +10,17 @@ import { OperationController } from "../../lib/repository/operation-controller.t
 import { OperationView } from "./operation-view.ts";
 import { RepositoryView } from "./repository-view.ts";
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
+import { FileHistoryController } from "../../lib/repository/file-history-controller.ts";
+import { registerFileHistoryView } from "./file-history-view.ts";
+type RepositoryController =
+  | HistoryController
+  | OperationController
+  | FileHistoryController;
 
 export class RepositoryPlugin extends Plugin {
   #services?: RepositoryServices;
-  #controllers = new Set<HistoryController | OperationController>();
-  #activities = new Map<HistoryController | OperationController, () => void>();
+  #controllers = new Set<RepositoryController>();
+  #activities = new Map<RepositoryController, () => void>();
   #closing?: Promise<void>;
   constructor(app: App) {
     super(app, {
@@ -81,17 +87,31 @@ export class RepositoryPlugin extends Plugin {
     );
     return controller;
   }
-  async release(
-    controller: HistoryController | OperationController,
-  ): Promise<void> {
+  async release(controller: RepositoryController): Promise<void> {
     await controller.close();
     this.#activities.get(controller)?.();
     this.#activities.delete(controller);
     this.#controllers.delete(controller);
   }
+  createFileHistoryController(): FileHistoryController {
+    const controller = new FileHistoryController(
+      this.#services!.reader,
+      this.feedback("File history"),
+    );
+    this.#controllers.add(controller);
+    this.#activities.set(
+      controller,
+      new BackgroundWork(this.app.notifications, "repository-history").follow(
+        "Loading file history",
+        controller,
+      ),
+    );
+    return controller;
+  }
   async onload(): Promise<void> {
     this.#closing = undefined;
     this.#services = ownedRepository(this.app);
+    registerFileHistoryView(this);
     this.registerView(
       "repository-history",
       (leaf) => new RepositoryView(leaf, this),
@@ -120,10 +140,10 @@ export class RepositoryPlugin extends Plugin {
         },
       },
     );
-    this.addRibbonIcon("list-tree", "Repository Op Log", () => {
+    this.addRibbonIcon("git-pull-request-arrow", "Repository Op Log", () => {
       void this.openOperations().catch((error) => this.report(error));
     });
-    this.addRibbonIcon("history", "Repository History", () => {
+    this.addRibbonIcon("git-branch", "Repository History", () => {
       void this.open().catch((error) => this.report(error));
     });
   }
@@ -156,7 +176,7 @@ export class RepositoryPlugin extends Plugin {
       message: error instanceof Error ? error.message : String(error),
     });
   }
-  async open(operation?: string): Promise<void> {
+  async open(operation?: string, revision?: string): Promise<void> {
     const workspace = getWorkspaceHostBinding(this.app.workspace).controller
       .workspace;
     const existing = workspace.getLeavesOfType("repository-history")[0];
@@ -164,7 +184,7 @@ export class RepositoryPlugin extends Plugin {
       if (operation)
         await existing.setViewState({
           type: "repository-history",
-          state: { operation },
+          state: { operation, revision },
         });
       workspace.revealLeaf(existing);
       return;
@@ -172,7 +192,7 @@ export class RepositoryPlugin extends Plugin {
     if (
       !workspace.openLeaf(
         "repository-history",
-        operation ? { operation } : {},
+        operation ? { operation, revision } : {},
         { active: true },
       )
     )

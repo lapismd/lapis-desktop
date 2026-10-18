@@ -27,7 +27,7 @@ export class OperationReviewView extends View {
     return "Op Log review";
   }
   getIcon() {
-    return "list-tree";
+    return "git-pull-request-arrow";
   }
   protected async onOpen() {}
   protected async onClose() {}

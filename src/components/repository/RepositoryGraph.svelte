@@ -48,6 +48,18 @@
     observer.observe(node);
     return { destroy: () => observer.disconnect() };
   }
+  function selectRow(event: MouseEvent, id: string) {
+    const target = event.target;
+    if (
+      event.defaultPrevented ||
+      !(target instanceof Element) ||
+      target.closest(
+        'button, a, input, select, textarea, [role="button"], [role="combobox"], [contenteditable="true"]',
+      )
+    )
+      return;
+    onSelect(id);
+  }
 </script>
 
 <ol class="repository-graph" aria-label={label}>
@@ -61,10 +73,13 @@
       class:selected={selectedId === row.revision.eventId}
       use:measure={`graph:${row.revision.eventId}`}
     >
+      <!-- Existing selection button owns keyboard input; extend only its pointer hit area. -->
+      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <div
         class="repository-graph-row"
         style:padding-left={`${width}px`}
         use:measure={`row:${row.revision.eventId}`}
+        onclick={(event) => selectRow(event, row.revision.eventId)}
       >
         <RepositoryGraphSvg
           {row}
@@ -147,6 +162,7 @@
     width: 100%;
     border-bottom: 1px solid var(--border);
     padding: 0.5rem;
+    cursor: pointer;
   }
   .repository-graph-row:hover {
     background: color-mix(in srgb, var(--foreground) 7%, var(--background));

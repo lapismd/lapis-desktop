@@ -22,7 +22,7 @@ export class OperationView extends View {
     return "Repository operation log";
   }
   getIcon(): string {
-    return "list-tree";
+    return "git-pull-request-arrow";
   }
   getState(): Record<string, unknown> {
     return { operation: this.#controller?.state.operation ?? this.#operation };

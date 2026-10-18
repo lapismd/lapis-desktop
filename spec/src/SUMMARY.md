@@ -8,6 +8,7 @@
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
   - [Repository history and conversations](current/repository.md)
+    - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
@@ -194,3 +195,4 @@
 
 - [Background activity and responsiveness](current/background.md)
 - [Visible background work and responsive repository startup](history/E-REPO-016.md)
+- [Native file history and repository row actions](history/E-REPO-017.md)

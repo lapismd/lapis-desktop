@@ -31,7 +31,7 @@ export class HistoryReviewView extends View {
     return "JJ Log review";
   }
   getIcon() {
-    return "history";
+    return "git-branch";
   }
   protected async onOpen() {}
   protected async onClose() {}

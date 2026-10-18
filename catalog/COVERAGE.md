@@ -1,5 +1,12 @@
 # Desktop catalog coverage
 
+`plugins/repository/RowSelection.stories.ts` checks graph/padding/tag selection,
+independent author/copy controls and keyboard selection on both logs.
+`FileHistory.stories.ts` mounts the default right-sidebar production view,
+follows editor switches/rename/deletion, opens the selected revision at the same
+pin, and covers empty/loading and toast recovery. Native stock-JJ equivalence is
+qualified in jj-store E-FILE-HISTORY-001. Visual baselines remain pending.
+
 `plugins/background/Work.stories.ts` mounts the production Notes workspace,
 Repository History and native AI factory. Its owned delayed ports qualify
 interactive startup during command discovery, repository loading progress and

@@ -55,15 +55,17 @@ export function operationDifference(
 }
 export function operationFixture(scenario = "operation-ready") {
   const f = historyFixture(
-    scenario === "operation-admission-failure"
-      ? "failure"
-      : scenario === "operation-multiple-heads"
-        ? "multiple"
-        : scenario === "operation-paths-failure"
-          ? "paths-failure"
-          : scenario.startsWith("operation-")
-            ? "ready"
-            : scenario,
+    scenario === "file-preparing"
+      ? "preparing"
+      : scenario === "operation-admission-failure"
+        ? "failure"
+        : scenario === "operation-multiple-heads"
+          ? "multiple"
+          : scenario === "operation-paths-failure"
+            ? "paths-failure"
+            : scenario.startsWith("operation-")
+              ? "ready"
+              : scenario,
   );
   const read = f.reader.read;
   const originalOpen = f.reader.open;

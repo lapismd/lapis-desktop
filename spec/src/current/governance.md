@@ -24,10 +24,10 @@ Native readiness covers split/log-batched receipts without longer deadlines. The
 e2e entry shares early progress, then imports runtime instrumentation; ordinary
 bundle audits reject its startup capture marker.
 
-The canonical registry separates `plugins.md` for catalog, bundled plugins and
-dynamic installation from `ai.md` for direct ACP, native AI and optional
-compute. `repository.md` owns JJ reuse. The task ledger keeps their stage gates
-alongside original milestones.
+The canonical registry separates plugin/catalog ownership (`plugins.md`), direct
+ACP/AI/compute (`ai.md`) and JJ reuse (`repository.md`). E-REPO-017 adds
+`repository-navigation.md` for row/sidebar behavior under LD-GOV-001/002/004.
+The task ledger retains stage gates alongside original milestones.
 
 The desktop catalog uses `.storybook`, `catalog/plugins` and `catalog/support`.
 Import audits resolve relative paths before distinguishing the repository's
