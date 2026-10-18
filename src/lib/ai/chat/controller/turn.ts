@@ -6,6 +6,7 @@ import { buildConversationContextHandoff } from "../../conversations/context-han
 import { reduceAgentBindings } from "../../conversations/binding-state.ts";
 import { extractMentionPaths, mergeAttachmentPaths } from "../chat-mentions.ts";
 import { type AiChatItem } from "../chat-items.ts";
+import { attachmentContext } from "../attachment-context.ts";
 import { applyAgentEventToChatItems } from "../chat-trace.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 export async function submit(
@@ -168,11 +169,17 @@ export async function submit(
             recallAbort.signal,
           )
           .catch(() => []);
+        const files = await attachmentContext(
+          attachments,
+          this._readVaultText,
+          recallAbort.signal,
+        );
         if (recallAbort.signal.aborted || !authorized())
           throw new Error("Conversation preparation was cancelled.");
         this._pendingHandoffs.delete(session);
         return [
           ...(handoff ? [handoff.block] : []),
+          ...files,
           ...(recalledBlocks ?? []),
           ...(effectiveRequest.contextBlocks ?? []),
         ];

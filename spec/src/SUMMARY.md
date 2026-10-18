@@ -212,3 +212,5 @@
 - [Compact transcript footer and inline formatting](history/E-AI-040.md)
 
 - [Shared AI transcript adoption and vault presentation](history/E-AI-041.md)
+
+- [E-AI-042](history/E-AI-042.md)

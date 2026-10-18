@@ -124,7 +124,9 @@ describe("AiChatController", () => {
 
   it("merges mention and drawer attachments on the agent request", async () => {
     const runtime = new FakeAgentRuntime();
-    const controller = new AiChatController(runtime);
+    const controller = new AiChatController(runtime, null, [], {
+      readVaultText: async (path) => `Contents of ${path}`,
+    });
     await controller.submit("See @Notes/alpha.md", {
       metadata: { attachments: ["Notes/alpha.md", "Notes/beta.md"] },
     });

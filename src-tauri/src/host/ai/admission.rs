@@ -22,12 +22,24 @@ pub struct ReleaseRequest {
 pub async fn desktop_ai_admit(
     window: WebviewWindow,
     host: tauri::State<'_, NativeHost>,
+    policy: tauri::State<'_, super::policy::DesktopAiPolicy>,
     request: AdmitRequest,
 ) -> Result<(), NativeError> {
     let context = caller(&window).map_err(|error| io::Error::other(error.to_string()))?;
     let backends = window.app_handle().state::<Arc<NativeBackends>>();
     let transition = backends.transitions.clone().lock_owned().await;
     let session = request.session_id;
+    let validating = session.clone();
+    access(host.inner().clone(), move |services| {
+        services.vaults.get(&validating)?;
+        Ok(())
+    })
+    .await?;
+    let file_policy = policy.inner().clone();
+    // Hashes and configuration IO run outside both the UI and NativeHost lock.
+    tauri::async_runtime::spawn_blocking(move || file_policy.prepare_file_profile())
+        .await
+        .map_err(|_| io::Error::other("Local AI preparation was interrupted"))??;
     let owner = context.window.clone();
     let checking = backends.inner().clone();
     let (plan, transition) = access(host.inner().clone(), move |services| {

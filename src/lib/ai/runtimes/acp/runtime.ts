@@ -21,6 +21,7 @@ export class AcpAgentRuntime implements AgentRuntime {
   }
   capabilities(): AgentCapabilities {
     return {
+      skillSnapshots: false,
       sessions: true,
       resume: false,
       cancel: true,

@@ -11,13 +11,17 @@ The 2026-10-18 delivery sequence prioritizes visible, functional slices:
    standing implementation approval (2026-10-18).
 2. NOTES-08B: promote the approved composition into the review app and retain
    the per-vault presentation choice, existing conversations and scope controls.
-3. NOTES-07K: connect explicit JJ backend selection, confirmed conversation
-   listing/creation/reads and retained transcript continuation to the renderer.
-4. NOTES-07L: admit bundled lapis-agent through explicitly selected Lapis AI
-   configuration and native secret references; run chat with file context and
-   native-owned sanitized AgentStore/ThreadStore persistence.
-5. NOTES-09: demonstrate a real conversation, cancellation and cold restart
-   recovery without automatically replaying an uncertain prompt.
+3. NOTES-07L-FILES (Complete): E-AI-042 qualifies installed Codex, actual file
+   context, cancellation and vault-file transcript saving. JJ persistence
+   remains deferred by the user (2026-10-19).
+4. NOTES-09-FILES-A (Complete): E-AI-042 proves cold saved History reopen with
+   unchanged journals and no prompt replay. Fault-injected unknown-provider cold
+   recovery remains deferred in NOTES-09-FILES.
+5. NOTES-07K/07L/09: native JJ backend selection, listing/creation/pinned reads,
+   AgentStore/ThreadStore capture and managed restart are deferred by the user.
+   The unqualified renderer client draft is preserved in change lqqoypxx;
+   ordinary UI adoption remains on parent 612ab0e0. Original JJ milestone gates
+   remain pending; file-profile success does not complete them.
 
 The opt-in `AiChatPanel.presentation` selects the shared transcript for review.
 `initialTranscriptView` only chooses its initial document/classic presentation;
@@ -78,17 +82,18 @@ lapis-agent model requests are non-streaming: activity follows actual events and
 text appears as received. Incremental fake-client examples qualify rendering
 only.
 
-JJ capture has one native raw-event owner. Renderer projection cannot become a
-second writer. Authored messages and application metadata use explicit native
-operations; saved state requires confirmed publication. Legacy file
-conversations retain their selected backend without silent migration/fallback.
-Native process/storage work runs off the UI thread, with App-owned status
-progress and notifications. Host-selected provider/model configuration resolves
-native credentials at launch; new credential-management UI is deferred.
+The current profile retains vault-file transcripts. Deferred JJ capture has one
+native raw-event owner. Renderer projection cannot become a second writer.
+Authored messages and application metadata use explicit native operations; saved
+state requires confirmed publication. Legacy file conversations retain their
+selected backend without silent migration/fallback. Native process/storage work
+runs off the UI thread, with App-owned status progress and notifications.
+Host-selected provider/model configuration resolves native credentials at
+launch; new credential-management UI is deferred.
 
 Each slice records focused source, interaction/accessibility and necessary
-native evidence. The user gave standing approval to finish the UI and continue
-all subsequent slices on 2026-10-18; NOTES-08B follows focused UI qualification.
-Broad catalog, provider/platform, release and visual-baseline checks stay
-deferred; original M13/M33 completion gates are unchanged. One child task is
-Active at a time.
+native evidence. Standing approval continues, with the 2026-10-19 user
+correction prioritizing working Codex chat and local transcript files, qualified
+in E-AI-042. JJ persistence stays deferred. Broad catalog, provider/platform,
+release and visual-baseline checks stay deferred; original M13/M33 completion
+gates are unchanged. One child task is Active at a time.

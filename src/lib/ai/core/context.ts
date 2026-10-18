@@ -28,6 +28,12 @@ export type ConversationHandoffContextBlock = {
 };
 
 export type AgentContextBlock =
+  | {
+      kind: "file-context";
+      id: string;
+      content: string;
+      metadata: { path: string };
+    }
   | MemoryRecallContextBlock
   | ConversationHandoffContextBlock
   | {

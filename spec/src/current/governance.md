@@ -1,8 +1,5 @@
 # Governance
 
-E-REPO-015/023/024/025 record UI adoption and scoped qualification.
-LD-GOV-001/002/004 ownership, evidence and original milestone gates stay intact.
-
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
 acceptance; M13.3 keeps its original backend, native ownership and restart
@@ -38,14 +35,18 @@ repository-source traversal, formatting and commits.
 
 ## Requirements
 
-Native AI admission adds only named main-window admit/release frames. Ordinary
-ACP execution still has no admitted target. The linked Rust adapter is compiled
-into ordinary builds but its policy exposes no targets or executable selection.
+Native AI admission adds only named main-window admit/release frames. The
+explicit device-owned local-file profile admits Codex through a verified runtime
+under `ai.md`; absence stays inert. No renderer executable selection is granted.
 Actual mounted admission/recovery qualification retains the M10.2 gate; the
 existing e2e transport fixture is independent. Notes owns the lazy native
 factory and optional bundled registration. The main window's exact ACP-session
 grant exposes only host-admitted operations; extra individual, default, wildcard
 and remote plugin grants remain denied.
+
+E-AI-042 follows the user's local-file priority. LD-GOV-001/002/004 retain
+source ownership, evidence and original JJ milestone gates; file-backed AI does
+not qualify deferred native-store capture or application-tool integration.
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

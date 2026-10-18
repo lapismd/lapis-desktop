@@ -118,10 +118,14 @@ export async function _prepareSession(
           ),
         })
       : undefined;
-  const skillSnapshot = await this._prepareSkillSnapshot(
+  const discoveredSkills = await this._prepareSkillSnapshot(
     bindingId,
     snapshot?.location.scopeDir ?? this.location?.scopeDir ?? "",
   );
+  const skillSnapshot =
+    targetRuntime.capabilities().skillSnapshots === false
+      ? undefined
+      : discoveredSkills;
   const appToolLocation = snapshot?.location ?? this.location;
   const appToolSession = appToolLocation
     ? await this._prepareAppToolSession(

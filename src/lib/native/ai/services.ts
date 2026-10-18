@@ -11,6 +11,7 @@ import { NativeAiModels } from "./model-catalog.ts";
 import { NativeUserAgentsStore } from "./user-commands.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../../ai/bootstrap/runtime-unavailable.ts";
 import { NativeCommandParser } from "./command-parser.ts";
+import { BackgroundWork } from "../../desktop/background-work.ts";
 
 export type NativeAiPorts = {
   call?: NativeCall;
@@ -42,6 +43,7 @@ export function createNativeAi(
     release: (reload) => native("desktop_ai_release", { request: { reload } }),
   });
   const models = new NativeAiModels(scope);
+  const background = new BackgroundWork(app.notifications, "ai");
   const parser = new NativeCommandParser();
   const userAgents = new NativeUserAgentsStore(
     vault.sessionId,
@@ -74,7 +76,12 @@ export function createNativeAi(
   }
   return {
     runtime,
-    models,
+    models: {
+      listModels: (provider, runtime) =>
+        background.run("Preparing AI and loading models", () =>
+          models.listModels(provider, runtime),
+        ),
+    },
     userAgents,
     parseCommand: parser.parse,
     workspace: vault.profileId,

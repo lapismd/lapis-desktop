@@ -1,12 +1,11 @@
 # Migration inventory and progress
 
-E-REPO-023–025 cover reviewed blame/log surfaces and working-copy status.
-E-AI-039–041: shared transcript adoption and saved vault presentation.
-LD-MIG-002 ownership and original native gates remain unchanged.
+E-AI-042 advances the user-selected local Codex/file-transcript slice.
+LD-MIG-002 and original M10.2/M13 gates remain unchanged; JJ renderer/capture
+integration is explicitly deferred. Local chat/restart evidence is distinct.
 
-E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
-LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and
-restart recovery stay pending.
+E-REPO-023–025 cover blame/log UI; E-AI-039–041 cover shared transcript UI.
+E-REPO-017/018 cover file history/blame (NOTES-05I7/8); original M13 gates stay.
 
 E-REPO-016 records the focused [responsiveness slice](background.md). LD-MIG-002
 and original M13/M10.2 gates and statuses remain unchanged.

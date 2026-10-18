@@ -129,6 +129,13 @@ pub fn run() -> tauri::Result<()> {
             }
             crate::host::state::initialize(app.handle())?;
             crate::host::repository::initialize(app.handle())?;
+            #[cfg(not(feature = "e2e"))]
+            let ai_config = app.path().app_data_dir()?.join("ai-runtime.json");
+            #[cfg(feature = "e2e")]
+            let ai_config =
+                std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
+                    .join("profile/ai-runtime.json");
+            ai.configure_file_profile(ai_config, app.path().home_dir()?)?;
             ai.initialize(
                 app.state::<crate::host::state::NativeHost>()
                     .inner()

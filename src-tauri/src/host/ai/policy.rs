@@ -17,6 +17,7 @@ pub struct DesktopAiPolicy(Arc<PolicyState>);
 struct PolicyState {
     host: OnceLock<NativeHost>,
     backends: OnceLock<Arc<NativeBackends>>,
+    files: super::file_profile::FileProfile,
 }
 pub fn local(context: &HostContext) -> Result<()> {
     let url = url::Url::parse(&context.url).map_err(|_| Error("denied"))?;
@@ -36,6 +37,16 @@ pub fn caller(window: &WebviewWindow) -> Result<HostContext> {
     Ok(context)
 }
 impl DesktopAiPolicy {
+    pub fn configure_file_profile(
+        &self,
+        settings: std::path::PathBuf,
+        home: std::path::PathBuf,
+    ) -> io::Result<()> {
+        self.0.files.configure(settings, home)
+    }
+    pub fn prepare_file_profile(&self) -> io::Result<()> {
+        self.0.files.prepare()
+    }
     pub fn initialize(
         &self,
         host: NativeHost,
@@ -104,8 +115,7 @@ impl HostPolicy for DesktopAiPolicy {
     }
     fn targets(&self, context: &HostContext) -> Result<Vec<Target>> {
         self.current(context)?;
-        // Executable/credential policy and its native qualification remain gated.
-        Ok(vec![])
+        Ok(self.0.files.targets())
     }
     fn processor(
         &self,
@@ -115,6 +125,11 @@ impl HostPolicy for DesktopAiPolicy {
         let current = self.current(context)?;
         if current.generation() != binding.admission {
             return Err(Error("admission_revoked"));
+        }
+        // This explicit profile uses the existing local transcript writer. It
+        // does not construct a JJ capture processor or publish store metadata.
+        if self.0.files.contains(&binding.target_id) {
+            return Ok(None);
         }
         let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
         let processor = self
@@ -126,14 +141,16 @@ impl HostPolicy for DesktopAiPolicy {
             .map_err(|_| Error("capture_backend_not_admitted"))?;
         Ok(Some(processor))
     }
-    fn resolve(
-        &self,
-        context: &HostContext,
-        _target: &str,
-        _resume: Option<&str>,
-    ) -> Result<Launch> {
-        self.current(context)?;
-        Err(Error("agent_not_admitted"))
+    fn resolve(&self, context: &HostContext, target: &str, resume: Option<&str>) -> Result<Launch> {
+        let current = self.current(context)?;
+        if resume.is_some() && self.0.files.contains(target) {
+            return Err(Error("resume_not_admitted"));
+        }
+        self.0
+            .files
+            .launch(target, current.root())
+            .map_err(|_| Error("agent_not_admitted"))?
+            .ok_or(Error("agent_not_admitted"))
     }
 }
 

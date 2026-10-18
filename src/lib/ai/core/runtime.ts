@@ -65,6 +65,8 @@ export type AgentRequest = {
 
 export type AgentCapabilities = {
   preparesContext?: boolean;
+  /** False when application skill snapshots cannot be admitted by this runtime. */
+  skillSnapshots?: boolean;
   sessions: boolean;
   resume: boolean;
   cancel: boolean;

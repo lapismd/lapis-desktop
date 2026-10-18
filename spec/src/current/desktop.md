@@ -1,15 +1,15 @@
 # Desktop shell
 
-E-REPO-023/025, E-AI-039–041 retain LD-DESK-003/HOST-001; Gravatar uses
-`https://www.gravatar.com`; status: `repository-navigation.md`.
+E-AI-042: native-profile Codex; named IPC, isolated E2E config, no renderer
+launch authority (LD-DESK-003/HOST-001). Earlier UI: E-REPO-023/025,
+E-AI-039–041; Gravatar: `https://www.gravatar.com`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on
 failure (LD-FILE-002/003). M6 registers public Search and Graph with native
 settings recovery and metadata qualification governed by `navigation.md`.
 
-M0.1 establishes the shell; M2 adds admitted folder access and the launcher. M3
-integrates the public Notes workspace and App over native storage.
+M0.1–M3 establish the shell, admitted launcher and native Notes workspace.
 
 Plugin assets and Terminal follow [plugins](plugins.md).
 
