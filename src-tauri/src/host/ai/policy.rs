@@ -89,6 +89,19 @@ impl HostPolicy for DesktopAiPolicy {
     fn authorize(&self, context: &HostContext) -> Result<String> {
         Ok(self.current(context)?.generation().into())
     }
+    fn authorize_processing(
+        &self,
+        context: &HostContext,
+        binding: &SessionBinding,
+    ) -> Result<String> {
+        local(context)?;
+        self.0
+            .backends
+            .get()
+            .ok_or(Error("host_unavailable"))?
+            .authorize_processing(context, binding)
+            .map_err(|_| Error("capture_scope_unavailable"))
+    }
     fn targets(&self, context: &HostContext) -> Result<Vec<Target>> {
         self.current(context)?;
         // Executable/credential policy and its native qualification remain gated.
@@ -103,6 +116,14 @@ impl HostPolicy for DesktopAiPolicy {
         if current.generation() != binding.admission {
             return Err(Error("admission_revoked"));
         }
+        let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
+        let _permit = self
+            .0
+            .backends
+            .get()
+            .ok_or(Error("host_unavailable"))?
+            .register_processing(host, context, binding)
+            .map_err(|_| Error("capture_backend_not_admitted"))?;
         Err(Error("capture_backend_not_admitted"))
     }
     fn resolve(

@@ -1,5 +1,6 @@
 pub(crate) mod commands;
 mod frames;
+mod processing;
 mod retirement;
 use crate::host::state::NativeHost;
 use cap_std::{ambient_authority, fs::Dir};
@@ -36,6 +37,7 @@ pub struct NativeBackends {
     pub transitions: Arc<tokio::sync::Mutex<()>>,
     workers: OnceLock<Weak<tauri_plugin_lapis_ai::AcpHost>>,
     destroyed: AtomicBool,
+    processing: Mutex<HashMap<String, Weak<processing::Authority>>>,
 }
 fn denied() -> io::Error {
     io::Error::new(
@@ -64,6 +66,7 @@ impl NativeBackends {
             transitions: Arc::new(tokio::sync::Mutex::new(())),
             workers: OnceLock::new(),
             destroyed: AtomicBool::new(false),
+            processing: Mutex::new(HashMap::new()),
         }
     }
     fn profiles(
@@ -80,11 +83,15 @@ impl NativeBackends {
         let window = context.window.clone();
         let weak = Arc::downgrade(&host.0);
         let owner = Arc::downgrade(self);
+        let generation = lease.generation().to_owned();
         let profiles = BackendProfiles::new(
             self.profile.try_clone()?,
             Arc::new(move || {
                 let host = NativeHost(weak.upgrade().ok_or_else(denied)?);
-                owner.upgrade().ok_or_else(denied)?.current(&host, &window)
+                owner
+                    .upgrade()
+                    .ok_or_else(denied)?
+                    .retained(&host, &window, &generation)
             }),
         )?;
         Ok((profiles, lease))

@@ -1,5 +1,10 @@
 # Desktop AI and optional compute
 
+Native capture retains an exact binding and physical witness through renderer
+reload under a counted backend permit. Renderer admission remains independent;
+[the repository contract](repository.md#native-backend-ownership-and-transport)
+owns the lifetime, revocation and pending-adoption details.
+
 The native backend profile service retains exact private selection receipts and
 an exclusive owner lease. Selection alone grants no execution or renderer
 writer. Closing fences calls immediately and drains their original ownership;

@@ -1,5 +1,6 @@
 mod cancellation;
 mod ownership;
+mod processing;
 use super::{NativeBackends, commands::dispatch};
 use crate::host::{
     ai::policy::DesktopAiPolicy,
@@ -25,6 +26,7 @@ struct Fixture {
     host: NativeHost,
     backends: Arc<NativeBackends>,
     workers: Arc<AcpHost>,
+    policy: DesktopAiPolicy,
 }
 impl Fixture {
     fn new() -> Self {
@@ -61,6 +63,7 @@ impl Fixture {
             host,
             backends,
             workers,
+            policy,
         };
         value.activate();
         value

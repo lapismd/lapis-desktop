@@ -163,6 +163,22 @@ Native admission, execution and renderer integration remain separate grants.
 
 ## Native backend ownership and transport
 
+The last logical backend lease explicitly unlocks its file. Incidental kernel
+descriptor duplication must not extend ownership after all native owners and
+calls drop. The capture journal applies the same rule to its exclusive lease.
+Acquired locks must enter owned lifetime guards before fallible initialization.
+Exclusive ownership during their lifetime remains mandatory.
+
+The native backend may retain counted capture permits over renderer reload and
+old-token closure. Each permit binds its original native worker, open request,
+target, window/origin and generation to the exclusive selected backend owner.
+The callback rechecks retained physical/JJ witnesses and its closing fence.
+Permits cannot construct a new owner or authorize renderer commands. New
+processor construction still requires active admission and a reattached current
+owner. Native capture permits must drop after supervised worker drain, before
+the backend lease can be released. Actual durable processor and conversation
+adoption retain their separate qualification gates.
+
 The application command manifest registers `desktop_ai_backends`; its named
 permission belongs to the local main-window capability.
 

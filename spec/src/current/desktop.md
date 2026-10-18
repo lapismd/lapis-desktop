@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-AI-024/025/031/032/033 preserve LD-DESK-003: owned persistence drains and
+E-AI-024/025/031/032/033/034 preserve LD-DESK-003: owned persistence drains and
 shared vault admission remain native.
 
 E-REPO-003/004/005 keep native history qualification explicit.

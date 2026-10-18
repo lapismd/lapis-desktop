@@ -1,6 +1,8 @@
 //! Device-owned backend selection; native authority and publication stay injected.
 mod model;
 mod owner;
+#[cfg(test)]
+mod tests;
 use crate::{
     repository::source::Source,
     vault::{admission::VaultLease, private_profile as storage},
@@ -215,8 +217,8 @@ impl Context {
         let dir = self.dir(true)?.ok_or_else(storage::denied)?;
         let file = storage::file(&dir, "lease", true)?;
         rustix::fs::flock(&file, rustix::fs::FlockOperation::NonBlockingLockExclusive)?;
-        file.sync_all()?;
         let lease = Lease { dir, file };
+        lease.file.sync_all()?;
         lease.verify()?;
         Ok(lease)
     }
@@ -233,5 +235,12 @@ impl Lease {
             return Err(storage::denied());
         }
         Ok(())
+    }
+}
+impl Drop for Lease {
+    fn drop(&mut self) {
+        // Native owners/calls retain this lease. An incidental inherited
+        // descriptor must not extend it after the final logical owner drops.
+        let _ = rustix::fs::flock(&self.file, rustix::fs::FlockOperation::Unlock);
     }
 }

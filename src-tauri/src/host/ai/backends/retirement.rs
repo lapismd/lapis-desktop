@@ -69,4 +69,29 @@ impl NativeBackends {
             }
         });
     }
+    pub(super) fn retained(
+        self: &Arc<Self>,
+        host: &NativeHost,
+        window: &str,
+        generation: &str,
+    ) -> io::Result<VaultLease> {
+        self.ensure_live()?;
+        let result = {
+            let mut services = host.0.lock().map_err(|_| denied())?;
+            let NativeServices { ai, vaults, .. } = &mut *services;
+            ai.authorize_retained(vaults, window, generation)
+        };
+        match result {
+            Ok(lease) => {
+                self.ensure_live()?;
+                Ok(lease)
+            }
+            Err(failure) => {
+                if let Some(retired) = failure.retired {
+                    self.retire(retired);
+                }
+                Err(failure.error)
+            }
+        }
+    }
 }

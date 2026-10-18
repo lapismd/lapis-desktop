@@ -1,8 +1,10 @@
 use crate::vault::VaultManager;
+use cap_std::fs::Dir;
 use std::{
     collections::HashMap,
     io,
     path::{Path, PathBuf},
+    sync::Arc,
 };
 use uuid::Uuid;
 
@@ -13,6 +15,7 @@ pub struct VaultLease {
     profile: String,
     root: PathBuf,
     identity: (u64, u64),
+    witness: Arc<Dir>,
 }
 impl VaultLease {
     pub fn generation(&self) -> &str {
@@ -29,6 +32,19 @@ impl VaultLease {
     }
     fn same_root(&self, other: &Self) -> bool {
         self.profile == other.profile && self.root == other.root && self.identity == other.identity
+    }
+    fn verify_retained(&self) -> io::Result<()> {
+        use cap_std::fs::MetadataExt;
+        use std::os::unix::fs::MetadataExt as _;
+        let retained = self.witness.dir_metadata()?;
+        let current = std::fs::symlink_metadata(&self.root)?;
+        if !current.is_dir()
+            || (retained.dev(), retained.ino()) != self.identity
+            || (current.dev(), current.ino()) != self.identity
+        {
+            return Err(denied("Vault folder identity changed"));
+        }
+        Ok(())
     }
 }
 #[derive(Debug)]
@@ -57,7 +73,7 @@ pub struct AdmissionFailure {
     pub error: io::Error,
 }
 enum State {
-    Pending(Uuid),
+    Pending { ticket: Uuid, preserve: bool },
     Active,
     Suspended,
 }
@@ -90,7 +106,7 @@ impl VaultAdmissions {
         let mut lease = current(vaults, session, Uuid::new_v4().to_string())?;
         let previous = self.entries.get(window);
         let preserve = previous.is_some_and(|entry| {
-            !matches!(entry.state, State::Pending(_)) && entry.lease.same_root(&lease)
+            !matches!(entry.state, State::Pending { .. }) && entry.lease.same_root(&lease)
         });
         if preserve {
             lease.generation = previous.unwrap().lease.generation.clone();
@@ -100,7 +116,7 @@ impl VaultAdmissions {
             window.into(),
             Entry {
                 lease: lease.clone(),
-                state: State::Pending(ticket),
+                state: State::Pending { ticket, preserve },
             },
         );
         Ok(AdmissionPlan {
@@ -117,7 +133,7 @@ impl VaultAdmissions {
         plan: &AdmissionPlan,
     ) -> io::Result<VaultLease> {
         let matches = self.entries.get(&plan.window).is_some_and(
-            |entry| matches!(entry.state, State::Pending(ticket) if ticket == plan.ticket),
+            |entry| matches!(entry.state, State::Pending { ticket, .. } if ticket == plan.ticket),
         );
         if !matches || self.closing.contains_key(&plan.lease.session) {
             return Err(denied("Vault admission transition is stale"));
@@ -141,6 +157,23 @@ impl VaultAdmissions {
         vaults: &VaultManager,
         window: &str,
     ) -> Result<VaultLease, AdmissionFailure> {
+        self.authorize_scope(vaults, window, None)
+    }
+    /// Native retained work only; this never admits renderer operations.
+    pub fn authorize_retained(
+        &mut self,
+        vaults: &VaultManager,
+        window: &str,
+        generation: &str,
+    ) -> Result<VaultLease, AdmissionFailure> {
+        self.authorize_scope(vaults, window, Some(generation))
+    }
+    fn authorize_scope(
+        &mut self,
+        vaults: &VaultManager,
+        window: &str,
+        retained: Option<&str>,
+    ) -> Result<VaultLease, AdmissionFailure> {
         let unavailable = || AdmissionFailure {
             retired: None,
             error: denied("Vault scope is disabled or suspended"),
@@ -148,13 +181,31 @@ impl VaultAdmissions {
         let entry = self
             .entries
             .get(window)
-            .filter(|entry| matches!(entry.state, State::Active))
+            .filter(|entry| match retained {
+                None => matches!(entry.state, State::Active),
+                Some(generation) => {
+                    entry.lease.generation == generation
+                        && !matches!(
+                            entry.state,
+                            State::Pending {
+                                preserve: false,
+                                ..
+                            }
+                        )
+                }
+            })
             .ok_or_else(unavailable)?;
         let original = entry.lease.clone();
-        let verified = current(vaults, &original.session, original.generation.clone());
+        let suspended = retained.is_some() && matches!(entry.state, State::Suspended);
+        let verified = if suspended {
+            original.verify_retained().map(|()| original.clone())
+        } else {
+            current(vaults, &original.session, original.generation.clone())
+        };
         match verified {
             Ok(lease)
-                if lease.same_root(&original) && !self.closing.contains_key(&original.session) =>
+                if lease.same_root(&original)
+                    && (suspended || !self.closing.contains_key(&original.session)) =>
             {
                 Ok(lease)
             }
@@ -176,7 +227,7 @@ impl VaultAdmissions {
     pub fn leave(&mut self, window: &str, reload: bool) -> bool {
         if reload
             && let Some(entry) = self.entries.get_mut(window)
-            && !matches!(entry.state, State::Pending(_))
+            && !matches!(entry.state, State::Pending { .. })
         {
             entry.state = State::Suspended;
             return true;
@@ -219,6 +270,7 @@ fn current(vaults: &VaultManager, session: &str, generation: String) -> io::Resu
         profile: descriptor.profile_id.clone(),
         root: root.path().into(),
         identity: root.physical_identity()?,
+        witness: Arc::new(root.dir.try_clone()?),
     })
 }
 fn denied(message: &'static str) -> io::Error {

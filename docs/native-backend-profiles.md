@@ -37,6 +37,10 @@ it. Hosts must coordinate this owner with runtime revocation, the private
 capture journal and pending native commands; admission callbacks should avoid
 ownership cycles with a host that retains the owner.
 
+The final logical lease explicitly unlocks its file. An incidental kernel
+descriptor duplicate during concurrent process launch cannot extend native
+ownership after the service's owners and calls have dropped.
+
 The ordinary native host now consumes this service through the command below.
 Renderer conversation wiring remains pending; this does not expose a selectable
 JJ writer in app settings, admit an agent or replace legacy conversations.
@@ -82,7 +86,7 @@ original request status remains the recovery authority. Replacement and disable
 fence the backend, revoke native workers, then drain calls and release the
 owner. Failed or cancelled cleanup keeps the fenced owner and remains retryable.
 
-Reload suspends native AI authority while retaining the selected scope and
+Reload suspends renderer AI authority while retaining the selected scope and
 worker ownership. Verified same-generation admission allows one new opener to
 reattach with a fresh handle. Delayed closes with the previous handle cannot
 close the reattached owner. A physical admission failure or destroyed window
@@ -97,3 +101,26 @@ and Git-backed JJ sources. This proves transport and owner lifetime, separately
 from live processor construction, renderer TranscriptStore adoption, one managed
 conversation and its packaged-app restart acceptance. Ordinary execution targets
 remain empty and the missing capture backend still refuses processor creation.
+
+## Native capture permits
+
+The host's `register_processing` requires active main-window admission, an
+explicit backend choice and its current opened owner. The resulting permit
+retains a counted backend call for the exact native worker, open request,
+target, caller and generation. Keep it inside the processor until supervised
+worker teardown. The Lapis AI processing hook checks this binding and the
+backend's physical/JJ witnesses before and after callbacks. Missing permits,
+changed fields and closing owners fail closed. The registry holds only weak
+references, so dropping a permit cannot leave an orphaned lease.
+
+The retained native admission owns a physical directory witness. Capture may
+continue while its renderer is suspended, after that renderer's old vault token
+closes, and through a verified same-root pending re-admission. Renderer commands
+and new factories remain denied until active admission; a new factory also needs
+the renderer's reattached backend owner. Non-preserving replacement, disable,
+physical failure and native-window destruction revoke old authority.
+
+This is a native lifetime prerequisite. The ordinary factory still refuses the
+missing real store processor; targets remain empty. Permits grant neither a
+prompt nor repository publication, and service proof does not qualify actual
+managed capture or packaged conversation restart.

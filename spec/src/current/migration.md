@@ -1,5 +1,10 @@
 # Migration inventory and progress
 
+E-AI-034 records retained physical admission and exact native capture permits
+through renderer reload and old-token closure. This is the NOTES-07F2 lifetime
+prerequisite; M13/M13.3 keep their original gates. The real store processor,
+renderer persistence and managed conversation/restart still require adoption.
+
 E-AI-033 qualifies native backend ownership/IPC and its admission/closure
 transitions. Renderer persistence, managed capture and chat/restart remain
 pending within M13.3; original statuses and gates are retained.

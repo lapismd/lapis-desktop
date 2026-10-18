@@ -1,5 +1,7 @@
 //! Profile-owned durable capture records; provider receipts remain authoritative.
 mod scope;
+#[cfg(test)]
+mod tests;
 use crate::vault::private_profile as storage;
 use cap_std::fs::{Dir, MetadataExt as _};
 use jj_store_conversations::{capture::CaptureError, store_capture::*};
@@ -24,6 +26,11 @@ pub struct ProfileJournal {
     gate: Mutex<()>,
     admit: Admission,
 }
+impl Drop for ProfileJournal {
+    fn drop(&mut self) {
+        let _ = rustix::fs::flock(&self.lease, rustix::fs::FlockOperation::Unlock);
+    }
+}
 impl ProfileJournal {
     pub fn open(
         profile: &Dir,
@@ -37,7 +44,6 @@ impl ProfileJournal {
         let dir = storage::directory(&root, &scope.key())?;
         let lease = storage::file(&dir, "lease", true)?;
         rustix::fs::flock(&lease, rustix::fs::FlockOperation::NonBlockingLockExclusive)?;
-        lease.sync_all()?;
         let journal = Self {
             scope,
             dir,
@@ -45,6 +51,7 @@ impl ProfileJournal {
             gate: Mutex::new(()),
             admit,
         };
+        journal.lease.sync_all()?;
         journal.verify().map_err(|_| storage::denied())?;
         journal.scope.initialize(&journal.dir)?;
         (journal.admit)().map_err(|_| storage::denied())?;

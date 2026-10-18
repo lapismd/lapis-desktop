@@ -1,5 +1,8 @@
 # Governance
 
+E-AI-034 records retained admission/permits under the original M13.3 gates. IPC
+and renderer authority retain their existing boundaries.
+
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
 acceptance; M13.3 keeps its original backend, native ownership and restart

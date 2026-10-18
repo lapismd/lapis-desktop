@@ -54,3 +54,8 @@ current-vault selection, receipt recovery and retained owner handles. Native
 admission, worker revocation and vault closure share its transition owner. See
 the [backend guide](../docs/native-backend-profiles.md) for transport and reload
 semantics; renderer persistence and managed capture remain separate adapters.
+
+Native capture permits retain an exact worker binding and counted backend call
+through renderer reload. The physical witness survives old-token closure;
+renderer commands still need active admission. See the backend guide for
+revocation, drain and remaining real-processor qualification.
