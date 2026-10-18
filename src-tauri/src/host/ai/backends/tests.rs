@@ -4,6 +4,9 @@ mod capture_guards;
 mod capture_lifetime;
 mod capture_privacy;
 mod conversation_cancel;
+mod conversation_read_content;
+mod conversation_read_guards;
+mod conversation_reads;
 mod conversations;
 mod factory;
 mod ownership;
@@ -102,6 +105,22 @@ impl Fixture {
         let value: Value = serde_json::from_str(&text).unwrap();
         assert_eq!(value["version"], 1);
         Ok(value["data"].clone())
+    }
+    fn blocking_jobs(&self) -> usize {
+        self.backends
+            .blocking_started
+            .load(std::sync::atomic::Ordering::Acquire)
+    }
+    async fn wait_for_blocking_job(&self, before: usize) {
+        // A Tokio mutex can reserve its next grant before the waiting future
+        // resumes. Observe actual native worker entry before cancelling IPC.
+        tokio::time::timeout(std::time::Duration::from_secs(5), async {
+            while self.blocking_jobs() == before {
+                tokio::task::yield_now().await;
+            }
+        })
+        .await
+        .unwrap();
     }
 }
 fn run<T>(future: impl std::future::Future<Output = T>) -> T {

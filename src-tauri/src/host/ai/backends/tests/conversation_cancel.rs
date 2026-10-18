@@ -15,6 +15,7 @@ fn abandoned_conversation_ipc_retains_native_transition_and_original_result() {
         });
         started.recv().unwrap();
         let operation = super::conversations::prepare(&handle, 3);
+        let before = f.blocking_jobs();
         let task = tauri::async_runtime::spawn(dispatch(
             f.backends.clone(),
             f.host.clone(),
@@ -22,13 +23,7 @@ fn abandoned_conversation_ipc_retains_native_transition_and_original_result() {
             Fixture::context(),
             f.frame(operation.clone()),
         ));
-        tokio::time::timeout(std::time::Duration::from_secs(5), async {
-            while f.backends.transitions.try_lock().is_ok() {
-                tokio::task::yield_now().await;
-            }
-        })
-        .await
-        .unwrap();
+        f.wait_for_blocking_job(before).await;
         task.abort();
         assert!(task.await.is_err());
         assert!(f.backends.transitions.try_lock().is_err());

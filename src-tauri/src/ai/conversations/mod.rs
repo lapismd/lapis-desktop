@@ -1,6 +1,7 @@
 //! Native-owned conversation preparation; recovery only reads original receipts.
 mod capture;
 mod provider;
+mod read;
 mod records;
 use crate::{ai::backend::BackendCall, vault::private_profile as storage};
 use cap_std::fs::Dir;
@@ -8,6 +9,7 @@ pub use capture::PreparedConversation;
 use jj_collab::ThreadId;
 use jj_store_core::{StoreOutcome, StoreRequest};
 use jj_store_model::{RepositoryId, RequestId};
+pub use read::read;
 use records::Record;
 use serde::Serialize;
 use std::{io, sync::Arc};

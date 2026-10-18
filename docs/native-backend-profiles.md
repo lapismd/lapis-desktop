@@ -208,3 +208,38 @@ Loading a proof retains no counted call while idle. Processor construction
 requires a fresh admitted call, the exact binding, native privacy and an
 admission callback. Native executable/credential policy, ordinary runtime
 dispatch, renderer transcript adoption and managed chat/restart are later gates.
+
+## Reading a confirmed conversation
+
+Use the original conversation preparation request and current native handle:
+
+```ts
+const operation = { type: "readConversation", handle, requestId };
+```
+
+The reply is `{ type: "conversationView", data }`. Null data means no retained
+preparation exists. Present data is schema-version-1 JSON **text** containing
+the original confirmed conversation, native thread, optional metadata, current
+human-message revisions and active linked sessions with completed normalized
+transcript chunks. Unfinished streamed output remains capture evidence; live
+delivery and recovery projection need their own integration. Keep the text
+intact or decode it with a lossless integer codec; ordinary `JSON.parse` rounds
+sufficiently large native integers. Chunk `text` contains the exact UTF-8
+sanitized payload, including its original JSON when the media type is JSON.
+
+Reads verify the original provider receipt and require matching Agent/Thread
+publication selections. They neither publish nor repair private confirmation
+records. Unknown receipts, substituted preparations, stale handles and changed
+source/admission fail. Missing preparation creates no actor or companion.
+
+This bounded snapshot admits at most 64 human messages (256 KiB of bodies), 16
+linked sessions and 64 streams. It returns at most 32 chunks per stream within a
+shared 256 KiB payload budget and 2 MiB encoded view. A non-null
+`next_after_sequence` explicitly identifies an incomplete transcript range;
+stream metadata retains its native totals. Overflow or an unreadable stream
+fails instead of yielding an empty or supposedly complete conversation. A
+continuation command and renderer transcript projection remain integration work.
+
+The native library entrypoint is `ai::conversations::read`, consuming a counted
+`BackendCall` through result encoding. It retains no idle read owner and grants
+no executable, prompt, authoring or capture authority.

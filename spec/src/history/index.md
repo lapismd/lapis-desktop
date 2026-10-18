@@ -171,3 +171,5 @@ by the task ledger, not inferred from this list.
 - [Native conversation preparation and original receipt recovery](E-AI-035.md)
 
 - [Ordinary native selected-store capture factory](E-AI-036.md)
+
+- [Confirmed native conversation views](E-AI-037.md)

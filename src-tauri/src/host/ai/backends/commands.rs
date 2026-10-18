@@ -27,6 +27,10 @@ pub(super) async fn dispatch(
     let owner = backends.clone();
     tauri::async_runtime::spawn_blocking(move || {
         let _transition = transition;
+        #[cfg(test)]
+        owner
+            .blocking_started
+            .fetch_add(1, std::sync::atomic::Ordering::Release);
         let (profiles, _) = owner.profiles(&host, &context, &request.session_id)?;
         let reply = match request.operation {
             Operation::Read {} => Reply::Selection(profiles.read()?),
@@ -71,6 +75,12 @@ pub(super) async fn dispatch(
                 request_id,
                 conversation_request_id,
             )?),
+            Operation::ReadConversation { handle, request_id } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                Reply::ConversationView(tauri::async_runtime::block_on(
+                    lapis_desktop::ai::conversations::read(call, request_id),
+                )?)
+            }
             Operation::Close { .. } => return Err(denied()),
         };
         reply.encode()

@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-036 preserves LD-DESK-003: native capture retains owned persistence drains
-and vault admission.
+E-AI-036/037 preserve LD-DESK-003: native capture and confirmed conversation
+reads retain owned drains and vault admission.
 
 E-REPO-008 retains shell styling; native gates stay explicit.
 

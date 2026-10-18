@@ -73,3 +73,10 @@ before publication; retries recover the original Git receipt without executing
 again. The app's backend command exposes preparation/status with the current
 opaque owner handle. See the backend guide for usage and unknown outcomes.
 Actual agent capture and renderer transcript selection remain separate adapters.
+
+`ai::conversations::read` returns a bounded, same-publication view of a
+confirmed conversation, its native thread and linked sanitized capture as
+lossless JSON text. Use `readConversation` with the original preparation request
+and current owner handle. It verifies provider proof without publishing or
+repairing private state; see the backend guide for bounds and incomplete
+transcript ranges.

@@ -127,6 +127,26 @@ test("hidden ordinary native command prepares a JJ conversation and recovers its
   const stateRef = join(vaultPath, ".jj/repo/store/git/refs/lapis/state/v1");
   const companion = readFileSync(stateRef, "utf8");
   assert.match(companion.trim(), /^[a-f0-9]{40}$/);
+  const readRequest = {
+    type: "readConversation",
+    handle: opened.data.handle,
+    requestId: id(3),
+  };
+  const originalView = await backend(first, vault, readRequest);
+  assert.equal(originalView.type, "conversationView");
+  assert.equal(typeof originalView.data, "string");
+  const originalSnapshot = JSON.parse(originalView.data);
+  assert.equal(originalSnapshot.version, 1);
+  assert.deepEqual(originalSnapshot.conversation, prepared.data);
+  assert.equal(originalSnapshot.thread.thread_id, prepared.data.threadId);
+  assert.deepEqual(originalSnapshot.sessions, []);
+  assert.equal(
+    (await backend(first, vault, { ...readRequest, requestId: id(9) })).data,
+    null,
+  );
+  assert.ok(
+    (await call(first, vault, { ...readRequest, root: vaultPath })).failure,
+  );
   assert.deepEqual(await backend(first, vault, request), prepared);
   assert.equal(readFileSync(stateRef, "utf8"), companion);
   const captureRequest = {
@@ -187,6 +207,14 @@ test("hidden ordinary native command prepares a JJ conversation and recovers its
     requestId: id(3),
   };
   assert.deepEqual(await backend(cold, restored, recovery), prepared);
+  assert.deepEqual(
+    await backend(cold, restored, {
+      ...readRequest,
+      handle: fresh.data.handle,
+    }),
+    originalView,
+  );
+  assert.ok((await call(cold, restored, readRequest)).failure);
   assert.deepEqual(
     await backend(cold, restored, { ...request, handle: fresh.data.handle }),
     prepared,

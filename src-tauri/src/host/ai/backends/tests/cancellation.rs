@@ -12,6 +12,7 @@ fn cancelled_ipc_retains_its_transition_until_the_original_choice_finishes() {
     });
     started.recv().unwrap();
     run(async {
+        let before = f.blocking_jobs();
         let task = tauri::async_runtime::spawn(dispatch(
             f.backends.clone(),
             f.host.clone(),
@@ -19,13 +20,7 @@ fn cancelled_ipc_retains_its_transition_until_the_original_choice_finishes() {
             Fixture::context(),
             f.frame(select(1, 0)),
         ));
-        tokio::time::timeout(std::time::Duration::from_secs(5), async {
-            while f.backends.transitions.try_lock().is_ok() {
-                tokio::task::yield_now().await;
-            }
-        })
-        .await
-        .unwrap();
+        f.wait_for_blocking_job(before).await;
         task.abort();
         assert!(task.await.is_err());
         assert!(

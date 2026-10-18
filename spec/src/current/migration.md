@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+E-AI-037 records NOTES-07I bounded native conversation/thread/capture reads with
+same-publication selection and lossless integer text. Renderer projection and
+managed execution/chat/restart remain open; M13/M13.3 keep their original gates.
+
 E-AI-036 records NOTES-07H ordinary selected-store processor construction,
 native privacy/journal ownership and real Agent/Thread receipts. Executable and
 credential admission, runtime dispatch, renderer persistence and managed

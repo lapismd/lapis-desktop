@@ -1,7 +1,7 @@
 # Governance
 
-E-AI-036 retains native capture and independent UI qualification gates. Column
-Canvas source attribution lives in `docs/provenance.json`.
+E-AI-037 adds test-only worker-entry proof; native/UI gates remain separate.
+Column Canvas source attribution lives in `docs/provenance.json`.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

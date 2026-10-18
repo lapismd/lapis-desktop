@@ -43,6 +43,8 @@ pub struct NativeBackends {
     destroyed: AtomicBool,
     processing: Mutex<HashMap<String, Weak<processing::Authority>>>,
     privacy: OnceLock<privacy::Roots>,
+    #[cfg(test)]
+    blocking_started: std::sync::atomic::AtomicUsize,
 }
 fn denied() -> io::Error {
     io::Error::new(
@@ -78,6 +80,8 @@ impl NativeBackends {
             destroyed: AtomicBool::new(false),
             processing: Mutex::new(HashMap::new()),
             privacy: OnceLock::new(),
+            #[cfg(test)]
+            blocking_started: std::sync::atomic::AtomicUsize::new(0),
         }
     }
     fn profiles(

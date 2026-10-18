@@ -173,3 +173,5 @@
 - [Native conversation preparation and original receipt recovery](history/E-AI-035.md)
 
 - [Ordinary native selected-store capture factory](history/E-AI-036.md)
+
+- [Confirmed native conversation views](history/E-AI-037.md)

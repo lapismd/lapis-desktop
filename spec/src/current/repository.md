@@ -249,6 +249,24 @@ reattached owner. Close fences callbacks and drains the retained call before
 releasing its lease. Executable/credential admission, ordinary runtime dispatch,
 renderer transcript adoption and managed chat/restart retain separate gates.
 
+## Native conversation reads
+
+Native conversation reads use the current JJ owner and original retained
+preparation. They verify the original provider receipt without executing or
+repairing private records, and pin matching Agent/Thread source selections.
+Mixed selections, substituted identities or changed source/admission fail
+closed. Bounded native thread, metadata, membership and transcript data cross
+the renderer transport as versioned JSON text, preserving full-width integers.
+Missing preparation is explicit absence, not permission to initialize state.
+Reads publish no objects and retain no idle counted call. Renderer projection,
+authoring and managed execution remain separate integration work.
+
+Schema-1 views admit 64 human messages/256 KiB of bodies, 16 linked sessions, 64
+streams and 2 MiB encoded text. Transcript payloads share a 256 KiB budget with
+at most 32 chunks per stream; native totals and a non-null continuation sequence
+identify incomplete ranges. Refusal MUST NOT masquerade as empty or complete
+data. Continuation transport remains a separate integration step.
+
 ## Commit and operation-log columns
 
 The bundled Repository History plugin registers independent history and Op Log
