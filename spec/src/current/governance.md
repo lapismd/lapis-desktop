@@ -1,7 +1,7 @@
 # Governance
 
-E-AI-031/032 qualify the private capture journal, backend profiles and JJ
-boundary. Cold Rust-process lease proof stays distinct from packaged WebView
+E-AI-031/032/033 qualify private journal, backend profile and native host
+boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
 acceptance; M13.3 keeps its original backend, native ownership and restart
 gates.
 

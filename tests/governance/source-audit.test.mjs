@@ -155,10 +155,33 @@ test("AI session permission stays exact and bound to the admitted main window", 
         ...capabilities.permissions,
         "allow-desktop-ai-admit",
         "allow-desktop-ai-release",
+        "allow-desktop-ai-backends",
       ]),
     ],
   };
   assert.deepEqual(auditManifest(manifest, admitted, config), []);
+  assert.ok(capabilities.permissions.includes("allow-desktop-ai-backends"));
+  for (const altered of [
+    { ...admitted, windows: ["other"] },
+    { ...admitted, local: false },
+    { ...admitted, remote: { urls: ["https://example.com"] } },
+    {
+      ...admitted,
+      permissions: admitted.permissions.filter(
+        (p) => p !== "allow-desktop-ai-backends",
+      ),
+    },
+    {
+      ...admitted,
+      permissions: [...admitted.permissions, "allow-desktop-ai-*"],
+    },
+  ])
+    assert.ok(
+      auditManifest(manifest, altered, config).some(
+        ({ code }) => code === "LD-CAPABILITY-SCOPE",
+      ),
+    );
+
   for (const permission of [
     "lapis-ai:default",
     "lapis-ai:allow-open",

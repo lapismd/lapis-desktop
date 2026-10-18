@@ -37,9 +37,63 @@ it. Hosts must coordinate this owner with runtime revocation, the private
 capture journal and pending native commands; admission callbacks should avoid
 ownership cycles with a host that retains the owner.
 
-This service is available to native composition. Ordinary host/IPC and renderer
-conversation wiring remain pending; it does not yet expose a selectable JJ
-writer in the running app, admit an agent or replace legacy conversations.
+The ordinary native host now consumes this service through the command below.
+Renderer conversation wiring remains pending; this does not expose a selectable
+JJ writer in app settings, admit an agent or replace legacy conversations.
 Cold-process tests qualify private selection/lease recovery. Actual managed
 callbacks, packaged-app chat/restart and additional platform qualification keep
 their separate M13.3 gates.
+
+## Native command
+
+The local main window first admits its vault through `desktop_ai_admit`. The
+`desktop_ai_backends` command accepts one bounded JSON text argument, `request`:
+
+```ts
+const reply = JSON.parse(
+  await invoke<string>("desktop_ai_backends", {
+    request: JSON.stringify({
+      version: 1,
+      sessionId: vault.sessionId,
+      operation: { type: "read" },
+    }),
+  }),
+);
+```
+
+Replies retain `version: 1` and a tagged `data` value. Operations are `read`,
+`select`, `status`, `open` and `close`. Select takes `requestId`,
+`expectedRevision` and `backend`; status takes the original `requestId`. Open
+also takes a stable request ID. IDs use the owned 32-hex-character RequestId
+format. Close takes the native `handle` returned by open. Receipt data retains
+the shared DTO's `request_id`, `expected_revision` and `selection` fields.
+
+An absent status means unknown. A lost open reply is recovered by repeating its
+original request; another opener cannot silently take over an active owner.
+Wrong versions, unknown fields, stale vault sessions and renderer path, cache,
+window, origin or generation overrides fail before filesystem work. Responses
+contain no device paths or native source fingerprints.
+
+## Host lifetime
+
+One native transition serializes selection, ownership, AI admission and release.
+Blocking profile work retains that transition after its IPC caller disappears;
+original request status remains the recovery authority. Replacement and disable
+fence the backend, revoke native workers, then drain calls and release the
+owner. Failed or cancelled cleanup keeps the fenced owner and remains retryable.
+
+Reload suspends native AI authority while retaining the selected scope and
+worker ownership. Verified same-generation admission allows one new opener to
+reattach with a fresh handle. Delayed closes with the previous handle cannot
+close the reattached owner. A physical admission failure or destroyed window
+fences immediately and schedules cleanup for its exact native generation.
+Destruction is terminal for the native main-window owner; delayed admission
+frames cannot restore its authority. Delayed older-generation cleanup cannot
+revoke a replacement. Database blockers are checked before vault-close fencing,
+under the existing history/database transition guard.
+
+Cold hidden-WebView checks exercise the actual command with isolated profiles
+and Git-backed JJ sources. This proves transport and owner lifetime, separately
+from live processor construction, renderer TranscriptStore adoption, one managed
+conversation and its packaged-app restart acceptance. Ordinary execution targets
+remain empty and the missing capture backend still refuses processor creation.

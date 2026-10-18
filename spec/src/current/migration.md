@@ -1,5 +1,9 @@
 # Migration inventory and progress
 
+E-AI-033 qualifies native backend ownership/IPC and its admission/closure
+transitions. Renderer persistence, managed capture and chat/restart remain
+pending within M13.3; original statuses and gates are retained.
+
 E-AI-032 qualifies native backend profiles and owner fencing/drain as another
 M13.3 prerequisite. Ordinary host/renderer selection and managed conversation
 capture remain pending; original milestones and gates are unchanged.

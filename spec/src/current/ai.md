@@ -3,7 +3,8 @@
 The native backend profile service retains exact private selection receipts and
 an exclusive owner lease. Selection alone grants no execution or renderer
 writer. Closing fences calls immediately and drains their original ownership;
-host factory, persistence bridge and packaged-app adoption remain separate.
+native host transitions own the lease. Processor construction, the renderer
+persistence bridge and packaged-app chat adoption remain separate.
 
 AI catalog scenes expose product presentation only. Fixture observations, fault
 injection, settings changes and lifetime controls use owned review ports outside

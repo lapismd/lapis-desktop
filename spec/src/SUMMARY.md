@@ -163,3 +163,4 @@
   - [Notes-native privacy and explicit backend admission](history/E-AI-030.md)
   - [Native private capture journal and JJ receipt recovery](history/E-AI-031.md)
   - [Native backend profiles and exclusive owner lifetime](history/E-AI-032.md)
+  - [Native backend ownership and text transport](history/E-AI-033.md)

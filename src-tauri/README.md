@@ -48,3 +48,9 @@ that choice; hold a `BackendCall` through each admitted operation, then drain
 and drop the owner before changing writers. The native host still supplies
 admission and connects its runtime/persistence adapters. See the
 [backend guide](../docs/native-backend-profiles.md).
+
+The `desktop_ai_backends` command exposes bounded, versioned text frames for
+current-vault selection, receipt recovery and retained owner handles. Native
+admission, worker revocation and vault closure share its transition owner. See
+the [backend guide](../docs/native-backend-profiles.md) for transport and reload
+semantics; renderer persistence and managed capture remain separate adapters.

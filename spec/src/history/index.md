@@ -161,3 +161,4 @@ by the task ledger, not inferred from this list.
 - [E-AI-030: Notes-native privacy and explicit backend admission](E-AI-030.md)
 - [E-AI-031: Native private capture journal and JJ receipt recovery](E-AI-031.md)
 - [E-AI-032: Native backend profiles and exclusive owner lifetime](E-AI-032.md)
+- [E-AI-033: Native backend ownership and text transport](E-AI-033.md)

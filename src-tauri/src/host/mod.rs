@@ -93,6 +93,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::ai::user_commands::desktop_ai_user_commands,
             crate::host::ai::admission::desktop_ai_admit,
             crate::host::ai::admission::desktop_ai_release,
+            crate::host::ai::backends::commands::desktop_ai_backends,
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
             crate::host::shell::shell_info,
@@ -132,6 +133,9 @@ pub fn run() -> tauri::Result<()> {
                     .inner()
                     .clone(),
                 &app.ai(),
+                app.state::<std::sync::Arc<crate::host::ai::backends::NativeBackends>>()
+                    .inner()
+                    .clone(),
             )?;
             app.set_menu(crate::host::integration::menu::build(app.handle())?)?;
             crate::host::windows::build(app.handle())?;

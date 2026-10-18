@@ -35,7 +35,10 @@ fn fixture() -> Fixture {
     })));
     let policy = DesktopAiPolicy::default();
     let workers = Arc::new(AcpHost::new(Arc::new(policy.clone()), Config::default()).unwrap());
-    policy.initialize(host.clone(), &workers).unwrap();
+    let backends = Arc::new(crate::host::ai::backends::NativeBackends::new(
+        cap_std::fs::Dir::open_ambient_dir(profile.path(), cap_std::ambient_authority()).unwrap(),
+    ));
+    policy.initialize(host.clone(), &workers, backends).unwrap();
     Fixture {
         _profile: profile,
         root,
@@ -142,7 +145,11 @@ fn native_ai_policy_owner_cannot_be_rebound_to_another_host() {
     assert!(
         first
             .policy
-            .initialize(second.host, &first.workers)
+            .initialize(
+                second.host,
+                &first.workers,
+                second.policy.0.backends.get().unwrap().clone()
+            )
             .is_err()
     );
     assert_eq!(first.policy.authorize(&caller()).unwrap(), generation);

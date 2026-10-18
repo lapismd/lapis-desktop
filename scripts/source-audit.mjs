@@ -158,6 +158,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-desktop-ai-user-commands",
     "allow-desktop-ai-admit",
     "allow-desktop-ai-release",
+    "allow-desktop-ai-backends",
     "lapis-ai:acp-session",
     "allow-desktop-repository-admit",
     "allow-desktop-repository-release",

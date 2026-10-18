@@ -160,3 +160,29 @@ an exclusive profile lease so its selected writer cannot change during its
 lifetime. Closing fences new calls, drains admitted calls and retains the lease
 until the final owner/call drops. Abandoned close remains fenced and retryable.
 Native admission, execution and renderer integration remain separate grants.
+
+## Native backend ownership and transport
+
+The application command manifest registers `desktop_ai_backends`; its named
+permission belongs to the local main-window capability.
+
+The local main window may read, select or recover a backend choice only for its
+currently admitted vault session. Bounded versioned text frames reject unknown
+fields, renderer paths, generations and scope overrides. Opening an owner is
+idempotent for its original request. Another opener cannot claim the same writer
+unless a native reload suspended it and verified same-generation admission has
+completed; reattachment issues a fresh handle and rejects delayed old closes.
+The retained scope and physical source witnesses survive verified reload.
+
+AI admission changes, backend operations and release share one native transition
+owner. Replacement and explicit disable fence the backend before revoking
+workers, then drain owned calls before releasing the lease. Failed or abandoned
+cleanup remains fenced, retains its owner and is retryable. Exact generations
+prevent delayed old cleanup from revoking a replacement. Physical admission
+failure and destroyed windows fence immediately and schedule supervised cleanup.
+Window destruction is terminal within that native host; delayed frames cannot
+reactivate its admission. Vault close checks database blockers before fencing
+and retains its existing repository/database transition guard through release.
+Ordinary unavailable capture targets remain unavailable until separately
+admitted; selection/opening is not a raw-event processor, prompt grant or
+renderer persistence adapter.

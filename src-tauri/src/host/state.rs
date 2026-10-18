@@ -97,6 +97,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
         watches: WatchRegistry::default(),
         fs_gate: Arc::new(Mutex::new(())),
     }))));
+    crate::host::ai::backends::initialize(app, &profile)?;
     Ok(())
 }
 

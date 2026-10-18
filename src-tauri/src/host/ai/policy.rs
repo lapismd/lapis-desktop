@@ -1,8 +1,9 @@
+use super::backends::NativeBackends;
 use crate::host::state::{NativeHost, NativeServices};
 use lapis_desktop::vault::admission::{RetiredAdmission, VaultLease};
 use std::{
     io,
-    sync::{Arc, OnceLock, Weak},
+    sync::{Arc, OnceLock},
 };
 use tauri::WebviewWindow;
 use tauri_plugin_lapis_ai::{
@@ -15,7 +16,7 @@ pub struct DesktopAiPolicy(Arc<PolicyState>);
 #[derive(Default)]
 struct PolicyState {
     host: OnceLock<NativeHost>,
-    workers: OnceLock<Weak<AcpHost>>,
+    backends: OnceLock<Arc<NativeBackends>>,
 }
 pub fn local(context: &HostContext) -> Result<()> {
     let url = url::Url::parse(&context.url).map_err(|_| Error("denied"))?;
@@ -35,18 +36,28 @@ pub fn caller(window: &WebviewWindow) -> Result<HostContext> {
     Ok(context)
 }
 impl DesktopAiPolicy {
-    pub fn initialize(&self, host: NativeHost, workers: &Arc<AcpHost>) -> io::Result<()> {
+    pub fn initialize(
+        &self,
+        host: NativeHost,
+        workers: &Arc<AcpHost>,
+        backends: Arc<NativeBackends>,
+    ) -> io::Result<()> {
         self.0
             .host
             .set(host)
             .map_err(|_| io::Error::other("AI policy is already initialized"))?;
+        backends.bind_workers(workers)?;
         self.0
-            .workers
-            .set(Arc::downgrade(workers))
-            .map_err(|_| io::Error::other("AI worker owner is already initialized"))
+            .backends
+            .set(backends)
+            .map_err(|_| io::Error::other("AI backend owner is already initialized"))
     }
     fn current(&self, context: &HostContext) -> Result<VaultLease> {
         local(context)?;
+        let backends = self.0.backends.get().ok_or(Error("host_unavailable"))?;
+        backends
+            .ensure_live()
+            .map_err(|_| Error("vault_admission_unavailable"))?;
         let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
         let result = {
             let mut services = host.0.lock().map_err(|_| Error("host_unavailable"))?;
@@ -54,7 +65,12 @@ impl DesktopAiPolicy {
             ai.authorize(vaults, &context.window)
         };
         match result {
-            Ok(lease) => Ok(lease),
+            Ok(lease) => {
+                backends
+                    .ensure_live()
+                    .map_err(|_| Error("vault_admission_unavailable"))?;
+                Ok(lease)
+            }
             Err(failure) => {
                 if let Some(retired) = failure.retired {
                     self.retire(retired);
@@ -64,15 +80,8 @@ impl DesktopAiPolicy {
         }
     }
     fn retire(&self, retired: RetiredAdmission) {
-        if let Some(workers) = self.0.workers.get().and_then(Weak::upgrade) {
-            tauri::async_runtime::spawn(async move {
-                if let Err(error) = workers
-                    .revoke(&retired.window, Some(&retired.generation))
-                    .await
-                {
-                    eprintln!("Native AI scope cleanup failed: {error}");
-                }
-            });
+        if let Some(backends) = self.0.backends.get() {
+            backends.retire(retired);
         }
     }
 }
