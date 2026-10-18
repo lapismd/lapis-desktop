@@ -22,6 +22,7 @@ import {
 import { validateAgentBindingRecord } from "./binding-validation.ts";
 import { validateConversationMetadata } from "./metadata-validation.ts";
 import { validateTranscriptEntry } from "./transcript-validation.ts";
+import { runtimeProvenanceKey } from "./provenance.ts";
 
 export class MemoryTranscriptStore implements TranscriptStore {
   private readonly conversations = new Map<string, ConversationSnapshot>();
@@ -148,17 +149,13 @@ export class MemoryTranscriptStore implements TranscriptStore {
       const ids = new Set(snapshot.transcript.map((entry) => entry.id));
       const provenance = new Set(
         snapshot.transcript.flatMap((entry) =>
-          entry.source
-            ? [
-                `${entry.source.sessionId}\u0000${entry.source.runId}\u0000${entry.source.sequence}`,
-              ]
-            : [],
+          entry.source ? [runtimeProvenanceKey(entry.source)] : [],
         ),
       );
       for (const entry of entries) {
         const validated = validateTranscriptEntry(entry);
         const sourceKey = validated.source
-          ? `${validated.source.sessionId}\u0000${validated.source.runId}\u0000${validated.source.sequence}`
+          ? runtimeProvenanceKey(validated.source)
           : undefined;
         if (
           !ids.has(validated.id) &&

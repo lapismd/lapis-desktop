@@ -156,3 +156,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-027: native ACP factory compatibility refresh](E-AI-027.md)
 
 - [E-AI-028: native capture groups and receipt fencing](E-AI-028.md)
+
+- [E-AI-029: complete native groups in production transcripts](E-AI-029.md)

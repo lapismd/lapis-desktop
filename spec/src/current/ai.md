@@ -357,3 +357,15 @@ backend. The debug acceptance profile uses synthetic privacy and synced private
 fixture records to exercise actual batch transport and withheld receipt
 outcomes. It cannot enable ordinary Notes execution or qualify
 AgentStore/ThreadStore, power-loss recovery or a production privacy policy.
+
+Production ACP consumes each native event's complete before/main/after group
+through the public client helper. Every frame in a multi-frame group retains its
+native cursor and zero-based frameIndex in application provenance. Single frames
+omit that field, preserving legacy record bytes and hashes. Both transcript
+backends deduplicate by session, request, cursor and optional frame index; a
+replay cannot discard a different frame from the same cursor. Present frame
+indexes must be non-negative safe integers. Projection and offline reads retain
+them without inventing provider sequences or native acknowledgements. The SDK
+acknowledges only after the complete consumer callback returns; a coverage
+failure remains unknown. This renderer prerequisite does not select production
+native privacy, admit a target or enable JJ persistence.

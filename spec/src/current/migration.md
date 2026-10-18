@@ -322,3 +322,7 @@ with seven cold ACP cases, including withheld receipt/no-replay recovery. M13.3
 starts implementation but retains its original production privacy, durable JJ
 backend and restart gate. Synced synthetic candidates are not repository
 publication, and production renderer provenance adoption remains pending.
+
+E-AI-029 adds production grouped-frame consumption and per-frame transcript
+provenance to M13.3 prerequisites. Original native persistence, recovery and
+M10.2 completion gates remain open.

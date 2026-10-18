@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Adapted ACP session seam: native ownership replaces legacy JS bridge callbacks.
-import type { AcpSessionClient, SessionSnapshot } from "@lapismd/ai";
+import {
+  sessionEventFrames,
+  type AcpSessionClient,
+  type SessionSnapshot,
+} from "@lapismd/ai";
 import type { AgentSession } from "../../core/runtime.ts";
 import type { AgentSessionConfiguration } from "../../core/models.ts";
 import type { AgentEvent } from "../../core/events.ts";
@@ -42,47 +46,51 @@ export class AcpAgentSession implements AgentSession {
     return this.#events;
   }
   consume(snapshot: SessionSnapshot): void {
-    for (const { frame, sequence } of snapshot.events) {
-      const source = {
-        sessionId: frame.sessionId ?? this.id,
-        runId: frame.requestId,
-        sequence,
-      };
-      if (frame.type === "activity")
-        this.#events.push(mapAcpActivity(frame.update, source));
-      if (frame.type === "permission") {
-        const request = mapAcpPermission(frame);
-        if (this.#permissions.has(request.id))
-          throw new Error("Duplicate ACP permission");
-        this.#permissions.set(request.id, request);
-        this.#events.push({
-          type: "permission.request",
-          request,
-          source,
-          observation: frame,
-        });
-      }
-      if (
-        frame.type === "permission_resolved" &&
-        typeof frame.permissionId === "string"
-      )
-        this.#permissions.delete(frame.permissionId);
-      if (
-        frame.type === "record" ||
-        (frame.type === "error" && frame.requestId === this.#turn?.requestId)
-      ) {
-        this.#permissions.clear();
-        const event = mapAcpTerminal(frame, source);
-        this.#events.push(event);
+    for (const event of snapshot.events) {
+      const frames = sessionEventFrames(event);
+      for (const [frameIndex, frame] of frames.entries()) {
+        const source = {
+          sessionId: frame.sessionId ?? event.frame.sessionId ?? this.id,
+          runId: frame.requestId,
+          sequence: event.sequence,
+          ...(frames.length > 1 ? { frameIndex } : {}),
+        };
+        if (frame.type === "activity")
+          this.#events.push(mapAcpActivity(frame.update, source));
+        if (frame.type === "permission") {
+          const request = mapAcpPermission(frame);
+          if (this.#permissions.has(request.id))
+            throw new Error("Duplicate ACP permission");
+          this.#permissions.set(request.id, request);
+          this.#events.push({
+            type: "permission.request",
+            request,
+            source,
+            observation: frame,
+          });
+        }
         if (
-          (event.type === "error" &&
-            (event.error as AgentTurnFailure).outcome === "unknown") ||
-          frame.sessionUsable === false
+          frame.type === "permission_resolved" &&
+          typeof frame.permissionId === "string"
         )
-          this.#fatal =
-            event.type === "error"
-              ? event.error
-              : new AgentTurnFailure("session_unusable");
+          this.#permissions.delete(frame.permissionId);
+        if (
+          frame.type === "record" ||
+          (frame.type === "error" && frame.requestId === this.#turn?.requestId)
+        ) {
+          this.#permissions.clear();
+          const event = mapAcpTerminal(frame, source);
+          this.#events.push(event);
+          if (
+            (event.type === "error" &&
+              (event.error as AgentTurnFailure).outcome === "unknown") ||
+            frame.sessionUsable === false
+          )
+            this.#fatal =
+              event.type === "error"
+                ? event.error
+                : new AgentTurnFailure("session_unusable");
+        }
       }
     }
   }

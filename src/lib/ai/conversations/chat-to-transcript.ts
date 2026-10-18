@@ -3,16 +3,18 @@
 import type { AiChatItem } from "../chat/chat-items.ts";
 import type { DurableSanitizationOptions } from "./redaction.ts";
 import { sanitizeDurableField } from "./redaction.ts";
-import { CONVERSATION_SCHEMA_VERSION, type TranscriptEntry } from "./types.ts";
+import {
+  CONVERSATION_SCHEMA_VERSION,
+  type TranscriptEntry,
+  type RuntimeEventProvenance,
+} from "./types.ts";
 
 export type TranscriptProjectionOptions = DurableSanitizationOptions & {
   agentBindingId?: string;
   now?: () => string;
 };
 
-function isRuntimeProvenance(
-  value: unknown,
-): value is { sessionId: string; runId: string; sequence: number } {
+function isRuntimeProvenance(value: unknown): value is RuntimeEventProvenance {
   return Boolean(
     value &&
       typeof value === "object" &&
@@ -22,7 +24,7 @@ function isRuntimeProvenance(
 }
 
 function runtimeProvenance(value: unknown): {
-  source?: { sessionId: string; runId: string; sequence: number };
+  source?: RuntimeEventProvenance;
 } {
   return isRuntimeProvenance(value) ? { source: { ...value } } : {};
 }

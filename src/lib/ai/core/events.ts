@@ -8,6 +8,7 @@ export type AgentEventSource = {
   sessionId: string;
   runId: string;
   sequence: number;
+  frameIndex?: number;
 };
 
 export type AgentEvent = (

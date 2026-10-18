@@ -28,6 +28,7 @@ import {
 import { validateAgentBindingRecord } from "./binding-validation.ts";
 import { validateConversationMetadata } from "./metadata-validation.ts";
 import { validateTranscriptEntry } from "./transcript-validation.ts";
+import { runtimeProvenanceKey } from "./provenance.ts";
 
 const MAX_METADATA_BYTES = 256 * 1024;
 
@@ -223,16 +224,12 @@ export class VaultTranscriptStore implements TranscriptStore {
       const ids = new Set(existing.transcript.map((entry) => entry.id));
       const provenance = new Set(
         existing.transcript.flatMap((entry) =>
-          entry.source
-            ? [
-                `${entry.source.sessionId}\u0000${entry.source.runId}\u0000${entry.source.sequence}`,
-              ]
-            : [],
+          entry.source ? [runtimeProvenanceKey(entry.source)] : [],
         ),
       );
       const additions = entries.map(validateTranscriptEntry).filter((entry) => {
         const sourceKey = entry.source
-          ? `${entry.source.sessionId}\u0000${entry.source.runId}\u0000${entry.source.sequence}`
+          ? runtimeProvenanceKey(entry.source)
           : undefined;
         if (ids.has(entry.id) || (sourceKey && provenance.has(sourceKey))) {
           return false;

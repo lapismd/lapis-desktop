@@ -123,6 +123,7 @@ export type RuntimeEventProvenance = {
   sessionId: string;
   runId: string;
   sequence: number;
+  frameIndex?: number;
 };
 
 type TranscriptEntryBase = {

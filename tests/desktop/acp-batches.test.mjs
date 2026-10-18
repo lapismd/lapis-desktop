@@ -74,6 +74,21 @@ test("cold native capture preserves deferred text groups and withholds unknown r
     .find((e) => e.frame.type === "record");
   assert.equal(native.before.length, 1);
   assert.equal(native.before[0].sequence, undefined);
+  const mapped = await session.browser.execute(() =>
+    globalThis.__lapisAcpAcceptance.mapped("captured"),
+  );
+  const answers = mapped.filter((event) => event.type === "text");
+  const answer = answers.at(-1);
+  const complete = mapped.find((event) => event.type === "completed");
+  assert.equal(
+    answers.map((event) => event.text).join(""),
+    "A [captured] answer",
+  );
+  assert.equal(answer.source.frameIndex, 0);
+  assert.equal(complete.source.frameIndex, 1);
+  assert.equal(answer.source.sequence, complete.source.sequence);
+  assert.equal(answer.source.sessionId, info.sessionId);
+  assert.equal(JSON.stringify(mapped).includes("fixture-native-secret"), false);
   await session.browser.execute(() =>
     globalThis.__lapisAcpAcceptance.close("captured"),
   );
@@ -107,6 +122,24 @@ test("cold native capture preserves deferred text groups and withholds unknown r
   assert.deepEqual(state.unresolvedRequests, ["unknown-once"]);
   const hidden = await session.browser.execute(() =>
     globalThis.__lapisAcpAcceptance.frames("unknown"),
+  );
+  const hiddenMapped = await session.browser.execute(() =>
+    globalThis.__lapisAcpAcceptance.mapped("unknown"),
+  );
+  assert.equal(
+    hiddenMapped
+      .filter((event) => event.type === "text")
+      .map((event) => event.text)
+      .join(""),
+    "",
+  );
+  assert.equal(
+    hiddenMapped.some((event) => event.type === "completed"),
+    false,
+  );
+  assert.equal(
+    JSON.stringify(hiddenMapped).includes("fixture-native-secret"),
+    false,
   );
   assert.equal(
     hidden.some((f) => f.type === "record"),

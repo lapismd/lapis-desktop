@@ -45,6 +45,13 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
     if (!Number.isSafeInteger(source.sequence) || Number(source.sequence) < 0) {
       throw new Error("Transcript entry source.sequence is invalid");
     }
+    if (
+      "frameIndex" in source &&
+      (!Number.isSafeInteger(source.frameIndex) ||
+        Number(source.frameIndex) < 0)
+    ) {
+      throw new Error("Transcript entry source.frameIndex is invalid");
+    }
   }
   if (data.provenance != null) {
     const provenance = record(data.provenance, "Transcript entry provenance");

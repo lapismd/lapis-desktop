@@ -115,3 +115,10 @@ batches and stops on unknown or mismatched receipts. Its synthetic cold native
 acceptance supplies private fixture records, rather than a selected Notes
 AgentStore/ThreadStore backend. Native privacy, durable backend adoption and
 conversation restart recovery remain the M13.3 gate.
+
+Native grouped-frame provenance distinguishes each frame at a shared cursor in
+both legacy transcript backends. Omitted indexes preserve historical identity
+and hashes; explicit backend selection and confirmed native durability remain
+required before a JJ-backed conversation is enabled. E-AI-029 qualifies this
+production renderer prerequisite, not AgentStore/ThreadStore publication or cold
+restart recovery.
