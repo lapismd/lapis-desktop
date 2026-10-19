@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-042–055 cover local Codex, recovery, tools, discussions and native imports.
+E-AI-042–056 cover local Codex, tools, discussions and capture/import sources.
 IMPORT-01B retains cold acceptance; LD-MIG-002 keeps original M10.2/M13 gates.
 Deferred JJ integration and managed capture are not qualified by local chat.
 

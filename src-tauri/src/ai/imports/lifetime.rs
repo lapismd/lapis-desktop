@@ -1,4 +1,4 @@
-use super::{Catalog, Check, denied};
+use super::{CaptureQueue, Catalog, Check, denied};
 use std::{
     collections::HashMap,
     io,
@@ -24,6 +24,7 @@ pub struct ImportScope {
     state: Mutex<State>,
     changed: Notify,
     pub catalog: Mutex<Catalog>,
+    pub capture: Mutex<CaptureQueue>,
 }
 pub struct ImportWork {
     scope: Arc<ImportScope>,
@@ -37,6 +38,7 @@ impl ImportScope {
             state: Mutex::new(State::default()),
             changed: Notify::new(),
             catalog: Mutex::new(Catalog::default()),
+            capture: Mutex::new(CaptureQueue::default()),
         })
     }
     pub fn check(&self) -> io::Result<()> {

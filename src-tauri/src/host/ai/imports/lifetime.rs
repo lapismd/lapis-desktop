@@ -1,38 +1,48 @@
-use super::{NativeImports, denied};
+use super::{NativeImports, Purpose, denied};
 use crate::host::state::{NativeError, NativeHost, access};
 use std::{io, sync::Arc};
 use tauri::Manager;
 use uuid::Uuid;
 impl NativeImports {
     pub(super) fn fence(&self, window: &str, handle: Option<Uuid>) -> io::Result<()> {
-        let owners = self.owners.lock().map_err(|_| denied())?;
-        if let Some(owner) = owners
-            .get(window)
-            .filter(|o| handle.is_none_or(|h| o.handle == h))
-        {
-            owner.scope.fence()?;
+        for (id, owner) in self.owners.lock().map_err(|_| denied())?.iter() {
+            if owner.window == window && handle.is_none_or(|h| h == *id) {
+                owner.scope.fence()?;
+            }
+        }
+        Ok(())
+    }
+    pub(super) async fn drain_purpose(&self, window: &str, purpose: Purpose) -> io::Result<()> {
+        let handle = self
+            .owners
+            .lock()
+            .map_err(|_| denied())?
+            .iter()
+            .find(|(_, o)| o.window == window && o.purpose == purpose)
+            .map(|(id, _)| *id);
+        if let Some(handle) = handle {
+            self.drain(window, Some(handle)).await?;
         }
         Ok(())
     }
     pub(super) async fn drain(&self, window: &str, handle: Option<Uuid>) -> io::Result<()> {
         self.fence(window, handle)?;
-        let retained = self
+        let retained: Vec<_> = self
             .owners
             .lock()
             .map_err(|_| denied())?
-            .get(window)
-            .filter(|o| handle.is_none_or(|h| o.handle == h))
-            .map(|o| (o.handle, o.scope.clone()));
-        if let Some((handle, scope)) = retained {
+            .iter()
+            .filter(|(id, o)| o.window == window && handle.is_none_or(|h| h == **id))
+            .map(|(id, o)| (*id, o.scope.clone()))
+            .collect();
+        for (id, scope) in retained {
             scope.drain().await?;
-            let mut owners = self.owners.lock().map_err(|_| denied())?;
-            if owners.get(window).is_some_and(|o| o.handle == handle) {
-                owners.remove(window);
-            }
+            self.owners.lock().map_err(|_| denied())?.remove(&id);
         }
         Ok(())
     }
 }
+
 pub async fn close_vault(
     app: &tauri::AppHandle,
     host: NativeHost,
@@ -59,7 +69,7 @@ pub async fn close_vault(
         .map_err(|_| denied())?
         .iter()
         .filter(|(_, o)| o.session == session)
-        .map(|(w, _)| w.clone())
+        .map(|(_, o)| o.window.clone())
         .collect();
     for window in windows {
         imports.drain(&window, None).await?;

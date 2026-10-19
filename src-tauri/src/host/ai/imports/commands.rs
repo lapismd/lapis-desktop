@@ -1,4 +1,4 @@
-use super::{NativeImports, denied};
+use super::{NativeImports, Purpose, denied};
 use crate::host::state::{NativeError, NativeHost, access};
 use serde::Deserialize;
 use serde_json::{Value, json};
@@ -11,6 +11,8 @@ pub enum Request {
     #[serde(rename_all = "camelCase")]
     Open {
         session_id: String,
+        #[serde(default)]
+        purpose: Purpose,
     },
     Prepare {
         handle: Uuid,
@@ -23,6 +25,15 @@ pub enum Request {
         handle: Uuid,
         ticket: Uuid,
         selector: String,
+    },
+    NextCapture {
+        handle: Uuid,
+        ticket: Uuid,
+    },
+    ConfirmCapture {
+        handle: Uuid,
+        ticket: Uuid,
+        delivery: Uuid,
     },
     Cancel {
         handle: Uuid,
@@ -46,7 +57,10 @@ pub async fn desktop_ai_imports(
         .clone();
     let owner = context.window.clone();
     let handle = match request {
-        Request::Open { session_id } => {
+        Request::Open {
+            session_id,
+            purpose,
+        } => {
             let _transition = imports.transitions.lock().await;
             let checking = imports.clone();
             let name = owner.clone();
@@ -57,25 +71,31 @@ pub async fn desktop_ai_imports(
                     .prepare(&services.vaults, &name, &session_id)
             })
             .await?;
-            imports.drain(&owner, None).await?;
+            if plan.preserves_workers() {
+                imports.drain_purpose(&owner, purpose).await?;
+            } else {
+                imports.drain(&owner, None).await?;
+            }
             let checking = imports.clone();
             let lease = access(host.inner().clone(), move |services| {
                 checking.check_window(&context.window)?;
                 services.imports.complete(&services.vaults, &plan)
             })
             .await?;
-            return Ok(json!(imports.open(host.inner(), &owner, lease)?));
+            return Ok(json!(imports.open(host.inner(), &owner, lease, purpose)?));
         }
         Request::Close { handle } => {
             let _transition = imports.transitions.lock().await;
             // A late client may release only its own handle.
             if imports.matching(&owner, handle)?.is_some() {
                 imports.drain(&owner, Some(handle)).await?;
-                access(host.inner().clone(), move |services| {
-                    services.imports.leave(&owner, false);
-                    Ok(())
-                })
-                .await?;
+                if !imports.has_window(&owner)? {
+                    access(host.inner().clone(), move |services| {
+                        services.imports.leave(&owner, false);
+                        Ok(())
+                    })
+                    .await?;
+                }
             }
             return Ok(Value::Null);
         }
@@ -90,13 +110,28 @@ pub async fn desktop_ai_imports(
             imports.scope(&owner, handle)?.cancel(ticket)?;
             return Ok(Value::Null);
         }
-        Request::List { handle, .. } | Request::Preview { handle, .. } => handle,
+        Request::List { handle, .. }
+        | Request::Preview { handle, .. }
+        | Request::NextCapture { handle, .. }
+        | Request::ConfirmCapture { handle, .. } => handle,
     };
     let scope = imports.scope(&owner, handle)?;
     let ticket = match &request {
-        Request::List { ticket, .. } | Request::Preview { ticket, .. } => *ticket,
+        Request::List { ticket, .. }
+        | Request::Preview { ticket, .. }
+        | Request::NextCapture { ticket, .. }
+        | Request::ConfirmCapture { ticket, .. } => *ticket,
         _ => unreachable!(),
     };
+    let purpose = if matches!(
+        request,
+        Request::NextCapture { .. } | Request::ConfirmCapture { .. }
+    ) {
+        Purpose::Capture
+    } else {
+        Purpose::Import
+    };
+    let workspace = imports.workspace(&owner, handle, purpose)?;
     // Registered before spawn_blocking, including when the worker pool is busy.
     let work = scope.begin(ticket)?;
     let home = imports.home.clone();
@@ -121,6 +156,21 @@ pub async fn desktop_ai_imports(
                     &home,
                     &|| work.check()
                 )?)
+            }
+            Request::NextCapture { .. } => {
+                json!(scope.capture.lock().map_err(|_| denied())?.next(
+                    &home,
+                    &workspace,
+                    &|| work.check()
+                )?)
+            }
+            Request::ConfirmCapture { delivery, .. } => {
+                scope
+                    .capture
+                    .lock()
+                    .map_err(|_| denied())?
+                    .confirm(delivery, &|| work.check())?;
+                Value::Null
             }
             _ => unreachable!(),
         };

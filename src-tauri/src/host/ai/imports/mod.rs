@@ -14,14 +14,23 @@ use std::{
 };
 use tauri::Manager;
 use uuid::Uuid;
+#[derive(Clone, Copy, Default, PartialEq, Eq, serde::Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub enum Purpose {
+    #[default]
+    Import,
+    Capture,
+}
 pub struct NativeImports {
     pub(super) home: PathBuf,
-    owners: Mutex<HashMap<String, Owner>>,
+    owners: Mutex<HashMap<Uuid, Owner>>,
     destroyed: Mutex<HashSet<String>>,
     pub(super) transitions: Arc<tokio::sync::Mutex<()>>,
 }
 struct Owner {
-    handle: Uuid,
+    window: String,
+    purpose: Purpose,
+    workspace: PathBuf,
     session: String,
     scope: Arc<ImportScope>,
 }
@@ -62,11 +71,13 @@ impl NativeImports {
         host: &NativeHost,
         window: &str,
         lease: VaultLease,
+        purpose: Purpose,
     ) -> io::Result<Uuid> {
         self.check_window(window)?;
         let weak_host = Arc::downgrade(&host.0);
         let weak_owner = Arc::downgrade(self);
         let checking_window = window.to_owned();
+        let workspace = lease.root().to_path_buf();
         let session = lease.session().to_owned();
         let checking_session = session.clone();
         let generation = lease.generation().to_owned();
@@ -81,7 +92,7 @@ impl NativeImports {
                 imports, vaults, ..
             } = &mut *services;
             let current = imports
-                .authorize(vaults, &checking_window)
+                .authorize_retained(vaults, &checking_window, &generation)
                 .map_err(|_| denied())?;
             if current.session() != checking_session || current.generation() != generation {
                 return Err(denied());
@@ -90,13 +101,18 @@ impl NativeImports {
         }));
         let handle = Uuid::new_v4();
         let mut owners = self.owners.lock().map_err(|_| denied())?;
-        if owners.contains_key(window) {
+        if owners
+            .values()
+            .any(|owner| owner.window == window && owner.purpose == purpose)
+        {
             return Err(denied());
         }
         owners.insert(
-            window.into(),
+            handle,
             Owner {
-                handle,
+                window: window.into(),
+                purpose,
+                workspace,
                 session,
                 scope,
             },
@@ -108,13 +124,31 @@ impl NativeImports {
             .owners
             .lock()
             .map_err(|_| denied())?
-            .get(window)
-            .filter(|owner| owner.handle == handle)
+            .get(&handle)
+            .filter(|owner| owner.window == window)
             .map(|owner| owner.scope.clone()))
     }
     fn scope(&self, window: &str, handle: Uuid) -> io::Result<Arc<ImportScope>> {
         self.check_window(window)?;
         self.matching(window, handle)?.ok_or_else(denied)
+    }
+    fn workspace(&self, window: &str, handle: Uuid, purpose: Purpose) -> io::Result<PathBuf> {
+        self.check_window(window)?;
+        self.owners
+            .lock()
+            .map_err(|_| denied())?
+            .get(&handle)
+            .filter(|o| o.window == window && o.purpose == purpose)
+            .map(|o| o.workspace.clone())
+            .ok_or_else(denied)
+    }
+    fn has_window(&self, window: &str) -> io::Result<bool> {
+        Ok(self
+            .owners
+            .lock()
+            .map_err(|_| denied())?
+            .values()
+            .any(|o| o.window == window))
     }
     /// No catalog mutex is held during parsing; cancellation/fencing stays responsive.
     fn catalog(scope: &ImportScope) -> io::Result<Catalog> {

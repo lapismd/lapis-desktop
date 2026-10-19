@@ -6,7 +6,7 @@ Codex discovery, reading and privacy. Catalog clients are fixtures, never proof
 that ordinary native discovery is available. JJ persistence remains deferred.
 
 Native discovery uses only the host home’s `.codex/sessions` root. It selects up
-to 256 recent qualified CLI/Desktop sessions after a bounded metadata scan; no
+to 256 qualified CLI/Desktop sessions from the 1,024 most recent candidates; no
 archived root, environment override or renderer-supplied path is admitted.
 Opaque per-client handles and prepared request tickets bind cancellation before
 worker start. Disable, vault close and window destruction fence and drain reads
@@ -64,3 +64,52 @@ recovery and failure toasts. E-AI-055 qualifies native admission, reader
 privacy, cold actual-file import and ordinary-app adoption for this supported
 local profile. Automatic watching is a separate explicit opt-in CAPTURE-01
 slice.
+
+## Opt-in local capture
+
+CAPTURE-01 adds a per-vault, default-off watcher for supported Codex sessions.
+Its explicit control saves the opt-in before starting. AI disable, Safe Mode,
+vault/window closure and Stop fence and drain all owned work. Shutdown preserves
+the saved choice for cold restart; Stop saves the disabled choice.
+
+Only sessions whose header and every admitted body directory belong to the
+current physical vault may be captured automatically. Missing, ambiguous or
+foreign directory context never borrows the header's authority. Other sessions
+remain eligible only for explicit import. Native discovery, physical change
+checks, source reading and privacy run on workers under independent read-only
+admission. Manual import and capture clients have separate handles/catalogs.
+
+A complete sanitized immutable snapshot is retained under its existing import
+identity. Local capture receipts group its versions by source/profile/vault;
+latest selection is published only after the exact transcript and receipt save
+are acknowledged. Older snapshots stay readable. Unknown writes retry the same
+snapshot. Native confirmation retires only that pending observation; it never
+constructs a durable reader ACK, cursor, provider grant or JJ publication. Cold
+restart re-observes sources and verifies existing snapshots before confirming
+them, so a lost confirmation creates no duplicate or hidden progress.
+
+The watcher reports background activity through App status and exposes captured
+sessions, recent versions, waiting/deferred reads and local limits. Changing or
+incomplete files may wait without advancing. Operational failures publish a
+stable application toast and retain the pending snapshot. Capture is bounded to
+512 receipts, 128 source groups and 256 MiB of recorded transcript data per
+vault; reaching a limit pauses new work without deleting history. No automatic
+retention/purge, source edits, launch/resume, or JJ persistence is enabled.
+
+## Source foundation review
+
+CAPTURE-01A/E-AI-056 qualifies the source port independently of the opt-in
+coordinator and store. Each Start/Stop cycle can allocate a fresh capture
+handle; manual imports keep their separate catalog. Same-root admission
+preserves the other scope, while changed-root admission and vault/window closure
+fence both. The renderer supplies no path, root, executable or generation.
+Existing manual import frames and execution admission remain unchanged.
+
+One delivery retains its sanitized immutable snapshot until explicit
+confirmation, including when the source appends meanwhile. Recent confirmation
+IDs are idempotent (bounded to 256); retrying an old ID cannot consume a newer
+pending snapshot. Unconfirmed observations are not durable progress. Cold
+restart reobserves the source rather than retaining a cursor. Transient changed
+or incomplete reads defer; authority/cancellation failures still reject. This
+foundation alone performs no local receipt/transcript writes, opt-in changes,
+background watching or JJ publication. Those remain CAPTURE-01B/C.

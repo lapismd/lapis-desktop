@@ -5,111 +5,25 @@ import type {
 } from "../../ai/imports/source-port.ts";
 import { validateImportRows } from "../../ai/imports/source-port.ts";
 import type { CapturedSession } from "../../ai/conversations/import-types.ts";
-import { OwnedAiWork } from "../../ai/core/owned-work.ts";
 import type { NativeCall } from "../vault-client.ts";
-import { nativeError } from "../native-error.ts";
-const cancelled = () =>
-  new DOMException("Transcript import was cancelled", "AbortError");
-/** Native handles and prepared tickets only. This port cannot select paths or execute agents. */
+import { NativeTranscriptScope } from "./transcript-scope.ts";
+/** Native handles and prepared tickets only; no paths or agent execution. */
 export class NativeImportSources implements AiImportSources {
-  readonly #work = new OwnedAiWork();
-  readonly #aborts = new Set<AbortController>();
-  #handle?: Promise<string>;
-  #closed = false;
-  #closing?: Promise<void>;
-  constructor(
-    private readonly sessionId: string,
-    private readonly call: NativeCall,
-    private readonly allowed: () => boolean,
-  ) {}
-  async #request<T>(request: Record<string, unknown>): Promise<T> {
-    try {
-      return await this.call<T>("desktop_ai_imports", { request });
-    } catch (error) {
-      throw nativeError(error);
-    }
-  }
-  #check(signal: AbortSignal) {
-    if (this.#closed || signal.aborted) throw cancelled();
-    if (!this.allowed())
-      throw new Error("AI session import is disabled in this workspace");
-  }
-  #open(): Promise<string> {
-    return (this.#handle ??= this.#request<string>({
-      type: "open",
-      sessionId: this.sessionId,
-    }).catch((error) => {
-      this.#handle = undefined;
-      throw error;
-    }));
-  }
-  #run<T>(operation: Record<string, unknown>, signal: AbortSignal): Promise<T> {
-    return this.#work.run(async () => {
-      this.#check(signal);
-      const abort = new AbortController();
-      const forward = () => abort.abort();
-      signal.addEventListener("abort", forward, { once: true });
-      this.#aborts.add(abort);
-      let cancel: (() => void) | undefined;
-      let cancellation: Promise<void> | undefined;
-      try {
-        const handle = await this.#open();
-        this.#check(abort.signal);
-        const ticket = await this.#request<string>({ type: "prepare", handle });
-        const release = () =>
-          (cancellation ??= this.#request<void>({
-            type: "cancel",
-            handle,
-            ticket,
-          }));
-        cancel = () => {
-          void release().catch(() => {});
-        };
-        abort.signal.addEventListener("abort", cancel, { once: true });
-        try {
-          this.#check(abort.signal);
-          const result = await this.#request<T>({
-            ...operation,
-            handle,
-            ticket,
-          });
-          this.#check(abort.signal);
-          return result;
-        } finally {
-          // Also retires a prepared ticket when cancellation won before dispatch.
-          await release();
-          this.#check(abort.signal);
-        }
-      } finally {
-        signal.removeEventListener("abort", forward);
-        if (cancel) abort.signal.removeEventListener("abort", cancel);
-        this.#aborts.delete(abort);
-      }
-    });
+  readonly #scope: NativeTranscriptScope;
+  constructor(sessionId: string, call: NativeCall, allowed: () => boolean) {
+    this.#scope = new NativeTranscriptScope(sessionId, call, allowed);
   }
   async list(signal: AbortSignal): Promise<ImportSourceRow[]> {
     return validateImportRows(
-      await this.#run<ImportSourceRow[]>({ type: "list" }, signal),
+      await this.#scope.run<ImportSourceRow[]>({ type: "list" }, signal),
     );
   }
   preview(selector: string, signal: AbortSignal): Promise<CapturedSession> {
     if (!/^[A-Za-z0-9._:-]{1,128}$/u.test(selector))
       return Promise.reject(new Error("Invalid import selector"));
-    return this.#run({ type: "preview", selector }, signal);
+    return this.#scope.run({ type: "preview", selector }, signal);
   }
   close(): Promise<void> {
-    this.#closed = true;
-    for (const abort of this.#aborts) abort.abort();
-    return (this.#closing ??= (async () => {
-      // Native close fences immediately and drains workers; do not await reads first.
-      if (this.#handle) {
-        const handle = await this.#handle;
-        await this.#request({ type: "close", handle });
-      }
-      await this.#work.settle();
-    })().catch((error) => {
-      this.#closing = undefined;
-      throw error;
-    }));
+    return this.#scope.close();
   }
 }

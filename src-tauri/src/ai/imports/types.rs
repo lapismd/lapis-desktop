@@ -7,7 +7,7 @@ pub struct SourceRow {
     pub profile: String,
     pub updated_at: String,
 }
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ImportSource {
     pub kind: &'static str,
@@ -15,7 +15,7 @@ pub struct ImportSource {
     pub session_key: String,
     pub snapshot_key: String,
 }
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 pub enum CapturedEntry {
     #[serde(rename_all = "camelCase")]
@@ -43,7 +43,7 @@ pub enum CapturedEntry {
         text: String,
     },
 }
-#[derive(Serialize)]
+#[derive(Clone, Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct CapturedSession {
     pub version: u32,

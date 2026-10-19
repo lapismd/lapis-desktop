@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-054 adds local import UI/journal; E-AI-055 connects native sources.
-Discussion: E-AI-052/053. UI: E-REPO-023/025, E-AI-039–041. Gravatar:
+E-AI-056 retains LD-DESK-005's cold native lifecycle/automation boundary.
+Capture source semantics live in [local imports](ai-imports.md). Gravatar uses
 `https://www.gravatar.com`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.

@@ -15,6 +15,25 @@ pub fn preview(
     home: &Path,
     check: &dyn Fn() -> io::Result<()>,
 ) -> io::Result<CapturedSession> {
+    preview_in(catalog, selector, home, None, check)
+}
+/// Automatic capture admits every directory context against the physical vault.
+pub fn preview_for_workspace(
+    catalog: &Catalog,
+    selector: &str,
+    home: &Path,
+    workspace: &Path,
+    check: &dyn Fn() -> io::Result<()>,
+) -> io::Result<CapturedSession> {
+    preview_in(catalog, selector, home, Some(workspace), check)
+}
+fn preview_in(
+    catalog: &Catalog,
+    selector: &str,
+    home: &Path,
+    workspace: Option<&Path>,
+    check: &dyn Fn() -> io::Result<()>,
+) -> io::Result<CapturedSession> {
     check()?;
     let selection = catalog.0.get(selector).ok_or_else(super::denied)?;
     let temporary = std::env::temp_dir().canonicalize().map_err(|_| invalid())?;
@@ -42,6 +61,7 @@ pub fn preview(
         64 * 1024 * 1024,
     )
     .map_err(|_| invalid())?;
+    super::capture::admit_directory(workspace, reader.directory())?;
     let root_sanitizer =
         TranscriptSanitizer::new(reader.directory(), home, &temporary, cache.path())
             .map_err(|_| invalid())?;
@@ -68,9 +88,13 @@ pub fn preview(
             SnapshotPoll::Complete(summary) => break summary,
             SnapshotPoll::Ready(batch) => {
                 let Some(directory) = batch.directory() else {
+                    if workspace.is_some() {
+                        return Err(super::capture::outside());
+                    }
                     omitted = true;
                     continue;
                 };
+                super::capture::admit_directory(workspace, directory)?;
                 let sanitizer = root_sanitizer
                     .for_workspace(directory)
                     .map_err(|_| invalid())?;

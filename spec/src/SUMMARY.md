@@ -236,3 +236,5 @@
   - [Local import journal and preview](history/E-AI-054.md)
 
 - [Native local Codex session import](history/E-AI-055.md)
+
+- [Vault-scoped native capture sources](history/E-AI-056.md)

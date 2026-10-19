@@ -1,3 +1,4 @@
+import { NativeCaptureSources } from "./capture-sources.ts";
 import type { App } from "@lapis-notes/api";
 import { invoke } from "@tauri-apps/api/core";
 import { createAcpClient, type AcpTransport } from "@lapismd/ai";
@@ -51,6 +52,11 @@ export function createNativeAi(
   });
   const models = new NativeAiModels(scope);
   const importSources = new NativeImportSources(vault.sessionId, call, allowed);
+  const captureSources = new NativeCaptureSources(
+    vault.sessionId,
+    call,
+    allowed,
+  );
   const background = new BackgroundWork(app.notifications, "ai");
   const parser = new NativeCommandParser();
   const reported = new WeakSet<Error>();
@@ -107,6 +113,7 @@ export function createNativeAi(
         userAgents.close(),
         bridge?.close(),
         importSources.close(),
+        captureSources.close(),
       ]);
       parser.close();
       await scope.dispose(mode === "reload");
@@ -126,6 +133,7 @@ export function createNativeAi(
     },
     userAgents,
     importSources,
+    captureSources,
     parseCommand: parser.parse,
     workspace: vault.profileId,
     unavailableReason: () =>

@@ -1,13 +1,15 @@
 //! Read-only local Codex snapshots. No provider execution or JJ publication.
+mod capture;
 mod catalog;
 mod lifetime;
 mod projection;
 mod snapshot;
 mod types;
+pub use capture::{CaptureQueue, CaptureRead};
 pub use catalog::{Catalog, discover};
 pub use lifetime::{ImportScope, ImportWork};
 use sha2::{Digest, Sha256};
-pub use snapshot::preview;
+pub use snapshot::{preview, preview_for_workspace};
 use std::io;
 pub use types::{CapturedEntry, CapturedSession, ImportSource, SourceRow};
 pub type Check = std::sync::Arc<dyn Fn() -> io::Result<()> + Send + Sync>;

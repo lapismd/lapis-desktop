@@ -5450,6 +5450,7 @@ dependencies = [
  "jj-store-model",
  "jj-store-service",
  "lapis-ai-app-tools",
+ "lapis-ai-capture",
  "libc",
  "mac-usernotifications",
  "mime_guess",

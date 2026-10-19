@@ -52,7 +52,9 @@ impl Fixture {
         imports.complete(vaults, &plan).unwrap()
     }
     fn open(&self) -> Uuid {
-        self.imports.open(&self.host, "main", self.lease()).unwrap()
+        self.imports
+            .open(&self.host, "main", self.lease(), Purpose::Import)
+            .unwrap()
     }
 }
 #[tokio::test]
@@ -111,4 +113,109 @@ async fn physical_replacement_and_destroyed_window_deny_late_source_work() {
     f.imports.destroyed.lock().unwrap().insert("main".into());
     assert!(f.imports.check_window("main").is_err());
     assert!(f.imports.scope("main", handle).is_err());
+}
+
+#[tokio::test]
+async fn capture_and_manual_scopes_survive_preserving_admission_and_close_independently() {
+    let f = Fixture::new();
+    let manual = f.open();
+    let manual_scope = f.imports.scope("main", manual).unwrap();
+    let plan = {
+        let mut services = f.host.0.lock().unwrap();
+        let NativeServices {
+            imports, vaults, ..
+        } = &mut *services;
+        imports.prepare(vaults, "main", &f.session).unwrap()
+    };
+    assert!(plan.preserves_workers());
+    manual_scope.check().unwrap();
+    let lease = {
+        let mut services = f.host.0.lock().unwrap();
+        let NativeServices {
+            imports, vaults, ..
+        } = &mut *services;
+        imports.complete(vaults, &plan).unwrap()
+    };
+    let capture = f
+        .imports
+        .open(&f.host, "main", lease, Purpose::Capture)
+        .unwrap();
+    let capture_scope = f.imports.scope("main", capture).unwrap();
+    assert!(
+        f.imports
+            .workspace("main", manual, Purpose::Capture)
+            .is_err()
+    );
+    assert!(
+        f.imports
+            .workspace("main", capture, Purpose::Import)
+            .is_err()
+    );
+    let manual_work = manual_scope.begin(manual_scope.prepare().unwrap()).unwrap();
+    let capture_work = capture_scope
+        .begin(capture_scope.prepare().unwrap())
+        .unwrap();
+    manual_work.check().unwrap();
+    capture_work.check().unwrap();
+    drop(capture_work);
+    f.imports
+        .drain_purpose("main", Purpose::Capture)
+        .await
+        .unwrap();
+    assert!(capture_scope.check().is_err());
+    manual_work.check().unwrap();
+    assert!(f.imports.has_window("main").unwrap());
+    drop(manual_work);
+    let replacement = f
+        .imports
+        .open(&f.host, "main", f.lease(), Purpose::Capture)
+        .unwrap();
+    f.imports.drain("main", Some(capture)).await.unwrap();
+    f.imports
+        .scope("main", replacement)
+        .unwrap()
+        .check()
+        .unwrap();
+    f.imports.drain("main", Some(manual)).await.unwrap();
+    assert!(manual_scope.check().is_err());
+    f.imports
+        .scope("main", replacement)
+        .unwrap()
+        .check()
+        .unwrap();
+    f.imports.drain("main", None).await.unwrap();
+    assert!(!f.imports.has_window("main").unwrap());
+}
+#[tokio::test]
+async fn changed_vault_admission_fences_both_purposes() {
+    let f = Fixture::new();
+    let manual = f.open();
+    let capture = f
+        .imports
+        .open(&f.host, "main", f.lease(), Purpose::Capture)
+        .unwrap();
+    let scopes = [
+        f.imports.scope("main", manual).unwrap(),
+        f.imports.scope("main", capture).unwrap(),
+    ];
+    {
+        let mut services = f.host.0.lock().unwrap();
+        let other = f._root.path().join("other");
+        std::fs::create_dir(&other).unwrap();
+        let session = services
+            .vaults
+            .select(Some(other), None)
+            .unwrap()
+            .unwrap()
+            .session_id;
+        let NativeServices {
+            imports, vaults, ..
+        } = &mut *services;
+        let plan = imports.prepare(vaults, "main", &session).unwrap();
+        assert!(!plan.preserves_workers());
+    }
+    for scope in scopes {
+        assert!(scope.check().is_err());
+    }
+    f.imports.drain("main", None).await.unwrap();
 }
