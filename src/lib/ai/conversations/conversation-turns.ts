@@ -23,6 +23,10 @@ export class ConversationTurns {
     private readonly queue: ConversationWriteQueue,
     private readonly changed: (location: ConversationLocation) => void,
     private readonly title: (text: string) => string | undefined,
+    private readonly beforeSingle?: (
+      snapshot: ConversationSnapshot,
+      recovered?: string,
+    ) => Promise<void>,
   ) {}
 
   isActive(location: ConversationLocation, id: string): boolean {
@@ -34,12 +38,14 @@ export class ConversationTurns {
     intent: ConversationTurnIntent,
     user: Extract<TranscriptEntry, { type: "message" }>,
     recoveredId?: string,
+    recoveredDispatchId?: string,
   ): Promise<void> {
     return this.queue.run(conversationStorageKey(location), async () => {
       validateTurnIntent(intent);
       if (user.id !== intent.userEntryId || user.role !== "user")
         throw new Error("Turn intent must retain its exact authored message");
       const snapshot = await this.store.read(location);
+      await this.beforeSingle?.(snapshot, recoveredDispatchId);
       const previous = snapshot.metadata.pendingTurn;
       if (previous) {
         if (previous.id === intent.id || previous.userEntryId === user.id)

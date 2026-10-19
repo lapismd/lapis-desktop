@@ -37,6 +37,8 @@ import type { ConversationListEntry } from "../../conversations/transcript-store
 import type { AcpAgentId } from "../../settings/acp-agents.ts";
 export class AiChatControllerState {
   _disposed = false;
+  _activeDispatch?: import("./dispatch-state.ts").ActiveDispatch;
+  _recoveredDispatchId?: string;
   readonly _backgroundWork = new OwnedAiWork();
   items = $state.raw<AiChatItem[]>([]);
   busy = $state(false);
@@ -73,9 +75,11 @@ export class AiChatControllerState {
     {
       location: ConversationLocation | null;
       accepted?: boolean;
+      delivery?: import("./dispatch-state.ts").ActiveDelivery;
       turn?: {
         intent: import("../../conversations/turn-intent.ts").ConversationTurnIntent;
         known: boolean;
+        outcome?: "completed" | "rejected" | "unknown";
       };
       pendingBinding?: AgentBindingCreatedRecord;
       pendingSwitch?: TranscriptEntry;

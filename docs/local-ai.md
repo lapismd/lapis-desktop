@@ -68,8 +68,16 @@ Classic retain that selection, and History shows the original captured label
 even when the agent is no longer configured. The first native profile offers
 Codex. Named participants that share a runtime keep distinct bindings; switching
 back resumes only their own eligible context. The original captured name remains
-visible in saved History. Multiple recipients and persisted delivery queues
-remain later slices.
+visible in saved History. Use Conversation actions → Add agent participant to
+create another name using the selected installed agent. Creating a name starts
+no session and sends nothing. Up to sixteen names can be configured.
+
+Select two to four recipient pills to deliver one authored message to each
+participant. Delivery runs one participant at a time, with separate approvals
+and saved Pending, Working and Completed outcomes. Stop leaves a started
+recipient unknown and cancels recipients that have not started. A refusal or
+uncertain outcome stops the remaining deliveries. History retains each outcome
+without retrying any delivery. Persisted queues remain a later slice.
 
 The private migration app consumes the shared conversation token codec through
 `@lapismd/jj-conversations`' verified built exports, alongside the history SDK.
@@ -93,5 +101,7 @@ LAPIS_AI_TEST_RUNTIME_CONFIG=/absolute/path/to/ai-runtime.json node --test tests
 
 Use `tests/desktop/ai-local-tools.test.mjs` with the same configuration for the
 real Codex read → approved edit → cancel → cold History acceptance. It uses an
-isolated plain vault and checks that it never creates `.jj` metadata. Wider
+isolated plain vault and checks that it never creates `.jj` metadata.
+`tests/desktop/ai-local-multi.test.mjs` checks two named Codex participants, one
+authored prompt, two registered reads and read-only cold History. Wider
 provider, effect-fault, platform and distribution qualification remains open.

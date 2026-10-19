@@ -156,7 +156,11 @@
       {#snippet metadataSupplement(item)}
         {@const source = controller.items.find((entry) => entry.id === item.id)}
         {#if source?.type === "message" && source.role === "user" && source.recipients?.length}
-          <ChatRecipients recipients={source.recipients} label="Sent to" />
+          <ChatRecipients
+            recipients={source.recipients}
+            deliveries={source.deliveries}
+            label="Sent to"
+          />
         {/if}
         {#if source?.type === "message" && source.role === "assistant"}
           <Button

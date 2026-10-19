@@ -14,6 +14,16 @@ export function projectTranscriptToChatItems(
   const delivered = new Set(
     entries.filter(isCommentReceipt).map((entry) => entry.parentId),
   );
+  const deliveries = new Map<
+    string,
+    Map<string, import("./dispatch-intent.ts").Delivery>
+  >();
+  for (const entry of entries)
+    if (entry.type === "agent.delivery" && entry.parentId) {
+      const rows = deliveries.get(entry.parentId) ?? new Map();
+      rows.set(entry.delivery.id, entry.delivery);
+      deliveries.set(entry.parentId, rows);
+    }
   for (const entry of entries) {
     if (isCommentReceipt(entry)) continue;
     switch (entry.type) {
@@ -25,6 +35,13 @@ export function projectTranscriptToChatItems(
           text: entry.text,
           ...(entry.recipients?.length
             ? { recipients: structuredClone(entry.recipients) }
+            : {}),
+          ...(deliveries.has(entry.id)
+            ? {
+                deliveries: structuredClone([
+                  ...deliveries.get(entry.id)!.values(),
+                ]),
+              }
             : {}),
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
@@ -176,6 +193,7 @@ export function projectTranscriptToChatItems(
           agentBindingId: entry.agentBindingId,
         });
         break;
+      case "agent.delivery":
       case "agent.switch":
       case "agent.config":
         break;

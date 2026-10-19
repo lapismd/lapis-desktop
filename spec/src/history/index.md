@@ -199,3 +199,4 @@ by the task ledger, not inferred from this list.
 - [Native Codex application tools and local receipts](E-AI-047.md)
 - [Addressed local messages and retained draft context](E-AI-048.md)
 - [Independent local agent participants](E-AI-049.md)
+- [One local message with independent addressed deliveries](E-AI-050.md)

@@ -66,7 +66,7 @@ it("saves an immutable recipient tag before prompting while authored text and na
   }
 });
 
-it("refuses multiple recipients before creating a message, intent or provider worker", async () => {
+it("refuses unresolved multiple recipients before creating a message, intent or provider worker", async () => {
   const { acp, controller } = fixture();
   try {
     await expect(

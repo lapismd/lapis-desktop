@@ -1,3 +1,4 @@
+import { cancelDispatch } from "./dispatch.ts";
 import { requireApprovalOption } from "../../core/approvals.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat orchestration; see ../../NOTICE.md.
@@ -13,10 +14,15 @@ export async function respondToApproval(
   this: AiChatController,
   requestId: string,
   optionId: string,
+  itemId?: string,
 ): Promise<void> {
   const pending = this.items.find(
     (candidate) =>
-      candidate.type === "approval" && candidate.request.id === requestId,
+      candidate.type === "approval" &&
+      candidate.request.id === requestId &&
+      candidate.status === "pending" &&
+      candidate.agentBindingId === this._activeBindingId &&
+      (!itemId || candidate.id === itemId),
   );
   if (pending?.type !== "approval" || pending.status !== "pending")
     throw new Error(`Unknown application approval: ${requestId}`);
@@ -39,22 +45,20 @@ export async function respondToApproval(
     )
       return;
   }
-  const current = this.items.find(
-    (candidate) =>
-      candidate.type === "approval" && candidate.request.id === requestId,
-  );
+  const current = this.items.find((candidate) => candidate.id === pending.id);
   if (
     current?.type !== "approval" ||
     current.request !== pending.request ||
     current.status !== "pending"
   )
     return;
-  this.items = markApprovalResponse(this.items, requestId, optionId);
-  await this._rememberPersistentDecision(pending.request, optionId);
-  const item = this.items.find(
-    (candidate) =>
-      candidate.type === "approval" && candidate.request.id === requestId,
+  this.items = this.items.map((item) =>
+    item === current
+      ? markApprovalResponse([item], requestId, optionId)[0]!
+      : item,
   );
+  await this._rememberPersistentDecision(pending.request, optionId);
+  const item = this.items.find((candidate) => candidate.id === pending.id);
   if (this.repository && this.location && item)
     await this._appendDurableItems(
       this.location,
@@ -68,13 +72,18 @@ export async function respondToQuestion(
   this: AiChatController,
   requestId: string,
   answers: UserInputAnswers,
+  itemId?: string,
 ): Promise<void> {
   const session = this.session;
   if (!session?.respondToQuestion)
     throw new Error("The active runtime cannot answer agent questions.");
   const pending = this.items.find(
     (candidate) =>
-      candidate.type === "question" && candidate.request.id === requestId,
+      candidate.type === "question" &&
+      candidate.request.id === requestId &&
+      candidate.status === "pending" &&
+      candidate.agentBindingId === this._activeBindingId &&
+      (!itemId || candidate.id === itemId),
   );
   if (pending?.type !== "question" || pending.status !== "pending")
     throw new Error(`Unknown agent question: ${requestId}`);
@@ -88,21 +97,17 @@ export async function respondToQuestion(
     this.location?.scopeDir !== location?.scopeDir
   )
     return;
-  const current = this.items.find(
-    (candidate) =>
-      candidate.type === "question" && candidate.request.id === requestId,
-  );
+  const current = this.items.find((candidate) => candidate.id === pending.id);
   if (
     current?.type !== "question" ||
     current.request !== pending.request ||
     current.status !== "pending"
   )
     return;
-  this.items = markQuestionResponse(this.items, requestId);
-  const item = this.items.find(
-    (candidate) =>
-      candidate.type === "question" && candidate.request.id === requestId,
+  this.items = this.items.map((item) =>
+    item === current ? markQuestionResponse([item], requestId)[0]! : item,
   );
+  const item = this.items.find((candidate) => candidate.id === pending.id);
   if (this.repository && this.location && item)
     await this._appendDurableItems(
       this.location,
@@ -115,6 +120,8 @@ export async function respondToQuestion(
 export async function cancel(this: AiChatController): Promise<void> {
   if (this.session) this._flushSessionTrace.get(this.session)?.();
   this._turnId += 1;
+  const dispatchCancellation = cancelDispatch(this);
+  void dispatchCancellation.catch(() => undefined);
   this._activeRecallAbort?.abort();
   this._activeRecallAbort = undefined;
   const session = this.session;
@@ -124,6 +131,7 @@ export async function cancel(this: AiChatController): Promise<void> {
   this.items = interruptPendingInteractions(this.items);
   void this._confirmCancelledNotice(session);
   await this._persist(true);
+  await dispatchCancellation;
 }
 
 export async function _confirmCancelledNotice(
@@ -178,6 +186,8 @@ export async function close(this: AiChatController): Promise<void> {
   for (const flush of this._flushSessionTrace.values()) flush();
   this._disposed = true;
   this._turnId += 1;
+  const dispatchCancellation = cancelDispatch(this);
+  void dispatchCancellation.catch(() => undefined);
   this._unsubscribeAppToolEvents?.();
   this._unsubscribeAppToolEvents = undefined;
   this._activeRecallAbort?.abort();
@@ -189,6 +199,7 @@ export async function close(this: AiChatController): Promise<void> {
   this.commandWorking = false;
   if (interrupted) this.items = interruptPendingInteractions(this.items);
   const results = await Promise.allSettled([
+    dispatchCancellation,
     this._persist(interrupted),
     this._closeAppToolBinding(),
     ...[...sessions].map(async (session) => {

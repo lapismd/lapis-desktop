@@ -33,7 +33,7 @@
   <ChatRecipients
     recipients={composerState.recipients.display}
     {disabled}
-    onRemove={() => composerState.recipients.remove()}
+    onRemove={(id) => composerState.recipients.remove(id)}
   />
   <ChatComposerDrawer {controller} {attachmentsState} {actions} />
   <ChatContextUsage {controller} {composerState} {actions} />

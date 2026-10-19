@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
+import { validateDelivery } from "./dispatch-intent.ts";
 import { validateRecipients } from "./recipients.ts";
 import { validateCommentContexts } from "./comment-context.ts";
 import {
@@ -23,6 +24,7 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
   assertTimestamp(data, "createdAt", "Transcript entry");
   const types = new Set([
     "message",
+    "agent.delivery",
     "thinking.summary",
     "tool",
     "approval.request",
@@ -77,6 +79,11 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
     }
   }
   switch (data.type) {
+    case "agent.delivery":
+      requiredString(data, "dispatchId", "Agent delivery");
+      requiredString(data, "parentId", "Agent delivery");
+      validateDelivery(data.delivery);
+      break;
     case "message":
       if (data.recipients !== undefined && data.role !== "user")
         throw new Error("Only authored messages may retain recipient tags");

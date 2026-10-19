@@ -1,3 +1,4 @@
+import { refreshDispatchItems } from "./dispatch-view.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import type { AiChatItem } from "../chat-items.ts";
 import type { AgentSession } from "../../core/runtime.ts";
@@ -21,38 +22,59 @@ export async function prepareTurn(
     if (!controller.repository) return;
     if (!context?.location || !controller._activeBindingId)
       throw new Error("The agent no longer owns this conversation turn");
-    const entry = projectChatItemsToTranscript([user], {
-      agentBindingId: controller._activeBindingId,
-    })[0];
+    const entry =
+      context.delivery?.user ??
+      projectChatItemsToTranscript([user], {
+        agentBindingId: controller._activeBindingId,
+      })[0];
     if (!entry || entry.type !== "message" || entry.role !== "user")
       throw new Error("A turn requires its authored message");
     const intent = {
       version: 1 as const,
-      id: crypto.randomUUID(),
+      id: context.delivery?.deliveryId ?? crypto.randomUUID(),
       userEntryId: entry.id,
       agentBindingId: controller._activeBindingId,
       startedAt: new Date().toISOString(),
     };
-    await controller.repository.turns.prepare(
-      context.location,
-      intent,
-      entry,
-      controller._recoveredTurn?.id,
-    );
+    if (context.delivery) {
+      await controller.repository.dispatches.start(
+        context.location,
+        context.delivery.dispatchId,
+        context.delivery.deliveryId,
+        controller._activeBindingId,
+      );
+      await refreshDispatchItems(controller, context.location);
+    } else
+      await controller.repository.turns.prepare(
+        context.location,
+        intent,
+        entry,
+        controller._recoveredTurn?.id,
+        controller._recoveredDispatchId,
+      );
     if (
       controller._isAbandoned(turnId) ||
       controller.session !== session ||
       controller._sessionContexts.get(session) !== context
     ) {
-      await controller.repository.turns.finish(
-        context.location,
-        intent.id,
-        true,
-      );
+      if (context.delivery)
+        await controller.repository.dispatches.finish(
+          context.location,
+          context.delivery.dispatchId,
+          context.delivery.deliveryId,
+          "unknown",
+        );
+      else
+        await controller.repository.turns.finish(
+          context.location,
+          intent.id,
+          true,
+        );
       throw new DOMException("Turn preparation was cancelled", "AbortError");
     }
     context.turn = { intent, known: false };
     controller._recoveredTurn = undefined;
+    controller._recoveredDispatchId = undefined;
   });
 }
 
@@ -63,6 +85,27 @@ export async function finishTurn(
   const context = controller._sessionContexts.get(session);
   if (!controller.repository || !context?.location || !context.turn) return;
   const { intent, known } = context.turn;
+  if (context.delivery) {
+    const delivery = context.delivery;
+    const outcome = context.turn.outcome ?? (known ? "completed" : "unknown");
+    try {
+      await controller.repository.dispatches.finish(
+        context.location,
+        delivery.dispatchId,
+        delivery.deliveryId,
+        outcome,
+      );
+      await refreshDispatchItems(controller, context.location);
+      delivery.done(outcome);
+    } catch (error) {
+      delivery.done("unknown");
+      throw error;
+    } finally {
+      context.turn = undefined;
+      context.delivery = undefined;
+    }
+    return;
+  }
   const pending = await controller.repository.turns.finish(
     context.location,
     intent.id,

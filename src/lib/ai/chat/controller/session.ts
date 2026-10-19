@@ -13,6 +13,7 @@ export async function _prepareSession(
   this: AiChatController,
   request: Omit<AgentRequest, "prompt">,
   turnId?: number,
+  sharedUserEntryId?: string,
 ): Promise<void> {
   if (this._isAbandoned(turnId)) return;
   await this._terminalCheckpoint;
@@ -100,6 +101,7 @@ export async function _prepareSession(
       previousSession,
       previousBindingId,
       turnId,
+      sharedUserEntryId,
     );
     if (resumed.resumed) return;
     failedCompatibleBindingId = resumed.failedId;
@@ -109,14 +111,17 @@ export async function _prepareSession(
   const bindingId = `binding-${crypto.randomUUID()}`;
   const handoff =
     snapshot && previousBindingId
-      ? await buildConversationContextHandoff(snapshot.transcript, {
-          conversationId: snapshot.metadata.id,
-          targetBindingId: bindingId,
-          bindings: reduceAgentBindings(snapshot.agents),
-          summaries: snapshot.agents.filter(
-            (record) => record.type === "handoff.summary.created",
-          ),
-        })
+      ? await buildConversationContextHandoff(
+          snapshot.transcript.filter((entry) => entry.id !== sharedUserEntryId),
+          {
+            conversationId: snapshot.metadata.id,
+            targetBindingId: bindingId,
+            bindings: reduceAgentBindings(snapshot.agents),
+            summaries: snapshot.agents.filter(
+              (record) => record.type === "handoff.summary.created",
+            ),
+          },
+        )
       : undefined;
   const discoveredSkills = await this._prepareSkillSnapshot(
     bindingId,

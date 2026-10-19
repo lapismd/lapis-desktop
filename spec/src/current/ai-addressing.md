@@ -23,8 +23,8 @@ Explicit Send snapshots the selected recipients before asynchronous work. The
 exact recipient metadata and authored message are saved before dispatch under
 the existing local turn intent. Failed or unknown preparation retains the draft,
 recipient and attachments and cannot prompt. An unresolvable recipient refuses;
-there is no implicit fallback to the selected agent. AGENT-01A refuses multiple
-recipients explicitly before message/intent creation or dispatch.
+there is no implicit fallback to the selected agent. AGENT-01A initially refused
+multiple recipients; AGENT-01B2 governs their explicit dispatch below.
 
 Saved transcript messages may carry optional `recipients`; old files without the
 field remain readable and are never rewritten. The bounded field contains
@@ -64,3 +64,45 @@ This sub-slice does not enable multiple-recipient delivery or queues. One
 authored message still owns one durable turn intent; multi-delivery must add
 per-recipient outcomes without duplicating the authored message or repeatedly
 calling submit.
+
+## One message with multiple deliveries
+
+AGENT-01B2 captures two to four distinct recipients on one explicit Send. The
+host snapshots and resolves every recipient against its current admitted catalog
+before creating the authored message; saved tags cannot supply executable
+routes. The local dispatch journal claims one exclusive parent intent, saves the
+exact user message once, and records a distinct delivery identity for every
+recipient. Each delivery records pending, started and its own terminal outcome.
+A started checkpoint precedes the native prompt. Provider/tool execution retains
+the existing per-binding admission, approvals, context preparation and effect
+drain.
+
+Deliveries run sequentially, preserving the normal approval surface. A completed
+recipient does not authorize repeating its message. A rejected or uncertain turn
+stops remaining deliveries; cancellation marks only undispatched recipients as
+cancelled and retains uncertainty for a started turn. Failed journal publication
+cannot silently prompt or advance another recipient. Unknown outcomes never
+become successful, and incomplete outcomes remain independently visible beside
+the original recipient labels in Document and Classic.
+
+Cold History restores the one authored message, exact recipient identities and
+per-recipient outcomes without dispatch, retry or provider resume. Interrupted
+started deliveries display unknown; pending deliveries display not sent. A new
+explicit authored message can acknowledge the retained parent and continue, but
+cannot replay its old deliveries. Another mounted owner cannot steal a live
+parent or prepare an ordinary single turn concurrently. Terminal outcome records
+remain in the transcript after the active parent metadata is cleared.
+
+This is immediate explicit addressed delivery. Sending another message while a
+turn is busy and persisted bounded queues remain AGENT-01C. Automatic restart
+replay and JJ-backed transcript persistence remain unavailable.
+
+Named participants can be added from Conversation actions using the currently
+selected admitted agent. The bounded vault setting retains only ID, label and
+agent kind; executable routes, credentials and tools are rejected. Creating or
+selecting a participant does not create a conversation or prompt. Failed saves
+retain the name and existing settings and report one application notification.
+
+Native approval and question IDs are scoped to their originating logical
+binding. Reused IDs cannot select or update another participant's request; UI
+responses retain the exact visible item identity and stale actions refuse.

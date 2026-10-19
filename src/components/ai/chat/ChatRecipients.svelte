@@ -10,20 +10,36 @@
     onRemove,
     disabled = false,
     label = "Message recipients",
+    deliveries = [],
   }: {
     recipients: readonly SavedAgentRecipient[];
     onRemove?: (id: string) => void;
     disabled?: boolean;
     label?: string;
+    deliveries?: readonly import("../../../lib/ai/conversations/dispatch-intent.ts").Delivery[];
   } = $props();
 </script>
 
 {#if recipients.length}
   <div class="chat-recipients" role="group" aria-label={label}>
     {#each recipients as recipient (recipient.id)}
+      {@const delivery = deliveries.find(
+        (d) => d.recipient.id === recipient.id,
+      )}
       <Badge variant="secondary">
         <Avatar name={recipient.label} size="xs" shape="rounded" decorative />
         <span>@{recipient.label}</span>
+        {#if delivery}<span
+            >{{
+              pending: "Pending",
+              started: "Working",
+              completed: "Completed",
+              rejected: "Rejected",
+              unknown: "Unknown",
+              not_sent: "Not sent",
+              cancelled: "Cancelled",
+            }[delivery.state]}</span
+          >{/if}
         {#if onRemove}<Button
             type="button"
             variant="ghost"

@@ -605,3 +605,10 @@ IndependentParticipants exercises Reviewer → Writer → Reviewer through the s
 admitted runtime, distinct session bindings, exact switch-back resume and
 visible Document/Classic attribution. It qualifies sequential single-recipient
 turns; multiple-recipient dispatch and queues remain pending.
+
+`Desktop/AI/Multiple recipients` covers one authored message delivered to two
+independent participants, per-recipient results in both views, normal
+participant creation without execution, and failed save with retained name plus
+one toast. In-flight badges/cancellation and repeated native permission IDs
+across two independently approved participants retain separate outcomes. The
+normal menu uses production components and ordinary vault-owned AI settings.

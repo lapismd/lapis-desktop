@@ -51,6 +51,7 @@ class ComposerPanelState {
   recipientOptions = $derived.by(
     () =>
       this.getProps().agentOptions ??
+      this.getProps().settings?.agentParticipants ??
       ACP_AGENT_IDS.filter(
         (agent) =>
           agent === this.selectedAgent ||
@@ -127,7 +128,10 @@ class ComposerPanelState {
         this.recipients.selectedId = id;
         throw new Error("The selected agent is no longer available");
       }
-      if (option.agent !== this.selectedAgent)
+      if (
+        !this.recipients.selectedIds.length &&
+        option.agent !== this.selectedAgent
+      )
         this.changeAgent(option.agent, "acp");
       this.recipients.select(id);
     });

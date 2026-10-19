@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ChatParticipantDialog from "./ChatParticipantDialog.svelte";
   import type { ChatPanelActions } from "../../../lib/ai/chat/panel/actions.ts";
   // SPDX-License-Identifier: Apache-2.0
   // Retained Lapis chat presentation; see src/lib/ai/NOTICE.md.
@@ -35,6 +36,7 @@
   const fileSearch = $derived(panelProps.fileSearch);
   const onRevealHistory = $derived(panelProps.onRevealHistory);
   const createConversation = $derived(panelProps.createConversation);
+  let participantOpen = $state(false);
 </script>
 
 {#if repository}
@@ -109,6 +111,15 @@
     <DropdownMenu.Content data-ai-part="conversation-menu" align="end">
       <DropdownMenu.Group>
         <DropdownMenu.Item
+          disabled={initializing ||
+            controller.busy ||
+            !panelProps.onSettingsChange}
+          onclick={() => (participantOpen = true)}
+        >
+          <PlusIcon data-icon="inline-start" aria-hidden="true" />Add agent
+          participant
+        </DropdownMenu.Item>
+        <DropdownMenu.Item
           disabled={!controller.location}
           onclick={() =>
             void actions.perform(() =>
@@ -153,3 +164,5 @@
     </DropdownMenu.Content>
   </DropdownMenu.Root>
 {/if}
+
+<ChatParticipantDialog bind:open={participantOpen} {panelProps} {controller} />

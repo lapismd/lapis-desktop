@@ -35,20 +35,22 @@
     >
       {#if attachmentsState.pendingInteraction?.type === "approval"}
         {@const requestId = attachmentsState.pendingInteraction.request.id}
+        {@const itemId = attachmentsState.pendingInteraction.id}
         <AiApprovalCard
           request={attachmentsState.pendingInteraction.request}
           onRespond={(optionId) =>
             void actions.perform(() =>
-              controller.respondToApproval(requestId, optionId),
+              controller.respondToApproval(requestId, optionId, itemId),
             )}
         />
       {:else if attachmentsState.pendingInteraction?.type === "question"}
         {@const requestId = attachmentsState.pendingInteraction.request.id}
+        {@const itemId = attachmentsState.pendingInteraction.id}
         <AiQuestionCard
           request={attachmentsState.pendingInteraction.request}
           onRespond={(answers) =>
             void actions.perform(() =>
-              controller.respondToQuestion(requestId, answers),
+              controller.respondToQuestion(requestId, answers, itemId),
             )}
         />
       {/if}

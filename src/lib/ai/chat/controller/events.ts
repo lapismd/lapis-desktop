@@ -205,9 +205,14 @@ export async function _consume(
         ].includes(event.type)
       )
         context.accepted = true;
-      if (context.turn && event.type === "completed") context.turn.known = true;
-      if (context.turn && event.type === "error")
+      if (context.turn && event.type === "completed") {
+        context.turn.known = true;
+        context.turn.outcome = "completed";
+      }
+      if (context.turn && event.type === "error") {
         context.turn.known = knownTurnError(event.error);
+        context.turn.outcome = context.turn.known ? "rejected" : "unknown";
+      }
       const receivedAt = new Date().toISOString();
       const identify = eventIdentity(
         this.repository ? agentBindingId : undefined,
@@ -230,6 +235,7 @@ export async function _consume(
       }
       if (
         activeSession &&
+        !context.delivery &&
         (event.type === "completed" || event.type === "error")
       ) {
         this.busy = false;
@@ -246,7 +252,10 @@ export async function _consume(
     }
   } catch (error) {
     live.flush();
-    if (context.turn) context.turn.known = knownTurnError(error);
+    if (context.turn) {
+      context.turn.known = knownTurnError(error);
+      context.turn.outcome = context.turn.known ? "rejected" : "unknown";
+    }
     const normalized =
       error instanceof Error ? error : new Error(String(error));
     const errorEvent = {

@@ -46,6 +46,7 @@ export type ConversationMetadata = {
   approvalGrants?: ConversationApprovalGrant[];
   pinned?: boolean;
   pendingTurn?: ConversationTurnIntent;
+  pendingDispatch?: import("./dispatch-intent.ts").DispatchIntent;
   status: "active" | "archived";
 };
 
@@ -148,6 +149,11 @@ type TranscriptEntryBase = {
 };
 
 export type TranscriptEntry =
+  | (TranscriptEntryBase & {
+      type: "agent.delivery";
+      dispatchId: string;
+      delivery: import("./dispatch-intent.ts").Delivery;
+    })
   | (TranscriptEntryBase & {
       type: "message";
       role: "user" | "assistant";

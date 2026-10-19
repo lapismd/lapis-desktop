@@ -1,5 +1,10 @@
 # Desktop plugins and catalog
 
+AGENT-01B2 exposes named participant creation through conversation actions and
+multiple @ recipients in Document/Classic. One authored message retains separate
+local outcomes; failed participant saves preserve the form and use one App
+toast.
+
 AGENT-01B1 extends the addressed-message review with sequential independent
 participants using one runtime. Document/Classic retain their captured labels;
 multiple-recipient delivery and queues stay separate.

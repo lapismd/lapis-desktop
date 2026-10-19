@@ -32,7 +32,30 @@ export function createChatPanelActions(
     );
     const extra = attachmentState.attachments.map((file) => file.path);
     const accepted = await controller.submit(prompt, {
-      ...(addressed ? { recipients: addressed.recipients } : {}),
+      ...(addressed
+        ? {
+            recipients: addressed.recipients,
+            ...(addressed.recipients.length > 1
+              ? {
+                  deliveryTargets: addressed.options.map((option, i) => {
+                    const model = catalogModelsForAgent(
+                      option.agent,
+                      composer.catalogModels,
+                    ).find((m) => m.model === composer.selectedModel);
+                    return {
+                      recipient: addressed.recipients[i]!,
+                      request: {
+                        agent: option.agent,
+                        model: model
+                          ? { provider: model.provider, model: model.model }
+                          : undefined,
+                      },
+                    };
+                  }),
+                }
+              : {}),
+          }
+        : {}),
       contextBlocks,
       workspace,
       mcpServers,
@@ -55,8 +78,29 @@ export function createChatPanelActions(
       );
       attachmentState.drawerCollapsed = false;
     }
-    if (accepted === true && composer.recipients.selectedId === addressed?.id)
+    if (
+      accepted === true &&
+      addressed &&
+      composer.recipients.matches(addressed.recipients.map((r) => r.id))
+    )
       composer.recipients.remove();
+    if (addressed && addressed.recipients.length > 1) {
+      if (accepted === true)
+        await getProps().app?.notifications.clear(
+          "ai-addressed-delivery-error",
+        );
+      else if (controller.error) {
+        const message = controller.error;
+        controller.error = null;
+        getProps().app?.notifications.notify({
+          id: "ai-addressed-delivery-error",
+          title: "AI",
+          source: "ai",
+          severity: "error",
+          message,
+        });
+      }
+    }
     return accepted;
   }
   async function copyResponse(text: string): Promise<void> {

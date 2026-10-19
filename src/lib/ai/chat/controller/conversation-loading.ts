@@ -1,3 +1,4 @@
+import { restoreDispatch } from "./dispatch-view.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat orchestration; see ../../NOTICE.md.
 import { interruptPendingInteractions } from "../../sessions/session-store.ts";
@@ -143,6 +144,10 @@ export async function _restoreConversation(
     );
   this.usage =
     latestUsage?.type === "usage.updated" ? { ...latestUsage.usage } : null;
+  if (restoreDispatch(this, snapshot)) {
+    this.items = interruptPendingInteractions(this.items);
+    return;
+  }
   const unconfirmed = await restoreTurn(this);
   if (this._isAbandoned(turnId)) return;
   if (unconfirmed) {

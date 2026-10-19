@@ -115,6 +115,7 @@
       <Chat.Message sender={message.role === "user" ? "user" : "assistant"}>
         {#if message.recipients?.length}<ChatRecipients
             recipients={message.recipients}
+            deliveries={message.deliveries}
             label="Sent to"
           />{/if}
         <Chat.MessageBubble>

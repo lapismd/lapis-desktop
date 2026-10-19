@@ -137,3 +137,59 @@ it("an unconfirmed Send retains its recipient and attachment draft", async () =>
     await controller.close();
   }
 });
+
+it("reports a failed addressed send once through notifications and retains the complete draft audience", async () => {
+  const runtime = new FakeAgentRuntime(),
+    controller = new AiChatController(runtime),
+    notify = vi.fn();
+  vi.spyOn(controller, "submit").mockImplementation(async () => {
+    controller.error = "Addressed delivery journal unavailable";
+    return false;
+  });
+  const options = [
+    reviewer,
+    { id: "writer", label: "Writer", agent: "codex" as const },
+  ];
+  const recipients = new ComposerRecipients(() => options);
+  recipients.select("reviewer");
+  recipients.select("writer");
+  const composer = {
+    draft: "Keep both recipients",
+    catalogState: null,
+    recipients,
+    catalogModels: [],
+    selectedAgent: "codex",
+    selectedModel: "",
+    selectedThinking: "medium",
+    selectedRuntime: "fake",
+  } as unknown as ComposerState;
+  const attachments = {
+    attachments: [],
+    drawerCollapsed: false,
+  } as unknown as AttachmentsState;
+  const actions = createChatPanelActions(
+    () =>
+      ({
+        runtime,
+        app: { notifications: { notify } },
+      }) as unknown as AiChatPanelProps,
+    controller,
+    composer,
+    attachments,
+  );
+  try {
+    await actions.submit("Keep both recipients");
+    expect(notify).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({
+        id: "ai-addressed-delivery-error",
+        severity: "error",
+        message: "Addressed delivery journal unavailable",
+      }),
+    );
+    expect(controller.error).toBeNull();
+    expect(recipients.selectedIds).toEqual(["reviewer", "writer"]);
+    expect(composer.draft).toBe("Keep both recipients");
+  } finally {
+    await controller.close();
+  }
+});

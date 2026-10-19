@@ -72,7 +72,7 @@
     <ChatRecipients
       recipients={composerState.recipients.display}
       disabled={controller.busy || initializing}
-      onRemove={() => composerState.recipients.remove()}
+      onRemove={(id) => composerState.recipients.remove(id)}
     />
     {#if controller.usage}
       <label

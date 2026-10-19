@@ -25,6 +25,7 @@ export async function _tryResumeBinding(
   previousSession: AgentSession | null,
   previousBindingId: string | undefined,
   turnId?: number,
+  sharedUserEntryId?: string,
 ): Promise<{ resumed: boolean; failedId?: string }> {
   if (
     !compatibleBinding.context ||
@@ -35,18 +36,21 @@ export async function _tryResumeBinding(
   }
   let resumed: AgentSession | undefined;
   try {
-    const handoff = await buildConversationContextHandoff(snapshot.transcript, {
-      conversationId: snapshot.metadata.id,
-      targetBindingId: compatibleBinding.id,
-      after: {
-        entryId: compatibleBinding.context.throughEntryId,
-        entryHash: compatibleBinding.context.throughEntryHash,
+    const handoff = await buildConversationContextHandoff(
+      snapshot.transcript.filter((entry) => entry.id !== sharedUserEntryId),
+      {
+        conversationId: snapshot.metadata.id,
+        targetBindingId: compatibleBinding.id,
+        after: {
+          entryId: compatibleBinding.context.throughEntryId,
+          entryHash: compatibleBinding.context.throughEntryHash,
+        },
+        bindings: reduceAgentBindings(snapshot.agents),
+        summaries: snapshot.agents.filter(
+          (record) => record.type === "handoff.summary.created",
+        ),
       },
-      bindings: reduceAgentBindings(snapshot.agents),
-      summaries: snapshot.agents.filter(
-        (record) => record.type === "handoff.summary.created",
-      ),
-    });
+    );
     const appToolSession = await this._prepareAppToolSession(
       compatibleBinding.id,
       targetRuntime,

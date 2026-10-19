@@ -14,6 +14,7 @@ import { registerCatalogCleanup } from "../../lifecycle.ts";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 import { savedCommentSnapshot } from "./saved-comments.ts";
+import { ParticipantSettings } from "./participant-settings.svelte.ts";
 import { savedRecipientSnapshot } from "./saved-recipients.ts";
 
 export type TranscriptScenario =
@@ -27,13 +28,20 @@ export type TranscriptScenario =
   | "unknown-turn"
   | "restored-comments"
   | "addressed"
+  | "addressed-approval"
+  | "participant-settings"
+  | "participant-settings-failure"
   | "failure";
 const type = "ai-transcript-review";
 
 export function createTranscriptFixture(scenario: TranscriptScenario) {
   const base = createChatApp(() => {});
+  const participantSettings = new ParticipantSettings(
+    scenario === "participant-settings-failure",
+  );
   const runtime = new FakeAgentRuntime({
-    requireApproval: scenario === "approval",
+    requireApproval:
+      scenario === "approval" || scenario === "addressed-approval",
     requireQuestion: scenario === "question",
     trace: "rich",
     resumeSupported: scenario !== "restored-comments",
@@ -67,10 +75,14 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
     scopeDir: "Notes",
     conversationId: "123e4567-e89b-42d3-a456-426614174000",
   };
-  const addressedStore =
-    scenario === "addressed"
-      ? new MemoryTranscriptStore([savedRecipientSnapshot()])
-      : undefined;
+  const addressedStore = [
+    "addressed",
+    "addressed-approval",
+    "participant-settings",
+    "participant-settings-failure",
+  ].includes(scenario)
+    ? new MemoryTranscriptStore([savedRecipientSnapshot()])
+    : undefined;
   const repository = addressedStore
     ? new ConversationRepository(addressedStore)
     : scenario === "unknown-turn"
@@ -155,7 +167,7 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
             scenario === "classic" ? "classic" : "document",
           runtime,
           agentOptions:
-            scenario === "addressed"
+            scenario === "addressed" || scenario === "addressed-approval"
               ? [
                   { id: "reviewer", label: "Reviewer", agent: "codex" },
                   { id: "writer", label: "Writer", agent: "codex" },
@@ -164,7 +176,10 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
           sessionStore: repository ? undefined : store,
           repository,
           initialLocation: repository ? location : undefined,
-          settings: DEFAULT_AI_SETTINGS,
+          get settings() {
+            return participantSettings.value;
+          },
+          onSettingsChange: participantSettings.save,
           models: [{ provider: "codex", model: "gpt-5.6-sol" }],
           initializing: scenario === "loading",
           fileSearch: async (query) =>
