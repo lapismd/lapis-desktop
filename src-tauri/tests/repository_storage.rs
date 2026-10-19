@@ -181,3 +181,40 @@ fn backup_watches_skip_large_metadata_trees_and_do_not_react_to_their_own_writes
     );
     watches.close(&vault.session_id, &id).unwrap();
 }
+
+#[test]
+fn storage_display_and_reveal_only_use_the_native_selected_current_directory() {
+    use lapis_desktop::repository::storage::{reveal_path, view};
+    let temp = tempfile::tempdir().unwrap();
+    let base = temp.path().canonicalize().unwrap();
+    let notes = base.join("notes");
+    fs::create_dir(&notes).unwrap();
+    let mut vaults = VaultManager::new(&base.join("profile")).unwrap();
+    let vault = vaults.select(Some(notes), None).unwrap().unwrap();
+    let locations = Locations::new(base.join("history"));
+    let storage = locations.storage(&vault);
+    let expected = locations.binding(&vault).unwrap().metadata();
+    let empty = view(&storage).unwrap();
+    assert_eq!(empty.repository_path, expected.to_str().unwrap());
+    assert!(!empty.can_reveal);
+    assert!(!expected.exists(), "display does not initialize history");
+    fs::create_dir_all(&expected).unwrap();
+    assert!(view(&storage).unwrap().can_reveal);
+    assert_eq!(reveal_path(&storage, 0).unwrap(), expected);
+    assert!(
+        reveal_path(&storage, 1).is_err(),
+        "stale revision cannot reveal another layout"
+    );
+    #[cfg(unix)]
+    {
+        fs::remove_dir(&expected).unwrap();
+        let elsewhere = base.join("elsewhere");
+        fs::create_dir(&elsewhere).unwrap();
+        std::os::unix::fs::symlink(&elsewhere, &expected).unwrap();
+        assert!(!view(&storage).unwrap().can_reveal);
+        assert!(
+            reveal_path(&storage, 0).is_err(),
+            "symlink cannot redirect reveal"
+        );
+    }
+}

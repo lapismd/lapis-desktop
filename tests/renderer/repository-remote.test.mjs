@@ -201,3 +201,26 @@ test("recreated plugin owners serialize their writes and an obsolete completion 
   await updateRepositoryData(old, clear);
   assert.equal(data.pendingRemoteRestore.request.request_id, "new");
 });
+
+test("native upstream counts retain exact anchors and reject invalid totals", async () => {
+  const divergence = {
+    local_commit: "a".repeat(40),
+    remote_commit: "b".repeat(40),
+    incoming: 2,
+    outgoing: 1,
+  };
+  const read = (counts) =>
+    nativeRemote("opaque", async () => ({
+      revision: 1,
+      divergence: counts,
+    })).status();
+  assert.deepEqual((await read(divergence)).divergence, divergence);
+  for (const counts of [
+    { ...divergence, incoming: -1 },
+    { ...divergence, outgoing: 1.5 },
+    { ...divergence, incoming: Number.MAX_SAFE_INTEGER + 1 },
+    { ...divergence, remote_commit: null },
+  ])
+    await assert.rejects(read(counts), /Invalid remote backup state/);
+  assert.equal((await read(null)).divergence, null);
+});

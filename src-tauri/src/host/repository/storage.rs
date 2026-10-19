@@ -4,10 +4,13 @@ use super::{
     remote::{failure, runtime},
 };
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::{Binding, StorageLocation, StorageStatus};
+use jj_vault::{Binding, StorageLocation};
+use lapis_desktop::repository::storage::{self as presentation, StorageView};
 use lapis_desktop::vault::VaultDescriptor;
 use serde::Deserialize;
+use tauri::Manager;
 use tauri::{State, WebviewWindow};
+use tauri_plugin_opener::OpenerExt;
 
 // Local layout discovery and capture startup never queue behind networking.
 pub(super) async fn worker<T: Send + 'static>(
@@ -55,6 +58,9 @@ pub struct Request {
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 enum Action {
     Status,
+    Reveal {
+        revision: u64,
+    },
     Change {
         revision: u64,
         location: StorageLocation,
@@ -72,7 +78,7 @@ pub async fn desktop_backup_storage(
     host: State<'_, NativeHost>,
     repository: State<'_, RepositoryHost>,
     request: Request,
-) -> Result<StorageStatus, NativeError> {
+) -> Result<StorageView, NativeError> {
     let caller = policy::caller(&window).map_err(failure)?;
     let _transition = repository.transitions.lock().await;
     let session = request.session_id.clone();
@@ -82,9 +88,16 @@ pub async fn desktop_backup_storage(
     })
     .await?;
     let storage = repository.backups.locations.storage(&descriptor);
-    if matches!(request.action, Action::Status) {
+    if matches!(request.action, Action::Status | Action::Reveal { .. }) {
+        let app = window.app_handle().clone();
         return worker(&repository, move || {
-            storage.status().map_err(std::io::Error::other)
+            if let Action::Reveal { revision } = request.action {
+                let path = presentation::reveal_path(&storage, revision)?;
+                app.opener()
+                    .reveal_item_in_dir(path)
+                    .map_err(std::io::Error::other)?;
+            }
+            presentation::view(&storage)
         })
         .await;
     }
@@ -106,7 +119,7 @@ pub async fn desktop_backup_storage(
         .map_err(failure)?;
     let (status, binding) = worker(&repository, move || {
         runtime()?.block_on(async {
-            let status = match request.action {
+            match request.action {
                 Action::Change {
                     revision,
                     location,
@@ -114,10 +127,13 @@ pub async fn desktop_backup_storage(
                 } => storage.change(revision, location, &request_id).await,
                 Action::Recover => storage.recover().await,
                 Action::Rollback { request_id } => storage.rollback(&request_id).await,
-                Action::Status => unreachable!(),
+                Action::Status | Action::Reveal { .. } => unreachable!(),
             }
             .map_err(std::io::Error::other)?;
-            Ok((status, storage.binding().map_err(std::io::Error::other)?))
+            Ok((
+                presentation::view(&storage)?,
+                storage.binding().map_err(std::io::Error::other)?,
+            ))
         })
     })
     .await?;
@@ -139,6 +155,12 @@ mod tests {
     fn storage_frames_reject_paths_and_scope_injection() {
         let valid = serde_json::json!({"sessionId":"opaque", "action":{"kind":"change", "revision":0, "location":"colocated", "request_id":"original"}});
         assert!(serde_json::from_value::<Request>(valid.clone()).is_ok());
+        let reveal =
+            serde_json::json!({"sessionId":"opaque", "action":{"kind":"reveal", "revision":0}});
+        assert!(serde_json::from_value::<Request>(reveal.clone()).is_ok());
+        let mut injected = reveal;
+        injected["action"]["path"] = serde_json::json!("/outside");
+        assert!(serde_json::from_value::<Request>(injected).is_err());
         for key in [
             "root",
             "state",

@@ -228,3 +228,5 @@ by the task ledger, not inferred from this list.
 - [Constrained chat with long tool paths](E-CATALOG-012.md)
 
 - [Core file exclusions and compact composer](E-CATALOG-013.md)
+
+- [Upstream footer actions, counts and repository location](E-REPO-043.md)

@@ -1,10 +1,19 @@
+import { applyCandidate } from "./sync-application.ts";
+import {
+  observePublication,
+  publishSync,
+  refreshPublished,
+} from "./sync-publication.ts";
 import type { RemoteService } from "./remote.ts";
 import {
   pendingSync,
+  syncFeedback,
+  idleSyncPhase,
   type PendingSync,
   type SyncResolution,
   type SyncService,
   type SyncState,
+  type SyncAction,
 } from "./sync.ts";
 export class SyncController {
   #state: SyncState = {
@@ -18,7 +27,8 @@ export class SyncController {
   #job?: Promise<void>;
   #pending?: PendingSync;
   #revision = 0;
-  #failure?: string;
+  #resumeAction: SyncAction = "sync";
+  #feedback: ReturnType<typeof syncFeedback>;
   #conflictKey?: string;
   #operations = new Set<Promise<unknown>>();
   constructor(
@@ -30,7 +40,9 @@ export class SyncController {
       load(): Promise<unknown>;
       save(pending?: PendingSync): Promise<void>;
     },
-  ) {}
+  ) {
+    this.#feedback = syncFeedback(feedback);
+  }
   subscribe(listener: (state: SyncState) => void) {
     this.#listeners.add(listener);
     listener(this.#state);
@@ -45,14 +57,14 @@ export class SyncController {
     if (this.#state.enabled === enabled) return;
     this.#set({ enabled, phase: enabled ? "ready" : "paused" });
   }
-  run(): Promise<void> {
+  run(action: SyncAction = "sync"): Promise<void> {
     if (
       this.#closed ||
-      !this.#state.enabled ||
+      (action === "sync" && !this.#state.enabled) ||
       (this.#state.busy && !this.#job)
     )
       return Promise.resolve();
-    return (this.#job ??= this.#track(this.#execute()).finally(() => {
+    return (this.#job ??= this.#track(this.#execute(action)).finally(() => {
       this.#job = undefined;
     }));
   }
@@ -69,9 +81,29 @@ export class SyncController {
     if (this.#pending === original) this.#pending = undefined;
     this.#set({ recovery: false });
   }
-  async #execute() {
-    this.#set({ busy: true, phase: "fetching" });
+  #cancelled(action: SyncAction) {
+    return this.#closed || (action === "sync" && !this.#state.enabled);
+  }
+  async #execute(action: SyncAction) {
+    this.#set({
+      busy: true,
+      phase: action === "status" ? this.#state.phase : "fetching",
+    });
     try {
+      if (action === "fetch" || action === "status") {
+        let upstream = await this.remote.status();
+        if (this.#closed) return;
+        this.#set({ upstream });
+        if (action === "fetch") {
+          if (!upstream.configuration)
+            throw new Error("Connect an upstream repository first");
+          upstream = await this.remote.fetch(upstream.revision);
+        }
+        if (this.#closed) return;
+        this.#set({ upstream, phase: idleSyncPhase(this.#state) });
+        if (action === "fetch") this.#feedback.recovered();
+        return;
+      }
       if (!this.#pending) {
         const stored = await this.recovery.load();
         this.#pending = pendingSync(stored);
@@ -83,40 +115,58 @@ export class SyncController {
         }
       }
       if (this.#closed) return;
+      if (
+        action === "push" &&
+        (this.#pending ||
+          this.#state.recovery ||
+          this.#state.proposal?.conflicts.length)
+      )
+        throw new Error("Review pending synchronization before pushing");
       await this.#applyPending();
-      if (this.#closed || !this.#state.enabled) return;
+      if (this.#cancelled(action)) return;
       let remote = await this.remote.status();
-      if (this.#closed || !this.#state.enabled) return;
+      this.#set({ upstream: remote });
+      if (this.#cancelled(action)) return;
       if (!remote.configuration) {
+        if (action !== "sync")
+          throw new Error("Connect an upstream repository first");
         this.#set({ phase: "ready" });
-        this.#recovered();
+        this.#feedback.recovered();
         return;
       }
-      if (remote.publication && this.remote.publication) {
-        remote = await this.remote.publication.observe(
-          remote.revision,
-          remote.publication.request_id,
-        );
-        if (this.#closed || !this.#state.enabled) return;
-        if (
-          remote.publication &&
-          (remote.publication.outcome !== "prepared" ||
-            !remote.configuration?.canPush)
-        )
-          throw new Error(
-            "The original push still needs observation; local history is safe",
-          );
-      }
+      remote = await observePublication(this.remote, remote);
+      if (this.#cancelled(action)) return;
+      this.#set({ upstream: remote });
       if (!remote.configuration) return;
       this.#revision = remote.revision;
+      if (action === "push") {
+        if (!remote.configuration.canPush)
+          throw new Error(
+            "This account cannot push to the upstream repository",
+          );
+        const captured = await this.guard(async () => {
+          if (this.#cancelled(action)) return false;
+          await this.remote.keepCurrent();
+          return true;
+        });
+        if (!captured || this.#cancelled(action)) return;
+        this.#set({ phase: "publishing" });
+        await publishSync(this.service, remote.revision);
+        if (this.#closed) return;
+        this.#set({ upstream: await refreshPublished(this.remote, remote) });
+        this.#set({ phase: idleSyncPhase(this.#state) });
+        this.#feedback.recovered();
+        return;
+      }
+      this.#resumeAction = action;
       const proposal = await this.service.prepare(remote.revision);
-      if (this.#closed || !this.#state.enabled) return;
+      if (this.#cancelled(action)) return;
       this.#set({ proposal: proposal ?? undefined, conflict: undefined });
       if (proposal?.conflicts.length) {
         this.#set({ phase: "conflicts" });
         if (this.#conflictKey !== proposal.candidate?.commit) {
           this.#conflictKey = proposal.candidate?.commit;
-          this.#report(
+          this.#feedback.report(
             new Error(
               "Backup has conflicts. Open Backup settings to review them.",
             ),
@@ -125,63 +175,38 @@ export class SyncController {
         return;
       }
       if (proposal?.candidate) {
-        await this.guard(async () => {
-          if (this.#closed || !this.#state.enabled) return;
-          const current = await this.remote.status();
-          if (this.#closed || !this.#state.enabled) return;
-          if (current.revision !== remote.revision)
-            throw new Error("Backup connection changed; synchronize again");
-          const preview = await this.service.preview(
-            proposal.candidate!.commit,
-            remote.revision,
-          );
-          if (this.#closed || !this.#state.enabled) return;
-          this.#pending = {
-            version: 1,
-            revision: remote.revision,
-            request: {
-              request_id: crypto.randomUUID(),
-              checkpoint: preview.checkpoint,
-              expected: preview.expected,
-            },
-          };
-          await this.recovery.save(this.#pending);
-          if (this.#closed) return;
-          this.#set({ phase: "applying", recovery: true });
-          await this.service.apply(
-            this.#pending.request,
-            this.#pending.revision,
-          );
-          if (this.#closed) return;
-          await this.recovery.save(undefined);
-          this.#pending = undefined;
-          this.#set({ recovery: false });
+        await applyCandidate({
+          candidate: proposal.candidate.commit,
+          revision: remote.revision,
+          service: this.service,
+          remote: this.remote,
+          recovery: this.recovery,
+          guard: this.guard,
+          cancelled: () => this.#cancelled(action),
+          closed: () => this.#closed,
+          pending: (next) => {
+            this.#pending = next;
+            if (!next) this.#set({ recovery: false });
+          },
+          applying: () => this.#set({ phase: "applying", recovery: true }),
         });
       }
-      if (this.#closed || !this.#state.enabled) return;
-      if (remote.configuration.canPush) {
+      if (this.#cancelled(action)) return;
+      if (action === "sync" && remote.configuration.canPush) {
         this.#set({ phase: "publishing" });
-        const result = await this.service.publish(
-          remote.revision,
-          crypto.randomUUID(),
-        );
-        if (this.#closed) return;
-        if (result !== "complete")
-          throw new Error(
-            result === "unknown"
-              ? "The original push still needs observation; local history is safe"
-              : result === "stopped"
-                ? "The original push stopped tracking; synchronize again to create a new request"
-                : "The remote advanced; synchronization will fetch and merge again",
-          );
+        await publishSync(this.service, remote.revision);
+        remote = await refreshPublished(this.remote, remote);
       }
       if (!this.#closed) {
         this.#set({
-          phase: "ready",
-          proposal: undefined,
-          lastSuccess: Date.now(),
+          upstream: action === "sync" ? remote : await this.remote.status(),
         });
-        this.#recovered();
+        this.#set({
+          phase: this.#state.enabled ? "ready" : "paused",
+          proposal: undefined,
+          ...(action === "sync" ? { lastSuccess: Date.now() } : {}),
+        });
+        this.#feedback.recovered();
       }
     } catch (error) {
       if (!this.#closed) {
@@ -189,7 +214,7 @@ export class SyncController {
           phase: "attention",
           recovery: this.#state.recovery || !!this.#pending,
         });
-        this.#report(error);
+        this.#feedback.report(error);
       }
     } finally {
       this.#set({ busy: false });
@@ -205,7 +230,7 @@ export class SyncController {
       );
       this.#set({ conflict });
     } catch (error) {
-      if (!this.#closed) this.#report(error);
+      if (!this.#closed) this.#feedback.report(error);
     } finally {
       this.#set({ busy: false });
     }
@@ -232,13 +257,14 @@ export class SyncController {
         },
         conflict: undefined,
       });
-      this.#recovered();
+      this.#feedback.recovered();
     } catch (error) {
-      if (!this.#closed) this.#report(error);
+      if (!this.#closed) this.#feedback.report(error);
     } finally {
       this.#set({ busy: false });
     }
-    if (!this.#state.proposal?.conflicts.length) await this.run();
+    if (!this.#state.proposal?.conflicts.length)
+      await this.run(this.#resumeAction);
   }
   async keepCurrent() {
     if (this.#closed || this.#state.busy) return;
@@ -249,22 +275,12 @@ export class SyncController {
       await this.recovery.save(undefined);
       this.#pending = undefined;
       this.#set({ recovery: false, phase: "ready" });
-      this.#recovered();
+      this.#feedback.recovered();
     } catch (error) {
-      if (!this.#closed) this.#report(error);
+      if (!this.#closed) this.#feedback.report(error);
     } finally {
       this.#set({ busy: false });
     }
-  }
-  #report(error: unknown) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (this.#failure === message) return;
-    this.#failure = message;
-    this.feedback.report(error);
-  }
-  #recovered() {
-    this.#failure = undefined;
-    this.feedback.recovered();
   }
   close() {
     this.#closed = true;

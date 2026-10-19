@@ -58,7 +58,9 @@ export function pendingSync(value: unknown): PendingSync | undefined {
   )
     return saved;
 }
+export type SyncAction = "sync" | "fetch" | "pull" | "push" | "status";
 export type SyncState = {
+  upstream?: import("./remote.ts").RemoteSnapshot;
   busy: boolean;
   phase:
     | "ready"
@@ -74,3 +76,33 @@ export type SyncState = {
   lastSuccess?: number;
   recovery: boolean;
 };
+
+export function idleSyncPhase(state: SyncState): SyncState["phase"] {
+  return state.recovery
+    ? "attention"
+    : state.proposal?.conflicts.length
+      ? "conflicts"
+      : state.enabled
+        ? "ready"
+        : "paused";
+}
+
+/** Keep one notification episode across retries until a successful outcome. */
+export function syncFeedback(feedback: {
+  report(error: unknown): void;
+  recovered(): void;
+}) {
+  let failure: string | undefined;
+  return {
+    report(error: unknown) {
+      const message = error instanceof Error ? error.message : String(error);
+      if (failure === message) return;
+      failure = message;
+      feedback.report(error);
+    },
+    recovered() {
+      failure = undefined;
+      feedback.recovered();
+    },
+  };
+}

@@ -1,5 +1,7 @@
 export type StorageLocation = "external" | "colocated";
 export type StorageStatus = {
+  repositoryPath?: string;
+  canReveal?: boolean;
   revision: number;
   location: StorageLocation;
   pending: {
@@ -17,6 +19,7 @@ export interface StorageService {
   ): Promise<StorageStatus>;
   recover(): Promise<StorageStatus>;
   rollback(requestId: string): Promise<StorageStatus>;
+  reveal?(revision: number): Promise<StorageStatus>;
   reload(): Promise<void>;
 }
 export type StorageState = {

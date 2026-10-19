@@ -1,10 +1,9 @@
 # Desktop shell
 
-Footer: E-CATALOG-012. Composer/listings: E-CATALOG-013.
-
-E-REPO-035–041 retain backup Settings/native authority; E-AI-056 retains
-LD-DESK-005. [Local imports](ai-imports.md) governs capture admission. Gravatar:
-`https://www.gravatar.com`; status: `repository-navigation.md`.
+Footer/composer: E-CATALOG-012/013. E-REPO-043 adds worker counts and OS reveal.
+E-REPO-035–041 retain backup authority; E-AI-056 retains LD-DESK-005. Capture:
+[local imports](ai-imports.md). Gravatar: `https://www.gravatar.com`; status:
+`repository-navigation.md`.
 
 Notes starts App-owned watching after metadata/views; leave drains it before
 persistence/teardown and resumes a live App on failure (LD-FILE-002/003). M6

@@ -21,6 +21,9 @@
   let loadingFinished = false;
   let moveFinished = false;
   let saved: StorageStatus = untrack(() => ({
+    repositoryPath:
+      "/Users/reviewer/Library/Application Support/Lapis/vault-history/project-notes/repo",
+    canReveal: true,
     revision: scenario === "colocated" ? 1 : 0,
     location: scenario === "colocated" ? "colocated" : "external",
     pending:
@@ -67,6 +70,12 @@
           async openAuthorization() {},
         },
         storage: {
+          async reveal(revision) {
+            if (revision !== saved.revision)
+              throw new Error("Storage settings changed");
+            root.dataset.revealedRepository = saved.repositoryPath;
+            return saved;
+          },
           async status() {
             if (scenario === "loading" && !loadingFinished)
               await new Promise<void>((done) => (release = done));

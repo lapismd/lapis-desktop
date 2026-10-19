@@ -88,6 +88,17 @@ export class StorageController {
   refresh() {
     return this.#run("loading", () => this.service.status());
   }
+  reveal() {
+    const data = this.#state.data;
+    if (
+      !data?.canReveal ||
+      data.pending ||
+      this.#state.needsReload ||
+      !this.service.reveal
+    )
+      return Promise.resolve(false);
+    return this.#run("revealing", () => this.service.reveal!(data.revision));
+  }
   change(location: StorageLocation) {
     const data = this.#state.data;
     if (!data || data.pending || data.location === location)

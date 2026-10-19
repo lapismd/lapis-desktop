@@ -26,6 +26,13 @@ export function nativeRemote(
           typeof value.configuration.target?.url !== "string" ||
           typeof value.configuration.target.branch !== "string" ||
           typeof value.configuration.canPush !== "boolean")) ||
+      (value.divergence != null &&
+        (typeof value.divergence.local_commit !== "string" ||
+          typeof value.divergence.remote_commit !== "string" ||
+          !Number.isSafeInteger(value.divergence.incoming) ||
+          value.divergence.incoming < 0 ||
+          !Number.isSafeInteger(value.divergence.outgoing) ||
+          value.divergence.outgoing < 0)) ||
       (value.publication &&
         (typeof value.publication.request_id !== "string" ||
           typeof value.publication.after !== "string" ||

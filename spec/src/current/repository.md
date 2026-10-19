@@ -6,11 +6,11 @@ and original JJ identities remain separate, through owned interfaces without
 upstream `jj-lib`. E-AI-055 reuses capture/privacy for read-only local-file
 imports; LD-REPO-001/002/003 pins, identity and publication remain unchanged.
 
-E-REPO-024/025 add the bounded physical working-copy status read and left-footer
-controls (E-CATALOG-009/010). [Repository navigation](repository-navigation.md)
-owns its read-only authority, lifecycle, setting and presentation contract.
-E-CATALOG-012 adds viewport clearance around the footer popover without changing
-repository reads or working-copy observation.
+E-REPO-043 governs upstream actions/counts and OS directory reveal in
+[automatic backup](vault-backup.md), retaining admission and operation pins.
+E-REPO-024/025 and E-CATALOG-009/010/012 govern footer status/clearance in
+[repository navigation](repository-navigation.md); read authority stays
+unchanged.
 
 ## Requirements
 

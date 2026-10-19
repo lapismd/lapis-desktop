@@ -84,3 +84,7 @@ covers the read; errors use App toasts and obsolete counts disappear. Renderer
 paths, workspace names, generations and operation choices grant no authority.
 Structured native failures MUST retain their message/code as normalized Errors
 before notification; a serialized object cannot become `[object Object]` text.
+
+The working-copy and automatic-history popovers share the upstream header
+actions and capability gating specified in
+[Automatic vault backup](vault-backup.md).

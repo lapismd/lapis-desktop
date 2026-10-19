@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import RepositoryUpstreamActions from "./RepositoryUpstreamActions.svelte";
+  import type { SyncController } from "../../lib/repository/sync-controller.ts";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
   import { FileChangeStats } from "@lapismd/design-core/diff";
@@ -17,10 +19,12 @@
     controller,
     openRevision,
     copyText,
+    upstream,
   }: {
     controller: WorkingCopyController;
     openRevision(operation: string, revision: string): Promise<void>;
     copyText(value: string): Promise<void>;
+    upstream?: SyncController;
   } = $props();
   let statusState: WorkingCopyState = $state({ busy: true, status: "loading" });
   let open = $state(false);
@@ -82,6 +86,10 @@
         <header>
           <GitCommitHorizontal aria-hidden="true" /><strong>Working copy</strong
           >{#if value}<span class="workspace">{value.workspace}</span>{/if}
+          <RepositoryUpstreamActions
+            controller={upstream}
+            unavailable={statusState.busy}
+          />
         </header>
         {#if value}
           <button type="button" class="subject" onclick={inspect}
@@ -228,7 +236,9 @@
     border-bottom: 1px solid var(--border);
   }
   .workspace {
-    margin-left: auto;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
     color: var(--muted-foreground);
   }
   .subject {

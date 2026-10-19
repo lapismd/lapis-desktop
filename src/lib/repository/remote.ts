@@ -17,6 +17,12 @@ export type PendingPublication = {
   outcome: "prepared" | "unknown" | "complete" | "stale" | "stopped";
 };
 export type RemoteSnapshot = {
+  divergence?: {
+    local_commit: string;
+    remote_commit: string;
+    incoming: number;
+    outgoing: number;
+  } | null;
   revision: number;
   configuration: RemoteConfiguration | null;
   checkpoint: BackupCheckpoint | null;

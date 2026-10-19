@@ -366,3 +366,81 @@ test("automatic retries retain a dismissed failure episode until actual recovery
   await f.controller.run();
   assert.equal(f.errors.length, 2);
 });
+
+test("explicit fetch never applies files or publishes, including with automatic sync paused", async () => {
+  const f = fixture();
+  f.remote.fetch = async (revision) => {
+    assert.equal(revision, 2);
+    f.calls.push("fetch");
+    return f.remote.status();
+  };
+  f.controller.setEnabled(false);
+  await f.controller.run("fetch");
+  assert.deepEqual(f.calls, ["fetch"]);
+  f.controller.close();
+});
+test("explicit pull applies with the existing guard but never publishes", async () => {
+  const f = fixture();
+  f.controller.setEnabled(false);
+  await f.controller.run("pull");
+  assert.deepEqual(f.calls, ["prepare", "persist", "apply", "clear"]);
+  assert.equal(f.state.phase, "paused");
+  f.controller.close();
+});
+test("explicit push captures saved files, publishes and refreshes upstream counts", async () => {
+  const f = fixture();
+  const snapshot = await f.remote.status();
+  f.remote.fetch = async () => {
+    f.calls.push("fetch-counts");
+    return { ...snapshot, divergence: { incoming: 0, outgoing: 0 } };
+  };
+  await f.controller.run("push");
+  assert.deepEqual(f.calls, ["capture-barrier", "publish", "fetch-counts"]);
+  assert.equal(f.state.upstream.divergence.outgoing, 0);
+  f.controller.close();
+});
+test("a count refresh failure cannot fail or replay a confirmed push", async () => {
+  const f = fixture();
+  f.remote.fetch = async () => {
+    throw Error("offline after push");
+  };
+  await f.controller.run("push");
+  assert.deepEqual(f.calls, ["capture-barrier", "publish"]);
+  assert.equal(f.state.phase, "ready");
+  assert.equal(f.state.upstream.divergence, null);
+  assert.deepEqual(f.errors, []);
+  f.controller.close();
+});
+
+test("pull conflict resolution retains pull-only intent and never publishes", async () => {
+  const f = fixture();
+  f.proposal.conflicts = ["Note.md"];
+  await f.controller.run("pull");
+  f.proposal.conflicts = [];
+  await f.controller.resolve("Note.md", { kind: "delete" });
+  assert(f.calls.includes("apply"));
+  assert(!f.calls.includes("publish"));
+  f.controller.close();
+});
+test("push cannot replay a pending apply, and read-only accounts cannot publish", async () => {
+  const f = fixture();
+  f.recovery.load = async () => ({
+    version: 1,
+    revision: 2,
+    request: { request_id: "original", checkpoint: "saved", expected: "tree" },
+  });
+  await f.controller.run("push");
+  assert.deepEqual(f.calls, []);
+  assert.equal(f.state.recovery, true);
+  f.controller.close();
+  const r = fixture(),
+    status = await r.remote.status();
+  r.remote.status = async () => ({
+    ...status,
+    configuration: { ...status.configuration, canPush: false },
+  });
+  await r.controller.run("push");
+  assert.deepEqual(r.calls, []);
+  assert.match(r.errors[0].message, /cannot push/);
+  r.controller.close();
+});

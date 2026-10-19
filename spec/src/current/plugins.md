@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+E-REPO-043 maps upstream action/count states and external repository reveal to
+production plugin settings/status stories. Fixtures inject providers and record
+intent without real network publication or file-manager launch.
+
 Catalog browser files run serially through the browser-pool option; the outer
 Vitest file option alone does not bound that pool. Existing assertions and
 deadlines remain unchanged.

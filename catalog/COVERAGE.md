@@ -836,3 +836,11 @@ acceptance for the dedicated footer, repository placement and activity bridge.
 configuration updates in the production folder picker without Repository
 History. `Chat layout review/Compact Composer` covers both two-line modes and
 retained drafts.
+
+`repository/UpstreamStatus.stories.ts` uses production footer/header controls in
+the real Notes App for a HeaderReview and incoming/outgoing counts, no fetched
+tip, disconnected, read-only, pending and offline/toast states. Fetch/Pull/Push
+are separately asserted, with keyboard shadcn tooltips and count refresh.
+`HistoryStorage` shows the native-selected external directory and records OS
+reveal intent without a real file-manager launch or migration. E-REPO-043;
+visual-pending.

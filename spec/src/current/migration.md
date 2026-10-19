@@ -351,3 +351,7 @@ E-CATALOG-009 tracks the approved full-width status footer and centre API
 bridge, repository placement, ribbon Settings and removal of overlay clearances.
 This renderer handoff does not promote M8.5 native acceptance or AI/backup
 gates.
+
+E-REPO-043 extends the integrated history plugin with manual upstream footer
+actions/counts and external-directory reveal. It retains the original M14
+native/provider gates and Partial statuses. Focused UI delivery is complete.

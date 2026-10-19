@@ -5,6 +5,7 @@
   import * as ToggleGroup from "@lapismd/design-core/shadcn/toggle-group";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
+  import FolderOpen from "@lucide/svelte/icons/folder-open";
   import FolderCog from "@lucide/svelte/icons/folder-cog";
   import RefreshCw from "@lucide/svelte/icons/refresh-cw";
   import type { StorageController } from "../../../lib/repository/storage-controller.ts";
@@ -67,6 +68,21 @@
         >
       </div>
     {:else if snapshot.data}
+      {#if snapshot.data.location === "external" && snapshot.data.repositoryPath}
+        <div class="repository-location">
+          <strong>Repository location</strong>
+          <code>{snapshot.data.repositoryPath}</code>
+          <Button
+            variant="outline"
+            size="sm"
+            disabled={snapshot.busy ||
+              !snapshot.data.canReveal ||
+              snapshot.needsReload}
+            onclick={() => controller.reveal()}
+            ><FolderOpen data-icon="inline-start" />Show in file manager</Button
+          >
+        </div>
+      {/if}
       <Field.Field data-disabled={snapshot.busy || undefined}>
         <Field.Label>Repository metadata location</Field.Label>
         <ToggleGroup.Root
@@ -113,6 +129,17 @@
 </section>
 
 <style>
+  .repository-location {
+    display: grid;
+    justify-items: start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.8125rem;
+  }
+  .repository-location code {
+    overflow-wrap: anywhere;
+    white-space: normal;
+  }
   .storage-actions,
   .storage-loading {
     display: flex;

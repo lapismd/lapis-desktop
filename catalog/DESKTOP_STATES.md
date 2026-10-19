@@ -173,3 +173,10 @@ AI folder discovery excludes `.git`/`.jj` via core `files.exclude`; the
 shared-core story also updates the setting without changing stored bytes.
 Compact Composer reviews both two-line presentations without a focus ring
 (E-CATALOG-013).
+
+Repository upstream status: IncomingAndOutgoing, AwaitingFirstFetch, NoUpstream,
+ReadOnly, PendingFetch and Offline cover footer controls/counts and
+notifications. HistoryStorage/External covers directory display/reveal;
+Colocated hides that external row. Native graph counts and reveal admission have
+separate focused service tests. Visual approval and real-provider OS flows
+remain pending.

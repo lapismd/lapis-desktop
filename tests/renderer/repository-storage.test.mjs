@@ -169,3 +169,52 @@ test("an already requested native move finishes its reload even if its observer 
   assert.deepEqual(f.calls, [["reload"]]);
   assert.equal(f.states.length, count, "closed presentation remains fenced");
 });
+
+test("showing storage uses its native revision and never invokes the migration guard or reload", async () => {
+  let guarded = false;
+  const f = setup(async () => {
+    guarded = true;
+    throw new Error("Unexpected mutation");
+  });
+  f.service.status = async () => ({
+    ...external,
+    repositoryPath: "/native/history/vault/repo",
+    canReveal: true,
+  });
+  f.service.reveal = async (revision) => {
+    f.calls.push(["reveal", revision]);
+    return f.service.status();
+  };
+  await f.controller.refresh();
+  await f.controller.reveal();
+  assert.equal(guarded, false);
+  assert.deepEqual(f.calls, [["reveal", 0]]);
+  assert.equal(f.states.at(-1).needsReload, false);
+  f.controller.close();
+});
+
+test("native reveal sends only session and revision, rejecting malformed display metadata", async () => {
+  const calls = [];
+  const service = nativeStorage("opaque", async (command, args) => {
+    calls.push([command, args]);
+    return { ...external, repositoryPath: "/native/repo", canReveal: true };
+  });
+  await service.reveal(7);
+  assert.deepEqual(calls, [
+    [
+      "desktop_backup_storage",
+      {
+        request: {
+          sessionId: "opaque",
+          action: { kind: "reveal", revision: 7 },
+        },
+      },
+    ],
+  ]);
+  const invalid = nativeStorage("opaque", async () => ({
+    ...external,
+    repositoryPath: 42,
+    canReveal: true,
+  }));
+  await assert.rejects(invalid.status(), /Invalid history storage state/);
+});

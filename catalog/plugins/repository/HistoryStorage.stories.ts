@@ -31,10 +31,22 @@ async function open(element: HTMLElement) {
 }
 export const ApplicationData: StoryObj = {
   play: async ({ canvasElement }) => {
-    const { region } = await open(canvasElement);
+    const { region, fixture } = await open(canvasElement);
     await expect(
       await region.findByRole("radio", { name: "Application data" }),
     ).toHaveAttribute("aria-checked", "true");
+    await expect(
+      region.findByText(/Application Support\/Lapis\/vault-history/),
+    ).resolves.toBeVisible();
+    await userEvent.click(
+      region.getByRole("button", { name: "Show in file manager" }),
+    );
+    await waitFor(() =>
+      expect(fixture.dataset.revealedRepository).toContain(
+        "/vault-history/project-notes/repo",
+      ),
+    );
+    expect(fixture.dataset.storageReloads).toBeUndefined();
   },
 };
 export const VaultRoot: StoryObj = {
@@ -44,6 +56,7 @@ export const VaultRoot: StoryObj = {
     await expect(
       await region.findByRole("radio", { name: "Vault root (.jj)" }),
     ).toHaveAttribute("aria-checked", "true");
+    expect(region.queryByText("Repository location")).toBeNull();
   },
 };
 export const MoveAndReload: StoryObj = {

@@ -113,6 +113,8 @@ pub async fn desktop_backup_remote(
         remote::read,
     )
     .await?;
+    let include_counts = matches!(request.action, Action::Status | Action::Fetch { .. });
+    let count_binding = binding.clone();
     let result = match request.action {
         Action::Status => serde_json::to_value(state),
         Action::Configure {
@@ -241,7 +243,12 @@ pub async fn desktop_backup_remote(
             )
         }
     };
-    result.map_err(|_| failure("Native response is invalid"))
+    let result = result.map_err(|_| failure("Native response is invalid"))?;
+    if include_counts {
+        super::remote_counts::attach(&repository, count_binding, result).await
+    } else {
+        Ok(result)
+    }
 }
 #[cfg(test)]
 mod tests {

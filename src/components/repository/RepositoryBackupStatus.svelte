@@ -1,5 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import RepositoryUpstreamActions from "./RepositoryUpstreamActions.svelte";
+  import type { SyncController } from "../../lib/repository/sync-controller.ts";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
@@ -17,10 +19,12 @@
     controller,
     openRevision,
     copyText,
+    upstream,
   }: {
     controller: BackupController;
     openRevision(operation: string, revision: string): Promise<void>;
     copyText(value: string): Promise<void>;
+    upstream?: SyncController;
   } = $props();
   let value: BackupStatus = $state({
     phase: "saving",
@@ -69,11 +73,17 @@
     <Popover.Content
       side="top"
       align="end"
+      collisionPadding={8}
+      sideOffset={6}
       style="width:min(26rem,calc(100vw - 1rem));padding:0"
     >
       <section class="backup-card" aria-label="Vault history details">
         <header>
           <History aria-hidden="true" /><strong>Local history</strong>
+          <RepositoryUpstreamActions
+            controller={upstream}
+            unavailable={value.phase !== "ready"}
+          />
         </header>
         {#if value.checkpoint}
           <button type="button" class="subject" onclick={inspect}

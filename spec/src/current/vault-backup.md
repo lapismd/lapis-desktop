@@ -187,3 +187,24 @@ before native work and retains it across a lost reply or restart. Source
 unavailability keeps pending recovery controls available; feedback uses App
 toasts. Stopping fences even a request not yet delivered and cannot undo
 accepted ancestry, change capture preferences or enable remote synchronization.
+
+The status popover header MUST offer Fetch, Pull and Push upstream actions in
+that order, right-aligned with shadcn tooltips. Fetch only imports history; Pull
+uses existing guarded merge/apply recovery without publishing; Push captures
+saved files and uses the existing exact publication intent without applying
+incoming files. Explicit actions remain available when automatic sync is paused,
+serialize with it and report real background progress. No configured upstream,
+read-only publication, retained conflicts and recovery states gate the relevant
+actions. Incoming/outgoing counts MUST use retained checkpoint ancestry at a
+single immutable operation, exclude the unsaved working-copy child and label
+their last-fetch basis. Unknown or bounded-out counts MUST remain unknown. A
+proven push refreshes the fetched tip for counts; a failed refresh hides counts
+without failing or replaying the accepted publication.
+
+External history settings MUST display the native-selected repository directory
+and a Show in file manager action. The display path is read-only; reveal
+requests carry only the admitted vault session and storage revision. Native
+workers revalidate that revision, reject pending moves/symlink redirects and
+resolve the selected directory themselves. Revealing cannot initialize/move
+history, stop capture or revoke active readers. Colocated history retains its
+root selector.

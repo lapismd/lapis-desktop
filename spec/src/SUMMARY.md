@@ -284,3 +284,5 @@
 - [Constrained chat with long tool paths](history/E-CATALOG-012.md)
 
 - [Core file exclusions and compact composer](history/E-CATALOG-013.md)
+
+- [Upstream footer actions, counts and repository location](history/E-REPO-043.md)

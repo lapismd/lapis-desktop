@@ -143,6 +143,7 @@ export class RepositoryStatus {
               target: host,
               props: {
                 controller,
+                upstream: this.plugin.backup?.sync?.controller,
                 openRevision: (operation, revision) =>
                   this.plugin
                     .open(operation, revision)

@@ -25,6 +25,9 @@ export function nativeStorage(
       !Number.isSafeInteger(value.revision) ||
       value.revision < 0 ||
       !location(value.location) ||
+      (value.repositoryPath !== undefined &&
+        typeof value.repositoryPath !== "string") ||
+      (value.canReveal !== undefined && typeof value.canReveal !== "boolean") ||
       (value.pending !== null &&
         (!value.pending ||
           typeof value.pending.request_id !== "string" ||
@@ -36,6 +39,7 @@ export function nativeStorage(
   }
   return {
     status: () => request({ kind: "status" }),
+    reveal: (revision) => request({ kind: "reveal", revision }),
     change: (revision: number, location: StorageLocation, requestId: string) =>
       request({ kind: "change", revision, location, request_id: requestId }),
     recover: () => request({ kind: "recover" }),
