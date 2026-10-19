@@ -9,7 +9,7 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
 M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
-Current work: M14.4 — Integrate remote setup and fresh-device restore
+Current work: M14.5 — Implement automatic sync and conflicts
 
 Oldest pending gate: M7.3 — After M10.4: qualify ordinary native popouts
 
@@ -59,7 +59,7 @@ below.
 | M14.1 | Partial     | Complete native binding and identity proof                                          |
 | M14.2 | Partial     | Qualify cold native lifecycle later                                                 |
 | M14.3 | Partial     | Qualify cold app restore, then forge setup                                          |
-| M14.4 | In progress | Integrate remote setup and fresh-device restore                                     |
-| M14.5 | Planned     | Integrate guarded Git transport                                                     |
+| M14.4 | Partial     | Qualify cold app/provider flow later                                                |
+| M14.5 | In progress | Implement automatic sync and conflicts                                              |
 | M14.6 | Planned     | Add the disposable projection                                                       |
 | M14.7 | Planned     | Complete advanced storage and providers                                             |

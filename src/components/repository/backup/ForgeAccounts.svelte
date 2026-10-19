@@ -1,6 +1,6 @@
 <script lang="ts">
   // Adapted from jj-store StoreIntegrations.svelte (Apache-2.0).
-  import { onMount, tick } from "svelte";
+  import { onMount, tick, type Snippet } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as Card from "@lapismd/design-core/shadcn/card";
   import * as Menu from "@lapismd/design-core/shadcn/dropdown-menu";
@@ -17,7 +17,10 @@
   import ForgeAuthorization from "./ForgeAuthorization.svelte";
   import type { ForgeController } from "../../../lib/repository/forge-controller.ts";
   import type { ForgeState } from "../../../lib/repository/forge-accounts.ts";
-  let { controller }: { controller: ForgeController } = $props();
+  let {
+    controller,
+    remoteSettings,
+  }: { controller: ForgeController; remoteSettings?: Snippet } = $props();
   let snapshot = $state<ForgeState>({ busy: true, flow: "" });
   let menu = $state(false);
   onMount(() => {
@@ -151,6 +154,7 @@
           jj-store. Configure that ID or connect with a personal token.
         </p>{/if}
       <ForgeAuthorization manager={controller} {snapshot} />
+      {@render remoteSettings?.()}
       <p class="guidance">
         <KeyRound />Credentials are saved locally in your OS credential store.
       </p>

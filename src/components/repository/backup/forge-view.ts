@@ -2,20 +2,27 @@ import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import { mount, unmount } from "svelte";
 import { ForgeController } from "../../../lib/repository/forge-controller.ts";
-import type { ForgeService } from "../../../lib/repository/forge-accounts.ts";
+import type { RepositoryServices } from "../../../lib/repository/history-reader.ts";
+import { RemoteController } from "../../../lib/repository/remote-controller.ts";
+import type { RestoreController } from "../../../lib/repository/restore.ts";
 import { BackgroundWork } from "../../../lib/desktop/background-work.ts";
 import type { RepositoryPlugin } from "../repository-plugin.ts";
-import ForgeAccounts from "./ForgeAccounts.svelte";
+import BackupSettings from "./BackupSettings.svelte";
+import { createRemoteRestore } from "./remote-restore.ts";
+type Controller = ForgeController | RemoteController | RestoreController;
 
 class BackupSettingsView extends View {
   #controller?: ForgeController;
   #component?: ReturnType<typeof mount>;
   #progress?: () => void;
+  #remote?: RemoteController;
+  #restore?: RestoreController;
+  #remoteProgress?: () => void;
   constructor(
     leaf: WorkspaceLeaf,
     private readonly plugin: RepositoryPlugin,
-    private readonly service: ForgeService,
-    private readonly controllers: Set<ForgeController>,
+    private readonly services: RepositoryServices,
+    private readonly controllers: Set<Controller>,
   ) {
     super(leaf);
   }
@@ -32,7 +39,7 @@ class BackupSettingsView extends View {
   protected async onClose() {}
   onload() {
     const controller = (this.#controller = new ForgeController(
-      this.service,
+      this.services.forges!,
       this.plugin.feedback(
         "Forge accounts",
         "repository-history:forge-accounts",
@@ -45,9 +52,25 @@ class BackupSettingsView extends View {
     ).follow("Connecting forge accounts", {
       subscribe: (listener) => controller.subscribeActivity(listener),
     });
-    this.#component = mount(ForgeAccounts, {
+    if (this.services.remote) {
+      this.#remote = new RemoteController(
+        this.services.remote,
+        this.plugin.feedback("Remote backup", "repository-history:remote"),
+      );
+      this.#restore = createRemoteRestore(this.plugin, this.services.remote);
+      this.controllers.add(this.#remote);
+      if (this.#restore) this.controllers.add(this.#restore);
+      const remote = this.#remote;
+      this.#remoteProgress = new BackgroundWork(
+        this.app.notifications,
+        this.plugin.id,
+      ).follow("Remote vault backup", {
+        subscribe: (listener) => remote.subscribeActivity(listener),
+      });
+    }
+    this.#component = mount(BackupSettings, {
       target: this.containerEl,
-      props: { controller },
+      props: { controller, remote: this.#remote, restore: this.#restore },
     });
   }
   onunload() {
@@ -61,6 +84,19 @@ class BackupSettingsView extends View {
     }
     if (this.#controller) this.controllers.delete(this.#controller);
     this.#controller = undefined;
+    if (this.#remote) {
+      const remote = this.#remote,
+        progress = this.#remoteProgress;
+      remote.close();
+      void remote.drained().finally(() => progress?.());
+      this.controllers.delete(remote);
+      this.#remote = undefined;
+    }
+    if (this.#restore) {
+      this.#restore.close();
+      this.controllers.delete(this.#restore);
+    }
+    this.#restore = undefined;
   }
 }
 export function openBackupSettings(plugin: RepositoryPlugin) {
@@ -76,13 +112,13 @@ export function openBackupSettings(plugin: RepositoryPlugin) {
 }
 export function registerBackupSettings(
   plugin: RepositoryPlugin,
-  service: ForgeService | undefined,
+  services: RepositoryServices,
 ) {
-  if (!service) return;
-  const controllers = new Set<ForgeController>();
+  if (!services.forges) return;
+  const controllers = new Set<Controller>();
   plugin.registerView(
     "repository-backup-settings",
-    (leaf) => new BackupSettingsView(leaf, plugin, service, controllers),
+    (leaf) => new BackupSettingsView(leaf, plugin, services, controllers),
     {
       kind: "command",
       command: {

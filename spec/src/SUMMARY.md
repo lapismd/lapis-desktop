@@ -224,3 +224,5 @@
 - [Native GitHub accounts for vault backup](history/E-REPO-029.md)
 
 - [Native forge repository validation](history/E-REPO-030.md)
+
+- [Remote backup setup and guarded restoration](history/E-REPO-031.md)

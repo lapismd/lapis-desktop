@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-REPO-031 adds production remote backup settings and six mapped review states;
+LD-CAT-003 ownership and original native product gates remain unchanged.
+
 E-AI-041 promotes the shared transcript into the ordinary AI plugin under
 standing implementation approval. Vault-owned presentation defaults to Document;
 Classic uses the same controller/readers. Recorded model transitions, usage,

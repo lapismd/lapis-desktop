@@ -70,3 +70,16 @@ head without changing files. Fresh-device restoration reuses the all-writer
 guard, original safety checkpoint and durable request recovery, retaining both
 local and imported ancestry. Remote setup changes cannot reinterpret a pending
 publication intent.
+
+The exact `desktop_backup_remote` request contains an admitted session and a
+tagged status/configure/disconnect/fetch/preview/restore action. Renderer frames
+cannot supply paths, credentials, Git URLs, generations or caller authority.
+Versioned private configuration uses a revision guard; pending push intents
+prevent endpoint replacement. Cached imported checkpoints remain restorable
+without an available account. The original remote-restore request is persisted
+separately from local restore before mutation and is cleared only by its own
+confirmed result or a completed keep-current capture barrier. Plugin data merges
+serialize per App and plugin identity, including recreated plugin instances.
+Closing settings fences late responses but progress lasts until native work
+actually drains. E-REPO-031 records focused proof; cold app/provider gates
+remain.

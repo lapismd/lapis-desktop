@@ -7,6 +7,7 @@ import RepositoryWorkingCopyStatus from "./RepositoryWorkingCopyStatus.svelte";
 import RepositoryBackupStatus from "./RepositoryBackupStatus.svelte";
 import { RESTORE_NOTICE } from "./restore-controller.ts";
 import { openBackupSettings } from "./backup/forge-view.ts";
+import { updateRepositoryData } from "../../lib/repository/plugin-data.ts";
 import {
   AUTOMATIC_BACKUP_SETTING,
   automaticBackup,
@@ -32,11 +33,13 @@ export class RepositoryStatus {
   ) {}
   async start(): Promise<void> {
     this.#data = (await this.plugin.loadData()) ?? {};
-    if (this.#data.pendingRestore)
+    if (this.#data.pendingRestore || this.#data.pendingRemoteRestore)
       this.plugin.app.notifications.notify({
         id: RESTORE_NOTICE,
         title: "Restore needs review",
-        message: "Open Repository History to check the interrupted restore.",
+        message: this.#data.pendingRemoteRestore
+          ? "Open backup settings to check the interrupted remote restore."
+          : "Open Repository History to check the interrupted restore.",
         source: this.plugin.id,
         severity: "warning",
         persist: false,
@@ -102,8 +105,9 @@ export class RepositoryStatus {
             id === AUTOMATIC_BACKUP_SETTING
               ? "automaticBackup"
               : "showWorkingCopyStatus";
-          await this.plugin.saveData({ ...this.#data, [key]: value });
-          this.#data = { ...this.#data, [key]: value };
+          this.#data = await updateRepositoryData(this.plugin, {
+            [key]: value,
+          });
           if (id === AUTOMATIC_BACKUP_SETTING)
             await this.plugin.backup?.setEnabled(value);
           await this.#apply();

@@ -11,8 +11,8 @@ listed below. Changes integrate back into the main workspaces after completion.
 | 1. Vault identity and external storage | Partial | Ordinary folder has durable history without in-vault JJ/Git metadata; reopen/relink retains it |
 | 2. Capture coordinator                 | Partial | Internal/external changes, bounded debounce/reconciliation and crash/close recovery work       |
 | 3. Local history and restore           | Partial | Timeline, guarded file/vault restore, live history and optional status work                    |
-| 4. GitHub integration                  | Active  | Sign-in, remote setup and fresh-device restore work                                            |
-| 5. Automatic two-way synchronization   | Pending | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
+| 4. GitHub integration                  | Partial | Sign-in, remote setup and fresh-device restore work                                            |
+| 5. Automatic two-way synchronization   | Active  | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
 | 6. Historical search                   | Pending | Find and restore past text, paths and metadata through exact checkpoint anchors                |
 | 7. Advanced storage and Forgejo        | Pending | Root .jj/adoption and Forgejo work, then changes integrate into main                           |
 
@@ -95,7 +95,7 @@ serialized native worker proof. Unsupported symlink and file/directory type
 transitions fail explicitly before mutation. Full-tree restore does not replace
 `.lapis` runtime data or explicit backup exclusions.
 
-## Current stage: GitHub integration
+## GitHub integration
 
 - [x] Reuse jj-forge account manager with desktop-owned OS secret namespace and
       private account metadata. Reuse only the configured public OAuth client
@@ -112,5 +112,14 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
       source26c4c417 (E-VAULT-BACKUP-005).
 - [x] Native account-scoped repository resolution: validate clone origin,
       project, branch and observed push permission without exposing credentials.
-- [ ] Desktop remote repository/branch setup and fresh-device restore.
+- [x] Desktop remote repository/branch setup and guarded fresh-device restore;
+      cached restoration, original-request recovery and progress drain work.
+      E-REPO-031.
 - [ ] Live forge acceptance after the complete sync flow is implemented.
+
+## Current stage: Automatic synchronization
+
+- [ ] Plugin-owned automatic fetch/merge/push, independent of status/settings.
+- [ ] Bounded offline retry/coalescing without blocking local capture or close.
+- [ ] Guarded native merge and usable retained-conflict resolution.
+- [ ] Exact original push recovery and two-device native proof.

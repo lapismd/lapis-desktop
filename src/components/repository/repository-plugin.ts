@@ -124,7 +124,7 @@ export class RepositoryPlugin extends Plugin {
   async onload(): Promise<void> {
     this.#closing = undefined;
     this.#services = ownedRepository(this.app);
-    this.#closeForges = registerBackupSettings(this, this.#services.forges);
+    this.#closeForges = registerBackupSettings(this, this.#services);
     if (this.#services.backup) {
       this.backup = new RepositoryBackup(this, this.#services.backup);
       await this.backup.start();

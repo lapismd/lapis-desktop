@@ -1,6 +1,6 @@
 # Governance
 
-E-REPO-030 retains LD-GOV-001/002/004 with native account/remote validation,
+E-REPO-031 retains LD-GOV-001/002/004 with native account/remote validation,
 serialized writer admission and source audits. Original milestone gates remain.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host

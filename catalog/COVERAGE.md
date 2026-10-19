@@ -593,3 +593,10 @@ settings view, account controller, real App progress/toasts and injected native
 service port. Copied jj-store account/auth/field/controller sources and
 destinations are recorded in docs/provenance.json. No OS secrets or live forge
 requests occur in catalog execution. Visual review remains pending.
+
+Repository remote backup / RepositorySetup, FetchAndRestore,
+LostResponseAndRetry, CachedRestoreWithoutAccount, FailureAndRecovery and
+Loading exercise production remote settings, the shared guarded restore dialog,
+App progress and toasts. Copied jj-store remote settings/select provenance is in
+docs/provenance.json. The catalog uses injected services; live forge/native
+acceptance and visual approval remain separate.
