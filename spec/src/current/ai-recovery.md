@@ -5,6 +5,23 @@ provider can observe a prompt, and honest recovery when its outcome is unknown.
 E-AI-043 advances NOTES-09-FILES-B under the existing implementation approval.
 JJ-backed persistence remains deferred.
 
+E-AI-044 advances NOTES-09-FILES-C under LD-AI-001/002: ordinary streamed
+responses must retain complete ordered output through the existing bounded ACP
+client. Shared client fixes belong in Lapis AI and use built public exports.
+Queued, individually consumed snapshots may share a bounded acknowledgement;
+count/byte limits, scope/cursor checks, detach and unknown outcomes remain
+exact. The renderer cannot claim completion after lost coverage or replay a
+prompt. The focused native target saves all 500 synthetic response lines with
+the original authored prompt once, without a pending intent or error record.
+
+Notes schedules pending text/thinking presentation every 32ms, flushing earlier
+at 32 events or 16,384 UTF-16 code units. Larger fragments render directly
+without truncation. Capture still processes every event in order. Visible
+control boundaries flush first; cancellation and close flush before fencing
+their session. Retired views drop only pending presentation. Terminal
+checkpoints keep the complete received trace independently of repaint cadence;
+pending timers are released on teardown.
+
 The local file profile adds optional `pendingTurn` metadata, version 1,
 containing only a stable application turn ID, original user-entry ID, tentative
 binding ID and start time. It grants no provider resume, executable or

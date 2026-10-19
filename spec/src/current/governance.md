@@ -1,6 +1,6 @@
 # Governance
 
-E-AI-043 retains LD-GOV-001/002/004 gates; `ai-recovery.md` owns local recovery.
+E-AI-043/044 retain LD-GOV-001/002/004; `ai-recovery.md` owns local delivery.
 
 E-AI-031/032/033 qualify journal/backend/host boundaries. Cold Rust lease proof
 stays separate from packaged WebView acceptance; original M13.3 gates stay open.

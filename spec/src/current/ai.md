@@ -53,7 +53,7 @@ only the native generation; it does not invent resume or replay a prompt. Native
 model catalogs use temporary, non-prompting sessions and release them after
 reading the provider's actual advertised model state.
 
-[Local turn recovery](ai-recovery.md) governs durable dispatch and unknown
+[Local recovery](ai-recovery.md) governs durable dispatch, streaming and unknown
 outcomes.
 
 ## Requirements

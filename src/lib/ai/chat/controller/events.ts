@@ -14,6 +14,7 @@ import { APP_TOOL_MCP_SERVER_NAME } from "../../tools/mcp-server-registry.ts";
 import type { AppToolBridgeEvent } from "../../tools/app-tool-bridge.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { waitForNextTask } from "./turn.ts";
+import { StreamingChatTrace } from "./streaming-trace.ts";
 import {
   finishTurn,
   knownTurnError,
@@ -29,6 +30,21 @@ export async function _consume(
     pendingItems: [],
   };
   this._sessionContexts.set(session, context);
+  const live = new StreamingChatTrace(
+    () => this.items,
+    (items) => {
+      this.items = items.map((item) =>
+        item.agentBindingId || !agentBindingId
+          ? item
+          : { ...item, agentBindingId },
+      );
+    },
+    () =>
+      this.session === session &&
+      !this._disposed &&
+      !this._cancelledSessions.has(session),
+  );
+  this._flushSessionTrace.set(session, () => live.flush());
   let traceItems: AiChatItem[] = [];
   let latestUsage: AgentUsage | null = null;
   const persistCompletedTrace = async () => {
@@ -196,12 +212,7 @@ export async function _consume(
       const activeSession = this.session === session;
       const cancelled = this._cancelledSessions.has(session);
       if (activeSession && !cancelled) {
-        this.items = applyAgentEventToChatItems(this.items, event).map(
-          (item) =>
-            item.agentBindingId || !agentBindingId
-              ? item
-              : { ...item, agentBindingId },
-        );
+        live.receive(event);
       }
       if (event.type === "completed" || event.type === "error") {
         if (event.type === "error" && activeSession) {
@@ -225,6 +236,7 @@ export async function _consume(
       }
     }
   } catch (error) {
+    live.flush();
     if (context.turn) context.turn.known = knownTurnError(error);
     const normalized =
       error instanceof Error ? error : new Error(String(error));
@@ -243,6 +255,9 @@ export async function _consume(
     await session.close().catch(() => undefined);
     await this._closeAppToolBinding(agentBindingId);
   } finally {
+    live.flush();
+    live.clear();
+    this._flushSessionTrace.delete(session);
     if (this.session === session) this.busy = false;
     await checkpointTrace();
     this._sessionContexts.delete(session);
@@ -260,6 +275,7 @@ export async function _consumeAppToolEvent(
   ) {
     return;
   }
+  if (this.session) this._flushSessionTrace.get(this.session)?.();
   this.items = applyAgentEventToChatItems(this.items, event).map((item) =>
     item.agentBindingId ? item : { ...item, agentBindingId: bindingId },
   );

@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-042 advances local Codex/file transcripts; E-AI-043 adds turn recovery.
+E-AI-042–044 cover local Codex, file transcripts, recovery and streaming.
 LD-MIG-002 retains original M10.2/M13 gates and user-deferred JJ integration.
 Local chat/restart evidence stays distinct from managed capture qualification.
 

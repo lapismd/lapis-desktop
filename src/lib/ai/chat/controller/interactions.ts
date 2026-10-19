@@ -113,6 +113,7 @@ export async function respondToQuestion(
 }
 
 export async function cancel(this: AiChatController): Promise<void> {
+  if (this.session) this._flushSessionTrace.get(this.session)?.();
   this._turnId += 1;
   this._activeRecallAbort?.abort();
   this._activeRecallAbort = undefined;
@@ -174,6 +175,7 @@ export async function cancelAndSwitch(
 }
 
 export async function close(this: AiChatController): Promise<void> {
+  for (const flush of this._flushSessionTrace.values()) flush();
   this._disposed = true;
   this._turnId += 1;
   this._unsubscribeAppToolEvents?.();

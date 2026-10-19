@@ -63,6 +63,7 @@ export class AiChatControllerState {
   _createdAt?: string;
   _persistQueue: Promise<void> = Promise.resolve();
   _terminalCheckpoint: Promise<void> = Promise.resolve();
+  readonly _flushSessionTrace = new Map<AgentSession, () => void>();
   _activeBindingId?: string;
   _activeBinding?: EffectiveAgentBinding;
   _usageDirty = false;
