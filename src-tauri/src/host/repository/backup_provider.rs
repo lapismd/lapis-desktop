@@ -1,6 +1,7 @@
 use jj_vault::{
-    Capture, Checkpoint, FetchedHead, NativeRepository, Repository, RestorePreview, RestoreRequest,
-    SyncConflict, SyncProposal, SyncResolution, VaultRestorePreview, VaultRestoreRequest,
+    AdoptionRequest, Capture, Checkpoint, FetchedHead, NativeRepository, Repository,
+    RestorePreview, RestoreRequest, SyncConflict, SyncProposal, SyncResolution,
+    VaultRestorePreview, VaultRestoreRequest,
 };
 use std::sync::{
     Arc, Mutex,
@@ -15,6 +16,13 @@ pub(super) struct Provider {
     pub active: Arc<AtomicBool>,
 }
 impl Repository for Provider {
+    fn adopt_history(&mut self, request: &AdoptionRequest) -> Result<Checkpoint, String> {
+        self.with_native(|native| native.adopt_history(request))
+    }
+    fn stop_adoption(&mut self, id: &str) -> Result<(), String> {
+        self.with_native(|native| native.stop_adoption(id))
+    }
+
     fn prepare_sync(&mut self, incoming: &str) -> Result<SyncProposal, String> {
         self.with_native(|n| n.prepare_sync(incoming))
     }

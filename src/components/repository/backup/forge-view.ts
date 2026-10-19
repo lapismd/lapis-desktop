@@ -10,6 +10,8 @@ import type { RepositoryPlugin } from "../repository-plugin.ts";
 import BackupSettings from "./BackupSettings.svelte";
 import { createRemoteRestore } from "./remote-restore.ts";
 import type { StorageController } from "../../../lib/repository/storage-controller.ts";
+import { adoptionSettings } from "./adoption-settings.ts";
+import type { AdoptionController } from "../../../lib/repository/adoption-controller.ts";
 import { storageSettings } from "./storage-settings.ts";
 type Controller = ForgeController | RemoteController | RestoreController;
 
@@ -26,6 +28,7 @@ class BackupSettingsView extends View {
     private readonly services: RepositoryServices,
     private readonly controllers: Set<Controller>,
     private readonly storage?: StorageController,
+    private readonly adoption?: AdoptionController,
   ) {
     super(leaf);
   }
@@ -78,6 +81,7 @@ class BackupSettingsView extends View {
         remote: this.#remote,
         restore: this.#restore,
         storage: this.storage,
+        adoption: this.adoption,
         sync: this.plugin.backup?.sync?.controller,
         setSyncEnabled: (enabled) =>
           this.plugin
@@ -130,6 +134,7 @@ export function registerBackupSettings(
   if (!services.forges) return;
   const controllers = new Set<Controller>();
   const storage = storageSettings(plugin, services.storage);
+  const adoption = adoptionSettings(plugin, services.adoption);
   plugin.registerView(
     "repository-backup-settings",
     (leaf) =>
@@ -139,6 +144,7 @@ export function registerBackupSettings(
         services,
         controllers,
         storage?.controller,
+        adoption?.controller,
       ),
     {
       kind: "command",
@@ -150,7 +156,7 @@ export function registerBackupSettings(
     },
   );
   return async () => {
-    await storage?.close();
+    await Promise.all([storage?.close(), adoption?.close()]);
     await Promise.allSettled(
       [...controllers].map((controller) => controller.close()),
     );

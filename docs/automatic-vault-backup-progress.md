@@ -54,8 +54,8 @@ listed below. Changes integrate back into the main workspaces after completion.
   lacked the new workspace's public `jj-history` dist; building that package
   restored a clean type check. These attempts remain in local verification logs.
 - Historical search and Forgejo focused implementation are recorded below.
-  Existing-repository adoption/source selection and main integration remain
-  required implementation, not deferred scope.
+  Existing-repository adoption/source selection now have focused implementation;
+  native acceptance and main integration remain required delivery.
 - Nothing has been integrated into the main workspaces yet. Existing review app
   and ordinary vault data remain in their original locations.
 
@@ -82,7 +82,7 @@ listed below. Changes integrate back into the main workspaces after completion.
       reopening history.
 - [ ] Complete actual-WebView backup/restore lifecycle acceptance.
 - [x] Forgejo and historical search focused implementation (recorded below).
-- [ ] Existing repository source selector and adoption.
+- [x] Existing repository source selector and explicit ancestry adoption.
 
 First Storybook restore attempts exposed a Vite dependency-optimization reload
 and an assertion racing dialog animation. The exact stories pass after the
@@ -132,9 +132,9 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
 
 Normal, conflict and original-push recovery flows have focused proof in
 E-VAULT-BACKUP-008/009 and E-REPO-032/033. Stage 5 is Partial: cold
-native/provider acceptance remains open. Only stage 7 is Active. Root
-storage/adoption, Forgejo and main integration remain required; original
-workspaces and review data are preserved.
+native/provider acceptance remains open. Only stage 7 is Active. Root storage,
+adoption and Forgejo have focused implementations; cold acceptance and main
+integration remain required. Original workspaces and review data are preserved.
 
 ## Historical search
 
@@ -160,13 +160,21 @@ versions remain path-only with an explicit count.
       resolution.
 - [x] Backup watcher excludes repository/runtime metadata from both hints and
       recursive inventory, preventing capture loops in the root layout.
-- [ ] Explicit existing-repository adoption.
-- [ ] Existing-repository history source selector.
+- [x] Explicit existing-repository adoption with original-request recovery.
+- [x] Separate backup/original JJ Log and Op Log source tabs with pinned reads.
 - [ ] Focused cold native-app acceptance and integration into main workspaces.
 
 Forgejo focused evidence: E-VAULT-BACKUP-011 / E-REPO-035. Source29forge package
 cases, sevencredential/transfer cases, fournative consumer service cases,
 nineframe cases,11renderer cases and84catalog interaction/axe executions pass.
 Live provider/cold app gates remain open. E-VAULT-BACKUP-012 and E-REPO-036
-record focused source/desktop storage evidence. Stage7 now focuses on
-adoption/source selection and main integration; only this stage is Active.
+record focused source/desktop storage evidence. Stage7 now focuses on native
+acceptance and main integration; only this stage is Active.
+
+E-VAULT-BACKUP-013 / E-REPO-037 record recorded-ancestry import, original
+request recovery and source-specific tabs. The original repository stays
+independent and unchanged; imported Git ancestry joins the current managed tree.
+Original native operations/evolution remain available through separate read
+tokens. Capture, search, status and ordinary file history stay backup-scoped.
+Current focused results are recorded in the ledgers; cold native/provider and
+main integration remain open.

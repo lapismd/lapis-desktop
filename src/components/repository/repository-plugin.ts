@@ -1,3 +1,13 @@
+import {
+  repositoryFeedback,
+  copyRepositoryIdentifier,
+  reportRepositoryError,
+} from "./repository-feedback.ts";
+import { openRepositoryView } from "./repository-navigation.ts";
+import type {
+  HistorySource,
+  HistorySourcePicker,
+} from "../../lib/repository/history-source.ts";
 import { Plugin, type App } from "@lapis-notes/api";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import { HistoryController } from "../../lib/repository/history-controller.ts";
@@ -48,32 +58,29 @@ export class RepositoryPlugin extends Plugin {
   feedback(title = "Repository history", identity?: string) {
     if (!this.#services || this.#closing)
       throw new Error("Repository history is closed");
-    const id = identity ?? `repository-history:${crypto.randomUUID()}`;
+    return repositoryFeedback(this.app, title, identity);
+  }
+  reader(source: HistorySource) {
+    const reader =
+      source === "backup" ? this.#services?.reader : this.#services?.original;
+    if (!reader) throw new Error("This history source is unavailable");
+    return reader;
+  }
+  sourcePicker(
+    source: HistorySource,
+    select: HistorySourcePicker["select"],
+  ): HistorySourcePicker | undefined {
+    if (!this.#services?.sources) return;
     return {
-      report: (error: unknown) =>
-        this.app.notifications.notify({
-          id,
-          title,
-          message: error instanceof Error ? error.message : String(error),
-          source: "repository-history",
-          severity: "error",
-          persist: false,
-        }),
-      recovered: () => {
-        getWorkspaceHostBinding(
-          this.app.workspace,
-        ).controller.notifications.dismiss(id);
-        void this.app.notifications
-          .clear(id)
-          .catch((error) =>
-            console.error("Repository notification cleanup failed", error),
-          );
-      },
+      selected: source,
+      load: this.#services.sources,
+      select,
+      report: (error) => this.report(error),
     };
   }
-  createController(): HistoryController {
+  createController(source: HistorySource = "backup"): HistoryController {
     const feedback = this.feedback();
-    const controller = new HistoryController(this.#services!.reader, feedback);
+    const controller = new HistoryController(this.reader(source), feedback);
     this.#controllers.add(controller);
     this.#activities.set(
       controller,
@@ -84,12 +91,11 @@ export class RepositoryPlugin extends Plugin {
     );
     return controller;
   }
-  createOperationController(): OperationController {
+  createOperationController(
+    source: HistorySource = "backup",
+  ): OperationController {
     const feedback = this.feedback("Repository operation log");
-    const controller = new OperationController(
-      this.#services!.reader,
-      feedback,
-    );
+    const controller = new OperationController(this.reader(source), feedback);
     this.#controllers.add(controller);
     this.#activities.set(
       controller,
@@ -173,70 +179,33 @@ export class RepositoryPlugin extends Plugin {
     await this.#status.start();
   }
   async copyIdentifier(value: string): Promise<void> {
-    const id = `repository-copy:${value}`;
-    try {
-      await navigator.clipboard.writeText(value);
-      getWorkspaceHostBinding(
-        this.app.workspace,
-      ).controller.notifications.dismiss(id);
-      await this.app.notifications.clear(id);
-    } catch (error) {
-      this.app.notifications.notify({
-        id,
-        title: "Copy identifier",
-        source: "repository-history",
-        severity: "error",
-        persist: false,
-        message: error instanceof Error ? error.message : String(error),
-      });
-      throw error;
-    }
+    return copyRepositoryIdentifier(this.app, value);
   }
   report(error: unknown): void {
-    this.app.notifications.notify({
-      title: "Repository history",
-      source: "repository-history",
-      severity: "error",
-      persist: false,
-      message: error instanceof Error ? error.message : String(error),
-    });
+    reportRepositoryError(this.app, error);
   }
-  async open(operation?: string, revision?: string): Promise<void> {
-    const workspace = getWorkspaceHostBinding(this.app.workspace).controller
-      .workspace;
-    const existing = workspace.getLeavesOfType("repository-history")[0];
-    if (existing) {
-      if (operation)
-        await existing.setViewState({
-          type: "repository-history",
-          state: { operation, revision },
-        });
-      workspace.revealLeaf(existing);
-      return;
-    }
-    if (
-      !workspace.openLeaf(
-        "repository-history",
-        operation ? { operation, revision } : {},
-        { active: true },
-      )
-    )
-      throw new Error("Repository history could not be opened");
+  async open(
+    operation?: string,
+    revision?: string,
+    source: HistorySource = "backup",
+  ): Promise<void> {
+    await openRepositoryView(
+      getWorkspaceHostBinding(this.app.workspace).controller.workspace,
+      "repository-history",
+      source,
+      operation ? { operation, revision } : {},
+    );
   }
-  async openOperations(): Promise<void> {
-    const workspace = getWorkspaceHostBinding(this.app.workspace).controller
-      .workspace;
-    const existing = workspace.getLeavesOfType("repository-oplog")[0];
-    if (existing) {
-      workspace.revealLeaf(existing);
-      return;
-    }
-    if (!workspace.openLeaf("repository-oplog", {}, { active: true }))
-      throw new Error("Repository operation log could not be opened");
+  async openOperations(source: HistorySource = "backup"): Promise<void> {
+    await openRepositoryView(
+      getWorkspaceHostBinding(this.app.workspace).controller.workspace,
+      "repository-oplog",
+      source,
+    );
   }
-  createBlameController(): BlameController {
+  createBlameController(source: HistorySource = "backup"): BlameController {
     const controller = new BlameController(
-      this.#services!.reader,
+      this.reader(source),
       this.feedback("File blame"),
     );
     this.#controllers.add(controller);
@@ -261,18 +230,18 @@ export class RepositoryPlugin extends Plugin {
     operation: string,
     commit: string,
     path: string,
+    source: HistorySource = "backup",
   ): Promise<void> {
-    const workspace = getWorkspaceHostBinding(this.app.workspace).controller
-      .workspace;
-    const state = { operation, commit, path };
-    const existing = workspace.getLeavesOfType("repository-file-blame")[0];
-    if (existing) {
-      await existing.setViewState({ type: "repository-file-blame", state });
-      workspace.revealLeaf(existing);
-    } else if (
-      !workspace.openLeaf("repository-file-blame", state, { active: true })
-    )
-      throw new Error("File blame could not be opened");
+    await openRepositoryView(
+      getWorkspaceHostBinding(this.app.workspace).controller.workspace,
+      "repository-file-blame",
+      source,
+      {
+        operation,
+        commit,
+        path,
+      },
+    );
   }
   async onunload(): Promise<void> {
     return (this.#closing ??= (async () => {

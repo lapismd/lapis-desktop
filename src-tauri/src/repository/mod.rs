@@ -1,5 +1,6 @@
 //! Native repository grants independent of AI admission and renderer authority.
 pub mod forges;
+mod original;
 pub mod remote;
 pub(crate) mod source;
 pub mod storage;
@@ -20,6 +21,7 @@ pub struct Grant {
     generation: u64,
     repository: RepositoryId,
     source: Source,
+    read_token: Option<String>,
 }
 impl Grant {
     pub fn window(&self) -> &str {
@@ -42,8 +44,18 @@ pub struct Plan {
     vault: AdmissionPlan,
     grant: Grant,
     preserve: bool,
+    prior: bool,
 }
 impl Plan {
+    pub fn preserves_vault(&self) -> bool {
+        self.vault.preserves_workers()
+    }
+    pub fn had_prior_scope(&self) -> bool {
+        self.prior
+    }
+    pub fn read_token(&self) -> Option<&str> {
+        self.grant.read_token.as_deref()
+    }
     pub fn preserves_reads(&self) -> bool {
         self.preserve
     }
@@ -53,6 +65,7 @@ pub struct RepositoryAdmissions {
     backup_sources: HashMap<String, Source>,
     vault: VaultAdmissions,
     grants: HashMap<String, Grant>,
+    originals: HashMap<String, Grant>,
     sequence: u64,
 }
 impl RepositoryAdmissions {
@@ -72,8 +85,7 @@ impl RepositoryAdmissions {
         window: &str,
         session: &str,
     ) -> io::Result<Plan> {
-        let plan = self.vault.prepare(vaults, window, session)?;
-        // Pending vault admission denies reads throughout discovery and cleanup.
+        // Validate source discovery before suspending another read scope.
         let root = vaults.get(session)?;
         root.verify_physical_root()?;
         let source = match self.backup_sources.get(session) {
@@ -83,6 +95,7 @@ impl RepositoryAdmissions {
             }
             None => Source::capture(root.path())?,
         };
+        let plan = self.vault.prepare(vaults, window, session)?;
         let descriptor = vaults.descriptor(session)?;
         let mut digest = Sha256::new();
         digest.update(b"lapis-desktop-repository-v1\0");
@@ -106,11 +119,13 @@ impl RepositoryAdmissions {
             generation,
             repository,
             source,
+            read_token: None,
         };
         Ok(Plan {
             vault: plan,
             grant,
             preserve,
+            prior: previous.is_some(),
         })
     }
     /// The host must drain retired reads before completing a replacement plan.
@@ -120,8 +135,17 @@ impl RepositoryAdmissions {
         if !matches_lease(&plan.grant, &lease) {
             return Err(denied());
         }
-        self.grants
-            .insert(plan.grant.window.clone(), plan.grant.clone());
+        if !plan.preserves_vault() {
+            self.grants.remove(&plan.grant.window);
+            self.originals
+                .retain(|_, grant| grant.window != plan.grant.window);
+        }
+        if let Some(token) = &plan.grant.read_token {
+            self.originals.insert(token.clone(), plan.grant.clone());
+        } else {
+            self.grants
+                .insert(plan.grant.window.clone(), plan.grant.clone());
+        }
         Ok(plan.grant.clone())
     }
     pub fn authorize(
@@ -130,6 +154,9 @@ impl RepositoryAdmissions {
         window: &str,
         session: &str,
     ) -> io::Result<Grant> {
+        if self.originals.contains_key(session) {
+            return self.authorize_original(vaults, window, session);
+        }
         let lease = match self.vault.authorize(vaults, window) {
             Ok(lease) => lease,
             Err(failure) => {
@@ -150,12 +177,18 @@ impl RepositoryAdmissions {
         Ok(grant.clone())
     }
     pub fn check(&mut self, vaults: &VaultManager, grant: &Grant) -> io::Result<()> {
-        if self.authorize(vaults, &grant.window, &grant.session)? != *grant {
+        if self.authorize(
+            vaults,
+            &grant.window,
+            grant.read_token.as_deref().unwrap_or(&grant.session),
+        )? != *grant
+        {
             return Err(denied());
         }
         Ok(())
     }
     pub fn leave(&mut self, window: &str, reload: bool) -> bool {
+        self.originals.retain(|_, grant| grant.window != window);
         let retained = self.vault.leave(window, reload);
         if !retained {
             self.grants.remove(window);
@@ -163,6 +196,7 @@ impl RepositoryAdmissions {
         retained
     }
     pub fn begin_close_vault(&mut self, session: &str) -> Vec<RetiredAdmission> {
+        self.originals.retain(|_, grant| grant.session != session);
         let retired = self.vault.begin_close_vault(session);
         for entry in &retired {
             if self
@@ -183,6 +217,7 @@ impl RepositoryAdmissions {
             .is_none_or(|grant| grant.vault_generation == retired.generation)
     }
     pub fn finish_close_vault(&mut self, session: &str) {
+        self.originals.retain(|_, grant| grant.session != session);
         self.backup_sources.remove(session);
         self.vault.finish_close_vault(session);
     }

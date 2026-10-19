@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { HistorySourcePicker } from "../../lib/repository/history-source.ts";
   import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import { repositoryWorkspaces } from "../../lib/repository/workspaces.ts";
   import { onMount, onDestroy, untrack } from "svelte";
@@ -15,10 +16,12 @@
   import RepositoryGraph from "./RepositoryGraph.svelte";
   let {
     controller,
+    sources,
     initialOperation,
     copyText,
     onHistory,
   }: {
+    sources?: HistorySourcePicker;
     controller: OperationController;
     initialOperation?: string;
     copyText(value: string): Promise<void>;
@@ -73,6 +76,7 @@
           aria-label="Operations"
         >
           <RepositoryLogHeader
+            {sources}
             {copyText}
             nodes={state.nodes}
             workspaces={repositoryWorkspaces(state.workspaceCommits)}

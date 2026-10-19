@@ -1,7 +1,7 @@
 # Migration inventory and progress
 
 E-REPO-023–025/E-AI-039–041 retain UI scope. M14 adds backup, restore, search,
-forges and storage (E-REPO-035/036). Adoption, native/provider qualification and
+forges, storage and adoption (E-REPO-035–037). Native/provider qualification and
 main integration retain LD-MIG-002's original gates.
 
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).

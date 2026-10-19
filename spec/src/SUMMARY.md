@@ -235,3 +235,5 @@
 
 - [Native Forgejo vault backup accounts](history/E-REPO-035.md)
 - [Recoverable vault history storage selection](history/E-REPO-036.md)
+
+- [Original repository history sources and recoverable adoption](history/E-REPO-037.md)

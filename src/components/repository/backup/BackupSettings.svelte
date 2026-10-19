@@ -6,6 +6,8 @@
   import SyncSettings from "./SyncSettings.svelte";
   import ForgeAccounts from "./ForgeAccounts.svelte";
   import RemoteSettings from "./RemoteSettings.svelte";
+  import AdoptionSettings from "./AdoptionSettings.svelte";
+  import type { AdoptionController } from "../../../lib/repository/adoption-controller.ts";
   import StorageSettings from "./StorageSettings.svelte";
   import type { StorageController } from "../../../lib/repository/storage-controller.ts";
   import RepositoryRestoreDialog from "../RepositoryRestoreDialog.svelte";
@@ -19,6 +21,7 @@
     sync,
     setSyncEnabled,
     storage,
+    adoption,
   }: {
     controller: ForgeController;
     remote?: RemoteController;
@@ -26,6 +29,7 @@
     sync?: SyncController;
     setSyncEnabled?: (enabled: boolean) => Promise<void>;
     storage?: StorageController;
+    adoption?: AdoptionController;
   } = $props();
   let conflictsOpen = $state(false);
   onMount(() => {
@@ -41,6 +45,7 @@
   <ForgeAccounts {controller}>
     {#snippet remoteSettings()}
       {#if storage}<StorageSettings controller={storage} />{/if}
+      {#if adoption}<AdoptionSettings controller={adoption} />{/if}
       {#if sync && setSyncEnabled}<SyncSettings
           controller={sync}
           setEnabled={setSyncEnabled}

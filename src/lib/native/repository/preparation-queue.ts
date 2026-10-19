@@ -1,6 +1,10 @@
 import type { Handle, HistoryClient } from "@lapismd/jj-history";
 import { pause } from "../../repository/history-selection.ts";
-type Preparation = { handle: Handle; closing?: Promise<void> };
+type Preparation = {
+  handle: Handle;
+  reader: HistoryClient;
+  closing?: Promise<void>;
+};
 
 /** The native host deliberately admits only one preparation job at a time. */
 export class PreparationQueue {
@@ -11,21 +15,24 @@ export class PreparationQueue {
   constructor(reader: HistoryClient) {
     this.#reader = reader;
   }
-  open(operation: string): Promise<Handle> {
+  open(
+    operation: string,
+    reader: HistoryClient = this.#reader,
+  ): Promise<Handle> {
     const job = this.#tail.then(async () => {
       this.#abort.signal.throwIfAborted();
       const previous = this.#previous;
       if (previous) await this.#available(previous);
       this.#abort.signal.throwIfAborted();
-      const handle = await this.#reader.open(operation);
-      this.#previous = { handle };
+      const handle = await reader.open(operation);
+      this.#previous = { handle, reader };
       return handle;
     });
     this.#tail = job.catch(() => {});
     return job;
   }
-  close(handle: Handle): Promise<void> {
-    const job = this.#reader.close(handle);
+  close(handle: Handle, reader: HistoryClient = this.#reader): Promise<void> {
+    const job = reader.close(handle);
     if (this.#previous?.handle === handle) this.#previous.closing = job;
     return job;
   }
@@ -37,7 +44,7 @@ export class PreparationQueue {
       this.#abort.signal.throwIfAborted();
       if (previous.closing) return previous.closing;
       try {
-        const status = await this.#reader.status(previous.handle);
+        const status = await previous.reader.status(previous.handle);
         if (previous.closing) return previous.closing;
         if (status.state !== "preparing") return;
       } catch (error) {

@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-REPO-036: admitted `desktop_backup_storage`, native paths/workers and guarded
-reload; E-REPO-035: forge workers. LD-DESK-003/HOST-001 boundaries remain.
+E-REPO-037: admitted source/adoption commands use native scopes and workers.
+Storage/forge boundaries (E-REPO-035/036), LD-DESK-003/HOST-001 remain.
 Gravatar: `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 Notes starts App-owned watching after metadata/views; leave drains it before

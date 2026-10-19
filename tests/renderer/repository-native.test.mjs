@@ -79,7 +79,10 @@ test("native history lazily admits exactly the opaque vault once and stays indep
   assert.equal(f.calls.length, 0);
   await Promise.all([service.reader.heads(), service.reader.heads()]);
   assert.deepEqual(f.calls, [
-    ["desktop_repository_admit", { request: { sessionId: "vault-token" } }],
+    [
+      "desktop_repository_admit",
+      { request: { sessionId: "vault-token", managed: true } },
+    ],
   ]);
   await service.reader.open("operation");
   await service.reader.read("handle", { kind: "query_info" });

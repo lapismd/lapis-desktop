@@ -1,11 +1,12 @@
 # Repository history and conversations
 
 LD-REPO-005's backup, restore and forge bindings are specified in
-[Automatic vault backup](vault-backup.md). M14 tracks delivery (E-REPO-036).
+[Automatic vault backup](vault-backup.md). M14 tracks delivery (E-REPO-037).
 Immutable reader and M13 conversation contracts retain their original scope.
 
-The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces
-without upstream `jj-lib`. Notes consumes jj-store M33 in verified slices.
+Managed backup and original JJ repositories retain separate native identities.
+The desktop uses owned JJ interfaces without upstream `jj-lib`; M33 remains
+independent.
 
 E-REPO-024/025 add the bounded physical working-copy status read and
 plugin-owned status controls. [Repository navigation](repository-navigation.md)

@@ -103,6 +103,8 @@ pub fn run() -> tauri::Result<()> {
             repository::sync::desktop_backup_sync,
             repository::search::desktop_backup_search,
             repository::storage::desktop_backup_storage,
+            repository::adoption::desktop_backup_adoption,
+            repository::sources::desktop_repository_sources,
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
             crate::host::repository::working_copy::desktop_repository_working_copy,

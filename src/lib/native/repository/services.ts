@@ -1,4 +1,4 @@
-import type { HistoryClient, Handle, Query } from "@lapismd/jj-history";
+import type { HistoryClient } from "@lapismd/jj-history";
 import { tauriHistory } from "@lapismd/jj-history/tauri";
 import { invoke } from "@tauri-apps/api/core";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
@@ -12,6 +12,7 @@ import { nativeForges } from "./forges.ts";
 import { nativeSearch } from "./search.ts";
 import { nativeSync } from "./sync.ts";
 import { nativeRemote } from "./remote.ts";
+import { nativeAdoption } from "./adoption.ts";
 import { nativeStorage } from "./storage.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
@@ -20,15 +21,16 @@ export function createNativeRepository(
   call: NativeCall = invoke,
   client?: HistoryClient,
 ): RepositoryServices {
-  const reader =
-    client ??
-    tauriHistory(vault.sessionId, async (command, args) => {
-      try {
-        return await call<string>(command, args);
-      } catch (error) {
-        throw nativeError(error);
-      }
-    });
+  const transport = async (command: string, args: { request: string }) => {
+    try {
+      return await call<string>(command, args);
+    } catch (error) {
+      throw nativeError(error);
+    }
+  };
+  const reader = client ?? tauriHistory(vault.sessionId, transport);
+  let original: HistoryClient | undefined;
+  let originalActivation: Promise<void> | undefined;
   const preparation = new PreparationQueue(reader);
   const backupTransport = nativeBackup(vault.sessionId, call);
   let initialBackup: Promise<unknown> | undefined;
@@ -55,17 +57,23 @@ export function createNativeRepository(
       throw nativeError(error);
     }
   }
-  function run<T>(action: () => Promise<T>): Promise<T> {
+  function track<T>(action: () => Promise<T>): Promise<T> {
     if (closed)
       return Promise.reject(new Error("Repository history is closed"));
     const job = (async () => {
       attempted = true;
-      // Restored views wait for native source binding, while the rest of the
-      // app remains usable and reports the initial capture through status.
+      return action();
+    })();
+    pending.add(job);
+    void job.finally(() => pending.delete(job)).catch(() => {});
+    return job;
+  }
+  function run<T>(action: () => Promise<T>): Promise<T> {
+    return track(async () => {
       if (initialBackup) await initialBackup;
       if (closed) throw new Error("Repository history is closed");
       activation ??= native("desktop_repository_admit", {
-        request: { sessionId: vault.sessionId },
+        request: { sessionId: vault.sessionId, managed: true },
       }).catch((error) => {
         activation = undefined;
         throw error;
@@ -73,13 +81,57 @@ export function createNativeRepository(
       await activation;
       if (closed) throw new Error("Repository history is closed");
       return action();
-    })();
-    pending.add(job);
-    void job.finally(() => pending.delete(job)).catch(() => {});
-    return job;
+    });
+  }
+  async function sources(openOriginal: boolean) {
+    try {
+      const result = await call<{ original: boolean; token: string | null }>(
+        "desktop_repository_sources",
+        { request: { sessionId: vault.sessionId, openOriginal } },
+      );
+      if (
+        typeof result?.original !== "boolean" ||
+        (result.token !== null && typeof result.token !== "string") ||
+        (openOriginal && (!result.original || !result.token))
+      )
+        throw new Error("Invalid repository source state");
+      return result;
+    } catch (error) {
+      throw nativeError(error);
+    }
+  }
+  const originalRun = <T>(action: () => Promise<T>) =>
+    track(async () => {
+      // Original history remains readable when backup startup fails or is paused.
+      originalActivation ??= sources(true)
+        .then(({ token }) => {
+          original = tauriHistory(token!, transport);
+        })
+        .catch((error) => {
+          originalActivation = undefined;
+          throw error;
+        });
+      await originalActivation;
+      if (closed) throw new Error("Repository history is closed");
+      return action();
+    });
+  function scoped(
+    current: () => HistoryClient,
+    execute: typeof run,
+  ): RepositoryServices["reader"] {
+    return {
+      heads: () => execute(() => current().heads()),
+      open: (operation) =>
+        execute(() => preparation.open(operation, current())),
+      status: (handle) => execute(() => current().status(handle)),
+      read: (handle, query) => execute(() => current().read(handle, query)),
+      blame: (handle, query) => execute(() => current().blame(handle, query)),
+      close: (handle) => execute(() => preparation.close(handle, current())),
+    };
   }
   const search = nativeSearch(vault.sessionId, call);
   return {
+    adoption: nativeAdoption(vault.sessionId, call),
     storage: nativeStorage(vault.sessionId, call),
     search: { page: (request) => run(() => search.page(request)) },
     sync: nativeSync(vault.sessionId, call),
@@ -97,15 +149,10 @@ export function createNativeRepository(
           }),
         ),
       ),
-    reader: {
-      heads: () => run(() => reader.heads()),
-      open: (operation: string) => run(() => preparation.open(operation)),
-      status: (handle: Handle) => run(() => reader.status(handle)),
-      read: (handle: Handle, query: Query) =>
-        run(() => reader.read(handle, query)),
-      blame: (handle, query) => run(() => reader.blame(handle, query)),
-      close: (handle: Handle) => run(() => preparation.close(handle)),
-    },
+    sources: () =>
+      track(async () => ({ original: (await sources(false)).original })),
+    original: scoped(() => original!, originalRun),
+    reader: scoped(() => reader, run),
     close(mode) {
       closed = true;
       preparation.stop();

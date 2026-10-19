@@ -18,7 +18,7 @@ qualification remains deferred.
 | M14.4 | Partial     | M14.3       | LD-REPO-005              | GitHub sign-in, remote setup and fresh-device restore work                                                                 | Qualify cold app/provider flow later                | E-REPO-029,E-REPO-030,E-REPO-031 |
 | M14.5 | Partial     | M14.4       | LD-REPO-005              | Two-device automatic pull/merge/push preserves offline work and conflicts                                                  | Qualify cold app/provider gates later               | E-REPO-032,E-REPO-033            |
 | M14.6 | Partial     | M14.3       | LD-REPO-005              | Historical text and metadata search opens exact restorable checkpoint versions                                             | Finish focused search proof; then storage/providers | E-REPO-034                       |
-| M14.7 | In progress | M14.5,M14.6 | LD-REPO-005              | Root storage/adoption and Forgejo work, then changes integrate into main                                                   | Complete existing-source adoption and selection     | E-REPO-035,E-REPO-036            |
+| M14.7 | In progress | M14.5,M14.6 | LD-REPO-005              | Root storage/adoption and Forgejo work, then changes integrate into main                                                   | Complete native acceptance and main integration     | E-REPO-035,E-REPO-036,E-REPO-037 |
 
 The task checklist is
 [automatic-vault-backup-progress](../../../../docs/automatic-vault-backup-progress.md).
@@ -28,3 +28,8 @@ interrupted-move recovery and filtered backup watching. Focused source/native,
 renderer and catalog proofs are recorded separately. Existing-repository
 adoption/source selection, cold native/provider qualification and main
 integration remain required. M14.7 stays Active; earlier stages stay Partial.
+
+E-REPO-037 adds explicit original-history import/recovery and separate source
+readers/tabs. Focused service, renderer and catalog proof remains distinct from
+cold actual-app/provider qualification. M14.7 stays Active; earlier stages stay
+Partial. Main integration is still pending.

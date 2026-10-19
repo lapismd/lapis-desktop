@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { HistorySourcePicker } from "../../lib/repository/history-source.ts";
   import RepositorySkeleton from "./RepositorySkeleton.svelte";
   import RepositoryConflictResolution from "./conflicts/RepositoryConflictResolution.svelte";
   import { repositoryWorkspaces } from "../../lib/repository/workspaces.ts";
@@ -16,12 +17,14 @@
   import { openHistoryRevision } from "../../lib/repository/open-history-revision.ts";
   let {
     controller,
+    sources,
     initialOperation,
     initialRevision,
     initialLoad,
     copyText,
     restore,
   }: {
+    sources?: HistorySourcePicker;
     controller: HistoryController;
     initialOperation?: string;
     initialRevision?: string;
@@ -105,6 +108,7 @@
           aria-label="Revisions"
         >
           <RepositoryLogHeader
+            {sources}
             {copyText}
             workspaces={repositoryWorkspaces(snapshot.commits)}
             workspace={snapshot.workspace}

@@ -7,6 +7,8 @@ use tauri::{AppHandle, Manager, State, WebviewWindow};
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub struct AdmitRequest {
     session_id: String,
+    #[serde(default)]
+    managed: bool,
 }
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -38,6 +40,14 @@ pub async fn desktop_repository_admit(
     })
     .await?;
     let binding = super::storage::resolve(&repository, descriptor, false).await?;
+    // Missing managed history must not revoke independent original readers.
+    if request.managed && !binding.state.join("vault.json").is_file() {
+        return Err(io::Error::new(
+            io::ErrorKind::NotFound,
+            "No automatic vault history yet; enable local backup to create it",
+        )
+        .into());
+    }
     let plan = access(host.inner().clone(), move |services| {
         // Existing backup history remains readable when capture is paused.
         // Discovery only verifies its saved binding; it never initializes JJ.
@@ -63,7 +73,7 @@ pub async fn desktop_repository_admit(
             return Err(error);
         }
     };
-    if !plan.preserves_reads() {
+    if !plan.preserves_reads() && (plan.had_prior_scope() || !plan.preserves_vault()) {
         repository
             .history
             .revoke(&context.window)

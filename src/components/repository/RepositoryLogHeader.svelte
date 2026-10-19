@@ -1,4 +1,6 @@
 <script lang="ts">
+  import RepositorySourcePicker from "./RepositorySourcePicker.svelte";
+  import type { HistorySourcePicker } from "../../lib/repository/history-source.ts";
   import type { LocalGraphOperationNode } from "@lapismd/jj-history";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
   import { Button } from "@lapismd/design-core/shadcn/button";
@@ -8,6 +10,7 @@
   import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
   let {
     title,
+    sources,
     count,
     operations,
     operation,
@@ -22,6 +25,7 @@
     onWorkspaceSelect,
     onWorkspaceOpen,
   }: {
+    sources?: HistorySourcePicker;
     title: string;
     count: number;
     operations: string[];
@@ -45,6 +49,7 @@
     <ColumnCanvas.Count>{count}</ColumnCanvas.Count>
   </div>
   <div class="repository-log-actions">
+    {#if sources}<RepositorySourcePicker picker={sources} />{/if}
     <RepositoryWorkspacePicker
       {workspaces}
       selected={workspace}

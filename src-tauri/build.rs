@@ -24,6 +24,8 @@ fn main() {
         "desktop_backup_sync",
         "desktop_backup_search",
         "desktop_backup_storage",
+        "desktop_backup_adoption",
+        "desktop_repository_sources",
         "desktop_repository_admit",
         "desktop_repository_release",
         "desktop_repository_working_copy",

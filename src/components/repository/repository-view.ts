@@ -1,3 +1,7 @@
+import {
+  historySource,
+  type HistorySource,
+} from "../../lib/repository/history-source.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import type { HistoryController } from "../../lib/repository/history-controller.ts";
@@ -12,6 +16,7 @@ import { followBackup } from "../../lib/repository/backup-follow.ts";
 export class RepositoryView extends View {
   #controller?: HistoryController;
   #component?: ReturnType<typeof mount>;
+  #source: HistorySource = "backup";
   #operation?: string;
   #revision?: string;
   #unsubscribe?: () => void;
@@ -30,7 +35,9 @@ export class RepositoryView extends View {
     return "repository-history";
   }
   getDisplayText(): string {
-    return "Repository history";
+    return this.#source === "original"
+      ? "Original repository history"
+      : "Repository history";
   }
   getIcon(): string {
     return "git-branch";
@@ -38,14 +45,23 @@ export class RepositoryView extends View {
   getState(): Record<string, unknown> {
     return this.#controller
       ? {
+          source: this.#source,
           operation: this.#controller.pinned
             ? this.#controller.state.operation
             : undefined,
           revision: this.#controller.state.revision?.id,
         }
-      : { operation: this.#operation, revision: this.#revision };
+      : {
+          source: this.#source,
+          operation: this.#operation,
+          revision: this.#revision,
+        };
   }
   async setState(state: Record<string, unknown>): Promise<void> {
+    const source = historySource(state);
+    if (this.#controller && source !== this.#source)
+      throw new Error("Open a separate tab to change history source");
+    this.#source = source;
     const request = ++this.#stateRequest;
     const operation = (this.#operation =
       typeof state.operation === "string" ? state.operation : undefined);
@@ -65,8 +81,8 @@ export class RepositoryView extends View {
   protected async onOpen(): Promise<void> {}
   protected async onClose(): Promise<void> {}
   onload(): void {
-    this.#controller = this.plugin.createController();
-    if (this.plugin.restoreService) {
+    this.#controller = this.plugin.createController(this.#source);
+    if (this.#source === "backup" && this.plugin.restoreService) {
       this.#restore = createRestoreController(this.plugin);
       this.#restoreActivity = new BackgroundWork(
         this.app.notifications,
@@ -97,7 +113,9 @@ export class RepositoryView extends View {
     void this.#initialLoad.then(() => {
       if (this.#controller)
         this.#live = followBackup(
-          this.plugin.backup?.controller,
+          this.#source === "backup"
+            ? this.plugin.backup?.controller
+            : undefined,
           this.#controller,
         );
     });
@@ -105,6 +123,12 @@ export class RepositoryView extends View {
       target: this.containerEl,
       props: {
         controller: this.#controller,
+        sources: this.plugin.sourcePicker(this.#source, (source) => {
+          void this.plugin
+            .open(undefined, undefined, source)
+            .catch((error) => this.plugin.report(error));
+        }),
+
         restore: this.#restore,
         initialOperation: this.#operation,
         initialRevision: this.#revision,

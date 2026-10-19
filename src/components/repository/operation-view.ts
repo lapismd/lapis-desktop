@@ -1,3 +1,7 @@
+import {
+  historySource,
+  type HistorySource,
+} from "../../lib/repository/history-source.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import type { OperationController } from "../../lib/repository/operation-controller.ts";
@@ -8,6 +12,7 @@ import { followBackup } from "../../lib/repository/backup-follow.ts";
 export class OperationView extends View {
   #controller?: OperationController;
   #component?: ReturnType<typeof mount>;
+  #source: HistorySource = "backup";
   #operation?: string;
   #unsubscribe?: () => void;
   #live?: () => void;
@@ -21,13 +26,16 @@ export class OperationView extends View {
     return "repository-oplog";
   }
   getDisplayText(): string {
-    return "Repository operation log";
+    return this.#source === "original"
+      ? "Original repository operations"
+      : "Repository operation log";
   }
   getIcon(): string {
     return "git-pull-request-arrow";
   }
   getState(): Record<string, unknown> {
     return {
+      source: this.#source,
       operation: this.#controller
         ? this.#controller.pinned
           ? this.#controller.state.operation
@@ -36,6 +44,10 @@ export class OperationView extends View {
     };
   }
   async setState(state: Record<string, unknown>): Promise<void> {
+    const source = historySource(state);
+    if (this.#controller && source !== this.#source)
+      throw new Error("Open a separate tab to change history source");
+    this.#source = source;
     this.#operation =
       typeof state.operation === "string" ? state.operation : undefined;
     if (
@@ -49,8 +61,11 @@ export class OperationView extends View {
   protected async onOpen(): Promise<void> {}
   protected async onClose(): Promise<void> {}
   onload(): void {
-    this.#controller = this.plugin.createOperationController();
-    this.#live = followBackup(this.plugin.backup?.controller, this.#controller);
+    this.#controller = this.plugin.createOperationController(this.#source);
+    this.#live = followBackup(
+      this.#source === "backup" ? this.plugin.backup?.controller : undefined,
+      this.#controller,
+    );
     this.#unsubscribe = this.#controller.subscribe((state) => {
       if (
         state.operation !== undefined &&
@@ -67,11 +82,17 @@ export class OperationView extends View {
       target: this.containerEl,
       props: {
         controller: this.#controller,
+        sources: this.plugin.sourcePicker(this.#source, (source) => {
+          void this.plugin
+            .openOperations(source)
+            .catch((error) => this.plugin.report(error));
+        }),
+
         initialOperation: this.#operation,
         copyText: (value: string) => this.plugin.copyIdentifier(value),
         onHistory: (operation: string) =>
           void this.plugin
-            .open(operation)
+            .open(operation, undefined, this.#source)
             .catch((error) => this.plugin.report(error)),
       },
     });

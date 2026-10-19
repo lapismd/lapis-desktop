@@ -145,3 +145,25 @@ native code owns all paths. Status visibility does not select a storage layout.
 The backup watcher excludes repository and private runtime names from both event
 hints and recursive inventory. Root metadata writes cannot schedule captures of
 the backup itself. Other native watchers retain their existing default scope.
+
+An existing JJ repository remains an independent read source. JJ Log, Op Log and
+linked blame views retain their selected source with their operation pins;
+opening the other source creates or reveals that source's tab. Native opaque
+read tokens bind the original repository to the physical vault/window and never
+authorize capture, restoration or transfer. Both sources may be open together;
+one preparation queue covers their native worker. Source changes require fresh
+admission after reload and never substitute a different repository for a pin.
+Explicit adoption imports the recorded Git ancestry into managed backup while
+preserving current files and original repository bytes. It uses the guarded
+capture worker and original request recovery; source-native operation/evolution
+metadata stays available through the original read source.
+
+`desktop_repository_sources` only discovers/open-read scopes; it never creates
+backup state. Managed history admission explicitly requires managed storage and
+cannot fall back to the original repository. `desktop_backup_adoption` runs
+explicit imports/stops through the capture worker and guarded editor lifetime.
+Paused capture is not enabled implicitly. UI recovery saves the original request
+before native work and retains it across a lost reply or restart. Source
+unavailability keeps pending recovery controls available; feedback uses App
+toasts. Stopping fences even a request not yet delivered and cannot undo
+accepted ancestry, change capture preferences or enable remote synchronization.

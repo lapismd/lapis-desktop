@@ -1,3 +1,7 @@
+import {
+  historySource,
+  type HistorySource,
+} from "../../../lib/repository/history-source.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import type { RepositoryPlugin } from "../repository-plugin.ts";
@@ -6,6 +10,7 @@ import type { BlameSelection } from "../../../lib/repository/blame-model.ts";
 import RepositoryBlamePanel from "./RepositoryBlamePanel.svelte";
 
 export class BlameView extends View {
+  #source: HistorySource = "backup";
   #selection?: BlameSelection;
   #controller?: BlameController;
   #component?: ReturnType<typeof mount>;
@@ -25,9 +30,13 @@ export class BlameView extends View {
     return "git-merge-conflict";
   }
   getState(): Record<string, unknown> {
-    return { ...this.#selection };
+    return { ...this.#selection, source: this.#source };
   }
   async setState(state: Record<string, unknown>) {
+    const source = historySource(state);
+    if (this.#controller && source !== this.#source)
+      throw new Error("Open a separate tab to change history source");
+    this.#source = source;
     this.#selection =
       typeof state.operation === "string" &&
       typeof state.commit === "string" &&
@@ -41,7 +50,9 @@ export class BlameView extends View {
   protected async onOpen() {}
   protected async onClose() {}
   onload() {
-    const controller = (this.#controller = this.plugin.createBlameController());
+    const controller = (this.#controller = this.plugin.createBlameController(
+      this.#source,
+    ));
     this.#component = mount(RepositoryBlamePanel, {
       target: this.containerEl,
       props: {
@@ -51,7 +62,7 @@ export class BlameView extends View {
           const operation = controller.state.selection?.operation;
           if (operation)
             void this.plugin
-              .open(operation, commit)
+              .open(operation, commit, this.#source)
               .catch((error) => this.plugin.report(error));
         },
       },

@@ -10,7 +10,7 @@ use serde::Deserialize;
 use tauri::{State, WebviewWindow};
 
 // Local layout discovery and capture startup never queue behind networking.
-async fn worker<T: Send + 'static>(
+pub(super) async fn worker<T: Send + 'static>(
     repository: &RepositoryHost,
     action: impl FnOnce() -> std::io::Result<T> + Send + 'static,
 ) -> Result<T, NativeError> {

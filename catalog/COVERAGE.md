@@ -638,3 +638,11 @@ GitHub OAuth/PAT/loading/failure stories, remote setup, synchronization and
 original-publication recovery remain direct consumers. Native worker/custody and
 endpoint/project proof is separate; no personal token or live forge is used in
 catalog. Existing copied provenance remains in docs/provenance.json.
+
+Repository original history stories mount production source selectors and
+adoption settings in the actual Notes plugin. They cover independent JJ/Op Log
+tabs, loading/absent/unreadable sources, saved original requests, resume/stop
+and App-toast recovery. Existing public Design Core Command View/Popover/Card
+components are composed directly; no replacement screens or new copied source
+are introduced. Native source witnesses and ancestry transfer are separately
+qualified. Visual approval and cold native acceptance remain open.

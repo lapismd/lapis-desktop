@@ -1,3 +1,4 @@
+pub(crate) mod adoption;
 pub(crate) mod backup;
 mod backup_provider;
 pub(crate) mod backup_restore;
@@ -8,6 +9,7 @@ mod publication;
 pub(crate) mod remote;
 mod remote_transfer;
 pub(crate) mod search;
+pub(crate) mod sources;
 pub(crate) mod storage;
 pub(crate) mod sync;
 pub(crate) mod working_copy;
