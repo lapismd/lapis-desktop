@@ -15,7 +15,7 @@ e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 [dependencies]
 async-trait = "0.1"
 tempfile = "=3.27.0"
-tokio = { version = "1", features = ["rt", "sync"] }
+tokio = { version = "1", features = ["rt", "rt-multi-thread", "sync", "net", "io-util", "io-std", "time", "macros"] }
 tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", version = "0.1.0", features = ["tauri"] }
 
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
@@ -53,6 +53,8 @@ uuid = { version = "1", features = ["v4", "serde"] }
 tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin-lapis-terminal" }
 
 tauri-plugin-lapis-ai = { path = "../../lapis-ai/crates/tauri-plugin-lapis-ai" }
+lapis-ai-app-tools = { path = "../../lapis-ai/crates/lapis-ai-app-tools", version = "0.1.1" }
+zeroize = "1"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-usernotifications = { version = "=0.3.1", default-features = false }

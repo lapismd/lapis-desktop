@@ -38,6 +38,7 @@ struct Owner {
     reads: HashMap<Uuid, Arc<lapis_desktop::ai::conversations::ReadPin>>,
 }
 pub struct NativeBackends {
+    pub tools: lapis_desktop::ai::tools::Registry,
     profile: Dir,
     owners: Mutex<HashMap<String, Owner>>,
     pub transitions: Arc<tokio::sync::Mutex<()>>,
@@ -75,6 +76,7 @@ pub fn initialize(app: &tauri::AppHandle, profile: &Path) -> io::Result<()> {
 impl NativeBackends {
     pub fn new(profile: Dir) -> Self {
         Self {
+            tools: lapis_desktop::ai::tools::Registry::default(),
             profile,
             owners: Mutex::new(HashMap::new()),
             transitions: Arc::new(tokio::sync::Mutex::new(())),
@@ -197,6 +199,7 @@ impl NativeBackends {
         Ok(())
     }
     pub fn fence(&self, window: &str, generation: Option<&str>) -> io::Result<()> {
+        self.tools.fence(window, generation)?;
         if let Some(owner) = self.owners.lock().map_err(|_| denied())?.get(window)
             && generation.is_none_or(|g| owner.generation == g)
         {
@@ -206,6 +209,7 @@ impl NativeBackends {
     }
     /// Caller holds transitions. A cancelled wait retains the fenced owner.
     pub async fn drain(&self, window: &str, generation: Option<&str>) -> io::Result<()> {
+        self.tools.drain(window, generation).await?;
         let retained = {
             let owners = self.owners.lock().map_err(|_| denied())?;
             owners

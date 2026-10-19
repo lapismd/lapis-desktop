@@ -9,6 +9,7 @@
   - [Desktop AI and optional compute](current/ai.md)
   - [AI transcript delivery review](current/ai-presentation.md)
   - [Local AI turn recovery](current/ai-recovery.md)
+  - [Native application tools](current/ai-tools.md)
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
@@ -219,3 +220,4 @@
 
 - [Complete bounded local streaming](history/E-AI-044.md)
   - [Stable local transcript comments and cold recovery](history/E-AI-045.md)
+  - [Authenticated native application tools and effect drain](history/E-AI-046.md)

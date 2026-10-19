@@ -35,9 +35,10 @@ repository-source traversal, formatting and commits.
 
 ## Requirements
 
-Native AI admission adds only named main-window admit/release frames. The
-explicit device-owned local-file profile admits Codex through a verified runtime
-under `ai.md`; absence stays inert. No renderer executable selection is granted.
+Native AI admission and tools use exact named main-window grants. Tool frames
+carry opaque identities and metadata, with no launch authority. The explicit
+device-owned local-file profile admits Codex through a verified runtime under
+`ai.md`; absence stays inert. No renderer executable selection is granted.
 Actual mounted admission/recovery qualification retains the M10.2 gate; the
 existing e2e transport fixture is independent. Notes owns the lazy native
 factory and optional bundled registration. The main window's exact ACP-session
@@ -396,4 +397,4 @@ success stays distinct from native UI acceptance; original gates remain.
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
 IPC-only checks, headed windows and capture qualification boundaries.
 
-E-AI-045 records local comment recovery; LD-GOV-001/002/004 gates remain.
+Native tool work records exact source/consumer gates; LD-GOV-001/002/004 remain.

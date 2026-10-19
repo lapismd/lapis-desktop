@@ -25,7 +25,7 @@ impl NativeBackends {
             .set(Arc::downgrade(workers))
             .map_err(|_| io::Error::other("Backend worker owner is already initialized"))
     }
-    pub(super) fn current(
+    pub(in crate::host::ai) fn current(
         self: &Arc<Self>,
         host: &NativeHost,
         window: &str,
@@ -69,7 +69,7 @@ impl NativeBackends {
             }
         });
     }
-    pub(super) fn retained(
+    pub(in crate::host::ai) fn retained(
         self: &Arc<Self>,
         host: &NativeHost,
         window: &str,

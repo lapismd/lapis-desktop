@@ -15,6 +15,7 @@ export class AppToolExecutionError extends Error {
   constructor(
     readonly code: AppToolExecutionErrorCode,
     message: string,
+    readonly outcome?: "unknown",
   ) {
     super(message);
     this.name = "AppToolExecutionError";

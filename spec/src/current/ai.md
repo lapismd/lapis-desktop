@@ -8,9 +8,8 @@ conversations explicitly prepare capture targets; the ordinary factory composes
 native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
-The [transcript plan](ai-presentation.md) retains standing approval; E-AI-041
-qualifies shared UI; E-AI-045 adds stable local anchors and acknowledged comment
-recovery. Catalog fixtures and native AI gates remain distinct.
+The [transcript plan](ai-presentation.md) and [native tools](ai-tools.md) retain
+standing approval; E-AI-041/045 qualify UI/local comments. Native gates stay.
 
 E-REPO-002 retains separate AI/history admission under LD-AI-001; history cannot
 admit targets. NativeServices preserves raw-event ownership.

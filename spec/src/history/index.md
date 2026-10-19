@@ -195,3 +195,4 @@ by the task ledger, not inferred from this list.
 - [Complete bounded local streaming](E-AI-044.md)
 
 - [Stable local transcript comments and cold recovery](E-AI-045.md)
+- [Authenticated native application tools and effect drain](E-AI-046.md)

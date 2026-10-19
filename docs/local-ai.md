@@ -47,6 +47,12 @@ inline feedback. Unconfirmed captures remain prepared context and are never
 automatically resent. File snapshots remain transient. Provider-session resume
 and the native application-tool bridge remain separate capabilities.
 
+The authenticated native MCP transport has independent cold helper and
+cancellation/drain checks. Conversation wiring and real Codex tool acceptance
+are pending; the tool capability stays disabled. The existing Notes registry,
+explicit write approvals and guarded Vault APIs remain the policy boundary. No
+JJ persistence is added.
+
 The host chooses the current admitted vault root, executable and environment.
 The renderer cannot override them. Codex retains its native HOME authentication;
 the runtime receives only explicit launch variables. Disabling AI or leaving the

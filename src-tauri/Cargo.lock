@@ -5373,6 +5373,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "lapis-ai-app-tools"
+version = "0.1.1"
+dependencies = [
+ "serde",
+ "serde_json",
+ "thiserror 2.0.21",
+ "tokio",
+]
+
+[[package]]
 name = "lapis-ai-config"
 version = "0.1.1"
 dependencies = [
@@ -5412,6 +5422,7 @@ dependencies = [
  "jj-store-jj",
  "jj-store-model",
  "jj-store-service",
+ "lapis-ai-app-tools",
  "libc",
  "mac-usernotifications",
  "mime_guess",
@@ -5442,6 +5453,7 @@ dependencies = [
  "turso",
  "url",
  "uuid",
+ "zeroize",
 ]
 
 [[package]]

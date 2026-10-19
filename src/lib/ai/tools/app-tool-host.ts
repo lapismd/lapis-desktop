@@ -22,6 +22,7 @@ import { AppToolApprovalBroker } from "./app-tool-approvals.ts";
 import { AppToolValidation } from "./app-tool-validation.ts";
 import { isEligible, toDescriptor, grantKey } from "./app-tool-snapshot.ts";
 import { createInvocationSignal, raceWithAbort } from "./app-tool-abort.ts";
+import { AppToolExecutions } from "./app-tool-executions.ts";
 const DEFAULT_TIMEOUT_MS = 60_000;
 export class AppToolHost {
   readonly approvals = new AppToolApprovalBroker();
@@ -30,6 +31,7 @@ export class AppToolHost {
   readonly #validation = new AppToolValidation();
   readonly #activeInvocations = new Map<string, Map<() => void, string>>();
   readonly #registryChangeRef;
+  readonly #executions = new AppToolExecutions();
 
   constructor(
     private readonly registry: AppToolRegistry,
@@ -90,6 +92,16 @@ export class AppToolHost {
       snapshot.registrationId,
     );
     if (!registered) throw unavailableError(call.name);
+    const checkPolicy = () => {
+      const settings = this.settings();
+      if (
+        !settings.appToolsEnabled ||
+        !isEligible(registered, settings) ||
+        !this.registry.resolve(snapshot.name, snapshot.registrationId)
+      )
+        throw unavailableError(call.name);
+    };
+    checkPolicy();
 
     const invocation = createInvocationSignal(signal, this.timeoutMs);
     const activeForBinding =
@@ -107,6 +119,7 @@ export class AppToolHost {
       signal: invocation.signal,
     });
 
+    let dispatched = false;
     try {
       invocation.signal.throwIfAborted();
       this.#validation.input(registered, call.input);
@@ -139,9 +152,7 @@ export class AppToolHost {
         }
       }
 
-      if (!this.registry.resolve(snapshot.name, snapshot.registrationId)) {
-        throw unavailableError(call.name);
-      }
+      checkPolicy();
       if (grantForSession) {
         this.#grants.add(grantKey(session.descriptor, registered));
       }
@@ -167,12 +178,14 @@ export class AppToolHost {
         }
       }
 
-      let dispatched = false;
       try {
         invocation.signal.throwIfAborted();
+        checkPolicy();
         dispatched = true;
         const result = await raceWithAbort(
-          registered.tool.execute(call.input, context),
+          this.#executions.run(agentBindingId, () =>
+            registered.tool.execute(call.input, context),
+          ),
           invocation.signal,
         );
         this.#validation.result(registered, result);
@@ -194,8 +207,7 @@ export class AppToolHost {
               requestKey: `${call.toolCallId}:failed`,
               workspaceId: session.descriptor.scopeDir,
               spanId,
-              outcome:
-                invocation.signal.aborted && dispatched ? "unknown" : "failed",
+              outcome: dispatched ? "unknown" : "failed",
             });
           } catch {
             // Preserve the original tool error.
@@ -204,27 +216,34 @@ export class AppToolHost {
         throw error;
       }
     } catch (error) {
+      const failure = (
+        code: ConstructorParameters<typeof AppToolExecutionError>[0],
+        message: string,
+      ) =>
+        new AppToolExecutionError(
+          code,
+          message,
+          dispatched ? "unknown" : undefined,
+        );
       if (!this.registry.resolve(snapshot.name, snapshot.registrationId)) {
-        throw unavailableError(call.name);
+        const unavailable = unavailableError(call.name);
+        throw failure(unavailable.code, unavailable.message);
       }
       if (error instanceof AppToolExecutionError) {
         if (error.code === "cancelled" && invocation.timedOut()) {
-          throw new AppToolExecutionError(
-            "timed_out",
-            `App tool timed out: ${call.name}`,
-          );
+          throw failure("timed_out", `App tool timed out: ${call.name}`);
         }
-        throw error;
+        throw failure(error.code, error.message);
       }
       if (invocation.signal.aborted) {
-        throw new AppToolExecutionError(
+        throw failure(
           invocation.timedOut() ? "timed_out" : "cancelled",
           invocation.timedOut()
             ? `App tool timed out: ${call.name}`
             : `App tool cancelled: ${call.name}`,
         );
       }
-      throw new AppToolExecutionError(
+      throw failure(
         "execution_failed",
         `App tool execution failed: ${call.name}`,
       );
@@ -249,6 +268,9 @@ export class AppToolHost {
       if (key.includes(`\u0000${agentBindingId}\u0000`))
         this.#grants.delete(key);
     }
+  }
+  drainBinding(agentBindingId: string, timeoutMs?: number): Promise<void> {
+    return this.#executions.drain(agentBindingId, timeoutMs);
   }
 
   expireOwner(ownerPluginId: string): void {

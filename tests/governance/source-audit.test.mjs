@@ -156,6 +156,7 @@ test("AI session permission stays exact and bound to the admitted main window", 
         "allow-desktop-ai-admit",
         "allow-desktop-ai-release",
         "allow-desktop-ai-backends",
+        "allow-desktop-ai-tools",
       ]),
     ],
   };

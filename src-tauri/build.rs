@@ -15,6 +15,7 @@ fn main() {
         "desktop_ai_admit",
         "desktop_ai_release",
         "desktop_ai_backends",
+        "desktop_ai_tools",
         "desktop_repository_admit",
         "desktop_repository_release",
         "desktop_repository_working_copy",
