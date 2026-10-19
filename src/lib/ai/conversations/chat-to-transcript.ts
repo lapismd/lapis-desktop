@@ -61,6 +61,9 @@ export function projectChatItemsToTranscript(
             type: "message",
             role: item.role,
             text: item.text,
+            ...(item.role === "user" && item.recipients?.length
+              ? { recipients: structuredClone(item.recipients) }
+              : {}),
             ...(contexts.length ? { contextBlocks: contexts } : {}),
             provenance: {
               originClass: item.role === "user" ? "owner" : "agent",

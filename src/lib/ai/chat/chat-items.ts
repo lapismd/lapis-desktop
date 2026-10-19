@@ -16,6 +16,7 @@ export type AiChatItem = (
       type: "message";
       role: "user" | "assistant";
       text: string;
+      recipients?: import("../conversations/recipients.ts").SavedAgentRecipient[];
       createdAt?: string;
     }
   | {

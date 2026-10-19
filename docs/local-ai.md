@@ -61,6 +61,18 @@ The renderer cannot override them. Codex retains its native HOME authentication;
 the runtime receives only explicit launch variables. Disabling AI or leaving the
 vault drains transcript writes and releases its native workers.
 
+Type `@` in the message composer to choose an agent or attach a file. An agent
+selection appears as a removable recipient pill; selecting it sends nothing.
+Send saves its exact setup tag separately from your message. Document and
+Classic retain that selection, and History shows the original captured label
+even when the agent is no longer configured. The first native profile offers
+Codex. Multiple recipients and persisted delivery queues remain later slices.
+
+The private migration app consumes the shared conversation token codec through
+`@lapismd/jj-conversations`' verified built exports, alongside the history SDK.
+Its source checkout is an explicit development prerequisite until portable
+package intake is qualified; no source aliases or package publication are used.
+
 The [AI contract](../spec/src/current/ai.md) owns requirements and remaining
 native acceptance gates;
 [conversation persistence](ai-conversation-persistence.md) describes the storage

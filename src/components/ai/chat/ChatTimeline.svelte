@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ChatRecipients from "./ChatRecipients.svelte";
   // SPDX-License-Identifier: Apache-2.0
   // Retained Lapis chat presentation; see src/lib/ai/NOTICE.md.
   import type { Snippet } from "svelte";
@@ -112,6 +113,10 @@
     {:else if entry.item.type === "message"}
       {@const message = entry.item}
       <Chat.Message sender={message.role === "user" ? "user" : "assistant"}>
+        {#if message.recipients?.length}<ChatRecipients
+            recipients={message.recipients}
+            label="Sent to"
+          />{/if}
         <Chat.MessageBubble>
           {#if message.role === "assistant" && app}
             <MarkdownEmbed

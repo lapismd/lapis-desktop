@@ -67,6 +67,21 @@
         "web/src/lib/ui/community-projects/CommunityProjectsGitAuthorAvatar.svelte"
       ],
       "use": "Production author metadata adapted from the referenced source. Public Design Core AuthorCard/Avatar owns image and fallback presentation. SHA-256 Gravatar with d=404, supplied image precedence and name initials; no inferred email or account lookup. E-REPO-015 records focused adoption."
+    },
+    {
+      "repository": "jj-store",
+      "revision": "d80f03418e64c13f15483a41896cec5490e8e2ea",
+      "paths": [
+        "web/src/lib/ui/community-chat-composer/CommunityComposerAgentAudience.svelte",
+        "web/src/lib/ui/community-chat-composer/composer-agent-audience.svelte.ts",
+        "packages/jj-conversations/src/agent-mentions.ts"
+      ],
+      "destinations": [
+        "src/components/ai/chat/ChatRecipients.svelte",
+        "src/lib/ai/chat/panel/recipients.svelte.ts"
+      ],
+      "use": "Adapted explicit removable agent audience to the local composer using public Design Core Button/Avatar; reuse the shared token codec through its built public package. Notes owns recipient catalog, local persistence and runtime admission.",
+      "license": "Apache-2.0"
     }
   ],
   "copies": [

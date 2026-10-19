@@ -25,21 +25,21 @@ export function createChatPanelActions(
     const { initializing = false, workspace, mcpServers = [] } = getProps();
 
     if (initializing || composer.catalogState?.loading) return;
-    const selected = catalogModelsForAgent(
-      composer.selectedAgent,
-      composer.catalogModels,
-    ).find((model) => model.model === composer.selectedModel);
+    const addressed = composer.recipients.snapshot();
+    const agent = addressed?.agent ?? composer.selectedAgent;
+    const selected = catalogModelsForAgent(agent, composer.catalogModels).find(
+      (model) => model.model === composer.selectedModel,
+    );
     const extra = attachmentState.attachments.map((file) => file.path);
-    attachmentState.attachments = [];
-    attachmentState.drawerCollapsed = false;
-    return controller.submit(prompt, {
+    const accepted = await controller.submit(prompt, {
+      ...(addressed ? { recipients: addressed.recipients } : {}),
       contextBlocks,
       workspace,
       mcpServers,
-      agent: composer.selectedAgent,
+      agent,
       model: composer.selectedModel
         ? {
-            provider: selected?.provider ?? composer.selectedAgent,
+            provider: selected?.provider ?? agent,
             model: composer.selectedModel,
           }
         : undefined,
@@ -49,6 +49,15 @@ export function createChatPanelActions(
         runtime: composer.selectedRuntime,
       },
     });
+    if (accepted === true) {
+      attachmentState.attachments = attachmentState.attachments.filter(
+        (file) => !extra.includes(file.path),
+      );
+      attachmentState.drawerCollapsed = false;
+    }
+    if (accepted === true && composer.recipients.selectedId === addressed?.id)
+      composer.recipients.remove();
+    return accepted;
   }
   async function copyResponse(text: string): Promise<void> {
     await navigator.clipboard.writeText(text);

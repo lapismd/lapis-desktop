@@ -6,6 +6,7 @@
   import ChatComposerDrawer from "./ChatComposerDrawer.svelte";
   import ChatComposerActions from "./ChatComposerActions.svelte";
   import ChatComposerOptions from "./ChatComposerOptions.svelte";
+  import ChatRecipients from "./ChatRecipients.svelte";
   import type { ComposerState } from "../../../lib/ai/chat/panel/composer.svelte.ts";
   import type { AttachmentsState } from "../../../lib/ai/chat/panel/attachments.svelte.ts";
   import type { ChatPanelActions } from "../../../lib/ai/chat/panel/actions.ts";
@@ -68,6 +69,11 @@
     />
   {/snippet}
   {#snippet headerContext()}
+    <ChatRecipients
+      recipients={composerState.recipients.display}
+      disabled={controller.busy || initializing}
+      onRemove={() => composerState.recipients.remove()}
+    />
     {#if controller.usage}
       <label
         class="ai-chat-panel__context-usage"

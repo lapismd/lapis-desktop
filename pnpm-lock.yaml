@@ -68,6 +68,9 @@ importers:
       '@lapismd/design-core':
         specifier: ^0.4.0 || ^0.5.1
         version: 0.4.0(svelte@5.57.2)(tailwindcss@4.3.3)
+      '@lapismd/jj-conversations':
+        specifier: link:../jj-store/packages/jj-conversations
+        version: link:../jj-store/packages/jj-conversations
       '@lapismd/jj-history':
         specifier: link:../jj-store/packages/jj-history
         version: link:../jj-store/packages/jj-history

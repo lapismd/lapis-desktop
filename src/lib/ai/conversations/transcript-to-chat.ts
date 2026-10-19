@@ -23,6 +23,9 @@ export function projectTranscriptToChatItems(
           type: "message",
           role: entry.role,
           text: entry.text,
+          ...(entry.recipients?.length
+            ? { recipients: structuredClone(entry.recipients) }
+            : {}),
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
           ...(entry.contextBlocks?.length

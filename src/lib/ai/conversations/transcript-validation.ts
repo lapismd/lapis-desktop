@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
+import { validateRecipients } from "./recipients.ts";
 import { validateCommentContexts } from "./comment-context.ts";
 import {
   record,
@@ -77,6 +78,9 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
   }
   switch (data.type) {
     case "message":
+      if (data.recipients !== undefined && data.role !== "user")
+        throw new Error("Only authored messages may retain recipient tags");
+      validateRecipients(data.recipients);
       if (data.role !== "user" && data.role !== "assistant") {
         throw new Error("Transcript message role is invalid");
       }

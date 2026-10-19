@@ -5,6 +5,7 @@
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import ChatContextUsage from "./ChatContextUsage.svelte";
   import ChatComposerDrawer from "./ChatComposerDrawer.svelte";
+  import ChatRecipients from "./ChatRecipients.svelte";
 
   let {
     panel,
@@ -29,6 +30,11 @@
 </script>
 
 <div class="transcript-composer">
+  <ChatRecipients
+    recipients={composerState.recipients.display}
+    {disabled}
+    onRemove={() => composerState.recipients.remove()}
+  />
   <ChatComposerDrawer {controller} {attachmentsState} {actions} />
   <ChatContextUsage {controller} {composerState} {actions} />
   <MarkdownComposer

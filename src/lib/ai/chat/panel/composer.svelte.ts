@@ -14,14 +14,12 @@ import {
   type AcpAgentId,
 } from "../../settings/acp-agents.ts";
 import { DEFAULT_AI_SETTINGS } from "../../settings/ai-settings.ts";
-import { formatFileMention } from "../chat-mentions.ts";
+import { ComposerRecipients } from "./recipients.svelte.ts";
+import { mentionTriggers } from "./mention-triggers.ts";
+import { ACP_AGENT_IDS } from "../../settings/acp-agents.ts";
 import { shouldShowWorkingIndicator } from "../chat-status.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { composerAgentLabel } from "../../commands/agent.ts";
-import {
-  composerSlashItems,
-  filterComposerSlashItems,
-} from "../../commands/groups.ts";
 import {
   ComposerModelCatalog,
   type ComposerModelCatalogState,
@@ -50,6 +48,22 @@ class ComposerPanelState {
     return this.catalogState?.models ?? models;
   });
   draft = $state("");
+  recipientOptions = $derived.by(
+    () =>
+      this.getProps().agentOptions ??
+      ACP_AGENT_IDS.filter(
+        (agent) =>
+          agent === this.selectedAgent ||
+          this.catalogModels.some((model) => model.provider === agent),
+      ).map((agent) => ({
+        id: agent,
+        agent,
+        label: { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" }[
+          agent
+        ],
+      })),
+  );
+  recipients = new ComposerRecipients(() => this.recipientOptions);
   localAgent = $state<AcpAgentId | null>(null);
   localRuntime = $state<
     "acp" | "codex-native" | "opencode-native" | "fake" | null
@@ -104,43 +118,20 @@ class ComposerPanelState {
     return available;
   });
   mentionTriggers = $derived.by<ComposerTrigger[]>(() => {
-    const { slashRouter, fileSearch } = this.getProps();
-
-    const triggers: ComposerTrigger[] = [];
-    if (slashRouter) {
-      triggers.push({
-        character: "/",
-        menuLabel: "Commands",
-        emptySearchResultsText: "No commands",
-        searchSource: (query) =>
-          filterComposerSlashItems(
-            composerSlashItems(
-              slashRouter.catalog.list(this.controller.activeBindingId),
-              composerAgentLabel(this.selectedAgent, this.selectedRuntime),
-            ),
-            query,
-          ),
-        onSelect: (item) =>
-          item.submitOnSelect
-            ? (item.value ?? `/${item.id}`)
-            : `${item.value ?? `/${item.id}`} `,
-      });
-    }
-    if (fileSearch) {
-      triggers.push({
-        character: "@",
-        menuLabel: "Files",
-        emptySearchResultsText: "No vault files",
-        searchSource: fileSearch,
-        onSelect: (item) => ({
-          value: item.value ?? formatFileMention(item.id),
-          label: item.label,
-          variant: "secondary",
-        }),
-      });
-    }
-    return triggers;
+    return mentionTriggers(this.getProps(), this, this.controller);
   });
+  selectRecipient(id: string): void {
+    void runChatAction(this.getProps, this.controller, () => {
+      const option = this.recipientOptions.find((entry) => entry.id === id);
+      if (!option) {
+        this.recipients.selectedId = id;
+        throw new Error("The selected agent is no longer available");
+      }
+      if (option.agent !== this.selectedAgent)
+        this.changeAgent(option.agent, "acp");
+      this.recipients.select(id);
+    });
+  }
   composerError = $derived.by(() => {
     const { modelCatalogError = null, unavailableReason = null } =
       this.getProps();
@@ -217,6 +208,13 @@ class ComposerPanelState {
     agent: AcpAgentId,
     runtimePreference: "acp" | "codex-native" | "opencode-native",
   ): void {
+    if (
+      this.recipients.selectedId !== null &&
+      this.recipientOptions.find(
+        (entry) => entry.id === this.recipients.selectedId,
+      )?.agent !== agent
+    )
+      this.recipients.remove();
     const { settings, models = [], loadModels } = this.getProps();
 
     this.localAgent = agent;

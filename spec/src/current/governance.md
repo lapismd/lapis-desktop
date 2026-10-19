@@ -395,6 +395,6 @@ headed native acceptance. Hidden WebKit pauses animation frames, so service
 success stays distinct from native UI acceptance; original gates remain.
 
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
-IPC-only checks, headed windows and capture qualification boundaries.
-
-Native Codex tools retain LD-GOV-001/002/004 and original JJ/release gates.
+IPC-only checks, headed windows and capture qualification boundaries. The
+private migration link for `@lapismd/jj-conversations` consumes verified built
+exports; portable registry intake remains a distribution gate.

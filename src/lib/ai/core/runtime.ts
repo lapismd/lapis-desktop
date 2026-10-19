@@ -47,6 +47,7 @@ export type AppToolSessionDescriptor = {
 
 export type AgentRequest = {
   prompt: string;
+  recipients?: import("../conversations/recipients.ts").SavedAgentRecipient[];
   contextBlocks?: import("./context.ts").AgentContextBlock[];
   workspace?: string;
   agent?: string;

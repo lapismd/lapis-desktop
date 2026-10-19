@@ -27,6 +27,7 @@ import type { AppToolHost } from "../../tools/app-tool-host.ts";
 import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
+  agentOptions?: readonly import("../../conversations/recipients.ts").AgentRecipientOption[];
   /** Shared transcript selected by the ordinary plugin; legacy embeddings may omit it. */
   presentation?: "transcript";
   initialTranscriptView?: "document" | "classic";

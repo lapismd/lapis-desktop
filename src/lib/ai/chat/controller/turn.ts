@@ -11,11 +11,17 @@ import { prepareTurn, finishTurn, knownTurnError } from "./turn-checkpoint.ts";
 import { applyAgentEventToChatItems } from "../chat-trace.ts";
 import { publishCommentContext } from "./comment-publication.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
+import { validateRecipients } from "../../conversations/recipients.ts";
 export async function submit(
   this: AiChatController,
   prompt: string,
   request: Omit<AgentRequest, "prompt"> = {},
 ): Promise<boolean | undefined> {
+  const recipients = validateRecipients(request.recipients);
+  if (recipients.length > 1)
+    throw new Error(
+      "Multiple-recipient delivery is not available yet. Select one agent.",
+    );
   try {
     await this._syncSlashCatalog();
   } catch (error) {
@@ -51,6 +57,7 @@ export async function submit(
     type: "message",
     role: "user",
     text,
+    ...(recipients.length ? { recipients } : {}),
     ...(request.contextBlocks?.length
       ? { contextBlocks: structuredClone(request.contextBlocks) }
       : {}),
@@ -66,6 +73,7 @@ export async function submit(
   const effectiveRequest: Omit<AgentRequest, "prompt"> = {
     ...this.request,
     ...request,
+    ...(request.recipients ? { recipients } : {}),
     metadata: {
       ...this.request.metadata,
       ...request.metadata,

@@ -143,7 +143,9 @@ export function auditManifest(manifest, capabilities, normalConfig) {
             (name === "@lapismd/ai" &&
               version === "link:../lapis-ai/packages/ai") ||
             (name === "@lapismd/jj-history" &&
-              version === "link:../jj-store/packages/jj-history"))
+              version === "link:../jj-store/packages/jj-history") ||
+            (name === "@lapismd/jj-conversations" &&
+              version === "link:../jj-store/packages/jj-conversations"))
         )
       )
         report(

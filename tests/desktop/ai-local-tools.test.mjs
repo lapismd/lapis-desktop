@@ -151,6 +151,21 @@ test(
     writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
     await first.browser.$("button*=Open Vault").click();
     await ready(first);
+    await first.browser
+      .$('[contenteditable="true"][aria-label="Message"]')
+      .addValue("@codex");
+    const recipientOption = first.browser.$('[role="option"]');
+    await recipientOption.waitForDisplayed();
+    assert.match(await recipientOption.getText(), /Codex/);
+    await first.browser.keys("Enter");
+    await first.browser
+      .$('button[aria-label="Remove recipient @Codex"]')
+      .waitForDisplayed();
+    assert.equal(
+      metadataFiles(vault).length,
+      0,
+      "Recipient selection alone cannot publish or prompt",
+    );
     await send(
       first,
       "Use the app-provided MCP server lapis-tools and its read tool to read Note.md. Do not use shell commands or other filesystem tools. Reply with only the Read witness value from that file.",
@@ -167,6 +182,12 @@ test(
       records.some((e) => e.role === "assistant" && e.text.includes(witness)),
     );
     const journal = join(dirname(metadata), "transcript.jsonl");
+    assert.deepEqual(
+      entries(journal).find(
+        (entry) => entry.type === "message" && entry.role === "user",
+      ).recipients,
+      [{ id: "codex", label: "Codex", token: "jj-store-agent:636f646578;" }],
+    );
     const read = entries(journal).filter(
       (e) =>
         e.type === "tool" && e.name === "read" && e.server === "lapis-tools",
@@ -332,6 +353,10 @@ test(
       "Cold restore neither replays tools nor rewrites the transcript",
     );
     assert.equal(hash(note), noteHash);
+    assert.match(
+      await cold.browser.execute(() => document.body.innerText),
+      /@Codex/,
+    );
     assert.equal(existsSync(join(vault, ".jj")), false);
     writeFileSync(
       join(root, "accepted.json"),

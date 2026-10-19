@@ -16,6 +16,7 @@ gates.
   - [AI transcript delivery review](ai-presentation.md)
   - [Local AI turn recovery](ai-recovery.md)
   - [Native application tools](ai-tools.md)
+  - [Addressed local messages](ai-addressing.md)
 - [Repository history and conversations](repository.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)

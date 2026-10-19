@@ -585,3 +585,18 @@ checks inline Sent feedback and no pending queue, switches Document/Classic, and
 sends an explicit continuation with saved comments in handoff. Native
 comments-only Codex and cold History evidence remain in E-AI-045; visual review
 is pending.
+
+`Desktop/AI/Addressed messages` mounts the ordinary shared transcript in the App
+shell with both docks collapsed. SavedRecipients shows an unavailable historical
+recipient without creating a provider session. SelectRemoveAndSwitch covers the
+@ agent choice, shared draft audience, removal and Document/Classic.
+ExplicitSend checks the exact separately saved setup token and unchanged message
+text through the production repository/controller. Tags remain visual-pending;
+multi-recipient and queue delivery are separate slices.
+
+Recipient pills adapt jj-store
+`web/src/lib/ui/community-chat-composer/CommunityComposerAgentAudience.svelte`
+at `d80f03418e64c13f15483a41896cec5490e8e2ea` into
+`src/components/ai/chat/ChatRecipients.svelte`. The production adapter uses
+Design Core Button/Avatar/Badge and the headless codec's built public exports;
+no source-checkout import or catalog state enters production.

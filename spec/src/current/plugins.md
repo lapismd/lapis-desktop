@@ -292,3 +292,11 @@ not change application sidebar preferences. E-REPO-008 records this correction.
 E-AI-045 maps the restored code/table comment story to production local-file
 projection and public TranscriptController. Shared renderer ownership and
 visual-baseline gates under LD-PLUG-001 remain unchanged.
+
+The addressed-message catalog mounts the ordinary shared transcript. It covers
+saved unavailable recipients without execution, draft selection/removal,
+Document/Classic retention and exact metadata publication on explicit Send. Its
+memory repository and fake runtime stay catalog-owned; native Codex
+qualification remains separate. Recipient pills adapt the maintained jj-store
+component using public Design Core controls. Multi-recipient execution and
+persisted queues remain subsequent slices; stories cannot imply those grants.

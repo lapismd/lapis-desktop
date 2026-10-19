@@ -151,6 +151,7 @@ export type TranscriptEntry =
       type: "message";
       role: "user" | "assistant";
       text: string;
+      recipients?: import("./recipients.ts").SavedAgentRecipient[];
       /** Explicitly submitted comment captures; attached files remain transient. */
       contextBlocks?: import("./comment-context.ts").CommentContextBlock[];
     })

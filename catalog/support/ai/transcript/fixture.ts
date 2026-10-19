@@ -14,6 +14,7 @@ import { registerCatalogCleanup } from "../../lifecycle.ts";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 import { savedCommentSnapshot } from "./saved-comments.ts";
+import { savedRecipientSnapshot } from "./saved-recipients.ts";
 
 export type TranscriptScenario =
   | "conversation"
@@ -25,6 +26,7 @@ export type TranscriptScenario =
   | "long-code"
   | "unknown-turn"
   | "restored-comments"
+  | "addressed"
   | "failure";
 const type = "ai-transcript-review";
 
@@ -65,8 +67,13 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
     scopeDir: "Notes",
     conversationId: "123e4567-e89b-42d3-a456-426614174000",
   };
-  const repository =
-    scenario === "unknown-turn"
+  const addressedStore =
+    scenario === "addressed"
+      ? new MemoryTranscriptStore([savedRecipientSnapshot()])
+      : undefined;
+  const repository = addressedStore
+    ? new ConversationRepository(addressedStore)
+    : scenario === "unknown-turn"
       ? new ConversationRepository(
           new MemoryTranscriptStore([
             {
@@ -106,11 +113,16 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
             new MemoryTranscriptStore([savedCommentSnapshot()]),
           )
         : undefined;
+  let addressedTranscript = addressedStore
+    ? savedRecipientSnapshot().transcript
+    : [];
   function own(operation: Promise<unknown>) {
-    pending.add(operation);
-    void operation
-      .finally(() => pending.delete(operation))
-      .catch(console.error);
+    const observed = operation.finally(async () => {
+      if (addressedStore)
+        addressedTranscript = (await addressedStore.read(location)).transcript;
+    });
+    pending.add(observed);
+    void observed.finally(() => pending.delete(observed)).catch(console.error);
   }
   const mounts = new Set<ReturnType<typeof mount>>();
   const files = [
@@ -142,6 +154,13 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
           initialTranscriptView:
             scenario === "classic" ? "classic" : "document",
           runtime,
+          agentOptions:
+            scenario === "addressed"
+              ? [
+                  { id: "reviewer", label: "Reviewer", agent: "codex" },
+                  { id: "writer", label: "Writer", agent: "codex" },
+                ]
+              : undefined,
           sessionStore: repository ? undefined : store,
           repository,
           initialLocation: repository ? location : undefined,
@@ -235,13 +254,15 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
   return {
     app: base.app,
     ready,
-    inspect: () =>
-      JSON.stringify(
-        runtime.sessions.map((session) => ({
-          prompts: session.prompts,
-          context: session.contextBlocks,
-        })),
-      ),
+    inspect: (name: string) =>
+      name === "transcript" && addressedStore
+        ? JSON.stringify(addressedTranscript)
+        : JSON.stringify(
+            runtime.sessions.map((session) => ({
+              prompts: session.prompts,
+              context: session.contextBlocks,
+            })),
+          ),
     close: async () => {
       unregister();
       await close();
