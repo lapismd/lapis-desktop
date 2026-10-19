@@ -15,7 +15,7 @@ import type { AiChatController } from "../chat-controller.svelte.ts";
 export async function _applyAgentCommand(
   this: AiChatController,
   raw: string,
-): Promise<void> {
+): Promise<boolean> {
   const parsed = parseAgentCommand(raw);
   if (parsed === "unknown") {
     this.error = `Unknown agent: ${raw.trim()}`;
@@ -28,10 +28,10 @@ export async function _applyAgentCommand(
         createdAt: new Date().toISOString(),
       },
     ];
-    return;
+    return false;
   }
   if (parsed === "status") {
-    await this._withCommandProgress(async (turnId) => {
+    return this._withCommandProgress(async (turnId) => {
       if (this._isAbandoned(turnId)) return;
       this._appendLocalNotice(
         composerAgentLabel(
@@ -43,7 +43,6 @@ export async function _applyAgentCommand(
       );
       await this._persistCommandNotice();
     });
-    return;
   }
   this.request = {
     ...this.request,
@@ -66,6 +65,7 @@ export async function _applyAgentCommand(
   }
   this._appendLocalNotice(`Agent: ${parsed.label}`);
   await this._persistCommandNotice();
+  return !this._disposed && !this.error;
 }
 
 export async function _applyScopeCommand(

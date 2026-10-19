@@ -12,9 +12,9 @@ export async function _executeSlash(
   this: AiChatController,
   resolution: NonNullable<ReturnType<SlashCommandRouter["resolve"]>>,
   request: Omit<AgentRequest, "prompt">,
-): Promise<void> {
+): Promise<boolean | undefined> {
   const slashRouter = this._slashRouter;
-  if (!slashRouter || this.busy) return;
+  if (!slashRouter || this.busy) return false;
   this.error = null;
   if (this.repository) await this._ensureConversation();
   const discovery = this._skillContext?.() ?? {
@@ -35,26 +35,25 @@ export async function _executeSlash(
         createdAt: new Date().toISOString(),
       },
     ];
-    return;
+    return false;
   }
   if (result.kind === "local") {
     if (result.notice === "new") {
       await this.newConversation({
         scopeDir: this.location?.scopeDir ?? "",
       });
-      return;
+      return !this._disposed && !this.error;
     }
     if (result.notice === "refresh") {
       await this.refreshSkills();
       this._appendLocalNotice("Agent skills refreshed.");
-      return;
+      return !this._disposed && !this.error;
     }
     if (result.notice === "agent") {
-      await this._applyAgentCommand(result.arguments ?? "");
-      return;
+      return this._applyAgentCommand(result.arguments ?? "");
     }
     if (result.notice === "help") {
-      await this._withCommandProgress(async (turnId) => {
+      return this._withCommandProgress(async (turnId) => {
         await this._prepareSession(request, turnId);
         if (this._isAbandoned(turnId)) return;
         this._appendLocalNotice(
@@ -70,43 +69,39 @@ export async function _executeSlash(
         );
         await this._persistCommandNotice();
       });
-      return;
     }
     if (result.notice === "scope") {
       await this._applyScopeCommand(result.arguments ?? "");
-      return;
+      return !this._disposed && !this.error;
     }
     if (result.notice === "context") {
-      await this._withCommandProgress(async (turnId) => {
+      return this._withCommandProgress(async (turnId) => {
         await this._prepareSession(request, turnId);
         if (this._isAbandoned(turnId)) return;
         this._appendLocalNotice(await this._describeContext());
         await this._persistCommandNotice();
       });
-      return;
     }
     if (result.notice === "model") {
-      await this._withCommandProgress(async (turnId) => {
+      return this._withCommandProgress(async (turnId) => {
         if (this._isAbandoned(turnId)) return;
         this._appendLocalNotice(
           "Change the model from the composer Model menu.",
         );
         await this._persistCommandNotice();
       });
-      return;
     }
     if (result.notice === "cancel") {
-      await this._withCommandProgress(async (turnId) => {
+      return this._withCommandProgress(async (turnId) => {
         if (this._isAbandoned(turnId)) return;
         this._appendLocalNotice(
           "Use Stop in the composer to cancel the active run.",
         );
         await this._persistCommandNotice();
       });
-      return;
     }
     if (result.notice === "skills" || result.notice === "tools") {
-      await this._withCommandProgress(async (turnId) => {
+      return this._withCommandProgress(async (turnId) => {
         await this._prepareSession(request, turnId);
         if (this._isAbandoned(turnId)) return;
         if (result.notice === "skills") {
@@ -142,13 +137,12 @@ export async function _executeSlash(
         }
         await this._persistCommandNotice();
       });
-      return;
     }
     this._appendLocalNotice(`/${result.notice}`);
-    return;
+    return true;
   }
   if (result.kind === "tool") {
-    await this._withCommandProgress(async (turnId) => {
+    return this._withCommandProgress(async (turnId) => {
       await this._prepareSession(request, turnId);
       if (this._isAbandoned(turnId)) return;
       this._ensureLocalAppToolSession();
@@ -203,15 +197,12 @@ export async function _executeSlash(
         });
       }
     });
-    return;
   }
   if (result.kind === "skill") {
-    await this._submitWithActivation(result.activation, request);
-    return;
+    return this._submitWithActivation(result.activation, request);
   }
   if (result.kind === "prompt") {
-    await this.submit(result.prompt, request);
-    return;
+    return this.submit(result.prompt, request);
   }
   if (result.kind === "native") {
     const text = `/${result.name}${
@@ -222,13 +213,12 @@ export async function _executeSlash(
       "native-agent",
       result.arguments,
     );
-    this.busy = true;
-    try {
-      await this._prepareSession(request);
-      await this.session?.send(text);
-    } finally {
-      this.busy = false;
-    }
+    return this._withCommandProgress(async (turnId) => {
+      await this._prepareSession(request, turnId);
+      if (this._isAbandoned(turnId)) return;
+      if (!this.session) throw new Error("Agent session did not start.");
+      await this.session.send(text);
+    });
   }
 }
 

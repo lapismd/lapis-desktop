@@ -3,12 +3,6 @@
 import { queuedRequest } from "./queue-routing.ts";
 import { runChatAction } from "./action-errors.ts";
 import { catalogModelsForAgent } from "../../settings/acp-agents.ts";
-import { toolCallStatus, type AiChatToolItem } from "../chat-tool-display.ts";
-import {
-  isOneLineToolAlert as isOneLineAlert,
-  presentToolPayload,
-  toolCallTarget,
-} from "@lapismd/design-core/ai/chat";
 import type { AiChatPanelProps } from "./props.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import type { ComposerState } from "./composer.svelte.ts";
@@ -90,12 +84,18 @@ export function createChatPanelActions(
         runtime: composer.selectedRuntime,
       },
     };
+    const enqueue = Boolean(
+      controller.repository &&
+        (controller.busy ||
+          controller.publication.inFlight ||
+          controller.queuedMessages.pending.length),
+    );
+    const consumesAttachments =
+      enqueue || !/^\/(?!\/)/u.test(prompt.trimStart());
     let accepted: boolean | undefined;
     try {
       accepted = controller.repository
-        ? controller.busy ||
-          controller.publication.inFlight ||
-          controller.queuedMessages.pending.length
+        ? enqueue
           ? await controller.queuedMessages.enqueue(prompt, request)
           : await controller.publication.submit(prompt, request)
         : await controller.submit(prompt, request);
@@ -107,7 +107,7 @@ export function createChatPanelActions(
       queueError(error);
       return false;
     }
-    if (accepted === true) {
+    if (accepted === true && consumesAttachments) {
       attachmentState.attachments = attachmentState.attachments.filter(
         (file) => !extra.includes(file.path),
       );
@@ -115,6 +115,7 @@ export function createChatPanelActions(
     }
     if (
       accepted === true &&
+      consumesAttachments &&
       addressed &&
       composer.recipients.matches(addressed.recipients.map((r) => r.id))
     )
@@ -158,30 +159,6 @@ export function createChatPanelActions(
   function formatTokenCount(value: number): string {
     return new Intl.NumberFormat().format(value);
   }
-  function toolCallProps(item: AiChatToolItem) {
-    const hint = { toolName: item.name, input: item.input };
-    const presentedError =
-      item.state === "error"
-        ? presentToolPayload(item.output, hint)
-        : undefined;
-    return {
-      id: item.toolId,
-      name: item.name,
-      status: toolCallStatus(item.state),
-      errorMessage:
-        presentedError && isOneLineAlert(presentedError)
-          ? presentedError.code
-          : undefined,
-      target: toolCallTarget(item.input, item.server),
-      data: {
-        input: item.input,
-        output: item.state === "error" ? undefined : item.output,
-        error: item.state === "error" ? item.output : undefined,
-        name: item.name,
-      },
-    };
-  }
-
   const perform = (operation: () => unknown | Promise<unknown>) =>
     runChatAction(getProps, controller, operation);
   return {
@@ -220,7 +197,6 @@ export function createChatPanelActions(
     copyResponse: (text: string) => perform(() => copyResponse(text)),
     promptForError,
     formatTokenCount,
-    toolCallProps,
   };
 }
 export type ChatPanelActions = ReturnType<typeof createChatPanelActions>;

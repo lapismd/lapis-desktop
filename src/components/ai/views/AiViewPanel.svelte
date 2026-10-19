@@ -78,7 +78,6 @@
 </script>
 
 <AiChatPanel
-  presentation="transcript"
   {transcriptFrame}
   {app}
   runtime={bootstrap.runtime}

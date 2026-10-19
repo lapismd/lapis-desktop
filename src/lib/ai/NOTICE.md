@@ -92,3 +92,10 @@ Local discussion reply-context composition adapts
 retaining Notes-owned transcript parents, acknowledgement and binding checks.
 Presentation uses public Design Core Transcript/TranscriptController exports; no
 JJ store or native conversation publication is introduced by these local links.
+
+AI-JSONL-UI retires the retained Chat.Layout timeline/composer and old JSONL
+markup. AiRecordedTranscript shares the existing durable projection across
+imports and file previews. AiSessionFrame/AiSessionThread extract the already
+attributed jj-store inbox composition; docs/provenance.json retains those source
+mappings. The unused capture-source table is retired; its original provenance
+remains in historical E-AI-054. No shared-package source is copied.

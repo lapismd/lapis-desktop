@@ -9,9 +9,8 @@ native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
-E-AI-054/055 add [local imports](ai-imports.md) with native read-only workers.
-E-AI-056 adds transient sources; E-AI-057 reviews the session layout only. Live
-integration awaits UI confirmation; automatic watching remains pending.
+E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
+E-AI-058 qualifies the saved inbox layout; automatic watching remains pending.
 E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
@@ -310,9 +309,10 @@ mid-import.
 
 Enabled AI retains the file-only `ai-jsonl` view and default `.jsonl`
 association. Validated transcripts reuse the durable chat projection; validated
-agent events retain their timeline and structured records. Other JSONL retains
-line-numbered records. Interrupted final appends preserve prior records with a
-warning; terminated malformed records remain readable errors.
+agent events retain their timeline and structured records. Both compose the
+reviewed nested shell described in [presentation](ai-presentation.md). Other
+JSONL retains line-numbered records. Interrupted final appends preserve prior
+records with a warning; terminated malformed records remain readable errors.
 
 The preview has no composer or editing actions and never saves file content.
 Vault changes refresh it through the existing file-view lifecycle. Filename

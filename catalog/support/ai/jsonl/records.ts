@@ -58,4 +58,49 @@ export const agents = lines([
     agentBindingId: "b1",
     usage: { used: 1200, limit: 128000 },
   },
+  {
+    schemaVersion: 3,
+    type: "handoff.summary.created",
+    id: "handoff1",
+    createdAt: time,
+    conversationId: "123e4567-e89b-42d3-a456-426614174000",
+    fromEntryId: "u1",
+    throughEntryId: "a1",
+    sourceHash: "a".repeat(64),
+    summary:
+      "## Saved context\n\n- Retain the **release plan**.\n- Review the remaining work before continuing.",
+    processor: { runtime: "acp", agent: "codex", model: "fixture-model" },
+    estimatedTokens: 30,
+  },
 ]);
+
+export const largeTranscript =
+  transcript +
+  lines([
+    {
+      schemaVersion: 1,
+      id: "read-plan",
+      type: "tool",
+      toolId: "read-plan",
+      name: "read_file",
+      state: "completed",
+      input: JSON.stringify({ path: "Notes/Plan.md" }),
+      output:
+        "# Release plan\n\n- [x] Save local transcripts\n- [ ] Review the release\n\n| Area | Status |\n| --- | --- |\n| Chat | Ready |\n| History | Review |",
+      createdAt: time,
+    },
+    {
+      schemaVersion: 1,
+      id: "review",
+      type: "message",
+      role: "assistant",
+      text:
+        'The plan keeps the saved session local.\n\n```ts\nexport function summarize(records: readonly string[]) {\n  return records.filter(Boolean).join("\\n");\n}\n```\n\n```diff\n--- a/plan.md\n+++ b/plan.md\n@@ -1 +1 @@\n- Pending\n+ Ready for review\n```\n\n' +
+        Array.from(
+          { length: 24 },
+          (_, index) =>
+            `Review item ${index + 1}: retain captured source and explicit user actions.`,
+        ).join("\n\n"),
+      createdAt: time,
+    },
+  ]);

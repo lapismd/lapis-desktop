@@ -34,12 +34,11 @@ export async function submit(
   }
   const resolution = this._slashRouter?.resolve(prompt, this._activeBindingId);
   if (resolution?.kind === "unknown" || resolution?.kind === "command") {
-    await this._executeSlash(resolution, {
+    return this._executeSlash(resolution, {
       ...this.request,
       ...request,
       metadata: { ...this.request.metadata, ...request.metadata },
     });
-    return;
   }
   const text =
     resolution?.kind === "literal" ? resolution.text.trim() : prompt.trim();

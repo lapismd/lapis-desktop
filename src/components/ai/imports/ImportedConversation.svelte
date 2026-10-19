@@ -6,7 +6,7 @@
   import CapturedSessionBrowser from "../sessions/CapturedSessionBrowser.svelte";
   import { createSavedHistory } from "../../../lib/ai/session-browser/saved-history.svelte.ts";
   import type { ConversationSnapshot } from "../../../lib/ai/conversations/types.ts";
-  import ImportedTranscript from "./ImportedTranscript.svelte";
+  import AiRecordedTranscript from "../sessions/AiRecordedTranscript.svelte";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import DownloadIcon from "@lucide/svelte/icons/download";
   let {
@@ -59,7 +59,7 @@
     onRefresh={() => void history.refresh()}
   />
 {:else if snapshot.metadata.imported?.state === "complete" && !snapshot.warnings.length}
-  <ImportedTranscript entries={snapshot.transcript} />
+  <AiRecordedTranscript entries={snapshot.transcript} />
 {:else}
   <Empty.Root
     ><Empty.Header

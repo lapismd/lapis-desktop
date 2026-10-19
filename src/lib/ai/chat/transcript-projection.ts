@@ -7,7 +7,7 @@ import type {
 import type { AgentBindingCreatedRecord } from "../conversations/types.ts";
 import type { AiChatItem } from "./chat-items.ts";
 import { bindingLabels } from "./panel/binding-labels.ts";
-import { toolCallStatus } from "./chat-tool-display.ts";
+import { toolCallStatus, isLocalCommandTool } from "./chat-tool-display.ts";
 import { discussionReplyContexts } from "./transcript-discussions.ts";
 import { agentAvatar } from "../presentation/agent-avatar.ts";
 
@@ -106,6 +106,8 @@ export function projectAiTranscript(
       if (
         previous?.kind === "tools" &&
         previous.turn?.id === turn?.id &&
+        !isLocalCommandTool(item) &&
+        !previous.defaultExpanded &&
         !dayLabel
       ) {
         previous.tools = [...(previous.tools ?? []), tool(item)];
@@ -115,6 +117,7 @@ export function projectAiTranscript(
           kind: "tools",
           dayLabel,
           label: "Tool activity",
+          defaultExpanded: isLocalCommandTool(item),
           turn,
           blocks: [],
           tools: [tool(item)],
@@ -187,7 +190,8 @@ export function projectAiTranscript(
       defaultExpanded:
         item.type === "thinking"
           ? item.state === "streaming"
-          : item.type === "error",
+          : item.type === "error" ||
+            (item.type === "status" && item.layout !== undefined),
       blocks: [
         {
           ...block(item, value, custom ? "custom" : "markdown", label),

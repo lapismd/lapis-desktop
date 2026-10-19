@@ -9,7 +9,7 @@ Leave drains it before persistence/teardown and resumes only a still-live App on
 failure (LD-FILE-002/003). M6 registers public Search and Graph with native
 settings recovery and metadata qualification governed by `navigation.md`.
 
-E-AI-057 adds no native integration; its nested shell is catalog-owned.
+E-AI-059 retains LD-DESK-001/LD-HOST-001 for nested AI/file views.
 
 Plugin assets and Terminal follow [plugins](plugins.md).
 

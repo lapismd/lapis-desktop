@@ -241,3 +241,5 @@
 - [Storybook session inbox layout review](history/E-AI-057.md)
 
 - [Production AI inbox and local saved-history adoption](history/E-AI-058.md)
+
+- [Unified JSONL shell and sole AI transcript renderer](history/E-AI-059.md)

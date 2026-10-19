@@ -30,9 +30,7 @@ import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
   agentOptions?: readonly import("../../conversations/recipients.ts").AgentRecipientOption[];
-  /** Shared transcript selected by the ordinary plugin; legacy embeddings may omit it. */
-  presentation?: "transcript";
-  /** Optional presentation frame; absent in the ordinary plugin until review approval. */
+  /** Optional frame for standalone embeddings; the ordinary plugin supplies the session shell. */
   transcriptFrame?: Component<TranscriptFrameProps>;
   initialTranscriptView?: "document" | "classic";
   app?: App;

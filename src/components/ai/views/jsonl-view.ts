@@ -2,10 +2,13 @@
 // Retained Lapis file view; see src/lib/ai/NOTICE.md.
 import { TextFileView, TFile, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
+import { writable } from "svelte/store";
 import type { AiApplication } from "../../../lib/ai/plugin/application.ts";
 import { AI_JSONL_VIEW } from "../../../lib/ai/plugin/view-types.ts";
-import AiJsonlPreview from "../jsonl/AiJsonlPreview.svelte";
+import AiJsonlPanel from "../jsonl/AiJsonlPanel.svelte";
 export class AiJsonlView extends TextFileView {
+  #loading = writable(false);
+  #pending = 0;
   #component?: ReturnType<typeof mount>;
   #unregister?: () => void;
   #subscriptions: Array<() => void> = [];
@@ -35,10 +38,11 @@ export class AiJsonlView extends TextFileView {
     this.containerEl.classList.add("text-view", "ai-jsonl-file-view");
     this.actions = [];
     this.#unregister = this.host.operations.ownView(this.closePanel);
-    this.#component = mount(AiJsonlPreview, {
+    this.#component = mount(AiJsonlPanel, {
       target: this.contentEl,
       props: {
         app: this.app,
+        loading: this.#loading,
         get data() {
           return view.data;
         },
@@ -84,7 +88,13 @@ export class AiJsonlView extends TextFileView {
   }
   onLoadFile(file: TFile): Promise<void> {
     if (!this.host.active) return Promise.reject(new Error("AI is disabled"));
-    return this.host.operations.track(super.onLoadFile(file));
+    this.#pending++;
+    this.#loading.set(true);
+    const loading = super.onLoadFile(file).finally(() => {
+      this.#pending--;
+      this.#loading.set(this.#pending > 0);
+    });
+    return this.host.operations.track(loading);
   }
   closePanel = (): Promise<void> => {
     this.editor.cancelDocumentLoad();

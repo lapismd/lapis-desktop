@@ -364,18 +364,6 @@
     },
     {
       "sourceRepository": "jj-store",
-      "revision": "efc26dea6b8dab4e0317904a1395ad5a3b901981",
-      "license": "Apache-2.0",
-      "paths": [
-        {
-          "source": "web/src/lib/ui/store-settings/StoreCaptureSources.svelte",
-          "destination": "src/components/ai/imports/ImportSources.svelte"
-        }
-      ],
-      "use": "Copied and adapted source/status/action table, Design Core Table/TagList/Button composition and empty/loading structure. Notes owns the explicit source port, sanitized preview and local snapshot journal. Repository admission, controller settings and capture enrollment controls are omitted because native source acquisition is a separate Notes-owned slice. No cross-checkout runtime imports."
-    },
-    {
-      "sourceRepository": "jj-store",
       "revision": "08b58c7e507d49199cd24b4f7bb503099580c988",
       "license": "Apache-2.0",
       "paths": [
@@ -430,9 +418,17 @@
         {
           "source": "web/src/lib/ui/community-inbox/CommunityInboxFilters.svelte",
           "destination": "src/components/ai/sessions/AiSessionFilters.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInbox.svelte",
+          "destination": "src/components/ai/sessions/AiSessionFrame.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInbox.svelte",
+          "destination": "src/components/ai/sessions/AiSessionThread.svelte"
         }
       ],
-      "use": "Production adoption of the reviewed JJ Store inbox in E-AI-058. Application-owned nested AppShell, grouped rows, header toggle, bounded resizing, searchable source filters and compact status bars serve live chat, explicit import and read-only saved snapshots. Existing repository/runtime/import ports retain authority; saved versions are loaded lazily from local import journals. Automatic capture coordination and JJ persistence stay deferred. Codex artwork remains source-owned and attributed in src/lib/ai/presentation/assets/SOURCES.md. Catalog fixtures mount these production components; no production imports from catalog or another checkout."
+      "use": "Production adoption of the reviewed JJ Store inbox in E-AI-058. Application-owned nested AppShell, grouped rows, header toggle, bounded resizing, searchable source filters and compact status bars serve live chat, explicit import and read-only saved snapshots. Existing repository/runtime/import ports retain authority; saved versions are loaded lazily from local import journals. Automatic capture coordination and JJ persistence stay deferred. Codex artwork remains source-owned and attributed in src/lib/ai/presentation/assets/SOURCES.md. Catalog fixtures mount these production components; no production imports from catalog or another checkout. The shared frame/thread extraction also hosts file-only JSONL previews; it adds no source discovery or storage authority."
     },
     {
       "sourceRepository": "jj-store",

@@ -80,3 +80,11 @@ The Notes Mobile play omits tab-sheet interaction that remains in the plugin
 source. Its LocalConversations play also differs in selected creation scope and
 visible labels. Desktop retains the stronger mobile play and Notes-scoped
 creation; both source comparisons remain explicit.
+
+The legacy Chat.Layout panel branch and JSONL renderer are retired in
+AI-JSONL-UI. All direct-panel cases use the shared Transcript; explicit Classic
+fixtures keep Classic coverage while ordinary plugin/file defaults remain
+Document. JSONL files use the nested session frame without navigation or a
+composer. Agent event records retain their own schema projection. The old
+ImportSources table has no callers and is removed. Shared approval/question,
+attachment/configuration, scope and history controls remain active.

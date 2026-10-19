@@ -58,3 +58,64 @@ it("retains registered result views and never promotes failed reads into markdow
   expect(failed.displayed.blocks[0].kind).toBe("code");
   expect(failed.displayed.inlineBlocks).toBeUndefined();
 });
+
+it.each([false, true])(
+  "keeps a local slash tool inline, including registered views (%s)",
+  (custom) => {
+    const local: AiChatToolItem = {
+      id: "search",
+      type: "tool",
+      toolId: "slash-tool-saved-id",
+      name: "notes_search",
+      state: "completed",
+      output: "Captured matches",
+    };
+    const projected = projectAiTranscript([local]);
+    expect(projected[0].defaultExpanded).toBe(true);
+    const tool = projected[0].tools![0];
+    expect(previewTranscriptTool(tool, local, custom)).toMatchObject({
+      detailPlacement: "inline",
+      blocks: tool.blocks,
+      raw: tool.raw,
+    });
+    expect(
+      previewTranscriptTool(
+        tool,
+        { ...local, toolId: "agent-search-id" },
+        custom,
+      ).detailPlacement,
+    ).toBe("sidebar");
+  },
+);
+
+it("does not hide consecutive local commands in an agent tool group", () => {
+  const tool: AiChatToolItem = {
+    id: "first",
+    type: "tool",
+    toolId: "slash-tool-1",
+    name: "notes_search",
+    state: "completed",
+  };
+  const projected = projectAiTranscript([
+    tool,
+    { ...tool, id: "second", toolId: "slash-tool-2" },
+    { ...tool, id: "agent", toolId: "agent-1" },
+  ]);
+  expect(projected.map((item) => item.defaultExpanded)).toEqual([
+    true,
+    true,
+    false,
+  ]);
+});
+
+it("expands explicit command reports while retaining folded multiline context", () => {
+  const report = {
+    id: "report",
+    type: "status" as const,
+    text: "App\n  /help — Commands",
+  };
+  expect(projectAiTranscript([report])[0].defaultExpanded).toBe(false);
+  expect(
+    projectAiTranscript([{ ...report, layout: "report" }])[0].defaultExpanded,
+  ).toBe(true);
+});

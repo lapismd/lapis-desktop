@@ -34,6 +34,7 @@ export class TurnPublication {
     this.inFlight = true;
     this.active = sending
       .then((result) => {
+        if (result === true) pending.resolve(true);
         if (
           !this.controller._disposed &&
           result !== true &&

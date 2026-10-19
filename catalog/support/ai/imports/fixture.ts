@@ -148,7 +148,6 @@ export function createImportFixture(
               app: base.app,
               runtime,
               repository,
-              presentation: "transcript",
               initialLocation: recorded.location,
               recordedImport: recorded,
               selectRuntime: async () => {

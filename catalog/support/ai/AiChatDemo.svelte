@@ -241,6 +241,7 @@
 >
   {#if fixtureReady}
     <AiChatPanel
+      initialTranscriptView="classic"
       app={panelApp}
       {runtime}
       selectRuntime={showRuntimeSelection ? async () => runtime : undefined}
@@ -266,7 +267,7 @@
     display: flex;
     flex-direction: column;
     min-height: 28rem;
-    height: 100%;
+    height: calc(100dvh - 2rem);
   }
 
   .ai-chat-demo > :global([data-ui-component="ai-chat-panel"]) {

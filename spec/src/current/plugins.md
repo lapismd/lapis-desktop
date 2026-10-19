@@ -1,9 +1,10 @@
 # Desktop plugins and catalog
 
-E-AI-057 copies JJ Store’s inbox into Storybook session/import layout reviews.
-The existing transcript accepts an optional externally controlled mode/toolbar;
-ordinary plugin defaults remain exact. No new view or writer is registered.
-LD-PLUG-001 identity, admission and lifetime contracts are unchanged.
+E-AI-058/059 adopt JJ Store's inbox frame and share it with file-only JSONL.
+`transcript.jsonl` uses read-only Transcript; `agents.jsonl` retains event
+records. Exclusive legacy renderers are retired; local command results stay
+inline. LD-PLUG-001 identity, admission, profile and disposal contracts remain
+unchanged.
 
 E-AI-055 adds independently admitted native Codex import workers and truthful
 unknown tool outcomes; [local imports](ai-imports.md) owns that bounded profile.

@@ -168,7 +168,6 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
         target: this.containerEl,
         props: {
           app: base.app,
-          presentation: "transcript",
           initialTranscriptView:
             scenario === "classic" ? "classic" : "document",
           runtime,

@@ -15,6 +15,59 @@ export const Conversation: Story = {};
 export const SendingError: Story = {
   args: { scenario: "sending-error" },
 };
+export const InlineLocalCommands: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const panel = await canvas.findByTestId("ai-chat-panel");
+    await waitFor(() =>
+      expect(panel).toHaveAttribute("data-initializing", "false"),
+    );
+    const editor = await canvas.findByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(editor);
+    await userEvent.keyboard("/help{Escape}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    const report = await canvas.findByLabelText("Command output");
+    await expect(report).toBeVisible();
+    expect(report.textContent).toContain("App\n  /help — ");
+    expect(getComputedStyle(report).whiteSpace).toBe("pre-wrap");
+    expect(getComputedStyle(report).fontFamily).toMatch(/mono/i);
+    const command = within(report).getByText("/help", { exact: true });
+    expect(getComputedStyle(command).color).not.toBe(
+      getComputedStyle(report).color,
+    );
+    await waitFor(() => expect(editor).not.toHaveTextContent("/help"));
+    await userEvent.click(editor);
+    await userEvent.keyboard("/search project{Escape}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    const result = await canvas.findByRole("button", {
+      name: "Hide details for notes_search",
+    });
+    await userEvent.click(result);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Show details for notes_search" }),
+    );
+    expect(canvas.queryByLabelText("Tool details")).toBeNull();
+    expect(
+      canvas.getByRole("button", { name: "Hide details for notes_search" }),
+    ).toHaveAttribute("aria-expanded", "true");
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Show raw output for notes_search",
+      }),
+    );
+    expect(canvas.queryByLabelText("Tool details")).toBeNull();
+    expect(
+      canvas.getByRole("button", {
+        name: "Show rich output for notes_search",
+      }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Show rich output for notes_search",
+      }),
+    );
+  },
+};
 export const LiveInboxControls: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement),

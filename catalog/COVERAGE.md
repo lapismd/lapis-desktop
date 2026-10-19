@@ -649,13 +649,13 @@ presentations restore without a provider prompt. Legacy captures remain Sent.
   Reply composer, pending comments and Document/Classic state. Only the newly
   authored feedback is submitted; existing saved reply links are retained.
 
-IMPORT-01A (`ai/ImportReview.stories.ts`) mounts production AiImportPanel,
-ImportSources and ImportedTranscript in the real WorkspaceShell with both docks
+IMPORT-01A (`ai/ImportReview.stories.ts`) mounts production AiImportPanel and
+the shared AiRecordedTranscript in the real WorkspaceShell with both docks
 collapsed. Eight states cover explicit source preview, Document/Classic, save
 and exact duplicates, unknown-write retry, preview failure/toast recovery,
 representative loading skeletons, no sources, unavailable hosts and saved
 read-only chat projection without a composer. Source clients are fixtures;
-native discovery/import remains IMPORT-01B. Source table provenance is in
+native discovery/import remains IMPORT-01B. Inbox provenance is in
 docs/provenance.json; visual baseline approval is pending.
 
 AI-SESSION-UI promotes the reviewed components into the ordinary plugin under
@@ -683,3 +683,21 @@ with a rejected fixture runtime. Shell cases retain local journals, agent
 switching, folder following, archived actions, admission and narrow-panel reopen
 coverage. Catalog provider clients remain synthetic; this is not fresh native
 provider, JJ storage or automatic capture coordination proof.
+
+AI-JSONL-UI replaces the file-only preview with AiJsonlPanel in the shared
+nested AiSessionFrame/AiSessionThread. Desktop/AI/JSONL mounts the actual
+registered TextFileView in WorkspaceShell: Transcript (Document/Classic,
+read-only), Agent events (structured captures and Markdown handoff), generic
+refresh/rename, interrupted append, malformed record, empty, loading and disable
+during read. Large transcript exercises captured Markdown/source inspection,
+Escape/focus restoration, highlighted code/diff and long scrolling content
+without writes or runtime sessions. Retained direct-panel stories now use the
+sole shared renderer; legacy timeline/composer/source-table components and
+exclusive CSS are retired. Design Core's Classic prompt-surface story owns the
+role-based primary tint.
+
+InlineLocalCommands exercises real local `/help` and `/search` dispatch in the
+nested chat shell, coloured monospaced reports, acknowledgement and inline-only
+search disclosure. SavedLocalCommands reopens retained JSONL results read-only,
+with exact report whitespace and inline tool placement. Agent read inspection
+remains covered separately by LiveInboxControls. No new persistence fields.

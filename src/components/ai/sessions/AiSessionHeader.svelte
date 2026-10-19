@@ -14,13 +14,15 @@
     onToggle,
     actions,
     harness,
+    identity,
   }: {
     title: string;
     status?: string;
     selected: boolean;
     listLabel: string;
     expanded: boolean;
-    onToggle: () => void;
+    onToggle?: () => void;
+    identity?: Snippet;
     actions?: Snippet;
     harness?: string;
   } = $props();
@@ -28,17 +30,17 @@
 
 <header class="session-header">
   <div class="session-header__identity">
-    <Button
-      variant="ghost"
-      size="icon-sm"
-      aria-label={`Toggle ${listLabel.toLowerCase()}`}
-      title={`Toggle ${listLabel.toLowerCase()}`}
-      aria-pressed={expanded}
-      onclick={onToggle}
-    >
-      <AiSessionToggleIcon side="left" {expanded} />
-    </Button>
-    {#if selected}<Avatar
+    {#if onToggle}<Button
+        variant="ghost"
+        size="icon-sm"
+        aria-label={`Toggle ${listLabel.toLowerCase()}`}
+        title={`Toggle ${listLabel.toLowerCase()}`}
+        aria-pressed={expanded}
+        onclick={onToggle}
+      >
+        <AiSessionToggleIcon side="left" {expanded} />
+      </Button>{/if}
+    {#if identity}{@render identity()}{:else if selected}<Avatar
         src={agentAvatar(harness)}
         name={harness ?? "AI session"}
         size="sm"

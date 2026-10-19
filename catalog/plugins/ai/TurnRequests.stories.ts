@@ -1,3 +1,4 @@
+import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -19,9 +20,9 @@ export const PermissionRequested: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Apply the change");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     const allow = await canvas.findByRole("button", { name: /Allow once/ });
     const drawer = allow.closest(
       '[data-ui-component="ai-chat-composer-drawer"]',
@@ -43,13 +44,15 @@ export const PermissionAccepted: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Apply the change");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     const allow = await canvas.findByRole("button", { name: /Allow once/ });
     await userEvent.click(allow);
+    await canvas.findByRole("button", { name: "Permission response" });
+    await expandTranscriptActivity(canvasElement);
     await waitFor(() => {
-      expect(canvas.getByText(/Approval approved/i)).toBeInTheDocument();
+      expect(canvas.getByText(/Permission approved/i)).toBeInTheDocument();
       expect(canvas.queryByTestId("ai-chat-working")).toBeNull();
     });
   },
@@ -62,9 +65,9 @@ export const QuestionAsked: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Update the sample file");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     const option = await canvas.findByRole("button", {
       name: /Make the smallest change/,
     });

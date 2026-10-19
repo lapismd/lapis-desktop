@@ -13,13 +13,18 @@ export async function _submitWithActivation(
     instructions: string;
   },
   request: Omit<AgentRequest, "prompt">,
-): Promise<void> {
+): Promise<boolean> {
+  const turnId = this._turnId;
   this.busy = true;
   try {
-    await this._prepareSession({
-      ...request,
-      skillActivations: [activation],
-    });
+    await this._prepareSession(
+      {
+        ...request,
+        skillActivations: [activation],
+      },
+      turnId,
+    );
+    if (this._isAbandoned(turnId) || !this.session) return false;
     this.items = [
       ...this.items,
       {
@@ -42,10 +47,11 @@ export async function _submitWithActivation(
         this._activeBindingId,
       );
     }
-    await this.session?.send(
+    await this.session.send(
       activation.arguments?.trim() || activation.skillName,
     );
+    return !this._isAbandoned(turnId) && !this.error;
   } finally {
-    this.busy = false;
+    if (this._turnId === turnId) this.busy = false;
   }
 }

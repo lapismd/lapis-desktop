@@ -75,6 +75,21 @@
 {/if}
 
 <style>
+  .ai-chat-panel__context-usage {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    color: var(--muted-foreground);
+    font-size: 0.6875rem;
+    line-height: 1rem;
+    white-space: nowrap;
+  }
+  .ai-chat-panel__context-usage progress {
+    width: 4rem;
+    height: 0.25rem;
+    accent-color: var(--primary);
+  }
+
   .context-ring-track {
     stroke: var(--muted-foreground);
     opacity: 0.25;

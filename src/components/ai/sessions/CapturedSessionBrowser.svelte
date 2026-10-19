@@ -7,7 +7,7 @@
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import HistoryIcon from "@lucide/svelte/icons/history";
   import codexIcon from "../../../lib/ai/presentation/assets/codex.svg";
-  import ImportedTranscript from "../imports/ImportedTranscript.svelte";
+  import AiRecordedTranscript from "./AiRecordedTranscript.svelte";
   import AiTranscriptLoading from "../chat/AiTranscriptLoading.svelte";
   import TranscriptViewToggle from "./TranscriptViewToggle.svelte";
   import AiSessionShell from "./AiSessionShell.svelte";
@@ -128,7 +128,7 @@
       </div>
     </footer>{/snippet}
   {#if loading || previewLoading}<AiTranscriptLoading composer={false} />
-  {:else if version?.entries && !version.incomplete}{#key version.id}<ImportedTranscript
+  {:else if version?.entries && !version.incomplete}{#key version.id}<AiRecordedTranscript
         entries={version.entries}
         bind:view
         showViewToolbar={false}

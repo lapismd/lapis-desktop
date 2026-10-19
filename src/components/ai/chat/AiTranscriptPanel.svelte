@@ -89,9 +89,16 @@
           publication: "refused",
           error: "Wait for the active turn to finish.",
         };
+      const context = transcriptCommentContext(snapshot);
+      if (context.length && /^\/(?!\/)/u.test(snapshot.text.trimStart()))
+        return {
+          publication: "refused",
+          error:
+            "Send the pending comments with a regular message. Slash commands do not submit comment context.",
+        };
       const acknowledged = await actions.submitTranscript(
         snapshot.text,
-        transcriptCommentContext(snapshot),
+        context,
       );
       if (!acknowledged && actions.submissionWasRefused())
         return {
@@ -198,6 +205,7 @@
       {#snippet afterItems()}
         {#if composerState.showWorkingIndicator}<div
             class="transcript-activity"
+            data-testid="ai-chat-working"
             role="status"
           >
             <Spinner /><span>{composerState.workingLabel}</span>

@@ -47,7 +47,7 @@ export function createNotesSearchSeedItems() {
     {
       id: "search-tool",
       type: "tool" as const,
-      toolId: "search-tool",
+      toolId: "slash-tool-search-fixture",
       name: "notes_search",
       server: "lapis-tools",
       state: "completed" as const,

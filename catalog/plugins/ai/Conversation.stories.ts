@@ -21,23 +21,26 @@ export const SendAndComplete: Story = {
     const canvas = within(canvasElement);
     const panel = await canvas.findByTestId("ai-chat-panel");
     const dock = panel.querySelector(
-      '[data-ui-part="composer-dock"]',
+      ".transcript-composer",
     ) as HTMLElement | null;
     const shell = panel.querySelector(
-      '[data-ui-part="scroll-shell"]',
+      '[data-ui-part="scroll-area-viewport"]',
     ) as HTMLElement | null;
     expect(dock).not.toBeNull();
     expect(shell).not.toBeNull();
-    expect(getComputedStyle(dock!).position).toBe("relative");
-    expect(shell!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
-      dock!.getBoundingClientRect().top + 2,
+    expect(
+      panel.querySelector('[data-conversation-view="classic"]'),
+    ).not.toBeNull();
+    expect(getComputedStyle(shell!).overflowY).toMatch(/auto|scroll/);
+    expect(dock!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      shell!.getBoundingClientRect().bottom + 2,
     );
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Summarize this note");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
       expect(
-        canvas.getByRole("article", { name: "Message from assistant" }),
+        canvas.getByRole("article", { name: /Message from codex/i }),
       ).toHaveTextContent("Summarize this note");
     });
   },
@@ -51,19 +54,19 @@ export const AutomaticMemoryRecall: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Draft the Atlas summary");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-demo")).toHaveAttribute(
         "data-memory-recall-calls",
         "1",
       );
       expect(
-        canvas.getByRole("article", { name: "Message from user" }),
+        canvas.getByRole("article", { name: "Message from You" }),
       ).toHaveTextContent("Draft the Atlas summary");
       expect(
-        canvas.getByRole("article", { name: "Message from assistant" }),
+        canvas.getByRole("article", { name: /Message from codex/i }),
       ).toHaveTextContent("Draft the Atlas summary");
     });
     expect(

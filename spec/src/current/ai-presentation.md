@@ -20,16 +20,17 @@ The 2026-10-18 delivery sequence prioritizes visible, functional slices:
 5. NOTES-07K/07L/09: native JJ backend selection, listing/creation/pinned reads,
    AgentStore/ThreadStore capture and managed restart are deferred by the user.
    The unqualified renderer client draft is preserved in change lqqoypxx;
-   ordinary UI adoption remains on parent 612ab0e0. Original JJ milestone gates
-   remain pending; file-profile success does not complete them.
+   ordinary UI adoption is qualified separately in E-AI-058. Original JJ
+   milestone gates remain pending; file-profile success does not complete them.
 
-The opt-in `AiChatPanel.presentation` selects the shared transcript for review.
-`initialTranscriptView` only chooses its initial document/classic presentation;
-it grants no runtime, storage or native authority. The ordinary AiViewPanel
-selects the shared transcript in NOTES-08B. Its vault-owned `transcriptView`
-defaults to Document; explicit Classic selection persists through the existing
-acknowledged plugin-settings writer. Legacy embeddings can still omit the
-presentation prop. Catalog owns all synthetic data and runtime clients.
+The shared Transcript is the sole panel renderer. `initialTranscriptView` only
+chooses its initial document/classic presentation; it grants no runtime, storage
+or native authority. The ordinary AiViewPanel selects the shared transcript in
+NOTES-08B. Its vault-owned `transcriptView` defaults to Document; explicit
+Classic selection persists through the existing acknowledged plugin-settings
+writer. All panel embeddings use the shared Transcript; the superseded chat
+timeline and composer are retired. Catalog owns all synthetic data and runtime
+clients.
 
 The document footer keeps a single compact row. Formatting expands rightward
 using the jj-store strip (selected trigger, close, separator and actions), with
@@ -212,3 +213,38 @@ version browser does not silently enable either. E-AI-058 qualifies
 AI-SESSION-UI for the reviewed local-file profile through source and consumer
 acceptance and a cold ordinary-app review. Original M10.2/M13 gates and visual
 baseline approval remain separate.
+
+## Unified file previews and renderer retirement
+
+The file-only JSONL registration uses the same nested header/body/footer frame
+as the session inbox, without a session list or composer. Each tab reads only
+its selected file. `transcript.jsonl` uses the shared read-only Transcript with
+Document default, header icon toggle and retained tool inspector. `agents.jsonl`
+keeps its chronological binding/activity records, Markdown handoff summaries and
+expandable structured captures. Generic JSONL retains line-numbered records. The
+compact footer identifies read-only state and record counts. Initial file loads
+use representative skeletons. Empty, invalid and interrupted-append states
+retain their existing parsing semantics. Rename/refresh and owned teardown stay
+within the file-view lifecycle; no preview writes, sibling reads or runtime
+launches are introduced. Imports and files share one recorded transcript reader.
+
+The old Chat.Layout timeline/composer branch is removed from the ordinary panel
+and catalog embeddings. Existing approvals, questions, attachments, recipient,
+configuration, scope and history controls remain shared with the new renderer.
+Classic user prompts use Design Core's rounded primary-tinted surface, including
+on hover/focus; Document and assistant surfaces retain their existing behaviour.
+
+Shared-renderer adoption also retains slash-command usability: completed local
+commands and confirmed skill/prompt dispatch return explicit acceptance, while
+errors and cancellation retain the draft. Saved command publication acknowledges
+its local completion separately from provider checkpoints. Commands preserve
+unconsumed attachments and recipient choices. Pending anchored comments require
+a regular message and remain queued locally if a slash command is attempted;
+commands cannot silently acknowledge context they do not submit.
+
+Local slash-command tools retain inline disclosures and results, including
+registered search views; their titles never open the body inspector. The
+retained dispatch identity distinguishes local commands from agent tools.
+Reports such as `/help` preserve captured whitespace in a monospaced surface,
+with semantic colours for headings and commands. Saved captures remain plain
+text; presentation never resolves today's registry or executes the command.

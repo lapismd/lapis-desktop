@@ -5,6 +5,7 @@ import type {
   TranscriptBlock,
 } from "@lapismd/design-core/chat";
 import type { AiChatToolItem } from "./chat-tool-display.ts";
+import { isLocalCommandTool } from "./chat-tool-display.ts";
 import { parseToolResultPayload } from "./chat-result-views.ts";
 
 function record(value: unknown): Record<string, unknown> | undefined {
@@ -36,6 +37,7 @@ export function previewTranscriptTool(
   item: AiChatToolItem,
   customResult: boolean,
 ): TranscriptTool {
+  if (isLocalCommandTool(item)) return { ...tool, detailPlacement: "inline" };
   const inspected = { ...tool, detailPlacement: "sidebar" as const };
   const first = tool.blocks[0];
   if (!first || customResult) return inspected;

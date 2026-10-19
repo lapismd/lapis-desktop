@@ -11,7 +11,7 @@
     type AiImportProps,
   } from "../../../lib/ai/imports/state.svelte.ts";
   import codexIcon from "../../../lib/ai/presentation/assets/codex.svg";
-  import ImportedTranscript from "./ImportedTranscript.svelte";
+  import AiRecordedTranscript from "../sessions/AiRecordedTranscript.svelte";
   import AiTranscriptLoading from "../chat/AiTranscriptLoading.svelte";
   import TranscriptViewToggle from "../sessions/TranscriptViewToggle.svelte";
   import AiSessionShell from "../sessions/AiSessionShell.svelte";
@@ -123,7 +123,7 @@
     {#if imports.busy && !imports.plan && imports.loaded}<AiTranscriptLoading
         composer={false}
       />
-    {:else if imports.plan}<ImportedTranscript
+    {:else if imports.plan}<AiRecordedTranscript
         entries={imports.plan.entries}
         bind:view
         showViewToolbar={false}

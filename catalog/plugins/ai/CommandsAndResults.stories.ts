@@ -1,3 +1,4 @@
+import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 import { aiReviewAction } from "../../support/ai/review.ts";
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
@@ -21,20 +22,29 @@ export const SkillsAndSlash: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "/research-notes authentication");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await canvas.findByRole("button", { name: "Skill activation" });
+    await expandTranscriptActivity(canvasElement);
     await waitFor(() => {
       expect(canvas.getByText(/Skill research-notes/u)).toBeInTheDocument();
     });
     await userEvent.type(input, "/help");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await waitFor(async () => {
+      await expandTranscriptActivity(canvasElement);
+    });
     await waitFor(() => {
-      expect(canvas.getByText(/App/u)).toBeInTheDocument();
-      expect(canvas.getByText(/\/help/u)).toBeInTheDocument();
+      const report = canvas.getByLabelText("Command output");
+      expect(report).toHaveTextContent("App");
+      expect(report).toHaveTextContent("/help");
     });
     await userEvent.type(input, "/skills");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await waitFor(async () => {
+      await expandTranscriptActivity(canvasElement);
+    });
     await waitFor(() => {
       const inventory = canvasElement.querySelector(
         '[data-ui-component="ai-inventory-result"]',
@@ -44,13 +54,19 @@ export const SkillsAndSlash: Story = {
       expect(canvas.getByText("research-notes")).toBeInTheDocument();
     });
     await userEvent.type(input, "/open-daily-note");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await waitFor(async () => {
+      await expandTranscriptActivity(canvasElement);
+    });
     await waitFor(() => {
-      expect(canvas.getByText("/open-daily-note")).toBeInTheDocument();
+      expect(canvas.getAllByText("/open-daily-note").length).toBeGreaterThan(1);
     });
     await aiReviewAction(canvasElement, "Unload extension command");
     await userEvent.type(input, "/open-daily-note");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await waitFor(async () => {
+      await expandTranscriptActivity(canvasElement);
+    });
     await waitFor(() => {
       expect(
         canvas.getAllByText(/Unknown command: \/open-daily-note/u).length,
@@ -70,16 +86,13 @@ export const SearchToolHits: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const trigger = await canvas.findByRole("button", {
-      name: "Show details for notes_search OAuth",
-    });
-    await userEvent.click(trigger);
     const hit = await canvas.findByRole("button", {
       name: "Open auth.md Projects/auth.md",
     });
     await expect(hit).toBeVisible();
     await expect(canvas.getByText("OAuth tokens")).toBeVisible();
     await userEvent.click(hit);
+    expect(canvas.queryByRole("dialog")).not.toBeInTheDocument();
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-demo")).toHaveAttribute(
         "data-opened-paths",
@@ -104,36 +117,32 @@ export const ValidationAndEmptyState: Story = {
     await expect(alert).toHaveTextContent(
       "Agent runtime socket closed unexpectedly.",
     );
-    expect(alert).toHaveAttribute("data-ui-part", "status");
-    expect(alert).toHaveAttribute("data-position", "top");
-
-    const layout = panel.querySelector(
-      '[data-ui-component="ai-chat-layout"]',
-    ) as HTMLElement | null;
-    const shell = panel.querySelector(
-      '[data-ui-part="scroll-shell"]',
-    ) as HTMLElement | null;
-    const empty = panel.querySelector(
-      '[data-ui-part="empty-state"]',
-    ) as HTMLElement | null;
-    const dock = panel.querySelector(
-      '[data-ui-part="composer-dock"]',
-    ) as HTMLElement | null;
-    expect(layout).not.toBeNull();
-    expect(shell).not.toBeNull();
-    expect(empty).not.toBeNull();
-    expect(dock).not.toBeNull();
-    const layoutBox = layout!.getBoundingClientRect();
-    const shellBox = shell!.getBoundingClientRect();
-    const emptyBox = empty!.getBoundingClientRect();
-    const dockBox = dock!.getBoundingClientRect();
-    expect(layoutBox.height).toBeGreaterThan(400);
-    expect(shellBox.height).toBeGreaterThanOrEqual(
-      layoutBox.height - dockBox.height - 2,
-    );
-    expect(emptyBox.height).toBeGreaterThan(shellBox.height * 0.7);
-    expect(shellBox.bottom).toBeLessThanOrEqual(dockBox.top + 2);
-    expect(dockBox.bottom).toBeLessThanOrEqual(layoutBox.bottom + 2);
+    const transcript = panel.querySelector(
+      '[data-ui-component="transcript"]',
+    ) as HTMLElement;
+    const viewport = panel.querySelector(
+      '.ui-transcript-viewport > [data-ui-part="scroll-area-viewport"]',
+    ) as HTMLElement;
+    const composer = panel.querySelector(
+      "[data-transcript-composer]",
+    ) as HTMLElement;
+    const footer = panel.querySelector(
+      '[data-ui-component="transcript-footer"]',
+    ) as HTMLElement;
+    expect(transcript).not.toBeNull();
+    expect(viewport).not.toBeNull();
+    expect(composer).not.toBeNull();
+    expect(footer).not.toBeNull();
+    await waitFor(() => {
+      expect(transcript.getBoundingClientRect().height).toBeGreaterThan(400);
+      expect(viewport.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        footer.getBoundingClientRect().top + 2,
+      );
+      expect(composer.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        viewport.getBoundingClientRect().bottom + 2,
+      );
+    });
+    expect(canvas.getByText("Start a conversation")).toBeVisible();
     await expect(canvas.getByTestId("ai-chat-scope-path")).toHaveTextContent(
       "Vault",
     );
@@ -148,5 +157,65 @@ export const ValidationAndEmptyState: Story = {
     expect(
       within(menu!).queryByText("Agent runtime socket closed unexpectedly."),
     ).toBeNull();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(
+      () => {
+        expect(menu).toHaveAttribute("data-state", "closed");
+        expect(
+          getComputedStyle(canvasElement.ownerDocument.body).pointerEvents,
+        ).not.toBe("none");
+      },
+      { timeout: 5000 },
+    );
+  },
+};
+
+export const SlashRetainsPendingComments: Story = {
+  args: {
+    enableSkills: true,
+    seedItems: [
+      {
+        id: "comment-source",
+        type: "message",
+        role: "assistant",
+        text: "Keep this captured context.",
+        createdAt: "2026-10-19T09:00:00Z",
+      },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(
+      () =>
+        expect(
+          getComputedStyle(canvasElement.ownerDocument.body).pointerEvents,
+        ).not.toBe("none"),
+      { timeout: 5000 },
+    );
+    await userEvent.hover(
+      await canvas.findByRole("textbox", { name: "Assistant response" }),
+    );
+    await userEvent.click(
+      await canvas.findByRole("button", {
+        name: "Comment on Assistant response",
+      }),
+    );
+    const comment = await canvas.findByRole("textbox", {
+      name: "Comment on Assistant response",
+    });
+    await userEvent.click(comment);
+    await userEvent.keyboard("Preserve this feedback.");
+    const composer = canvas.getByRole("textbox", { name: /^Message$/ });
+    await userEvent.click(composer);
+    await userEvent.keyboard("/model");
+    await userEvent.keyboard("{Escape}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await expect(canvas.findByRole("alert")).resolves.toHaveTextContent(
+      "Slash commands do not submit comment context",
+    );
+    expect(composer).toHaveTextContent("/model");
+    expect(
+      canvas.getByRole("group", { name: "Pending comments" }),
+    ).toHaveTextContent("Preserve this feedback.");
   },
 };
