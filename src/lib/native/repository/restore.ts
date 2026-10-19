@@ -3,6 +3,7 @@ import { nativeError } from "../native-error.ts";
 import type {
   RestorePreview,
   RestoreService,
+  VaultRestorePreview,
 } from "../../repository/restore.ts";
 export function nativeRestore(
   sessionId: string,
@@ -18,6 +19,30 @@ export function nativeRestore(
     }
   }
   return {
+    async keepCurrent() {
+      try {
+        return await call("desktop_backup_capture", { request: { sessionId } });
+      } catch (error) {
+        throw nativeError(error);
+      }
+    },
+    async previewVault(checkpoint) {
+      const result = await run<VaultRestorePreview>({
+        kind: "preview_vault",
+        checkpoint,
+      });
+      if (
+        !result ||
+        result.checkpoint !== checkpoint ||
+        typeof result.expected !== "string" ||
+        ![result.added, result.modified, result.deleted].every(
+          (value) => Number.isSafeInteger(value) && value >= 0,
+        )
+      )
+        throw new Error("Invalid vault restore preview");
+      return result;
+    },
+    applyVault: (request) => run({ kind: "apply_vault", request }),
     async preview(checkpoint, path) {
       const result = await run<RestorePreview>({
         kind: "preview",

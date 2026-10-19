@@ -5,6 +5,7 @@ import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryPanel from "./RepositoryPanel.svelte";
 import { openHistoryRevision } from "../../lib/repository/open-history-revision.ts";
 import { RestoreController } from "../../lib/repository/restore.ts";
+import { createRestoreController } from "./restore-controller.ts";
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 import { followBackup } from "../../lib/repository/backup-follow.ts";
 
@@ -66,11 +67,7 @@ export class RepositoryView extends View {
   onload(): void {
     this.#controller = this.plugin.createController();
     if (this.plugin.restoreService) {
-      this.#restore = new RestoreController(
-        this.plugin.restoreService,
-        (path, action) => this.app.fileEditingSessions.guard(path, action),
-        this.plugin.feedback("Restore file"),
-      );
+      this.#restore = createRestoreController(this.plugin);
       this.#restoreActivity = new BackgroundWork(
         this.app.notifications,
         this.plugin.id,

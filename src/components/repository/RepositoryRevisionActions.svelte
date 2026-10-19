@@ -2,14 +2,17 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import HistoryIcon from "@lucide/svelte/icons/history";
   import GitMergeIcon from "@lucide/svelte/icons/git-merge";
+  import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
   let {
     expanded = false,
     onEvolution,
     onResolve,
+    onRestore,
   }: {
     expanded?: boolean;
     onEvolution?(): void;
     onResolve?(): void;
+    onRestore?(): void;
   } = $props();
 </script>
 
@@ -32,6 +35,9 @@
       <GitMergeIcon data-icon="inline-start" aria-hidden="true" />Resolve
       conflicts
     </Button>{/if}
+  {#if onRestore}<Button size="xs" variant="outline" onclick={onRestore}
+      ><RotateCcwIcon data-icon="inline-start" />Restore vault…</Button
+    >{/if}
 </div>
 
 <style>

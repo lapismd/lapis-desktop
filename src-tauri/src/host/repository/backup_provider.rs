@@ -1,4 +1,7 @@
-use jj_vault::{Capture, NativeRepository, Repository, RestorePreview, RestoreRequest};
+use jj_vault::{
+    Capture, NativeRepository, Repository, RestorePreview, RestoreRequest, VaultRestorePreview,
+    VaultRestoreRequest,
+};
 use std::sync::{
     Arc, Mutex,
     atomic::{AtomicBool, Ordering},
@@ -12,6 +15,12 @@ pub(super) struct Provider {
     pub active: Arc<AtomicBool>,
 }
 impl Repository for Provider {
+    fn preview_vault_restore(&mut self, checkpoint: &str) -> Result<VaultRestorePreview, String> {
+        self.with_native(|native| native.preview_vault_restore(checkpoint))
+    }
+    fn restore_vault(&mut self, request: &VaultRestoreRequest) -> Result<Capture, String> {
+        self.with_native(|native| native.restore_vault(request))
+    }
     fn capture(&mut self) -> Result<Capture, String> {
         self.with_native(|native| native.capture())
     }

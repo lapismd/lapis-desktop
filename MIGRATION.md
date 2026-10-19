@@ -9,7 +9,7 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
 M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
-Current work: M14.3 — Complete guarded whole-vault restore
+Current work: M14.3 — Qualify cold app restore, then forge setup
 
 Oldest pending gate: M7.3 — After M10.4: qualify ordinary native popouts
 
@@ -58,7 +58,7 @@ below.
 | M14   | In progress | Complete the staged plan                                                            |
 | M14.1 | Partial     | Complete native binding and identity proof                                          |
 | M14.2 | Partial     | Qualify cold native lifecycle later                                                 |
-| M14.3 | In progress | Complete guarded whole-vault restore                                                |
+| M14.3 | In progress | Qualify cold app restore, then forge setup                                          |
 | M14.4 | Planned     | Reuse forge account management                                                      |
 | M14.5 | Planned     | Integrate guarded Git transport                                                     |
 | M14.6 | Planned     | Add the disposable projection                                                       |

@@ -1,6 +1,6 @@
 use super::{RepositoryHost, policy};
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::RestoreRequest;
+use jj_vault::{RestoreRequest, VaultRestoreRequest};
 use serde::Deserialize;
 use serde_json::Value;
 use std::io;
@@ -17,6 +17,8 @@ pub struct Request {
 enum Action {
     Preview { checkpoint: String, path: String },
     Apply { request: RestoreRequest },
+    PreviewVault { checkpoint: String },
+    ApplyVault { request: VaultRestoreRequest },
 }
 #[tauri::command]
 pub async fn desktop_backup_restore(
@@ -36,6 +38,16 @@ pub async fn desktop_backup_restore(
         .owner(&request.session_id, &caller.window)
         .await?;
     let result = match request.action {
+        Action::PreviewVault { checkpoint } => serde_json::to_value(
+            owner
+                .backup
+                .preview_vault_restore(checkpoint)
+                .await
+                .map_err(failure)?,
+        ),
+        Action::ApplyVault { request } => {
+            serde_json::to_value(owner.backup.restore_vault(request).await.map_err(failure)?)
+        }
         Action::Preview { checkpoint, path } => serde_json::to_value(
             owner
                 .backup
@@ -65,6 +77,13 @@ mod tests {
             assert!(serde_json::from_value::<Request>(frame).is_err());
             let mut frame = valid.clone();
             frame["action"][key] = serde_json::json!("outside");
+            assert!(serde_json::from_value::<Request>(frame).is_err());
+        }
+        let valid = serde_json::json!({"sessionId":"opaque","action":{"kind":"apply_vault","request":{"request_id":"stable","checkpoint":"abc","expected":"tree"}}});
+        assert!(serde_json::from_value::<Request>(valid.clone()).is_ok());
+        for key in ["root", "path", "metadata", "generation", "window"] {
+            let mut frame = valid.clone();
+            frame["action"]["request"][key] = serde_json::json!("outside");
             assert!(serde_json::from_value::<Request>(frame).is_err());
         }
     }

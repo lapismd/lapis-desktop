@@ -35,6 +35,14 @@ stale previews cannot overwrite later edits. Default history follows completed
 captures until a commit or operation is explicitly selected; restored live tabs
 stay live. The first native scan does not hold up plugin or shell startup.
 
+Whole-vault previews pin the complete included tree and show added, changed and
+deleted counts. Apply preserves one original safety checkpoint, guards each file
+and journals progress for restart. Complete-tree verification precedes success.
+Symlinks and file/directory type transitions currently fail before mutation.
+Restore requests are saved before native mutation; reopening history offers the
+original request for receipt reconciliation. Keeping current files first drains
+a native capture barrier, then clears the UI recovery record.
+
 The delivery adds a simple file-version timeline, safety-checkpoint restore,
 historical text/metadata search and automatic selected-branch Git sync. GitHub
 device sign-in reuses jj-store's public client configuration and native secret

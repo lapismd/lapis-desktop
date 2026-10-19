@@ -1,7 +1,8 @@
 # Governance
 
-E-REPO-027 extends the exact backup writer grants to guarded restore.
-LD-GOV-001/002/004 ownership, evidence and original milestone gates stay intact.
+E-REPO-028 retains exact writer grants and persists restore identity before
+mutation. LD-GOV-001/002/004 ownership, evidence and original milestone gates
+stay intact.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

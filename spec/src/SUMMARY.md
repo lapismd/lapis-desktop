@@ -218,3 +218,5 @@
 - [External vault backup foundation](history/E-REPO-026.md)
 
 - [Guarded file restore and live backup follow](history/E-REPO-027.md)
+
+- [Whole-vault restore and retained UI recovery](history/E-REPO-028.md)

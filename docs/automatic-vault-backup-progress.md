@@ -38,8 +38,8 @@ listed below. Changes integrate back into the main workspaces after completion.
       watcher and status integration; native compilation and two real
       watcher/admission tests pass.
 - [ ] Native runtime close/destruction/reload proof and failed-open cleanup.
-- [ ] Record focused source/consumer evidence and commit the verified
-      foundation.
+- [x] Record focused source/consumer evidence and commit the verified
+      external-storage/capture and file-restore foundations in both workspaces.
 
 ## Deferred verification and remaining delivery
 
@@ -76,8 +76,11 @@ listed below. Changes integrate back into the main workspaces after completion.
       worker tests, 50 renderer/governance tests, strict types, native
       command-frame test, six stories in four width/theme runs (24
       interaction/accessibility executions).
-- [ ] Whole-vault restore and complete actual-WebView backup/restore lifecycle
-      acceptance.
+- [x] Whole-vault restore with an original safety checkpoint, guarded progress
+      and complete-tree verification.
+- [x] Durable UI restore identity and explicit original-request recovery after
+      reopening history.
+- [ ] Complete actual-WebView backup/restore lifecycle acceptance.
 - [ ] Existing repository source selector, GitHub/Forgejo, synchronization and
       search.
 
@@ -86,3 +89,8 @@ and an assertion racing dialog animation. The exact stories pass after the
 dependency cache settled and visibility is awaited. One inherited pin regression
 and a source-size violation were corrected without weakening the original
 assertions.
+
+Whole-vault native evidence adds two actual source regressions and the extended
+serialized native worker proof. Unsupported symlink and file/directory type
+transitions fail explicitly before mutation. Full-tree restore does not replace
+`.lapis` runtime data or explicit backup exclusions.

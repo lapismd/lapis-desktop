@@ -20,9 +20,22 @@
 >
   <AlertDialog.Content>
     <AlertDialog.Header>
-      <AlertDialog.Title>Restore file version</AlertDialog.Title>
+      <AlertDialog.Title
+        >{state.scope === "vault"
+          ? "Restore vault checkpoint"
+          : "Restore file version"}</AlertDialog.Title
+      >
       <AlertDialog.Description>
-        {#if state.preview}
+        {#if state.recovery}
+          An earlier restore was interrupted. Continue to check its original
+          receipt. Newer edits will be retained. You can cancel to review
+          another checkpoint.
+        {:else if state.vault}
+          Restore the vault to this checkpoint: {state.vault.added} files added,
+          {state.vault.modified} changed and {state.vault.deleted} removed. A safety
+          checkpoint saves all current files first. App runtime and excluded files
+          are retained.
+        {:else if state.preview}
           {state.preview.deleted ? "Remove" : "Restore"}
           {state.preview.path} to the selected version. A safety checkpoint saves
           your current files first. Any edits made since this preview must be reviewed
@@ -30,7 +43,7 @@
         {:else}Preparing the selected file version…{/if}
       </AlertDialog.Description>
     </AlertDialog.Header>
-    {#if state.busy && !state.preview}<div
+    {#if state.busy && !state.preview && !state.vault && !state.recovery}<div
         class="restore-skeleton"
         aria-label="Preparing restore"
       >
@@ -40,10 +53,20 @@
       </div>{/if}
     <AlertDialog.Footer>
       <AlertDialog.Cancel disabled={state.busy}>Cancel</AlertDialog.Cancel>
+      {#if state.recovery && controller.service.keepCurrent}<Button
+          variant="outline"
+          disabled={state.busy}
+          onclick={() => controller.keepCurrent()}>Keep current files</Button
+        >{/if}
       <Button
-        disabled={!state.preview || state.busy}
+        disabled={(!state.preview && !state.vault && !state.recovery) ||
+          state.busy}
         onclick={() => controller.apply()}
-        >{state.busy ? "Restoring…" : "Restore file"}</Button
+        >{state.busy
+          ? "Restoring…"
+          : state.scope === "vault"
+            ? "Restore vault"
+            : "Restore file"}</Button
       >
     </AlertDialog.Footer>
   </AlertDialog.Content>

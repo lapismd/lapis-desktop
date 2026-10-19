@@ -5,6 +5,7 @@ import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryWorkingCopyStatus from "./RepositoryWorkingCopyStatus.svelte";
 import RepositoryBackupStatus from "./RepositoryBackupStatus.svelte";
+import { RESTORE_NOTICE } from "./restore-controller.ts";
 import {
   AUTOMATIC_BACKUP_SETTING,
   automaticBackup,
@@ -30,6 +31,15 @@ export class RepositoryStatus {
   ) {}
   async start(): Promise<void> {
     this.#data = (await this.plugin.loadData()) ?? {};
+    if (this.#data.pendingRestore)
+      this.plugin.app.notifications.notify({
+        id: RESTORE_NOTICE,
+        title: "Restore needs review",
+        message: "Open Repository History to check the interrupted restore.",
+        source: this.plugin.id,
+        severity: "warning",
+        persist: false,
+      });
     this.plugin.registerSettingsSection({
       section: {
         id: "repository-history",

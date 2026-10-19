@@ -9,6 +9,7 @@
     onOpenDiff,
     onOpenEvolution,
     onResolveConflicts,
+    onRestoreVault,
     evolutionOpen = false,
     graphRevisions,
     graphLabel = "Revision graph",
@@ -30,6 +31,7 @@
     onOpenDiff(): void;
     onOpenEvolution?(): void;
     onResolveConflicts?(): void;
+    onRestoreVault?(): void;
     evolutionOpen?: boolean;
     graphRevisions?: import("../../lib/repository/graph/model.ts").RepositoryLogRevision[];
     graphLabel?: string;
@@ -69,12 +71,13 @@
     }}
   >
     {#snippet selectedFiles()}
-      {#if onOpenEvolution || (state.revision?.conflicted && onResolveConflicts)}<RepositoryRevisionActions
+      {#if onOpenEvolution || onRestoreVault || (state.revision?.conflicted && onResolveConflicts)}<RepositoryRevisionActions
           expanded={evolutionOpen}
           onEvolution={onOpenEvolution}
           onResolve={state.revision?.conflicted
             ? onResolveConflicts
             : undefined}
+          onRestore={onRestoreVault}
         />{/if}
       <RepositoryCommitMessage
         description={state.revision?.description ?? ""}
@@ -89,6 +92,7 @@
           separateActions={!hasMessageBody &&
             Boolean(
               onOpenEvolution ||
+                onRestoreVault ||
                 (state.revision?.conflicted && onResolveConflicts),
             )}
         />{/if}{/snippet}

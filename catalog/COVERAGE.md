@@ -582,3 +582,7 @@ plugin with an explicitly withheld initial-capture response. Repository restore
 stories use the production diff toolbar, App editor guard, restore dialog and
 notification service; SafetyCheckpoint and LostResponseAndRetry cover success
 and recovery.
+
+Repository restore / WholeVaultSafetyCheckpoint and InterruptedRestore exercise
+production all-writer guards, confirmation, retained request replay and
+feedback.

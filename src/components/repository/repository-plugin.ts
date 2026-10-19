@@ -43,10 +43,10 @@ export class RepositoryPlugin extends Plugin {
       description: "Read pinned JJ history and compare revisions in the vault.",
     });
   }
-  feedback(title = "Repository history") {
+  feedback(title = "Repository history", identity?: string) {
     if (!this.#services || this.#closing)
       throw new Error("Repository history is closed");
-    const id = `repository-history:${crypto.randomUUID()}`;
+    const id = identity ?? `repository-history:${crypto.randomUUID()}`;
     return {
       report: (error: unknown) =>
         this.app.notifications.notify({

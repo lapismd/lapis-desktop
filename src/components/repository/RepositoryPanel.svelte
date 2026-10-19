@@ -51,6 +51,14 @@
   const selection = $derived(
     `${snapshot.revision?.id ?? ""}/${snapshot.path ?? ""}`,
   );
+  const restoreCheckpoint = $derived(
+    snapshot.revision
+      ? snapshot.revision.workspaces.length &&
+        snapshot.revision.parents.length === 1
+        ? snapshot.revision.parents[0]
+        : snapshot.revision.id
+      : undefined,
+  );
   $effect(() => {
     selection;
     const revision = untrack(() => snapshot.revision?.id);
@@ -134,6 +142,10 @@
                 {copyText}
                 onOpenDiff={() => canvas.open("diff")}
                 onResolveConflicts={() => (conflictsOpen = true)}
+                onRestoreVault={restore?.service.previewVault &&
+                restoreCheckpoint
+                  ? () => restore.prepareVault(restoreCheckpoint!)
+                  : undefined}
               />
             {/if}
           </ColumnCanvas.Body>
@@ -142,7 +154,7 @@
           state={snapshot}
           {controller}
           onRestore={restore && snapshot.revision && snapshot.path
-            ? () => restore.prepare(snapshot.revision!.id, snapshot.path!)
+            ? () => restore.prepare(restoreCheckpoint!, snapshot.path!)
             : undefined}
         />
       </ColumnCanvas.Root>

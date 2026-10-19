@@ -292,3 +292,6 @@ focused catalog proof; LD-CAT-001/002/003 baseline/release gates are unchanged.
 
 E-REPO-027 adds production file-restore and responsive initial-capture stories.
 LD-CAT-001/002/003 teardown, loading, failure-toast and visual gates remain.
+
+E-REPO-028 adds whole-vault restore and interrupted-command review to the
+production-component restore stories; original catalog gates remain unchanged.

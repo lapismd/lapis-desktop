@@ -17,11 +17,26 @@
       return {
         reader: fixture.reader,
         restore: {
+          async keepCurrent() {
+            root.dataset.keptCurrent = "true";
+          },
+          async previewVault(checkpoint) {
+            return {
+              checkpoint,
+              expected: "c".repeat(40),
+              added: 2,
+              modified: 3,
+              deleted: 1,
+            };
+          },
+          async applyVault(request) {
+            root.dataset.restoredCheckpoint = request.checkpoint;
+          },
           async preview(checkpoint, path) {
             return {
               checkpoint,
               path,
-              expected: "fixture-current-hash",
+              expected: "a".repeat(64),
               bytes: 31,
               deleted: false,
             };
