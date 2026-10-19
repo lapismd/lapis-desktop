@@ -191,3 +191,5 @@ by the task ledger, not inferred from this list.
 - [Embedded repository plugin settings and forge styling](E-REPO-039.md)
 
 - [Content-sized forge account menus](E-REPO-040.md)
+
+- [Separate backup settings section and table surfaces](E-REPO-041.md)

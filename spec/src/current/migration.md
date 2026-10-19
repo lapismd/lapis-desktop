@@ -1,7 +1,7 @@
 # Migration inventory and progress
 
 E-REPO-023–025/E-AI-039–041 retain UI scope. M14 backup, restore, search,
-forges, storage, adoption and plugin settings are integrated (E-REPO-035–040).
+forges, storage, adoption and plugin settings are integrated (E-REPO-035–041).
 LD-MIG-002 native/provider, visual and release gates remain unchanged.
 
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).

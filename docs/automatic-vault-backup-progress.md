@@ -216,3 +216,7 @@ deferred.
 
 - [x] Forge account choices use jj-store menu sizing so labels fit on one line,
       bounded by the viewport (E-REPO-040).
+
+- [x] Separate Backup and synchronisation section with tinted table headers and
+      white light-theme body rows/footers (E-REPO-041). Existing settings source
+      values, account cleanup and background work ownership are retained.

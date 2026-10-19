@@ -243,3 +243,5 @@
 - [Embedded repository plugin settings and forge styling](history/E-REPO-039.md)
 
 - [Content-sized forge account menus](history/E-REPO-040.md)
+
+- [Separate backup settings section and table surfaces](history/E-REPO-041.md)

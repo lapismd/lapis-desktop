@@ -662,3 +662,10 @@ separate.
 Forge account menus copy jj-store menu-layout.ts: content-sized width, a 14rem
 minimum and a viewport bound keep account choices on one line. Existing Forges
 stories exercise these menus at desktop/narrow widths in both themes.
+
+Backup and synchronisation is a separate labelled region inside the actual
+Repository History plugin Settings page. General controls still use public
+controlled AppSettings components; the maintained backup cards use tinted
+headers and body-surface rows/footers. Forges, RemoteBackup, Sync, Publication,
+HistoryStorage and HistoryAdoption remain the complete affected story families.
+No replacement fixtures or dependency-internal CSS selectors are added.

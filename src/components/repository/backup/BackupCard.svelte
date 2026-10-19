@@ -23,7 +23,10 @@
   } = $props();
 </script>
 
-<Card.Root size="sm" style="gap:0;padding:0;overflow:hidden">
+<Card.Root
+  size="sm"
+  style="gap:0;padding:0;overflow:hidden;background:var(--background)"
+>
   <div class="backup-card-header">
     <Card.Header style="padding:0;display:flex;align-items:center;gap:.75rem">
       {#if Icon || icon}<span class="backup-card-icon" aria-hidden="true">
@@ -36,11 +39,12 @@
       {@render actions?.()}
     </Card.Header>
   </div>
-  <Card.Content style={`padding:${padded ? ".85rem 1rem" : "0"};min-width:0`}
+  <Card.Content
+    style={`padding:${padded ? ".85rem 1rem" : "0"};min-width:0;background:var(--background)`}
     >{@render children()}</Card.Content
   >
   {#if footer}<Card.Footer
-      style="padding:.85rem 1rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap"
+      style="padding:.85rem 1rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;background:var(--background)"
     >
       {@render footer()}
     </Card.Footer>{/if}

@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-035–040 retain LD-DESK-003/HOST-001 native authority. Backup controls
+E-REPO-035–041 retain LD-DESK-003/HOST-001 native authority. Backup controls
 live in plugin Settings; full-screen conflict review remains. Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 

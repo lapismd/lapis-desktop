@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-E-REPO-039/040 embed repository backup controls in the registered plugin
+E-REPO-039–041 embed repository backup controls in the registered plugin
 settings, including account authorization, remotes, storage and synchronization.
 Commands open that section; no backup-settings workspace view is registered.
 Maintained jj-store card/footer and forge icon adaptations retain local

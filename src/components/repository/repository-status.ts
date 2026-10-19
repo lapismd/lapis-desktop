@@ -7,6 +7,7 @@ import RepositoryWorkingCopyStatus from "./RepositoryWorkingCopyStatus.svelte";
 import RepositoryBackupStatus from "./RepositoryBackupStatus.svelte";
 import { RESTORE_NOTICE } from "./restore-controller.ts";
 import { createBackupSettings } from "./backup/backup-settings.ts";
+import RepositorySettingsPage from "./backup/RepositorySettingsPage.svelte";
 import { updateRepositoryData } from "../../lib/repository/plugin-data.ts";
 import {
   AUTOMATIC_BACKUP_SETTING,
@@ -55,6 +56,7 @@ export class RepositoryStatus {
         order: 46,
         navigationGroupId: "core-plugins",
         sourcePluginId: this.plugin.id,
+        page: this.#settings ? RepositorySettingsPage : undefined,
         fields: [
           ...(this.services.backup
             ? [

@@ -106,7 +106,7 @@ export function createBackupSettings(
   const field: BackupSettingsFieldDefinition = {
     id: BACKUP_SETTINGS,
     type: "custom",
-    title: "Backup and synchronization",
+    title: "Backup and synchronisation",
     presentation: "full-width",
     component: BackupSettingsField,
     openPanel,

@@ -3,7 +3,7 @@
   import type { WorkspaceCustomSettingProps } from "@lapis-notes/api";
   import type { BackupSettingsFieldDefinition } from "./backup-settings.ts";
   import BackupSettings from "./BackupSettings.svelte";
-  let { field }: WorkspaceCustomSettingProps = $props();
+  let { field }: Pick<WorkspaceCustomSettingProps, "field"> = $props();
   const panel = untrack(() =>
     (field as BackupSettingsFieldDefinition).openPanel(),
   );

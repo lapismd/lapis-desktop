@@ -63,8 +63,8 @@ and remote plugin grants remain denied.
 The user authorized verified local pnpm archives until the publication gate. The
 ignored overlay verifies checksums/revisions, redirects matching ranges and
 preserves tracked manifests/lockfiles. Fixes stay upstream; no source patches or
-aliases. E-REPO-039/040 retain LD-GOV-004/005 for adapted Settings/forge UI;
-exact source revisions and Apache-2.0 / CC0-1.0 provenance remain local.
+aliases. E-REPO-039–041 retain LD-GOV-004/005 for owned Settings/forge UI; exact
+source revisions and Apache-2.0 / CC0-1.0 provenance remain local.
 
 Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not

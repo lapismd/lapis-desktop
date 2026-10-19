@@ -1,6 +1,6 @@
 # Repository history and conversations
 
-LD-REPO-005 backup/forge controls live in plugin Settings (E-REPO-039/040).
+LD-REPO-005 backup/forge controls live in plugin Settings (E-REPO-039–041).
 [Automatic vault backup](vault-backup.md) governs M14 delivery (E-REPO-038).
 Immutable readers, M13 conversations and native/background authority remain.
 
