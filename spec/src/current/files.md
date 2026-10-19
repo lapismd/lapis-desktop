@@ -9,10 +9,12 @@ E-REPO-016 adds status progress to Notes startup. LD-FILE-002/003 admission,
 watch ownership and drained writer/close behavior remain unchanged; operations
 stay on existing native workers. See [background activity](background.md).
 
-Native vault closure first fences new AI admissions and retires active/pending
-scopes before releasing the vault. An open database still blocks that closure
-without changing AI authority. Suspended reload scopes retain their generation
-for verified re-admission; failed cleanup cannot activate a replacement scope.
+E-AI-055 adds an independent local import read scope. Native vault closure
+fences and drains import workers before releasing the vault, alongside existing
+AI admissions and active/pending execution scopes. An open database still blocks
+that closure without changing AI authority. Suspended reload scopes retain their
+generation for verified re-admission; failed cleanup cannot activate a
+replacement scope.
 
 The Notes leave guard passes the requested close/reload mode to bundled AI after
 writer protection succeeds. AI views, settings and maintenance drain before

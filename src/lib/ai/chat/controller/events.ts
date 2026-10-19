@@ -11,9 +11,16 @@ import {
   isVisibleAgentStatus,
 } from "../chat-trace.ts";
 import { APP_TOOL_MCP_SERVER_NAME } from "../../tools/mcp-server-registry.ts";
-import type { AppToolBridgeEvent } from "../../tools/app-tool-bridge.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { waitForNextTask } from "./turn.ts";
+import { StreamingChatTrace } from "./streaming-trace.ts";
+import { eventIdentity } from "./event-identity.ts";
+import { captureReplyParents } from "./reply-parents.ts";
+import {
+  finishTurn,
+  knownTurnError,
+  retainUnknownTurn,
+} from "./turn-checkpoint.ts";
 export async function _consume(
   this: AiChatController,
   session: AgentSession,
@@ -24,38 +31,56 @@ export async function _consume(
     pendingItems: [],
   };
   this._sessionContexts.set(session, context);
+  const live = new StreamingChatTrace(
+    () => this.items,
+    (items) => {
+      this.items = items.map((item) =>
+        item.agentBindingId || !agentBindingId
+          ? item
+          : { ...item, agentBindingId },
+      );
+    },
+    () =>
+      this.session === session &&
+      !this._disposed &&
+      !this._cancelledSessions.has(session),
+  );
+  this._flushSessionTrace.set(session, () => live.flush());
   let traceItems: AiChatItem[] = [];
   let latestUsage: AgentUsage | null = null;
   const persistCompletedTrace = async () => {
+    traceItems = retainUnknownTurn(this, session, traceItems);
+    traceItems = captureReplyParents(this, session, traceItems);
     if (
       traceItems.length === 0 &&
       !latestUsage &&
       !context.pendingBinding &&
       !context.pendingSwitch &&
       !context.pendingConfiguration &&
+      !context.turn &&
       context.pendingItems.length === 0
     ) {
       return;
     }
     await waitForNextTask();
     if (this.repository && context.location) {
-      if (context.pendingBinding) {
+      if (context.accepted && context.pendingBinding) {
         await this.repository.appendAgentRecords(context.location, [
           context.pendingBinding,
         ]);
       }
-      if (context.pendingActivationBindingId) {
+      if (context.accepted && context.pendingActivationBindingId) {
         await this.repository.activateBinding(
           context.location,
           context.pendingActivationBindingId,
           context.pendingSwitch,
         );
-      } else if (context.pendingSwitch) {
+      } else if (context.accepted && context.pendingSwitch) {
         await this.repository.appendTranscript(context.location, [
           context.pendingSwitch,
         ]);
       }
-      if (context.pendingConfiguration) {
+      if (context.accepted && context.pendingConfiguration) {
         await this.repository.appendAgentRecords(context.location, [
           context.pendingConfiguration.agentRecord,
         ]);
@@ -105,6 +130,9 @@ export async function _consume(
     } else {
       await this._persist(false, agentBindingId);
     }
+    const wasGroup = Boolean(context.delivery);
+    const completed = context.turn?.outcome === "completed";
+    await finishTurn(this, session);
     context.pendingBinding = undefined;
     context.pendingSwitch = undefined;
     context.pendingActivationBindingId = undefined;
@@ -113,6 +141,7 @@ export async function _consume(
     context.pendingItems = [];
     traceItems = [];
     latestUsage = null;
+    if (!wasGroup) this.queuedMessages.afterTerminal(completed);
   };
   const checkpointTrace = (): Promise<void> => {
     const checkpoint = persistCompletedTrace();
@@ -168,25 +197,51 @@ export async function _consume(
           }
         }
       }
-      traceItems = applyAgentEventToChatItems(traceItems, event);
+      if (
+        [
+          "text",
+          "message_complete",
+          "thinking",
+          "tool.start",
+          "tool.end",
+          "permission.request",
+          "question.request",
+          "completed",
+        ].includes(event.type)
+      )
+        context.accepted = true;
+      if (context.turn && event.type === "completed") {
+        context.turn.known = true;
+        context.turn.outcome = "completed";
+        context.turn.nativeRequestId = event.source?.runId;
+      }
+      if (context.turn && event.type === "error") {
+        context.turn.known = knownTurnError(event.error);
+        context.turn.outcome = context.turn.known ? "rejected" : "unknown";
+      }
+      const receivedAt = new Date().toISOString();
+      const identify = eventIdentity(
+        this.repository ? agentBindingId : undefined,
+      );
+      traceItems = applyAgentEventToChatItems(
+        traceItems,
+        event,
+        () => receivedAt,
+        identify,
+      );
       const activeSession = this.session === session;
       const cancelled = this._cancelledSessions.has(session);
       if (activeSession && !cancelled) {
-        this.items = applyAgentEventToChatItems(this.items, event).map(
-          (item) =>
-            item.agentBindingId || !agentBindingId
-              ? item
-              : { ...item, agentBindingId },
-        );
+        live.receive(event, receivedAt, identify);
       }
       if (event.type === "completed" || event.type === "error") {
         if (event.type === "error" && activeSession) {
           this.error = event.error.message;
-          this.session = null;
         }
       }
       if (
         activeSession &&
+        !context.delivery &&
         (event.type === "completed" || event.type === "error")
       ) {
         this.busy = false;
@@ -195,65 +250,53 @@ export async function _consume(
         await checkpointTrace();
       }
       if (event.type === "error") {
+        if (this.session === session) this.session = null;
         await session.close().catch(() => undefined);
         await this._closeAppToolBinding(agentBindingId);
         break;
       }
     }
   } catch (error) {
+    live.flush();
+    if (context.turn) {
+      context.turn.known = knownTurnError(error);
+      context.turn.outcome = context.turn.known ? "rejected" : "unknown";
+    }
     const normalized =
       error instanceof Error ? error : new Error(String(error));
     const errorEvent = {
       type: "error",
       error: normalized,
     } as const;
-    traceItems = applyAgentEventToChatItems(traceItems, errorEvent);
+    const identify = eventIdentity(
+      this.repository ? agentBindingId : undefined,
+    );
+    traceItems = applyAgentEventToChatItems(
+      traceItems,
+      errorEvent,
+      undefined,
+      identify,
+    );
     if (this.session === session) {
       this.error = normalized.message;
-      this.items = applyAgentEventToChatItems(this.items, errorEvent);
+      this.items = applyAgentEventToChatItems(
+        this.items,
+        errorEvent,
+        undefined,
+        identify,
+      );
       this.busy = false;
-      this.session = null;
     }
     await checkpointTrace();
+    if (this.session === session) this.session = null;
     await session.close().catch(() => undefined);
     await this._closeAppToolBinding(agentBindingId);
   } finally {
+    live.flush();
+    live.clear();
+    this._flushSessionTrace.delete(session);
     if (this.session === session) this.busy = false;
     await checkpointTrace();
     this._sessionContexts.delete(session);
-  }
-}
-
-export async function _consumeAppToolEvent(
-  this: AiChatController,
-  { bindingId, event }: AppToolBridgeEvent,
-): Promise<void> {
-  if (
-    this._activeBindingId &&
-    bindingId !== this._activeBindingId &&
-    !this.bindings.some((binding) => binding.id === bindingId)
-  ) {
-    return;
-  }
-  this.items = applyAgentEventToChatItems(this.items, event).map((item) =>
-    item.agentBindingId ? item : { ...item, agentBindingId: bindingId },
-  );
-  const itemId =
-    event.type === "permission.request"
-      ? `approval-${event.request.id}`
-      : event.type === "tool.start" || event.type === "tool.end"
-        ? event.id
-        : undefined;
-  const item = itemId
-    ? this.items.find(
-        (candidate) =>
-          candidate.id === itemId ||
-          (candidate.type === "tool" && candidate.toolId === itemId),
-      )
-    : undefined;
-  if (this.repository && this.location && item) {
-    await this._appendDurableItems(this.location, [item], bindingId);
-  } else if (!this.repository) {
-    await this._persist(false, bindingId);
   }
 }

@@ -17,7 +17,7 @@ jj-forge = { path = "../../jj-store/crates/jj-forge", version = "0.1.0" }
 jj-vault = { path = "../../jj-store/crates/jj-vault", version = "0.1.0" }
 async-trait = "0.1"
 tempfile = "=3.27.0"
-tokio = { version = "1", features = ["rt", "sync"] }
+tokio = { version = "1", features = ["rt", "rt-multi-thread", "sync", "net", "io-util", "io-std", "time", "macros"] }
 tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", version = "0.1.0", features = ["tauri"] }
 
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
@@ -26,6 +26,9 @@ jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1
 jj-store-conversations = { path = "../../jj-store/crates/jj-store-conversations", version = "0.1.0", features = ["native-privacy", "store-capture"] }
 jj-store-core = { path = "../../jj-store/crates/jj-store-core", version = "0.1.0" }
 jj-collab = { path = "../../jj-store/crates/jj-collab", version = "0.1.0" }
+lapis-ai-capture = { path = "../../lapis-ai/crates/lapis-ai-capture", version = "0.1.1" }
+jj-store-capture = { path = "../../jj-store/crates/jj-store-capture", version = "0.1.0", default-features = false }
+chrono = { version = "0.4", default-features = false, features = ["std"] }
 jj-agent = { path = "../../jj-store/crates/jj-agent", version = "0.1.0" }
 jj-store-git = { path = "../../jj-store/crates/jj-store-git", version = "0.1.0" }
 
@@ -55,6 +58,8 @@ uuid = { version = "1", features = ["v4", "serde"] }
 tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin-lapis-terminal" }
 
 tauri-plugin-lapis-ai = { path = "../../lapis-ai/crates/tauri-plugin-lapis-ai" }
+lapis-ai-app-tools = { path = "../../lapis-ai/crates/lapis-ai-app-tools", version = "0.1.1" }
+zeroize = "1"
 
 [target.'cfg(target_os = "macos")'.dependencies]
 mac-usernotifications = { version = "=0.3.1", default-features = false }

@@ -11,12 +11,13 @@ import type { AiChatController } from "../chat-controller.svelte.ts";
 export async function _withCommandProgress(
   this: AiChatController,
   work: (turnId: number) => Promise<void>,
-): Promise<void> {
+): Promise<boolean> {
   const turnId = ++this._turnId;
   this.busy = true;
   this.commandWorking = true;
   try {
     await work(turnId);
+    return !this._isAbandoned(turnId) && !this.error;
   } finally {
     this.commandWorking = false;
     if (this._turnId === turnId) this.busy = false;

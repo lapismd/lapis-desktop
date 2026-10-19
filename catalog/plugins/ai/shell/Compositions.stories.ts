@@ -21,7 +21,7 @@ export const ChatWithToolActivity: Story = {
   parameters: shellParameters("registry-chat", "desktop"),
   render: () => ({
     Component: AiShellDemo,
-    props: { scenario: "registry-chat" },
+    props: { scenario: "registry-chat", reviewLayout: true },
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -43,7 +43,7 @@ export const ChatWithToolActivity: Story = {
     ).resolves.toHaveTextContent("Summary");
     await expect(
       within(panel).getByRole("button", {
-        name: /^Show details for vault.read$/,
+        name: /^Show details for vault.read · /,
       }),
     ).toBeVisible();
     expect(

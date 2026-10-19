@@ -8,9 +8,13 @@
   let {
     scenario = "default",
     displayMode = "desktop",
-  }: { scenario?: ShellScenario; displayMode?: WorkspaceRequestedDisplayMode } =
-    $props();
-  const fixture = untrack(() => createShellFixture(scenario));
+    reviewLayout = false,
+  }: {
+    scenario?: ShellScenario;
+    displayMode?: WorkspaceRequestedDisplayMode;
+    reviewLayout?: boolean;
+  } = $props();
+  const fixture = untrack(() => createShellFixture(scenario, reviewLayout));
   let root = $state<HTMLDivElement>();
   let status = $state("booting");
   let error = $state("");

@@ -3,6 +3,7 @@
 import { approvalChoiceStatus } from "../core/approvals.ts";
 import type { AiChatItem } from "../chat/chat-items.ts";
 import type { TranscriptEntry } from "./types.ts";
+import { isCommentReceipt } from "./comment-receipt.ts";
 
 export function projectTranscriptToChatItems(
   entries: TranscriptEntry[],
@@ -10,7 +11,21 @@ export function projectTranscriptToChatItems(
   const items: AiChatItem[] = [];
   const approvals = new Map<string, number>();
   const questions = new Map<string, number>();
+  const delivered = new Set(
+    entries.filter(isCommentReceipt).map((entry) => entry.parentId),
+  );
+  const deliveries = new Map<
+    string,
+    Map<string, import("./dispatch-intent.ts").Delivery>
+  >();
+  for (const entry of entries)
+    if (entry.type === "agent.delivery" && entry.parentId) {
+      const rows = deliveries.get(entry.parentId) ?? new Map();
+      rows.set(entry.delivery.id, entry.delivery);
+      deliveries.set(entry.parentId, rows);
+    }
   for (const entry of entries) {
+    if (isCommentReceipt(entry)) continue;
     switch (entry.type) {
       case "message":
         items.push({
@@ -18,8 +33,27 @@ export function projectTranscriptToChatItems(
           type: "message",
           role: entry.role,
           text: entry.text,
+          ...(entry.parentId ? { parentId: entry.parentId } : {}),
+          ...(entry.recipients?.length
+            ? { recipients: structuredClone(entry.recipients) }
+            : {}),
+          ...(deliveries.has(entry.id)
+            ? {
+                deliveries: structuredClone([
+                  ...deliveries.get(entry.id)!.values(),
+                ]),
+              }
+            : {}),
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
+          ...(entry.contextBlocks?.length
+            ? {
+                contextBlocks: structuredClone(entry.contextBlocks),
+                contextDelivery: delivered.has(entry.id)
+                  ? ("sent" as const)
+                  : ("prepared" as const),
+              }
+            : {}),
         });
         break;
       case "thinking.summary":
@@ -127,6 +161,8 @@ export function projectTranscriptToChatItems(
           id: entry.id,
           type: "error",
           text: entry.message,
+          retryable: entry.retryable,
+          parentId: entry.parentId,
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
         });
@@ -158,6 +194,7 @@ export function projectTranscriptToChatItems(
           agentBindingId: entry.agentBindingId,
         });
         break;
+      case "agent.delivery":
       case "agent.switch":
       case "agent.config":
         break;

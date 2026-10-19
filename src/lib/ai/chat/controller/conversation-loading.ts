@@ -1,3 +1,4 @@
+import { restoreDispatch } from "./dispatch-view.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat orchestration; see ../../NOTICE.md.
 import { interruptPendingInteractions } from "../../sessions/session-store.ts";
@@ -14,6 +15,7 @@ import {
 } from "../chat-session.ts";
 import { type AiChatItem } from "../chat-items.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
+import { restoreTurn } from "./turn-checkpoint.ts";
 export async function restore(this: AiChatController): Promise<void> {
   const turnId = this._turnId;
   if (this._isAbandoned(turnId)) return;
@@ -85,6 +87,7 @@ export async function openConversation(
   location: ConversationLocation,
 ): Promise<void> {
   if (this._disposed) return;
+  this.queuedMessages.pause();
   if (!this.repository) return;
   await this._closeAppToolBinding();
   await this.session?.close().catch(() => undefined);
@@ -93,6 +96,7 @@ export async function openConversation(
   this.busy = false;
   this.error = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.location = { ...location };
   this.directoryContext = location.scopeDir;
   this._followedScope = location.scopeDir;
@@ -114,6 +118,18 @@ export async function _restoreConversation(
   if (!this.repository || !this.location) return;
   const snapshot = await this.repository.read(this.location);
   if (this._isAbandoned(turnId)) return;
+  this.importedSnapshot = snapshot.metadata.imported ? snapshot : null;
+  if (this.importedSnapshot) {
+    this.items = [];
+    this.bindings = [];
+    this._activeBinding = undefined;
+    this._activeBindingId = undefined;
+    this._approvalGrants = [];
+    this.queuedMessages.entries = [];
+    this.conversationStatus = snapshot.metadata.status;
+    return;
+  }
+  this.queuedMessages.restore(snapshot);
   this.conversationStatus = snapshot.metadata.status;
   this.conversationPinned = Boolean(snapshot.metadata.pinned);
   this.directoryContext = snapshot.location.scopeDir;
@@ -142,6 +158,13 @@ export async function _restoreConversation(
     );
   this.usage =
     latestUsage?.type === "usage.updated" ? { ...latestUsage.usage } : null;
+  const hasDispatch = restoreDispatch(this, snapshot);
+  const unconfirmed = await restoreTurn(this);
+  if (this._isAbandoned(turnId)) return;
+  if (unconfirmed || hasDispatch || snapshot.metadata.queuedMessages?.length) {
+    this.items = interruptPendingInteractions(this.items);
+    return;
+  }
   if (!activeBinding || activeBinding.runtime !== this.runtime.id) {
     await this._interruptUnresumableInteractions();
     return;
@@ -149,6 +172,9 @@ export async function _restoreConversation(
   this._sessionRequest = {
     ...this.request,
     agent: activeBinding.agent,
+    recipients: activeBinding.participant
+      ? [{ ...activeBinding.participant }]
+      : undefined,
     model: activeBinding.model,
     thinking: activeBinding.thinking,
     workspace: this.workspace,
@@ -218,6 +244,7 @@ export function _releaseUnreadableLocation(
   if (!this.location) return;
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this._onLocationChange?.(null);
 }
@@ -226,5 +253,11 @@ export function namespaceChatItems(
   items: AiChatItem[],
   namespace: string,
 ): AiChatItem[] {
-  return items.map((item) => ({ ...item, id: `${namespace}:${item.id}` }));
+  return items.map((item) =>
+    (item.type === "message" && item.role === "user") ||
+    item.id.startsWith("turn-unknown:") ||
+    item.id.startsWith(`${namespace}:`)
+      ? item
+      : { ...item, id: `${namespace}:${item.id}` },
+  );
 }

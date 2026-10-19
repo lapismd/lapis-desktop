@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat presentation state; see ../../NOTICE.md.
 import type { App, WorkspaceLeaf } from "@lapis-notes/api";
+import type { Component } from "svelte";
+import type { TranscriptFrameProps } from "./transcript.ts";
 import type { ComposerSearchSource } from "@lapismd/design-core/ai/chat";
 import type {
   AgentRequest,
@@ -27,14 +29,16 @@ import type { AppToolHost } from "../../tools/app-tool-host.ts";
 import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
-  /** Shared transcript selected by the ordinary plugin; legacy embeddings may omit it. */
-  presentation?: "transcript";
+  agentOptions?: readonly import("../../conversations/recipients.ts").AgentRecipientOption[];
+  /** Optional frame for standalone embeddings; the ordinary plugin supplies the session shell. */
+  transcriptFrame?: Component<TranscriptFrameProps>;
   initialTranscriptView?: "document" | "classic";
   app?: App;
   runtime: AgentRuntime;
   selectRuntime?: (request: AgentRequest) => Promise<AgentRuntime>;
   unavailableReason?: string | null;
   initializing?: boolean;
+  recordedImport?: import("../../conversations/types.ts").ConversationSnapshot;
   onControllerDispose?: (operation: Promise<void>) => void;
   onOperation?: (operation: Promise<void>) => void;
   workspace?: string;

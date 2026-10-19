@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
+import { validateRecipients } from "./recipients.ts";
 import type { AgentBindingRecord } from "./types.ts";
 import {
   record,
@@ -19,6 +20,7 @@ export function validateAgentBindingRecord(value: unknown): AgentBindingRecord {
   requiredString(data, "id", "Agent record");
   assertTimestamp(data, "createdAt", "Agent record");
   if (data.type === "binding.created") {
+    if (data.participant !== undefined) validateRecipients([data.participant]);
     requiredString(data, "runtime", "Agent record");
     for (const key of [
       "agent",

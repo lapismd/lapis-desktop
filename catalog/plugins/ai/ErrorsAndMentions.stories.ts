@@ -36,17 +36,12 @@ export const FailedToolCall: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for shell.execute local workspace",
+      name: "Show details for shell.execute",
     });
-    await expect(
-      trigger.querySelector(
-        '[data-ui-part="call-status"][data-status="error"]',
-      ),
-    ).toHaveTextContent("Error");
-    const chevron = trigger.querySelector('[data-ui-part="detail-chevron"]');
-    await expect(chevron).toHaveAttribute("data-direction", "right");
+    await expect(trigger).toHaveAccessibleDescription("Error");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
     await userEvent.click(trigger);
-    await expect(chevron).toHaveAttribute("data-direction", "down");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await expect(
       canvasElement.querySelector('[data-ui-part="code-block-line"]'),
     ).toHaveTextContent("pnpm --filter @lapis-notes/ai test");
@@ -59,35 +54,44 @@ export const FailedToolCall: Story = {
 export const FileMentions: Story = {
   render: () => ({
     Component: AiChatDemo,
-    props: { requireApproval: false },
+    props: { requireApproval: false, enableMarkdown: true },
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "@alp");
     const option = await canvas.findByText("alpha");
-    const menu = option.closest("[data-ui-part='trigger-menu']");
+    const menu = option.closest("[role='listbox']");
     expect(menu).toBeTruthy();
-    const inputBox = input.getBoundingClientRect();
-    const menuBox = (menu as HTMLElement).getBoundingClientRect();
-    const gap =
-      menuBox.top >= inputBox.bottom - 2
-        ? menuBox.top - inputBox.bottom
-        : inputBox.top - menuBox.bottom;
-    expect(gap).toBeGreaterThanOrEqual(-4);
-    expect(gap).toBeLessThan(32);
+    await waitFor(() => {
+      const inputBox = input.getBoundingClientRect();
+      const menuBox = (menu as HTMLElement).getBoundingClientRect();
+      const gap =
+        menuBox.top >= inputBox.bottom - 2
+          ? menuBox.top - inputBox.bottom
+          : inputBox.top - menuBox.bottom;
+      expect(gap).toBeGreaterThanOrEqual(-4);
+      expect(gap).toBeLessThan(32);
+    });
     await userEvent.click(option);
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
       const userMessage = canvas.getByRole("article", {
-        name: "Message from user",
+        name: "Message from You",
       });
-      expect(
-        userMessage.querySelector(
-          '[data-ui-component="ai-chat-tokenized-text"]',
-        ),
-      ).not.toBeNull();
+      expect(userMessage.querySelector('[role="textbox"]')).not.toBeNull();
       expect(userMessage).toHaveTextContent("Notes/alpha.md");
     });
+    await userEvent.click(
+      within(
+        canvas.getByRole("article", { name: "Message from You" }),
+      ).getByRole("link", { name: "Notes/alpha.md" }),
+    );
+    await waitFor(() =>
+      expect(canvas.getByTestId("ai-chat-demo")).toHaveAttribute(
+        "data-opened-paths",
+        "Notes/alpha.md",
+      ),
+    );
   },
 };

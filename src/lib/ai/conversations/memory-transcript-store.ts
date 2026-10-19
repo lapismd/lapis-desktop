@@ -23,10 +23,44 @@ import { validateAgentBindingRecord } from "./binding-validation.ts";
 import { validateConversationMetadata } from "./metadata-validation.ts";
 import { validateTranscriptEntry } from "./transcript-validation.ts";
 import { runtimeProvenanceKey } from "./provenance.ts";
+import { assertSameImport } from "./session-imports.ts";
 
 export class MemoryTranscriptStore implements TranscriptStore {
   private readonly conversations = new Map<string, ConversationSnapshot>();
   private readonly queue = new ConversationWriteQueue();
+
+  async prepareImport(
+    location: ConversationLocation,
+    metadata: ConversationMetadata,
+  ): Promise<ConversationSnapshot> {
+    const normalized = normalizeConversationLocation(location);
+    return this.queue.run(conversationStorageKey(normalized), async () => {
+      validateConversationMetadata(metadata);
+      if (
+        !metadata.imported ||
+        metadata.imported.state !== "preparing" ||
+        metadata.id !== normalized.conversationId
+      )
+        throw new Error(
+          "Import initialization requires its exact preparing marker",
+        );
+      const key = conversationStorageKey(normalized);
+      const existing = this.conversations.get(key);
+      if (existing) {
+        assertSameImport(existing.metadata, metadata);
+        return cloneConversationSnapshot(existing);
+      }
+      const snapshot = {
+        location: normalized,
+        metadata: structuredClone(metadata),
+        agents: [],
+        transcript: [],
+        warnings: [],
+      };
+      this.conversations.set(key, snapshot);
+      return cloneConversationSnapshot(snapshot);
+    });
+  }
 
   constructor(initial: ConversationSnapshot[] = []) {
     for (const snapshot of initial) {

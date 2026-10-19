@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // App-owned contracts recovered from the pre-controller AI plugin; see NOTICE.md.
 import type { AgentUsage, AiThinkingLevel, ModelRef } from "../core/models.ts";
+import type { ConversationTurnIntent } from "./turn-intent.ts";
 import type {
   ApprovalKind,
   ApprovalOption,
@@ -44,12 +45,17 @@ export type ConversationMetadata = {
   activeAgentBindingId?: string;
   approvalGrants?: ConversationApprovalGrant[];
   pinned?: boolean;
+  pendingTurn?: ConversationTurnIntent;
+  queuedMessages?: import("./queued-message.ts").QueuedMessage[];
+  pendingDispatch?: import("./dispatch-intent.ts").DispatchIntent;
   status: "active" | "archived";
+  imported?: import("./import-types.ts").ImportMarker;
 };
 
 export type AgentBindingCreatedRecord = {
   schemaVersion: ConversationSchemaVersion;
   type: "binding.created";
+  participant?: import("./recipients.ts").SavedAgentRecipient;
   id: string;
   createdAt: string;
   runtime: string;
@@ -146,9 +152,22 @@ type TranscriptEntryBase = {
 
 export type TranscriptEntry =
   | (TranscriptEntryBase & {
+      type: "queue.outcome";
+      queued: import("./queued-message.ts").QueuedMessage;
+      outcome: import("./queued-message.ts").QueueOutcome;
+    })
+  | (TranscriptEntryBase & {
+      type: "agent.delivery";
+      dispatchId: string;
+      delivery: import("./dispatch-intent.ts").Delivery;
+    })
+  | (TranscriptEntryBase & {
       type: "message";
       role: "user" | "assistant";
       text: string;
+      recipients?: import("./recipients.ts").SavedAgentRecipient[];
+      /** Explicitly submitted comment captures; attached files remain transient. */
+      contextBlocks?: import("./comment-context.ts").CommentContextBlock[];
     })
   | (TranscriptEntryBase & {
       type: "thinking.summary";
@@ -160,7 +179,7 @@ export type TranscriptEntry =
       toolId: string;
       name: string;
       server?: string;
-      state: "completed" | "error" | "cancelled";
+      state: "completed" | "error" | "cancelled" | "unknown";
       input?: string;
       output?: string;
       redacted?: boolean;

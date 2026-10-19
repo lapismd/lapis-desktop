@@ -10,6 +10,8 @@ export async function newConversation(
   this: AiChatController,
   input?: CreateConversationInput,
 ): Promise<void> {
+  this.queuedMessages.pause();
+  this.queuedMessages.entries = [];
   await this._closeAppToolBinding();
   await this.session?.close().catch(() => undefined);
   this.session = null;
@@ -22,6 +24,7 @@ export async function newConversation(
   this.bindings = [];
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this.pickerEntries = [];
   this._approvalGrants = [];
@@ -50,6 +53,7 @@ export function relocateScope(
   oldPath: string,
   newPath: string,
 ): void {
+  this.queuedMessages.pause();
   if (this.location) {
     const relocated = relocateConversationLocation(
       this.location,
@@ -76,6 +80,8 @@ export function relocateScope(
 }
 
 export async function deleteCurrent(this: AiChatController): Promise<void> {
+  this.queuedMessages.pause();
+  this.queuedMessages.entries = [];
   if (!this.repository || !this.location) return;
   const location = this.location;
   await this._closeAppToolBinding();
@@ -91,6 +97,7 @@ export async function deleteCurrent(this: AiChatController): Promise<void> {
   this.bindings = [];
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this.pickerEntries = [];
   this._approvalGrants = [];
@@ -154,6 +161,9 @@ export async function setPinned(
 export async function _clearOpenConversation(
   this: AiChatController,
 ): Promise<void> {
+  this.queuedMessages.pause();
+  this.queuedMessages.entries = [];
+  this._recoveredTurn = undefined;
   await this._closeAppToolBinding();
   await this.session?.close().catch(() => undefined);
   this.session = null;
@@ -166,6 +176,7 @@ export async function _clearOpenConversation(
   this.bindings = [];
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this._approvalGrants = [];
   this._onLocationChange?.(null);
@@ -184,6 +195,7 @@ export async function _ensureConversation(
       if (!(error instanceof ConversationUnavailableError)) throw error;
       this.location = null;
       this.conversationStatus = null;
+      this.importedSnapshot = null;
       this._approvalGrants = [];
       this._onLocationChange?.(null);
     }

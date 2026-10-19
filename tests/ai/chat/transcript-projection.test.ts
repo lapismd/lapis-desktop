@@ -3,6 +3,27 @@ import { projectAiTranscript } from "../../../src/lib/ai/chat/transcript-project
 import type { AiChatItem } from "../../../src/lib/ai/chat/chat-items.ts";
 
 describe("AI transcript presentation projection", () => {
+  it("projects an interrupted turn as one inert inline notice with exact captured details", () => {
+    const error: AiChatItem = {
+      id: "failed",
+      type: "error",
+      text: "Agent could not start; draft retained.",
+    };
+    const projected = projectAiTranscript([error]);
+    expect(projected).toHaveLength(1);
+    expect(projected[0]).toMatchObject({
+      id: "failed",
+      kind: "context",
+      notice: "error",
+      label: "Turn interrupted",
+    });
+    expect(projected[0]!.blocks[0]).toMatchObject({
+      id: "failed/body",
+      text: error.text,
+      kind: "markdown",
+      commentable: false,
+    });
+  });
   it("keeps captured identities while partial text changes the display revision", () => {
     const source: AiChatItem = {
       id: "answer",

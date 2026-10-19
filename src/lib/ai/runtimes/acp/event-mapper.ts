@@ -10,6 +10,7 @@ import { record, text, AgentTurnFailure } from "./wire.ts";
 export function mapAcpActivity(
   value: unknown,
   source: AgentEventSource,
+  ownedMcpServer?: string,
 ): AgentEvent {
   const update = record(value);
   const kind = text(update.sessionUpdate) ?? "unknown";
@@ -47,7 +48,13 @@ export function mapAcpActivity(
       name,
       title,
       kind: text(update.kind),
-      server: text(update.server),
+      server:
+        text(update.server) ??
+        (ownedMcpServer &&
+        (name.startsWith(`mcp.${ownedMcpServer}.`) ||
+          text(record(update.rawInput).server) === ownedMcpServer)
+          ? ownedMcpServer
+          : undefined),
       input: update.rawInput,
       locations: Array.isArray(update.locations) ? update.locations : undefined,
       content: update.content,
@@ -131,10 +138,7 @@ export function mapAcpTerminal(
   source: AgentEventSource,
 ): AgentEvent {
   const result = record(frame.record);
-  if (
-    frame.type === "record" &&
-    (result.status === "completed" || result.status === "cancelled")
-  )
+  if (frame.type === "record" && result.status === "completed")
     return { type: "completed", result, source, observation: frame };
   const outcome =
     result.status === "invalid" || frame.type === "error"

@@ -3,6 +3,7 @@
 import type { AiChatItem } from "../chat/chat-items.ts";
 import type { DurableSanitizationOptions } from "./redaction.ts";
 import { sanitizeDurableField } from "./redaction.ts";
+import { persistableCommentContexts } from "./comment-context.ts";
 import {
   CONVERSATION_SCHEMA_VERSION,
   type TranscriptEntry,
@@ -48,7 +49,11 @@ export function projectChatItemsToTranscript(
       ...runtimeProvenance(item.source),
     } as const;
     switch (item.type) {
-      case "message":
+      case "message": {
+        const contexts =
+          item.role === "user"
+            ? persistableCommentContexts(item.contextBlocks)
+            : [];
         return [
           {
             ...common,
@@ -56,6 +61,11 @@ export function projectChatItemsToTranscript(
             type: "message",
             role: item.role,
             text: item.text,
+            ...(item.parentId ? { parentId: item.parentId } : {}),
+            ...(item.role === "user" && item.recipients?.length
+              ? { recipients: structuredClone(item.recipients) }
+              : {}),
+            ...(contexts.length ? { contextBlocks: contexts } : {}),
             provenance: {
               originClass: item.role === "user" ? "owner" : "agent",
               sourceKind:
@@ -63,6 +73,7 @@ export function projectChatItemsToTranscript(
             },
           },
         ];
+      }
       case "thinking":
         if (
           item.state !== "done" ||
@@ -140,6 +151,8 @@ export function projectChatItemsToTranscript(
             ...common,
             id: `${item.id}:response`,
             type: "approval.response",
+            // The owner's decision is distinct from the runtime request frame.
+            source: undefined,
             requestId: item.request.id,
             option: {
               id: item.responseOptionId,
@@ -173,6 +186,7 @@ export function projectChatItemsToTranscript(
             ...common,
             id: `${item.id}:response`,
             type: "question.response",
+            source: undefined,
             requestId: item.request.id,
             status: item.status,
             provenance: {
@@ -208,8 +222,9 @@ export function projectChatItemsToTranscript(
             ...common,
             id: item.id,
             type: "error",
+            parentId: item.parentId,
             message: sanitizeDurableField(item.text, options).text ?? "",
-            retryable: true,
+            retryable: item.retryable !== false,
             provenance: {
               originClass: "system",
               sourceKind: "app-system",

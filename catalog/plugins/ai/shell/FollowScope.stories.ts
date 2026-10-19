@@ -32,7 +32,9 @@ export const FollowScope: Story = {
     );
     const panel = await canvas.findByTestId("ai-chat-panel");
     const app = demoApp(canvasElement);
-    const picker = await canvas.findByTestId("ai-chat-conversation-picker");
+    const picker = await canvas.findByLabelText("Conversations", {
+      selector: "aside",
+    });
     await expect(within(picker).getByText("Near folder chat")).toBeVisible();
     await expect(within(picker).getByText("Atlas folder chat")).toBeVisible();
     await waitFor(() => {
@@ -57,7 +59,7 @@ export const FollowScope: Story = {
       expect(canvas.getByTestId("ai-chat-scope-path")).toHaveTextContent(
         "Vault",
       );
-      expect(canvas.getByTestId("ai-chat-conversation-picker")).toBeVisible();
+      expect(picker).toBeVisible();
       const explorer = app.workspace.getLeavesOfType("file-explorer")[0]
         ?.view as { selectedPath?: string } | undefined;
       expect(explorer?.selectedPath).toBe("");
@@ -67,7 +69,9 @@ export const FollowScope: Story = {
       expect(
         within(panel).getByText("The near folder chat is open."),
       ).toBeVisible();
-      expect(canvas.queryByTestId("ai-chat-conversation-picker")).toBeNull();
+      expect(
+        within(panel).getByRole("heading", { name: "Near folder chat" }),
+      ).toBeVisible();
       const folder = canvasElement.querySelector(
         '[data-path="Projects"][data-active]',
       );
@@ -92,7 +96,9 @@ export const FollowScope: Story = {
       expect(
         within(panel).getByText("The near folder chat is open."),
       ).toBeVisible();
-      expect(canvas.queryByTestId("ai-chat-conversation-picker")).toBeNull();
+      expect(
+        within(panel).getByRole("heading", { name: "Near folder chat" }),
+      ).toBeVisible();
     });
   },
 };

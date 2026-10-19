@@ -1,25 +1,19 @@
 # Desktop AI and optional compute
 
-Native capture retains exact binding/witnesses across reload under counted
-backend permits. Renderer admission is independent;
-[the repository contract](repository.md#native-backend-ownership-and-transport)
-owns lifetime/revocation. E-REPO-016 qualifies [background work](background.md)
-under LD-AI-002; provider authority and durable capture gates are unchanged.
+E-REPO-016 qualifies [background work](background.md). The
+[repository contract](repository.md) retains native capture/provider gates.
+E-AI-037/038 qualify pinned reads and explicit continuation through native
+privacy, the exclusive owner lease, journals/stores and drained factory
+lifetime.
 
-Native backend receipts and an exclusive owner lease remain exact. Confirmed
-conversations explicitly prepare capture targets; the ordinary factory composes
-native privacy, journal and Agent/Thread stores and drains ownership on close.
-E-AI-037/038 qualify reads/continuation; other capture gates stay open.
+[Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
+E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
+E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
+E-AI-062 lands local AI into main; JJ persistence and original gates stay
+deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) keep their
+gates.
 
-The [transcript plan](ai-presentation.md) has standing implementation approval.
-E-AI-041 adopts shared UI and vault presentation preferences after footer
-repair. Catalog fixtures stay isolated; native AI gates remain separate.
-
-E-REPO-002 retains LD-AI-001 execution authority: repository history admission
-cannot admit AI or select a target. The existing cold AI admission case passes
-alongside the new independent history case. NativeServices test construction
-adds the separate registry without changing AI policy or raw-event ownership.
-
+E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 `PLUGIN_MIGRATION.md` and the original M10 task gates remain authoritative.
 Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).
@@ -34,18 +28,18 @@ retained. Invalid active roots identify exactly their retired generation for
 scoped cleanup. Native caller/origin checks and target policy remain host-owned;
 the renderer cannot choose a root, executable, environment or generation.
 
-Ordinary builds register the native ACP host with no targets. The exact main
-ACP-session grant permits the scoped protocol without executable selection. The
-two admit/release commands accept only a vault token or reload flag, reject
-surplus authority fields and derive window/origin from Tauri. Pending scopes
-stay unavailable until prior worker cleanup succeeds. Failed cleanup remains
-retryable; root failure retires only its old generation. Vault closure retains
-exact generation-scoped cleanup targets across retries, so delayed old-vault
-cleanup cannot revoke a newer window admission. Destroyed windows invalidate
-pending admissions before they can publish late. The isolated e2e transport
-policy remains separate. Production target selection and actual mounted native
-recovery keep their M10.2 gate; registering the host alone cannot enable
-ordinary AI execution.
+Ordinary builds admit only explicitly configured local-file Codex targets. The
+exact main ACP-session grant permits the scoped protocol without executable
+selection. The two admit/release commands accept only a vault token or reload
+flag, reject surplus authority fields and derive window/origin from Tauri.
+Pending scopes stay unavailable until prior worker cleanup succeeds. Failed
+cleanup remains retryable; root failure retires only its old generation. Vault
+closure retains exact generation-scoped cleanup targets across retries, so
+delayed old-vault cleanup cannot revoke a newer window admission. Destroyed
+windows invalidate pending admissions before they can publish late. The isolated
+e2e transport policy remains separate. Production target selection and actual
+mounted native recovery keep their M10.2 gate; registering the host alone cannot
+enable ordinary AI execution.
 
 Notes binds the native AI factory before optional plugin loading. Client
 allocation and ACP admission remain lazy, scoped to the owning physical vault
@@ -58,13 +52,16 @@ only the native generation; it does not invent resume or replay a prompt. Native
 model catalogs use temporary, non-prompting sessions and release them after
 reading the provider's actual advertised model state.
 
+[Local recovery](ai-recovery.md) governs durable dispatch, streaming and unknown
+outcomes.
+
 ## Requirements
 
 | ID          | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LD-AI-001   | Desktop AI MUST use a reusable lapis-ai Tauri adapter for direct ACP with host-owned executable/root/credential policy, correlated ordered events, exact permission option IDs, model/configuration selection, cancellation and teardown. Each single-turn worker MUST remain isolated; uncertain submissions MUST NOT replay automatically.                                                                                |
 | LD-AI-002   | Desktop MUST retain current AI UI, conversations, app tools, context and memory while adapting the pre-controller ACP seam. Injected context MUST remain distinct from authored messages. Old controller IDs MUST NOT become ACP session IDs; unsupported resume MUST create an explicit new binding and context handoff. Unresolved turns/tools MUST remain interrupted or unknown and MUST NOT be projected as completed. |
-| LD-AI-003   | Application tools MUST use a bundled Rust bridge with private authenticated IPC, existing registry/vault authorization, guarded edits and approval UI. Credentials MUST remain native-side. Unknown permission options MUST NOT approve. Packaged lapis-agent qualification MUST precede external adapters with explicit prerequisites.                                                                                     |
+| LD-AI-003   | Application tools MUST use a bundled Rust bridge with private authenticated IPC, existing registry/vault authorization, guarded edits and approval UI. Credentials MUST remain native-side. Unknown permission options MUST NOT approve. The user-selected local-file Codex profile MAY precede packaged lapis-agent/tool qualification; other external adapters retain explicit prerequisites.                             |
 | LD-AI-004   | Migrated AI stories MUST retain applicable source scenarios and unique regression coverage, use fake clients by default and replace live-controller scenarios with native acceptance. Native chat, cancellation, approval, reads/edits, recovery, isolation and process cleanup MUST pass without ai-controller.                                                                                                            |
 | LD-COMP-001 | Optional compute MUST default to no sharing, no model download and no automatic cloud fallback. Explicit download/import/start/stop and existing mutually admitted pairing MUST qualify independently of ACP. Non-streaming inference MUST remain explicit; embeddings and cross-app singleton management remain outside scope.                                                                                             |
 
@@ -126,12 +123,14 @@ Interrupted or uncertain terminal outcomes remain explicit failures.
 
 The adapted ACP runtime attaches before configuration and never submits its
 request prompt during startup. It confirms the requested approval mode and
-selected configuration before allowing a turn. Preparation belongs to the active
+selected configuration before a turn: Codex uses its advertised `read-only`
+user-approval mode; other profiles use `ask`. Preparation belongs to the active
 turn, so cancel/close can fence late dispatch. Unknown submission or unusable
 outcomes block that session without replay. Detach preserves the native worker;
 close releases it. Failed startup locates its original request for cleanup and
-retains cleanup errors. Resume, skills, restricted maintenance and arbitrary MCP
-declarations remain unavailable until their admitted application integration.
+retains cleanup errors. ACP omits unsupported automatic skill snapshots from
+plain-chat preparation; explicit activations, resume, restricted work and
+arbitrary MCP remain refused.
 
 Retained skill parsing, discovery precedence, immutable snapshots and bundled
 seeding remain application-owned and Vault-scoped. The migrated policy test lane
@@ -145,10 +144,10 @@ reads admitted vault-relative folder instructions with bounds and omits host
 paths. User-global command persistence is an injected host port; the legacy Node
 implementation and runtime-only loader are not migrated.
 
-Chat state, settings persistence and visible transcript projection remain
-app-owned. Projection excludes raw reasoning, redacts durable tool detail and
-retains conversation identities without provider resume conversion. Generic
-Design Core presentation helpers are consumed directly from public exports.
+File context stays separate and bounded (8 files/64 KiB each/128 KiB total).
+Preparation checks cancellation. Projection excludes raw reasoning and redacts
+durable tool detail, retaining conversation IDs without provider resume. Design
+Core presentation helpers come directly from public exports.
 
 Live and restored approval presentation follows the selected advertised option
 kind, never an ID prefix. Unadvertised live choices reject; historical unknown
@@ -224,11 +223,11 @@ latest-call summaries; status is an accessible description. The source component
 owns the label references, with per-instance IDs preserving repeated call
 identities. Desktop queries follow those complete names without suppressing axe.
 
-The isolated Chromium catalog collects discarded test graphs after each file,
-using a test-only exposed collector. Missing collector support fails the run.
-This resource policy retains fixture teardown, test isolation, all four
-theme/viewport lanes, accessibility rules and unhandled-error reporting. It does
-not expose collection in the application or change native lifecycle gates.
+The isolated Chromium catalog collects discarded test graphs after each file;
+missing test-only collector support fails the run. This resource policy retains
+fixture teardown, test isolation, all four theme/viewport lanes, accessibility
+rules and unhandled-error reporting. It does not expose collection in the
+application or change native lifecycle gates.
 
 ## Retained AI settings
 
@@ -310,9 +309,10 @@ mid-import.
 
 Enabled AI retains the file-only `ai-jsonl` view and default `.jsonl`
 association. Validated transcripts reuse the durable chat projection; validated
-agent events retain their timeline and structured records. Other JSONL retains
-line-numbered records. Interrupted final appends preserve prior records with a
-warning; terminated malformed records remain readable errors.
+agent events retain their timeline and structured records. Both compose the
+reviewed nested shell described in [presentation](ai-presentation.md). Other
+JSONL retains line-numbered records. Interrupted final appends preserve prior
+records with a warning; terminated malformed records remain readable errors.
 
 The preview has no composer or editing actions and never saves file content.
 Vault changes refresh it through the existing file-view lifecycle. Filename
@@ -374,14 +374,15 @@ acknowledges only after the complete consumer callback returns; a coverage
 failure remains unknown. This renderer prerequisite does not select production
 native privacy, admit a target or enable JJ persistence.
 
-Ordinary native policy requires an explicit capture backend for any future
-managed target. Its factory rechecks current physical-vault/window admission and
-exact generation, then refuses an unselected backend instead of returning an
-unprocessed fallback. The library adapter can construct the existing native
-privacy policy with an injected durable sink; it chooses no paths or backend. A
-separate debug-only profile exercises real scanner/path/credential handling
-through native transport with a private fixture sink and owned temporary cache.
-That profile does not admit production targets or qualify JJ publication.
+The [local Codex profile](../../../docs/local-ai.md) uses vault-file transcripts
+and the SDK's explicit unprocessed event profile, without a JJ capture writer.
+JJ capture requires an explicit backend and rechecks current
+physical-vault/window admission and exact generation; it never falls back. The
+adapter constructs native privacy policy with an injected durable sink; it
+chooses no paths or backend. A separate debug-only profile exercises real
+scanner/path/credential handling through native transport with a private fixture
+sink and owned temporary cache. That profile does not admit production targets
+or qualify JJ publication.
 
 The native service journal implements the shared selected-store capture port
 under an exclusive private profile lease. It retains only checked sanitized
@@ -394,6 +395,6 @@ admit a target or replace the required native callback drain.
 
 Ordinary preparation uses the current JJ owner handle and private native IDs.
 The repository topic governs its single ThreadStore publication and receipt
-recovery. Unknown outcomes cannot enable execution. Cold hidden API acceptance
-covers preparation/restart, separately from managed capture and chat recovery;
-ordinary targets and processor refusal retain their existing gates.
+recovery. Unknown outcomes cannot enable execution. Cold API acceptance
+qualifies preparation/restart separately from managed chat/capture. Ordinary
+targets stay gated; [tags and queues](ai-addressing.md) confer no authority.

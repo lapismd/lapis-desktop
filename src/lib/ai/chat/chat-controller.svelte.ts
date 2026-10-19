@@ -18,6 +18,8 @@ import {
   _clearOpenConversation,
   _ensureConversation,
 } from "./controller/conversation-selection.ts";
+import { TurnPublication } from "./controller/turn-publication.ts";
+import { QueuedMessages } from "./controller/queued-messages.svelte.ts";
 import { submit } from "./controller/turn.ts";
 import { _submitWithActivation } from "./controller/activation.ts";
 import {
@@ -28,7 +30,8 @@ import {
   cancelAndSwitch,
   close,
 } from "./controller/interactions.ts";
-import { _consume, _consumeAppToolEvent } from "./controller/events.ts";
+import { _consume } from "./controller/events.ts";
+import { _consumeAppToolEvent } from "./controller/app-tool-events.ts";
 import { _executeSlash } from "./controller/command-dispatch.ts";
 import {
   _applyAgentCommand,
@@ -75,6 +78,8 @@ import {
 } from "./controller/persistence.ts";
 import { _tryResumeBinding } from "./controller/session-resume.ts";
 export class AiChatController extends AiChatControllerState {
+  readonly publication = new TurnPublication(this);
+  readonly queuedMessages = new QueuedMessages(this);
   restore = restore;
   openConversation = openConversation;
   _restoreConversation = _restoreConversation;
@@ -96,8 +101,17 @@ export class AiChatController extends AiChatControllerState {
   _confirmCancelledNotice = _confirmCancelledNotice;
   cancelAndSwitch = cancelAndSwitch;
   close = close;
-  _consume = (...args: Parameters<typeof _consume>) =>
-    this._backgroundWork.run(() => _consume.apply(this, args));
+  _consume = (...args: Parameters<typeof _consume>) => {
+    const work = this._backgroundWork.run(() => _consume.apply(this, args));
+    this._sessionConsumers.set(args[0], work);
+    void work
+      .finally(() => {
+        if (this._sessionConsumers.get(args[0]) === work)
+          this._sessionConsumers.delete(args[0]);
+      })
+      .catch(() => {});
+    return work;
+  };
   _consumeAppToolEvent = (...args: Parameters<typeof _consumeAppToolEvent>) =>
     this._backgroundWork.run(() => _consumeAppToolEvent.apply(this, args));
   _executeSlash = _executeSlash;
@@ -138,9 +152,10 @@ export class AiChatController extends AiChatControllerState {
     super(...args);
     this._unsubscribeAppToolEvents = this._appToolBridge?.subscribe((event) => {
       if (this._disposed) return;
-      void this._consumeAppToolEvent(event).catch((error) => {
+      return this._consumeAppToolEvent(event).catch((error) => {
         if (!this._disposed)
           this.error = error instanceof Error ? error.message : String(error);
+        throw error;
       });
     });
   }

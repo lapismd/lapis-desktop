@@ -1,6 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
+import { validateQueuedMessage } from "./queued-message.ts";
+import { validateDelivery } from "./dispatch-intent.ts";
+import { validateRecipients } from "./recipients.ts";
+import { validateCommentContexts } from "./comment-context.ts";
 import {
   record,
   assertSchemaVersion,
@@ -21,6 +25,8 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
   assertTimestamp(data, "createdAt", "Transcript entry");
   const types = new Set([
     "message",
+    "agent.delivery",
+    "queue.outcome",
     "thinking.summary",
     "tool",
     "approval.request",
@@ -75,11 +81,39 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
     }
   }
   switch (data.type) {
+    case "queue.outcome":
+      validateQueuedMessage(data.queued);
+      if (
+        !["completed", "cancelled", "rejected", "not_sent", "unknown"].includes(
+          String(data.outcome),
+        )
+      )
+        throw new Error("Invalid queue outcome");
+      break;
+    case "agent.delivery":
+      requiredString(data, "dispatchId", "Agent delivery");
+      requiredString(data, "parentId", "Agent delivery");
+      validateDelivery(data.delivery);
+      break;
     case "message":
+      if (data.recipients !== undefined && data.role !== "user")
+        throw new Error("Only authored messages may retain recipient tags");
+      validateRecipients(data.recipients);
       if (data.role !== "user" && data.role !== "assistant") {
         throw new Error("Transcript message role is invalid");
       }
-      requiredString(data, "text", "Transcript message");
+      if (data.contextBlocks !== undefined && data.role !== "user")
+        throw new Error(
+          "Only authored messages may retain submitted comment context",
+        );
+      if (
+        typeof data.text !== "string" ||
+        (!data.text && !validateCommentContexts(data.contextBlocks).length)
+      )
+        throw new Error(
+          "Transcript message requires authored text or comments",
+        );
+      validateCommentContexts(data.contextBlocks);
       break;
     case "thinking.summary":
       requiredString(data, "text", "Transcript thinking summary");
@@ -97,7 +131,8 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
       if (
         data.state !== "completed" &&
         data.state !== "error" &&
-        data.state !== "cancelled"
+        data.state !== "cancelled" &&
+        data.state !== "unknown"
       ) {
         throw new Error("Transcript tool state is invalid");
       }

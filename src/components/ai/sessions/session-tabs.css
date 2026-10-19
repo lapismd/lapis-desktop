@@ -1,0 +1,103 @@
+/* SPDX-License-Identifier: Apache-2.0; jj-store view-tabs.css, 08b58c7e. */
+.ai-session-tabs__tabs {
+  z-index: 3;
+  display: flex;
+  width: 100%;
+  min-height: 3.25rem;
+  min-width: 0;
+  box-sizing: border-box;
+  flex: none;
+  align-items: center;
+  padding: 0.55rem var(--ai-session-tabs-padding-inline-end, 1rem);
+  padding-inline-start: 0.5rem;
+  background: color-mix(in srgb, var(--background) 96%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.ai-session-tabs__tab-root {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  flex-direction: row;
+  gap: 0.4rem;
+}
+
+.ai-session-tabs__tab-list {
+  display: flex;
+  width: auto;
+  min-width: 0;
+  height: auto;
+  flex: 1 1 auto;
+  justify-content: flex-start;
+  overflow: hidden;
+  gap: 0.4rem;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.ai-session-tabs__tabs[data-presentation="pill"] .ai-session-tabs__tab-trigger,
+.ai-session-tabs__tabs[data-presentation="pill"]
+  .ai-session-tabs__tab-more[data-ui-component="button"] {
+  min-height: 1.8rem;
+  flex: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 0.25rem 0.8rem;
+  color: var(--muted-foreground);
+  background: color-mix(in srgb, var(--muted) 38%, transparent);
+  box-shadow: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.ai-session-tabs__tabs[data-presentation="pill"]
+  .ai-session-tabs__tab-trigger[data-state="active"],
+.ai-session-tabs__tabs[data-presentation="pill"]
+  .ai-session-tabs__tab-more[data-selected] {
+  color: var(--foreground);
+  background: var(--muted);
+  box-shadow: none;
+}
+
+.ai-session-tabs__tabs[data-presentation="pill"]
+  .ai-session-tabs__tab-trigger:hover:not(:disabled),
+.ai-session-tabs__tabs[data-presentation="pill"]
+  .ai-session-tabs__tab-more:hover:not(:disabled) {
+  color: var(--foreground);
+  background: color-mix(in srgb, var(--muted) 72%, transparent);
+}
+
+.ai-session-tabs__tab-space {
+  display: flex;
+  flex: 1;
+  min-width: var(--ai-session-tabs-min-width, 0);
+  align-items: center;
+  gap: 0.4rem;
+}
+.ai-session-tabs__tab-more {
+  flex: none;
+}
+
+.ai-session-tabs__tab-list[data-empty] {
+  display: none;
+}
+
+/* Measure natural control widths without replacing the active tabs or menu. */
+.ai-session-tabs__tab-measure {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+.ai-session-tabs__tab-probes {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: max-content;
+  gap: 0.4rem;
+}

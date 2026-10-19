@@ -35,8 +35,8 @@ vi.mock("@lapis-notes/api", () => ({
     }
   },
 }));
-vi.mock("../../../src/components/ai/jsonl/AiJsonlPreview.svelte", () => ({
-  default: { name: "AiJsonlPreview" },
+vi.mock("../../../src/components/ai/jsonl/AiJsonlPanel.svelte", () => ({
+  default: { name: "AiJsonlPanel" },
 }));
 import { AiJsonlView } from "../../../src/components/ai/views/jsonl-view.ts";
 import { AiOperations } from "../../../src/lib/ai/plugin/operations.ts";
@@ -139,5 +139,36 @@ describe("AiJsonlView", () => {
     expect(mocks.read).toHaveBeenCalledOnce();
     await view.onunload();
     expect(mocks.unmount).toHaveBeenCalledOnce();
+  });
+  it("keeps the loading surface pending until overlapping reads drain", async () => {
+    const { view } = fixture();
+    view.onload();
+    const states: boolean[] = [];
+    const unsubscribe = mocks.mount.mock.calls[0][1].props.loading.subscribe(
+      (value: boolean) => states.push(value),
+    );
+    let first!: () => void, second!: () => void;
+    mocks.read
+      .mockReturnValueOnce(
+        new Promise<void>((resolve) => {
+          first = resolve;
+        }),
+      )
+      .mockReturnValueOnce(
+        new Promise<void>((resolve) => {
+          second = resolve;
+        }),
+      );
+    const one = view.onLoadFile({ path: "transcript.jsonl" } as never);
+    const two = view.onLoadFile({ path: "agents.jsonl" } as never);
+    expect(states.at(-1)).toBe(true);
+    first();
+    await one;
+    expect(states.at(-1)).toBe(true);
+    second();
+    await two;
+    expect(states.at(-1)).toBe(false);
+    unsubscribe();
+    await view.onunload();
   });
 });

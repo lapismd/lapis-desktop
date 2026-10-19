@@ -1,14 +1,11 @@
 # Governance
 
-E-REPO-042 reconciles migration tracking under LD-GOV-001/002/003/004. Generated
-summaries list completion and open gates, without deriving active work from
-Partial/In progress status or table order. Roadmaps separate implemented
-functionality, focused checks and remaining acceptance. All 41 task statuses,
-dependencies, requirements and original gates are retained. E-REPO-035–041
-record integrated backup and settings; native/provider/wider gates remain open.
+E-REPO-042 and E-AI-062 retain all 41 statuses, dependencies and original gates
+under LD-GOV-001/002/003/004. E-AI-042–061 local AI and E-REPO-035–041 backup
+remain separately qualified; broader integration checks are delegated.
 
-E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold
-Rust-process proof does not replace M13.3 packaged WebView/restart gates.
+E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold Rust proof
+does not replace M13.3 packaged WebView/restart gates.
 
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
 The repository topic owns JJ reuse and exact history grants. E-REPO-003
@@ -25,27 +22,31 @@ e2e entry shares early progress, then imports runtime instrumentation; ordinary
 bundle audits reject its startup capture marker.
 
 Canonical owners: `plugins.md`, `ai.md`, `ai-presentation.md`, `repository.md`
-and E-REPO-018's `repository-navigation.md` (LD-GOV-001/002/004). The task
-ledger retains original milestone gates.
+and E-REPO-018's `repository-navigation.md` (LD-GOV-001/002/004).
 
-The desktop catalog uses `.storybook`, `catalog/plugins` and `catalog/support`.
-Import audits resolve relative paths before distinguishing the repository's
-development catalog from production AI catalog features; test and fixture
-imports remain prohibited, including re-exports and dynamic imports. Catalog
-Vite/Vitest configs map to `plugins.md`; production source audits reject catalog
-imports. Generated static catalog and browser artifacts are excluded from
+The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import
+audits resolve relative paths before distinguishing the repository's development
+catalog from production AI catalog features; test and fixture imports remain
+prohibited, including re-exports and dynamic imports. Catalog Vite/Vitest
+configs map to `plugins.md`; production source audits reject catalog imports.
+Generated static catalog and browser artifacts are excluded from
 repository-source traversal, formatting and commits.
 
 ## Requirements
 
-Native AI admission adds only named main-window admit/release frames. Ordinary
-ACP execution still has no admitted target. The linked Rust adapter is compiled
-into ordinary builds but its policy exposes no targets or executable selection.
+Native AI admission and tools use exact named main-window grants. Tool frames
+carry opaque identities and metadata, with no launch authority. The explicit
+device-owned local-file profile admits Codex through a verified runtime under
+`ai.md`; absence stays inert. No renderer executable selection is granted.
 Actual mounted admission/recovery qualification retains the M10.2 gate; the
 existing e2e transport fixture is independent. Notes owns the lazy native
 factory and optional bundled registration. The main window's exact ACP-session
 grant exposes only host-admitted operations; extra individual, default, wildcard
 and remote plugin grants remain denied.
+
+E-AI-042 follows the user's local-file priority. LD-GOV-001/002/004 retain
+source ownership, evidence and original JJ milestone gates; file-backed AI does
+not qualify deferred native-store capture or application-tool integration.
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -388,12 +389,11 @@ AI user-command IO adds only its named main-window operation. Rust chooses the
 user directory; acceptance uses its existing isolated root. Default seeding uses
 exclusive publication, and ordinary AI execution remains unavailable.
 
-The local desktop default is the quiet renderer/native-service/catalog lane.
-Native acceptance in CI explicitly selects the headed runner; changing a local
-default must not silently remove the original native gate. macOS hidden WebKit
-stops animation frames, so browser/service success is separately labelled.
-
-## Native acceptance modes
+The local default is the quiet renderer/native-service/catalog lane; CI selects
+headed native acceptance. Hidden WebKit pauses animation frames, so service
+success stays distinct from native UI acceptance; original gates remain.
 
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
-IPC-only checks, headed windows and capture qualification boundaries.
+IPC-only checks, headed windows and capture qualification boundaries. The
+private migration link for `@lapismd/jj-conversations` consumes verified built
+exports. Local queues retain host custody; registry intake remains gated.

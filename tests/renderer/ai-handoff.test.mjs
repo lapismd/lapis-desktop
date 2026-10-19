@@ -1,10 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { buildConversationContextHandoff } from "../../src/lib/ai/conversations/context-handoff.ts";
-import {
-  transcriptEntryHash,
-  transcriptRangeHash,
-} from "../../src/lib/ai/conversations/hashes.ts";
+import { register } from "tsx/esm/api";
+register();
+const { buildConversationContextHandoff } = await import(
+  "../../src/lib/ai/conversations/context-handoff.ts"
+);
+const { transcriptEntryHash, transcriptRangeHash } = await import(
+  "../../src/lib/ai/conversations/hashes.ts"
+);
 const base = { schemaVersion: 3, createdAt: "2026-08-16T00:00:00.000Z" };
 const message = (id, text, role = "user") => ({
   ...base,

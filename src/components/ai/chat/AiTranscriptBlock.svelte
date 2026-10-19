@@ -1,6 +1,5 @@
 <script lang="ts">
   import * as Chat from "@lapismd/design-core/ai/chat";
-  import { Button } from "@lapismd/design-core/shadcn/button";
   import {
     resolveToolResultView,
     parseToolResultPayload,
@@ -8,6 +7,8 @@
   import type { AiChatItem } from "../../../lib/ai/chat/chat-items.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import AiInventoryResult from "./AiInventoryResult.svelte";
+  import AiCommandReport from "./AiCommandReport.svelte";
+  import { isSlashCommandNotice } from "../../../lib/ai/chat/chat-items.ts";
 
   let { item, panel }: { item: AiChatItem; panel: TranscriptPanelProps } =
     $props();
@@ -49,15 +50,8 @@
     name={item.inventory?.kind ?? "skills"}
     output={item.inventory}
   />
-{:else if item.type === "error"}
-  <p>{item.text}</p>
-  {@const prompt = panel.actions.promptForError(item.id)}
-  {#if prompt}<Button
-      size="sm"
-      variant="outline"
-      disabled={panel.controller.busy}
-      onclick={() => void panel.actions.submit(prompt)}>Retry message</Button
-    >{/if}
+{:else if isSlashCommandNotice(item)}
+  <AiCommandReport text={item.text} />
 {:else if "text" in item}
   <Chat.SystemMessage>{item.text}</Chat.SystemMessage>
 {/if}

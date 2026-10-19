@@ -85,6 +85,21 @@
       ],
       "use": "Copied and adapted account list, device authorization, PAT form and controller flow for installation-owned Notes backup settings. Public Design Core Card/Field/Badge replace jj-store settings wrappers. Tokens remain transient; custody, native worker admission and lifecycle remain desktop-owned.",
       "license": "Apache-2.0"
+    },
+    {
+      "repository": "jj-store",
+      "revision": "d80f03418e64c13f15483a41896cec5490e8e2ea",
+      "paths": [
+        "web/src/lib/ui/community-chat-composer/CommunityComposerAgentAudience.svelte",
+        "web/src/lib/ui/community-chat-composer/composer-agent-audience.svelte.ts",
+        "packages/jj-conversations/src/agent-mentions.ts"
+      ],
+      "destinations": [
+        "src/components/ai/chat/ChatRecipients.svelte",
+        "src/lib/ai/chat/panel/recipients.svelte.ts"
+      ],
+      "use": "Adapted explicit removable agent audience to the local composer using public Design Core Button/Avatar; reuse the shared token codec through its built public package. Notes owns recipient catalog, local persistence and runtime admission.",
+      "license": "Apache-2.0"
     }
   ],
   "copies": [
@@ -444,6 +459,130 @@
         }
       ],
       "use": "Copied the GitHub and Forgejo Simple Icons SVG paths used by jj-store. Brand paths remain bundled locally; no remote icon fetch or runtime source import."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "204676c3783cd62f3627e976edabb24b96f83c95",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictSurface.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictSurface.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictBody.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictBody.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictText.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictText.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/StoreConflictHeaderActions.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictActions.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/store-conflicts.css",
+          "destination": "src/components/repository/conflicts/repository-conflicts.css"
+        },
+        {
+          "source": "web/src/lib/ui/store-conflicts/menu-context.ts",
+          "destination": "src/lib/repository/conflict-menu.ts"
+        },
+        {
+          "source": "web/src/lib/ui/community-app-shell/CommunitySidebarToggleIcon.svelte",
+          "destination": "src/components/repository/conflicts/RepositorySidebarToggleIcon.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/CommunityProjectsRepositoryFileTree.svelte",
+          "destination": "src/components/repository/conflicts/RepositoryConflictFileTree.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-projects/repository-file-tree.css",
+          "destination": "src/components/repository/conflicts/repository-conflict-file-tree.css"
+        }
+      ],
+      "use": "Production adoption in E-REPO-015: Copied jj-store presentation first, adapted only to native-read/local draft/stage/delete/preview and public Design Core composition. Same header actions, Files/mode browser, nested shell, Left/Resolved/Right editor, sidebar icon and merge settings. Replaces custom approximation. Source internal sizing selectors are replaced by owned measured hosts/public slots; shell is disposed. Settings are memory-only and language adapts the explicit Markdown fixture. Native apply remains disabled, no conflicts are persisted or cleared. Native publication remains unavailable."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "08b58c7e507d49199cd24b4f7bb503099580c988",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInbox.svelte",
+          "destination": "src/components/ai/sessions/AiSessionShell.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInboxThreadHeader.svelte",
+          "destination": "src/components/ai/sessions/AiSessionHeader.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInboxItem.svelte",
+          "destination": "src/components/ai/sessions/AiSessionRow.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInboxSessions.svelte",
+          "destination": "src/components/ai/sessions/AiSessionList.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/inbox.css",
+          "destination": "src/components/ai/sessions/session-shell.css"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/inbox-thread.css",
+          "destination": "src/components/ai/sessions/session-shell.css"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/inbox-resize.svelte.ts",
+          "destination": "src/components/ai/sessions/session-resize.svelte.ts"
+        },
+        {
+          "source": "web/src/lib/ui/StoreToolbarSearch.svelte",
+          "destination": "src/components/ai/sessions/AiSessionSearch.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-application/StoreViewTabs.svelte",
+          "destination": "src/components/ai/sessions/AiSessionTabs.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-application/view-tabs.css",
+          "destination": "src/components/ai/sessions/session-tabs.css"
+        },
+        {
+          "source": "web/src/lib/ui/community-app-shell/CommunitySidebarToggleIcon.svelte",
+          "destination": "src/components/ai/sessions/AiSessionToggleIcon.svelte"
+        },
+        {
+          "source": "web/public/agent-icons/codex.svg",
+          "destination": "src/lib/ai/presentation/assets/codex.svg"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInboxFilters.svelte",
+          "destination": "src/components/ai/sessions/AiSessionFilters.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInbox.svelte",
+          "destination": "src/components/ai/sessions/AiSessionFrame.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-inbox/CommunityInbox.svelte",
+          "destination": "src/components/ai/sessions/AiSessionThread.svelte"
+        }
+      ],
+      "use": "Production adoption of the reviewed JJ Store inbox in E-AI-058. Application-owned nested AppShell, grouped rows, header toggle, bounded resizing, searchable source filters and compact status bars serve live chat, explicit import and read-only saved snapshots. Existing repository/runtime/import ports retain authority; saved versions are loaded lazily from local import journals. Automatic capture coordination and JJ persistence stay deferred. Codex artwork remains source-owned and attributed in src/lib/ai/presentation/assets/SOURCES.md. Catalog fixtures mount these production components; no production imports from catalog or another checkout. The shared frame/thread extraction also hosts file-only JSONL previews; it adds no source discovery or storage authority."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "b7a82c437efb62b2cf8c2694eb9b7db67619f984",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-agent-chat-body/ChatToolPanel.svelte",
+          "destination": "src/components/ai/chat/AiTranscriptToolInspector.svelte"
+        }
+      ],
+      "use": "Copied the tool-panel composition and adapted it to the public AppShell SurfaceLayer for the approved ordinary AI inbox. Public Transcript readers retain exact capture/comment identity and the controller owns source selection. One view control presents Markdown preview, exact Markdown source and the captured request/response. Notes retains registered result views; no native execution, current-file read or persistence is added. The tool icon precedes the title. The layer uses the public inset token to cover the complete main body, with full-width content, 32px horizontal and 16px vertical padding. E-AI-058 resumes source and consumer qualification for live adoption."
     }
   ]
 }

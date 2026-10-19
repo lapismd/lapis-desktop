@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained complete shell geometry assertions, lapis-plugins ee20d366.
-import { expect } from "storybook/test";
+import { expect, waitFor } from "storybook/test";
 import type { App, WorkspaceLeaf } from "@lapis-notes/api";
 import { shellFixture } from "./fixture.ts";
 export function demoApp(element: HTMLElement): App {
@@ -16,49 +16,74 @@ export function mainAiLeaves(app: App): WorkspaceLeaf[] {
 export function releaseAiInitialization(element: HTMLElement) {
   shellFixture(element).releaseModels();
 }
-export function assertStackedComposer(panel: HTMLElement): void {
-  const surface = panel.querySelector<HTMLElement>(
-    '[data-ui-component="transcript"]',
-  );
-  const footer = panel.querySelector<HTMLElement>(
-    '[data-ui-component="transcript-footer"]',
-  );
-  const viewport = panel.querySelector<HTMLElement>(
-    '.ui-transcript-viewport > [data-ui-part="scroll-area-viewport"]',
-  );
-  const composer = panel.querySelector<HTMLElement>(
-    "[data-transcript-composer]",
-  );
-  expect(surface).not.toBeNull();
-  expect(footer).not.toBeNull();
-  expect(viewport).not.toBeNull();
-  expect(composer).not.toBeNull();
-  expect(surface!.getBoundingClientRect().height).toBeGreaterThan(
-    panel.clientHeight * 0.7,
-  );
-  expect(viewport!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
-    footer!.getBoundingClientRect().top + 2,
-  );
-  const clearance = parseFloat(
-    getComputedStyle(
-      panel.querySelector<HTMLElement>('[data-testid="ai-transcript-panel"]')!,
-    ).paddingBottom,
-  );
-  expect(
-    Math.abs(
-      footer!.getBoundingClientRect().bottom +
-        clearance -
-        panel.getBoundingClientRect().bottom,
-    ),
-  ).toBeLessThan(2);
-  expect(footer!.getBoundingClientRect().height).toBe(48);
-  expect(surface!.scrollHeight).toBeLessThanOrEqual(surface!.clientHeight);
+export async function assertStackedComposer(panel: HTMLElement): Promise<void> {
+  await waitFor(() => {
+    const surface = panel.querySelector<HTMLElement>(
+      '[data-ui-component="transcript"]',
+    );
+    const footer = panel.querySelector<HTMLElement>(
+      '[data-ui-component="transcript-footer"]',
+    );
+    const viewport = panel.querySelector<HTMLElement>(
+      '.ui-transcript-viewport > [data-ui-part="scroll-area-viewport"]',
+    );
+    const composer = panel.querySelector<HTMLElement>(
+      "[data-transcript-composer]",
+    );
+    expect(surface).not.toBeNull();
+    expect(footer).not.toBeNull();
+    expect(viewport).not.toBeNull();
+    expect(composer).not.toBeNull();
+    const frame = panel.querySelector<HTMLElement>(".ai-session-shell");
+    const body =
+      panel.querySelector<HTMLElement>(".ai-session-thread-body") ?? panel;
+    const bar =
+      panel.querySelector<HTMLElement>(".ai-session-footer") ?? footer!;
+    expect(surface!.getBoundingClientRect().height).toBeGreaterThan(
+      body.clientHeight * 0.7,
+    );
+    expect(viewport!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+      footer!.getBoundingClientRect().top + 2,
+    );
+    const clearance = parseFloat(
+      getComputedStyle(
+        frame ??
+          panel.querySelector<HTMLElement>(
+            '[data-testid="ai-transcript-panel"]',
+          )!,
+      ).paddingBottom,
+    );
+    if (frame) {
+      const content = bar.closest('[data-ui-part="body-content"]')!;
+      expect(
+        Math.abs(
+          bar.getBoundingClientRect().bottom -
+            content.getBoundingClientRect().bottom,
+        ),
+      ).toBeLessThan(2);
+      expect(clearance).toBeGreaterThan(0);
+      expect(bar.getBoundingClientRect().height).toBe(32);
+      expect(footer!.getBoundingClientRect().height).toBeLessThanOrEqual(32);
+    } else {
+      expect(
+        Math.abs(
+          bar.getBoundingClientRect().bottom +
+            clearance -
+            panel.getBoundingClientRect().bottom,
+        ),
+      ).toBeLessThan(2);
+      expect(footer!.getBoundingClientRect().height).toBe(48);
+    }
+    expect(surface!.scrollHeight).toBeLessThanOrEqual(surface!.clientHeight);
+  });
 }
 
-export function assertNoMessageOverlap(panel: HTMLElement): void {
-  assertStackedComposer(panel);
+export async function assertNoMessageOverlap(
+  panel: HTMLElement,
+): Promise<void> {
+  await assertStackedComposer(panel);
   const messages = panel.querySelectorAll(
-    '[data-chat-item][data-kind="message"]',
+    'article[aria-label^="Message from"]',
   );
   expect(messages.length).toBeGreaterThan(0);
 }

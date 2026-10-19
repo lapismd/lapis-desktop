@@ -4,10 +4,13 @@ import type { AgentEvent } from "../core/events.ts";
 import type { AppToolSessionDescriptor } from "../core/runtime.ts";
 import type { CreateAppToolSessionInput } from "./app-tool-contracts.ts";
 export type AppToolBridgeEvent = { bindingId: string; event: AgentEvent };
+export type AppToolBridgeListener = (
+  event: AppToolBridgeEvent,
+) => void | Promise<void>;
 export interface AppToolBridgeCoordinator {
   prepare(input: CreateAppToolSessionInput): Promise<AppToolSessionDescriptor>;
   closeBinding(bindingId: string): Promise<void>;
   respondToApproval(requestId: string, optionId: string): boolean;
-  subscribe(listener: (event: AppToolBridgeEvent) => void): () => void;
+  subscribe(listener: AppToolBridgeListener): () => void;
   close(): Promise<void>;
 }

@@ -28,7 +28,7 @@
     client,
     urlDelivery,
     pluginDistributionOptions,
-    createAi = createNativeAi,
+    createAi = (app, vault, tools) => createNativeAi(app, vault, { tools }),
   }: {
     client: VaultClient;
     urlDelivery: DesktopUrlDelivery;
@@ -36,6 +36,7 @@
     createAi?: (
       app: import("@lapis-notes/api").App,
       vault: VaultDescriptor,
+      tools: import("../../lib/ai/tools/app-tool-host.ts").AppToolHost,
     ) => AiServices;
   } = $props();
   let safeMode = $state<AppSafeModeState>(normalRecovery());
@@ -199,7 +200,7 @@
         selected!.resourceToken,
       )}
       createTerminal={(app) => createNativeTerminal(app, selected!)}
-      createAi={(app) => createAi(app, selected!)}
+      createAi={(app, tools) => createAi(app, selected!, tools)}
       createRepository={() => createNativeRepository(selected!)}
       onRestart={restartNotes}
       onBack={back}

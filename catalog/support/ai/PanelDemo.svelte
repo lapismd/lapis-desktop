@@ -4,8 +4,11 @@
   import AiCatalogPanel from "../../../src/components/ai/catalog/AiCatalogPanel.svelte";
   import { registerAiReview } from "./review.ts";
   import { createPanelFixture } from "./panel-fixture.ts";
+  import { NotificationToasts } from "@lapismd/design-core/workspace/plugins/notifications";
+  import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
   let { kind = "history" }: { kind?: "history" | "catalog" } = $props();
   const fixture = untrack(createPanelFixture);
+  const controller = getWorkspaceHostBinding(fixture.app.workspace).controller;
   let ready = $state(false);
   let mounted = $state(true);
   let failure = $state("");
@@ -57,6 +60,7 @@
     {/if}
   </div>
   {#if failure}<p role="alert">{failure}</p>{/if}
+  <NotificationToasts app={controller} />
 </div>
 
 <style>

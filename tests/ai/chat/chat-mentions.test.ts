@@ -44,6 +44,15 @@ describe("vault file mentions", () => {
     ).toEqual(["Notes/alpha.md", "Notes/beta.md"]);
   });
 
+  it("recognizes a captured wiki mention without treating brackets as a filename", () => {
+    expect(extractMentionPaths("Summarize @[[Notes/Welcome.md]]")).toEqual([
+      "Notes/Welcome.md",
+    ]);
+    expect(extractMentionPaths("See @[[Notes/beta file.md|Beta]]")).toEqual([
+      "Notes/beta file.md",
+    ]);
+  });
+
   it("builds tokenized mention chips from prompt text", () => {
     expect(mentionTokensFromText("See @Notes/alpha.md")).toEqual([
       {

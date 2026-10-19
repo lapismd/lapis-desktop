@@ -19,7 +19,7 @@ export function observeComposerDefaults(
   $effect(() => {
     const { initializing = false, settings, loadModels } = getProps();
 
-    if (initializing) return;
+    if (initializing || getProps().recordedImport) return;
     const next = {
       agent: normalizeAcpAgent(settings?.acpAgent),
       runtime:

@@ -1,12 +1,10 @@
 # Repository history and conversations
 
-LD-REPO-005 backup/forge controls live in plugin Settings (E-REPO-039–041).
-[Automatic vault backup](vault-backup.md) governs M14 delivery (E-REPO-038).
-Immutable readers, M13 conversations and native/background authority remain.
-
-Managed backup and original JJ repositories retain separate native identities.
-The desktop uses owned JJ interfaces without upstream `jj-lib`; M33 remains
-independent.
+LD-REPO-005 backup/forge controls live in plugin Settings (E-REPO-039–041);
+[automatic vault backup](vault-backup.md) governs M14 delivery. Managed backup
+and original JJ identities remain separate, through owned interfaces without
+upstream `jj-lib`. E-AI-055 reuses capture/privacy for read-only local-file
+imports; LD-REPO-001/002/003 pins, identity and publication remain unchanged.
 
 E-REPO-024/025 add the bounded physical working-copy status read and
 plugin-owned status controls. [Repository navigation](repository-navigation.md)

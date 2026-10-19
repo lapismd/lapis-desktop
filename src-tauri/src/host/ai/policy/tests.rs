@@ -26,6 +26,7 @@ fn fixture() -> Fixture {
         .unwrap()
         .session_id;
     let host = NativeHost(Arc::new(Mutex::new(NativeServices {
+        imports: VaultAdmissions::default(),
         ai: VaultAdmissions::default(),
         repository: lapis_desktop::repository::RepositoryAdmissions::default(),
         vaults,
@@ -185,4 +186,94 @@ fn native_capture_requires_current_admission_and_an_explicit_backend() {
     fixture.host.0.lock().unwrap().ai.leave("main", false);
     assert!(fixture.policy.processor(&caller(), &binding).is_err());
     assert!(fixture.workers.list(&caller()).is_err());
+}
+
+#[test]
+fn codex_tool_alias_is_native_scoped_single_claim_and_never_constructs_jj_capture() {
+    let fixture = fixture();
+    let (_runtime, settings, home) = super::super::file_profile::tests::fixture();
+    fixture
+        .policy
+        .configure_file_profile(settings, home)
+        .unwrap();
+    fixture.policy.prepare_file_profile().unwrap();
+    let generation = activate(&fixture);
+    let request = uuid::Uuid::new_v4();
+    let owner = lapis_desktop::ai::tools::Owner {
+        window: "main".into(),
+        session: fixture.session.clone(),
+        generation: generation.clone(),
+    };
+    let backends = fixture.policy.0.backends.get().unwrap();
+    tauri::async_runtime::block_on(backends.tools.open(
+        request,
+        owner,
+        vec![lapis_desktop::ai::tools::ToolSpec {
+            name: "notes.read".into(),
+            description: "Read".into(),
+            input_schema: serde_json::json!({"type":"object"}),
+        }],
+        Arc::new(|| Ok(())),
+        Arc::new(|_| Ok(())),
+    ))
+    .unwrap();
+    assert_eq!(
+        fixture
+            .policy
+            .targets(&caller())
+            .unwrap()
+            .iter()
+            .map(|t| t.id.as_str())
+            .collect::<Vec<_>>(),
+        vec!["codex"]
+    );
+    let alias = format!("codex:tools:{request}");
+    assert!(
+        fixture
+            .policy
+            .resolve(&caller(), &alias, Some("resume"))
+            .is_err()
+    );
+    let launch = fixture.policy.resolve(&caller(), &alias, None).unwrap();
+    assert_eq!(
+        launch.directory,
+        fixture.root.path().canonicalize().unwrap()
+    );
+    assert!(launch.prepared.arguments.is_empty());
+    assert!(
+        launch
+            .prepared
+            .environment
+            .0
+            .contains_key("LAPIS_NOTES_TOOL_SOCKET")
+    );
+    assert_eq!(
+        launch.prepared.environment.0["LAPIS_NOTES_TOOL_CREDENTIAL"].len(),
+        64
+    );
+    let config = std::fs::read_to_string(&launch.prepared.environment.0["JJ_ACP_TOOLS"]).unwrap();
+    assert!(!config.contains(&launch.prepared.environment.0["LAPIS_NOTES_TOOL_CREDENTIAL"]));
+    let binding = tauri_plugin_lapis_ai::SessionBinding {
+        session_id: "worker".into(),
+        request_id: "open".into(),
+        target_id: alias.clone(),
+        admission: generation,
+    };
+    assert!(
+        fixture
+            .policy
+            .processor(&caller(), &binding)
+            .unwrap()
+            .is_none()
+    );
+    assert!(fixture.policy.resolve(&caller(), &alias, None).is_err());
+    assert!(
+        fixture
+            .policy
+            .resolve(&caller(), "codex:tools:invalid", None)
+            .is_err()
+    );
+    tauri::async_runtime::block_on(backends.tools.close(request, "main", &fixture.session))
+        .unwrap();
+    assert!(fixture.policy.processor(&caller(), &binding).is_err());
 }

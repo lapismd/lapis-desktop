@@ -216,3 +216,19 @@ describe("VaultTranscriptStore", () => {
     );
   });
 });
+
+it("refuses an oversized encoded metadata write before making the current conversation unreadable", async () => {
+  const { store, repository } = await createHarness();
+  const { location, metadata } = await repository.create({
+    id: ID,
+    scopeDir: "Notes",
+  });
+  const before = await repository.read(location);
+  await expect(
+    store.writeMetadata(location, {
+      ...metadata,
+      launchContext: { notePath: "x".repeat(270000) },
+    }),
+  ).rejects.toThrow(/maximum supported size/);
+  expect(await repository.read(location)).toEqual(before);
+});

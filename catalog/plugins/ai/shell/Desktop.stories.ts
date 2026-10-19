@@ -92,7 +92,7 @@ export const Desktop: Story = {
     await waitFor(() =>
       expect(panel).toHaveAttribute("data-initializing", "false"),
     );
-    assertStackedComposer(panel);
+    await assertStackedComposer(panel);
     expect(within(panel).getByText("Start a conversation")).toBeVisible();
     expect(
       within(panel).getByRole("textbox", { name: "Message" }),
@@ -129,20 +129,27 @@ export const Desktop: Story = {
     ).toBeVisible();
     await expect(
       within(panel).getByRole("button", {
-        name: /^Show details for vault.read$/,
+        name: /^Show details for vault.read · /,
       }),
     ).toBeVisible();
     await userEvent.click(
       within(panel).getByRole("button", {
-        name: /^Show details for vault.read$/,
+        name: /^Show details for vault.read · /,
       }),
     );
-    await expect(
+    await expect(body.findByLabelText("Tool details")).resolves.toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    await userEvent.click(
       within(panel).getByRole("button", {
-        name: /^Hide details for vault.read$/,
+        name: /^Show contents for vault.read · /,
+      }),
+    );
+    expect(
+      within(panel).getByRole("button", {
+        name: /^Hide contents for vault.read · /,
       }),
     ).toBeVisible();
-    assertNoMessageOverlap(panel);
+    await assertNoMessageOverlap(panel);
     const response = within(panel).getByRole("textbox", {
       name: /^Assistant response$/,
     });

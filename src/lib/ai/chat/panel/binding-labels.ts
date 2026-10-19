@@ -7,7 +7,8 @@ export function bindingLabels(
   return new Map(
     bindings.map((binding) => {
       const label =
-        binding.runtime === "codex-native"
+        binding.participant?.label ??
+        (binding.runtime === "codex-native"
           ? "Codex Native"
           : binding.runtime === "opencode-native"
             ? "OpenCode Native"
@@ -15,7 +16,7 @@ export function bindingLabels(
               ? "Cursor ACP"
               : binding.agent === "opencode"
                 ? "OpenCode ACP"
-                : "Codex ACP";
+                : "Codex ACP");
       return [
         binding.id,
         binding.model?.model ? `${label} · ${binding.model.model}` : label,

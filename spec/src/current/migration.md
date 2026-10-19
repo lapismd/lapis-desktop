@@ -30,6 +30,10 @@ order. Task pages alone own completion; no status, dependency, requirement or
 original gate is changed. The 2026-10-17 pause was followed by resumed delivery.
 This documentation refresh starts no implementation or acceptance runs.
 
+E-AI-042–061 adds local Codex execution, file-backed transcripts, comments,
+imports and reviewed chat/file UI. JJ persistence and the original native,
+provider and distribution gates remain deferred.
+
 ## Historical checkpoints
 
 These records describe their own slices. Their earlier next actions do not

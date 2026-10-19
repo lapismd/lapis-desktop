@@ -16,8 +16,10 @@ import {
 } from "./conversation-history-tree.ts";
 import { loadHistoryEntries } from "./search.ts";
 import { OwnedAiWork } from "../core/owned-work.ts";
+import { BackgroundWork } from "../../desktop/background-work.ts";
 export function createHistoryState(props: AiHistoryProps) {
   const work = new OwnedAiWork();
+  const background = new BackgroundWork(props.app.notifications, "ai-history");
   const {
     app,
     repository,
@@ -132,15 +134,23 @@ export function createHistoryState(props: AiHistoryProps) {
     if (!loading) loading = true;
     if (error !== null) error = null;
     try {
-      const next = await loadHistoryEntries(
-        repository,
-        query,
-        searchAllConversations,
+      const next = await background.run("Loading AI conversation history", () =>
+        loadHistoryEntries(repository, query, searchAllConversations),
       );
-      if (active && version === refreshVersion) entries = next;
+      if (active && version === refreshVersion) {
+        entries = next;
+        await app.notifications.clear("ai-history-failure");
+      }
     } catch (cause) {
       if (active && version === refreshVersion) {
         error = cause instanceof Error ? cause.message : String(cause);
+        app.notifications.notify({
+          id: "ai-history-failure",
+          title: "AI conversations",
+          message: error,
+          severity: "error",
+          source: "ai",
+        });
       }
     } finally {
       if (active && version === refreshVersion) loading = false;
@@ -157,10 +167,12 @@ export function createHistoryState(props: AiHistoryProps) {
     error = null;
     try {
       await action();
+      if (active) await app.notifications.clear("ai-history-failure");
     } catch (cause) {
       if (!active) return;
       error = cause instanceof Error ? cause.message : String(cause);
       app.notifications.notify({
+        id: "ai-history-failure",
         title: "AI conversations",
         message: error,
         severity: "error",

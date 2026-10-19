@@ -143,11 +143,12 @@ test("terminal failure or unknown outcomes never become fabricated completion", 
     ).type,
     "completed",
   );
-  assert.equal(
-    mapAcpTerminal({ type: "record", record: { status: "cancelled" } }, source)
-      .result.status,
-    "cancelled",
+  const cancelled = mapAcpTerminal(
+    { type: "record", record: { status: "cancelled" } },
+    source,
   );
+  assert.equal(cancelled.type, "error");
+  assert.equal(cancelled.error.outcome, "unknown");
   for (const status of ["failed", "invalid", "timed_out", "outcome_unknown"]) {
     const event = mapAcpTerminal(
       { type: "record", record: { status, error: "classified" } },

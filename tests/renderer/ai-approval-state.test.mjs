@@ -1,7 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { markApprovalResponse } from "../../src/lib/ai/chat/chat-trace.ts";
-import { projectTranscriptToChatItems } from "../../src/lib/ai/conversations/transcript-to-chat.ts";
+import { register } from "tsx/esm/api";
+register();
+const { markApprovalResponse } = await import(
+  "../../src/lib/ai/chat/chat-trace.ts"
+);
+const { projectTranscriptToChatItems } = await import(
+  "../../src/lib/ai/conversations/transcript-to-chat.ts"
+);
 const NOW = "2026-08-16T00:00:00.000Z";
 const request = (option) => ({
   id: "permission",

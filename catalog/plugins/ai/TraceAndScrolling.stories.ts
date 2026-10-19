@@ -29,7 +29,9 @@ export const AgentTrace: Story = {
       configurable: true,
       value: writeText,
     });
-    await expect(await canvas.findByText("Ask anything…")).toBeVisible();
+    await expect(
+      await canvas.findByText("Ask about your notes…"),
+    ).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Effort and model" }),
     );
@@ -43,8 +45,12 @@ export const AgentTrace: Story = {
     await expect(
       await body.findByRole("menuitemradio", { name: "Medium" }),
     ).toHaveAttribute("data-state", "checked");
-    await userEvent.keyboard("{Escape}");
-    await userEvent.click(canvas.getByRole("button", { name: "Attach file" }));
+    await userEvent.keyboard("{Escape}{Escape}");
+    const attachButton = canvas.getByRole("button", { name: "Attach file" });
+    await waitFor(() =>
+      expect(getComputedStyle(attachButton).pointerEvents).not.toBe("none"),
+    );
+    await userEvent.click(attachButton);
     const attachSearch = await body.findByPlaceholderText("Search vault files");
     const attachPopover = attachSearch.closest(
       '[data-ui-component="popover"][data-ai-part="attach-popover"]',
@@ -88,7 +94,9 @@ export const AgentTrace: Story = {
     ) as HTMLElement | null;
     expect(openPopover).not.toBeNull();
     const popoverBox = openPopover!.getBoundingClientRect();
-    const drawerBox = drawer!.getBoundingClientRect();
+    const drawerBox = canvas
+      .getByRole("button", { name: "Attach file" })
+      .getBoundingClientRect();
     expect(popoverBox.bottom).toBeLessThanOrEqual(drawerBox.top + 2);
     const sampleX = Math.floor((popoverBox.left + popoverBox.right) / 2);
     const sampleY = Math.floor((popoverBox.top + popoverBox.bottom) / 2);
@@ -98,35 +106,25 @@ export const AgentTrace: Story = {
         ?.closest('[data-ai-part="attach-popover"]'),
     ).not.toBeNull();
     await userEvent.keyboard("{Escape}");
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Summarize this note");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
       expect(
-        canvasElement.querySelector(
-          '[data-ui-component="ai-chat-system-message"][data-variant="divider"]',
-        ),
-      ).toHaveTextContent("Today");
-      expect(
-        canvasElement.querySelector('[data-ui-component="ai-chat-reasoning"]'),
+        canvasElement.querySelector('[data-kind="reasoning"]'),
       ).not.toBeNull();
       expect(
-        canvasElement.querySelector('[data-ui-part="reasoning-content-inner"]'),
-      ).toHaveTextContent("I will read the mentioned note, then summarize it.");
-      expect(
-        canvas.getByText("vault.read", {
-          selector: '[data-ui-part="call-name"]',
-        }),
+        canvas.getByRole("button", { name: /details for vault.read/ }),
       ).toBeVisible();
       expect(
-        canvas.getByRole("article", { name: "Message from assistant" }),
+        canvas.getByRole("article", { name: /Message from codex/i }),
       ).toHaveTextContent("Summary");
       expect(
-        canvas.getByRole("article", { name: "Message from assistant" }),
+        canvas.getByRole("article", { name: /Message from codex/i }),
       ).toHaveTextContent("TODO");
       expect(
         canvasElement.querySelector(
-          '[data-ui-component="ai-chat-message-metadata"] [data-ui-part="timestamp"]',
+          'article[data-role="assistant"] time[datetime]',
         ),
       ).not.toBeNull();
       expect(canvas.getByText("Context")).toBeVisible();
@@ -137,9 +135,9 @@ export const AgentTrace: Story = {
       expect(canvas.queryByText("available commands updated (75)")).toBeNull();
     });
     const readTrigger = canvas.getByRole("button", {
-      name: "Show details for vault.read Notes/alpha.md",
+      name: "Show details for vault.read",
     });
-    const readCall = readTrigger.closest('[data-ui-part="call"]');
+    const readCall = readTrigger.closest('[data-kind="tools"]');
     expect(readCall).not.toBeNull();
     await userEvent.click(readTrigger);
     await expect(readCall).toHaveTextContent("Notes/alpha.md");
@@ -152,31 +150,40 @@ export const AgentTrace: Story = {
     );
     const panel = canvas.getByTestId("ai-chat-panel");
     const dock = panel.querySelector(
-      '[data-ui-part="composer-dock"]',
+      "[data-transcript-composer]",
     ) as HTMLElement | null;
     const viewport = panel.querySelector(
       '[data-ui-part="scroll-area-viewport"]',
     ) as HTMLElement | null;
     const assistant = canvas.getByRole("article", {
-      name: "Message from assistant",
+      name: /Message from codex/i,
     });
     const bubble = assistant.querySelector(
-      '[data-ui-component="ai-chat-message-bubble"]',
+      ".ui-transcript-message-content",
     ) as HTMLElement | null;
     expect(dock).not.toBeNull();
     expect(viewport).not.toBeNull();
     expect(bubble).not.toBeNull();
-    expect(viewport!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
-      dock!.getBoundingClientRect().top + 2,
+    await userEvent.click(canvas.getByRole("button", { name: "Jump to end" }));
+    await waitFor(() =>
+      expect(dock!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+        viewport!.getBoundingClientRect().bottom + 2,
+      ),
     );
     expect(getComputedStyle(viewport!).overflowY).toMatch(/auto|scroll/);
-    const bubbleStyles = getComputedStyle(bubble!);
+    const bubbleStyles = getComputedStyle(
+      within(assistant).getByRole("textbox", { name: "Assistant response" }),
+    );
     expect(bubbleStyles.fontFamily).toMatch(/DM Sans/i);
     expect(bubbleStyles.fontSize).toBe("14px");
-    expect(bubbleStyles.lineHeight).toBe("22px");
-    const heading = bubble!.querySelector("h2");
+    expect(parseFloat(bubbleStyles.lineHeight)).toBeGreaterThan(
+      parseFloat(bubbleStyles.fontSize),
+    );
+    const heading = within(bubble!).getByText("Summary", { exact: true });
     expect(heading).not.toBeNull();
-    expect(getComputedStyle(heading!).fontSize).toBe(bubbleStyles.fontSize);
+    expect(
+      parseFloat(getComputedStyle(heading!).fontSize),
+    ).toBeGreaterThanOrEqual(parseFloat(bubbleStyles.fontSize));
     expect(getComputedStyle(heading!).fontFamily).toBe(bubbleStyles.fontFamily);
   },
 };
@@ -194,13 +201,9 @@ export const FailedMessageAndRetry: Story = {
     const failure = await canvas.findByText(
       "The agent connection closed before the response completed.",
     );
-    const message = failure.closest(
-      '[data-ui-component="ai-chat-message"]',
-    ) as HTMLElement | null;
+    const message = failure.closest('[role="alert"]') as HTMLElement | null;
     expect(message).not.toBeNull();
-    await expect(
-      within(message!).getByRole("alert", { name: "Failed to send" }),
-    ).toBeVisible();
+    await expect(message).toHaveAccessibleName("Turn interrupted");
     const retry = within(message!).getByRole("button", {
       name: "Retry message",
     });
@@ -233,17 +236,9 @@ export const ScrollRecovery: Story = {
       viewport!.scrollTop = 0;
       viewport!.dispatchEvent(new Event("scroll"));
       expect(viewport!.scrollTop).toBe(0);
-      expect(
-        canvasElement.querySelector(
-          '[data-ui-component="ai-chat-layout-scroll-button"][data-visible="true"]',
-        ),
-      ).not.toBeNull();
+      expect(canvas.getByRole("button", { name: "Jump to end" })).toBeVisible();
     });
-    const scrollButton = canvasElement.querySelector(
-      '[data-ui-component="ai-chat-layout-scroll-button"][data-visible="true"] button',
-    ) as HTMLButtonElement | null;
-    expect(scrollButton).not.toBeNull();
-    expect(scrollButton).toHaveAttribute("aria-label", "Scroll to latest");
+    const scrollButton = canvas.getByRole("button", { name: "Jump to end" });
     scrollButton!.click();
     await waitFor(() => {
       const latest = canvas.getByText("Latest seeded message");

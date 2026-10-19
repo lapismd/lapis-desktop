@@ -278,7 +278,7 @@ test("native cancel addresses the exact in-flight request and does not cancel an
   f.emit(turn.id, "record", turn.requestId, {
     record: { status: "cancelled" },
   });
-  await pending;
+  await assert.rejects(pending, { outcome: "unknown" });
   f.onPrompt = undefined;
   await second.send("Independent");
   await first.close();

@@ -33,6 +33,9 @@ export function _activateNewBinding(
     createdAt: new Date().toISOString(),
     runtime: runtime.id,
     agent: request.agent,
+    ...(request.recipients?.[0]
+      ? { participant: { ...request.recipients[0] } }
+      : {}),
     model: request.model ? { ...request.model } : undefined,
     thinking: request.thinking,
     nativeSessionId: session.id,
@@ -116,7 +119,12 @@ export function _bindingMatchesIdentity(
   request: Omit<AgentRequest, "prompt">,
   runtime = this.runtime,
 ): boolean {
-  return binding.runtime === runtime.id && binding.agent === request.agent;
+  return (
+    binding.runtime === runtime.id &&
+    binding.agent === request.agent &&
+    (binding.participant?.id ?? binding.agent) ===
+      (request.recipients?.[0]?.id ?? request.agent)
+  );
 }
 
 export function _bindingMatchesConfiguration(

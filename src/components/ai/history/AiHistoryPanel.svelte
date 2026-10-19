@@ -8,6 +8,9 @@
   import type { AiHistoryProps } from "../../../lib/ai/history/props.ts";
   import HistoryToolbar from "./HistoryToolbar.svelte";
   import HistoryFolder from "./HistoryFolder.svelte";
+  import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
+  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import HistoryIcon from "@lucide/svelte/icons/history";
   import "./panel.css";
   let props: AiHistoryProps = $props();
   const history = untrack(() => createHistoryState(props));
@@ -37,19 +40,35 @@
     <HistoryToolbar {history} />
     <ScrollArea class="ai-history__scroll">
       <div class="ai-history__body">
-        {#if history.error}<p class="ai-history__state" role="alert">
-            {history.error}
-          </p>{/if}
         {#if history.loading && history.entries.length === 0}
-          <p class="ai-history__state">Loading conversations…</p>
-        {:else if history.folders.length === 0 && !history.error}
-          <p class="ai-history__state">
-            {history.query.trim()
-              ? "No conversations match your search."
-              : history.showArchived
-                ? "No conversations yet."
-                : "No active conversations yet."}
-          </p>
+          <div
+            class="ai-history-skeleton"
+            role="status"
+            aria-label="Loading conversations"
+            aria-busy="true"
+          >
+            {#each [1, 2, 3, 4] as row (row)}<Skeleton
+                style="height:2.5rem;width:100%"
+              />{/each}
+          </div>
+        {:else if history.folders.length === 0}
+          <Empty.Root
+            ><Empty.Header
+              ><Empty.Media variant="icon"
+                ><HistoryIcon aria-hidden="true" /></Empty.Media
+              ><Empty.Title>
+                {history.error
+                  ? "History is unavailable"
+                  : history.query.trim()
+                    ? "No matching conversations"
+                    : "No conversations yet"}
+              </Empty.Title><Empty.Description
+                >{history.error
+                  ? "Refresh to try loading local history again."
+                  : "Start a conversation or change the current search."}</Empty.Description
+              ></Empty.Header
+            ></Empty.Root
+          >
         {:else if history.folders.length > 0}
           <Sidebar.Menu
             class="ai-history__tree"
@@ -65,3 +84,10 @@
     </ScrollArea>
   </div>
 </Tooltip.Provider>
+
+<style>
+  .ai-history-skeleton {
+    display: grid;
+    gap: 0.375rem;
+  }
+</style>

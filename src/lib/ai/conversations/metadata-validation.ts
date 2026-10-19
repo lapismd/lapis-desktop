@@ -5,7 +5,11 @@ import {
   normalizeApprovalGrants,
 } from "./approval-grants.ts";
 import type { ConversationMetadata } from "./types.ts";
+import { validateQueuedMessages } from "./queued-message.ts";
+import { validateDispatchIntent } from "./dispatch-intent.ts";
+import { validateTurnIntent } from "./turn-intent.ts";
 import { assertConversationId } from "./paths.ts";
+import { validateImportMarker } from "./import-types.ts";
 import {
   record,
   assertSchemaVersion,
@@ -49,6 +53,21 @@ export function validateConversationMetadata(
     requiredString(workspace, "path", "Conversation workspace");
     assertPortableOptionalPath(workspace.path, "Conversation workspace.path");
   }
+  if (data.imported !== undefined) {
+    validateImportMarker(data.imported);
+    if (
+      [
+        "pendingTurn",
+        "pendingDispatch",
+        "queuedMessages",
+        "activeAgentBindingId",
+        "approvalGrants",
+      ].some((k) => data[k] !== undefined)
+    )
+      throw new Error(
+        "Imported snapshots cannot retain execution or permission authority",
+      );
+  }
   if (data.approvalGrants != null) {
     if (!Array.isArray(data.approvalGrants)) {
       throw new Error("Conversation metadata.approvalGrants must be an array");
@@ -66,5 +85,11 @@ export function validateConversationMetadata(
     throw new Error("Conversation metadata.pinned must be a boolean");
   }
   if (data.pinned === false) delete data.pinned;
+  if (data.queuedMessages !== undefined)
+    validateQueuedMessages(data.queuedMessages);
+  if (data.pendingDispatch != null)
+    validateDispatchIntent(data.pendingDispatch);
+  if (data.pendingTurn != null) validateTurnIntent(data.pendingTurn);
+
   return data as ConversationMetadata;
 }

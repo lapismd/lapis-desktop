@@ -9,10 +9,13 @@ import { record, text, AgentTurnFailure } from "./wire.ts";
 export async function configureAcpSession(
   native: AcpSessionClient,
   input: AgentSessionConfiguration,
+  provider = native.info.targetId,
 ): Promise<AgentSessionConfigurationResult> {
   const frame = await native.send(crypto.randomUUID(), {
     type: "configure",
-    mode: "ask",
+    // Codex calls its user-reviewed approval mode "read-only". The shared
+    // runtime resolves this exact advertised ID and must confirm modeReady.
+    mode: provider === "codex" ? "read-only" : "ask",
     ...(input.model ? { model: input.model.model } : {}),
     ...(input.thinking ? { effort: input.thinking } : {}),
   });

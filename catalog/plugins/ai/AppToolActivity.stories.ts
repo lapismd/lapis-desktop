@@ -3,6 +3,7 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within } from "storybook/test";
 import AiChatDemo from "../../support/ai/AiChatDemo.svelte";
+import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 import {
   createAppToolReadSeedItems,
   createAppToolPatchPendingSeedItems,
@@ -25,7 +26,7 @@ export const AppToolReadTranscript: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for read Notes/alpha.md",
+      name: "Show details for read",
     });
     await userEvent.click(trigger);
     expect(canvas.getAllByText(/Notes\/alpha\.md/).length).toBeGreaterThan(0);
@@ -63,15 +64,17 @@ export const AppToolSessionGrant: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(await canvas.findByText(/Approval approved/)).toBeVisible();
+    await canvas.findByRole("button", { name: "Permission response" });
+    await expandTranscriptActivity(canvasElement);
+    await expect(
+      canvas.findByRole("textbox", { name: "Permission response" }),
+    ).resolves.toHaveTextContent("Permission approved");
     await userEvent.click(
-      canvas.getByRole("button", {
-        name: "Expand edit Notes/beta.md 2 tool calls",
-      }),
+      canvas.getByRole("button", { name: "Expand Tool activity" }),
     );
     expect(
       canvas.getAllByRole("button", {
-        name: /^Show details for edit Notes\/(?:alpha|beta)\.md$/,
+        name: "Show details for edit",
       }),
     ).toHaveLength(2);
     expect(canvas.queryByRole("button", { name: /Allow once/ })).toBeNull();

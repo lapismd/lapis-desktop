@@ -49,6 +49,7 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             event: WindowEvent::Destroyed,
             ..
         } => {
+            crate::host::ai::imports::window_destroyed(app, &label);
             crate::host::ai::admission::window_destroyed(app, &label);
             crate::host::repository::commands::window_destroyed(app, &label);
             #[cfg(target_os = "macos")]

@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-REPO-035–041 retain LD-DESK-003/HOST-001 native authority. Backup controls
-live in plugin Settings; full-screen conflict review remains. Gravatar:
+E-REPO-035–041 retain backup Settings/native authority; E-AI-056 retains
+LD-DESK-005. [Local imports](ai-imports.md) governs capture admission. Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 Notes starts App-owned watching after metadata/views; leave drains it before
@@ -9,8 +9,7 @@ persistence/teardown and resumes a live App on failure (LD-FILE-002/003). M6
 public Search/Graph native settings recovery and metadata follow
 `navigation.md`.
 
-M0.1 owns the shell; M2 adds folder admission/launcher; M3 adds Notes/App over
-native storage.
+E-AI-059–061 retain LD-DESK-001/LD-HOST-001 for nested AI/file views.
 
 Plugin assets and Terminal follow [plugins](plugins.md).
 
@@ -344,5 +343,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-[Native qualification](native-acceptance.md), including E-AI-029/030 batch
-consumption, retains AI and repository gates.
+[Native qualification](native-acceptance.md) retains AI/repository gates. Local
+participant names, delivery and queues retain native admission.

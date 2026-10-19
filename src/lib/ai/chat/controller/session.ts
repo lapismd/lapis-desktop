@@ -9,12 +9,18 @@ import {
 } from "../../conversations/binding-state.ts";
 import { buildAvailableSkillsManifest } from "../../skills/manifest.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
+import { assertConversationWritable } from "../../conversations/import-types.ts";
 export async function _prepareSession(
   this: AiChatController,
   request: Omit<AgentRequest, "prompt">,
   turnId?: number,
+  sharedUserEntryId?: string,
 ): Promise<void> {
   if (this._isAbandoned(turnId)) return;
+  if (this.repository && this.location)
+    assertConversationWritable(
+      (await this.repository.read(this.location)).metadata,
+    );
   await this._terminalCheckpoint;
   if (this._isAbandoned(turnId)) return;
   const targetRuntime = this._selectRuntime
@@ -26,6 +32,12 @@ export async function _prepareSession(
     : this.runtime;
   if (this._isAbandoned(turnId)) return;
 
+  if (this.session && this._cancelledSessions.has(this.session)) {
+    const old = this.session;
+    this.session = null;
+    await this._closeAppToolBinding(this._activeBindingId);
+    await this._detachSession(old);
+  }
   const refreshRequiresReplacement =
     this._refreshSkills ||
     Boolean(request.skillActivations && request.skillActivations.length > 0);
@@ -100,6 +112,7 @@ export async function _prepareSession(
       previousSession,
       previousBindingId,
       turnId,
+      sharedUserEntryId,
     );
     if (resumed.resumed) return;
     failedCompatibleBindingId = resumed.failedId;
@@ -109,19 +122,26 @@ export async function _prepareSession(
   const bindingId = `binding-${crypto.randomUUID()}`;
   const handoff =
     snapshot && previousBindingId
-      ? await buildConversationContextHandoff(snapshot.transcript, {
-          conversationId: snapshot.metadata.id,
-          targetBindingId: bindingId,
-          bindings: reduceAgentBindings(snapshot.agents),
-          summaries: snapshot.agents.filter(
-            (record) => record.type === "handoff.summary.created",
-          ),
-        })
+      ? await buildConversationContextHandoff(
+          snapshot.transcript.filter((entry) => entry.id !== sharedUserEntryId),
+          {
+            conversationId: snapshot.metadata.id,
+            targetBindingId: bindingId,
+            bindings: reduceAgentBindings(snapshot.agents),
+            summaries: snapshot.agents.filter(
+              (record) => record.type === "handoff.summary.created",
+            ),
+          },
+        )
       : undefined;
-  const skillSnapshot = await this._prepareSkillSnapshot(
+  const discoveredSkills = await this._prepareSkillSnapshot(
     bindingId,
     snapshot?.location.scopeDir ?? this.location?.scopeDir ?? "",
   );
+  const skillSnapshot =
+    targetRuntime.capabilities().skillSnapshots === false
+      ? undefined
+      : discoveredSkills;
   const appToolLocation = snapshot?.location ?? this.location;
   const appToolSession = appToolLocation
     ? await this._prepareAppToolSession(
@@ -182,6 +202,7 @@ export async function _prepareSession(
   }
   if (previousBindingId) {
     await this._closeAppToolBinding(previousBindingId);
+    if (this.session === previousSession) this.session = null;
     await this._detachSession(previousSession);
   }
   const { binding, switchRecord } = this._activateNewBinding(

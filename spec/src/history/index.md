@@ -187,6 +187,23 @@ by the task ledger, not inferred from this list.
 - [Compact transcript footer and inline formatting](E-AI-040.md)
 
 - [Shared AI transcript adoption and vault presentation](E-AI-041.md)
+- [E-AI-042](E-AI-042.md)
+- [E-AI-043 — Durable local turn recovery](E-AI-043.md)
+- [Complete bounded local streaming](E-AI-044.md)
+- [Stable local transcript comments and cold recovery](E-AI-045.md)
+- [Authenticated native application tools and effect drain](E-AI-046.md)
+- [Native Codex application tools and local receipts](E-AI-047.md)
+- [Addressed local messages and retained draft context](E-AI-048.md)
+- [Independent local agent participants](E-AI-049.md)
+- [One local message with independent addressed deliveries](E-AI-050.md)
+- [E-AI-051](E-AI-051.md)
+- [Local discussion reply links](E-AI-052.md)
+- [Native local discussion continuation](E-AI-053.md)
+- [E-AI-054: local import journal and preview](E-AI-054.md)
+- [E-AI-055](E-AI-055.md)
+- [E-AI-056](E-AI-056.md)
+- [E-AI-057: Storybook session inbox layout review](E-AI-057.md)
+- [E-AI-058 — Production AI inbox and local saved-history adoption](E-AI-058.md)
 
 - [Embedded repository plugin settings and forge styling](E-REPO-039.md)
 
@@ -195,3 +212,7 @@ by the task ledger, not inferred from this list.
 - [Separate backup settings section and table surfaces](E-REPO-041.md)
 
 - [Migration checkpoint and completion-gate reconciliation](E-REPO-042.md)
+
+- [Local AI history landing](E-AI-062.md): integrate the reviewed AI branch,
+  preserve the independent footer slice and retire only its incorporated
+  workspace.

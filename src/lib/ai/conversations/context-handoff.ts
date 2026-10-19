@@ -89,7 +89,7 @@ export async function buildConversationContextHandoff(
   const labels = new Map(
     (normalized.bindings ?? []).map((binding) => [
       binding.id,
-      binding.agent ?? binding.runtime,
+      binding.participant?.label ?? binding.agent ?? binding.runtime,
     ]),
   );
   const groups = source.flatMap((entry) => projectEntry(entry, labels));

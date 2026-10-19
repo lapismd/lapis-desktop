@@ -33,6 +33,19 @@ processing without fallback. This adapter alone does not select a Notes backend
 or enable execution. The debug acceptance profile uses synthetic policy and
 private fixture records, separately from production privacy/JJ adoption.
 
+The device-configured local Codex profile uses the existing vault transcript
+files and the shared ACP transport. It does not construct a JJ capture writer.
+See [local AI setup](../docs/local-ai.md) for runtime configuration and usage.
+
+`ai::imports` discovers and previews supported local Codex snapshots without
+starting an agent or writing JJ state. Its synchronous discovery/read/privacy
+functions belong on native workers with a current authority/cancellation check.
+The host injects the scoped source port; use **Open Import AI sessions** in the
+app to preview and save read-only local history. Its `CaptureQueue` also offers
+vault-filtered immutable observations and transient retry-safe confirmation for
+an injected opt-in capture coordinator. This source API alone watches/saves
+nothing. See the local AI guide above.
+
 For explicitly selected JJ conversations, the ordinary host can prepare an
 opaque native capture target and construct the real AgentStore/ThreadStore
 processor with native privacy and a private receipt journal. This is separate
@@ -47,10 +60,10 @@ live in [`spec/src/current`](../spec/src/current/index.md) and
 [`docs`](../docs).
 
 `ManagedCapture::with_native_privacy` selects the shared optional native policy
-with host-admitted roots/credentials and an injected sink. Ordinary policy
-rejects missing backend selection and stale admission; it grants no targets. The
-debug-only real-scanner profile uses an owned temporary cache and private
-fixture candidates. Production JJ publication and restart remain separate gates.
+with host-admitted roots/credentials and an injected sink. JJ capture policy
+rejects missing backend selection and stale admission. The debug-only
+real-scanner profile uses an owned temporary cache and private fixture
+candidates. Production JJ publication and restart remain separate gates.
 
 `ai::journal::ProfileJournal` supplies the private durable journal for shared
 selected-store capture. Construct it from an admitted profile `Dir`, exact

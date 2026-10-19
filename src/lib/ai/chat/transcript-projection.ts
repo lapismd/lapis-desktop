@@ -5,9 +5,11 @@ import type {
   TranscriptTool,
 } from "@lapismd/design-core/chat";
 import type { AgentBindingCreatedRecord } from "../conversations/types.ts";
-import type { AiChatItem } from "./chat-items.ts";
+import { isSlashCommandNotice, type AiChatItem } from "./chat-items.ts";
 import { bindingLabels } from "./panel/binding-labels.ts";
-import { toolCallStatus } from "./chat-tool-display.ts";
+import { toolCallStatus, isLocalCommandTool } from "./chat-tool-display.ts";
+import { discussionReplyContexts } from "./transcript-discussions.ts";
+import { agentAvatar } from "../presentation/agent-avatar.ts";
 
 /** Display-only revision. Native source IDs and receipt authority remain untouched. */
 function revision(text: string): string {
@@ -45,13 +47,16 @@ function tool(item: Extract<AiChatItem, { type: "tool" }>): TranscriptTool {
     title: item.name,
     status: toolCallStatus(item.state),
     blocks: [
-      block(
-        item,
-        item.output ?? item.input ?? "",
-        "custom",
-        `${item.name} details`,
-        "detail",
-      ),
+      {
+        ...block(
+          item,
+          item.output ?? item.input ?? "",
+          "custom",
+          `${item.name} details`,
+          "detail",
+        ),
+        ...(isLocalCommandTool(item) ? { surface: "plain" as const } : {}),
+      },
     ],
     raw: JSON.stringify({
       name: item.name,
@@ -73,6 +78,7 @@ export function projectAiTranscript(
   let turn: TranscriptItem["turn"];
   let previousBinding: string | undefined;
   const labels = bindingLabels([...bindings]);
+  const replyContexts = discussionReplyContexts(source, bindings);
   for (const item of source) {
     const binding = item.agentBindingId
       ? agents.get(item.agentBindingId)
@@ -93,7 +99,7 @@ export function projectAiTranscript(
         author: "You",
         prompt: item.text,
         summary: "",
-        agentName: binding?.agent,
+        agentName: binding?.participant?.label ?? binding?.agent,
         modelLabel: binding?.model?.model,
         createdAt: item.createdAt ? Date.parse(item.createdAt) : undefined,
       };
@@ -103,6 +109,8 @@ export function projectAiTranscript(
       if (
         previous?.kind === "tools" &&
         previous.turn?.id === turn?.id &&
+        !isLocalCommandTool(item) &&
+        !previous.defaultExpanded &&
         !dayLabel
       ) {
         previous.tools = [...(previous.tools ?? []), tool(item)];
@@ -112,6 +120,7 @@ export function projectAiTranscript(
           kind: "tools",
           dayLabel,
           label: "Tool activity",
+          defaultExpanded: isLocalCommandTool(item),
           turn,
           blocks: [],
           tools: [tool(item)],
@@ -141,7 +150,6 @@ export function projectAiTranscript(
                   ? "Command result"
                   : "Context and activity";
     const custom =
-      item.type === "error" ||
       item.type === "status" ||
       item.type === "command" ||
       item.type === "skill-activation";
@@ -153,15 +161,20 @@ export function projectAiTranscript(
           ? "reasoning"
           : "context",
       label,
+      notice: item.type === "error" ? "error" : undefined,
+      replyContext: replyContexts.get(item.id),
       dayLabel,
       role: message ? item.role : undefined,
       author: message
         ? item.role === "user"
           ? { id: "local-user", name: "You", initials: "YO" }
           : {
-              id: item.agentBindingId ?? "assistant",
-              name: binding?.agent ?? "Assistant",
+              id:
+                binding?.participant?.id ?? item.agentBindingId ?? "assistant",
+              name:
+                binding?.participant?.label ?? binding?.agent ?? "Assistant",
               initials: "AI",
+              image: agentAvatar(binding?.agent),
               shape: "rounded",
             }
         : undefined,
@@ -174,14 +187,21 @@ export function projectAiTranscript(
               .join("\n\n"),
             rawContent: JSON.stringify(item.contextBlocks, null, 2),
             rawLanguage: "json",
-            delivery: "prepared",
+            delivery: item.contextDelivery ?? "prepared",
           }
         : undefined,
       defaultExpanded:
         item.type === "thinking"
           ? item.state === "streaming"
-          : item.type === "error",
-      blocks: [block(item, value, custom ? "custom" : "markdown", label)],
+          : item.type === "error" ||
+            (item.type === "status" && item.layout !== undefined),
+      blocks: [
+        {
+          ...block(item, value, custom ? "custom" : "markdown", label),
+          ...(isSlashCommandNotice(item) ? { surface: "plain" as const } : {}),
+          ...(item.type === "error" ? { commentable: false } : {}),
+        },
+      ],
     });
   }
   return items;

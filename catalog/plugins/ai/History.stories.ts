@@ -30,9 +30,9 @@ export const CreationFailureAndRetry: Story = {
     await userEvent.click(
       panel.getByRole("button", { name: "New chat in Notes" }),
     );
-    expect(await panel.findByRole("alert")).toHaveTextContent(
-      "Fixture panel action failed",
-    );
+    expect(
+      await within(canvasElement.ownerDocument.body).findByRole("alert"),
+    ).toHaveTextContent("Fixture panel action failed");
     expect(
       panel.getByRole("button", { name: /^Summarize project notes(?:\s|$)/ }),
     ).toBeVisible();
@@ -49,6 +49,13 @@ export const CreationFailureAndRetry: Story = {
     ).toBeVisible();
     expect((await inspectPanel(canvasElement)).created).toBe("Notes");
     expect(panel.queryByRole("alert")).toBeNull();
+    await waitFor(
+      () =>
+        expect(
+          within(canvasElement.ownerDocument.body).queryByRole("alert"),
+        ).toBeNull(),
+      { timeout: 12_000 },
+    );
   },
 };
 export const ArchiveRestoreDelete: Story = {

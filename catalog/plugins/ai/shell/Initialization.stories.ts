@@ -32,8 +32,8 @@ export const ImmediateInitializingComposer: Story = {
       within(panel).queryByRole("textbox", { name: /^Message$/ }),
     ).toBeNull();
     expect(
-      within(panel).queryByRole("button", { name: /^Send message$/ }),
-    ).toBeNull();
+      within(panel).getByRole("button", { name: /^Send message$/ }),
+    ).toBeDisabled();
     const fixture = aiWorkspaceFixture(canvasElement);
     fixture.releaseModels();
     await waitFor(() => {

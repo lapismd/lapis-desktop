@@ -1,27 +1,18 @@
 # Desktop plugins and catalog
 
-E-REPO-039–041 embed repository backup controls in the registered plugin
-settings, including account authorization, remotes, storage and synchronization.
-Commands open that section; no backup-settings workspace view is registered.
-Maintained jj-store card/footer and forge icon adaptations retain local
-provenance. Settings closure fences transient account/remote replies while
-plugin-owned work and progress keep their existing lifetime. Review stories
-exercise the actual Settings host, including close/reopen and nested
-conflict/restore flows.
-
-E-REPO-036–038 add production storage/adoption settings and source-specific
-history tabs, with loading, empty, recovery and toast stories (LD-CAT-003).
-Mutations/progress belong to the enabled plugin and drain beyond tab closure.
-Cold native app and visual approval gates remain separate.
-
-E-REPO-035 adds Forgejo to the maintained account/settings stories; LD-CAT-003
-ownership and original native product gates remain unchanged.
-
-E-AI-041 promotes the shared transcript into the ordinary AI plugin under
-standing implementation approval. Vault-owned presentation defaults to Document;
-Classic uses the same controller/readers. Recorded model transitions, usage,
-copy/retry actions and pending requests remain. Source scroll containment keeps
-the footer anchored; native/provider/restart gates remain separate.
+E-REPO-039–041 embed backup/forge controls in registered plugin Settings,
+retaining plugin-owned work, transient reply fencing and local provenance.
+E-AI-042–061 adds local Codex, explicit imports and the reviewed shared
+transcript/inbox. JSONL readers reuse the same read-only renderer; local tools
+stay inline, with App-owned links, attachment state and exact capture offsets.
+[AI presentation](ai-presentation.md), [imports](ai-imports.md) and
+[vault backup](vault-backup.md) retain independent admission and lifecycle.
+Native, provider, JJ, distribution and visual gates remain separate. E-AI-041
+promotes the shared transcript into the ordinary AI plugin under standing
+implementation approval. Vault-owned presentation defaults to Document; Classic
+uses the same controller/readers. Recorded model transitions, usage, copy/retry
+actions and pending requests remain. Source scroll containment keeps the footer
+anchored; native/provider/restart gates remain separate.
 
 E-REPO-025 qualifies working-copy status after visual confirmation. The final
 Storybook Vite hook MUST retain owned watcher exclusions for `.jj`, native build
@@ -316,3 +307,6 @@ production-component restore stories; original catalog gates remain unchanged.
 E-REPO-029 adds production GitHub account settings with token/device flows,
 skeletons, cancellation and App feedback; native custody and catalog gates stay
 distinct. No live account is required by catalog execution.
+
+E-AI-045/047–053 retains local comments, addressed recipients, queues and
+delivery; catalog proof cannot complete M10.2 native gates.

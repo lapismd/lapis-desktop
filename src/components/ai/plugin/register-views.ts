@@ -5,11 +5,13 @@ import { AiView } from "../views/ai-view.ts";
 import { AiHistoryView } from "../views/history-view.ts";
 import { AiCatalogView } from "../views/catalog-view.ts";
 import { AiJsonlView } from "../views/jsonl-view.ts";
+import { AiImportView } from "../views/import-view.ts";
 import {
   AI_VIEW,
   AI_HISTORY_VIEW,
   AI_CATALOG_VIEW,
   AI_JSONL_VIEW,
+  AI_IMPORT_VIEW,
 } from "../../../lib/ai/plugin/view-types.ts";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import {
@@ -34,6 +36,28 @@ export function registerAiViews(plugin: Plugin, host: AiApplication): void {
     if (!host.active) return;
     void host.operations.track(action()).catch((error) => host.report(error));
   };
+  const importCommand = {
+    id: "open-import-sessions" as const,
+    name: "Open Import AI sessions" as const,
+    callback: () =>
+      perform(async () => {
+        const existing =
+          plugin.app.workspace.getLeavesOfType(AI_IMPORT_VIEW)[0];
+        const leaf = existing ?? plugin.app.workspace.getLeaf("tab");
+        if (!existing)
+          await leaf.setViewState({ type: AI_IMPORT_VIEW, state: {} });
+        plugin.app.workspace.activateLeaf(leaf, {
+          focusRootHost: false,
+          source: "api",
+          operation: "open-ai-import",
+        });
+        await plugin.app.workspace.revealLeaf(leaf);
+      }),
+  };
+  plugin.registerView(AI_IMPORT_VIEW, (leaf) => new AiImportView(leaf, host), {
+    kind: "command",
+    command: importCommand,
+  });
   plugin.registerSidebarView(
     AI_VIEW,
     (leaf) => new AiView(leaf, host),

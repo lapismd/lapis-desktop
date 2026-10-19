@@ -8,6 +8,7 @@ import { demoApp } from "../../../support/ai/shell/assertions.ts";
 import { LOCAL_CONVERSATION_ID } from "../../../support/ai/shell/types.ts";
 import { shellParameters } from "../../../support/ai/shell/examples.ts";
 import { cleanupCatalog } from "../../../support/lifecycle.ts";
+import { hoverHarnessControl } from "../../../support/ai/menu-interactions.ts";
 const meta = {
   title: "Desktop/AI/Shell/AgentSwitching",
   component: WorkspaceShell,
@@ -56,11 +57,15 @@ export const AgentSwitching: Story = {
     expect(
       await within(panel).findAllByRole("button", { name: "Copy response" }),
     ).toHaveLength(3);
+    const context = within(panel).getByRole("button", {
+      name: "Context window: 10% full",
+    });
+    await expect(context).toBeVisible();
+    await hoverHarnessControl(context);
     await expect(
-      within(panel).getByRole("progressbar", {
-        name: "Context window usage",
-      }),
-    ).toHaveAttribute("value", "12920");
+      within(canvasElement.ownerDocument.body).findByRole("tooltip"),
+    ).resolves.toHaveTextContent("12,920 / 128,000 tokens used");
+    await userEvent.unhover(context);
     const app = demoApp(canvasElement);
     const root = `Notes/.lapis/agents/sessions/${LOCAL_CONVERSATION_ID}`;
     await expect(

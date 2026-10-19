@@ -37,6 +37,8 @@ import type { ConversationListEntry } from "../../conversations/transcript-store
 import type { AcpAgentId } from "../../settings/acp-agents.ts";
 export class AiChatControllerState {
   _disposed = false;
+  _activeDispatch?: import("./dispatch-state.ts").ActiveDispatch;
+  _recoveredDispatchId?: string;
   readonly _backgroundWork = new OwnedAiWork();
   items = $state.raw<AiChatItem[]>([]);
   busy = $state(false);
@@ -48,6 +50,9 @@ export class AiChatControllerState {
   location = $state.raw<ConversationLocation | null>(null);
   conversationStatus = $state<ConversationMetadata["status"] | null>(null);
   conversationPinned = $state(false);
+  importedSnapshot = $state.raw<
+    import("../../conversations/types.ts").ConversationSnapshot | null
+  >(null);
   directoryContext = $state("");
   pickerEntries = $state.raw<ConversationListEntry[]>([]);
   session: AgentSession | null = null;
@@ -63,13 +68,23 @@ export class AiChatControllerState {
   _createdAt?: string;
   _persistQueue: Promise<void> = Promise.resolve();
   _terminalCheckpoint: Promise<void> = Promise.resolve();
+  readonly _flushSessionTrace = new Map<AgentSession, () => void>();
   _activeBindingId?: string;
   _activeBinding?: EffectiveAgentBinding;
   _usageDirty = false;
+  _recoveredTurn?: import("../../conversations/turn-intent.ts").ConversationTurnIntent;
   readonly _sessionContexts = new Map<
     AgentSession,
     {
       location: ConversationLocation | null;
+      accepted?: boolean;
+      delivery?: import("./dispatch-state.ts").ActiveDelivery;
+      turn?: {
+        intent: import("../../conversations/turn-intent.ts").ConversationTurnIntent;
+        known: boolean;
+        outcome?: "completed" | "rejected" | "unknown";
+        nativeRequestId?: string;
+      };
       pendingBinding?: AgentBindingCreatedRecord;
       pendingSwitch?: TranscriptEntry;
       pendingActivationBindingId?: string;
@@ -83,6 +98,7 @@ export class AiChatControllerState {
       pendingItems: AiChatItem[];
     }
   >();
+  readonly _sessionConsumers = new Map<AgentSession, Promise<void>>();
   readonly _cancelledSessions = new WeakSet<AgentSession>();
   _turnId = 0;
   readonly _createConversation?: (

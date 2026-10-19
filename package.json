@@ -79,6 +79,7 @@
     "@lucide/svelte": "^1.57.0",
     "@lapismd/ai": "link:../lapis-ai/packages/ai",
     "@lapismd/jj-history": "link:../jj-store/packages/jj-history",
+    "@lapismd/jj-conversations": "link:../jj-store/packages/jj-conversations",
     "@tanstack/svelte-virtual": "^3.13.46"
   },
   "devDependencies": {

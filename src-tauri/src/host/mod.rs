@@ -92,6 +92,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::terminal::desktop_terminal_release,
             crate::host::ai::user_commands::desktop_ai_user_commands,
             crate::host::ai::admission::desktop_ai_admit,
+            crate::host::ai::imports::commands::desktop_ai_imports,
             crate::host::ai::admission::desktop_ai_release,
             crate::host::ai::backends::commands::desktop_ai_backends,
             crate::host::repository::backup::desktop_backup_start,
@@ -105,6 +106,7 @@ pub fn run() -> tauri::Result<()> {
             repository::storage::desktop_backup_storage,
             repository::adoption::desktop_backup_adoption,
             repository::sources::desktop_repository_sources,
+            crate::host::ai::tools::desktop_ai_tools,
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
             crate::host::repository::working_copy::desktop_repository_working_copy,
@@ -140,6 +142,13 @@ pub fn run() -> tauri::Result<()> {
             }
             crate::host::state::initialize(app.handle())?;
             crate::host::repository::initialize(app.handle())?;
+            #[cfg(not(feature = "e2e"))]
+            let ai_config = app.path().app_data_dir()?.join("ai-runtime.json");
+            #[cfg(feature = "e2e")]
+            let ai_config =
+                std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
+                    .join("profile/ai-runtime.json");
+            ai.configure_file_profile(ai_config, app.path().home_dir()?)?;
             ai.initialize(
                 app.state::<crate::host::state::NativeHost>()
                     .inner()

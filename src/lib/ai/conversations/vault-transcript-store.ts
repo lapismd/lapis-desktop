@@ -29,6 +29,7 @@ import { validateAgentBindingRecord } from "./binding-validation.ts";
 import { validateConversationMetadata } from "./metadata-validation.ts";
 import { validateTranscriptEntry } from "./transcript-validation.ts";
 import { runtimeProvenanceKey } from "./provenance.ts";
+import { prepareVaultImport } from "./vault-import.ts";
 
 const MAX_METADATA_BYTES = 256 * 1024;
 
@@ -40,6 +41,17 @@ export class VaultTranscriptStore implements TranscriptStore {
   private readonly queue = new ConversationWriteQueue();
 
   constructor(private readonly vault: Vault) {}
+
+  async prepareImport(
+    location: ConversationLocation,
+    metadata: ConversationMetadata,
+  ): Promise<ConversationSnapshot> {
+    const normalized = normalizeConversationLocation(location);
+    return this.queue.run(conversationStorageKey(normalized), async () => {
+      await prepareVaultImport(this.vault, normalized, metadata);
+      return this.read(normalized);
+    });
+  }
 
   async create(
     location: ConversationLocation,
@@ -258,7 +270,10 @@ export class VaultTranscriptStore implements TranscriptStore {
 
   private metadataYaml(metadata: ConversationMetadata): string {
     const validated = validateConversationMetadata(metadata);
-    return stringify(validated, { lineWidth: 0 });
+    const yaml = stringify(validated, { lineWidth: 0 });
+    if (new TextEncoder().encode(yaml).byteLength > MAX_METADATA_BYTES)
+      throw new Error("metadata.yaml exceeds the maximum supported size");
+    return yaml;
   }
 
   private async readRequired(path: string): Promise<string> {

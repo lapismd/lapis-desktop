@@ -1,3 +1,4 @@
+import { validateAgentParticipants } from "./participants.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see src/lib/ai/NOTICE.md.
 import type { AiThinkingLevel } from "../core/models.ts";
@@ -20,6 +21,7 @@ export type AppToolEnablementRef = {
 };
 
 export type AiPluginSettings = {
+  agentParticipants?: import("../conversations/recipients.ts").AgentRecipientOption[];
   transcriptView: "document" | "classic";
   defaultRuntime: "auto" | "acp" | "codex-native" | "opencode-native" | "fake";
   acpAgent: AcpAgentId;
@@ -206,7 +208,9 @@ export function mergeAiSettings(
     opencode: storedModels?.opencode?.trim() || "",
   };
   const thinking = value?.thinking;
+  const participants = validateAgentParticipants(value?.agentParticipants);
   const merged: AiPluginSettings = {
+    ...(participants ? { agentParticipants: participants } : {}),
     transcriptView:
       value?.transcriptView === "classic" ? "classic" : "document",
     defaultRuntime: value?.defaultRuntime ?? DEFAULT_AI_SETTINGS.defaultRuntime,

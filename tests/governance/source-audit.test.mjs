@@ -154,8 +154,10 @@ test("AI session permission stays exact and bound to the admitted main window", 
       ...new Set([
         ...capabilities.permissions,
         "allow-desktop-ai-admit",
+        "allow-desktop-ai-imports",
         "allow-desktop-ai-release",
         "allow-desktop-ai-backends",
+        "allow-desktop-ai-tools",
       ]),
     ],
   };
@@ -169,6 +171,12 @@ test("AI session permission stays exact and bound to the admitted main window", 
       ...admitted,
       permissions: admitted.permissions.filter(
         (p) => p !== "allow-desktop-ai-backends",
+      ),
+    },
+    {
+      ...admitted,
+      permissions: admitted.permissions.filter(
+        (p) => p !== "allow-desktop-ai-imports",
       ),
     },
     {
@@ -222,12 +230,27 @@ test("only authorized private native-client public-build links are admitted duri
     },
   };
   assert.deepEqual(auditManifest(history, capabilities, configuration), []);
+  const conversations = {
+    private: true,
+    dependencies: {
+      "@lapismd/jj-conversations": "link:../jj-store/packages/jj-conversations",
+    },
+  };
+  assert.deepEqual(
+    auditManifest(conversations, capabilities, configuration),
+    [],
+  );
   for (const manifest of [
     { ...terminal, private: false },
     { private: true, dependencies: { "@lapismd/terminal": "link:../other" } },
     { private: true, dependencies: { other: "link:../other" } },
     { ...ai, private: false },
     { ...history, private: false },
+    { ...conversations, private: false },
+    {
+      private: true,
+      dependencies: { "@lapismd/jj-conversations": "link:../other" },
+    },
     { private: true, dependencies: { "@lapismd/jj-history": "link:../other" } },
     { private: true, dependencies: { "@lapismd/ai": "link:../other" } },
   ])

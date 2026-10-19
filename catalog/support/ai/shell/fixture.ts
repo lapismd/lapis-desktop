@@ -19,12 +19,26 @@ import { FakeAgentRuntime } from "../../../../tests/ai/support/fake-runtime.ts";
 import { shellSeed } from "./seed.ts";
 import type { ShellScenario } from "./types.ts";
 import { registerCatalogCleanup } from "../../lifecycle.ts";
-export function createShellFixture(scenario: ShellScenario) {
+import { registerChatReview } from "../sessions/chat-review-view.ts";
+import { chatReviewSeed } from "../sessions/chat-review-seed.ts";
+import { SendingErrorRuntime } from "../sessions/sending-error-runtime.ts";
+export function createShellFixture(
+  scenario: ShellScenario,
+  reviewLayout = false,
+) {
+  const files = shellSeed(
+    undefined,
+    scenario === "sending-error" || scenario === "send-failure"
+      ? "registry-chat"
+      : scenario,
+  );
   const database = new MemoryAppDatabase(crypto.randomUUID());
   const app = new App({
     version: "0.1.0-catalog",
     configPath: ".lapis/app.json",
-    adapter: new MemoryVaultAdapter(shellSeed(undefined, scenario)),
+    adapter: new MemoryVaultAdapter(
+      reviewLayout ? chatReviewSeed(files) : files,
+    ),
     appDatabase: database,
     markdownRenderer: async () => {},
     workspaceShell: { application: { name: "Lapis Notes" } },
@@ -37,7 +51,10 @@ export function createShellFixture(scenario: ShellScenario) {
   if (scenario !== "initializing") releaseModels();
   const runtimes: FakeAgentRuntime[] = [];
   const releaseAi = bindAi(app, () => {
-    const runtime = new FakeAgentRuntime({ id: "acp", trace: "rich" });
+    const runtime =
+      scenario === "sending-error" || scenario === "send-failure"
+        ? new SendingErrorRuntime({ id: "acp", trace: "rich" })
+        : new FakeAgentRuntime({ id: "acp", trace: "rich" });
     runtimes.push(runtime);
     return {
       runtime,
@@ -126,6 +143,8 @@ export function createShellFixture(scenario: ShellScenario) {
       communityPlugins: "disabled",
       optionalCorePlugins: "configured",
     });
+    if (reviewLayout && scenario === "sending-error")
+      registerChatReview(app, true);
     stopMetadata = app.metadataTypeManager.trackChanges();
     await app.metadataCache.load();
     const search = app.plugins.plugins.get("search");

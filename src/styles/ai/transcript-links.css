@@ -1,0 +1,14 @@
+.ai-transcript-note-link {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  cursor: pointer;
+}
+.ai-transcript-note-link:hover {
+  text-decoration-thickness: 2px;
+}
+.ai-transcript-note-link:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

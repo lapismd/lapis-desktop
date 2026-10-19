@@ -13,10 +13,10 @@ export const PermissionReplyRejected: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(
-      await canvas.findByRole("combobox", { name: "Message" }),
+      await canvas.findByRole("textbox", { name: /^Message$/ }),
       "Update a note",
     );
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await userEvent.click(
       await canvas.findByRole("button", { name: /Allow once/ }),
     );
@@ -34,10 +34,10 @@ export const QuestionReplyRejected: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.type(
-      await canvas.findByRole("combobox", { name: "Message" }),
+      await canvas.findByRole("textbox", { name: /^Message$/ }),
       "Update a note",
     );
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await userEvent.click(
       await canvas.findByRole("button", { name: /Make the smallest change/ }),
     );

@@ -1,15 +1,28 @@
 # Desktop catalog coverage
 
-`repository/HistoryStorage.stories.ts` mounts production storage settings in the
-real Notes shell. It covers external/root layouts, move/reload, original-request
-resume/rollback, representative loading and App-toast failure recovery. Native
-storage identity and crash recovery are separate service proofs; visual approval
-and cold native app acceptance remain pending.
+`Desktop/AI/Note links/Conversation` reviews current file mentions, Markdown
+note links, wiki aliases and literal code/unavailable references through the
+production reader in both modes. `JSONL/Transcript` retains the captured
+`@[[Notes/Welcome.md]]` text and verifies keyboard navigation to a visible note.
+`Errors and mentions/File Mentions` verifies composer selection and mouse
+opening.
 
-Automatic vault backup: `repository/AutomaticBackup.stories.ts` mounts the real
-plugin, independent native-service adapter boundary and production status
-control for saved, saving and failure/recovery states. Native capture is
-qualified separately; visual approval remains pending.
+`Desktop/AI/Chat layout review/Sending Error` injects one catalog runtime
+failure before dispatch, showing the production interrupted-turn/retry controls,
+retained draft and standalone error beside the fixed keyboard hint. Explicit
+retry uses the normal fake runtime. This is passive UI review, with checks
+paused.
+
+`Desktop/AI/Chat layout review/Conversation` now exposes app tool details
+through an owned adaptation of JJ Store's `ChatToolPanel`, backed by public
+AppShell SurfaceLayer and Transcript readers. The read title opens the
+body-covering inspector; its separate chevron expands captured
+syntax-highlighted source and existing Show more/less. Markdown has one
+Preview/Source/Capture view control, with checked/unchecked/nested/ordered
+tasks, a table and fenced TypeScript in the review fixture. The shared fixed
+hint row omits its top border. Conversation rows retain a small gap in both the
+inbox review and History subtree. These are manual UI review targets; automated
+checks and live integration remain paused.
 
 `Desktop/Repository working copy status` mounts the production plugin in the
 real Notes shell through the public status-item mount API. `DetailsAndRefresh`
@@ -575,6 +588,8 @@ MessageQueue and Footer exports. Source/destination fixture provenance is in
 `support/ai/transcript/REFERENCE.md` (Apache-2.0). Document/Classic are separate
 review states, independent of the Notes controller adapter. TranscriptReview
 also covers two table-row comments/context and long fenced-code folding.
+GroupedToolDisclosures opens captured tools and the real inline comment editor
+in both Document and Classic, including Escape dismissal without submitting.
 
 AI transcript adoption (NOTES-08B/E-AI-041) uses the ordinary `AiViewPanel` in
 `Shell/Transcript adoption`, with no opt-in catalog replacement. Existing Shell
@@ -582,6 +597,141 @@ Desktop, LocalConversations, Initialization and Compositions now assert the
 shared transcript, fixed footer, exact restored context, copy/retry/model
 actions and skeleton loading. Persistence failure has an explicit toast
 assertion.
+
+`Transcript review/UnknownLocalTurn` mounts the production local-file recovery
+path in the App shell. It retains the authored prompt, disables Retry in both
+Document and Classic views, starts no provider on restore, and continues only
+from a new authored message. Native interruption/reopen is a separate acceptance
+lane; visual approval remains pending.
+
+`Desktop/AI/Comment history/RestoredCodeAndTableFeedback` uses production file
+conversation projection, two exact acknowledged code/table captures and the
+public TranscriptController. It scrolls the immutable reader to the table,
+checks inline Sent feedback and no pending queue, switches Document/Classic, and
+sends an explicit continuation with saved comments in handoff. Native
+comments-only Codex and cold History evidence remain in E-AI-045; visual review
+is pending.
+
+`Desktop/AI/Addressed messages` mounts the ordinary shared transcript in the App
+shell with both docks collapsed. SavedRecipients shows an unavailable historical
+recipient without creating a provider session. SelectRemoveAndSwitch covers the
+@ agent choice, shared draft audience, removal and Document/Classic.
+ExplicitSend checks the exact separately saved setup token and unchanged message
+text through the production repository/controller. Tags remain visual-pending;
+multi-recipient and queue delivery are separate slices.
+
+Recipient pills adapt jj-store
+`web/src/lib/ui/community-chat-composer/CommunityComposerAgentAudience.svelte`
+at `d80f03418e64c13f15483a41896cec5490e8e2ea` into
+`src/components/ai/chat/ChatRecipients.svelte`. The production adapter uses
+Design Core Button/Avatar/Badge and the headless codec's built public exports;
+no source-checkout import or catalog state enters production.
+
+IndependentParticipants exercises Reviewer → Writer → Reviewer through the same
+admitted runtime, distinct session bindings, exact switch-back resume and
+visible Document/Classic attribution. It qualifies sequential single-recipient
+turns; multiple-recipient dispatch and queues remain pending.
+
+`Desktop/AI/Multiple recipients` covers one authored message delivered to two
+independent participants, per-recipient results in both views, normal
+participant creation without execution, and failed save with retained name plus
+one toast. In-flight badges/cancellation and repeated native permission IDs
+across two independently approved participants retain separate outcomes. The
+normal menu uses production components and ordinary vault-owned AI settings.
+
+`Desktop/AI/Queued messages` uses the production local queue with Design Core
+MessageQueue and TranscriptFooter. It covers editable active Document/Classic
+composers, FIFO after completion, whole-message cancellation, explicit live and
+cold resume, visible waiting follow-ups and retained failed-save draft/one
+toast. Interrupted-before-checkpoint recovery keeps one notice and renders the
+new approval after explicit Resume without repeating the interrupted prompt.
+
+`Desktop/AI/Comment history/Linked code table and tool replies` uses the
+production local parent/receipt projection and unchanged Design Core controls.
+Code/table/tool captures retain their original anchors; acknowledged feedback
+opens its captured answer, which links back to the same discussion. Both
+presentations restore without a provider prompt. Legacy captures remain Sent.
+
+- `Desktop/AI/Comment history/Continue restored thread` reuses the production
+  Reply composer, pending comments and Document/Classic state. Only the newly
+  authored feedback is submitted; existing saved reply links are retained.
+
+IMPORT-01A (`ai/ImportReview.stories.ts`) mounts production AiImportPanel and
+the shared AiRecordedTranscript in the real WorkspaceShell with both docks
+collapsed. Eight states cover explicit source preview, Document/Classic, save
+and exact duplicates, unknown-write retry, preview failure/toast recovery,
+representative loading skeletons, no sources, unavailable hosts and saved
+read-only chat projection without a composer. Source clients are fixtures;
+native discovery/import remains IMPORT-01B. Inbox provenance is in
+docs/provenance.json; visual baseline approval is pending.
+
+AI-SESSION-UI promotes the reviewed components into the ordinary plugin under
+its 2026-10-19 implementation approval. E-AI-058 owns resumed source and
+consumer qualification; visual baseline approval remains separate.
+`Desktop/AI/Session layout review` and `Import layout review` use the production
+nested inbox shell with collapsed outer docks. The saved-local cases mount
+ImportedConversation over the real local repository: metadata-only grouping,
+lazy version reads, immutable version switching, failure toast and explicit
+retry. Incomplete versions expose no partial transcript or composer. Import
+preview, save and exact duplicate handling retain their existing source and
+repository authority. ImportReview now covers the same production inbox.
+Loading, search, filters, compact navigation and empty content remain mapped.
+Copied paths, source revision and license are in docs/provenance.json.
+
+`Desktop/AI/Chat layout review/Conversation` and
+`Shell/Compositions/ChatWithToolActivity` mount the ordinary AiView factory.
+AiChatSession composes the existing transcript, controller, comments, composer,
+local repository and actions. LiveInboxControls exercises wrapped slash
+suggestions, read-tool Preview/Source overlay, focus restoration and draft
+retention across Document/Classic. Inline interruption feedback checks one
+rounded inline warning with an icon-only, tooltipped retry at the far right and
+no duplicate fixed error. FailedSendRetainsDraft invokes the real submit path
+with a rejected fixture runtime. Shell cases retain local journals, agent
+switching, folder following, archived actions, admission and narrow-panel reopen
+coverage. Catalog provider clients remain synthetic; this is not fresh native
+provider, JJ storage or automatic capture coordination proof.
+
+AI-JSONL-UI replaces the file-only preview with AiJsonlPanel in the shared
+nested AiSessionFrame/AiSessionThread. Desktop/AI/JSONL mounts the actual
+registered TextFileView in WorkspaceShell: Transcript (Document/Classic,
+read-only), Agent events (structured captures and Markdown handoff), generic
+refresh/rename, interrupted append, malformed record, empty, loading and disable
+during read. Large transcript exercises captured Markdown/source inspection,
+Escape/focus restoration, highlighted code/diff and long scrolling content
+without writes or runtime sessions. Retained direct-panel stories now use the
+sole shared renderer; legacy timeline/composer/source-table components and
+exclusive CSS are retired. Design Core's Classic prompt-surface story owns the
+role-based primary tint.
+
+InlineLocalCommands exercises real local `/help` and `/search` dispatch in the
+nested chat shell, coloured monospaced reports, acknowledgement and inline-only
+search disclosure. SavedLocalCommands reopens retained JSONL results read-only,
+with exact report whitespace and inline tool placement. Agent read inspection
+remains covered separately by LiveInboxControls. No new persistence fields.
+
+AI Attachments mounts the production nested shell: Classic preserves the rounded
+composer edge and compact drawer; Document keeps removable file chips in an
+expandable section with relative-path tooltips. FilePicker covers
+icon/title/path rows, tooltip and keyboard selection; ThreeLineComposer covers
+both default heights and retained multiline drafts across modes. Pending
+approval/question callbacks remain covered by Requests, ToolActivity and
+Cancellation.
+
+InlineLocalCommands additionally asserts that local reports have no outer frame
+or inset. EmptyLocalSearch exercises a real unmatched query and the Search-owned
+Empty state. SavedLocalCommands retains exact captured output and inline-only
+inspection in the JSONL reader.
+
+`repository/HistoryStorage.stories.ts` mounts production storage settings in the
+real Notes shell. It covers external/root layouts, move/reload, original-request
+resume/rollback, representative loading and App-toast failure recovery. Native
+storage identity and crash recovery are separate service proofs; visual approval
+and cold native app acceptance remain pending.
+
+Automatic vault backup: `repository/AutomaticBackup.stories.ts` mounts the real
+plugin, independent native-service adapter boundary and production status
+control for saved, saving and failure/recovery states. Native capture is
+qualified separately; visual approval remains pending.
 
 Automatic vault backup / ResponsiveInitialCapture uses the production Notes
 plugin with an explicitly withheld initial-capture response. Repository restore

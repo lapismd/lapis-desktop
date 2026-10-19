@@ -1,3 +1,4 @@
+import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -20,9 +21,9 @@ export const QuestionAnswered: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("combobox", { name: "Message" });
+    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
     await userEvent.type(input, "Update the sample file");
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     const option = await canvas.findByRole("button", {
       name: /Make the smallest change/,
     });
@@ -30,6 +31,8 @@ export const QuestionAnswered: Story = {
     const submit = canvas.getByRole("button", { name: "Submit answer" });
     await expect(submit).toBeEnabled();
     await userEvent.click(submit);
+    await canvas.findByRole("button", { name: "Question response" });
+    await expandTranscriptActivity(canvasElement);
     await waitFor(() => {
       expect(canvas.getByText("Question answered")).toBeInTheDocument();
       expect(canvas.queryByTestId("ai-question-card")).toBeNull();
@@ -49,16 +52,10 @@ export const ToolRunning: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for shell.execute local workspace",
+      name: "Show details for shell.execute",
     });
-    await expect(
-      trigger.querySelector('[data-ui-part="detail-chevron"]'),
-    ).toHaveAttribute("data-direction", "right");
-    const status = canvasElement.querySelector(
-      '[data-ui-part="call-status"][data-status="running"]',
-    );
-    expect(status).not.toBeNull();
-    await expect(status).toHaveTextContent("Running");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    await expect(trigger).toHaveAccessibleDescription("Running");
   },
 };
 
@@ -70,12 +67,11 @@ export const SuccessfulToolCall: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for shell.execute local workspace",
+      name: "Show details for shell.execute",
     });
-    const chevron = trigger.querySelector('[data-ui-part="detail-chevron"]');
-    await expect(chevron).toHaveAttribute("data-direction", "right");
+    await expect(trigger).toHaveAttribute("aria-expanded", "false");
     await userEvent.click(trigger);
-    await expect(chevron).toHaveAttribute("data-direction", "down");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
     await expect(
       canvasElement.querySelector('[data-ui-part="code-block-line"]'),
     ).toHaveTextContent("pnpm --filter @lapis-notes/ai test");

@@ -9,7 +9,8 @@ import { AppToolExecutionError, cancelledError } from "./app-tool-errors.ts";
 export type AppToolApprovalListener = (
   request: ApprovalRequest,
   bindingId: string,
-) => void;
+  toolCallId?: string,
+) => void | Promise<void>;
 
 interface PendingApproval {
   bindingId: string;
@@ -34,6 +35,7 @@ export class AppToolApprovalBroker {
     input: unknown,
     details: AppToolApprovalDetails | undefined,
     signal: AbortSignal,
+    toolCallId?: string,
   ): Promise<ApprovalOptionKind> {
     if (signal.aborted) {
       return Promise.reject(cancelledError());
@@ -78,8 +80,35 @@ export class AppToolApprovalBroker {
       });
     });
 
-    for (const listener of this.#listeners) listener(request, bindingId);
-    return decision;
+    // Publication may persist the request. Do not release a decision before it.
+    void decision.catch(() => undefined);
+    return Promise.allSettled(
+      [...this.#listeners].map(async (listener) =>
+        listener(request, bindingId, toolCallId),
+      ),
+    )
+      .then((results) => {
+        const errors = results.flatMap((result) =>
+          result.status === "rejected" ? [result.reason] : [],
+        );
+        if (errors.length)
+          throw new AggregateError(errors, "Approval publication failed");
+        return decision;
+      })
+      .catch((error) => {
+        const pending = this.#pending.get(id);
+        if (pending) {
+          this.#pending.delete(id);
+          pending.removeAbortListener();
+          pending.reject(
+            new AppToolExecutionError(
+              "execution_failed",
+              "Approval publication failed.",
+            ),
+          );
+        }
+        throw error;
+      });
   }
 
   respond(requestId: string, decision: ApprovalOptionKind): boolean {

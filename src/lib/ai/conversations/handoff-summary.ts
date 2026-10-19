@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis conversation summaries; see ../NOTICE.md.
 import type { ConversationRepository } from "./conversation-repository.ts";
+import { messageEvidence } from "./comment-receipt.ts";
 import { transcriptEntryHash, transcriptRangeHash } from "./hashes.ts";
 import {
   CONVERSATION_SCHEMA_VERSION,
@@ -134,7 +135,7 @@ function summaryEntry(
       type: entry.type,
       role: entry.role,
       agentBindingId: entry.agentBindingId,
-      content: entry.text,
+      content: messageEvidence(entry),
     };
   }
   if (entry.type === "tool") {

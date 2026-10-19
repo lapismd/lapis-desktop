@@ -16,6 +16,8 @@ export type AiChatItem = (
       type: "message";
       role: "user" | "assistant";
       text: string;
+      recipients?: import("../conversations/recipients.ts").SavedAgentRecipient[];
+      deliveries?: import("../conversations/dispatch-intent.ts").Delivery[];
       createdAt?: string;
     }
   | {
@@ -32,7 +34,7 @@ export type AiChatItem = (
       toolId: string;
       name: string;
       server?: string;
-      state: "running" | "completed" | "error";
+      state: "running" | "completed" | "error" | "unknown";
       input?: string;
       output?: string;
       createdAt?: string;
@@ -60,7 +62,13 @@ export type AiChatItem = (
       inventory?: AiChatInventory;
       createdAt?: string;
     }
-  | { id: string; type: "error"; text: string; createdAt?: string }
+  | {
+      id: string;
+      type: "error";
+      text: string;
+      createdAt?: string;
+      retryable?: boolean;
+    }
   | {
       id: string;
       type: "command";
@@ -83,9 +91,11 @@ export type AiChatItem = (
       createdAt?: string;
     }
 ) & {
+  parentId?: string;
   agentBindingId?: string;
   source?: AgentEventSource;
   contextBlocks?: import("../core/context.ts").AgentContextBlock[];
+  contextDelivery?: "prepared" | "sent";
 };
 
 export type AiChatInventoryKind = "skills" | "tools";
