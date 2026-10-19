@@ -154,6 +154,7 @@ test("AI session permission stays exact and bound to the admitted main window", 
       ...new Set([
         ...capabilities.permissions,
         "allow-desktop-ai-admit",
+        "allow-desktop-ai-imports",
         "allow-desktop-ai-release",
         "allow-desktop-ai-backends",
         "allow-desktop-ai-tools",
@@ -170,6 +171,12 @@ test("AI session permission stays exact and bound to the admitted main window", 
       ...admitted,
       permissions: admitted.permissions.filter(
         (p) => p !== "allow-desktop-ai-backends",
+      ),
+    },
+    {
+      ...admitted,
+      permissions: admitted.permissions.filter(
+        (p) => p !== "allow-desktop-ai-imports",
       ),
     },
     {

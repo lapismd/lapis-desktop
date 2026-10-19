@@ -46,6 +46,11 @@ export function registerAiViews(plugin: Plugin, host: AiApplication): void {
         const leaf = existing ?? plugin.app.workspace.getLeaf("tab");
         if (!existing)
           await leaf.setViewState({ type: AI_IMPORT_VIEW, state: {} });
+        plugin.app.workspace.activateLeaf(leaf, {
+          focusRootHost: false,
+          source: "api",
+          operation: "open-ai-import",
+        });
         await plugin.app.workspace.revealLeaf(leaf);
       }),
   };

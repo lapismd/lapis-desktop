@@ -87,7 +87,7 @@ export async function planSessionImport(
         type: "tool",
         toolId: base.id,
         name: e.name as string,
-        state: e.state as "completed",
+        state: e.state as Extract<TranscriptEntry, { type: "tool" }>["state"],
         ...(e.input !== undefined ? { input: e.input as string } : {}),
         ...(e.output !== undefined ? { output: e.output as string } : {}),
       };

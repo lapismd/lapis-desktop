@@ -8,6 +8,7 @@ use tauri::Manager;
 
 pub struct NativeServices {
     pub repository: lapis_desktop::repository::RepositoryAdmissions,
+    pub imports: lapis_desktop::vault::admission::VaultAdmissions,
     pub ai: lapis_desktop::vault::admission::VaultAdmissions,
     pub vaults: VaultManager,
     pub databases: NativeDatabases,
@@ -29,6 +30,7 @@ impl NativeServices {
         self.watches.close_session(session_id)?;
         self.with_files(|services| services.vaults.close(session_id))?;
         self.ai.finish_close_vault(session_id);
+        self.imports.finish_close_vault(session_id);
         self.repository.finish_close_vault(session_id);
         Ok(())
     }
@@ -84,12 +86,14 @@ impl From<io::Error> for NativeError {
 
 pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     crate::host::ai::user_commands::initialize(app);
+    crate::host::ai::imports::initialize(app)?;
     #[cfg(not(feature = "e2e"))]
     let profile = app.path().app_data_dir()?;
     #[cfg(feature = "e2e")]
     let profile =
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
+        imports: lapis_desktop::vault::admission::VaultAdmissions::default(),
         ai: lapis_desktop::vault::admission::VaultAdmissions::default(),
         repository: lapis_desktop::repository::RepositoryAdmissions::default(),
         vaults: VaultManager::new(&profile)?,

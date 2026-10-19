@@ -16,6 +16,8 @@ import type { AppToolHost } from "../../ai/tools/app-tool-host.ts";
 import { NativeAppTools } from "./app-tools/coordinator.ts";
 import { createToolPort, type ToolListen } from "./app-tools/port.ts";
 
+import { NativeImportSources } from "./import-sources.ts";
+
 export type NativeAiPorts = {
   call?: NativeCall;
   createTransport?: () => AcpTransport;
@@ -48,6 +50,7 @@ export function createNativeAi(
     release: (reload) => native("desktop_ai_release", { request: { reload } }),
   });
   const models = new NativeAiModels(scope);
+  const importSources = new NativeImportSources(vault.sessionId, call, allowed);
   const background = new BackgroundWork(app.notifications, "ai");
   const parser = new NativeCommandParser();
   const reported = new WeakSet<Error>();
@@ -99,7 +102,12 @@ export function createNativeAi(
   function close(mode: AiLeaveMode): Promise<void> {
     scope.fence();
     return (closing ??= (async () => {
-      await Promise.all([models.close(), userAgents.close(), bridge?.close()]);
+      await Promise.all([
+        models.close(),
+        userAgents.close(),
+        bridge?.close(),
+        importSources.close(),
+      ]);
       parser.close();
       await scope.dispose(mode === "reload");
     })().catch((error) => {
@@ -117,6 +125,7 @@ export function createNativeAi(
         ),
     },
     userAgents,
+    importSources,
     parseCommand: parser.parse,
     workspace: vault.profileId,
     unavailableReason: () =>

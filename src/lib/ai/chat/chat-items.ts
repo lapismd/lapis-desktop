@@ -34,7 +34,7 @@ export type AiChatItem = (
       toolId: string;
       name: string;
       server?: string;
-      state: "running" | "completed" | "error";
+      state: "running" | "completed" | "error" | "unknown";
       input?: string;
       output?: string;
       createdAt?: string;

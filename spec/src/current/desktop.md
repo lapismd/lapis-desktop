@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-054 adds local import UI/journal; native sources stay pending. Discussion:
-E-AI-052/053. UI: E-REPO-023/025, E-AI-039–041. Gravatar:
+E-AI-054 adds local import UI/journal; E-AI-055 connects native sources.
+Discussion: E-AI-052/053. UI: E-REPO-023/025, E-AI-039–041. Gravatar:
 `https://www.gravatar.com`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.

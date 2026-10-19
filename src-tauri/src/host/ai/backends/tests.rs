@@ -53,6 +53,7 @@ impl Fixture {
             .unwrap()
             .session_id;
         let host = NativeHost(Arc::new(Mutex::new(NativeServices {
+            imports: VaultAdmissions::default(),
             ai: VaultAdmissions::default(),
             repository: Default::default(),
             vaults,

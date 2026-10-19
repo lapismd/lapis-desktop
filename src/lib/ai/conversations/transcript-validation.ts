@@ -131,7 +131,8 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
       if (
         data.state !== "completed" &&
         data.state !== "error" &&
-        data.state !== "cancelled"
+        data.state !== "cancelled" &&
+        data.state !== "unknown"
       ) {
         throw new Error("Transcript tool state is invalid");
       }

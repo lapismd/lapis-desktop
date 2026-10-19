@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+E-AI-055 adds independently admitted native Codex import workers and truthful
+unknown tool outcomes; [local imports](ai-imports.md) owns that bounded profile.
+Original task gates and deferred JJ/provider/distribution qualification stay.
+
 IMPORT-01A/E-AI-054 adds a production source table adapted from jj-store,
 read-only Transcript preview and an injected source port. Catalog clients
 qualify UI only. Ordinary native discovery/import remains IMPORT-01B.

@@ -5,11 +5,24 @@ production import journal and injected preview UI; IMPORT-01B connects native
 Codex discovery, reading and privacy. Catalog clients are fixtures, never proof
 that ordinary native discovery is available. JJ persistence remains deferred.
 
+Native discovery uses only the host home’s `.codex/sessions` root. It selects up
+to 256 recent qualified CLI/Desktop sessions after a bounded metadata scan; no
+archived root, environment override or renderer-supplied path is admitted.
+Opaque per-client handles and prepared request tickets bind cancellation before
+worker start. Disable, vault close and window destruction fence and drain reads
+independently of execution admission; imports require no configured provider.
+Completed immutable snapshots alone cross IPC. Tool output remains unknown
+unless the native normalizer has affirmative terminal evidence; output alone
+cannot prove success. Both saved and displayed states retain that distinction.
+
 Import is an explicit, bounded snapshot operation. Native acquisition keeps raw
 paths, headers, private reasoning and credentials outside the renderer. The
-renderer receives only sanitized messages, terminal tool evidence, neutral
-notices and opaque source/session/snapshot digests. Source labels are display
-data. Import cannot launch/resume a provider or grant tools or permissions.
+renderer receives only sanitized messages, observed tool evidence, neutral
+notices and opaque source/session/snapshot digests. Codex CLI 0.156.1 also
+accepts the exact Lapis ACP `vscode` / `lapis-acp` producer pair through the
+shared native reader. Other adapter labels and the observed Desktop alpha
+version remain excluded. Source labels are display data. Import cannot
+launch/resume a provider or grant tools or permissions.
 
 The first profile stores read-only snapshots. Imported user messages remain
 untrusted historical evidence. They cannot become authored instructions,
@@ -47,6 +60,7 @@ ports are injected per App; fixtures cannot enter production dependencies.
 
 Focused tests cover identity/content collision, concurrent duplicate imports,
 partial/unknown saves, corrupt destinations, read-only authority, preview,
-recovery and failure toasts. Native admission, reader privacy, cold actual-file
-import and ordinary-app adoption stay IMPORT-01B gates. Automatic watching is a
-separate explicit opt-in CAPTURE-01 slice.
+recovery and failure toasts. E-AI-055 qualifies native admission, reader
+privacy, cold actual-file import and ordinary-app adoption for this supported
+local profile. Automatic watching is a separate explicit opt-in CAPTURE-01
+slice.

@@ -128,11 +128,24 @@ provider, effect-fault, platform and distribution qualification remains open.
 
 ## Local session import preview
 
-IMPORT-01A adds the local snapshot journal and production import UI. Review
-`Desktop/AI/Import review` in Storybook for selection, Document/Classic preview,
-saving, duplicate imports and interrupted-save recovery. Its source clients are
-fixtures; ordinary native Codex discovery and privacy are the next IMPORT-01B
-slice. The app command **Open Import AI sessions** shows an unavailable state
-until its host injects a source. Imported snapshots are read-only and never
-resume the captured session or restore permissions. JJ persistence stays
-deferred.
+Use **Open Import AI sessions** from the command palette to browse recent
+supported Codex CLI and Desktop sessions in the device’s `.codex/sessions`
+folder. Supported Codex CLI 0.156.1 includes sessions launched by Lapis ACP;
+newer Desktop alpha formats remain excluded. Select a session to preview it in
+Document or Classic view, then choose **Import snapshot** to save it under the
+current vault’s local AI history. Import requires no configured agent or model.
+It does not resume a session or restore permissions. Saved snapshots are
+read-only; use a new chat to continue.
+
+Repeating an exact snapshot reopens its existing local copy. Changed snapshots
+save separately. An actively changing, incomplete, oversized or unsupported
+source cannot be imported; select a completed session or refresh and retry.
+Native workers apply the shared privacy policy before any content enters the
+renderer. Tool output without a proven terminal outcome displays as unknown. The
+initial catalog is bounded to 256 recent qualified sessions from a bounded
+metadata scan; archived roots and automatic capture are separate later slices.
+
+Review `Desktop/AI/Import review` in Storybook for the production presentation,
+saving, duplicate imports and interrupted-save recovery. Catalog sources are
+fixtures. Native acquisition and cold local-file acceptance are recorded in
+E-AI-055. JJ persistence remains deferred.

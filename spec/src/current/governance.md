@@ -1,6 +1,6 @@
 # Governance
 
-E-AI-043–054 preserve local delivery gates and LD-GOV-001/002/004.
+E-AI-043–055 retain LD-GOV-001/002/004 and original local delivery gates.
 
 E-AI-031/032/033 qualify journal/backend/host boundaries. Cold Rust lease proof
 stays separate from packaged WebView acceptance; original M13.3 gates stay open.

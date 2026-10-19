@@ -4818,6 +4818,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "jj-store-capture"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "jj-agent",
+ "jj-collab",
+ "jj-store-model",
+ "lapis-agent-redaction",
+ "lapis-ai-capture",
+ "serde",
+ "serde_json",
+ "sha2 0.10.9",
+ "tempfile",
+ "thiserror 2.0.21",
+]
+
+[[package]]
 name = "jj-store-conversations"
 version = "0.1.0"
 dependencies = [
@@ -5383,6 +5400,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "lapis-ai-capture"
+version = "0.1.1"
+dependencies = [
+ "serde",
+ "serde_json",
+]
+
+[[package]]
 name = "lapis-ai-config"
 version = "0.1.1"
 dependencies = [
@@ -5414,8 +5439,10 @@ dependencies = [
  "block2",
  "cap-std",
  "cap-tempfile",
+ "chrono",
  "jj-agent",
  "jj-collab",
+ "jj-store-capture",
  "jj-store-conversations",
  "jj-store-core",
  "jj-store-git",

@@ -27,6 +27,12 @@ The device-configured local Codex profile uses the existing vault transcript
 files and the shared ACP transport. It does not construct a JJ capture writer.
 See [local AI setup](../docs/local-ai.md) for runtime configuration and usage.
 
+`ai::imports` discovers and previews supported local Codex snapshots without
+starting an agent or writing JJ state. Its synchronous discovery/read/privacy
+functions belong on native workers with a current authority/cancellation check.
+The host injects the scoped source port; use **Open Import AI sessions** in the
+app to preview and save read-only local history. See the local AI guide above.
+
 For explicitly selected JJ conversations, the ordinary host can prepare an
 opaque native capture target and construct the real AgentStore/ThreadStore
 processor with native privacy and a private receipt journal. This is separate

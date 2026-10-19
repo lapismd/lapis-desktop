@@ -24,6 +24,8 @@ jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1
 jj-store-conversations = { path = "../../jj-store/crates/jj-store-conversations", version = "0.1.0", features = ["native-privacy", "store-capture"] }
 jj-store-core = { path = "../../jj-store/crates/jj-store-core", version = "0.1.0" }
 jj-collab = { path = "../../jj-store/crates/jj-collab", version = "0.1.0" }
+jj-store-capture = { path = "../../jj-store/crates/jj-store-capture", version = "0.1.0", default-features = false }
+chrono = { version = "0.4", default-features = false, features = ["std"] }
 jj-agent = { path = "../../jj-store/crates/jj-agent", version = "0.1.0" }
 jj-store-git = { path = "../../jj-store/crates/jj-store-git", version = "0.1.0" }
 

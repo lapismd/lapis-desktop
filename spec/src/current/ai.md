@@ -9,7 +9,7 @@ native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
-E-AI-054 adds [local imports](ai-imports.md); native sources stay pending.
+E-AI-054/055 add [local imports](ai-imports.md) with native read-only workers.
 E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
 
 E-REPO-002 retains separate AI/history admission under LD-AI-001; history cannot

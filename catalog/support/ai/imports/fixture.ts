@@ -42,7 +42,7 @@ export const sampleCapture: CapturedSession = {
       createdAt: "2026-10-19T09:00:02.000Z",
       type: "tool",
       name: "read_file",
-      state: "completed",
+      state: "unknown",
       input: '{"path":"<workspace>/Notes/weekly.md"}',
       output: "# Weekly review\n\nCapture decisions and follow-ups.",
     },

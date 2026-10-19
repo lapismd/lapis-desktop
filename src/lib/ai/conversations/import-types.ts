@@ -28,7 +28,7 @@ export type CapturedEntry =
       createdAt: string;
       type: "tool";
       name: string;
-      state: "completed" | "error" | "cancelled";
+      state: "completed" | "error" | "cancelled" | "unknown";
       input?: string;
       output?: string;
     }

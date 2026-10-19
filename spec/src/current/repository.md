@@ -2,6 +2,9 @@
 
 The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces
 without upstream `jj-lib`. Notes consumes jj-store M33 in verified slices.
+E-AI-055 reuses capture parsing and privacy for read-only local-file imports;
+LD-REPO-001/002/003 identity, pins and JJ publication contracts remain
+unchanged. Import admits no repository writer.
 
 E-REPO-024/025 add the bounded physical working-copy status read and
 plugin-owned status controls. [Repository navigation](repository-navigation.md)

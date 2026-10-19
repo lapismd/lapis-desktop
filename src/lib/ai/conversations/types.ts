@@ -179,7 +179,7 @@ export type TranscriptEntry =
       toolId: string;
       name: string;
       server?: string;
-      state: "completed" | "error" | "cancelled";
+      state: "completed" | "error" | "cancelled" | "unknown";
       input?: string;
       output?: string;
       redacted?: boolean;

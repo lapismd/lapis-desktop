@@ -161,6 +161,7 @@ pub async fn vault_close(
     let repository = app.state::<crate::host::repository::RepositoryHost>();
     let _transition = repository.transitions.lock().await;
     let closing = session_id.clone();
+    crate::host::ai::imports::close_vault(&app, host.inner().clone(), &session_id).await?;
     crate::host::ai::admission::close_vault(&app, host.inner().clone(), &session_id).await?;
     crate::host::repository::commands::close_vault(&repository, host.inner().clone(), &session_id)
         .await?;
