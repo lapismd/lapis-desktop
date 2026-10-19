@@ -4,19 +4,18 @@
   import { untrack, type Snippet } from "svelte";
   import {
     Transcript,
-    TranscriptFooter,
     TranscriptController,
+    type TranscriptBlock,
   } from "@lapismd/design-core/chat";
   import AiTranscriptToolbar from "./AiTranscriptToolbar.svelte";
-  import * as Empty from "@lapismd/design-core/shadcn/empty";
+  import AiTranscriptFooter from "./AiTranscriptFooter.svelte";
+  import AiTranscriptSendHint from "./AiTranscriptSendHint.svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import CopyIcon from "@lucide/svelte/icons/copy";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
-  import SparklesIcon from "@lucide/svelte/icons/sparkles";
-  import {
-    projectAiTranscript,
-    transcriptSourceItem,
-  } from "../../../lib/ai/chat/transcript-projection.ts";
+  import AiTranscriptEmpty from "./AiTranscriptEmpty.svelte";
+  import AiRetryTurn from "./AiRetryTurn.svelte";
+  import { transcriptSourceItem } from "../../../lib/ai/chat/transcript-projection.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import { transcriptCommentContext } from "../../../lib/ai/chat/transcript-context.ts";
   import {
@@ -27,20 +26,13 @@
   import AiTranscriptComposer from "./AiTranscriptComposer.svelte";
   import AiTranscriptLoading from "./AiTranscriptLoading.svelte";
   import { navigateDiscussionReply } from "../../../lib/ai/chat/transcript-discussions.ts";
-  import ChatComposerActions from "./ChatComposerActions.svelte";
-  import ChatComposerOptions from "./ChatComposerOptions.svelte";
   import ChatConversationPicker from "./ChatConversationPicker.svelte";
-  import ChatScopeFooter from "./ChatScopeFooter.svelte";
+  import AiTranscriptToolInspector from "./AiTranscriptToolInspector.svelte";
+  import { transcriptToolInspection } from "../../../lib/ai/chat/transcript-inspection.svelte.ts";
 
   let panel: TranscriptPanelProps = $props();
-  const {
-    panelProps,
-    controller,
-    composerState,
-    attachmentsState,
-    conversationsState,
-    actions,
-  } = $derived(panel);
+  const { panelProps, controller, composerState, conversationsState, actions } =
+    $derived(panel);
   let view = $state<"document" | "classic">(
     untrack(
       () =>
@@ -53,16 +45,35 @@
     const preference = panelProps.settings?.transcriptView;
     if (preference && !panelProps.initialTranscriptView) view = preference;
   });
+  const Frame = $derived(panelProps.transcriptFrame);
+  function chooseView(next: "document" | "classic") {
+    view = next;
+    const saving = Promise.resolve()
+      .then(() => panelProps.onSettingsChange?.({ transcriptView: next }))
+      .catch((error) => {
+        panelProps.app?.notifications.notify({
+          id: "ai-presentation-error",
+          source: "ai",
+          severity: "error",
+          title: "Conversation view",
+          message: error instanceof Error ? error.message : String(error),
+        });
+      });
+    panelProps.onOperation?.(saving);
+  }
   let documentActions = $state<Snippet>();
-  const items = $derived(
-    projectAiTranscript(controller.items, controller.bindings),
+  const inspection = transcriptToolInspection(
+    () => panel,
+    () => !!Frame,
   );
+  const items = $derived(inspection.items);
   const blocked = $derived(
     Boolean(panelProps.initializing || composerState.catalogState?.loading),
   );
   const commentState: TranscriptController = new TranscriptController(() => ({
     items,
     canComment: !blocked,
+    onInspectTool: Frame ? inspection.open : undefined,
     onNavigateReply: (id): Promise<void> =>
       actions.perform(() =>
         navigateDiscussionReply(
@@ -122,11 +133,12 @@
   }
 </script>
 
-<div class="transcript-panel" data-testid="ai-transcript-panel">
-  <AiTranscriptToolbar {panelProps} bind:view />
+{#snippet conversation()}
   {#if panelProps.initializing}<AiTranscriptLoading />{:else}<Transcript
       {items}
       {view}
+      footer={transcriptBottom}
+      classicComposerPlacement={Frame ? "fixed" : "inline"}
       label="AI conversation"
       logLabel="AI conversation messages"
       loading={panelProps.initializing}
@@ -134,19 +146,25 @@
       canComment={!blocked}
       reactionsDisabled
       authorPopover={{ interaction: "hover" }}
+      onInspectTool={Frame ? inspection.open : undefined}
+      {customBlock}
     >
       {#snippet beforeItems()}
-        <div class="transcript-conversations">
-          <ChatConversationPicker
-            {panelProps}
-            {controller}
-            {conversationsState}
-            {actions}
-          />
-        </div>
+        {#if !Frame}<div class="transcript-conversations">
+            <ChatConversationPicker
+              {panelProps}
+              {controller}
+              {conversationsState}
+              {actions}
+            />
+          </div>{/if}
       {/snippet}
       {#snippet metadataSupplement(item)}
         {@const source = controller.items.find((entry) => entry.id === item.id)}
+        {#if source?.type === "error"}<AiRetryTurn
+            {panel}
+            errorId={source.id}
+          />{/if}
         {#if source?.type === "message" && source.role === "user" && source.recipients?.length}
           <ChatRecipients
             recipients={source.recipients}
@@ -164,20 +182,8 @@
           >
         {/if}
       {/snippet}
-      {#snippet customBlock(block)}
-        {@const item = transcriptSourceItem(block, controller.items)}
-        {#if item}<AiTranscriptBlock {item} {panel} />{/if}
-      {/snippet}
       {#snippet emptyState()}
-        <Empty.Root
-          ><Empty.Header
-            ><Empty.Media variant="icon"
-              ><SparklesIcon aria-hidden="true" /></Empty.Media
-            ><Empty.Title>Start a conversation</Empty.Title><Empty.Description
-              >Ask a question or attach a note to explore it together.</Empty.Description
-            ></Empty.Header
-          ></Empty.Root
-        >
+        <AiTranscriptEmpty />
       {/snippet}
       {#snippet queuedMessages()}<AiQueuedMessages
           onCancelled={(q) => {
@@ -205,54 +211,59 @@
           bind:documentActions
         />
       {/snippet}
-      {#snippet footer()}
-        <TranscriptFooter
-          busy={controller.busy || !!controller.queuedMessages.pending.length}
-          state={commentState}
-          sendPending={commentState.sending ||
-            !!commentState.retainedSubmission ||
-            controller.queuedMessages.saving}
-          hasContent={(!controller.busy || !!controller.repository) &&
-            Boolean(composerState.draft.trim() || commentState.pending.length)}
-          canSend={!controller.queuedMessages.saving &&
-            Boolean(composerState.draft.trim() || commentState.pending.length)}
-          disabled={blocked}
-          onSend={send}
-          onStop={controller.busy
-            ? () => panel.actions.perform(() => controller.cancel())
-            : undefined}
-          status={composerState.composerStatus}
-        >
-          {#snippet actions()}
-            <ChatComposerActions
-              compact
-              {panelProps}
-              {controller}
-              {attachmentsState}
-              actions={panel.actions}
-            />
-            {@render documentActions?.()}
-          {/snippet}
-          {#snippet controls()}
-            <div class="transcript-controls">
-              <ChatComposerOptions
-                {panelProps}
-                {controller}
-                {composerState}
-                actions={panel.actions}
-              />
-            </div>
-          {/snippet}
-          {#snippet workspace()}<ChatScopeFooter
-              inline
-              {panelProps}
-              {controller}
-              {conversationsState}
-              actions={panel.actions}
-            />{/snippet}
-        </TranscriptFooter>
-      {/snippet}
     </Transcript>{/if}
+{/snippet}
+
+{#snippet customBlock(block: TranscriptBlock)}
+  {@const item = transcriptSourceItem(block, controller.items)}
+  {#if item}<AiTranscriptBlock {item} {panel} />{/if}
+{/snippet}
+
+{#snippet toolInspector()}
+  {#if inspection.tool && inspection.opener}
+    <AiTranscriptToolInspector
+      tool={inspection.tool}
+      state={commentState}
+      opener={inspection.opener}
+      onClose={inspection.close}
+      {customBlock}
+    />
+  {/if}
+{/snippet}
+
+{#snippet transcriptBottom()}
+  {#if Frame}<AiTranscriptSendHint {panel} error={commentState.error} />
+  {:else}{@render composerFooter()}{/if}
+{/snippet}
+
+{#snippet composerFooter()}
+  <AiTranscriptFooter
+    {panel}
+    state={commentState}
+    {blocked}
+    {documentActions}
+    onSend={send}
+  />
+{/snippet}
+
+<div
+  class="transcript-panel"
+  data-testid="ai-transcript-panel"
+  data-framed={!!Frame}
+>
+  {#if Frame}<Frame
+      {panel}
+      {view}
+      onViewChange={chooseView}
+      footer={composerFooter}
+      {toolInspector}
+    >
+      {@render conversation()}
+    </Frame>
+  {:else}<AiTranscriptToolbar
+      {panelProps}
+      bind:view
+    />{@render conversation()}{/if}
 </div>
 
 <style>
@@ -266,13 +277,13 @@
     flex: 1;
     height: 100%;
   }
+  .transcript-panel[data-framed="true"] {
+    padding-block-end: 0;
+    background: var(--sidebar, var(--muted));
+    --ui-transcript-body-footer-border: 0;
+  }
   .transcript-conversations {
     padding-inline: 0.75rem;
-  }
-  .transcript-controls {
-    gap: 0.25rem;
-    display: flex;
-    align-items: center;
   }
   .transcript-activity {
     display: flex;

@@ -47,7 +47,7 @@ export const LocalConversations: Story = {
     await waitFor(() =>
       expect(panel).toHaveAttribute("data-initializing", "false"),
     );
-    assertStackedComposer(panel);
+    await assertStackedComposer(panel);
     await userEvent.click(
       within(panel).getByRole("button", {
         name: "Conversation actions",
@@ -273,8 +273,8 @@ export const LocalConversations: Story = {
       ),
     ).toBeVisible();
     await expect(
-      within(restored!).getByRole("progressbar", {
-        name: "Context window usage",
+      within(restored!).getByRole("button", {
+        name: "Context window: 10% full",
       }),
     ).toBeVisible();
     await waitFor(() => {

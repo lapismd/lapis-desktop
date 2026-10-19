@@ -10,11 +10,11 @@ E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
 E-AI-054/055 add [local imports](ai-imports.md) with native read-only workers.
-E-AI-056 adds transient capture sources; automatic watching remains pending.
+E-AI-056 adds transient sources; E-AI-057 reviews the session layout only. Live
+integration awaits UI confirmation; automatic watching remains pending.
 E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
-
 `PLUGIN_MIGRATION.md` and the original M10 task gates remain authoritative.
 Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).

@@ -6,6 +6,8 @@ import { OwnedAiPanelView } from "./owned-panel-view.ts";
 import AiViewPanel from "./AiViewPanel.svelte";
 import type { ConversationLocation } from "../../../lib/ai/conversations/types.ts";
 import { AI_VIEW } from "../../../lib/ai/plugin/view-types.ts";
+import type { AiChatPanelProps } from "../../../lib/ai/chat/panel/props.ts";
+import AiChatSession from "../sessions/AiChatSession.svelte";
 function location(state: Record<string, unknown>): ConversationLocation | null {
   return typeof state.scopeDir === "string" &&
     typeof state.conversationId === "string"
@@ -13,6 +15,8 @@ function location(state: Record<string, unknown>): ConversationLocation | null {
     : null;
 }
 export class AiView extends OwnedAiPanelView {
+  protected transcriptFrame: AiChatPanelProps["transcriptFrame"] =
+    AiChatSession;
   getViewType() {
     return AI_VIEW;
   }
@@ -63,6 +67,7 @@ export class AiView extends OwnedAiPanelView {
       props: {
         app: this.app,
         host: this.host,
+        transcriptFrame: this.transcriptFrame,
         workspaceLeaf: this.leaf,
         initialLocation: location(this.getState()),
         onConversationLocationChange: (next) => {

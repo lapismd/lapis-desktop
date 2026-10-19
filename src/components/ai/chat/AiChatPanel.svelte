@@ -56,7 +56,13 @@
   data-model-catalog-loading={composerState.catalogState?.loading ?? false}
 >
   {#if imported}
-    <ImportedConversation snapshot={imported} />
+    <ImportedConversation
+      snapshot={imported}
+      app={panelProps.app}
+      repository={panelProps.repository}
+      onDispose={panelProps.onControllerDispose}
+      onLocationChange={panelProps.onConversationLocationChange}
+    />
   {:else if panelProps.presentation === "transcript"}
     <AiTranscriptPanel
       {panelProps}

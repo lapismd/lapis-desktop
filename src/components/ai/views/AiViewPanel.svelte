@@ -3,6 +3,7 @@
   import { onMount } from "svelte";
   import type { App, WorkspaceLeaf } from "@lapis-notes/api";
   import type { ConversationLocation } from "../../../lib/ai/conversations/types.ts";
+  import type { AiChatPanelProps } from "../../../lib/ai/chat/panel/props.ts";
   import AiChatPanel from "../chat/AiChatPanel.svelte";
   import type { AiApplication as AiViewHost } from "../../../lib/ai/plugin/application.ts";
   import {
@@ -18,6 +19,7 @@
     workspaceLeaf,
     initialLocation,
     onConversationLocationChange,
+    transcriptFrame,
   }: {
     app: App;
     host: AiViewHost;
@@ -26,6 +28,7 @@
     onConversationLocationChange: (
       location: ConversationLocation | null,
     ) => void;
+    transcriptFrame?: AiChatPanelProps["transcriptFrame"];
   } = $props();
 
   const mcpServers = $derived(host.mcpServers.list());
@@ -76,6 +79,7 @@
 
 <AiChatPanel
   presentation="transcript"
+  {transcriptFrame}
   {app}
   runtime={bootstrap.runtime}
   selectRuntime={(request) => host.selectRuntime(request)}

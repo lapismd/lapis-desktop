@@ -28,8 +28,8 @@ export const DocumentDefaultAndSavedClassic: Story = {
   play: async ({ canvasElement }) => {
     const { canvas, panel, fixture, plugin } = await ready(canvasElement);
     await expect(
-      within(panel).getByRole("button", { name: /^Document$/ }),
-    ).toHaveAttribute("aria-pressed", "true");
+      within(panel).getByRole("button", { name: "Switch to Classic view" }),
+    ).toBeVisible();
     const send = within(panel).getByRole("button", { name: /^Send message$/ });
     await expect(send.getBoundingClientRect().bottom).toBeLessThanOrEqual(
       canvas.getByLabelText("Workspace status").getBoundingClientRect().top,
@@ -38,7 +38,7 @@ export const DocumentDefaultAndSavedClassic: Story = {
     await userEvent.click(editor);
     await userEvent.keyboard("Keep this draft across presentation changes");
     await userEvent.click(
-      within(panel).getByRole("button", { name: /^Classic$/ }),
+      within(panel).getByRole("button", { name: "Switch to Classic view" }),
     );
     await expect(editor).toBeInTheDocument();
     await expect(editor).toHaveTextContent(
@@ -55,8 +55,8 @@ export const DocumentDefaultAndSavedClassic: Story = {
     await plugin.application.openAiConversation();
     const reopened = await canvas.findByTestId("ai-transcript-panel");
     await expect(
-      within(reopened).getByRole("button", { name: /^Classic$/ }),
-    ).toHaveAttribute("aria-pressed", "true");
+      within(reopened).getByRole("button", { name: "Switch to Document view" }),
+    ).toBeVisible();
     const input = await within(reopened).findByRole("textbox", {
       name: /^Message$/,
     });
@@ -82,7 +82,7 @@ export const PreferenceSaveFailure: Story = {
     };
     try {
       await userEvent.click(
-        within(panel).getByRole("button", { name: /^Classic$/ }),
+        within(panel).getByRole("button", { name: "Switch to Classic view" }),
       );
       await plugin.application.operations.settle();
       await expect(

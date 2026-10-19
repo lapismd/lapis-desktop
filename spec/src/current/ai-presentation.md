@@ -38,8 +38,9 @@ uses inline layout without the legacy standalone top margin. Shared footer and
 formatting fixes belong in Design Core and apply to the reference story too. The
 application reserves its floating status-bar clearance outside the compact
 footer; send and formatting controls remain above the overlay in all placements.
-Conversation discovery stays in the transcript scroll region; it cannot consume
-the fixed header or hide the composer in a short bottom panel.
+Conversation discovery uses the nested shell list; its compact presentation
+keeps the selected conversation and new-chat composer reachable in a short
+panel.
 
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.
@@ -124,3 +125,90 @@ correction prioritizing working Codex chat and local transcript files, qualified
 in E-AI-042. JJ persistence stays deferred. Broad catalog, provider/platform,
 release and visual-baseline checks stay deferred; original M13/M33 completion
 gates are unchanged. One child task is Active at a time.
+
+## Session inbox layout
+
+The user approved live adoption and resumed tests on 2026-10-19. AI-SESSION-UI
+copies and adapts JJ Store's application-specific session inbox for explicit
+import and captured local history. An application-owned nested AppShell keeps
+the outer Notes workspace intact. A compact searchable, grouped session list,
+bounded pointer/keyboard divider and selected-session header surround the
+existing read-only transcript; Document/Classic retain their current behavior.
+Selected rows remain full-width buttons, with readable title, source profile and
+relative time. Loading uses matching row/transcript Skeletons and empty content
+uses Empty. Narrow layouts switch between list and selected session. Source
+profiles (Codex CLI/Desktop) live in the copied filter popover, not individual
+tabs. The aligned footer bars use a compact status-bar layout with inline
+icon/text segments and subtle dividers. The captured-version picker is an
+interactive footer status control; the body header retains only the
+transcript-mode action. The ordinary plugin uses this same production
+composition. Captured file reads pass their retained filename to the shared
+syntax reader; unknown paths stay plain. Diff fences use the shared patch
+reader. These are display projections only and never read files or rewrite
+captured content.
+
+The general-chat layout review reuses the same inbox AppShell, conversation
+rows, header icon toggle and aligned compact footer. The ordinary AiView
+supplies the production transcript frame; catalog fixtures mount the same
+components. The frame composes the existing transcript, composer and footer
+controls, with local conversation selection through the existing
+controller/repository. Each chat row shows its truncated vault-relative
+launch-note path (or scope folder) beneath the title, retaining the complete
+path on hover. The shell background covers the view's bottom padding. Context
+usage moves from the composer body into the footer as a ring with a shared
+shadcn tooltip showing the percentage and exact used/limit token counts,
+available on keyboard focus. It never adds a second transcript writer or native
+dispatch path. The initial single-agent label is represented by the frame
+header; later multi-agent transitions retain their transcript labels. Source and
+consumer tests qualify the resumed live adoption.
+
+The keyboard-send hint occupies a fixed body row immediately above the footer.
+Interrupted turns render once inline as a shared tinted warning, with a red
+circular warning icon and an icon-only Retry action at the far right. Retry has
+a shadcn tooltip and retains the existing explicit prompt eligibility. The fixed
+hint section omits an interruption already shown inline; unrelated composer-only
+availability feedback remains beside the composer. The 32px footer contains
+actions only, keeping the hint, status and send controls visible without overlap
+in either view. The sending-error story injects one pre-dispatch runtime failure
+and uses the existing error/retry/draft paths; retry stays explicit.
+Slash-command suggestions put the command on the first row and a wrapping
+description beneath it, through the shared Design Core composer. The Classic
+composer is pinned above that row for short and long histories; Document keeps
+its inline writing area. The same editor stays mounted across view changes,
+retaining draft, selection, pending comments and queued context.
+
+The same inbox frame opens app tool details in the public AppShell surface
+layer, covering the main body while retaining the underlying conversation and
+composer. Escape/Close restore the opener. The copied JJ Store tool panel uses
+public Transcript readers and one output-view control; it never nests a second
+ToolCallDetail toolbar. Captured Markdown file reads open as Preview, with
+Source showing the exact Markdown and Capture showing the original tool
+request/response. These are distinct views of retained data; no current vault
+read or tool execution occurs. Registered result views retain ownership. The
+row's raw action and inspector share the controller's captured-payload state.
+For reads, a separate chevron reveals the captured source inline using the
+shared syntax reader and its Show more/less controls; the title independently
+opens the inspector. Both readers retain the same exact block identity and
+comment ranges. The overlay spans the full main-body bounds, with a full-width
+16px vertical/32px horizontal inset and the tool icon before its title. The
+keyboard-hint row omits its top separator. Conversation History subtrees retain
+a visible gap between adjacent rows. The ordinary plugin retains this
+presentation.
+
+Import selection still previews without writing. Only explicit Import saves, and
+incomplete captures remain distinguished from complete versions. Version
+selection cannot launch or resume an agent. Notes retains source ports, local
+custody, notification/status services and teardown. No placeholder watcher
+controls or provider actions are added. Provenance records the copied source
+paths/revision; shared Design Core foundations and the transcript are reused.
+The approved shells are production-owned. Saved imports are grouped by their
+existing vault scope, source profile and opaque source-session identity; only
+the selected immutable version is read. Listing, selection and refresh use the
+existing repository, with stale-response fences, App status/notifications and
+owned teardown. Incomplete versions never expose a writable chat or partial
+transcript. Selection remains read-only and updates the owning view location.
+Automatic capture coordination and JJ persistence remain deferred; the saved
+version browser does not silently enable either. E-AI-058 qualifies
+AI-SESSION-UI for the reviewed local-file profile through source and consumer
+acceptance and a cold ordinary-app review. Original M10.2/M13 gates and visual
+baseline approval remain separate.

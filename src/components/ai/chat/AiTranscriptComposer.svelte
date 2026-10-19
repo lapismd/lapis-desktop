@@ -36,13 +36,18 @@
     onRemove={(id) => composerState.recipients.remove(id)}
   />
   <ChatComposerDrawer {controller} {attachmentsState} {actions} />
-  <ChatContextUsage {controller} {composerState} {actions} />
+  {#if !panel.panelProps.transcriptFrame}<ChatContextUsage
+      {controller}
+      {composerState}
+      {actions}
+    />{/if}
   <MarkdownComposer
     bind:value={composerState.draft}
     bind:documentActions
     presentation={view === "document" ? "document" : "framed"}
     dockActions={view === "document"}
     showSendButton={false}
+    showHint={!panel.panelProps.transcriptFrame}
     submitOnEnter={false}
     label="Message composer"
     inputLabel="Message"

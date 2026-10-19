@@ -95,16 +95,19 @@ export const UnavailableAdmission: Story = {
       within(panel).getByText("Fixture native AI is unavailable"),
     ).toBeVisible();
     await userEvent.type(
-      within(panel).getByRole("combobox", { name: "Message" }),
+      within(panel).getByRole("textbox", { name: "Message" }),
       "Cannot execute without admission",
     );
-    await userEvent.keyboard("{Enter}");
+    await userEvent.click(
+      within(panel).getByRole("button", { name: "Send message" }),
+    );
     await fixture.plugin()!.application.operations.settle();
     expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);
     const errors = within(panel).getAllByText(
       "Fixture native AI is unavailable",
     );
-    expect(errors).toHaveLength(2);
+    expect(errors).toHaveLength(1);
+    expect(within(panel).getAllByRole("alert")).toHaveLength(1);
     for (const error of errors) expect(error).toBeVisible();
   },
 };

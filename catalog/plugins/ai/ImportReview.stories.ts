@@ -13,7 +13,7 @@ export const SelectAndPreview: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Preview Weekly review" }),
+      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
     );
     await expect(
       canvas.findByRole("region", { name: "Captured conversation" }),
@@ -22,12 +22,14 @@ export const SelectAndPreview: Story = {
       canvas.findByText("A focused weekly review"),
     ).resolves.toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Document" }),
-    ).toHaveAttribute("aria-pressed", "true");
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    ).toBeVisible();
     await expect(
       canvas.getByRole("button", { name: "Import snapshot" }),
     ).toBeEnabled();
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(canvas.getByText("A focused weekly review")).toBeVisible();
     await expect(canvas.queryByRole("textbox", { name: "Message" })).toBeNull();
   },
@@ -36,7 +38,7 @@ export const SaveAndDeduplicate: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Preview Weekly review" }),
+      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
     );
     await userEvent.click(
       await canvas.findByRole("button", { name: "Import snapshot" }),
@@ -58,7 +60,7 @@ export const InterruptedSave: Story = {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Preview Weekly review" }),
+      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
     );
     await userEvent.click(
       await canvas.findByRole("button", { name: "Import snapshot" }),
@@ -92,7 +94,7 @@ export const PreviewRecovery: Story = {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
     await userEvent.click(
-      await canvas.findByRole("button", { name: "Preview Weekly review" }),
+      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
     );
     await expect(
       page.findByText(
@@ -103,7 +105,7 @@ export const PreviewRecovery: Story = {
       canvas.getByRole("button", { name: "Import snapshot" }),
     ).toBeDisabled();
     await userEvent.click(
-      canvas.getByRole("button", { name: "Preview Weekly review" }),
+      canvas.getByRole("button", { name: /^Preview Weekly review/ }),
     );
     await expect(
       canvas.findByText("A focused weekly review"),
@@ -139,12 +141,14 @@ export const SavedReadOnlySnapshot: Story = {
     await expect(
       canvas.findByText("A focused weekly review"),
     ).resolves.toBeVisible();
-    await expect(canvas.getByText("Read-only snapshot")).toBeVisible();
+    await expect(canvas.getByText("Read-only")).toBeVisible();
     await expect(canvas.queryByRole("textbox", { name: "Message" })).toBeNull();
     await expect(
       canvas.queryByRole("button", { name: "Send message" }),
     ).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(canvas.getByText("A focused weekly review")).toBeVisible();
   },
 };

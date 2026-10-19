@@ -29,6 +29,7 @@ export function shellSeed(
   const initialLocation =
     scenario === "agent-switching" ||
     scenario === "registry-chat" ||
+    scenario === "sending-error" ||
     scenario === "registry-overview"
       ? { scopeDir: "Notes", conversationId: LOCAL_CONVERSATION_ID }
       : scenario === "recovery"

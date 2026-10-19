@@ -9,6 +9,7 @@ import type { AiChatItem } from "./chat-items.ts";
 import { bindingLabels } from "./panel/binding-labels.ts";
 import { toolCallStatus } from "./chat-tool-display.ts";
 import { discussionReplyContexts } from "./transcript-discussions.ts";
+import { agentAvatar } from "../presentation/agent-avatar.ts";
 
 /** Display-only revision. Native source IDs and receipt authority remain untouched. */
 function revision(text: string): string {
@@ -143,7 +144,6 @@ export function projectAiTranscript(
                   ? "Command result"
                   : "Context and activity";
     const custom =
-      item.type === "error" ||
       item.type === "status" ||
       item.type === "command" ||
       item.type === "skill-activation";
@@ -155,6 +155,7 @@ export function projectAiTranscript(
           ? "reasoning"
           : "context",
       label,
+      notice: item.type === "error" ? "error" : undefined,
       replyContext: replyContexts.get(item.id),
       dayLabel,
       role: message ? item.role : undefined,
@@ -167,6 +168,7 @@ export function projectAiTranscript(
               name:
                 binding?.participant?.label ?? binding?.agent ?? "Assistant",
               initials: "AI",
+              image: agentAvatar(binding?.agent),
               shape: "rounded",
             }
         : undefined,
@@ -186,7 +188,12 @@ export function projectAiTranscript(
         item.type === "thinking"
           ? item.state === "streaming"
           : item.type === "error",
-      blocks: [block(item, value, custom ? "custom" : "markdown", label)],
+      blocks: [
+        {
+          ...block(item, value, custom ? "custom" : "markdown", label),
+          ...(item.type === "error" ? { commentable: false } : {}),
+        },
+      ],
     });
   }
   return items;

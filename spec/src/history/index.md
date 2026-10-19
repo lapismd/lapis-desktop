@@ -211,3 +211,7 @@ by the task ledger, not inferred from this list.
 - [E-AI-055](E-AI-055.md)
 
 - [E-AI-056](E-AI-056.md)
+
+- [E-AI-057: Storybook session inbox layout review](E-AI-057.md)
+
+- [E-AI-058 — Production AI inbox and local saved-history adoption](E-AI-058.md)

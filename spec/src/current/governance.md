@@ -1,6 +1,6 @@
 # Governance
 
-E-AI-043–056 retain LD-GOV-001/002/004 and original local delivery gates.
+E-AI-043–057 retain LD-GOV-001/002/004; E-AI-057 awaits UI confirmation.
 
 E-AI-031/032/033 qualify journal/backend/host boundaries. Cold Rust lease proof
 stays separate from packaged WebView acceptance; original M13.3 gates stay open.
@@ -25,12 +25,12 @@ Canonical owners: `plugins.md`, `ai.md`, `ai-presentation.md`, `repository.md`
 and E-REPO-018's `repository-navigation.md` (LD-GOV-001/002/004). The task
 ledger retains original milestone gates.
 
-The desktop catalog uses `.storybook`, `catalog/plugins` and `catalog/support`.
-Import audits resolve relative paths before distinguishing the repository's
-development catalog from production AI catalog features; test and fixture
-imports remain prohibited, including re-exports and dynamic imports. Catalog
-Vite/Vitest configs map to `plugins.md`; production source audits reject catalog
-imports. Generated static catalog and browser artifacts are excluded from
+The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import
+audits resolve relative paths before distinguishing the repository's development
+catalog from production AI catalog features; test and fixture imports remain
+prohibited, including re-exports and dynamic imports. Catalog Vite/Vitest
+configs map to `plugins.md`; production source audits reject catalog imports.
+Generated static catalog and browser artifacts are excluded from
 repository-source traversal, formatting and commits.
 
 ## Requirements

@@ -4,6 +4,7 @@ import { mount, unmount } from "svelte";
 import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
 import { FakeAgentRuntime } from "../../../../tests/ai/support/fake-runtime.ts";
 import type { ConversationSnapshot } from "../../../../src/lib/ai/conversations/types.ts";
+import ImportSessionReview from "../../../../src/components/ai/imports/AiImportPanel.svelte";
 import AiImportPanel from "../../../../src/components/ai/imports/AiImportPanel.svelte";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { VaultTranscriptStore } from "../../../../src/lib/ai/conversations/vault-transcript-store.ts";
@@ -56,7 +57,10 @@ export const sampleCapture: CapturedSession = {
   ],
 };
 const type = "ai-import-review";
-export function createImportFixture(scenario: ImportScenario) {
+export function createImportFixture(
+  scenario: ImportScenario,
+  sessionLayout = false,
+) {
   const base = createChatApp(() => {}),
     store = new VaultTranscriptStore(base.app.vault),
     repository = new ConversationRepository(store);
@@ -157,12 +161,15 @@ export function createImportFixture(scenario: ImportScenario) {
               onOperation: track,
             },
           })
-        : mount(AiImportPanel, {
+        : mount(sessionLayout ? ImportSessionReview : AiImportPanel, {
             target: this.containerEl,
             props: {
               app: base.app,
               repository,
               scopeDir: "Notes",
+              ...(sessionLayout && scenario === "ready"
+                ? { initialSelector: "opaque-codex-1" }
+                : {}),
               sources: scenario === "unavailable" ? undefined : sources,
               onDispose: track,
             },

@@ -1,8 +1,8 @@
 # Migration inventory and progress
 
-E-AI-042–056 cover local Codex, tools, discussions and capture/import sources.
+E-AI-042–056 cover local Codex/tools/capture; E-AI-057 is catalog UI only.
 IMPORT-01B retains cold acceptance; LD-MIG-002 keeps original M10.2/M13 gates.
-Deferred JJ integration and managed capture are not qualified by local chat.
+Live session layout adoption waits for UI confirmation; JJ/capture gates stay.
 
 E-REPO-023–025 cover blame/log UI; E-AI-039–041 cover shared transcript UI.
 E-REPO-017/018 cover file history/blame (NOTES-05I7/8); original M13 gates stay.

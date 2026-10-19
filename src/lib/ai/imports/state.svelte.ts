@@ -16,6 +16,8 @@ export type AiImportProps = {
   repository: ConversationRepository;
   sources?: AiImportSources;
   scopeDir: string;
+  /** Optional opaque selection restored only after a fresh source listing. */
+  initialSelector?: string;
   onOpen?: (location: ConversationLocation) => Promise<void>;
   onDispose: (pending: Promise<void>) => void;
 };

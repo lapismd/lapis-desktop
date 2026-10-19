@@ -1,5 +1,10 @@
 # Desktop plugins and catalog
 
+E-AI-057 copies JJ Store’s inbox into Storybook session/import layout reviews.
+The existing transcript accepts an optional externally controlled mode/toolbar;
+ordinary plugin defaults remain exact. No new view or writer is registered.
+LD-PLUG-001 identity, admission and lifetime contracts are unchanged.
+
 E-AI-055 adds independently admitted native Codex import workers and truthful
 unknown tool outcomes; [local imports](ai-imports.md) owns that bounded profile.
 Original task gates and deferred JJ/provider/distribution qualification stay.

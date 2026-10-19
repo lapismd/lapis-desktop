@@ -1,5 +1,22 @@
 # Desktop catalog coverage
 
+`Desktop/AI/Chat layout review/Sending Error` injects one catalog runtime
+failure before dispatch, showing the production interrupted-turn/retry controls,
+retained draft and standalone error beside the fixed keyboard hint. Explicit
+retry uses the normal fake runtime. This is passive UI review, with checks
+paused.
+
+`Desktop/AI/Chat layout review/Conversation` now exposes app tool details
+through an owned adaptation of JJ Store's `ChatToolPanel`, backed by public
+AppShell SurfaceLayer and Transcript readers. The read title opens the
+body-covering inspector; its separate chevron expands captured
+syntax-highlighted source and existing Show more/less. Markdown has one
+Preview/Source/Capture view control, with checked/unchecked/nested/ordered
+tasks, a table and fenced TypeScript in the review fixture. The shared fixed
+hint row omits its top border. Conversation rows retain a small gap in both the
+inbox review and History subtree. These are manual UI review targets; automated
+checks and live integration remain paused.
+
 `Desktop/Repository working copy status` mounts the production plugin in the
 real Notes shell through the public status-item mount API. `DetailsAndRefresh`
 covers totals, refresh, recorded revision navigation and the borderless compact
@@ -640,3 +657,29 @@ representative loading skeletons, no sources, unavailable hosts and saved
 read-only chat projection without a composer. Source clients are fixtures;
 native discovery/import remains IMPORT-01B. Source table provenance is in
 docs/provenance.json; visual baseline approval is pending.
+
+AI-SESSION-UI promotes the reviewed components into the ordinary plugin under
+its 2026-10-19 implementation approval. E-AI-058 owns resumed source and
+consumer qualification; visual baseline approval remains separate.
+`Desktop/AI/Session layout review` and `Import layout review` use the production
+nested inbox shell with collapsed outer docks. The saved-local cases mount
+ImportedConversation over the real local repository: metadata-only grouping,
+lazy version reads, immutable version switching, failure toast and explicit
+retry. Incomplete versions expose no partial transcript or composer. Import
+preview, save and exact duplicate handling retain their existing source and
+repository authority. ImportReview now covers the same production inbox.
+Loading, search, filters, compact navigation and empty content remain mapped.
+Copied paths, source revision and license are in docs/provenance.json.
+
+`Desktop/AI/Chat layout review/Conversation` and
+`Shell/Compositions/ChatWithToolActivity` mount the ordinary AiView factory.
+AiChatSession composes the existing transcript, controller, comments, composer,
+local repository and actions. LiveInboxControls exercises wrapped slash
+suggestions, read-tool Preview/Source overlay, focus restoration and draft
+retention across Document/Classic. Inline interruption feedback checks one
+rounded inline warning with an icon-only, tooltipped retry at the far right and
+no duplicate fixed error. FailedSendRetainsDraft invokes the real submit path
+with a rejected fixture runtime. Shell cases retain local journals, agent
+switching, folder following, archived actions, admission and narrow-panel reopen
+coverage. Catalog provider clients remain synthetic; this is not fresh native
+provider, JJ storage or automatic capture coordination proof.

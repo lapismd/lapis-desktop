@@ -90,10 +90,14 @@
   padding: 0;
   list-style: none;
   flex-direction: column;
-  gap: var(--ui-workspace-explorer-row-gap, 0.125rem);
+  gap: max(0.125rem, var(--ui-workspace-explorer-row-gap, 0.125rem));
 }
 
 .ai-history .ai-history__subtree {
+  display: flex;
+  flex-direction: column;
+  gap: max(0.125rem, var(--ui-workspace-explorer-row-gap, 0.125rem));
+  padding-block: 0.125rem 0;
   box-sizing: border-box;
   width: calc(100% - var(--ui-workspace-explorer-indent, 0.75rem));
   max-width: 100%;

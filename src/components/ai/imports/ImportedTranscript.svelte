@@ -4,8 +4,18 @@
   import { projectTranscriptToChatItems } from "../../../lib/ai/conversations/transcript-to-chat.ts";
   import { projectAiTranscript } from "../../../lib/ai/chat/transcript-projection.ts";
   import type { TranscriptEntry } from "../../../lib/ai/conversations/types.ts";
-  let { entries }: { entries: TranscriptEntry[] } = $props();
-  let view = $state<"document" | "classic">("document");
+  import { importedToolBlock } from "../../../lib/ai/imports/transcript-tool-block.ts";
+  let {
+    entries,
+    view = $bindable<"document" | "classic">("document"),
+    showViewToolbar = true,
+    assistant,
+  }: {
+    entries: TranscriptEntry[];
+    view?: "document" | "classic";
+    showViewToolbar?: boolean;
+    assistant?: { name: string; image: string };
+  } = $props();
   function block(b: TranscriptBlock): TranscriptBlock {
     return {
       ...b,
@@ -13,6 +23,13 @@
       kind: b.kind === "custom" ? "code" : b.kind,
     };
   }
+  const capturedTools = $derived(
+    new Map(
+      entries
+        .filter((entry) => entry.type === "tool")
+        .map((entry) => [entry.id, entry]),
+    ),
+  );
   const items = $derived(
     projectAiTranscript(projectTranscriptToChatItems(entries)).map((item) => ({
       ...item,
@@ -20,30 +37,34 @@
       author:
         item.role === "user"
           ? { id: "captured-user", name: "Captured user", initials: "CU" }
-          : item.author,
+          : item.role === "assistant" && item.author && assistant
+            ? { ...item.author, name: assistant.name, image: assistant.image }
+            : item.author,
       blocks: item.blocks.map(block),
       tools: item.tools?.map((t) => ({
         ...t,
         commentable: false,
-        blocks: t.blocks.map(block),
+        blocks: t.blocks.map((b) =>
+          importedToolBlock(b, capturedTools.get(t.id)),
+        ),
       })),
     })),
   );
 </script>
 
 <section class="import-transcript" aria-label="Imported transcript preview">
-  <div class="import-transcript__toolbar">
-    <span>Read-only snapshot</span>
-    <SegmentedControl
-      value={view}
-      options={["document", "classic"]}
-      labels={{ document: "Document", classic: "Classic" }}
-      ariaLabel="Imported transcript view"
-      onChange={(next) => {
-        if (next === "document" || next === "classic") view = next;
-      }}
-    />
-  </div>
+  {#if showViewToolbar}<div class="import-transcript__toolbar">
+      <span>Read-only snapshot</span>
+      <SegmentedControl
+        value={view}
+        options={["document", "classic"]}
+        labels={{ document: "Document", classic: "Classic" }}
+        ariaLabel="Imported transcript view"
+        onChange={(next) => {
+          if (next === "document" || next === "classic") view = next;
+        }}
+      />
+    </div>{/if}
   <Transcript
     {items}
     {view}

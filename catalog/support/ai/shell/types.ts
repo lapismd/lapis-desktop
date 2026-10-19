@@ -11,6 +11,8 @@ export type ShellScenario =
   | "community-tools"
   | "reload-resume"
   | "registry-chat"
+  | "sending-error"
+  | "send-failure"
   | "registry-overview";
 export const LOCAL_CONVERSATION_ID = "123e4567-e89b-42d3-a456-426614174000";
 export const ARCHIVED_CONVERSATION_ID = "223e4567-e89b-42d3-a456-426614174001";

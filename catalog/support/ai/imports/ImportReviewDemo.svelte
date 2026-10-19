@@ -2,8 +2,11 @@
   import { onMount, untrack } from "svelte";
   import { WorkspaceShell } from "@lapis-notes/workspace";
   import { createImportFixture, type ImportScenario } from "./fixture.ts";
-  let { scenario = "ready" }: { scenario?: ImportScenario } = $props();
-  const fixture = untrack(() => createImportFixture(scenario));
+  let {
+    scenario = "ready",
+    sessionLayout = false,
+  }: { scenario?: ImportScenario; sessionLayout?: boolean } = $props();
+  const fixture = untrack(() => createImportFixture(scenario, sessionLayout));
   let ready = $state(false);
   onMount(() => {
     let active = true;

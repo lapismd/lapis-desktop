@@ -238,3 +238,6 @@
 - [Native local Codex session import](history/E-AI-055.md)
 
 - [Vault-scoped native capture sources](history/E-AI-056.md)
+- [Storybook session inbox layout review](history/E-AI-057.md)
+
+- [Production AI inbox and local saved-history adoption](history/E-AI-058.md)
