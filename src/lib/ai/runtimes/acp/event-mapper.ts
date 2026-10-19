@@ -10,6 +10,7 @@ import { record, text, AgentTurnFailure } from "./wire.ts";
 export function mapAcpActivity(
   value: unknown,
   source: AgentEventSource,
+  ownedMcpServer?: string,
 ): AgentEvent {
   const update = record(value);
   const kind = text(update.sessionUpdate) ?? "unknown";
@@ -47,7 +48,13 @@ export function mapAcpActivity(
       name,
       title,
       kind: text(update.kind),
-      server: text(update.server),
+      server:
+        text(update.server) ??
+        (ownedMcpServer &&
+        (name.startsWith(`mcp.${ownedMcpServer}.`) ||
+          text(record(update.rawInput).server) === ownedMcpServer)
+          ? ownedMcpServer
+          : undefined),
       input: update.rawInput,
       locations: Array.isArray(update.locations) ? update.locations : undefined,
       content: update.content,

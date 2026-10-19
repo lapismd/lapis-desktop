@@ -221,3 +221,4 @@
 - [Complete bounded local streaming](history/E-AI-044.md)
   - [Stable local transcript comments and cold recovery](history/E-AI-045.md)
   - [Authenticated native application tools and effect drain](history/E-AI-046.md)
+  - [Native Codex application tools and local receipts](history/E-AI-047.md)

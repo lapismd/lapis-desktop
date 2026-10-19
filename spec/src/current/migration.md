@@ -395,6 +395,6 @@ E-AI-029 adds production grouped-frame consumption and per-frame transcript
 provenance to M13.3 prerequisites. Original native persistence, recovery and
 M10.2 completion gates remain open.
 
-E-AI-030 extends native capture prerequisites with explicit missing-backend
-refusal and real privacy qualification. Original Notes/JJ persistence and
-complete native recovery gates remain open.
+E-AI-030 retains missing-backend refusal and native privacy prerequisites. Codex
+tools use a separate local-file profile; original Notes/JJ persistence, complete
+native recovery and M10.2/M10.3 completion gates remain open.

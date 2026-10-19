@@ -8,10 +8,12 @@ import type {
 } from "../../core/runtime.ts";
 import { ACP_APPROVAL_CAPABILITIES } from "../../core/approvals.ts";
 import { AcpAgentSession } from "./session.ts";
+import type { AcpAppTools, ToolTurnPort } from "./tool-turn.ts";
 
 export type AcpRuntimeBackend = {
   client: ReturnType<typeof createAcpClient>;
   close(sessionId: string): Promise<void>;
+  tools?: AcpAppTools;
 };
 export class AcpAgentRuntime implements AgentRuntime {
   readonly id = "acp";
@@ -21,6 +23,7 @@ export class AcpAgentRuntime implements AgentRuntime {
   }
   capabilities(): AgentCapabilities {
     return {
+      preparesContext: true,
       skillSnapshots: false,
       sessions: true,
       resume: false,
@@ -28,7 +31,7 @@ export class AcpAgentRuntime implements AgentRuntime {
       steer: false,
       modelSelection: true,
       nativeTools: true,
-      mcpTools: false,
+      mcpTools: Boolean(this.#backend.tools),
       approvals: ACP_APPROVAL_CAPABILITIES,
     };
   }
@@ -47,12 +50,24 @@ export class AcpAgentRuntime implements AgentRuntime {
       request.agent ? target.id === request.agent : true,
     );
     if (!target) throw new Error("ACP target unavailable");
-    const session = new AcpAgentSession();
+    const descriptor = request.appToolSession;
+    const tools = this.#backend.tools;
+    if (descriptor?.status === "available" && !tools)
+      throw new Error("Application tools are unavailable");
+    const targetId = tools?.target(descriptor, target.id) ?? target.id;
+    const turnTools: ToolTurnPort | undefined =
+      descriptor?.status === "available" && descriptor.bridgeId && tools
+        ? {
+            arm: (id) => tools.arm(descriptor.bridgeId!, id),
+            end: (id) => tools.end(descriptor.bridgeId!, id),
+          }
+        : undefined;
+    const session = new AcpAgentSession(120_000, turnTools, target.id);
     const requestId = crypto.randomUUID();
     let bound = false;
     try {
       const native = await this.#backend.client.open(
-        { requestId, targetId: target.id },
+        { requestId, targetId },
         {
           consume: (value) => session.consume(value),
           onFailure: (error) => session.fail(error),

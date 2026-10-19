@@ -140,6 +140,7 @@ export class AppToolHost {
           call.input,
           details,
           invocation.signal,
+          call.toolCallId,
         );
         if (decision === "deny-once") {
           throw new AppToolExecutionError(
@@ -183,7 +184,7 @@ export class AppToolHost {
         checkPolicy();
         dispatched = true;
         const result = await raceWithAbort(
-          this.#executions.run(agentBindingId, () =>
+          this.#executions.run(agentBindingId, call.toolCallId, () =>
             registered.tool.execute(call.input, context),
           ),
           invocation.signal,
@@ -271,6 +272,9 @@ export class AppToolHost {
   }
   drainBinding(agentBindingId: string, timeoutMs?: number): Promise<void> {
     return this.#executions.drain(agentBindingId, timeoutMs);
+  }
+  settleInvocation(agentBindingId: string, toolCallId: string): Promise<void> {
+    return this.#executions.settle(agentBindingId, toolCallId);
   }
 
   expireOwner(ownerPluginId: string): void {

@@ -139,9 +139,10 @@ export class AiChatController extends AiChatControllerState {
     super(...args);
     this._unsubscribeAppToolEvents = this._appToolBridge?.subscribe((event) => {
       if (this._disposed) return;
-      void this._consumeAppToolEvent(event).catch((error) => {
+      return this._consumeAppToolEvent(event).catch((error) => {
         if (!this._disposed)
           this.error = error instanceof Error ? error.message : String(error);
+        throw error;
       });
     });
   }

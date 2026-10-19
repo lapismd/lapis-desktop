@@ -147,4 +147,4 @@ fn load(source: &Source) -> io::Result<Option<Ready>> {
 }
 
 #[cfg(test)]
-mod tests;
+pub(super) mod tests;

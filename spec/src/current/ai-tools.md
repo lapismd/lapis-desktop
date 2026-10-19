@@ -5,10 +5,20 @@ local transcript files. TOOLS-01B/C connect that policy through the shared MCP
 stdio engine. JJ persistence remains deferred. Source-only fixtures cannot
 qualify the mounted Codex profile.
 
-TOOLS-01B1 supplies the authenticated native transport, original-owner cleanup
-and actual callback drain. Conversation wiring and Codex launch admission are
-pending TOOLS-01B2/C; `mcpTools` remains disabled. The ordinary review app stays
-on its qualified local-chat build.
+TOOLS-01B1 supplies authenticated transport and original-owner cleanup.
+TOOLS-01B2 adds coordinator/approval wiring and scoped Codex launch admission.
+Only a factory with its owned AppToolHost advertises MCP support. E-AI-047
+qualifies installed Codex read, approved edit, pending-edit cancellation and
+cold local History. Wider effect-fault qualification remains TOOLS-01C.
+
+TOOLS-01B2 connects the existing coordinator and approval/event policy. Native
+Codex tool targets are opaque aliases bound to one worker claim and the original
+vault/window generation. Base Codex discovery stays tool-free. Raw MCP launch
+declarations remain refused. The turn arms only after durable local intent and
+context preparation, and terminal publication waits for tool callback and
+transcript-event drain. Any unknown effect fences the session; no automatic
+replay is offered. Exact reply acknowledgements may be reconciled without
+executing a callback again.
 
 The native main-window host registers an immutable bounded tool snapshot under
 its current physical vault/window/admission generation and original application

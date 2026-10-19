@@ -20,6 +20,7 @@
   data-ui-component="ai-agent-request"
   data-kind="permission"
   data-testid="ai-approval-card"
+  data-origin={request.origin}
 >
   <div data-ui-part="request-heading">
     <strong>{request.title}</strong>
@@ -45,6 +46,7 @@
       <button
         type="button"
         data-ui-part="feedback-option"
+        data-approval-kind={option.kind}
         {disabled}
         onclick={() => onRespond(option.id)}
       >

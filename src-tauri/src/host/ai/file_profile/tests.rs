@@ -1,7 +1,7 @@
 use super::*;
 use sha2::{Digest, Sha256};
 
-fn fixture() -> (tempfile::TempDir, PathBuf, PathBuf) {
+pub(in crate::host::ai) fn fixture() -> (tempfile::TempDir, PathBuf, PathBuf) {
     let temp = tempfile::tempdir().unwrap();
     let bundle = temp.path().join("bundle");
     let bin = temp.path().join("bin");

@@ -66,6 +66,7 @@ export type AiChatItem = (
       text: string;
       createdAt?: string;
       retryable?: boolean;
+      parentId?: string;
     }
   | {
       id: string;

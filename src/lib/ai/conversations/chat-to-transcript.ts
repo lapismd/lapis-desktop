@@ -147,6 +147,8 @@ export function projectChatItemsToTranscript(
             ...common,
             id: `${item.id}:response`,
             type: "approval.response",
+            // The owner's decision is distinct from the runtime request frame.
+            source: undefined,
             requestId: item.request.id,
             option: {
               id: item.responseOptionId,
@@ -180,6 +182,7 @@ export function projectChatItemsToTranscript(
             ...common,
             id: `${item.id}:response`,
             type: "question.response",
+            source: undefined,
             requestId: item.request.id,
             status: item.status,
             provenance: {
@@ -215,6 +218,7 @@ export function projectChatItemsToTranscript(
             ...common,
             id: item.id,
             type: "error",
+            parentId: item.parentId,
             message: sanitizeDurableField(item.text, options).text ?? "",
             retryable: item.retryable !== false,
             provenance: {

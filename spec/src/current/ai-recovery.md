@@ -1,5 +1,9 @@
 # Local AI turn recovery
 
+Native tool uncertainty retains the original pending turn and authored-message
+parent anchor through live/durable projection. Tool drain precedes terminal
+acknowledgement. Exact replies may reconcile; callbacks are never replayed.
+
 LD-AI-001/002/004 require a durable authored-message checkpoint before the
 provider can observe a prompt, and honest recovery when its outcome is unknown.
 E-AI-043 advances NOTES-09-FILES-B under the existing implementation approval.
@@ -59,6 +63,10 @@ checkpoint acknowledgement. Unknown transport/provider outcomes retain it.
 Unconfirmed binding/configuration changes do not become accepted merely because
 the stream ends. Authored message IDs stay stable across preparation, terminal
 checkpointing and teardown; completed messages are not duplicated.
+
+Owner approval/question responses retain their own stable journal identities.
+They must not inherit the runtime request's replay identity: deduplication of a
+replayed request cannot discard a later owner decision.
 
 Cold conversation restore reads the intent without writing or starting/resuming
 a conversational provider session. Non-prompting model discovery stays separate.

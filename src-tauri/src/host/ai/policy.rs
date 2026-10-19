@@ -10,6 +10,7 @@ use tauri_plugin_lapis_ai::{
     AcpHost, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
     runtime::SessionProcessor,
 };
+mod tool_launch;
 
 #[derive(Clone, Default)]
 pub struct DesktopAiPolicy(Arc<PolicyState>);
@@ -128,7 +129,11 @@ impl HostPolicy for DesktopAiPolicy {
         }
         // This explicit profile uses the existing local transcript writer. It
         // does not construct a JJ capture processor or publish store metadata.
-        if self.0.files.contains(&binding.target_id) {
+        if self.0.files.contains(&binding.target_id)
+            || self
+                .tool_binding(context, &current, &binding.target_id, false)?
+                .is_some()
+        {
             return Ok(None);
         }
         let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
@@ -143,6 +148,9 @@ impl HostPolicy for DesktopAiPolicy {
     }
     fn resolve(&self, context: &HostContext, target: &str, resume: Option<&str>) -> Result<Launch> {
         let current = self.current(context)?;
+        if let Some(launch) = self.tool_launch(context, &current, target, resume)? {
+            return Ok(launch);
+        }
         if resume.is_some() && self.0.files.contains(target) {
             return Err(Error("resume_not_admitted"));
         }

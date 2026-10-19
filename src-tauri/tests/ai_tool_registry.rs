@@ -38,6 +38,8 @@ async fn registry_fences_original_scope_and_never_reuses_request_identity() {
         .await
         .unwrap();
     let binding = registry.binding(request, &owner()).unwrap();
+    registry.claim(request, &owner()).unwrap();
+    assert!(registry.claim(request, &owner()).is_err());
     let (config, _) = binding.launch().unwrap();
     let mut other = owner();
     other.generation = "second".into();

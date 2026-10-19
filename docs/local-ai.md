@@ -45,13 +45,16 @@ message or on its own. The exact comment, quote and table row are saved before
 dispatch; confirmed turns retain an acknowledgement for History to restore
 inline feedback. Unconfirmed captures remain prepared context and are never
 automatically resent. File snapshots remain transient. Provider-session resume
-and the native application-tool bridge remain separate capabilities.
+remains a separate capability.
 
-The authenticated native MCP transport has independent cold helper and
-cancellation/drain checks. Conversation wiring and real Codex tool acceptance
-are pending; the tool capability stays disabled. The existing Notes registry,
-explicit write approvals and guarded Vault APIs remain the policy boundary. No
-JJ persistence is added.
+Codex can use the enabled Notes application tools through the authenticated
+native MCP bridge. Reads use the existing registry and vault scope. Edits show
+the existing App approval with their exact file changes before execution; Codex
+may also ask for its own permission first. Messages, completed tool calls and
+approval decisions stay in local transcripts. Stop preserves an unapproved file;
+if provider or callback completion cannot be confirmed, History retains an
+unknown outcome without replay. The registry, explicit write approvals and
+guarded Vault APIs remain the policy boundary. JJ persistence stays deferred.
 
 The host chooses the current admitted vault root, executable and environment.
 The renderer cannot override them. Codex retains its native HOME authentication;
@@ -72,3 +75,8 @@ the device runtime configuration:
 pnpm exec tauri build --debug --bundles app --features e2e --config src-tauri/tauri.e2e.conf.json
 LAPIS_AI_TEST_RUNTIME_CONFIG=/absolute/path/to/ai-runtime.json node --test tests/desktop/ai-local-recovery.test.mjs
 ```
+
+Use `tests/desktop/ai-local-tools.test.mjs` with the same configuration for the
+real Codex read → approved edit → cancel → cold History acceptance. It uses an
+isolated plain vault and checks that it never creates `.jj` metadata. Wider
+provider, effect-fault, platform and distribution qualification remains open.

@@ -397,4 +397,4 @@ success stays distinct from native UI acceptance; original gates remain.
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
 IPC-only checks, headed windows and capture qualification boundaries.
 
-Native tool work records exact source/consumer gates; LD-GOV-001/002/004 remain.
+Native Codex tools retain LD-GOV-001/002/004 and original JJ/release gates.

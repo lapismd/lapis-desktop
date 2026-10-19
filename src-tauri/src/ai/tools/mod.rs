@@ -1,11 +1,13 @@
 //! Authenticated application-tool transport. The host retains policy and effects.
 mod binding;
 mod client;
+mod events;
 mod files;
 mod framing;
 mod listener;
 mod protocol;
 mod registry;
+mod state;
 
 pub use binding::{Authorize, Binding, EventSink, Limits};
 pub use client::{Client, stdio};

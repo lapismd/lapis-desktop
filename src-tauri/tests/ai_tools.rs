@@ -163,6 +163,14 @@ async fn exact_turn_and_opaque_invocation_are_retained_without_mcp_numeric_ids()
         .unwrap();
     assert_eq!(task.await.unwrap().unwrap()["content"][0]["text"], "note");
     assert!(binding.reply(invocation_id, Outcome::Unknown {}).is_err());
+    binding
+        .reply(
+            invocation_id,
+            Outcome::Completed {
+                value: json!({"content":[{"type":"text","text":"note"}]}),
+            },
+        )
+        .unwrap();
     binding.end(turn).await.unwrap();
     assert!(binding.end(turn).await.is_err());
     binding.close().await.unwrap();

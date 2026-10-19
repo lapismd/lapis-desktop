@@ -16,21 +16,40 @@ import { mapAcpActivity, mapAcpTerminal } from "./event-mapper.ts";
 import { mapAcpPermission } from "./permissions.ts";
 import { configureAcpSession } from "./configuration.ts";
 import { AgentTurnFailure } from "./wire.ts";
+import { ToolTurn, type ToolTurnPort } from "./tool-turn.ts";
+import {
+  isGenericToolName,
+  toolNameFromInput,
+} from "../../chat/chat-tool-identity.ts";
 
-type ActiveTurn = { abort: AbortController; requestId?: string };
+type ActiveTurn = {
+  abort: AbortController;
+  requestId?: string;
+  tools?: ToolTurn;
+  terminal?: Promise<void>;
+};
 export class AcpAgentSession implements AgentSession {
   #native?: AcpSessionClient;
   readonly #events = new AsyncEventQueue<AgentEvent>();
   readonly #permissions = new Map<string, ApprovalRequest>();
   readonly #deciding = new Set<string>();
+  readonly #toolNames = new Map<string, string>();
   #turn?: ActiveTurn;
   #configuring = false;
   #state: "active" | "detached" | "closed" = "active";
   #fatal?: Error;
   #close?: Promise<void>;
   readonly #maxDurationMs: number;
-  constructor(maxDurationMs = 120_000) {
+  readonly #tools?: ToolTurnPort;
+  readonly #provider?: string;
+  constructor(
+    maxDurationMs = 120_000,
+    tools?: ToolTurnPort,
+    provider?: string,
+  ) {
     this.#maxDurationMs = maxDurationMs;
+    this.#tools = tools;
+    this.#provider = provider;
   }
   get id(): string {
     return this.#native?.info.sessionId ?? "starting";
@@ -46,6 +65,7 @@ export class AcpAgentSession implements AgentSession {
     return this.#events;
   }
   consume(snapshot: SessionSnapshot): void {
+    if (this.#state !== "active") return;
     for (const event of snapshot.events) {
       const frames = sessionEventFrames(event);
       for (const [frameIndex, frame] of frames.entries()) {
@@ -55,10 +75,26 @@ export class AcpAgentSession implements AgentSession {
           sequence: event.sequence,
           ...(frames.length > 1 ? { frameIndex } : {}),
         };
-        if (frame.type === "activity")
-          this.#events.push(mapAcpActivity(frame.update, source));
+        if (frame.type === "activity") {
+          const event = mapAcpActivity(
+            frame.update,
+            source,
+            this.#tools && this.#provider === "codex"
+              ? "lapis-tools"
+              : undefined,
+          );
+          if (event.type === "tool.start" || event.type === "tool.end") {
+            const title = event.title ?? toolNameFromInput(event.input);
+            if (title && !isGenericToolName(title)) {
+              if (!this.#toolNames.has(event.id) && this.#toolNames.size >= 256)
+                this.#toolNames.delete(this.#toolNames.keys().next().value!);
+              this.#toolNames.set(event.id, title.slice(0, 1024));
+            }
+          }
+          this.#events.push(event);
+        }
         if (frame.type === "permission") {
-          const request = mapAcpPermission(frame);
+          const request = mapAcpPermission(frame, this.#toolNames);
           if (this.#permissions.has(request.id))
             throw new Error("Duplicate ACP permission");
           this.#permissions.set(request.id, request);
@@ -80,16 +116,27 @@ export class AcpAgentSession implements AgentSession {
         ) {
           this.#permissions.clear();
           const event = mapAcpTerminal(frame, source);
-          this.#events.push(event);
-          if (
-            (event.type === "error" &&
-              (event.error as AgentTurnFailure).outcome === "unknown") ||
-            frame.sessionUsable === false
-          )
-            this.#fatal =
-              event.type === "error"
-                ? event.error
-                : new AgentTurnFailure("session_unusable");
+          const publish = () => {
+            this.#toolNames.clear();
+            this.#events.push(event);
+            if (
+              (event.type === "error" &&
+                (event.error as AgentTurnFailure).outcome === "unknown") ||
+              frame.sessionUsable === false
+            )
+              this.#fatal =
+                event.type === "error"
+                  ? event.error
+                  : new AgentTurnFailure("session_unusable");
+          };
+          const turn = this.#turn;
+          if (turn?.tools && frame.requestId === turn.requestId) {
+            turn.terminal ??= turn.tools
+              .end()
+              .then(publish)
+              .catch((error) => this.#toolFailure(error));
+            void turn.terminal.catch(() => undefined);
+          } else publish();
         }
       }
     }
@@ -104,12 +151,18 @@ export class AcpAgentSession implements AgentSession {
     const native = this.#ready();
     if (this.#turn || this.#configuring) throw new Error("ACP session busy");
     const turn: ActiveTurn = { abort: new AbortController() };
+    this.#toolNames.clear();
     this.#turn = turn;
     try {
       const prepared = await prepareAgentTurn(text, options, turn.abort.signal);
       this.#ready();
       turn.abort.signal.throwIfAborted();
       turn.requestId = crypto.randomUUID();
+      if (this.#tools) {
+        turn.tools = new ToolTurn(this.#tools, turn.requestId);
+        await turn.tools.arm();
+        turn.abort.signal.throwIfAborted();
+      }
       const frame = await native.send(turn.requestId, {
         type: "prompt",
         ...prepared,
@@ -120,25 +173,43 @@ export class AcpAgentSession implements AgentSession {
         runId: turn.requestId,
         sequence: native.sequence,
       });
+      await turn.terminal;
       if (result.type === "error") throw result.error;
     } catch (error) {
       if (
         error instanceof Error &&
         "outcome" in error &&
         error.outcome === "unknown"
-      )
+      ) {
         this.fail(error);
+        if (this.#tools) await this.close().catch(() => undefined);
+      }
       throw error;
     } finally {
-      if (this.#turn === turn) this.#turn = undefined;
+      try {
+        if (turn.terminal) await turn.terminal;
+        else await turn.tools?.end().catch((error) => this.#toolFailure(error));
+      } finally {
+        if (this.#turn === turn) this.#turn = undefined;
+      }
     }
+  }
+  async #toolFailure(_error: unknown): Promise<never> {
+    const error = new AgentTurnFailure("application_tool_outcome_unknown");
+    this.fail(error);
+    try {
+      await this.close();
+    } catch {
+      /* The unknown outcome remains authoritative. */
+    }
+    throw error;
   }
   async configure(input: AgentSessionConfiguration) {
     const native = this.#ready();
     if (this.#turn || this.#configuring) throw new Error("ACP session busy");
     this.#configuring = true;
     try {
-      return await configureAcpSession(native, input);
+      return await configureAcpSession(native, input, this.#provider);
     } finally {
       this.#configuring = false;
     }
@@ -194,6 +265,7 @@ export class AcpAgentSession implements AgentSession {
     }
   }
   async detach(): Promise<void> {
+    if (this.#tools) return this.close();
     if (this.#state !== "active") return;
     this.#state = "detached";
     this.#turn?.abort.abort();
@@ -209,6 +281,7 @@ export class AcpAgentSession implements AgentSession {
     return this.#close;
   }
   async #stop(): Promise<void> {
+    this.#toolNames.clear();
     this.#state = "closed";
     this.#turn?.abort.abort();
     this.#permissions.clear();

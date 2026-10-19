@@ -21,6 +21,7 @@ struct Entry {
     owner: Owner,
     fenced: Arc<AtomicBool>,
     ready: watch::Receiver<Option<Result<Arc<Binding>, ()>>>,
+    claimed: AtomicBool,
 }
 #[derive(Default)]
 struct State {
@@ -54,6 +55,7 @@ impl Registry {
                 owner: owner.clone(),
                 fenced: Arc::new(AtomicBool::new(false)),
                 ready,
+                claimed: AtomicBool::new(false),
             });
             state.seen.insert(request, owner);
             state.entries.insert(request, entry.clone());
@@ -120,6 +122,18 @@ impl Registry {
             .ok_or_else(unavailable)?;
         let result = entry.ready.borrow().clone();
         result.ok_or_else(unavailable)?.map_err(|_| unavailable())
+    }
+    /// An admitted alias belongs to exactly one ACP worker, including lost opens.
+    pub fn claim(&self, request: Uuid, owner: &Owner) -> io::Result<Arc<Binding>> {
+        let binding = self.binding(request, owner)?;
+        binding.check()?;
+        let state = self.state.lock().map_err(|_| unavailable())?;
+        let entry = state.entries.get(&request).ok_or_else(unavailable)?;
+        entry
+            .claimed
+            .compare_exchange(false, true, Ordering::SeqCst, Ordering::SeqCst)
+            .map_err(|_| unavailable())?;
+        Ok(binding)
     }
     /// Closing uses the original window/session, even after its generation expired.
     pub async fn close(&self, request: Uuid, window: &str, session: &str) -> io::Result<()> {

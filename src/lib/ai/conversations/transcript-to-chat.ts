@@ -141,6 +141,7 @@ export function projectTranscriptToChatItems(
           type: "error",
           text: entry.message,
           retryable: entry.retryable,
+          parentId: entry.parentId,
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
         });

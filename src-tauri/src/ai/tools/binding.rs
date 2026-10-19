@@ -1,7 +1,8 @@
+use super::events::Events;
+use super::state::{Pending, State};
 use super::{Event, Outcome, ToolSpec, files::Files, unavailable, unknown};
 use serde_json::Value;
 use std::{
-    collections::HashMap,
     io,
     path::PathBuf,
     sync::{Arc, Mutex},
@@ -27,24 +28,13 @@ impl Default for Limits {
         }
     }
 }
-struct Pending {
-    reply: oneshot::Sender<Outcome>,
-    cancelled: bool,
-}
-#[derive(Default)]
-struct State {
-    fenced: bool,
-    turn: Option<Uuid>,
-    calls: HashMap<Uuid, Pending>,
-    total: usize,
-}
 pub struct Binding {
     pub id: Uuid,
     pub(super) tools: Vec<ToolSpec>,
     pub(super) files: Mutex<Option<Files>>,
     pub(super) limits: Limits,
     authorize: Authorize,
-    sink: EventSink,
+    sink: Events,
     state: Mutex<State>,
     changed: Notify,
     pub(super) stop: watch::Sender<bool>,
@@ -80,7 +70,7 @@ impl Binding {
             files: Mutex::new(Some(files)),
             limits,
             authorize,
-            sink,
+            sink: Events::new(sink),
             state: Mutex::new(State::default()),
             changed: Notify::new(),
             stop: watch::channel(false).0,
@@ -192,15 +182,18 @@ impl Binding {
             state.total += 1;
             (id, turn, receiver)
         };
-        if (self.sink)(Event::Call {
+        let sent = self.sink.send(Event::Call {
             bridge_id: self.id,
             invocation_id: id,
             turn_id: turn,
             name,
             arguments,
-        })
-        .is_err()
-        {
+        });
+        if matches!(sent, Ok(false)) {
+            let _ = self.reply(id, Outcome::Rejected {});
+            return Err(Outcome::Rejected {});
+        }
+        if sent.is_err() {
             // Event delivery may have happened: retain execution ownership until an exact reply.
             let _ = self.cancel(id);
             return Err(Outcome::Unknown {});
@@ -213,10 +206,10 @@ impl Binding {
             .state
             .lock()
             .map_err(|_| unavailable())?
-            .calls
-            .remove(&id)
-            .ok_or_else(unavailable)?;
-        let _ = pending.reply.send(outcome);
+            .acknowledge(id, &outcome)?;
+        if let Some(pending) = pending {
+            let _ = pending.reply.send(outcome);
+        }
         self.changed.notify_waiters();
         Ok(())
     }
@@ -230,7 +223,7 @@ impl Binding {
             })
         };
         if emit {
-            (self.sink)(Event::Cancel {
+            self.sink.send(Event::Cancel {
                 bridge_id: self.id,
                 invocation_id: id,
             })?;
@@ -245,10 +238,18 @@ impl Binding {
             state.calls.keys().copied().collect::<Vec<_>>()
         };
         self.stop.send_replace(true);
+        let mut failure = None;
         for id in calls {
-            self.cancel(id)?;
+            if let Err(error) = self.cancel(id) {
+                failure.get_or_insert(error);
+            }
         }
-        Ok(())
+        self.sink.close()?;
+        if let Some(error) = failure {
+            Err(error)
+        } else {
+            Ok(())
+        }
     }
     async fn drain(&self) -> io::Result<()> {
         tokio::time::timeout(self.limits.drain, async {

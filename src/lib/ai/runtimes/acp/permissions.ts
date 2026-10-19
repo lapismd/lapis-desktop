@@ -36,6 +36,7 @@ function approvalKind(value: unknown): ApprovalKind {
 }
 export function mapAcpPermission(
   frame: Record<string, unknown>,
+  names?: ReadonlyMap<string, string>,
 ): ApprovalRequest {
   const id = text(frame.permissionId);
   const request = record(frame.request);
@@ -54,14 +55,15 @@ export function mapAcpPermission(
     };
   });
   const tool = record(request.toolCall);
+  const title = text(tool.title) ?? names?.get(text(tool.toolCallId) ?? "");
   return {
     id,
     origin: "runtime",
     kind: approvalKind(tool.kind),
-    title: text(tool.title) ?? "Allow this agent action?",
+    title: title ?? "Allow this agent action?",
     options,
     tool: {
-      name: text(tool.title) ?? text(tool.kind) ?? "acp_tool",
+      name: title ?? text(tool.kind) ?? "acp_tool",
       input: tool.rawInput,
     },
   };

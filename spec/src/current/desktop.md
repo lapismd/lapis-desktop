@@ -1,7 +1,7 @@
 # Desktop shell
 
-E-AI-042–046 cover local AI and [native tools](ai-tools.md). UI: E-REPO-023/025,
-E-AI-039–041. Gravatar: `https://www.gravatar.com`.
+Local AI and [native tool wiring](ai-tools.md) retain host admission. UI:
+E-REPO-023/025, E-AI-039–041. Gravatar: `https://www.gravatar.com`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.
 Leave drains it before persistence/teardown and resumes only a still-live App on
