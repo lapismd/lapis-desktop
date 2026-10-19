@@ -15,6 +15,16 @@ admission or vault closure. The binary now connects it to a private history
 cache and the read-only JJ Tauri plugin through exact admit/release commands. It
 grants no AI execution.
 
+Automatic vault history uses the reusable `jj-vault` coordinator on native
+workers. It retains saved internal/external edits with external metadata by
+default, while separate commands handle guarded restoration, Git synchronization
+and explicit original-history adoption. Immutable readers keep their source and
+operation pins; credentials stay in installation-owned native custody. The host
+owns watching, vault admission and editor/close barriers. See the
+[backup contract](../spec/src/current/vault-backup.md) and
+[delivery checklist](../docs/automatic-vault-backup-progress.md) for setup and
+qualification boundaries.
+
 `ai::capture::ManagedCapture` adapts an injected
 `jj_store_conversations::capture::NativeCapture` to the shared native runtime.
 The host supplies admitted privacy and a durable receipt sink. Every safe frame

@@ -1,10 +1,11 @@
 # Automatic vault backup delivery
 
-This checklist implements the approved seven-stage plan. Only the current stage
-is Active. Checkmarks identify completed slices; they do not promote an entire
-stage before its acceptance is proven. The native source ledger is jj-store M34;
-the desktop ledger is M14. Heavy checks are deferred by user instruction and
-listed below. Changes integrate back into the main workspaces after completion.
+The seven implementation stages are integrated into the main workspaces.
+Checkmarks identify completed slices; Partial retains their outstanding
+qualification gates. No implementation stage is currently Active. The native
+source ledger is jj-store M34; the desktop ledger is M14. Heavy checks are
+deferred by user instruction and listed below. Source and desktop main
+workspaces now contain the implementation.
 
 | Stage                                  | Status  | Acceptance                                                                                     |
 | -------------------------------------- | ------- | ---------------------------------------------------------------------------------------------- |
@@ -14,7 +15,7 @@ listed below. Changes integrate back into the main workspaces after completion.
 | 4. GitHub integration                  | Partial | Sign-in, remote setup and fresh-device restore work                                            |
 | 5. Automatic two-way synchronization   | Partial | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
 | 6. Historical search                   | Partial | Find and restore past text, paths and metadata through exact checkpoint anchors                |
-| 7. Advanced storage and Forgejo        | Active  | Root .jj/adoption and Forgejo work, then changes integrate into main                           |
+| 7. Advanced storage and Forgejo        | Partial | Root storage, adoption and Forgejo integrated; further qualification pending                   |
 
 ## Completed slices
 
@@ -44,7 +45,8 @@ listed below. Changes integrate back into the main workspaces after completion.
 ## Deferred verification and remaining delivery
 
 - Full repository Rust/UI/catalog suites and all-platform/release qualification
-  are deferred until implementation is in place. No visual baseline changes.
+  remain deferred under the approved working-version scope. No visual baseline
+  changes.
 - A focused Rust check initially hit the 30 GiB disk reserve. The active
   jj-store target was preserved. An idle desktop incremental cache was cleaned
   while holding its Cargo lock, recovering about14 GiB; review data and app
@@ -55,9 +57,9 @@ listed below. Changes integrate back into the main workspaces after completion.
   restored a clean type check. These attempts remain in local verification logs.
 - Historical search and Forgejo focused implementation are recorded below.
   Existing-repository adoption/source selection now have focused implementation;
-  native acceptance and main integration remain required delivery.
-- Nothing has been integrated into the main workspaces yet. Existing review app
-  and ordinary vault data remain in their original locations.
+  native/provider acceptance remains deferred and recorded.
+- [x] Source and desktop code integrated into the main workspaces. Existing
+      review-app and ordinary vault data remain in their original locations.
 
 ## Local restore and live follow
 
@@ -132,9 +134,10 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
 
 Normal, conflict and original-push recovery flows have focused proof in
 E-VAULT-BACKUP-008/009 and E-REPO-032/033. Stage 5 is Partial: cold
-native/provider acceptance remains open. Only stage 7 is Active. Root storage,
-adoption and Forgejo have focused implementations; cold acceptance and main
-integration remain required. Original workspaces and review data are preserved.
+native/provider acceptance remains open. Implementation is integrated; no stage
+is Active. Root storage, adoption and Forgejo have focused implementations; cold
+native/provider qualification remains deferred. Main code is integrated;
+original review and vault data are preserved.
 
 ## Historical search
 
@@ -146,11 +149,11 @@ integration remain required. Original workspaces and review data are preserved.
 Source E-VAULT-BACKUP-010 qualifies20native and nineworker/search cases. Desktop
 E-REPO-034 qualifies46renderer cases, nine native frame cases and 116affected
 catalog interaction/accessibility executions. Cold native
-search/restore/lifecycle acceptance remains deferred until all implementation is
-present. Search cache is disposable; content above1MiB and binary/conflicted
-versions remain path-only with an explicit count.
+search/restore/lifecycle acceptance remains deferred after implementation.
+Search cache is disposable; content above1MiB and binary/conflicted versions
+remain path-only with an explicit count.
 
-## Current stage: Advanced storage and Forgejo
+## Advanced storage and Forgejo
 
 - [x] Forgejo PAT custody, provider-aware Git authentication and remote setup.
 - [x] Recoverable native external/root .jj migration, original receipt lineage,
@@ -162,19 +165,36 @@ versions remain path-only with an explicit count.
       recursive inventory, preventing capture loops in the root layout.
 - [x] Explicit existing-repository adoption with original-request recovery.
 - [x] Separate backup/original JJ Log and Op Log source tabs with pinned reads.
-- [ ] Focused cold native-app acceptance and integration into main workspaces.
+- [x] Focused source/desktop implementation integrated into main.
+- [ ] Cold native-app acceptance remains deferred.
 
 Forgejo focused evidence: E-VAULT-BACKUP-011 / E-REPO-035. Source29forge package
 cases, sevencredential/transfer cases, fournative consumer service cases,
 nineframe cases,11renderer cases and84catalog interaction/axe executions pass.
 Live provider/cold app gates remain open. E-VAULT-BACKUP-012 and E-REPO-036
-record focused source/desktop storage evidence. Stage7 now focuses on native
-acceptance and main integration; only this stage is Active.
+record focused source/desktop storage evidence. Stage7 implementation is
+integrated; its native/provider qualification remains Partial.
 
 E-VAULT-BACKUP-013 / E-REPO-037 record recorded-ancestry import, original
 request recovery and source-specific tabs. The original repository stays
 independent and unchanged; imported Git ancestry joins the current managed tree.
 Original native operations/evolution remain available through separate read
 tokens. Capture, search, status and ordinary file history stay backup-scoped.
-Current focused results are recorded in the ledgers; cold native/provider and
-main integration remain open.
+Current focused results are recorded in the ledgers. Cold native/provider
+qualification remains open; E-REPO-038 records main integration.
+
+## Main workspace acceptance
+
+E-REPO-038 records main integration. The desktop uses the
+same14checksum-verified local archives as the qualified isolated workspace;
+normal package manifests and lockfiles remain portable. Main focused renderer
+tests, strict types, affected cold Storybook/theme/width checks and the
+production renderer build pass. Source production code is unchanged from
+E-VAULT-BACKUP-013. The unrelated source progress edit and review/vault data are
+preserved. Heavy actual-native-app, live-forge, full-suite, other-platform and
+release qualification remain deferred; focused evidence does not complete those
+original gates.
+
+- [x] Generate the source documentation book and rerun the rendered-book link
+      audit. E-VAULT-BACKUP-015 records the initial missing input and successful
+      repair:3157HTMLpages/120192local references pass.

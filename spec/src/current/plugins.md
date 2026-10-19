@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-E-REPO-036/037 add production storage/adoption settings and source-specific
+E-REPO-036–038 add production storage/adoption settings and source-specific
 history tabs, with loading, empty, recovery and toast stories (LD-CAT-003).
 Mutations/progress belong to the enabled plugin and drain beyond tab closure.
 Cold native app and visual approval gates remain separate.

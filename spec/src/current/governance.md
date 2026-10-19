@@ -1,8 +1,8 @@
 # Governance
 
-E-REPO-035–037 retain LD-GOV-001/002/004 with native source/account/storage
-audits and evidence. Deferred native/provider/full-suite/release gates remain
-open; only M14.7 is active.
+E-REPO-035–038 retain LD-GOV-001/002/004 with source/account/storage audits.
+Implementation is integrated; deferred native/provider/full-suite/release gates
+remain Partial with no active implementation stage.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

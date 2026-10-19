@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-037: admitted source/adoption commands use native scopes and workers.
+E-REPO-037/038: native source/adoption scope and worker contracts are unchanged.
 Storage/forge boundaries (E-REPO-035/036), LD-DESK-003/HOST-001 remain.
 Gravatar: `https://www.gravatar.com`; status: `repository-navigation.md`.
 
