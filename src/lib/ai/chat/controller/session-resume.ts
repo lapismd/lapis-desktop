@@ -85,6 +85,7 @@ export async function _tryResumeBinding(
     }
     if (previousBindingId && previousBindingId !== compatibleBinding.id) {
       await this._closeAppToolBinding(previousBindingId);
+      if (this.session === previousSession) this.session = null;
       await this._detachSession(previousSession);
     }
     const switchRecord: TranscriptEntry | undefined =

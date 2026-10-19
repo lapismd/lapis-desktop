@@ -259,6 +259,7 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
         ? JSON.stringify(addressedTranscript)
         : JSON.stringify(
             runtime.sessions.map((session) => ({
+              id: session.id,
               prompts: session.prompts,
               context: session.contextBlocks,
             })),

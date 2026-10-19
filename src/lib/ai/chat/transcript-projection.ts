@@ -93,7 +93,7 @@ export function projectAiTranscript(
         author: "You",
         prompt: item.text,
         summary: "",
-        agentName: binding?.agent,
+        agentName: binding?.participant?.label ?? binding?.agent,
         modelLabel: binding?.model?.model,
         createdAt: item.createdAt ? Date.parse(item.createdAt) : undefined,
       };
@@ -159,8 +159,10 @@ export function projectAiTranscript(
         ? item.role === "user"
           ? { id: "local-user", name: "You", initials: "YO" }
           : {
-              id: item.agentBindingId ?? "assistant",
-              name: binding?.agent ?? "Assistant",
+              id:
+                binding?.participant?.id ?? item.agentBindingId ?? "assistant",
+              name:
+                binding?.participant?.label ?? binding?.agent ?? "Assistant",
               initials: "AI",
               shape: "rounded",
             }

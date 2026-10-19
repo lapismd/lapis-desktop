@@ -186,6 +186,7 @@ export async function _prepareSession(
   }
   if (previousBindingId) {
     await this._closeAppToolBinding(previousBindingId);
+    if (this.session === previousSession) this.session = null;
     await this._detachSession(previousSession);
   }
   const { binding, switchRecord } = this._activateNewBinding(

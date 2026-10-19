@@ -600,3 +600,8 @@ at `d80f03418e64c13f15483a41896cec5490e8e2ea` into
 `src/components/ai/chat/ChatRecipients.svelte`. The production adapter uses
 Design Core Button/Avatar/Badge and the headless codec's built public exports;
 no source-checkout import or catalog state enters production.
+
+IndependentParticipants exercises Reviewer → Writer → Reviewer through the same
+admitted runtime, distinct session bindings, exact switch-back resume and
+visible Document/Classic attribution. It qualifies sequential single-recipient
+turns; multiple-recipient dispatch and queues remain pending.

@@ -188,6 +188,12 @@ test(
       ).recipients,
       [{ id: "codex", label: "Codex", token: "jj-store-agent:636f646578;" }],
     );
+    assert.deepEqual(
+      entries(join(dirname(metadata), "agents.jsonl")).find(
+        (entry) => entry.type === "binding.created",
+      ).participant,
+      { id: "codex", label: "Codex", token: "jj-store-agent:636f646578;" },
+    );
     const read = entries(journal).filter(
       (e) =>
         e.type === "tool" && e.name === "read" && e.server === "lapis-tools",

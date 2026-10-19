@@ -102,3 +102,44 @@ export const ExplicitSend: Story = {
     ).toHaveTextContent("@Reviewer");
   },
 };
+
+export const IndependentParticipants: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    for (const [name, prompt] of [
+      ["Reviewer", "Review the note"],
+      ["Writer", "Draft the follow-up"],
+      ["Reviewer", "Review the follow-up"],
+    ]) {
+      const editor = await canvas.findByRole("textbox", { name: "Message" });
+      await userEvent.click(editor);
+      await userEvent.keyboard(`@${name.toLowerCase()}`);
+      await userEvent.click(
+        await canvas.findByRole("option", { name: new RegExp(name!) }),
+      );
+      await userEvent.keyboard(prompt!);
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Send message" }),
+      );
+      await waitFor(() =>
+        expect(
+          canvas.queryByRole("button", { name: `Remove recipient @${name}` }),
+        ).toBeNull(),
+      );
+      await waitFor(() =>
+        expect(
+          canvas.getAllByText(name!, { exact: true }).length,
+        ).toBeGreaterThan(0),
+      );
+    }
+    await waitFor(() => {
+      const sessions = JSON.parse(aiReviewValue(canvasElement, "sessions"));
+      expect(sessions).toHaveLength(3);
+      expect(sessions[2].id).toBe(sessions[0].id);
+      expect(sessions[1].id).not.toBe(sessions[0].id);
+    });
+    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await expect(canvas.findAllByText(/Writer/)).resolves.not.toHaveLength(0);
+    await expect(canvas.findAllByText(/Reviewer/)).resolves.not.toHaveLength(0);
+  },
+};

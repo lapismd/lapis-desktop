@@ -224,3 +224,4 @@
   - [Authenticated native application tools and effect drain](history/E-AI-046.md)
   - [Native Codex application tools and local receipts](history/E-AI-047.md)
   - [Addressed local messages and retained draft context](history/E-AI-048.md)
+  - [Independent local agent participants](history/E-AI-049.md)

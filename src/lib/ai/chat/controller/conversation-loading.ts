@@ -156,6 +156,9 @@ export async function _restoreConversation(
   this._sessionRequest = {
     ...this.request,
     agent: activeBinding.agent,
+    recipients: activeBinding.participant
+      ? [{ ...activeBinding.participant }]
+      : undefined,
     model: activeBinding.model,
     thinking: activeBinding.thinking,
     workspace: this.workspace,

@@ -52,6 +52,7 @@ export type ConversationMetadata = {
 export type AgentBindingCreatedRecord = {
   schemaVersion: ConversationSchemaVersion;
   type: "binding.created";
+  participant?: import("./recipients.ts").SavedAgentRecipient;
   id: string;
   createdAt: string;
   runtime: string;

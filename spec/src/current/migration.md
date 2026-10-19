@@ -395,6 +395,6 @@ E-AI-029 adds production grouped-frame consumption and per-frame transcript
 provenance to M13.3 prerequisites. Original native persistence, recovery and
 M10.2 completion gates remain open.
 
-E-AI-030 retains native privacy and missing-backend refusal. E-AI-047/048
-qualify local tools/recipient tags. Original JJ persistence, native recovery and
+E-AI-030 retains native privacy and missing-backend refusal. E-AI-047–049
+qualify local tools/participants. Original JJ persistence, native recovery and
 M10.2/M10.3 completion gates remain open.

@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+AGENT-01B1 extends the addressed-message review with sequential independent
+participants using one runtime. Document/Classic retain their captured labels;
+multiple-recipient delivery and queues stay separate.
+
 E-AI-043/044 retain LD-PLUG-001 ownership: Document and Classic share local
 recovery, with authored messages and unknown outcomes shown without replay.
 

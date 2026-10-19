@@ -66,7 +66,10 @@ selection appears as a removable recipient pill; selecting it sends nothing.
 Send saves its exact setup tag separately from your message. Document and
 Classic retain that selection, and History shows the original captured label
 even when the agent is no longer configured. The first native profile offers
-Codex. Multiple recipients and persisted delivery queues remain later slices.
+Codex. Named participants that share a runtime keep distinct bindings; switching
+back resumes only their own eligible context. The original captured name remains
+visible in saved History. Multiple recipients and persisted delivery queues
+remain later slices.
 
 The private migration app consumes the shared conversation token codec through
 `@lapismd/jj-conversations`' verified built exports, alongside the history SDK.

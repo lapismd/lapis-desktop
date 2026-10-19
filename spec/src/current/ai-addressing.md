@@ -37,3 +37,30 @@ Source-derived recipient pills reuse Design Core Button and Avatar. Operational
 selection/send failures use existing App-owned notifications and retain draft
 context. Fixture stories prove selection, removal, view switching and saved
 projection separately from actual native delivery and cold local persistence.
+
+## Independent logical participants
+
+AGENT-01B1 binds an explicit single recipient to a logical participant
+independently of runtime and provider-session identity. A new binding captures
+the exact validated recipient ID/token/label as optional `participant`. Two
+participants using the same Codex target receive separate bindings and verified
+context cursors. Switching back may resume only that participant's eligible
+binding and receives the existing bounded verified delta. A saved label never
+selects a runtime, executable, tools, permissions or credentials.
+
+Binding matching uses the participant's stable ID; equal display names do not
+merge identities. Unaddressed messages target the ordinary selected
+runtime/agent identity and do not implicitly address the last named participant.
+Legacy bindings retain their original agent identity; saved user-message tags
+are never used to reattribute old output. The original captured participant
+label remains visible in Document, Classic and handoff context after restart,
+even when the current catalog no longer contains that setup. Display-only
+restore retains the existing no-dispatch/no-replay policy.
+
+Working status remains owned by the new turn while the previous participant
+session detaches; old session closure cannot clear the new turn's busy state.
+
+This sub-slice does not enable multiple-recipient delivery or queues. One
+authored message still owns one durable turn intent; multi-delivery must add
+per-recipient outcomes without duplicating the authored message or repeatedly
+calling submit.
