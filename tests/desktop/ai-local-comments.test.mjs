@@ -73,7 +73,7 @@ test(
       root,
       executable,
       [],
-      { background: true },
+      { background: false },
     );
     context.after(async () => {
       if (first.isRunning())
@@ -141,6 +141,15 @@ test(
       [prompt, ""],
     );
     const capture = JSON.parse(users[1].contextBlocks[0].content).comments[0];
+    const reply = recorded.find(
+      (entry) =>
+        entry.role === "assistant" && entry.text === "COMMENT-CONTEXT-READY",
+    );
+    assert.equal(
+      reply.parentId,
+      users[1].id,
+      "A reply keeps its exact authored feedback parent",
+    );
     assert.equal(capture.text, feedback);
     assert.equal(capture.anchor.blockId, `${original.id}/body`);
     assert.equal(
@@ -161,7 +170,7 @@ test(
       root,
       executable,
       [],
-      { background: true },
+      { background: false },
     );
     context.after(async () => {
       if (cold.isRunning())
@@ -185,6 +194,20 @@ test(
     );
     await inline.waitForDisplayed({ timeout: 15_000 });
     assert.ok((await inline.getText()).includes(feedback));
+    await inline.$('button[aria-label="Go to reply"]').click();
+    const replyBody = cold.browser.$(`[data-block-id="${reply.id}/body"]`);
+    await replyBody.waitForDisplayed();
+    await cold.browser.waitUntil(() =>
+      cold.browser.execute((id) => {
+        const rect = document
+          .querySelector(`[data-block-id="${id}/body"]`)
+          .getBoundingClientRect();
+        return rect.top >= 0 && rect.top < window.innerHeight;
+      }, reply.id),
+    );
+    await cold.browser
+      .$('[data-placement="reply"] button[aria-label^="Go to source:"]')
+      .click();
     assert.equal(
       await cold.browser.$('[aria-label="Pending comments"]').isExisting(),
       false,

@@ -5,12 +5,15 @@ import type {
 import type { AiChatItem } from "./chat-items.ts";
 import { projectAiTranscript } from "./transcript-projection.ts";
 import { persistableCommentContexts } from "../conversations/comment-context.ts";
+import { restoreDiscussionReplies } from "./transcript-discussions.ts";
+import type { AgentBindingCreatedRecord } from "../conversations/types.ts";
 
 /** Restore only locally acknowledged captures; never turn unknown history into drafts. */
 export function restoreTranscriptComments(
   current: TranscriptCommentThread[],
   items: readonly AiChatItem[],
   seen?: WeakSet<object>,
+  bindings: readonly AgentBindingCreatedRecord[] = [],
 ): TranscriptCommentThread[] {
   let next = current;
   const delivered = items.filter(
@@ -20,7 +23,8 @@ export function restoreTranscriptComments(
       item.contextDelivery === "sent" &&
       !seen?.has(item),
   );
-  if (!delivered.length) return current;
+  if (!delivered.length)
+    return restoreDiscussionReplies(current, items, bindings);
   const blocks = projectAiTranscript(items).flatMap((item) => [
     ...item.blocks,
     ...(item.tools ?? []).flatMap((tool) => tool.blocks),
@@ -103,7 +107,7 @@ export function restoreTranscriptComments(
     }
     seen?.add(item);
   }
-  return next;
+  return restoreDiscussionReplies(next, items, bindings);
 }
 
 /** Only an explicit acknowledged cancellation can return its current live comments to drafts. */

@@ -68,7 +68,6 @@ export type AiChatItem = (
       text: string;
       createdAt?: string;
       retryable?: boolean;
-      parentId?: string;
     }
   | {
       id: string;
@@ -92,6 +91,7 @@ export type AiChatItem = (
       createdAt?: string;
     }
 ) & {
+  parentId?: string;
   agentBindingId?: string;
   source?: AgentEventSource;
   contextBlocks?: import("../core/context.ts").AgentContextBlock[];

@@ -146,3 +146,88 @@ it("a failed tool drain cannot clear the local unknown intent or offer a replay"
     tools.host.close();
   }
 });
+
+it("Stop retains a cancelled app-tool capture after an earlier parented answer", async () => {
+  const acp = acpFixture(),
+    tools = fixture("write");
+  const repository = new ConversationRepository(new MemoryTranscriptStore());
+  const runtime = new AcpAgentRuntime({
+    ...acp.backend,
+    tools: {
+      target: (_descriptor, base) => base,
+      arm: (id, turn) => tools.bridge.arm(id, turn),
+      end: (id, turn) => tools.bridge.end(id, turn),
+    },
+  });
+  const start = vi.spyOn(runtime, "start");
+  const controller = new AiChatController(runtime, null, [], {
+    repository,
+    createConversation: () => ({ scopeDir: "Notes" }),
+    request: { agent: "agent" },
+    appToolBridge: tools.bridge,
+  });
+  let invocation = "";
+  acp.onPrompt = async (
+    id: string,
+    requestId: string,
+    request: { text: string },
+  ) => {
+    acp.emit(id, "activity", requestId, {
+      update: {
+        sessionUpdate: "agent_message_chunk",
+        content: { type: "text", text: "An exact answer" },
+      },
+    });
+    if (request.text === "First") {
+      acp.emit(id, "record", requestId, { record: { status: "completed" } });
+      return;
+    }
+    invocation = crypto.randomUUID();
+    tools.event({
+      type: "call",
+      bridgeId: start.mock.calls[0]![0].appToolSession!.bridgeId!,
+      invocationId: invocation,
+      turnId: requestId,
+      name: "notes_read",
+      arguments: {},
+    });
+  };
+  try {
+    await controller.submit("First");
+    await vi.waitFor(async () =>
+      expect(
+        (await repository.read(controller.location!)).metadata.pendingTurn,
+      ).toBeUndefined(),
+    );
+    const sending = controller.submit("Hold the edit");
+    await vi.waitFor(() =>
+      expect(
+        controller.items.some(
+          (i) => i.type === "approval" && i.status === "pending",
+        ),
+      ).toBe(true),
+    );
+    await controller.cancel();
+    expect(
+      (await repository.read(controller.location!)).transcript.filter(
+        (e) => e.type === "tool",
+      ),
+    ).toContainEqual(expect.objectContaining({ state: "error" }));
+    tools.event({
+      type: "cancel",
+      bridgeId: start.mock.calls[0]![0].appToolSession!.bridgeId!,
+      invocationId: invocation,
+    });
+    await controller.close();
+    await sending;
+    const final = await repository.read(controller.location!);
+    expect(final.transcript.filter((e) => e.type === "tool")).toContainEqual(
+      expect.objectContaining({ state: "error" }),
+    );
+    expect(tools.execute).not.toHaveBeenCalled();
+  } finally {
+    await controller.close();
+    await tools.bridge.close();
+    tools.host.close();
+  }
+});

@@ -228,3 +228,5 @@
   - [Independent local agent participants](history/E-AI-049.md)
   - [One local message with independent addressed deliveries](history/E-AI-050.md)
   - [Local queued messages](history/E-AI-051.md)
+
+- [Local discussion reply links](history/E-AI-052.md)

@@ -138,10 +138,7 @@ export function mapAcpTerminal(
   source: AgentEventSource,
 ): AgentEvent {
   const result = record(frame.record);
-  if (
-    frame.type === "record" &&
-    (result.status === "completed" || result.status === "cancelled")
-  )
+  if (frame.type === "record" && result.status === "completed")
     return { type: "completed", result, source, observation: frame };
   const outcome =
     result.status === "invalid" || frame.type === "error"

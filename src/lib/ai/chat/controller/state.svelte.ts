@@ -80,6 +80,7 @@ export class AiChatControllerState {
         intent: import("../../conversations/turn-intent.ts").ConversationTurnIntent;
         known: boolean;
         outcome?: "completed" | "rejected" | "unknown";
+        nativeRequestId?: string;
       };
       pendingBinding?: AgentBindingCreatedRecord;
       pendingSwitch?: TranscriptEntry;

@@ -86,3 +86,9 @@ and stories by responsibility, injects catalog-only ACP clients and documents
 source differences in catalog/AI_MIGRATION.md. Public examples derive from
 actual seeds/layouts. Notes Catalog's command navigation and expansion checks
 are retained in addition to skill navigation.
+
+Local discussion reply-context composition adapts
+`jj-store/web/src/lib/conversations/agent-adapter.ts` at `9e531400` while
+retaining Notes-owned transcript parents, acknowledgement and binding checks.
+Presentation uses public Design Core Transcript/TranscriptController exports; no
+JJ store or native conversation publication is introduced by these local links.

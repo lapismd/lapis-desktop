@@ -202,3 +202,5 @@ by the task ledger, not inferred from this list.
 - [One local message with independent addressed deliveries](E-AI-050.md)
 
 - [E-AI-051](E-AI-051.md)
+
+- [Local discussion reply links](E-AI-052.md)

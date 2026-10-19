@@ -619,3 +619,9 @@ composers, FIFO after completion, whole-message cancellation, explicit live and
 cold resume, visible waiting follow-ups and retained failed-save draft/one
 toast. Interrupted-before-checkpoint recovery keeps one notice and renders the
 new approval after explicit Resume without repeating the interrupted prompt.
+
+`Desktop/AI/Comment history/Linked code table and tool replies` uses the
+production local parent/receipt projection and unchanged Design Core controls.
+Code/table/tool captures retain their original anchors; acknowledged feedback
+opens its captured answer, which links back to the same discussion. Both
+presentations restore without a provider prompt. Legacy captures remain Sent.

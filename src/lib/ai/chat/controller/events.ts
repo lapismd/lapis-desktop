@@ -15,6 +15,7 @@ import type { AiChatController } from "../chat-controller.svelte.ts";
 import { waitForNextTask } from "./turn.ts";
 import { StreamingChatTrace } from "./streaming-trace.ts";
 import { eventIdentity } from "./event-identity.ts";
+import { captureReplyParents } from "./reply-parents.ts";
 import {
   finishTurn,
   knownTurnError,
@@ -49,6 +50,7 @@ export async function _consume(
   let latestUsage: AgentUsage | null = null;
   const persistCompletedTrace = async () => {
     traceItems = retainUnknownTurn(this, session, traceItems);
+    traceItems = captureReplyParents(this, session, traceItems);
     if (
       traceItems.length === 0 &&
       !latestUsage &&
@@ -211,6 +213,7 @@ export async function _consume(
       if (context.turn && event.type === "completed") {
         context.turn.known = true;
         context.turn.outcome = "completed";
+        context.turn.nativeRequestId = event.source?.runId;
       }
       if (context.turn && event.type === "error") {
         context.turn.known = knownTurnError(event.error);

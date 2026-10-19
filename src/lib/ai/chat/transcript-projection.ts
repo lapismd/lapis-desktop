@@ -8,6 +8,7 @@ import type { AgentBindingCreatedRecord } from "../conversations/types.ts";
 import type { AiChatItem } from "./chat-items.ts";
 import { bindingLabels } from "./panel/binding-labels.ts";
 import { toolCallStatus } from "./chat-tool-display.ts";
+import { discussionReplyContexts } from "./transcript-discussions.ts";
 
 /** Display-only revision. Native source IDs and receipt authority remain untouched. */
 function revision(text: string): string {
@@ -73,6 +74,7 @@ export function projectAiTranscript(
   let turn: TranscriptItem["turn"];
   let previousBinding: string | undefined;
   const labels = bindingLabels([...bindings]);
+  const replyContexts = discussionReplyContexts(source, bindings);
   for (const item of source) {
     const binding = item.agentBindingId
       ? agents.get(item.agentBindingId)
@@ -153,6 +155,7 @@ export function projectAiTranscript(
           ? "reasoning"
           : "context",
       label,
+      replyContext: replyContexts.get(item.id),
       dayLabel,
       role: message ? item.role : undefined,
       author: message

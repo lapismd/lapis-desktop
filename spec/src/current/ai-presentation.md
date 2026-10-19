@@ -76,6 +76,16 @@ restore sent inline comments. Prepared or unknown context remains inspectable
 without becoming queued work. Native local comments/restart and JJ
 discussion-store gates remain distinct.
 
+DISCUSS-01A adopts jj-store's explicit reply-context composition. The shared
+reply control navigates to the final captured answer for its exact accepted
+participant; multiple accepted recipients retain separate destinations. The
+answer links back to its captured comments. Document and Classic reuse the
+public controller's reader registrations, not private component selectors.
+Missing parents, unrelated bindings and unacknowledged context retain Sent or
+prepared state without a fabricated reply. Historical files are never
+backfilled. An unavailable reply or reader reports through one stable App
+notification and preserves the authored draft without an inline error.
+
 Application context stays distinct from authored text. Existing tool result
 registrations and authorized note links remain host-owned. Loading uses shared
 skeletons; empty content uses shared Empty. Preview controls MUST NOT imply that

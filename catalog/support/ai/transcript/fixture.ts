@@ -14,6 +14,7 @@ import { registerCatalogCleanup } from "../../lifecycle.ts";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 import { savedCommentSnapshot } from "./saved-comments.ts";
+import { savedDiscussionSnapshot } from "./saved-discussions.ts";
 import { ParticipantSettings } from "./participant-settings.svelte.ts";
 import { recordedReviewStore } from "./queue-store.ts";
 import { savedRecipientSnapshot } from "./saved-recipients.ts";
@@ -28,6 +29,7 @@ export type TranscriptScenario =
   | "long-code"
   | "unknown-turn"
   | "restored-comments"
+  | "restored-discussions"
   | "addressed"
   | "addressed-approval"
   | "queue-failure"
@@ -120,9 +122,13 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
             },
           ]),
         )
-      : scenario === "restored-comments"
+      : scenario === "restored-comments" || scenario === "restored-discussions"
         ? new ConversationRepository(
-            new MemoryTranscriptStore([savedCommentSnapshot()]),
+            new MemoryTranscriptStore([
+              scenario === "restored-discussions"
+                ? savedDiscussionSnapshot()
+                : savedCommentSnapshot(),
+            ]),
           )
         : undefined;
   let addressedTranscript = addressedStore

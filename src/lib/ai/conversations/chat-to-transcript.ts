@@ -61,6 +61,7 @@ export function projectChatItemsToTranscript(
             type: "message",
             role: item.role,
             text: item.text,
+            ...(item.parentId ? { parentId: item.parentId } : {}),
             ...(item.role === "user" && item.recipients?.length
               ? { recipients: structuredClone(item.recipients) }
               : {}),

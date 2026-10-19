@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+DISCUSS-01A reuses Design Core comment/reply controls and public readers for
+local captured answers. LD-PLUG-001 identity/admission is unchanged; old files
+remain unlinked. The linked code/table/tool story remains visual-pending.
+
 AGENT-01C uses public Design Core queue/footer components for editable active
 composers, waiting follow-ups, pause/resume, read-only cold recovery and
 retained failed-save drafts with one App notification. Local queue custody owns

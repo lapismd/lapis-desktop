@@ -139,6 +139,10 @@ test(
     });
     context.after(async () => {
       if (first.isRunning()) {
+        await first.browser
+          .$('button[aria-label="Notifications"]')
+          .click()
+          .catch(() => undefined);
         writeFileSync(
           join(root, "first-ui.txt"),
           await first.browser

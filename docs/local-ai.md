@@ -5,6 +5,14 @@ runtime. Conversations use the existing vault-owned `.lapis/agents/sessions`
 files. This profile does not publish transcripts through JJ, create
 AgentStore/ThreadStore records or migrate existing conversations.
 
+Comments on a recorded answer, code, table or tool result can accompany a
+message or be sent on their own. New completed Codex answers retain their exact
+authored-message parent. Once that comment turn is acknowledged locally, use the
+comment's reply control to open the answer, including after reopening History.
+The answer also links back to its feedback. Multiple addressed agents keep
+separate reply destinations. Older captures without an exact parent keep their
+existing Sent state; reopening does not rewrite them or send anything.
+
 Install the official `@agentclientprotocol/codex-acp` adapter from npm in a
 device-owned location, and authenticate Codex using its normal native login.
 Keep credentials out of the vault and runtime configuration.

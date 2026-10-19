@@ -4,7 +4,7 @@ import {
   approvalChoiceStatus,
   requireApprovalOption,
 } from "../core/approvals.ts";
-import type { AgentEvent } from "../core/events.ts";
+import type { AgentEvent, AgentEventSource } from "../core/events.ts";
 import { createChatItemId, type AiChatItem } from "./chat-items.ts";
 import { isEmptyToolInput, preferToolName } from "./chat-tool-identity.ts";
 
@@ -29,7 +29,11 @@ export function applyAgentEventToChatItems(
     case "text": {
       settleStreamingThinking(next);
       const last = next.at(-1);
-      if (last?.type === "message" && last.role === "assistant") {
+      if (
+        last?.type === "message" &&
+        last.role === "assistant" &&
+        sameRun(last.source, event.source)
+      ) {
         next[next.length - 1] = {
           ...last,
           ...source,
@@ -49,7 +53,11 @@ export function applyAgentEventToChatItems(
     }
     case "thinking": {
       const last = next.at(-1);
-      if (last?.type === "thinking" && last.state === "streaming") {
+      if (
+        last?.type === "thinking" &&
+        last.state === "streaming" &&
+        sameRun(last.source, event.source)
+      ) {
         next[next.length - 1] = {
           ...last,
           text: `${last.text}${event.text}`,
@@ -237,6 +245,10 @@ export function markQuestionResponse(
       ? { ...item, status: "answered" }
       : item,
   );
+}
+
+function sameRun(a?: AgentEventSource, b?: AgentEventSource) {
+  return a?.runId === b?.runId && a?.sessionId === b?.sessionId;
 }
 
 function settleStreamingThinking(items: AiChatItem[]): void {

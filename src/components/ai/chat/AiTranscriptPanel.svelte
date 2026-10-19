@@ -26,6 +26,7 @@
   import AiTranscriptBlock from "./AiTranscriptBlock.svelte";
   import AiTranscriptComposer from "./AiTranscriptComposer.svelte";
   import AiTranscriptLoading from "./AiTranscriptLoading.svelte";
+  import { navigateDiscussionReply } from "../../../lib/ai/chat/transcript-discussions.ts";
   import ChatComposerActions from "./ChatComposerActions.svelte";
   import ChatComposerOptions from "./ChatComposerOptions.svelte";
   import ChatConversationPicker from "./ChatConversationPicker.svelte";
@@ -59,9 +60,18 @@
   const blocked = $derived(
     Boolean(panelProps.initializing || composerState.catalogState?.loading),
   );
-  const commentState = new TranscriptController(() => ({
+  const commentState: TranscriptController = new TranscriptController(() => ({
     items,
     canComment: !blocked,
+    onNavigateReply: (id): Promise<void> =>
+      actions.perform(() =>
+        navigateDiscussionReply(
+          commentState,
+          items,
+          id,
+          panelProps.app?.notifications,
+        ),
+      ),
     onSend: async (snapshot) => {
       if (blocked || (controller.busy && !controller.repository))
         return {
@@ -92,11 +102,13 @@
   const restoredCommentItems = new WeakSet<object>();
   $effect(() => {
     const source = controller.items;
+    const bindings = controller.bindings;
     untrack(() => {
       const next = restoreTranscriptComments(
         commentState.threads,
         source,
         restoredCommentItems,
+        bindings,
       );
       if (next !== commentState.threads) commentState.threads = next;
     });

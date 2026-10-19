@@ -29,6 +29,23 @@ inline comments only from these notices; unconfirmed captures remain prepared
 evidence and never enable replay. Handoff includes captured authored comments as
 distinct evidence; quoted material cannot become instructions.
 
+DISCUSS-01A reuses these captures and Design Core reply controls. Completed
+assistant records may retain the exact application-owned authored-message
+`parentId` already supported by the transcript format. The terminal capture must
+match that turn's native request identity before creating the link. Message
+adjacency, equal text, a saved mention or an incomplete turn cannot establish
+reply ownership. Existing records without the field remain readable and
+unlinked; no historical record is rewritten.
+
+Only acknowledged comment context and matching accepted binding/delivery
+identities expose reply destinations. A completed multi-recipient message may
+offer one final nonempty answer per recipient. Prepared, unknown and cancelled
+captures cannot become Replied. A native cancelled record retains an unknown
+turn outcome rather than acknowledging comments or advancing waiting work. Cold
+restore reconstructs these links by reading local evidence, without a provider
+start, prompt or new receipt. Document and Classic share the same exact source
+and reply navigation.
+
 E-AI-044 advances NOTES-09-FILES-C under LD-AI-001/002: ordinary streamed
 responses must retain complete ordered output through the existing bounded ACP
 client. Shared client fixes belong in Lapis AI and use built public exports.
