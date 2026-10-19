@@ -226,3 +226,5 @@ by the task ledger, not inferred from this list.
 - [Rounded footer and imported XML context](E-CATALOG-011.md)
 
 - [Constrained chat with long tool paths](E-CATALOG-012.md)
+
+- [Core file exclusions and compact composer](E-CATALOG-013.md)

@@ -191,12 +191,12 @@ remain M10.3 gates.
 
 ## Retained chat presentation and controller
 
-The owned chat panel retains the source composer, permission/question cards,
-conversation folder picker, timeline, tool-result views, mentions, skills, model
-selection and error/retry presentation. Responsibility-specific components and
-reactive state modules retain the original behavior within source limits. New
-composer menus offer ACP choices only; historical native-mode labels remain
-readable without enabling those deferred execution paths.
+The chat panel keeps two-line composition, core listings, permission/question
+cards, conversation folder picker, timeline, tool-result views, mentions,
+skills, model selection and error/retry presentation. Responsibility-specific
+components and reactive state modules retain the original behavior within source
+limits. New composer menus offer ACP choices only; historical native-mode labels
+remain readable without enabling those deferred execution paths.
 
 Permission replies validate advertised IDs before dispatch, await provider
 acknowledgement and derive persistent grants from the advertised kind. Automatic

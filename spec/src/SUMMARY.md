@@ -282,3 +282,5 @@
 - [Rounded footer and imported XML context](history/E-CATALOG-011.md)
 
 - [Constrained chat with long tool paths](history/E-CATALOG-012.md)
+
+- [Core file exclusions and compact composer](history/E-CATALOG-013.md)

@@ -61,18 +61,21 @@ Classic attachments MUST share the Composer drawer and rounded input edge;
 collapsed state exposes only a compact summary. Document attachments MUST use an
 expandable section of removable file chips with relative-path tooltips. The file
 picker MUST show an icon, title and smaller truncated relative path, with the
-full path available on hover/focus. Both composers start at three text lines and
-grow with the draft; attachments and pending approvals/questions stay usable and
-retained when switching modes or while input is disabled. IME switching MUST
-defer until composition ends. Display item/block identities remain stable as
-content updates, and display revisions are never storage proof. Anchored
-comments are included in NOTES-08A by the user's review correction.
-NOTES-09-FILES-D1 gives live and durable event projections the same
-application-owned creation identity before display. Binding namespaces are
-idempotent. Native session/request/cursor, permission IDs and tool IDs are
-unchanged; existing saved IDs/hashes remain readable without rewriting. Private
-reasoning still stays outside durable capture. Exact live/restored message and
-tool block identities are the prerequisite for local comment context recovery in
+full path available on hover/focus. Core `files.exclude` governs file/folder
+discovery, defaulting to `.git` and `.jj` at any depth, without a plugin.
+Explicit admitted metadata reads and native backup policy remain separate. Both
+composers start at two text lines without a focus ring and grow with the draft;
+attachments and pending approvals/questions stay usable and retained when
+switching modes or while input is disabled. IME switching MUST defer until
+composition ends. Display item/block identities remain stable as content
+updates, and display revisions are never storage proof. Anchored comments are
+included in NOTES-08A by the user's review correction. NOTES-09-FILES-D1 gives
+live and durable event projections the same application-owned creation identity
+before display. Binding namespaces are idempotent. Native
+session/request/cursor, permission IDs and tool IDs are unchanged; existing
+saved IDs/hashes remain readable without rewriting. Private reasoning still
+stays outside durable capture. Exact live/restored message and tool block
+identities are the prerequisite for local comment context recovery in
 NOTES-09-FILES-D2; this does not enable JJ stores. Comments on messages/tool
 results can accompany a prompt or be submitted alone. Code and GFM table cells
 retain immutable cursor readers for exact text selection; their comment ranges

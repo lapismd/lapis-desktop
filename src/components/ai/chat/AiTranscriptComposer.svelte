@@ -87,8 +87,8 @@
 
 <style>
   .transcript-composer {
-    --ui-markdown-composer-min-height: calc(3 * 1.4rem + 1rem);
-    --ui-markdown-composer-document-min-height: calc(3 * 0.875rem * 1.65);
+    --ui-markdown-composer-min-height: calc(2 * 1.4rem + 1rem);
+    --ui-markdown-composer-document-min-height: calc(2 * 0.875rem * 1.65);
     display: grid;
     gap: 0.5rem;
     min-width: 0;

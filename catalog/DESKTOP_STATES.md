@@ -168,3 +168,8 @@ Chat layout review: LongMessagesWithSidebars combines long prose and a deep
 captured read path with a long basename and a full-path tooltip. It checks both
 views and sidebar toggling; wide layouts also retain the nested conversation
 list.
+
+AI folder discovery excludes `.git`/`.jj` via core `files.exclude`; the
+shared-core story also updates the setting without changing stored bytes.
+Compact Composer reviews both two-line presentations without a focus ring
+(E-CATALOG-013).

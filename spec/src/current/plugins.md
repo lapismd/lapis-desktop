@@ -327,6 +327,7 @@ are 0.5rem and the block-end inset is 0.25rem; the footer owns that clearance.
 Its background remains full width, its status region stays centred and content
 ends above its complete track. Hosted views/plugins MUST NOT add spacers.
 
-E-CATALOG-012 verifies shared chat path tooltips and footer fades plus
-repository popover clearance through prepared public packages. Native/plugin
-ownership and all original release gates remain unchanged.
+E-CATALOG-012 verifies path tooltips, footer fades and popover clearance.
+E-CATALOG-013 adds core listing exclusions and compact ring-free composition
+through public packages. Native/plugin ownership and release gates stay
+unchanged.

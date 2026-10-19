@@ -117,3 +117,4 @@ retains the original native gates.
 
 E-CATALOG-012 verifies LD-AI-002/004 and LD-CAT-001/002/003 constrained chat
 layout through the source repair and public package; original gates remain.
+E-CATALOG-013 covers two-line composition and core `files.exclude` discovery.

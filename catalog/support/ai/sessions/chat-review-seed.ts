@@ -47,6 +47,14 @@ export function chatReviewSeed(
   longMessages = false,
 ) {
   if (longMessages) {
+    Object.assign(files, {
+      ".git/config": "Fixture Git metadata",
+      "Notes/.jj/repo/store": "Fixture JJ metadata",
+      "Nested/.git/config": "Nested fixture Git metadata",
+      ".github/workflows/check.yml": "name: Checks",
+      "Notes/.gitignore": "*.tmp",
+      "Private/draft.md": "# Private draft",
+    });
     const layout = JSON.parse(files[".lapis/workspace.json"]!);
     layout.left.width = "16rem";
     layout.right.width = "16rem";

@@ -39,6 +39,7 @@ through focused source and public-archive consumer checks. Review restarts
 retain the existing vault. Original native, provider and release gates remain.
 E-CATALOG-012 covers long captured tool paths in constrained chat columns using
 the owning Design Core repair; original completion gates remain unchanged.
+E-CATALOG-013 adds core discovery exclusions and a smaller ring-free composer.
 
 ## Historical checkpoints
 

@@ -831,3 +831,8 @@ No replacement fixtures or dependency-internal CSS selectors are added.
 
 The working-copy WorkspaceFooter scenario extends the production shell
 acceptance for the dedicated footer, repository placement and activity bridge.
+
+`Desktop/AI/Vault file exclusions/Shared Core Policy` proves core defaults and
+configuration updates in the production folder picker without Repository
+History. `Chat layout review/Compact Composer` covers both two-line modes and
+retained drafts.

@@ -1,6 +1,6 @@
 # Desktop shell
 
-Footer/popup insets: LD-HOST-001; E-CATALOG-012.
+Footer: E-CATALOG-012. Composer/listings: E-CATALOG-013.
 
 E-REPO-035–041 retain backup Settings/native authority; E-AI-056 retains
 LD-DESK-005. [Local imports](ai-imports.md) governs capture admission. Gravatar:

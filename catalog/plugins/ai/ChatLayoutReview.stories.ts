@@ -334,3 +334,49 @@ export const LongMessagesWithSidebars: Story = {
     ).toBeVisible();
   },
 };
+
+export const CompactComposer: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() =>
+      expect(canvas.getByTestId("ai-chat-panel")).toHaveAttribute(
+        "data-initializing",
+        "false",
+      ),
+    );
+    const editor = canvas.getByRole("textbox", { name: /^Message$/ });
+    const content = editor.closest<HTMLElement>(".cm-content")!;
+    const rootSize = parseFloat(
+      getComputedStyle(document.documentElement).fontSize,
+    );
+    await userEvent.click(editor);
+    await waitFor(() =>
+      expect(parseFloat(getComputedStyle(content).minHeight)).toBeCloseTo(
+        2 * 0.875 * 1.65 * rootSize,
+        1,
+      ),
+    );
+    await userEvent.keyboard("Keep this draft");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
+    const framed = editor.closest<HTMLElement>(
+      '[data-ui-component="markdown-composer"]',
+    )!;
+    expect(framed).toHaveAttribute("data-presentation", "framed");
+    const surface = framed.querySelector<HTMLElement>(
+      ".ui-markdown-composer__editor",
+    )!;
+    await waitFor(() =>
+      expect(parseFloat(getComputedStyle(surface).minHeight)).toBeCloseTo(
+        (2 * 1.4 + 1) * rootSize,
+        1,
+      ),
+    );
+    await userEvent.click(editor);
+    expect(
+      getComputedStyle(editor.closest('[data-ui-part="body"]')!).boxShadow,
+    ).toBe("none");
+    expect(editor).toHaveTextContent("Keep this draft");
+  },
+};
