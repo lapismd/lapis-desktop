@@ -224,3 +224,5 @@ by the task ledger, not inferred from this list.
 - [Main-workspace footer handoff](E-CATALOG-010.md)
 
 - [Rounded footer and imported XML context](E-CATALOG-011.md)
+
+- [Constrained chat with long tool paths](E-CATALOG-012.md)

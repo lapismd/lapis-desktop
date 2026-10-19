@@ -114,3 +114,6 @@ presentation gates remain separate.
 Footer safe-area and imported XML follow-up:
 [E-CATALOG-011](../history/E-CATALOG-011.md). Focused source/consumer evidence
 retains the original native gates.
+
+E-CATALOG-012 verifies LD-AI-002/004 and LD-CAT-001/002/003 constrained chat
+layout through the source repair and public package; original gates remain.

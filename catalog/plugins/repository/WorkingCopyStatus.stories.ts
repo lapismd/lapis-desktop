@@ -229,5 +229,25 @@ export const RoundedWindowSafeArea: StoryObj = {
         expect(control.bottom).toBeLessThanOrEqual(bounds.bottom - 4);
       }
     }
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Working copy details/ }),
+    );
+    const card = await within(canvasElement.ownerDocument.body).findByRole(
+      "region",
+      { name: "Working copy details" },
+    );
+    const popover = card.closest<HTMLElement>(
+      '[data-ui-part="popover-content"]',
+    )!;
+    await waitFor(() => {
+      const popup = popover.getBoundingClientRect();
+      expect(popup.left).toBeGreaterThanOrEqual(8);
+      expect(popup.right).toBeLessThanOrEqual(window.innerWidth - 8);
+      expect(
+        canvas
+          .getByRole("button", { name: /^Working copy details/ })
+          .getBoundingClientRect().top - popup.bottom,
+      ).toBeCloseTo(6, 0);
+    });
   },
 };

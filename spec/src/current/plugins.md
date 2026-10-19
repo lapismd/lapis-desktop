@@ -326,3 +326,7 @@ rounded window corners cannot clip edge controls (LD-HOST-001). Inline insets
 are 0.5rem and the block-end inset is 0.25rem; the footer owns that clearance.
 Its background remains full width, its status region stays centred and content
 ends above its complete track. Hosted views/plugins MUST NOT add spacers.
+
+E-CATALOG-012 verifies shared chat path tooltips and footer fades plus
+repository popover clearance through prepared public packages. Native/plugin
+ownership and all original release gates remain unchanged.

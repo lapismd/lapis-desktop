@@ -37,6 +37,8 @@ provider and distribution gates remain deferred.
 E-CATALOG-011 qualifies rounded-window footer clearance and inert XML imports
 through focused source and public-archive consumer checks. Review restarts
 retain the existing vault. Original native, provider and release gates remain.
+E-CATALOG-012 covers long captured tool paths in constrained chat columns using
+the owning Design Core repair; original completion gates remain unchanged.
 
 ## Historical checkpoints
 

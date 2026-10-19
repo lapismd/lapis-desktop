@@ -163,3 +163,8 @@ Rounded native-window footer clearance is reviewed in Repository working copy
 status: RoundedWindowSafeArea. Import layout review: XmlContextPreview and
 XmlContextSaved exercise the public inert XML renderer before and after saving,
 including Document/Classic presentation.
+
+Chat layout review: LongMessagesWithSidebars combines long prose and a deep
+captured read path with a long basename and a full-path tooltip. It checks both
+views and sidebar toggling; wide layouts also retain the nested conversation
+list.

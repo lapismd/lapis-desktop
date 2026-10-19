@@ -38,11 +38,15 @@ export function previewTranscriptTool(
   customResult: boolean,
 ): TranscriptTool {
   if (isLocalCommandTool(item)) return { ...tool, detailPlacement: "inline" };
-  const inspected = { ...tool, detailPlacement: "sidebar" as const };
-  const first = tool.blocks[0];
-  if (!first || customResult) return inspected;
   const input = record(parseToolResultPayload(item.input));
   const path = input?.path ?? input?.file_path;
+  const inspected = {
+    ...tool,
+    detailPlacement: "sidebar" as const,
+    ...(typeof path === "string" && path.trim() ? { path } : {}),
+  };
+  const first = tool.blocks[0];
+  if (!first || customResult) return inspected;
   const read = ["vault.read", "notes_read", "read_file", "read"].includes(
     item.name,
   );
@@ -63,6 +67,7 @@ export function previewTranscriptTool(
       ...inspected,
       icon: FileTextIcon,
       title: `${item.name} · ${path}`,
+      path,
       blocks: [block],
       inlineBlocks: [{ ...block, kind: "code" }],
     };

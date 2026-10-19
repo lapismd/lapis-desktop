@@ -49,6 +49,11 @@ selected conversation and new-chat composer reachable in a short panel.
 
 Nested session shells and History/Catalog trees retain ordinary uniform
 container padding; they MUST NOT reserve space for the workspace footer.
+Captured file-read titles MUST truncate on one line with a full-path shadcn
+tooltip on hover/focus. Prose MUST fit alongside open workspace sidebars and the
+conversation list in both views, including after sidebar toggles. Both views use
+the shared trailing fade above the fixed footer while history continues below;
+pinned composers and footer controls remain clear.
 
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.

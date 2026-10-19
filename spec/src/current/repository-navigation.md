@@ -67,7 +67,9 @@ status host; custom controls do not require repository UI in the shell. The
 compact split control has no border, minimal vertical padding and a subtle
 background relative to the status bar; refresh uses a slightly stronger fill.
 Its compact buttons remain inset from the footer borders, including populated
-diff statistics; loading and backup states retain the same compact minimum.
+diff statistics; loading and backup states retain the same compact minimum. The
+working-copy popover MUST keep at least 8px from viewport edges and 6px above
+its footer trigger so rounded window edges do not clip the surface.
 
 Native status resolves the current physical root from existing admission and
 observes it on bounded workers. It MUST NOT initialize, snapshot, write a source

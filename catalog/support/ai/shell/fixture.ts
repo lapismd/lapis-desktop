@@ -25,6 +25,7 @@ import { SendingErrorRuntime } from "../sessions/sending-error-runtime.ts";
 export function createShellFixture(
   scenario: ShellScenario,
   reviewLayout = false,
+  longMessages = false,
 ) {
   const files = shellSeed(
     undefined,
@@ -37,7 +38,7 @@ export function createShellFixture(
     version: "0.1.0-catalog",
     configPath: ".lapis/app.json",
     adapter: new MemoryVaultAdapter(
-      reviewLayout ? chatReviewSeed(files) : files,
+      reviewLayout ? chatReviewSeed(files, longMessages) : files,
     ),
     appDatabase: database,
     markdownRenderer: async () => {},

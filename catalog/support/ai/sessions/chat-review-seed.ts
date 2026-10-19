@@ -42,7 +42,22 @@ Keep completed tasks in this captured snapshot so the next review has the same c
 `;
 
 /** Representative launch-note paths belong only to this disposable review vault. */
-export function chatReviewSeed(files: Record<string, string>) {
+export function chatReviewSeed(
+  files: Record<string, string>,
+  longMessages = false,
+) {
+  if (longMessages) {
+    const layout = JSON.parse(files[".lapis/workspace.json"]!);
+    layout.left.width = "16rem";
+    layout.right.width = "16rem";
+    layout.right.children[0].children[0].state = {
+      type: "ai-conversation-history",
+      state: {},
+      title: "Conversations",
+      icon: "history",
+    };
+    files[".lapis/workspace.json"] = JSON.stringify(layout);
+  }
   for (const [id, notePath] of [
     [LOCAL_CONVERSATION_ID, "Welcome.md"],
     [ARCHIVED_CONVERSATION_ID, "Archive/Planning/Release checklist.md"],
@@ -60,9 +75,34 @@ export function chatReviewSeed(files: Record<string, string>) {
       .map((line) => {
         if (!line) return line;
         const entry = JSON.parse(line) as Record<string, unknown>;
+        if (
+          longMessages &&
+          ["registry-user", "registry-assistant"].includes(String(entry.id))
+        )
+          return JSON.stringify({
+            ...entry,
+            text:
+              "Review the complete set of workspace notes and explain which decisions still need supporting evidence. ".repeat(
+                8,
+              ) +
+              "\n\n" +
+              "captured-context-".repeat(25),
+          });
         return entry.id === "registry-tool"
           ? JSON.stringify({
               ...entry,
+              ...(longMessages
+                ? {
+                    input: JSON.stringify({
+                      path:
+                        "/Users/reviewer/code/lapismd/lapis-desktop-history/.local/demo-review/Repository Review/.agents/skills/lapis-notes/" +
+                        "workspace-history-and-conversation-review-with-supporting-evidence-".repeat(
+                          4,
+                        ) +
+                        "SKILL.md",
+                    }),
+                  }
+                : {}),
               output: JSON.stringify({ content: capturedWelcome }),
             })
           : line;

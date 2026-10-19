@@ -25,6 +25,7 @@ it("shows captured markdown and inline source without changing its capture or bl
   const text = "# Captured title\n\n- [ ] Review this note\n";
   const { original, displayed } = preview(JSON.stringify({ content: text }));
   expect(displayed.raw).toBe(original.raw);
+  expect(displayed.path).toBe("Notes/Welcome.md");
   expect(displayed.blocks[0]).toMatchObject({
     id: original.blocks[0].id,
     kind: "markdown",
@@ -54,9 +55,11 @@ it("reads a captured MCP text envelope without fetching the current file", () =>
 it("retains registered result views and never promotes failed reads into markdown file previews", () => {
   const custom = preview("# Original", "Notes/Welcome.md", "completed", true);
   expect(custom.displayed.blocks).toBe(custom.original.blocks);
+  expect(custom.displayed.path).toBe("Notes/Welcome.md");
   const failed = preview("permission denied", "Notes/Welcome.md", "error");
   expect(failed.displayed.blocks[0].kind).toBe("code");
   expect(failed.displayed.inlineBlocks).toBeUndefined();
+  expect(failed.displayed.path).toBe("Notes/Welcome.md");
 });
 
 it.each([false, true])(

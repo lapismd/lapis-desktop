@@ -280,3 +280,5 @@
 - [Main-workspace footer handoff](history/E-CATALOG-010.md)
 
 - [Rounded footer and imported XML context](history/E-CATALOG-011.md)
+
+- [Constrained chat with long tool paths](history/E-CATALOG-012.md)

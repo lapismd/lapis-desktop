@@ -9,12 +9,16 @@
     scenario = "default",
     displayMode = "desktop",
     reviewLayout = false,
+    longMessages = false,
   }: {
     scenario?: ShellScenario;
     displayMode?: WorkspaceRequestedDisplayMode;
     reviewLayout?: boolean;
+    longMessages?: boolean;
   } = $props();
-  const fixture = untrack(() => createShellFixture(scenario, reviewLayout));
+  const fixture = untrack(() =>
+    createShellFixture(scenario, reviewLayout, longMessages),
+  );
   let root = $state<HTMLDivElement>();
   let status = $state("booting");
   let error = $state("");

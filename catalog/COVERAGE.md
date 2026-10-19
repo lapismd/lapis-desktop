@@ -693,6 +693,13 @@ switching, folder following, archived actions, admission and narrow-panel reopen
 coverage. Catalog provider clients remain synthetic; this is not fresh native
 provider, JJ storage or automatic capture coordination proof.
 
+LongMessagesWithSidebars adds a captured deep file-read path and long basename
+to this real shell. Prose must fit and tool paths truncate after outer sidebar
+toggles and Document/Classic switching, with the nested conversation list
+visible when space permits. Design Core owns title truncation and full-path
+tooltips; captured text, identities and host-owned inspector actions are
+unchanged.
+
 AI-JSONL-UI replaces the file-only preview with AiJsonlPanel in the shared
 nested AiSessionFrame/AiSessionThread. Desktop/AI/JSONL mounts the actual
 registered TextFileView in WorkspaceShell: Transcript (Document/Classic,

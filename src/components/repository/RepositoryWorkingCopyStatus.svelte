@@ -74,6 +74,8 @@
     <Popover.Content
       side="top"
       align="end"
+      collisionPadding={8}
+      sideOffset={6}
       style="width:min(26rem,calc(100vw - 1rem));padding:0"
     >
       <section class="working-card" aria-label="Working copy details">
