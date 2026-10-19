@@ -15,6 +15,7 @@ import {
   type DeliveryState,
 } from "./dispatch-intent.ts";
 import { unknownTurnEntry } from "./turn-intent.ts";
+import { assertConversationWritable } from "./import-types.ts";
 
 /** Local explicit-Send ownership; recorded recipients never authorize execution. */
 export class ConversationDispatches {
@@ -75,6 +76,7 @@ export class ConversationDispatches {
   }
   /** Called inside the repository's shared write queue, including ordinary turns. */
   async guardSingle(snapshot: ConversationSnapshot, recoveredId?: string) {
+    assertConversationWritable(snapshot.metadata);
     const intent = this.current(snapshot);
     if (!intent) return;
     if (

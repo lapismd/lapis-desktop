@@ -16,6 +16,7 @@
   import ChatComposer from "./ChatComposer.svelte";
   import ChatTimeline from "./ChatTimeline.svelte";
   import AiTranscriptPanel from "./AiTranscriptPanel.svelte";
+  import ImportedConversation from "../imports/ImportedConversation.svelte";
   import "./panel.css";
 
   const panelProps: AiChatPanelProps = $props();
@@ -42,6 +43,9 @@
     conversationsState,
     actions.perform,
   );
+  const imported = $derived(
+    panelProps.recordedImport ?? controller.importedSnapshot,
+  );
 </script>
 
 <div
@@ -51,7 +55,9 @@
   data-initializing={panelProps.initializing ?? false}
   data-model-catalog-loading={composerState.catalogState?.loading ?? false}
 >
-  {#if panelProps.presentation === "transcript"}
+  {#if imported}
+    <ImportedConversation snapshot={imported} />
+  {:else if panelProps.presentation === "transcript"}
     <AiTranscriptPanel
       {panelProps}
       {controller}

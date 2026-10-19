@@ -17,6 +17,7 @@ gates.
   - [Local AI turn recovery](ai-recovery.md)
   - [Native application tools](ai-tools.md)
   - [Addressed local messages](ai-addressing.md)
+  - [Explicit local transcript imports](ai-imports.md)
 - [Repository history and conversations](repository.md)
 - [Enabled writer audit](writer-audit.md)
 - [Migration inventory](migration.md)

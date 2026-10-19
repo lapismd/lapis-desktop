@@ -17,6 +17,11 @@ export type ConversationListEntry = {
 };
 
 export interface TranscriptStore {
+  /** Initialize/recover only the exact marked local import. No fallback backend. */
+  prepareImport?(
+    location: ConversationLocation,
+    metadata: ConversationMetadata,
+  ): Promise<ConversationSnapshot>;
   create(
     location: ConversationLocation,
     metadata: ConversationMetadata,

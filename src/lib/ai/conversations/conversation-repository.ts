@@ -4,6 +4,8 @@ import { normalizeApprovalGrants } from "./approval-grants.ts";
 import { ConversationMessageQueue } from "./conversation-message-queue.ts";
 import { ConversationDispatches } from "./conversation-dispatches.ts";
 import { ConversationTurns } from "./conversation-turns.ts";
+import { SessionImports } from "./session-imports.ts";
+import { assertConversationWritable } from "./import-types.ts";
 import {
   normalizePortableVaultPath,
   relativePathWithinScope,
@@ -55,10 +57,17 @@ export class ConversationRepository {
   readonly messages: ConversationMessageQueue;
   readonly turns: ConversationTurns;
   readonly dispatches: ConversationDispatches;
+  readonly imports: SessionImports;
   constructor(
     private readonly store: TranscriptStore,
     private readonly sanitization: DurableSanitizationOptions = {},
   ) {
+    this.imports = new SessionImports(
+      store,
+      this.queue,
+      (location) => this.emit({ type: "upsert", location }),
+      sanitization,
+    );
     this.messages = new ConversationMessageQueue(
       store,
       this.queue,
@@ -147,6 +156,7 @@ export class ConversationRepository {
       const safeEntries = entries.map((entry) =>
         sanitizeTranscriptEntry(entry, this.sanitization),
       );
+      assertConversationWritable((await this.store.read(location)).metadata);
       await this.store.appendTranscriptEntries(location, safeEntries);
       const snapshot = await this.store.read(location);
       const firstUserMessage = snapshot.transcript.find(
@@ -176,6 +186,7 @@ export class ConversationRepository {
     records: AgentBindingRecord[],
   ): Promise<ConversationSnapshot> {
     return this.queue.run(conversationStorageKey(location), async () => {
+      assertConversationWritable((await this.store.read(location)).metadata);
       await this.store.appendAgentRecords(location, records);
       const snapshot = await this.store.read(location);
       const updatedAt = records.at(-1)?.createdAt ?? new Date().toISOString();
@@ -201,6 +212,7 @@ export class ConversationRepository {
     return this.queue.run(conversationStorageKey(location), async () => {
       const snapshot = await this.store.read(location);
       const approvalGrants = normalizeApprovalGrants(grants);
+      assertConversationWritable(snapshot.metadata);
       const metadata: ConversationMetadata = {
         ...snapshot.metadata,
         updatedAt: new Date().toISOString(),
@@ -262,6 +274,7 @@ export class ConversationRepository {
         (record) =>
           record.type === "binding.created" && record.id === bindingId,
       );
+      assertConversationWritable(snapshot.metadata);
       if (!binding) throw new Error(`Unknown agent binding: ${bindingId}`);
       if (switchEntry) {
         await this.store.appendTranscriptEntries(location, [

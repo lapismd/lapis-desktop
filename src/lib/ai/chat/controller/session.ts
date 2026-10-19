@@ -9,6 +9,7 @@ import {
 } from "../../conversations/binding-state.ts";
 import { buildAvailableSkillsManifest } from "../../skills/manifest.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
+import { assertConversationWritable } from "../../conversations/import-types.ts";
 export async function _prepareSession(
   this: AiChatController,
   request: Omit<AgentRequest, "prompt">,
@@ -16,6 +17,10 @@ export async function _prepareSession(
   sharedUserEntryId?: string,
 ): Promise<void> {
   if (this._isAbandoned(turnId)) return;
+  if (this.repository && this.location)
+    assertConversationWritable(
+      (await this.repository.read(this.location)).metadata,
+    );
   await this._terminalCheckpoint;
   if (this._isAbandoned(turnId)) return;
   const targetRuntime = this._selectRuntime

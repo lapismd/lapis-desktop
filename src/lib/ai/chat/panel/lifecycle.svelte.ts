@@ -18,7 +18,7 @@ export function observeChatPanel(
     controller.mcpServers = mcpServers;
   });
   $effect(() => {
-    if (getProps().initializing) return;
+    if (getProps().initializing || getProps().recordedImport) return;
     untrack(() => {
       void perform(() => controller.restore());
     });
@@ -30,7 +30,7 @@ export function observeChatPanel(
     };
   });
   $effect(() => {
-    if (getProps().initializing) return;
+    if (getProps().initializing || getProps().recordedImport) return;
     void controller.location;
     void controller.activeBindingId;
     void perform(() => controller.syncComposerCommands());

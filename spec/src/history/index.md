@@ -205,3 +205,5 @@ by the task ledger, not inferred from this list.
 
 - [Local discussion reply links](E-AI-052.md)
 - [Native local discussion continuation](E-AI-053.md)
+
+- [E-AI-054: local import journal and preview](E-AI-054.md)

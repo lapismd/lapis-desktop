@@ -631,3 +631,12 @@ presentations restore without a provider prompt. Legacy captures remain Sent.
 - `Desktop/AI/Comment history/Continue restored thread` reuses the production
   Reply composer, pending comments and Document/Classic state. Only the newly
   authored feedback is submitted; existing saved reply links are retained.
+
+IMPORT-01A (`ai/ImportReview.stories.ts`) mounts production AiImportPanel,
+ImportSources and ImportedTranscript in the real WorkspaceShell with both docks
+collapsed. Eight states cover explicit source preview, Document/Classic, save
+and exact duplicates, unknown-write retry, preview failure/toast recovery,
+representative loading skeletons, no sources, unavailable hosts and saved
+read-only chat projection without a composer. Source clients are fixtures;
+native discovery/import remains IMPORT-01B. Source table provenance is in
+docs/provenance.json; visual baseline approval is pending.

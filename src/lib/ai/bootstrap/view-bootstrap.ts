@@ -2,7 +2,10 @@
 // Retained Lapis AI orchestration; see ../NOTICE.md.
 import type { AgentRuntime, McpServerContribution } from "../core/runtime.ts";
 import type { ModelRef } from "../core/models.ts";
-import type { ConversationLocation } from "../conversations/types.ts";
+import type {
+  ConversationLocation,
+  ConversationSnapshot,
+} from "../conversations/types.ts";
 import type { AiPluginSettings } from "../settings/ai-settings.ts";
 import type { AiViewHost } from "./view-host.ts";
 
@@ -12,6 +15,7 @@ export type AiViewBootstrap = {
   models: ModelRef[];
   modelCatalogError: string | null;
   unavailableReason: string | null;
+  importedSnapshot?: ConversationSnapshot;
 };
 
 export function initialAiViewBootstrap(host: AiViewHost): AiViewBootstrap {
@@ -38,6 +42,12 @@ export async function prepareAiViewBootstrap(
   const snapshot = await conversation.catch(() => null);
   signal?.throwIfAborted();
 
+  if (snapshot?.metadata.imported)
+    return {
+      ...initialAiViewBootstrap(host),
+      importedSnapshot: snapshot,
+      unavailableReason: "Imported snapshots are read-only.",
+    };
   if (snapshot) {
     const binding = snapshot.agents.find(
       (record) =>

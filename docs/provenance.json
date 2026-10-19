@@ -361,6 +361,18 @@
         }
       ],
       "use": "Copied maintained blame groups, sticky author/source grid, line numbers, bounded chunks and virtual-row geometry. Host callbacks replace route ownership; native reader/controller owns pin, source text, status, toast recovery and drain. Generic unused virtual-row controls/appearance integration are omitted; public Design Core author/profile, RelativeTime, Skeleton and async syntax highlighting are reused. No source checkout or internal dependency imports. E-REPO-023 adopts reviewed desktop revisions 6f96191f/c366a990 into these production components: public ScrollArea, untransformed virtual positions, compact gutter, static separators and first-subject commit details. RepositoryBlameCommitTitle and editor action registration are desktop-owned compositions promoted from catalog; synthetic statistics remain injected catalog data."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "efc26dea6b8dab4e0317904a1395ad5a3b901981",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-settings/StoreCaptureSources.svelte",
+          "destination": "src/components/ai/imports/ImportSources.svelte"
+        }
+      ],
+      "use": "Copied and adapted source/status/action table, Design Core Table/TagList/Button composition and empty/loading structure. Notes owns the explicit source port, sanitized preview and local snapshot journal. Repository admission, controller settings and capture enrollment controls are omitted because native source acquisition is a separate Notes-owned slice. No cross-checkout runtime imports."
     }
   ]
 }

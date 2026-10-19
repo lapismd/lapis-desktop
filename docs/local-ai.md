@@ -125,3 +125,14 @@ isolated plain vault and checks that it never creates `.jj` metadata.
 `tests/desktop/ai-local-multi.test.mjs` checks two named Codex participants, one
 authored prompt, two registered reads and read-only cold History. Wider
 provider, effect-fault, platform and distribution qualification remains open.
+
+## Local session import preview
+
+IMPORT-01A adds the local snapshot journal and production import UI. Review
+`Desktop/AI/Import review` in Storybook for selection, Document/Classic preview,
+saving, duplicate imports and interrupted-save recovery. Its source clients are
+fixtures; ordinary native Codex discovery and privacy are the next IMPORT-01B
+slice. The app command **Open Import AI sessions** shows an unavailable state
+until its host injects a source. Imported snapshots are read-only and never
+resume the captured session or restore permissions. JJ persistence stays
+deferred.

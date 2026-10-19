@@ -15,6 +15,7 @@ import {
   type QueuedMessage,
   type QueueOutcome,
 } from "./queued-message.ts";
+import { assertConversationWritable } from "./import-types.ts";
 export type QueuedAdoption = { id: string; owner: string };
 /** Same-App queue ownership; saved preferences never authorize a native prompt. */
 export class ConversationMessageQueue {
@@ -47,6 +48,7 @@ export class ConversationMessageQueue {
         throw new QueueRefusedError(
           "Another live owner controls this message queue",
         );
+      assertConversationWritable(s.metadata);
       if (s.metadata.status !== "active")
         throw new QueueRefusedError(
           "Archived conversations cannot queue messages",

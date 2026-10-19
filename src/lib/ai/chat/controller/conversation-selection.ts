@@ -24,6 +24,7 @@ export async function newConversation(
   this.bindings = [];
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this.pickerEntries = [];
   this._approvalGrants = [];
@@ -96,6 +97,7 @@ export async function deleteCurrent(this: AiChatController): Promise<void> {
   this.bindings = [];
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this.pickerEntries = [];
   this._approvalGrants = [];
@@ -174,6 +176,7 @@ export async function _clearOpenConversation(
   this.bindings = [];
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this._approvalGrants = [];
   this._onLocationChange?.(null);
@@ -192,6 +195,7 @@ export async function _ensureConversation(
       if (!(error instanceof ConversationUnavailableError)) throw error;
       this.location = null;
       this.conversationStatus = null;
+      this.importedSnapshot = null;
       this._approvalGrants = [];
       this._onLocationChange?.(null);
     }

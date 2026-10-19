@@ -10,6 +10,7 @@ import { ACP_APPROVAL_CAPABILITIES } from "../core/approvals.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../bootstrap/runtime-unavailable.ts";
 export type AiLeaveMode = "close" | "reload";
 export interface AiServices {
+  importSources?: import("../imports/source-port.ts").AiImportSources;
   runtime: AgentRuntime;
   models: AiModelCatalog;
   workspace?: string;

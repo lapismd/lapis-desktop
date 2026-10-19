@@ -11,6 +11,7 @@
   - [Local AI turn recovery](current/ai-recovery.md)
   - [Native application tools](current/ai-tools.md)
   - [Addressed local messages](current/ai-addressing.md)
+  - [Explicit local transcript imports](current/ai-imports.md)
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
@@ -231,3 +232,5 @@
 
 - [Local discussion reply links](history/E-AI-052.md)
 - [Native local discussion continuation](history/E-AI-053.md)
+
+  - [Local import journal and preview](history/E-AI-054.md)

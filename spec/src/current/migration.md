@@ -1,9 +1,8 @@
 # Migration inventory and progress
 
-E-AI-042–053 cover local Codex, transcripts, recovery, streaming, comments,
-tools and exact reply navigation. LD-MIG-002 retains original M10.2/M13 gates
-and deferred JJ integration. Mounted tool wiring remains TOOLS-01B2/C; local
-chat/restart does not qualify managed capture.
+E-AI-042–054 cover local Codex, recovery, tools, discussions and import UI.
+Native import stays IMPORT-01B. LD-MIG-002 retains original M10.2/M13 gates and
+deferred JJ integration. Local chat/restart does not qualify managed capture.
 
 E-REPO-023–025 cover blame/log UI; E-AI-039–041 cover shared transcript UI.
 E-REPO-017/018 cover file history/blame (NOTES-05I7/8); original M13 gates stay.

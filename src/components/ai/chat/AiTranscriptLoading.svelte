@@ -1,5 +1,6 @@
 <script lang="ts">
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
+  let { composer = true }: { composer?: boolean } = $props();
 </script>
 
 <div class="transcript-loading" role="status" aria-label="Loading conversation">
@@ -17,11 +18,11 @@
       </div>
     {/each}
   </div>
-  <div class="loading-composer" aria-hidden="true">
-    <Skeleton style="width:60%;height:1rem" /><Skeleton
-      style="width:100%;height:5rem"
-    />
-  </div>
+  {#if composer}<div class="loading-composer" aria-hidden="true">
+      <Skeleton style="width:60%;height:1rem" /><Skeleton
+        style="width:100%;height:5rem"
+      />
+    </div>{/if}
 </div>
 
 <style>

@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+IMPORT-01A/E-AI-054 adds a production source table adapted from jj-store,
+read-only Transcript preview and an injected source port. Catalog clients
+qualify UI only. Ordinary native discovery/import remains IMPORT-01B.
+
 DISCUSS-01A/B reuse Design Core comment/reply controls and public readers for
 local captured answers. LD-PLUG-001 identity/admission is unchanged; old files
 remain unlinked. The linked code/table/tool story remains visual-pending.

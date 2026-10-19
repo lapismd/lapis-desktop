@@ -50,6 +50,9 @@ export class AiChatControllerState {
   location = $state.raw<ConversationLocation | null>(null);
   conversationStatus = $state<ConversationMetadata["status"] | null>(null);
   conversationPinned = $state(false);
+  importedSnapshot = $state.raw<
+    import("../../conversations/types.ts").ConversationSnapshot | null
+  >(null);
   directoryContext = $state("");
   pickerEntries = $state.raw<ConversationListEntry[]>([]);
   session: AgentSession | null = null;

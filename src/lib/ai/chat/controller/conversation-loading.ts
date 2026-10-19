@@ -96,6 +96,7 @@ export async function openConversation(
   this.busy = false;
   this.error = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.location = { ...location };
   this.directoryContext = location.scopeDir;
   this._followedScope = location.scopeDir;
@@ -117,6 +118,17 @@ export async function _restoreConversation(
   if (!this.repository || !this.location) return;
   const snapshot = await this.repository.read(this.location);
   if (this._isAbandoned(turnId)) return;
+  this.importedSnapshot = snapshot.metadata.imported ? snapshot : null;
+  if (this.importedSnapshot) {
+    this.items = [];
+    this.bindings = [];
+    this._activeBinding = undefined;
+    this._activeBindingId = undefined;
+    this._approvalGrants = [];
+    this.queuedMessages.entries = [];
+    this.conversationStatus = snapshot.metadata.status;
+    return;
+  }
   this.queuedMessages.restore(snapshot);
   this.conversationStatus = snapshot.metadata.status;
   this.conversationPinned = Boolean(snapshot.metadata.pinned);
@@ -232,6 +244,7 @@ export function _releaseUnreadableLocation(
   if (!this.location) return;
   this.location = null;
   this.conversationStatus = null;
+  this.importedSnapshot = null;
   this.conversationPinned = false;
   this._onLocationChange?.(null);
 }

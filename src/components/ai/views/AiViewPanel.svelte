@@ -81,6 +81,7 @@
   selectRuntime={(request) => host.selectRuntime(request)}
   unavailableReason={bootstrap.unavailableReason}
   {initializing}
+  recordedImport={bootstrap.importedSnapshot}
   {mcpServers}
   appToolBridge={host.appToolBridge}
   skills={host.skills}

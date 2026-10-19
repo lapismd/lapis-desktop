@@ -107,7 +107,9 @@ lapis-agent model requests are non-streaming: activity follows actual events and
 text appears as received. Incremental fake-client examples qualify rendering
 only.
 
-The current profile retains vault-file transcripts. Deferred JJ capture has one
+The current profile retains vault-file transcripts.
+[Explicit imports](ai-imports.md) add read-only local snapshots with injected
+catalog clients before native source adoption. Deferred JJ capture retains one
 native raw-event owner. Renderer projection cannot become a second writer.
 Authored messages and application metadata use explicit native operations; saved
 state requires confirmed publication. Legacy file conversations retain their

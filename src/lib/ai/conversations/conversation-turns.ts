@@ -3,6 +3,7 @@ import type {
   ConversationSnapshot,
   TranscriptEntry,
 } from "./types.ts";
+import { assertConversationWritable } from "./import-types.ts";
 import {
   conversationStorageKey,
   type ConversationWriteQueue,
@@ -45,6 +46,7 @@ export class ConversationTurns {
       if (user.id !== intent.userEntryId || user.role !== "user")
         throw new Error("Turn intent must retain its exact authored message");
       const snapshot = await this.store.read(location);
+      assertConversationWritable(snapshot.metadata);
       await this.beforeSingle?.(snapshot, recoveredDispatchId);
       const previous = snapshot.metadata.pendingTurn;
       if (previous) {

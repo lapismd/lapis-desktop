@@ -49,6 +49,7 @@ export type ConversationMetadata = {
   queuedMessages?: import("./queued-message.ts").QueuedMessage[];
   pendingDispatch?: import("./dispatch-intent.ts").DispatchIntent;
   status: "active" | "archived";
+  imported?: import("./import-types.ts").ImportMarker;
 };
 
 export type AgentBindingCreatedRecord = {

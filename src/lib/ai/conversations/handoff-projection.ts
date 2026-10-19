@@ -14,9 +14,11 @@ export function projectEntry(
   switch (entry.type) {
     case "message": {
       const label =
-        entry.role === "user"
-          ? "User"
-          : `Assistant${agent ? ` (${agent})` : ""}`;
+        entry.provenance?.originClass === "untrusted"
+          ? `Captured ${entry.role} evidence; trust=untrusted`
+          : entry.role === "user"
+            ? "User"
+            : `Assistant${agent ? ` (${agent})` : ""}`;
       return [
         { entryIds: [entry.id], text: `[${label}]\n${messageEvidence(entry)}` },
       ];

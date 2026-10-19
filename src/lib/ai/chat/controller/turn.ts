@@ -4,11 +4,14 @@ import type { AiChatItem } from "../chat-items.ts";
 import { validateRecipients } from "../../conversations/recipients.ts";
 import { deliverTurn } from "./turn-delivery.ts";
 import { submitAudience } from "./dispatch.ts";
+import { assertConversationWritable } from "../../conversations/import-types.ts";
 export async function submit(
   this: AiChatController,
   prompt: string,
   request: Omit<AgentRequest, "prompt"> = {},
 ): Promise<boolean | undefined> {
+  if (this.importedSnapshot)
+    assertConversationWritable(this.importedSnapshot.metadata);
   if (this._activeDispatch) return false;
   const recipients = validateRecipients(request.recipients);
   if (request.recipients) request = { ...request, recipients };
