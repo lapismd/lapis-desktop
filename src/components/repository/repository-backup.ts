@@ -1,5 +1,6 @@
 import { BackupController } from "../../lib/repository/backup.ts";
-import type { BackupService } from "../../lib/repository/backup.ts";
+import type { RepositoryServices } from "../../lib/repository/history-reader.ts";
+import { RepositorySync } from "./repository-sync.ts";
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 
@@ -11,14 +12,17 @@ export const automaticBackup = (value: Record<string, unknown>) =>
 export class RepositoryBackup {
   readonly controller: BackupController;
   #progress?: () => void;
+  readonly sync?: RepositorySync;
   constructor(
     readonly plugin: RepositoryPlugin,
-    service: BackupService,
+    services: RepositoryServices,
   ) {
     this.controller = new BackupController(
-      service,
+      services.backup!,
       plugin.feedback("Vault backup"),
     );
+    if (services.sync && services.remote)
+      this.sync = new RepositorySync(plugin, services);
   }
   async start() {
     this.#progress = new BackgroundWork(
@@ -38,12 +42,15 @@ export class RepositoryBackup {
     if (enabled)
       void this.controller.start().catch((error) => this.plugin.report(error));
     else await this.controller.pause();
+    await this.sync?.start();
   }
   async setEnabled(enabled: boolean) {
     if (enabled) await this.controller.start();
     else await this.controller.pause();
+    await this.sync?.start();
   }
   async close() {
+    this.sync?.close();
     await this.controller.close();
     this.#progress?.();
     this.#progress = undefined;

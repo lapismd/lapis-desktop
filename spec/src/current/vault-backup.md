@@ -83,3 +83,22 @@ serialize per App and plugin identity, including recreated plugin instances.
 Closing settings fences late responses but progress lasts until native work
 actually drains. E-REPO-031 records focused proof; cold app/provider gates
 remain.
+
+The open-vault plugin owns automatic synchronization independently of settings
+and status controls. Captures coalesce a remote check; bounded periodic checks
+and exponential failure backoff cover missed events and offline recovery. Local
+capture and close never await remote networking. Main-window-only
+`desktop_backup_sync` actions carry admitted sessions, connection revisions and
+exact native candidates. Clean merges use the App all-writer guard across
+preview/apply; an original request is persisted before mutation. Unknown apply
+outcomes reconcile that request or explicitly keep current files after a native
+capture barrier. Config changes cannot reinterpret an in-flight publication.
+Conflicted candidates preserve current files and open the copied conflict
+surface for explicit text/native-term/deletion choices. Per-path resolution
+creates retained native commits; only a current clean candidate materializes.
+Native transfer runs on bounded workers outside vault/capture locks. E-REPO-032
+records this stage while cold app/live provider and later stages stay open.
+
+Automatic failure feedback uses a stable episode: an unchanged failed retry does
+not replay a dismissed notice. A completed synchronization clears it. New
+retained conflicts publish one actionable notice and preserve local files.

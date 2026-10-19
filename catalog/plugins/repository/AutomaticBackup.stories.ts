@@ -29,7 +29,9 @@ export const SavedLocally: StoryObj = {
     const card = within(
       await body.findByRole("region", { name: "Vault history details" }),
     );
-    await expect(card.getByText("Automatic vault backup")).toBeVisible();
+    await waitFor(() =>
+      expect(card.getByText("Automatic vault backup")).toBeVisible(),
+    );
     await expect(
       card.getByText(/external file changes are captured automatically/),
     ).toBeVisible();

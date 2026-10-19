@@ -600,3 +600,12 @@ Loading exercise production remote settings, the shared guarded restore dialog,
 App progress and toasts. Copied jj-store remote settings/select provenance is in
 docs/provenance.json. The catalog uses injected services; live forge/native
 acceptance and visual approval remain separate.
+
+Repository automatic sync / CleanMergeAndPush, ConflictResolution,
+OfflineAndRecovery, BackgroundTransfer and UnknownApplyRecovery exercise the
+production plugin-owned scheduler, account/settings view, shared conflict
+editor, all-writer guarded apply, original request and real App progress/toasts.
+Resolution accepts a local merge-editor side and verifies the saved text. Fresh
+catalog processes cover light/dark and desktop/narrow layouts. Native
+transfer/merge proofs are separate; no live provider or personal credentials.
+Visual approval and actual native WebView qualification remain open.

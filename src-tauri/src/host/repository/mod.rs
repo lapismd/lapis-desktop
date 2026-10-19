@@ -5,6 +5,8 @@ pub(crate) mod commands;
 pub(crate) mod forges;
 mod policy;
 pub(crate) mod remote;
+mod remote_transfer;
+pub(crate) mod sync;
 pub(crate) mod working_copy;
 use crate::host::state::NativeHost;
 use std::{io, sync::Arc};
@@ -15,6 +17,7 @@ pub struct RepositoryHost {
     pub history: Arc<History>,
     pub working_tree: jj_store_service::working_tree::Observer,
     pub transitions: tokio::sync::Mutex<()>,
+    pub remote_mutations: tokio::sync::Mutex<()>,
     pub remote_slots: Arc<tokio::sync::Semaphore>,
 }
 pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
@@ -51,6 +54,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
         )
         .map_err(|_| io::Error::other("Working copy reader unavailable"))?,
         transitions: tokio::sync::Mutex::new(()),
+        remote_mutations: tokio::sync::Mutex::new(()),
         remote_slots: Arc::new(tokio::sync::Semaphore::new(2)),
     }) {
         return Err(io::Error::other("Repository history is already initialized").into());

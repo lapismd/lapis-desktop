@@ -1,7 +1,7 @@
 # Repository history and conversations
 
 LD-REPO-005's backup, restore and forge bindings are specified in
-[Automatic vault backup](vault-backup.md). M14 tracks delivery (E-REPO-031).
+[Automatic vault backup](vault-backup.md). M14 tracks delivery (E-REPO-032).
 Immutable reader and M13 conversation contracts retain their original scope.
 
 The existing Git-backed JJ vault owns code; the desktop uses owned JJ interfaces

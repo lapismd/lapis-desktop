@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-E-REPO-031 adds production remote backup settings and six mapped review states;
+E-REPO-032 adds automatic sync settings and five mapped review states;
 LD-CAT-003 ownership and original native product gates remain unchanged.
 
 E-AI-041 promotes the shared transcript into the ordinary AI plugin under

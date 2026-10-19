@@ -70,7 +70,16 @@ class BackupSettingsView extends View {
     }
     this.#component = mount(BackupSettings, {
       target: this.containerEl,
-      props: { controller, remote: this.#remote, restore: this.#restore },
+      props: {
+        controller,
+        remote: this.#remote,
+        restore: this.#restore,
+        sync: this.plugin.backup?.sync?.controller,
+        setSyncEnabled: (enabled) =>
+          this.plugin
+            .backup!.sync!.setEnabled(enabled)
+            .catch((error) => this.plugin.report(error)),
+      },
     });
   }
   onunload() {

@@ -9,6 +9,7 @@ import { PreparationQueue } from "./preparation-queue.ts";
 import { nativeBackup } from "./backup.ts";
 import { nativeRestore } from "./restore.ts";
 import { nativeForges } from "./forges.ts";
+import { nativeSync } from "./sync.ts";
 import { nativeRemote } from "./remote.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
@@ -76,6 +77,7 @@ export function createNativeRepository(
     return job;
   }
   return {
+    sync: nativeSync(vault.sessionId, call),
     remote: nativeRemote(vault.sessionId, call),
     forges: nativeForges(call),
     restore: nativeRestore(vault.sessionId, call),

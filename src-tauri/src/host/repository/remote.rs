@@ -1,6 +1,6 @@
 use super::{RepositoryHost, policy};
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::{Binding, RemoteTransfer, VaultRestoreRequest};
+use jj_vault::{Binding, VaultRestoreRequest};
 use lapis_desktop::repository::{forges::ForgeAccounts, remote};
 use serde::Deserialize;
 use serde_json::Value;
@@ -39,10 +39,10 @@ enum Action {
         request: VaultRestoreRequest,
     },
 }
-fn failure(message: impl std::fmt::Display) -> NativeError {
+pub(super) fn failure(message: impl std::fmt::Display) -> NativeError {
     io::Error::other(format!("Remote backup: {message}")).into()
 }
-async fn bound<T: Send + 'static>(
+pub(super) async fn bound<T: Send + 'static>(
     host: NativeHost,
     session: String,
     binding: Binding,
@@ -63,7 +63,7 @@ async fn bound<T: Send + 'static>(
     })
     .await
 }
-async fn worker<T: Send + 'static>(
+pub(super) async fn worker<T: Send + 'static>(
     repository: &RepositoryHost,
     action: impl FnOnce() -> io::Result<T> + Send + 'static,
 ) -> Result<T, NativeError> {
@@ -80,7 +80,7 @@ async fn worker<T: Send + 'static>(
     .map_err(|_| failure("Remote worker stopped"))?
     .map_err(Into::into)
 }
-fn runtime() -> io::Result<tokio::runtime::Runtime> {
+pub(super) fn runtime() -> io::Result<tokio::runtime::Runtime> {
     tokio::runtime::Builder::new_current_thread()
         .enable_all()
         .build()
@@ -137,6 +137,7 @@ pub async fn desktop_backup_remote(
                 })
             })
             .await?;
+            let _mutation = repository.remote_mutations.lock().await;
             serde_json::to_value(
                 bound(
                     host.inner().clone(),
@@ -147,83 +148,30 @@ pub async fn desktop_backup_remote(
                 .await?,
             )
         }
-        Action::Disconnect { revision } => serde_json::to_value(
-            bound(
-                host.inner().clone(),
-                request.session_id,
-                binding,
-                move |binding| remote::disconnect(binding, revision),
-            )
-            .await?,
-        ),
-        Action::Fetch { revision } => {
-            if state.revision != revision {
-                return Err(failure("Connection changed; refresh before continuing"));
-            }
-            let config = state
-                .configuration
-                .ok_or_else(|| failure("Connect a remote repository first"))?;
-            let resolved = accounts
-                .remote(
-                    config.account.clone(),
-                    config.project.clone(),
-                    Some(config.target.branch.clone()),
-                )
-                .await
-                .map_err(NativeError::from)?;
-            if resolved.target != config.target {
-                return Err(failure(
-                    "Forge repository changed; reconnect before continuing",
-                ));
-            }
-            let transfer_binding = binding.clone();
-            let can_push = resolved.can_push;
-            let fetched = worker(&repository, move || {
-                runtime()?.block_on(async {
-                    let transfer = RemoteTransfer::connect(
-                        transfer_binding,
-                        resolved.target,
-                        resolved.credentials,
-                    )
-                    .await
-                    .map_err(|e| io::Error::other(e.to_string()))?;
-                    transfer
-                        .fetch()
-                        .await
-                        .map_err(|e| io::Error::other(e.to_string()))
-                })
-            })
-            .await?;
-            // Network work holds neither the vault-service lock nor backup map.
-            let current = bound(
-                host.inner().clone(),
-                request.session_id.clone(),
-                binding.clone(),
-                remote::read,
-            )
-            .await?;
-            if current.revision != revision {
-                return Err(failure("Connection changed while fetching"));
-            }
-            let checkpoint = if let Some(fetched) = fetched {
-                let owner = repository
-                    .backups
-                    .owner(&request.session_id, &caller.window)
-                    .await?;
-                Some(owner.backup.import_remote(fetched).await.map_err(failure)?)
-            } else {
-                None
-            };
+        Action::Disconnect { revision } => {
+            let _mutation = repository.remote_mutations.lock().await;
             serde_json::to_value(
                 bound(
                     host.inner().clone(),
                     request.session_id,
                     binding,
-                    move |binding| remote::observed(binding, revision, checkpoint, can_push),
+                    move |binding| remote::disconnect(binding, revision),
                 )
                 .await?,
             )
         }
+        Action::Fetch { revision } => serde_json::to_value(
+            super::remote_transfer::Context {
+                host: host.inner().clone(),
+                repository: &repository,
+                accounts: &accounts,
+                session: request.session_id,
+                window: caller.window,
+                binding,
+            }
+            .fetch(revision)
+            .await?,
+        ),
         Action::Preview { checkpoint } => {
             if state.checkpoint.as_ref().map(|c| c.commit.as_str()) != Some(&checkpoint) {
                 return Err(failure(

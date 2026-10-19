@@ -1,6 +1,6 @@
 use jj_vault::{
     Capture, Checkpoint, FetchedHead, NativeRepository, Repository, RestorePreview, RestoreRequest,
-    VaultRestorePreview, VaultRestoreRequest,
+    SyncConflict, SyncProposal, SyncResolution, VaultRestorePreview, VaultRestoreRequest,
 };
 use std::sync::{
     Arc, Mutex,
@@ -15,6 +15,26 @@ pub(super) struct Provider {
     pub active: Arc<AtomicBool>,
 }
 impl Repository for Provider {
+    fn prepare_sync(&mut self, incoming: &str) -> Result<SyncProposal, String> {
+        self.with_native(|n| n.prepare_sync(incoming))
+    }
+    fn preview_sync(&mut self, candidate: &str) -> Result<VaultRestorePreview, String> {
+        self.with_native(|n| n.preview_sync(candidate))
+    }
+    fn apply_sync(&mut self, request: &VaultRestoreRequest) -> Result<Capture, String> {
+        self.with_native(|n| n.apply_sync(request))
+    }
+    fn sync_conflict(&mut self, candidate: &str, path: &str) -> Result<SyncConflict, String> {
+        self.with_native(|n| n.sync_conflict(candidate, path))
+    }
+    fn resolve_sync(
+        &mut self,
+        candidate: &str,
+        path: &str,
+        resolution: SyncResolution,
+    ) -> Result<Checkpoint, String> {
+        self.with_native(|n| n.resolve_sync(candidate, path, resolution))
+    }
     fn import_remote(&mut self, head: &FetchedHead) -> Result<Checkpoint, String> {
         self.with_native(|native| native.import_remote(head))
     }

@@ -1,4 +1,8 @@
 <script lang="ts">
+  import RepositoryShell from "../RepositoryShell.svelte";
+  import type { SyncController } from "../../../lib/repository/sync-controller.ts";
+  import SyncConflictEditor from "./SyncConflictEditor.svelte";
+  import SyncSettings from "./SyncSettings.svelte";
   import ForgeAccounts from "./ForgeAccounts.svelte";
   import RemoteSettings from "./RemoteSettings.svelte";
   import RepositoryRestoreDialog from "../RepositoryRestoreDialog.svelte";
@@ -9,20 +13,39 @@
     controller,
     remote,
     restore,
+    sync,
+    setSyncEnabled,
   }: {
     controller: ForgeController;
     remote?: RemoteController;
     restore?: RestoreController;
+    sync?: SyncController;
+    setSyncEnabled?: (enabled: boolean) => Promise<void>;
   } = $props();
+  let conflictsOpen = $state(false);
 </script>
 
-<ForgeAccounts {controller}>
-  {#snippet remoteSettings()}
-    {#if remote}<RemoteSettings
-        controller={remote}
-        accounts={controller}
-        {restore}
+<RepositoryShell>
+  <ForgeAccounts {controller}>
+    {#snippet remoteSettings()}
+      {#if sync && setSyncEnabled}<SyncSettings
+          controller={sync}
+          setEnabled={setSyncEnabled}
+          onReview={() => (conflictsOpen = true)}
+        />{/if}
+      {#if remote}<RemoteSettings
+          controller={remote}
+          accounts={controller}
+          {restore}
+        />{/if}
+    {/snippet}
+  </ForgeAccounts>
+  {#if restore}<RepositoryRestoreDialog controller={restore} />{/if}
+  {#snippet surface()}
+    {#if sync}<SyncConflictEditor
+        controller={sync}
+        open={conflictsOpen}
+        onClose={() => (conflictsOpen = false)}
       />{/if}
   {/snippet}
-</ForgeAccounts>
-{#if restore}<RepositoryRestoreDialog controller={restore} />{/if}
+</RepositoryShell>

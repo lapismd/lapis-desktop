@@ -126,7 +126,7 @@ export class RepositoryPlugin extends Plugin {
     this.#services = ownedRepository(this.app);
     this.#closeForges = registerBackupSettings(this, this.#services);
     if (this.#services.backup) {
-      this.backup = new RepositoryBackup(this, this.#services.backup);
+      this.backup = new RepositoryBackup(this, this.#services);
       await this.backup.start();
     }
     registerFileHistoryView(this);

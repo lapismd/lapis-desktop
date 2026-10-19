@@ -339,7 +339,7 @@
           "destination": "src/components/repository/conflicts/repository-conflict-file-tree.css"
         }
       ],
-      "use": "Production adoption in E-REPO-015: Copied jj-store presentation first, adapted only to native-read/local draft/stage/delete/preview and public Design Core composition. Same header actions, Files/mode browser, nested shell, Left/Resolved/Right editor, sidebar icon and merge settings. Replaces custom approximation. Source internal sizing selectors are replaced by owned measured hosts/public slots; shell is disposed. Settings are memory-only and language adapts the explicit Markdown fixture. Native apply remains disabled, no conflicts are persisted or cleared. Native publication remains unavailable."
+      "use": "Production adoption in E-REPO-015: Copied jj-store presentation first, adapted only to native-read/local draft/stage/delete/preview and public Design Core composition. Same header actions, Files/mode browser, nested shell, Left/Resolved/Right editor, sidebar icon and merge settings. Replaces custom approximation. Source internal sizing selectors are replaced by owned measured hosts/public slots; shell is disposed. Settings are memory-only and language adapts the explicit Markdown fixture. Native apply remains disabled, no conflicts are persisted or cleared. Native publication remains unavailable. E-REPO-032 reuses the maintained conflict surface/body/text components in automatic backup synchronization, with separate admitted native merge candidates, explicit resolution and guarded file materialization. Backup settings provide the owned AppShell context and render the surface beside Main."
     },
     {
       "sourceRepository": "jj-store",

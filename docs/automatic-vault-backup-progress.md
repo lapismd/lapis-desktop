@@ -119,7 +119,18 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
 
 ## Current stage: Automatic synchronization
 
-- [ ] Plugin-owned automatic fetch/merge/push, independent of status/settings.
-- [ ] Bounded offline retry/coalescing without blocking local capture or close.
-- [ ] Guarded native merge and usable retained-conflict resolution.
-- [ ] Exact original push recovery and two-device native proof.
+- [x] Plugin-owned automatic fetch/merge/push, independent of status/settings.
+- [x] Bounded offline retry/coalescing without blocking local capture or close.
+- [x] Guarded native merge and usable retained-conflict resolution.
+- [x] Two-device native merge/convergence proof, exact publication reservation
+      and accepted-ancestor observation without replay. E-VAULT-BACKUP-008.
+- [x] Original apply recovery, cold recovery record matching and native writer
+      barrier before keeping current files. E-REPO-032.
+- [ ] Explicit recovery controls when an unknown push cannot be confirmed by
+      remote ancestry; preserve its original receipt and never replay blindly.
+- [ ] Focused actual native-app synchronization/lifecycle acceptance.
+
+The current normal and conflict synchronization flows are implemented. Stage 5
+remains Active until the remaining recovery controls and native acceptance are
+addressed; search, root storage/adoption, Forgejo and main integration remain
+required. The review app and original workspaces have not been replaced.
