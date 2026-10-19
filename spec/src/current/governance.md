@@ -389,12 +389,11 @@ AI user-command IO adds only its named main-window operation. Rust chooses the
 user directory; acceptance uses its existing isolated root. Default seeding uses
 exclusive publication, and ordinary AI execution remains unavailable.
 
-The local desktop default is the quiet renderer/native-service/catalog lane.
-Native acceptance in CI explicitly selects the headed runner; changing a local
-default must not silently remove the original native gate. macOS hidden WebKit
-stops animation frames, so browser/service success is separately labelled.
-
-## Native acceptance modes
+The local default is the quiet renderer/native-service/catalog lane; CI selects
+headed native acceptance. Hidden WebKit pauses animation frames, so service
+success stays distinct from native UI acceptance; original gates remain.
 
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
 IPC-only checks, headed windows and capture qualification boundaries.
+
+E-AI-045 records local comment recovery; LD-GOV-001/002/004 gates remain.

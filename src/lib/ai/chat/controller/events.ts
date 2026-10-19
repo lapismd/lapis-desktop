@@ -11,10 +11,10 @@ import {
   isVisibleAgentStatus,
 } from "../chat-trace.ts";
 import { APP_TOOL_MCP_SERVER_NAME } from "../../tools/mcp-server-registry.ts";
-import type { AppToolBridgeEvent } from "../../tools/app-tool-bridge.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { waitForNextTask } from "./turn.ts";
 import { StreamingChatTrace } from "./streaming-trace.ts";
+import { eventIdentity } from "./event-identity.ts";
 import {
   finishTurn,
   knownTurnError,
@@ -208,11 +208,20 @@ export async function _consume(
       if (context.turn && event.type === "completed") context.turn.known = true;
       if (context.turn && event.type === "error")
         context.turn.known = knownTurnError(event.error);
-      traceItems = applyAgentEventToChatItems(traceItems, event);
+      const receivedAt = new Date().toISOString();
+      const identify = eventIdentity(
+        this.repository ? agentBindingId : undefined,
+      );
+      traceItems = applyAgentEventToChatItems(
+        traceItems,
+        event,
+        () => receivedAt,
+        identify,
+      );
       const activeSession = this.session === session;
       const cancelled = this._cancelledSessions.has(session);
       if (activeSession && !cancelled) {
-        live.receive(event);
+        live.receive(event, receivedAt, identify);
       }
       if (event.type === "completed" || event.type === "error") {
         if (event.type === "error" && activeSession) {
@@ -244,10 +253,23 @@ export async function _consume(
       type: "error",
       error: normalized,
     } as const;
-    traceItems = applyAgentEventToChatItems(traceItems, errorEvent);
+    const identify = eventIdentity(
+      this.repository ? agentBindingId : undefined,
+    );
+    traceItems = applyAgentEventToChatItems(
+      traceItems,
+      errorEvent,
+      undefined,
+      identify,
+    );
     if (this.session === session) {
       this.error = normalized.message;
-      this.items = applyAgentEventToChatItems(this.items, errorEvent);
+      this.items = applyAgentEventToChatItems(
+        this.items,
+        errorEvent,
+        undefined,
+        identify,
+      );
       this.busy = false;
     }
     await checkpointTrace();
@@ -261,40 +283,5 @@ export async function _consume(
     if (this.session === session) this.busy = false;
     await checkpointTrace();
     this._sessionContexts.delete(session);
-  }
-}
-
-export async function _consumeAppToolEvent(
-  this: AiChatController,
-  { bindingId, event }: AppToolBridgeEvent,
-): Promise<void> {
-  if (
-    this._activeBindingId &&
-    bindingId !== this._activeBindingId &&
-    !this.bindings.some((binding) => binding.id === bindingId)
-  ) {
-    return;
-  }
-  if (this.session) this._flushSessionTrace.get(this.session)?.();
-  this.items = applyAgentEventToChatItems(this.items, event).map((item) =>
-    item.agentBindingId ? item : { ...item, agentBindingId: bindingId },
-  );
-  const itemId =
-    event.type === "permission.request"
-      ? `approval-${event.request.id}`
-      : event.type === "tool.start" || event.type === "tool.end"
-        ? event.id
-        : undefined;
-  const item = itemId
-    ? this.items.find(
-        (candidate) =>
-          candidate.id === itemId ||
-          (candidate.type === "tool" && candidate.toolId === itemId),
-      )
-    : undefined;
-  if (this.repository && this.location && item) {
-    await this._appendDurableItems(this.location, [item], bindingId);
-  } else if (!this.repository) {
-    await this._persist(false, bindingId);
   }
 }

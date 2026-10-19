@@ -28,7 +28,8 @@ import {
   cancelAndSwitch,
   close,
 } from "./controller/interactions.ts";
-import { _consume, _consumeAppToolEvent } from "./controller/events.ts";
+import { _consume } from "./controller/events.ts";
+import { _consumeAppToolEvent } from "./controller/app-tool-events.ts";
 import { _executeSlash } from "./controller/command-dispatch.ts";
 import {
   _applyAgentCommand,

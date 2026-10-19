@@ -3,6 +3,7 @@
 import { approvalChoiceStatus } from "../core/approvals.ts";
 import type { AiChatItem } from "../chat/chat-items.ts";
 import type { TranscriptEntry } from "./types.ts";
+import { isCommentReceipt } from "./comment-receipt.ts";
 
 export function projectTranscriptToChatItems(
   entries: TranscriptEntry[],
@@ -10,7 +11,11 @@ export function projectTranscriptToChatItems(
   const items: AiChatItem[] = [];
   const approvals = new Map<string, number>();
   const questions = new Map<string, number>();
+  const delivered = new Set(
+    entries.filter(isCommentReceipt).map((entry) => entry.parentId),
+  );
   for (const entry of entries) {
+    if (isCommentReceipt(entry)) continue;
     switch (entry.type) {
       case "message":
         items.push({
@@ -20,6 +25,14 @@ export function projectTranscriptToChatItems(
           text: entry.text,
           createdAt: entry.createdAt,
           agentBindingId: entry.agentBindingId,
+          ...(entry.contextBlocks?.length
+            ? {
+                contextBlocks: structuredClone(entry.contextBlocks),
+                contextDelivery: delivered.has(entry.id)
+                  ? ("sent" as const)
+                  : ("prepared" as const),
+              }
+            : {}),
         });
         break;
       case "thinking.summary":

@@ -92,6 +92,7 @@ export type AiChatItem = (
   agentBindingId?: string;
   source?: AgentEventSource;
   contextBlocks?: import("../core/context.ts").AgentContextBlock[];
+  contextDelivery?: "prepared" | "sent";
 };
 
 export type AiChatInventoryKind = "skills" | "tools";

@@ -39,9 +39,13 @@ format retains messages and responses. Stop cancels the current turn. Reopen
 saved conversations from AI History. The authored prompt and a local turn intent
 are saved before dispatch. After an interruption, History shows that exact
 prompt with an unknown-outcome explanation and no Retry action. Reopening is
-read-only; send a new message to continue without replaying the original.
-Provider-session resume and the native application-tool bridge remain separate
-capabilities.
+read-only; send a new message to continue without replaying the original. Select
+text in a response, code block or table cell to add a comment. Send it with a
+message or on its own. The exact comment, quote and table row are saved before
+dispatch; confirmed turns retain an acknowledgement for History to restore
+inline feedback. Unconfirmed captures remain prepared context and are never
+automatically resent. File snapshots remain transient. Provider-session resume
+and the native application-tool bridge remain separate capabilities.
 
 The host chooses the current admitted vault root, executable and environment.
 The renderer cannot override them. Codex retains its native HOME authentication;

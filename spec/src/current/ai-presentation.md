@@ -46,25 +46,35 @@ attachments, pending approvals/questions and disclosure state through switching.
 IME switching MUST defer until composition ends. Display item/block identities
 remain stable as content updates, and display revisions are never storage proof.
 Anchored comments are included in NOTES-08A by the user's review correction.
-Comments on messages/tool results can accompany a prompt or be submitted alone.
-Code and GFM table cells retain immutable cursor readers for exact text
-selection; their comment ranges still refer to the original captured block.
-Table comments split the rendered table after the referenced row. Queued context
-retains the complete original row with the exact selected text highlighted,
-independently of later source changes. Mira owns the immutable table surface;
-Design Core owns annotation/controller composition. Fenced code uses the
-existing captured-code reader with syntax highlighting, inline comments and Show
-more/Show less controls. A separate reference story renders Design Core's
-recorded demo and synthetic discussions through installed public exports outside
-the Notes adapter, for visual comparison. Its copied fixture provenance remains
-catalog-owned; it is not native conversation proof. Exact block identity,
-revision, UTF-16 range, quote and authored comment travel as separate context;
-the authored message is never rewritten. The shared TranscriptController owns
-drafts across document/classic switching. Only an explicit successful host
-outcome marks a snapshot sent; refused/unknown outcomes retain drafts and
-original submission identity without replay. The first catalog profile uses its
-memory session host; durable native comment publication and restart remain part
-of NOTES-07L/09, not a completed discussion-store gate.
+NOTES-09-FILES-D1 gives live and durable event projections the same
+application-owned creation identity before display. Binding namespaces are
+idempotent. Native session/request/cursor, permission IDs and tool IDs are
+unchanged; existing saved IDs/hashes remain readable without rewriting. Private
+reasoning still stays outside durable capture. Exact live/restored message and
+tool block identities are the prerequisite for local comment context recovery in
+NOTES-09-FILES-D2; this does not enable JJ stores. Comments on messages/tool
+results can accompany a prompt or be submitted alone. Code and GFM table cells
+retain immutable cursor readers for exact text selection; their comment ranges
+still refer to the original captured block. Table comments split the rendered
+table after the referenced row. Queued context retains the complete original row
+with the exact selected text highlighted, independently of later source changes.
+Mira owns the immutable table surface; Design Core owns annotation/controller
+composition. Fenced code uses the existing captured-code reader with syntax
+highlighting, inline comments and Show more/Show less controls. A separate
+reference story renders Design Core's recorded demo and synthetic discussions
+through installed public exports outside the Notes adapter, for visual
+comparison. Its copied fixture provenance remains catalog-owned; it is not
+native conversation proof. Exact block identity, revision, UTF-16 range, quote
+and authored comment travel as separate context; the authored message is never
+rewritten. The shared TranscriptController owns drafts across document/classic
+switching. Only an explicit successful host outcome marks a snapshot sent;
+refused/unknown outcomes retain drafts and original submission identity without
+replay. The first catalog profile uses its memory session host.
+NOTES-09-FILES-D2 retains submitted local comment context before dispatch. Only
+an explicit successful native turn and confirmed local acknowledgement notice
+restore sent inline comments. Prepared or unknown context remains inspectable
+without becoming queued work. Native local comments/restart and JJ
+discussion-store gates remain distinct.
 
 Application context stays distinct from authored text. Existing tool result
 registrations and authorized note links remain host-owned. Loading uses shared

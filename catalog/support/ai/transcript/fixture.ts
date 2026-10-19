@@ -13,6 +13,7 @@ import { transcriptReviewItems } from "./seeds.ts";
 import { registerCatalogCleanup } from "../../lifecycle.ts";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
+import { savedCommentSnapshot } from "./saved-comments.ts";
 
 export type TranscriptScenario =
   | "conversation"
@@ -23,6 +24,7 @@ export type TranscriptScenario =
   | "question"
   | "long-code"
   | "unknown-turn"
+  | "restored-comments"
   | "failure";
 const type = "ai-transcript-review";
 
@@ -32,6 +34,7 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
     requireApproval: scenario === "approval",
     requireQuestion: scenario === "question",
     trace: "rich",
+    resumeSupported: scenario !== "restored-comments",
   });
   const seed =
     scenario === "empty" ||
@@ -98,7 +101,11 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
             },
           ]),
         )
-      : undefined;
+      : scenario === "restored-comments"
+        ? new ConversationRepository(
+            new MemoryTranscriptStore([savedCommentSnapshot()]),
+          )
+        : undefined;
   function own(operation: Promise<unknown>) {
     pending.add(operation);
     void operation

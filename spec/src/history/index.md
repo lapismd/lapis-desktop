@@ -193,3 +193,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-043 — Durable local turn recovery](E-AI-043.md)
 
 - [Complete bounded local streaming](E-AI-044.md)
+
+- [Stable local transcript comments and cold recovery](E-AI-045.md)

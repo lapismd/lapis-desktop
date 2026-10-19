@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from the pre-controller AI handoff; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
+import { messageEvidence } from "./comment-receipt.ts";
 export type ProjectionGroup = { entryIds: string[]; text: string };
 
 export function projectEntry(
@@ -16,7 +17,9 @@ export function projectEntry(
         entry.role === "user"
           ? "User"
           : `Assistant${agent ? ` (${agent})` : ""}`;
-      return [{ entryIds: [entry.id], text: `[${label}]\n${entry.text}` }];
+      return [
+        { entryIds: [entry.id], text: `[${label}]\n${messageEvidence(entry)}` },
+      ];
     }
     case "tool":
       return [

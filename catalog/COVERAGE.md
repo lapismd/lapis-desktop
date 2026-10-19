@@ -577,3 +577,11 @@ path in the App shell. It retains the authored prompt, disables Retry in both
 Document and Classic views, starts no provider on restore, and continues only
 from a new authored message. Native interruption/reopen is a separate acceptance
 lane; visual approval remains pending.
+
+`Desktop/AI/Comment history/RestoredCodeAndTableFeedback` uses production file
+conversation projection, two exact acknowledged code/table captures and the
+public TranscriptController. It scrolls the immutable reader to the table,
+checks inline Sent feedback and no pending queue, switches Document/Classic, and
+sends an explicit continuation with saved comments in handoff. Native
+comments-only Codex and cold History evidence remain in E-AI-045; visual review
+is pending.

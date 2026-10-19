@@ -1,8 +1,7 @@
 # Desktop AI and optional compute
 
-The [repository contract](repository.md) owns native capture and revocation.
-E-REPO-016 qualifies [background work](background.md) under LD-AI-002; provider
-and capture gates stay open.
+E-REPO-016 qualifies [background work](background.md); native capture belongs to
+the [repository contract](repository.md). Provider gates stay.
 
 Native backend receipts and an exclusive owner lease remain exact. Confirmed
 conversations explicitly prepare capture targets; the ordinary factory composes
@@ -10,7 +9,8 @@ native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 The [transcript plan](ai-presentation.md) retains standing approval; E-AI-041
-qualifies shared UI. Catalog fixtures and native AI gates remain distinct.
+qualifies shared UI; E-AI-045 adds stable local anchors and acknowledged comment
+recovery. Catalog fixtures and native AI gates remain distinct.
 
 E-REPO-002 retains separate AI/history admission under LD-AI-001; history cannot
 admit targets. NativeServices preserves raw-event ownership.

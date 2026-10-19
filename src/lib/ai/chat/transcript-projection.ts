@@ -174,7 +174,7 @@ export function projectAiTranscript(
               .join("\n\n"),
             rawContent: JSON.stringify(item.contextBlocks, null, 2),
             rawLanguage: "json",
-            delivery: "prepared",
+            delivery: item.contextDelivery ?? "prepared",
           }
         : undefined,
       defaultExpanded:

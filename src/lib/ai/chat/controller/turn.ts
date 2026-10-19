@@ -9,6 +9,7 @@ import { type AiChatItem } from "../chat-items.ts";
 import { attachmentContext } from "../attachment-context.ts";
 import { prepareTurn, finishTurn, knownTurnError } from "./turn-checkpoint.ts";
 import { applyAgentEventToChatItems } from "../chat-trace.ts";
+import { publishCommentContext } from "./comment-publication.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 export async function submit(
   this: AiChatController,
@@ -207,6 +208,8 @@ export async function submit(
       if (this._isAbandoned(turnId)) return;
       await session.send(text, { contextBlocks: blocks });
     }
+    if (this._isAbandoned(turnId) || this.error) return false;
+    await publishCommentContext(this, userItem, turnId);
     if (!this.repository) await this._persist();
     return true;
   } catch (error) {
@@ -242,7 +245,12 @@ export async function submit(
       type: "error",
       error: error instanceof Error ? error : new Error(String(error)),
     });
-    if (failedContext?.turn && !knownTurnError(error))
+    if (
+      (failedContext?.turn && !knownTurnError(error)) ||
+      (error instanceof Error &&
+        "outcome" in error &&
+        error.outcome === "unknown")
+    )
       this.items = this.items.map((item, index) =>
         index === this.items.length - 1 && item.type === "error"
           ? { ...item, retryable: false }

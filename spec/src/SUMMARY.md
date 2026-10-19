@@ -218,3 +218,4 @@
 - [E-AI-042](history/E-AI-042.md)
 
 - [Complete bounded local streaming](history/E-AI-044.md)
+  - [Stable local transcript comments and cold recovery](history/E-AI-045.md)

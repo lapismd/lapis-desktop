@@ -151,6 +151,8 @@ export type TranscriptEntry =
       type: "message";
       role: "user" | "assistant";
       text: string;
+      /** Explicitly submitted comment captures; attached files remain transient. */
+      contextBlocks?: import("./comment-context.ts").CommentContextBlock[];
     })
   | (TranscriptEntryBase & {
       type: "thinking.summary";

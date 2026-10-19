@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
+import { validateCommentContexts } from "./comment-context.ts";
 import {
   record,
   assertSchemaVersion,
@@ -79,7 +80,18 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
       if (data.role !== "user" && data.role !== "assistant") {
         throw new Error("Transcript message role is invalid");
       }
-      requiredString(data, "text", "Transcript message");
+      if (data.contextBlocks !== undefined && data.role !== "user")
+        throw new Error(
+          "Only authored messages may retain submitted comment context",
+        );
+      if (
+        typeof data.text !== "string" ||
+        (!data.text && !validateCommentContexts(data.contextBlocks).length)
+      )
+        throw new Error(
+          "Transcript message requires authored text or comments",
+        );
+      validateCommentContexts(data.contextBlocks);
       break;
     case "thinking.summary":
       requiredString(data, "text", "Transcript thinking summary");

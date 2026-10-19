@@ -3,6 +3,7 @@
 import type { AiChatItem } from "../chat/chat-items.ts";
 import type { DurableSanitizationOptions } from "./redaction.ts";
 import { sanitizeDurableField } from "./redaction.ts";
+import { persistableCommentContexts } from "./comment-context.ts";
 import {
   CONVERSATION_SCHEMA_VERSION,
   type TranscriptEntry,
@@ -48,7 +49,11 @@ export function projectChatItemsToTranscript(
       ...runtimeProvenance(item.source),
     } as const;
     switch (item.type) {
-      case "message":
+      case "message": {
+        const contexts =
+          item.role === "user"
+            ? persistableCommentContexts(item.contextBlocks)
+            : [];
         return [
           {
             ...common,
@@ -56,6 +61,7 @@ export function projectChatItemsToTranscript(
             type: "message",
             role: item.role,
             text: item.text,
+            ...(contexts.length ? { contextBlocks: contexts } : {}),
             provenance: {
               originClass: item.role === "user" ? "owner" : "agent",
               sourceKind:
@@ -63,6 +69,7 @@ export function projectChatItemsToTranscript(
             },
           },
         ];
+      }
       case "thinking":
         if (
           item.state !== "done" ||

@@ -5,6 +5,26 @@ provider can observe a prompt, and honest recovery when its outcome is unknown.
 E-AI-043 advances NOTES-09-FILES-B under the existing implementation approval.
 JJ-backed persistence remains deferred.
 
+NOTES-09-FILES-D1/D2 retain stable live/durable block identities and explicitly
+submitted comment context under LD-AI-002/004. User messages may carry optional
+`contextBlocks` containing only bounded `transcript-comments` captures; file,
+recall and handoff snapshots remain transient. A comments-only message keeps
+empty authored text, with a valid nonempty comment capture. Existing schema
+versions, message IDs and hashes remain readable without rewriting old entries.
+Captures retain exact submission/comment/block/revision identities, UTF-16
+ranges, quotes and table context, bounded to 64 KiB, 16 groups and 64 comments
+per group. Invalid captures refuse persistence and dispatch.
+
+After a confirmed successful turn, the host appends an immutable existing
+`system.notice` record with ID `comment-context-sent:<user-entry-id>`, its exact
+`parentId`, and fixed acknowledgement text. It is a local receipt, not a grant
+or a repository publication. Projection suppresses this bookkeeping notice and
+marks only that parent's comment context sent. Cancellation, unknown execution,
+write failure or mere checkpointing cannot create it. Cold reads restore sent
+inline comments only from these notices; unconfirmed captures remain prepared
+evidence and never enable replay. Handoff includes captured authored comments as
+distinct evidence; quoted material cannot become instructions.
+
 E-AI-044 advances NOTES-09-FILES-C under LD-AI-001/002: ordinary streamed
 responses must retain complete ordered output through the existing bounded ACP
 client. Shared client fixes belong in Lapis AI and use built public exports.

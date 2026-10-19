@@ -235,7 +235,8 @@ export function namespaceChatItems(
 ): AiChatItem[] {
   return items.map((item) =>
     (item.type === "message" && item.role === "user") ||
-    item.id.startsWith("turn-unknown:")
+    item.id.startsWith("turn-unknown:") ||
+    item.id.startsWith(`${namespace}:`)
       ? item
       : { ...item, id: `${namespace}:${item.id}` },
   );

@@ -17,6 +17,7 @@
   } from "../../../lib/ai/chat/transcript-projection.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import { transcriptCommentContext } from "../../../lib/ai/chat/transcript-context.ts";
+  import { restoreTranscriptComments } from "../../../lib/ai/chat/restored-comments.ts";
   import AiTranscriptBlock from "./AiTranscriptBlock.svelte";
   import AiTranscriptComposer from "./AiTranscriptComposer.svelte";
   import AiTranscriptLoading from "./AiTranscriptLoading.svelte";
@@ -75,6 +76,18 @@
         : { publication: "published", batchId: snapshot.id };
     },
   }));
+  const restoredCommentItems = new WeakSet<object>();
+  $effect(() => {
+    const source = controller.items;
+    untrack(() => {
+      const next = restoreTranscriptComments(
+        commentState.threads,
+        source,
+        restoredCommentItems,
+      );
+      if (next !== commentState.threads) commentState.threads = next;
+    });
+  });
   async function chooseView(next: "document" | "classic") {
     view = next;
     try {

@@ -288,3 +288,7 @@ The primary pinned-history preview closes its disposable Files/Outline sidebars
 through their real controls so desktop review shows the log and diff together.
 NarrowPaneInWideShell retains the crowded-pane acceptance; preview choices do
 not change application sidebar preferences. E-REPO-008 records this correction.
+
+E-AI-045 maps the restored code/table comment story to production local-file
+projection and public TranscriptController. Shared renderer ownership and
+visual-baseline gates under LD-PLUG-001 remain unchanged.
