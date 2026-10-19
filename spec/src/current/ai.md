@@ -10,7 +10,7 @@ E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
 E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
-E-AI-058 qualifies the saved inbox layout; automatic watching remains pending.
+E-AI-058/060 qualify inbox/link UI; automatic watching remains pending.
 E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.

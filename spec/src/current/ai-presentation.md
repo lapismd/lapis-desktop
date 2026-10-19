@@ -98,6 +98,16 @@ registrations and authorized note links remain host-owned. Loading uses shared
 skeletons; empty content uses shared Empty. Preview controls MUST NOT imply that
 reactions, queues or native tools are enabled without host support.
 
+Live and recorded transcripts resolve note references through their owned App.
+Current plain/quoted file mentions, captured `@[[path]]` mentions, wiki links
+and Markdown note links open the resolved vault file in a tab. The host supplies
+Design Core's public immutable-reader link/reference callbacks; it never
+rewrites captured text, identities, revisions or UTF-16 comment offsets. Code
+examples and unavailable references remain literal. External links retain their
+existing handling, and note navigation cannot resolve outside the current vault
+or expose internal `.lapis` files. Navigation failures use one stable App
+notification.
+
 The first live profile includes chat, supported model configuration, file
 context, cancellation, saved history and restart. The live composition retains
 agent/model transition labels, copy-response actions, retry controls, context

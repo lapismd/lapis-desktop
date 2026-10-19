@@ -54,7 +54,7 @@ export const FailedToolCall: Story = {
 export const FileMentions: Story = {
   render: () => ({
     Component: AiChatDemo,
-    props: { requireApproval: false },
+    props: { requireApproval: false, enableMarkdown: true },
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
@@ -82,5 +82,16 @@ export const FileMentions: Story = {
       expect(userMessage.querySelector('[role="textbox"]')).not.toBeNull();
       expect(userMessage).toHaveTextContent("Notes/alpha.md");
     });
+    await userEvent.click(
+      within(
+        canvas.getByRole("article", { name: "Message from You" }),
+      ).getByRole("link", { name: "Notes/alpha.md" }),
+    );
+    await waitFor(() =>
+      expect(canvas.getByTestId("ai-chat-demo")).toHaveAttribute(
+        "data-opened-paths",
+        "Notes/alpha.md",
+      ),
+    );
   },
 };

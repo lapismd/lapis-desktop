@@ -111,6 +111,9 @@ export const Transcript: Story = {
     expect(await preview.findByText("one active project")).toBeVisible();
     expect(preview.getByText("Summarize", { exact: false })).toBeVisible();
     expect(
+      preview.getByRole("link", { name: "Notes/Welcome.md" }),
+    ).toBeVisible();
+    expect(
       preview.getByRole("button", { name: "Show details for notes_search" }),
     ).toBeVisible();
     expect(preview.queryByRole("combobox", { name: "Message" })).toBeNull();
@@ -140,6 +143,15 @@ export const Transcript: Story = {
     await (leaf.view as InstanceType<typeof TextFileView>).save(true);
     expect(await fixture.app.vault.read(file)).toBe(transcript);
     expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);
+    const noteLink = preview.getByRole("link", { name: "Notes/Welcome.md" });
+    noteLink.focus();
+    await userEvent.keyboard("{Enter}");
+    await waitFor(() =>
+      expect(fixture.app.workspace.getActiveFile()?.path).toBe(
+        "Notes/Welcome.md",
+      ),
+    );
+    expect(fixture.app.workspace.activeLeaf?.containerEl).toBeVisible();
   },
 };
 export const AgentEvents: Story = {

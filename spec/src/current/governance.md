@@ -1,6 +1,6 @@
 # Governance
 
-E-AI-059 retains LD-GOV-001/002/004/006; wider and visual gates stay open.
+E-AI-059/060 retain LD-GOV-001/002/004/006; wider and visual gates stay open.
 
 E-AI-031/032/033 qualify journal/backend/host boundaries. Cold Rust lease proof
 stays separate from packaged WebView acceptance; original M13.3 gates stay open.

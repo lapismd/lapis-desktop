@@ -8,7 +8,7 @@ export type VaultFileRef = {
 };
 
 const TRAILING_MENTION_PATTERN = /(^|\s)@(?:"([^"]*)"|([^\s"]*))$/;
-const MENTION_PATTERN = /(^|\s)@(?:"([^"]+)"|([^\s]+))/g;
+const MENTION_PATTERN = /(^|\s)@(?:\[\[([^\]\r\n]+)\]\]|"([^"]+)"|([^\s]+))/g;
 
 export function normalizeMentionPath(path: string): string {
   const normalized = path.trim().replaceAll("\\", "/");
@@ -29,15 +29,26 @@ export function extractMentionQuery(input: string): string | null {
 }
 
 export function extractMentionPaths(input: string): string[] {
-  const paths: string[] = [];
-  const seen = new Set<string>();
-  for (const match of input.matchAll(MENTION_PATTERN)) {
-    const path = normalizeMentionPath((match[2] ?? match[3] ?? "").trim());
-    if (!path || seen.has(path)) continue;
-    seen.add(path);
-    paths.push(path);
-  }
-  return paths;
+  return [...new Set(fileMentionRanges(input).map((mention) => mention.path))];
+}
+
+/** Source offsets include the authored markers; captured text is never rewritten. */
+export function fileMentionRanges(input: string) {
+  return [...input.matchAll(MENTION_PATTERN)].flatMap((match) => {
+    const [target = "", alias] = (match[2] ?? "").split("|");
+    const path = normalizeMentionPath(target || match[3] || match[4] || "");
+    const from = match.index + match[1]!.length;
+    return path
+      ? [
+          {
+            from,
+            to: match.index + match[0].length,
+            path,
+            label: alias || path,
+          },
+        ]
+      : [];
+  });
 }
 
 export function mergeAttachmentPaths(

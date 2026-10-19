@@ -47,6 +47,7 @@
 
 {#if history}
   <CapturedSessionBrowser
+    {app}
     sessions={history.groups}
     selected={history.selected}
     selectedVersion={history.selectedVersion}
@@ -59,7 +60,7 @@
     onRefresh={() => void history.refresh()}
   />
 {:else if snapshot.metadata.imported?.state === "complete" && !snapshot.warnings.length}
-  <AiRecordedTranscript entries={snapshot.transcript} />
+  <AiRecordedTranscript {app} entries={snapshot.transcript} />
 {:else}
   <Empty.Root
     ><Empty.Header

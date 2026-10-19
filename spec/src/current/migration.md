@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-042–058 cover local Codex and inbox adoption; E-AI-059 retires the old UI.
+E-AI-042–058 cover Codex/inbox adoption; E-AI-059/060 cover renderer/link fixes.
 LD-MIG-002 retains original M10.2/M13 gates and separate import acceptance. JJ
 persistence and automatic capture remain deferred.
 

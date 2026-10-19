@@ -1,5 +1,8 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import type { App } from "@lapis-notes/api";
+  import { transcriptLinks } from "../../../lib/ai/chat/transcript-links.ts";
+  import "../../../styles/ai/transcript-links.css";
   import {
     Transcript,
     TranscriptController,
@@ -19,6 +22,8 @@
   import type { TranscriptEntry } from "../../../lib/ai/conversations/types.ts";
   import { importedToolBlock } from "../../../lib/ai/imports/transcript-tool-block.ts";
   let {
+    app,
+    sourcePath = "",
     entries,
     view = $bindable<"document" | "classic">("document"),
     showViewToolbar = true,
@@ -28,6 +33,8 @@
     capturedUser = true,
     label = "Imported transcript preview",
   }: {
+    app?: App | undefined;
+    sourcePath?: string;
     entries: TranscriptEntry[];
     view?: "document" | "classic";
     showViewToolbar?: boolean;
@@ -93,6 +100,7 @@
     selected = { id: tool.id, opener };
   }
   const commentState = new TranscriptController(() => ({
+    ...transcriptLinks(app, sourcePath),
     items,
     canComment: false,
     onInspectTool: inspectTools ? inspect : undefined,

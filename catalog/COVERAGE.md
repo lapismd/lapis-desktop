@@ -1,5 +1,12 @@
 # Desktop catalog coverage
 
+`Desktop/AI/Note links/Conversation` reviews current file mentions, Markdown
+note links, wiki aliases and literal code/unavailable references through the
+production reader in both modes. `JSONL/Transcript` retains the captured
+`@[[Notes/Welcome.md]]` text and verifies keyboard navigation to a visible note.
+`Errors and mentions/File Mentions` verifies composer selection and mouse
+opening.
+
 `Desktop/AI/Chat layout review/Sending Error` injects one catalog runtime
 failure before dispatch, showing the production interrupted-turn/retry controls,
 retained draft and standalone error beside the fixed keyboard hint. Explicit

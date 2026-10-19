@@ -1,5 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0; read-only local snapshot presentation. -->
 <script lang="ts">
+  import type { App } from "@lapis-notes/api";
   import DriveIcon from "@lucide/svelte/icons/hard-drive";
   import LockIcon from "@lucide/svelte/icons/lock-keyhole";
   import PauseIcon from "@lucide/svelte/icons/pause";
@@ -18,6 +19,7 @@
     type SavedSessionGroup,
   } from "../../../lib/ai/session-browser/model.ts";
   let {
+    app,
     sessions,
     loading = false,
     initialSelection = true,
@@ -28,6 +30,7 @@
     onRefresh,
     previewLoading = false,
   }: {
+    app?: App | undefined;
     sessions: SavedSessionGroup[];
     loading?: boolean;
     initialSelection?: boolean;
@@ -129,6 +132,7 @@
     </footer>{/snippet}
   {#if loading || previewLoading}<AiTranscriptLoading composer={false} />
   {:else if version?.entries && !version.incomplete}{#key version.id}<AiRecordedTranscript
+        {app}
         entries={version.entries}
         bind:view
         showViewToolbar={false}

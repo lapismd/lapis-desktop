@@ -243,3 +243,4 @@
 - [Production AI inbox and local saved-history adoption](history/E-AI-058.md)
 
 - [Unified JSONL shell and sole AI transcript renderer](history/E-AI-059.md)
+- [App-owned note links in shared AI transcripts](history/E-AI-060.md)

@@ -6,6 +6,9 @@ records. Exclusive legacy renderers are retired; local command results stay
 inline. LD-PLUG-001 identity, admission, profile and disposal contracts remain
 unchanged.
 
+E-AI-060 retains those boundaries while restoring App-owned note links in live,
+imported and saved transcripts; fixture text and comment offsets stay exact.
+
 E-AI-055 adds independently admitted native Codex import workers and truthful
 unknown tool outcomes; [local imports](ai-imports.md) owns that bounded profile.
 Original task gates and deferred JJ/provider/distribution qualification stay.

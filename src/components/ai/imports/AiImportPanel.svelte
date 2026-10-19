@@ -124,6 +124,7 @@
         composer={false}
       />
     {:else if imports.plan}<AiRecordedTranscript
+        app={props.app}
         entries={imports.plan.entries}
         bind:view
         showViewToolbar={false}

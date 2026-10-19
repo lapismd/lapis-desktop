@@ -16,7 +16,7 @@
   import AiJsonlRecords from "./AiJsonlRecords.svelte";
   import { createAiJsonlPreview } from "../../../lib/ai/jsonl/preview.ts";
   let {
-    app: _app,
+    app,
     data,
     filePath,
     loading = readable(false),
@@ -90,6 +90,8 @@
           >
         {:else if preview.kind === "transcript"}
           {#key filePath}<AiRecordedTranscript
+              {app}
+              sourcePath={filePath}
               entries={preview.entries}
               {view}
               showViewToolbar={false}

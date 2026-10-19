@@ -29,6 +29,8 @@
   import ChatConversationPicker from "./ChatConversationPicker.svelte";
   import AiTranscriptToolInspector from "./AiTranscriptToolInspector.svelte";
   import { transcriptToolInspection } from "../../../lib/ai/chat/transcript-inspection.svelte.ts";
+  import { transcriptLinks } from "../../../lib/ai/chat/transcript-links.ts";
+  import "../../../styles/ai/transcript-links.css";
 
   let panel: TranscriptPanelProps = $props();
   const { panelProps, controller, composerState, conversationsState, actions } =
@@ -71,6 +73,7 @@
     Boolean(panelProps.initializing || composerState.catalogState?.loading),
   );
   const commentState: TranscriptController = new TranscriptController(() => ({
+    ...transcriptLinks(panelProps.app),
     items,
     canComment: !blocked,
     onInspectTool: Frame ? inspection.open : undefined,
