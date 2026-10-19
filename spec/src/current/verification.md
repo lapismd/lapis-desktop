@@ -110,3 +110,7 @@ qualification remain separate.
 Footer qualification for LD-HOST-001, LD-DESK-001, LD-CAT-001/002/003 and
 LD-GOV-002: [E-CATALOG-009](../history/E-CATALOG-009.md). Original native
 presentation gates remain separate.
+
+Footer safe-area and imported XML follow-up:
+[E-CATALOG-011](../history/E-CATALOG-011.md). Focused source/consumer evidence
+retains the original native gates.

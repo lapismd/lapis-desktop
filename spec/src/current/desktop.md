@@ -1,6 +1,6 @@
 # Desktop shell
 
-Footer: LD-HOST-001; E-CATALOG-009/010.
+Footer/safe insets: LD-HOST-001; see `plugins.md`.
 
 E-REPO-035–041 retain backup Settings/native authority; E-AI-056 retains
 LD-DESK-005. [Local imports](ai-imports.md) governs capture admission. Gravatar:

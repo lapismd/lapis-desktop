@@ -158,3 +158,8 @@ representative transcript skeleton until the real controller can be used.
 `Desktop/Repository working copy status/Workspace Footer` verifies full-width
 footer geometry, left repository placement, fixed centre activity and shared
 notification-panel opening through the real packed API/workspace shell.
+
+Rounded native-window footer clearance is reviewed in Repository working copy
+status: RoundedWindowSafeArea. Import layout review: XmlContextPreview and
+XmlContextSaved exercise the public inert XML renderer before and after saving,
+including Document/Classic presentation.

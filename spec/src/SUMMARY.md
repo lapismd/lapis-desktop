@@ -278,3 +278,5 @@
 - [Full-width workspace status footer](history/E-CATALOG-009.md)
 
 - [Main-workspace footer handoff](history/E-CATALOG-010.md)
+
+- [Rounded footer and imported XML context](history/E-CATALOG-011.md)

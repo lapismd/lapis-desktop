@@ -34,6 +34,10 @@ E-AI-042–061 adds local Codex execution, file-backed transcripts, comments,
 imports and reviewed chat/file UI. JJ persistence and the original native,
 provider and distribution gates remain deferred.
 
+E-CATALOG-011 qualifies rounded-window footer clearance and inert XML imports
+through focused source and public-archive consumer checks. Review restarts
+retain the existing vault. Original native, provider and release gates remain.
+
 ## Historical checkpoints
 
 These records describe their own slices. Their earlier next actions do not

@@ -13,7 +13,7 @@ deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) keep their
 gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
-E-CATALOG-009/010 removes overlay clearance owned by the shell footer.
+E-CATALOG-009–011 retain shell-owned clearance and inert XML imports.
 `PLUGIN_MIGRATION.md` and the original M10 task gates remain authoritative.
 Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).

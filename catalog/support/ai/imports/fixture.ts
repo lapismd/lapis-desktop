@@ -36,7 +36,7 @@ export const sampleCapture: CapturedSession = {
       createdAt: "2026-10-19T09:00:00.000Z",
       type: "message",
       role: "user",
-      text: "Review the weekly note structure",
+      text: "<recommended_plugins>\nAvailable helpers from the **captured session**.\n\n- Notes search\n- Weekly review\n</recommended_plugins>\n\n<environment_context>\n<cwd>$WORKSPACE</cwd>\n\n<workspace_roots>\n<root>$WORKSPACE/Notes</root>\n</workspace_roots>\n</environment_context>\n\nReview the weekly note structure",
     },
     {
       id: "record-2",

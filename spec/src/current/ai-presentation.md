@@ -23,6 +23,11 @@ The 2026-10-18 delivery sequence prioritizes visible, functional slices:
    ordinary UI adoption is qualified separately in E-AI-058. Original JJ
    milestone gates remain pending; file-profile success does not complete them.
 
+Recorded/imported transcripts MUST enable Design Core's public
+`promptElementsExtension` for inert XML context, with accessible disclosures,
+nested Markdown and the same Document/Classic behavior. Captured text, IDs,
+revisions and read-only authority remain unchanged.
+
 The shared Transcript is the sole panel renderer. `initialTranscriptView` only
 chooses its initial document/classic presentation; it grants no runtime, storage
 or native authority. The ordinary AiViewPanel selects the shared transcript in

@@ -209,3 +209,25 @@ export const WorkspaceFooter: StoryObj = {
     }
   },
 };
+
+export const RoundedWindowSafeArea: StoryObj = {
+  args: { roundedWindow: true },
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    await canvas.findByRole("button", { name: /^Working copy details/ });
+    const footer = canvas.getByLabelText("Workspace status");
+    const bounds = footer.getBoundingClientRect();
+    expect(bounds.height).toBe(28);
+    for (const side of ["left", "right"]) {
+      const region = footer.querySelector<HTMLElement>(
+        `[data-ui-part="${side}"]`,
+      )!;
+      for (const button of within(region).getAllByRole("button")) {
+        const control = button.getBoundingClientRect();
+        expect(control.left).toBeGreaterThanOrEqual(bounds.left + 8);
+        expect(control.right).toBeLessThanOrEqual(bounds.right - 8);
+        expect(control.bottom).toBeLessThanOrEqual(bounds.bottom - 4);
+      }
+    }
+  },
+};

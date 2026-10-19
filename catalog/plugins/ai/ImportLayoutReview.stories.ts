@@ -34,3 +34,36 @@ export const ImportAndDeduplicate: Story = {
 export const LoadingSources: Story = { args: { scenario: "loading" } };
 export const NoSources: Story = { args: { scenario: "empty" } };
 export const UnavailableHost: Story = { args: { scenario: "unavailable" } };
+
+async function inspectXmlContext(element: HTMLElement) {
+  const canvas = within(element);
+  const plugins = await canvas.findByRole("button", {
+    name: "<recommended_plugins>",
+  });
+  await expect(plugins).toHaveAttribute("aria-expanded", "false");
+  await userEvent.click(plugins);
+  await expect(canvas.getByText("captured session")).toBeVisible();
+  await userEvent.click(
+    canvas.getByRole("button", { name: "<environment_context>" }),
+  );
+  await expect(
+    element.querySelector('[data-prompt-element="<cwd>"]'),
+  ).toHaveTextContent("$WORKSPACE");
+  await userEvent.click(
+    canvas.getByRole("button", { name: "Switch to Classic view" }),
+  );
+  const classic = await canvas.findByRole("button", {
+    name: "<recommended_plugins>",
+  });
+  if (classic.getAttribute("aria-expanded") === "false")
+    await userEvent.click(classic);
+  await expect(canvas.getByText("captured session")).toBeVisible();
+  await expect(canvas.queryByRole("textbox", { name: "Message" })).toBeNull();
+}
+export const XmlContextPreview: Story = {
+  play: ({ canvasElement }) => inspectXmlContext(canvasElement),
+};
+export const XmlContextSaved: Story = {
+  args: { scenario: "saved" },
+  play: ({ canvasElement }) => inspectXmlContext(canvasElement),
+};

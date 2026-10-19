@@ -6,6 +6,7 @@
   import {
     Transcript,
     TranscriptController,
+    promptElementsExtension,
     type TranscriptBlock,
     type TranscriptTool,
   } from "@lapismd/design-core/chat";
@@ -126,6 +127,7 @@
     </div>{/if}
   <Transcript
     {items}
+    markdown={{ extensions: [promptElementsExtension] }}
     {commentState}
     onInspectTool={inspectTools ? inspect : undefined}
     {view}

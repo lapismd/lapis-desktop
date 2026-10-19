@@ -8,8 +8,11 @@
   import type { WorkingCopyStatus } from "../../../src/lib/repository/working-copy-status.ts";
   let {
     scenario = "ready",
-  }: { scenario?: "ready" | "loading" | "binary" | "clean" | "failed" } =
-    $props();
+    roundedWindow = false,
+  }: {
+    scenario?: "ready" | "loading" | "binary" | "clean" | "failed";
+    roundedWindow?: boolean;
+  } = $props();
   const fixture = untrack(() => operationFixture());
   let attempts = 0,
     root: HTMLDivElement;
@@ -42,7 +45,12 @@
   }
 </script>
 
-<div bind:this={root} data-repository-fixture class="working-copy-demo">
+<div
+  bind:this={root}
+  data-repository-fixture
+  class="working-copy-demo"
+  class:rounded-window={roundedWindow}
+>
   <NotesDemo
     createRepository={(app) => {
       bindHistoryFixture(root, { app, fixture });
@@ -56,6 +64,11 @@
 </div>
 
 <style>
+  .rounded-window {
+    border: 1px solid var(--ui-workspace-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
   .working-copy-demo {
     height: 100vh;
     min-height: 36rem;

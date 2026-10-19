@@ -222,3 +222,5 @@ by the task ledger, not inferred from this list.
 - [Full-width workspace status footer](E-CATALOG-009.md)
 
 - [Main-workspace footer handoff](E-CATALOG-010.md)
+
+- [Rounded footer and imported XML context](E-CATALOG-011.md)

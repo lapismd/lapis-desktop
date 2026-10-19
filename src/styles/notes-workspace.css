@@ -6,6 +6,9 @@
   min-height: 0;
 }
 .notes-session-workspace {
+  --ui-workspace-safe-area-inline-start: 0.5rem;
+  --ui-workspace-safe-area-inline-end: 0.5rem;
+  --ui-workspace-safe-area-block-end: 0.25rem;
   flex: 1;
   min-height: 0;
   overflow: hidden;

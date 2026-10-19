@@ -320,3 +320,9 @@ distinct. No live account is required by catalog execution.
 
 E-AI-045/047–053 retains local comments, addressed recipients, queues and
 delivery; catalog proof cannot complete M10.2 native gates.
+
+The native workspace host MUST set Design Core footer safe-area variables so
+rounded window corners cannot clip edge controls (LD-HOST-001). Inline insets
+are 0.5rem and the block-end inset is 0.25rem; the footer owns that clearance.
+Its background remains full width, its status region stays centred and content
+ends above its complete track. Hosted views/plugins MUST NOT add spacers.
