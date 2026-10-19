@@ -22,6 +22,7 @@ fn main() {
         "desktop_forge_accounts",
         "desktop_backup_remote",
         "desktop_backup_sync",
+        "desktop_backup_search",
         "desktop_repository_admit",
         "desktop_repository_release",
         "desktop_repository_working_copy",

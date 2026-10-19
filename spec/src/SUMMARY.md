@@ -230,3 +230,5 @@
 - [Automatic vault synchronization](history/E-REPO-032.md)
 
 - [Original vault push recovery](history/E-REPO-033.md)
+
+- [Historical checkpoint search](history/E-REPO-034.md)

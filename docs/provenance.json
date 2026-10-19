@@ -380,6 +380,22 @@
         }
       ],
       "use": "Copied remote repository setup and accessible selected account control, adapted to public Design Core Card/Field/Select and native CSS. Native account/endpoint custody, explicit immutable fetch, guarded restore and durable request recovery remain desktop-owned. No dependency internals or catalog state enter production."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "e500adb1e0597b91390f78b3400bf98dee2fa4a7",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/community-search-command/CommunitySearchCommand.svelte",
+          "destination": "src/components/repository/search/HistorySearchResults.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-search-command/search-command.css",
+          "destination": "src/components/repository/search/HistorySearchResults.svelte"
+        }
+      ],
+      "use": "Copied and adapted the grouped command-view result layout and two-line excerpt styling. Desktop owns filters, fixed native checkpoint cursors, exact version/checkpoint navigation, independent App progress/toasts and guarded restore. Public Design Core command/scroll/skeleton/empty components and the maintained noninteractive time display replace source-owned wrappers. No catalog authority, dependency-internal selectors or runtime checkout imports."
     }
   ]
 }

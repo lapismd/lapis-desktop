@@ -101,6 +101,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::repository::forges::desktop_forge_accounts,
             crate::host::repository::remote::desktop_backup_remote,
             repository::sync::desktop_backup_sync,
+            repository::search::desktop_backup_search,
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
             crate::host::repository::working_copy::desktop_repository_working_copy,

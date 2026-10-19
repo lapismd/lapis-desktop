@@ -1,7 +1,7 @@
 # Desktop plugins and catalog
 
-E-REPO-033 adds four original-push recovery review states; LD-CAT-003 ownership
-and original native product gates remain unchanged.
+E-REPO-034 adds six history search and restoration review states; LD-CAT-003
+ownership and original native product gates remain unchanged.
 
 E-AI-041 promotes the shared transcript into the ordinary AI plugin under
 standing implementation approval. Vault-owned presentation defaults to Document;

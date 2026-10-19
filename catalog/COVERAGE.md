@@ -616,3 +616,12 @@ summary, read-only observation, signed-out explicit stop, retained confirmation
 and failure/toast recovery. The original request is asserted throughout; catalog
 services cannot publish. Native receipt/replay proofs remain separate. Visual
 review and cold native/provider gates remain pending.
+
+Repository history search / TextAndFileRestore, MetadataAndFilters,
+OlderHistory, NoMatches, Loading and FailureAndRecovery exercise the production
+plugin registration/search panel, fixed-anchor continuation, exact native
+selection, restore preview/apply, real App feedback and progress. Search rows
+copy/adapt jj-store's maintained command result composition; provenance is in
+docs/provenance.json. File results open the maintained blame view; checkpoints
+open JJ Log. Full native search/cache/identity proofs remain source-owned.
+Visual review and cold native-app/provider acceptance remain open.

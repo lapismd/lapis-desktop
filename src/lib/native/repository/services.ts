@@ -9,6 +9,7 @@ import { PreparationQueue } from "./preparation-queue.ts";
 import { nativeBackup } from "./backup.ts";
 import { nativeRestore } from "./restore.ts";
 import { nativeForges } from "./forges.ts";
+import { nativeSearch } from "./search.ts";
 import { nativeSync } from "./sync.ts";
 import { nativeRemote } from "./remote.ts";
 
@@ -76,7 +77,9 @@ export function createNativeRepository(
     void job.finally(() => pending.delete(job)).catch(() => {});
     return job;
   }
+  const search = nativeSearch(vault.sessionId, call);
   return {
+    search: { page: (request) => run(() => search.page(request)) },
     sync: nativeSync(vault.sessionId, call),
     remote: nativeRemote(vault.sessionId, call),
     forges: nativeForges(call),

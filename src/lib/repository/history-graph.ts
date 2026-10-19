@@ -19,6 +19,51 @@ export class HistoryGraph {
     this.scope = scope;
     this.publish = publish;
   }
+  async exact(id: string, current: () => boolean) {
+    const epoch = ++this.#epoch;
+    const { handle } = this.scope();
+    if (!handle || this.scope().closed) return;
+    const response = await this.reader.read(handle, {
+      kind: "commit",
+      query: { commit: id },
+    });
+    if (
+      epoch !== this.#epoch ||
+      this.scope().handle !== handle ||
+      this.scope().closed ||
+      !current()
+    )
+      return;
+    check(
+      response.kind === "commit" &&
+        response.data.commit.id === id &&
+        response.data.object.key.id === id &&
+        response.data.object.data.kind === "commit",
+    );
+    this.publish({
+      commits: [response.data.commit],
+      commitsReady: true,
+      next: null,
+    });
+    return response.data.commit;
+  }
+  async conflicts(current: () => boolean) {
+    const { handle, state } = this.scope();
+    const revision = state.revision;
+    if (!handle || !revision?.conflicted || this.scope().closed) return;
+    const response = await this.reader.read(handle, {
+      kind: "conflicts",
+      query: { commit: revision.id, path: "" },
+    });
+    if (!current() || this.scope().handle !== handle || this.scope().closed)
+      return;
+    check(
+      response.kind === "conflicts" &&
+        response.data.commit === revision.id &&
+        response.data.change === revision.change_id,
+    );
+    this.publish({ conflicts: response.data.conflicts, conflictsReady: true });
+  }
   async load(append: boolean): Promise<void> {
     const epoch = append ? this.#epoch : ++this.#epoch;
     const { handle, state, closed } = this.scope();

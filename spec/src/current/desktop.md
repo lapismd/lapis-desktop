@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-033 retains LD-DESK-003/HOST-001 with native push recovery. Gravatar:
+E-REPO-034 retains LD-DESK-003/HOST-001 with native search workers. Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.

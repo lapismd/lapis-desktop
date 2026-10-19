@@ -201,6 +201,22 @@ export class HistoryController {
       }),
     );
   }
+  openRevision(id: string): Promise<void> {
+    const comparison = ++this.#comparison;
+    this.#files.reset();
+    return this.#run(() =>
+      this.#action(async () => {
+        const revision = await this.#graph.exact(
+          id,
+          () => comparison === this.#comparison,
+        );
+        if (!revision) return;
+        this.#set({ ...resetHistoryComparison(), revision });
+        if (revision.parents.length === 1)
+          await this.#paths(revision.parents[0], false);
+      }),
+    );
+  }
   loadParents(): Promise<void> {
     return this.#run(() =>
       this.#action(async () => {
@@ -223,29 +239,11 @@ export class HistoryController {
     );
   }
   loadConflicts(): Promise<void> {
+    const comparison = this.#comparison;
     return this.#run(() =>
-      this.#action(async () => {
-        const handle = this.#handle,
-          revision = this.#state.revision,
-          comparison = this.#comparison;
-        if (!handle || !revision?.conflicted) return;
-        const response = await this.reader.read(handle, {
-          kind: "conflicts",
-          query: { commit: revision.id, path: "" },
-        });
-        if (
-          this.#closed ||
-          handle !== this.#handle ||
-          comparison !== this.#comparison
-        )
-          return;
-        check(
-          response.kind === "conflicts" &&
-            response.data.commit === revision.id &&
-            response.data.change === revision.change_id,
-        );
-        this.#set({ conflicts: response.data.conflicts, conflictsReady: true });
-      }),
+      this.#action(() =>
+        this.#graph.conflicts(() => comparison === this.#comparison),
+      ),
     );
   }
   selectBase(base: string): Promise<void> {

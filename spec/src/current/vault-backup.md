@@ -109,3 +109,20 @@ with read-only access. Explicit stop requires confirmation, retains the stopped
 receipt and cannot cancel or undo remote acceptance. It works without an
 available account. Revision and request identities fence obsolete completions; a
 stopped request cannot clear a newer active pointer or publish on retry.
+
+Historical search is a main-window-only native read for an admitted vault with
+retained backup history. Pausing capture preserves search access. Fixed
+retained-checkpoint cursors page metadata and changed-file UTF-8 text; binary,
+conflicted, symlink and over-one-MiB contents remain path-only and are reported
+explicitly. Native code owns index paths and exclusions. Disposable caches
+rebuild after loss/corruption. Search runs on one bounded worker outside
+NativeHost, capture and editor locks and reports App progress. New queries fence
+old results; closing drains in-flight reads. Search hits never authorize
+restoration: exact native preview and editor guards remain required.
+
+Search versions open the retained file in the main-panel blame reader or its
+exact checkpoint in JJ Log, including commits beyond graph paging. Late exact
+commit replies cannot replace a newer row selection. Restoring a hit uses the
+existing native preview, original safety checkpoint and receipt path, never
+cache bytes. The copied command result layout retains public Design Core
+composition and a noninteractive time label inside each selectable row.

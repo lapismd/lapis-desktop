@@ -12,8 +12,8 @@ listed below. Changes integrate back into the main workspaces after completion.
 | 2. Capture coordinator                 | Partial | Internal/external changes, bounded debounce/reconciliation and crash/close recovery work       |
 | 3. Local history and restore           | Partial | Timeline, guarded file/vault restore, live history and optional status work                    |
 | 4. GitHub integration                  | Partial | Sign-in, remote setup and fresh-device restore work                                            |
-| 5. Automatic two-way synchronization   | Active  | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
-| 6. Historical search                   | Pending | Find and restore past text, paths and metadata through exact checkpoint anchors                |
+| 5. Automatic two-way synchronization   | Partial | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
+| 6. Historical search                   | Active  | Find and restore past text, paths and metadata through exact checkpoint anchors                |
 | 7. Advanced storage and Forgejo        | Pending | Root .jj/adoption and Forgejo work, then changes integrate into main                           |
 
 ## Completed slices
@@ -115,7 +115,7 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
       E-REPO-031.
 - [ ] Live forge acceptance after the complete sync flow is implemented.
 
-## Current stage: Automatic synchronization
+## Automatic synchronization
 
 - [x] Plugin-owned automatic fetch/merge/push, independent of status/settings.
 - [x] Bounded offline retry/coalescing without blocking local capture or close.
@@ -128,8 +128,22 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
       remote ancestry; preserve its original receipt and never replay blindly.
 - [ ] Focused actual native-app synchronization/lifecycle acceptance.
 
-The current normal and conflict synchronization flows are implemented. Stage 5
-remains Active while focused recovery verification is completed; cold native
-acceptance remains open. search, root storage/adoption, Forgejo and main
-integration remain required. The review app and original workspaces have not
-been replaced.
+Normal, conflict and original-push recovery flows have focused proof in
+E-VAULT-BACKUP-008/009 and E-REPO-032/033. Stage 5 is Partial: cold
+native/provider acceptance remains open. Only stage 6 is Active. Root
+storage/adoption, Forgejo and main integration remain required; original
+workspaces and review data are preserved.
+
+## Current stage: Historical search
+
+- [x] Bounded immutable checkpoint/text/path/metadata reader and disposable
+      cache.
+- [x] Plugin search UI, exact selection and guarded restoration.
+- [x] Focused source/consumer proofs and mapped loading/empty/recovery stories.
+
+Source E-VAULT-BACKUP-010 qualifies20native and nineworker/search cases. Desktop
+E-REPO-034 qualifies46renderer cases, nine native frame cases and 116affected
+catalog interaction/accessibility executions. Cold native
+search/restore/lifecycle acceptance remains deferred until all implementation is
+present. Search cache is disposable; content above1MiB and binary/conflicted
+versions remain path-only with an explicit count.
