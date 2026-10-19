@@ -200,3 +200,5 @@ by the task ledger, not inferred from this list.
 - [Addressed local messages and retained draft context](E-AI-048.md)
 - [Independent local agent participants](E-AI-049.md)
 - [One local message with independent addressed deliveries](E-AI-050.md)
+
+- [E-AI-051](E-AI-051.md)

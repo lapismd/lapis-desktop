@@ -73,6 +73,7 @@ export async function prepareTurn(
       throw new DOMException("Turn preparation was cancelled", "AbortError");
     }
     context.turn = { intent, known: false };
+    controller.publication.prepared();
     controller._recoveredTurn = undefined;
     controller._recoveredDispatchId = undefined;
   });
@@ -173,10 +174,14 @@ export async function restoreTurn(
   const recovered = controller.repository.turns.recovery(snapshot);
   if (recovered) {
     controller._recoveredTurn = recovered;
-    if (!hasUnknownTurnEntry(snapshot, intent))
+    const notice = unknownTurnEntry(intent);
+    if (
+      !hasUnknownTurnEntry(snapshot, intent) &&
+      !controller.items.some((item) => item.id === notice.id)
+    )
       controller.items = [
         ...controller.items,
-        ...projectTranscriptToChatItems([unknownTurnEntry(intent)]),
+        ...projectTranscriptToChatItems([notice]),
       ];
   }
   return true; // Never resume while another view owns the turn or its outcome is unknown.

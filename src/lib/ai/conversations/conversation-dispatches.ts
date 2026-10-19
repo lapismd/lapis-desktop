@@ -46,6 +46,12 @@ export class ConversationDispatches {
     private queue: ConversationWriteQueue,
     private changed: (l: ConversationLocation) => void,
     private activeTurn: (l: ConversationLocation, id: string) => boolean,
+    private beforeBegin?: (
+      s: ConversationSnapshot,
+      u: Extract<TranscriptEntry, { type: "message" }>,
+      id: string,
+      adoption?: import("./conversation-message-queue.ts").QueuedAdoption,
+    ) => void,
   ) {}
   isActive(location: ConversationLocation, id: string) {
     return this.owners.get(conversationStorageKey(location)) === id;
@@ -94,6 +100,7 @@ export class ConversationDispatches {
     intent: DispatchIntent,
     recoveredId?: string,
     recoveredTurnId?: string,
+    queued?: import("./conversation-message-queue.ts").QueuedAdoption,
   ) {
     return this.queue.run(conversationStorageKey(location), async () => {
       validateDispatchIntent(intent);
@@ -112,6 +119,7 @@ export class ConversationDispatches {
         );
       const snapshot = await this.store.read(location);
       await this.guardSingle(snapshot, recoveredId);
+      this.beforeBegin?.(snapshot, user, intent.id, queued);
       const previous = snapshot.metadata.pendingTurn;
       if (previous) {
         if (

@@ -5,6 +5,7 @@ import {
   normalizeApprovalGrants,
 } from "./approval-grants.ts";
 import type { ConversationMetadata } from "./types.ts";
+import { validateQueuedMessages } from "./queued-message.ts";
 import { validateDispatchIntent } from "./dispatch-intent.ts";
 import { validateTurnIntent } from "./turn-intent.ts";
 import { assertConversationId } from "./paths.ts";
@@ -68,6 +69,8 @@ export function validateConversationMetadata(
     throw new Error("Conversation metadata.pinned must be a boolean");
   }
   if (data.pinned === false) delete data.pinned;
+  if (data.queuedMessages !== undefined)
+    validateQueuedMessages(data.queuedMessages);
   if (data.pendingDispatch != null)
     validateDispatchIntent(data.pendingDispatch);
   if (data.pendingTurn != null) validateTurnIntent(data.pendingTurn);

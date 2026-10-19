@@ -3,6 +3,7 @@
   // Retained Lapis chat presentation; see src/lib/ai/NOTICE.md.
   import * as Chat from "@lapismd/design-core/ai/chat";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
+  import AiQueuedMessages from "./AiQueuedMessages.svelte";
   import ChatComposerDrawer from "./ChatComposerDrawer.svelte";
   import ChatComposerActions from "./ChatComposerActions.svelte";
   import ChatComposerOptions from "./ChatComposerOptions.svelte";
@@ -41,14 +42,17 @@
     <span>{composerState.workingLabel}</span>
   </div>
 {/if}
+<AiQueuedMessages queue={controller.queuedMessages} {actions} />
 <Chat.Composer
   bind:value={composerState.draft}
   placeholder="Ask anything…"
   disabled={initializing ||
     Boolean(composerState.catalogState?.loading) ||
-    controller.busy}
+    controller.queuedMessages.saving ||
+    (controller.busy && !controller.repository)}
   interactiveDrawerWhenDisabled={Boolean(attachmentsState.pendingInteraction)}
-  isStopShown={controller.busy}
+  isStopShown={controller.busy &&
+    (!controller.repository || !composerState.draft.trim())}
   status={composerState.composerStatus}
   statusPosition="top"
   triggers={composerState.mentionTriggers}
@@ -71,7 +75,7 @@
   {#snippet headerContext()}
     <ChatRecipients
       recipients={composerState.recipients.display}
-      disabled={controller.busy || initializing}
+      disabled={initializing}
       onRemove={(id) => composerState.recipients.remove(id)}
     />
     {#if controller.usage}

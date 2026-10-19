@@ -77,7 +77,16 @@ participant. Delivery runs one participant at a time, with separate approvals
 and saved Pending, Working and Completed outcomes. Stop leaves a started
 recipient unknown and cancels recipients that have not started. A refusal or
 uncertain outcome stops the remaining deliveries. History retains each outcome
-without retrying any delivery. Persisted queues remain a later slice.
+without retrying any delivery. While an agent is working, keep typing in
+Document or Classic and choose Queue message. Up to sixteen follow-ups are saved
+locally, then sent in order after the current turn finishes. Queued messages
+retain their recipients, model and thinking preferences; file attachments are
+read when the message is dispatched. Cancel a queued message without
+interrupting the active turn. Stop pauses the queue as well as cancelling active
+work. Reopening History sends nothing: use Resume queue to send only follow-ups
+that never started. Uncertain deliveries remain recorded and are never retried.
+Queue capacity or save failures retain your draft. Saving a queue never stores
+credentials or executable commands.
 
 The private migration app consumes the shared conversation token codec through
 `@lapismd/jj-conversations`' verified built exports, alongside the history SDK.

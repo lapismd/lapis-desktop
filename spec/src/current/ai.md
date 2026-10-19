@@ -397,4 +397,4 @@ Ordinary preparation uses the current JJ owner handle and private native IDs.
 The repository topic governs its single ThreadStore publication and receipt
 recovery. Unknown outcomes cannot enable execution. Cold API acceptance
 qualifies preparation/restart separately from managed chat/capture. Ordinary
-targets retain their gates; [agent tags](ai-addressing.md) confer no authority.
+targets stay gated; [tags and queues](ai-addressing.md) confer no authority.

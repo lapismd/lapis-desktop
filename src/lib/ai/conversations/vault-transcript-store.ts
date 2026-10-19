@@ -258,7 +258,10 @@ export class VaultTranscriptStore implements TranscriptStore {
 
   private metadataYaml(metadata: ConversationMetadata): string {
     const validated = validateConversationMetadata(metadata);
-    return stringify(validated, { lineWidth: 0 });
+    const yaml = stringify(validated, { lineWidth: 0 });
+    if (new TextEncoder().encode(yaml).byteLength > MAX_METADATA_BYTES)
+      throw new Error("metadata.yaml exceeds the maximum supported size");
+    return yaml;
   }
 
   private async readRequired(path: string): Promise<string> {

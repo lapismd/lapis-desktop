@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import { normalizeApprovalGrants } from "./approval-grants.ts";
+import { ConversationMessageQueue } from "./conversation-message-queue.ts";
 import { ConversationDispatches } from "./conversation-dispatches.ts";
 import { ConversationTurns } from "./conversation-turns.ts";
 import {
@@ -8,7 +9,7 @@ import {
   relativePathWithinScope,
 } from "./paths.ts";
 import type { DurableSanitizationOptions } from "./redaction.ts";
-import { sanitizeDurableField } from "./redaction.ts";
+import { sanitizeTranscriptEntry } from "./sanitize-entry.ts";
 import type {
   ConversationListEntry,
   TranscriptStore,
@@ -51,24 +52,35 @@ export class ConversationRepository {
     (change: ConversationRepositoryChange) => void
   >();
 
+  readonly messages: ConversationMessageQueue;
   readonly turns: ConversationTurns;
   readonly dispatches: ConversationDispatches;
   constructor(
     private readonly store: TranscriptStore,
     private readonly sanitization: DurableSanitizationOptions = {},
   ) {
+    this.messages = new ConversationMessageQueue(
+      store,
+      this.queue,
+      (location) => this.emit({ type: "upsert", location }),
+      (l, id) => this.dispatches.isActive(l, id),
+    );
     this.turns = new ConversationTurns(
       store,
       this.queue,
       (location) => this.emit({ type: "upsert", location }),
       deriveConversationTitle,
-      (snapshot, recovered) => this.dispatches.guardSingle(snapshot, recovered),
+      async (snapshot, recovered) => {
+        await this.dispatches.guardSingle(snapshot, recovered);
+        this.messages.guard(snapshot);
+      },
     );
     this.dispatches = new ConversationDispatches(
       store,
       this.queue,
       (location) => this.emit({ type: "upsert", location }),
       (location, id) => this.turns.isActive(location, id),
+      (s, u, id, adoption) => this.messages.guard(s, u, id, adoption),
     );
   }
 
@@ -132,7 +144,9 @@ export class ConversationRepository {
     entries: TranscriptEntry[],
   ): Promise<ConversationSnapshot> {
     return this.queue.run(conversationStorageKey(location), async () => {
-      const safeEntries = entries.map((entry) => this.sanitizeEntry(entry));
+      const safeEntries = entries.map((entry) =>
+        sanitizeTranscriptEntry(entry, this.sanitization),
+      );
       await this.store.appendTranscriptEntries(location, safeEntries);
       const snapshot = await this.store.read(location);
       const firstUserMessage = snapshot.transcript.find(
@@ -251,7 +265,7 @@ export class ConversationRepository {
       if (!binding) throw new Error(`Unknown agent binding: ${bindingId}`);
       if (switchEntry) {
         await this.store.appendTranscriptEntries(location, [
-          this.sanitizeEntry(switchEntry),
+          sanitizeTranscriptEntry(switchEntry, this.sanitization),
         ]);
       }
       const metadata: ConversationMetadata = {
@@ -273,38 +287,5 @@ export class ConversationRepository {
 
   private emit(change: ConversationRepositoryChange): void {
     for (const listener of this.listeners) listener(change);
-  }
-
-  private sanitizeEntry(entry: TranscriptEntry): TranscriptEntry {
-    if (entry.type === "tool") {
-      const input = sanitizeDurableField(entry.input, this.sanitization);
-      const output = sanitizeDurableField(entry.output, this.sanitization);
-      return {
-        ...entry,
-        input: input.text,
-        output: output.text,
-        redacted:
-          entry.redacted || input.redacted || output.redacted || undefined,
-        truncated:
-          entry.truncated || input.truncated || output.truncated || undefined,
-      };
-    }
-    if (entry.type === "approval.request" && entry.tool?.input) {
-      const input = sanitizeDurableField(entry.tool.input, this.sanitization);
-      return {
-        ...entry,
-        tool: { ...entry.tool, input: input.text },
-        redacted: entry.redacted || input.redacted || undefined,
-        truncated: entry.truncated || input.truncated || undefined,
-      };
-    }
-    if (entry.type === "error") {
-      return {
-        ...entry,
-        message:
-          sanitizeDurableField(entry.message, this.sanitization).text ?? "",
-      };
-    }
-    return entry;
   }
 }

@@ -94,6 +94,7 @@ export class AiChatControllerState {
       pendingItems: AiChatItem[];
     }
   >();
+  readonly _sessionConsumers = new Map<AgentSession, Promise<void>>();
   readonly _cancelledSessions = new WeakSet<AgentSession>();
   _turnId = 0;
   readonly _createConversation?: (

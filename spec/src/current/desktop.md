@@ -343,4 +343,4 @@ Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
 [Native qualification](native-acceptance.md) retains AI/repository gates. Local
-participant names and delivery retain native admission.
+participant names, delivery and queues retain native admission.

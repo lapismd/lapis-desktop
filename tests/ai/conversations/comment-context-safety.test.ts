@@ -187,3 +187,45 @@ it("does not offer replay when the provider completed but local acknowledgement 
     expect.objectContaining({ type: "error", retryable: false }),
   );
 });
+
+it("moves an exact live queued comment to sent only after its durable acknowledgement", () => {
+  const entry = user();
+  const delivered = projectTranscriptToChatItems([
+    entry,
+    commentReceipt(entry.id),
+  ]);
+  const sent = restoreTranscriptComments([], delivered);
+  const queued = sent.map((t) => ({
+    ...t,
+    comments: t.comments.map((c) => ({ ...c, status: "queued" as const })),
+  }));
+  expect(
+    restoreTranscriptComments(queued, projectTranscriptToChatItems([entry])),
+  ).toBe(queued);
+  expect(
+    restoreTranscriptComments(queued, delivered)[0]?.comments[0]?.status,
+  ).toBe("sent");
+});
+
+it("an explicit cancelled queue returns only its matching live comments to drafts", async () => {
+  const { reclaimQueuedCommentDrafts } = await import(
+    "../../../src/lib/ai/chat/restored-comments.ts"
+  );
+  const entry = user();
+  const sent = restoreTranscriptComments(
+    [],
+    projectTranscriptToChatItems([entry, commentReceipt(entry.id)]),
+  );
+  const queued = sent.map((t) => ({
+    ...t,
+    comments: t.comments.map((c) => ({ ...c, status: "queued" as const })),
+  }));
+  expect(
+    reclaimQueuedCommentDrafts(queued, entry.contextBlocks)[0]?.comments[0]
+      ?.status,
+  ).toBe("draft");
+  expect(
+    reclaimQueuedCommentDrafts(sent, entry.contextBlocks)[0]?.comments[0]
+      ?.status,
+  ).toBe("sent");
+});

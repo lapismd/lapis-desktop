@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
+import { validateQueuedMessage } from "./queued-message.ts";
 import { validateDelivery } from "./dispatch-intent.ts";
 import { validateRecipients } from "./recipients.ts";
 import { validateCommentContexts } from "./comment-context.ts";
@@ -25,6 +26,7 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
   const types = new Set([
     "message",
     "agent.delivery",
+    "queue.outcome",
     "thinking.summary",
     "tool",
     "approval.request",
@@ -79,6 +81,15 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
     }
   }
   switch (data.type) {
+    case "queue.outcome":
+      validateQueuedMessage(data.queued);
+      if (
+        !["completed", "cancelled", "rejected", "not_sent", "unknown"].includes(
+          String(data.outcome),
+        )
+      )
+        throw new Error("Invalid queue outcome");
+      break;
     case "agent.delivery":
       requiredString(data, "dispatchId", "Agent delivery");
       requiredString(data, "parentId", "Agent delivery");

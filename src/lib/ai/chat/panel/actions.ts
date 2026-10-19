@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat presentation state; see ../../NOTICE.md.
+import { queuedRequest } from "./queue-routing.ts";
 import { runChatAction } from "./action-errors.ts";
 import { catalogModelsForAgent } from "../../settings/acp-agents.ts";
 import { toolCallStatus, type AiChatToolItem } from "../chat-tool-display.ts";
@@ -18,10 +19,27 @@ export function createChatPanelActions(
   composer: ComposerState,
   attachmentState: AttachmentsState,
 ) {
+  let submissionRefused = false;
+  const queueError = (error: unknown) => {
+    controller.error = null;
+    getProps().app?.notifications.notify({
+      id: "ai-queue-error",
+      source: "ai",
+      severity: "error",
+      title: "AI messages",
+      message: error instanceof Error ? error.message : String(error),
+    });
+  };
+  controller.queuedMessages.configure(
+    (q) => queuedRequest(q, getProps(), composer.recipientOptions),
+    queueError,
+  );
+  controller.publication.configure(queueError);
   async function submit(
     prompt: string,
     contextBlocks?: import("../../core/context.ts").AgentContextBlock[],
   ): Promise<boolean | undefined> {
+    submissionRefused = false;
     const { initializing = false, workspace, mcpServers = [] } = getProps();
 
     if (initializing || composer.catalogState?.loading) return;
@@ -31,7 +49,7 @@ export function createChatPanelActions(
       (model) => model.model === composer.selectedModel,
     );
     const extra = attachmentState.attachments.map((file) => file.path);
-    const accepted = await controller.submit(prompt, {
+    const request = {
       ...(addressed
         ? {
             recipients: addressed.recipients,
@@ -71,7 +89,24 @@ export function createChatPanelActions(
         ...(extra.length > 0 ? { attachments: extra } : {}),
         runtime: composer.selectedRuntime,
       },
-    });
+    };
+    let accepted: boolean | undefined;
+    try {
+      accepted = controller.repository
+        ? controller.busy ||
+          controller.publication.inFlight ||
+          controller.queuedMessages.pending.length
+          ? await controller.queuedMessages.enqueue(prompt, request)
+          : await controller.publication.submit(prompt, request)
+        : await controller.submit(prompt, request);
+    } catch (error) {
+      submissionRefused =
+        error instanceof Error &&
+        "outcome" in error &&
+        error.outcome === "rejected";
+      queueError(error);
+      return false;
+    }
     if (accepted === true) {
       attachmentState.attachments = attachmentState.attachments.filter(
         (file) => !extra.includes(file.path),
@@ -151,6 +186,23 @@ export function createChatPanelActions(
     runChatAction(getProps, controller, operation);
   return {
     perform,
+    submissionWasRefused: () => submissionRefused,
+    resumeQueue: () =>
+      perform(async () => {
+        try {
+          await controller.queuedMessages.resume();
+        } catch (e) {
+          queueError(e);
+        }
+      }),
+    cancelQueued: (id: string) =>
+      perform(async () => {
+        try {
+          await controller.queuedMessages.cancel(id);
+        } catch (e) {
+          queueError(e);
+        }
+      }),
     submit: (
       prompt: string,
       contextBlocks?: import("../../core/context.ts").AgentContextBlock[],

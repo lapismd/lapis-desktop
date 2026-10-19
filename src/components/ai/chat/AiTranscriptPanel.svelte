@@ -1,4 +1,5 @@
 <script lang="ts">
+  import AiQueuedMessages from "./AiQueuedMessages.svelte";
   import ChatRecipients from "./ChatRecipients.svelte";
   import { untrack, type Snippet } from "svelte";
   import {
@@ -6,7 +7,7 @@
     TranscriptFooter,
     TranscriptController,
   } from "@lapismd/design-core/chat";
-  import { SegmentedControl } from "@lapismd/design-core/forms";
+  import AiTranscriptToolbar from "./AiTranscriptToolbar.svelte";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import CopyIcon from "@lucide/svelte/icons/copy";
@@ -18,7 +19,10 @@
   } from "../../../lib/ai/chat/transcript-projection.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import { transcriptCommentContext } from "../../../lib/ai/chat/transcript-context.ts";
-  import { restoreTranscriptComments } from "../../../lib/ai/chat/restored-comments.ts";
+  import {
+    restoreTranscriptComments,
+    reclaimQueuedCommentDrafts,
+  } from "../../../lib/ai/chat/restored-comments.ts";
   import AiTranscriptBlock from "./AiTranscriptBlock.svelte";
   import AiTranscriptComposer from "./AiTranscriptComposer.svelte";
   import AiTranscriptLoading from "./AiTranscriptLoading.svelte";
@@ -59,7 +63,7 @@
     items,
     canComment: !blocked,
     onSend: async (snapshot) => {
-      if (blocked || controller.busy)
+      if (blocked || (controller.busy && !controller.repository))
         return {
           publication: "refused",
           error: "Wait for the active turn to finish.",
@@ -68,13 +72,21 @@
         snapshot.text,
         transcriptCommentContext(snapshot),
       );
+      if (!acknowledged && actions.submissionWasRefused())
+        return {
+          publication: "refused",
+          error: "Message was not queued. Your draft is retained.",
+        };
       return !acknowledged || controller.error
         ? {
             publication: "unknown",
             error:
               controller.error ?? "This submission has not been acknowledged.",
           }
-        : { publication: "published", batchId: snapshot.id };
+        : {
+            publication: panelProps.repository ? "queued" : "published",
+            batchId: snapshot.id,
+          };
     },
   }));
   const restoredCommentItems = new WeakSet<object>();
@@ -89,28 +101,9 @@
       if (next !== commentState.threads) commentState.threads = next;
     });
   });
-  async function chooseView(next: "document" | "classic") {
-    view = next;
-    try {
-      await panelProps.onSettingsChange?.({ transcriptView: next });
-    } catch (error) {
-      panelProps.app?.notifications.notify({
-        id: "ai-presentation-error",
-        source: "ai",
-        severity: "error",
-        title: "Conversation view",
-        message: error instanceof Error ? error.message : String(error),
-      });
-    }
-  }
   async function send() {
     const value = composerState.draft;
-    if (
-      blocked ||
-      controller.busy ||
-      (!value.trim() && !commentState.pending.length)
-    )
-      return;
+    if (blocked || (!value.trim() && !commentState.pending.length)) return;
     commentState.message = value;
     const accepted = await commentState.send();
     if (accepted && composerState.draft === value) composerState.draft = "";
@@ -118,20 +111,7 @@
 </script>
 
 <div class="transcript-panel" data-testid="ai-transcript-panel">
-  <div class="transcript-toolbar">
-    <span class="transcript-title">Conversation</span>
-    <SegmentedControl
-      value={view}
-      options={["document", "classic"]}
-      labels={{ document: "Document", classic: "Classic" }}
-      ariaLabel="Conversation view"
-      onChange={(next) => {
-        if (next !== "document" && next !== "classic") return;
-        const pending = chooseView(next);
-        panelProps.onOperation?.(pending);
-      }}
-    />
-  </div>
+  <AiTranscriptToolbar {panelProps} bind:view />
   {#if panelProps.initializing}<AiTranscriptLoading />{:else}<Transcript
       {items}
       {view}
@@ -187,6 +167,16 @@
           ></Empty.Root
         >
       {/snippet}
+      {#snippet queuedMessages()}<AiQueuedMessages
+          onCancelled={(q) => {
+            commentState.threads = reclaimQueuedCommentDrafts(
+              commentState.threads,
+              q.user.contextBlocks,
+            );
+          }}
+          queue={controller.queuedMessages}
+          {actions}
+        />{/snippet}
       {#snippet afterItems()}
         {#if composerState.showWorkingIndicator}<div
             class="transcript-activity"
@@ -205,15 +195,20 @@
       {/snippet}
       {#snippet footer()}
         <TranscriptFooter
-          busy={controller.busy}
+          busy={controller.busy || !!controller.queuedMessages.pending.length}
           state={commentState}
-          hasContent={!controller.busy &&
+          sendPending={commentState.sending ||
+            !!commentState.retainedSubmission ||
+            controller.queuedMessages.saving}
+          hasContent={(!controller.busy || !!controller.repository) &&
             Boolean(composerState.draft.trim() || commentState.pending.length)}
-          canSend={!controller.busy &&
+          canSend={!controller.queuedMessages.saving &&
             Boolean(composerState.draft.trim() || commentState.pending.length)}
           disabled={blocked}
           onSend={send}
-          onStop={() => panel.actions.perform(() => controller.cancel())}
+          onStop={controller.busy
+            ? () => panel.actions.perform(() => controller.cancel())
+            : undefined}
           status={composerState.composerStatus}
         >
           {#snippet actions()}
@@ -259,21 +254,8 @@
     flex: 1;
     height: 100%;
   }
-  .transcript-toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    padding: 0.5rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-  }
   .transcript-conversations {
     padding-inline: 0.75rem;
-  }
-  .transcript-title {
-    font-size: 0.8125rem;
-    color: var(--muted-foreground);
   }
   .transcript-controls {
     gap: 0.25rem;

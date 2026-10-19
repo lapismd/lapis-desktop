@@ -46,6 +46,7 @@ export type ConversationMetadata = {
   approvalGrants?: ConversationApprovalGrant[];
   pinned?: boolean;
   pendingTurn?: ConversationTurnIntent;
+  queuedMessages?: import("./queued-message.ts").QueuedMessage[];
   pendingDispatch?: import("./dispatch-intent.ts").DispatchIntent;
   status: "active" | "archived";
 };
@@ -149,6 +150,11 @@ type TranscriptEntryBase = {
 };
 
 export type TranscriptEntry =
+  | (TranscriptEntryBase & {
+      type: "queue.outcome";
+      queued: import("./queued-message.ts").QueuedMessage;
+      outcome: import("./queued-message.ts").QueueOutcome;
+    })
   | (TranscriptEntryBase & {
       type: "agent.delivery";
       dispatchId: string;

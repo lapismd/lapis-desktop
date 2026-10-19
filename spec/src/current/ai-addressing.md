@@ -2,9 +2,9 @@
 
 AGENT-01 adopts jj-store's participant addressing for LD-AI-002/004 while
 retaining local transcript files. Its first delivery slice, AGENT-01A, adds
-explicit recipient selection and saved tags. Multiple-recipient execution and
-queued delivery remain AGENT-01B/C; a single-recipient implementation cannot
-claim those gates.
+explicit recipient selection and saved tags. Independent participants and
+multiple-recipient execution are governed by AGENT-01B; AGENT-01C governs
+persisted queues. A single-recipient implementation cannot claim those gates.
 
 The application reuses `@lapismd/jj-conversations`' public built agent-token
 codec. A saved recipient keeps its exact installation setup ID, canonical token
@@ -60,10 +60,9 @@ restore retains the existing no-dispatch/no-replay policy.
 Working status remains owned by the new turn while the previous participant
 session detaches; old session closure cannot clear the new turn's busy state.
 
-This sub-slice does not enable multiple-recipient delivery or queues. One
-authored message still owns one durable turn intent; multi-delivery must add
-per-recipient outcomes without duplicating the authored message or repeatedly
-calling submit.
+This sub-slice alone does not enable multiple-recipient delivery or queues.
+AGENT-01B2 below adds per-recipient outcomes without duplicating the authored
+message or repeatedly calling submit; AGENT-01C adds persisted queues.
 
 ## One message with multiple deliveries
 
@@ -93,9 +92,9 @@ cannot replay its old deliveries. Another mounted owner cannot steal a live
 parent or prepare an ordinary single turn concurrently. Terminal outcome records
 remain in the transcript after the active parent metadata is cleared.
 
-This is immediate explicit addressed delivery. Sending another message while a
-turn is busy and persisted bounded queues remain AGENT-01C. Automatic restart
-replay and JJ-backed transcript persistence remain unavailable.
+This is immediate explicit addressed delivery. AGENT-01C below governs sending
+another message while a turn is busy and persisted bounded queues. Automatic
+restart replay and JJ-backed transcript persistence remain unavailable.
 
 Named participants can be added from Conversation actions using the currently
 selected admitted agent. The bounded vault setting retains only ID, label and
@@ -106,3 +105,34 @@ retain the name and existing settings and report one application notification.
 Native approval and question IDs are scoped to their originating logical
 binding. Reused IDs cannot select or update another participant's request; UI
 responses retain the exact visible item identity and stale actions refuse.
+
+## Persisted follow-up queues
+
+AGENT-01C keeps Document and Classic composers editable during active work.
+Nonempty drafts use Queue message; empty drafts retain Stop. Explicit queuing
+saves one exact authored message, captured recipient IDs/labels, model/thinking
+preferences and bounded attachment paths in optional version-one local queue
+metadata before clearing the draft. Credentials, executable routes, native
+bindings and raw file snapshots are never saved in a queue. Comment captures
+retain their existing validated bounds. Attached files are read at dispatch.
+
+A conversation admits at most sixteen pending messages and 128 KiB of encoded
+queue data. Each message retains at most four recipients and eight file paths.
+Live queues dispatch FIFO only after the preceding turn's durable completion.
+Each item crosses the existing dispatch and started-before-prompt barriers; its
+authored message enters the transcript once. Current host routing and native
+admission are checked again for every recipient. Missing or changed participant
+routes refuse instead of falling back. Application commands cannot be queued.
+Per-recipient outcomes remain independent.
+
+Cancel queued message settles only an unstarted item and retains its capture.
+Stop pauses the queue and retains uncertainty for started delivery. Failure,
+unknown completion, vault/view replacement or closure cannot advance queued
+work. Cold restore reads queued captures and outcomes without writing, starting
+or resuming a provider. Repeated recovery projection retains one stable notice
+per interrupted turn. Resume queue is an explicit action: it acknowledges
+retained uncertainty, resolves current admitted targets and sends only
+still-unstarted items; it cannot retry a previously started item. Separate live
+owners cannot claim or bypass each other's queue. Lost metadata acknowledgements
+cannot overwrite immutable terminal queue receipts. JJ persistence remains
+deferred.

@@ -24,7 +24,7 @@
     Boolean(
       panel.panelProps.initializing ||
         composerState.catalogState?.loading ||
-        controller.busy,
+        (controller.busy && !controller.repository),
     ),
   );
 </script>

@@ -87,6 +87,7 @@ export async function openConversation(
   location: ConversationLocation,
 ): Promise<void> {
   if (this._disposed) return;
+  this.queuedMessages.pause();
   if (!this.repository) return;
   await this._closeAppToolBinding();
   await this.session?.close().catch(() => undefined);
@@ -116,6 +117,7 @@ export async function _restoreConversation(
   if (!this.repository || !this.location) return;
   const snapshot = await this.repository.read(this.location);
   if (this._isAbandoned(turnId)) return;
+  this.queuedMessages.restore(snapshot);
   this.conversationStatus = snapshot.metadata.status;
   this.conversationPinned = Boolean(snapshot.metadata.pinned);
   this.directoryContext = snapshot.location.scopeDir;
@@ -144,13 +146,10 @@ export async function _restoreConversation(
     );
   this.usage =
     latestUsage?.type === "usage.updated" ? { ...latestUsage.usage } : null;
-  if (restoreDispatch(this, snapshot)) {
-    this.items = interruptPendingInteractions(this.items);
-    return;
-  }
+  const hasDispatch = restoreDispatch(this, snapshot);
   const unconfirmed = await restoreTurn(this);
   if (this._isAbandoned(turnId)) return;
-  if (unconfirmed) {
+  if (unconfirmed || hasDispatch || snapshot.metadata.queuedMessages?.length) {
     this.items = interruptPendingInteractions(this.items);
     return;
   }

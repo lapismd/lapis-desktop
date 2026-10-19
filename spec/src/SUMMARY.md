@@ -220,9 +220,11 @@
 - [E-AI-042](history/E-AI-042.md)
 
 - [Complete bounded local streaming](history/E-AI-044.md)
+
   - [Stable local transcript comments and cold recovery](history/E-AI-045.md)
   - [Authenticated native application tools and effect drain](history/E-AI-046.md)
   - [Native Codex application tools and local receipts](history/E-AI-047.md)
   - [Addressed local messages and retained draft context](history/E-AI-048.md)
   - [Independent local agent participants](history/E-AI-049.md)
   - [One local message with independent addressed deliveries](history/E-AI-050.md)
+  - [Local queued messages](history/E-AI-051.md)

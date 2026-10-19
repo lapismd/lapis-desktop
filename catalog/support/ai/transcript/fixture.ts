@@ -15,6 +15,7 @@ import { ConversationRepository } from "../../../../src/lib/ai/conversations/con
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 import { savedCommentSnapshot } from "./saved-comments.ts";
 import { ParticipantSettings } from "./participant-settings.svelte.ts";
+import { recordedReviewStore } from "./queue-store.ts";
 import { savedRecipientSnapshot } from "./saved-recipients.ts";
 
 export type TranscriptScenario =
@@ -29,6 +30,9 @@ export type TranscriptScenario =
   | "restored-comments"
   | "addressed"
   | "addressed-approval"
+  | "queue-failure"
+  | "queue-restored"
+  | "queue-crashed"
   | "participant-settings"
   | "participant-settings-failure"
   | "failure";
@@ -41,7 +45,10 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
   );
   const runtime = new FakeAgentRuntime({
     requireApproval:
-      scenario === "approval" || scenario === "addressed-approval",
+      scenario === "approval" ||
+      scenario === "addressed-approval" ||
+      scenario === "queue-crashed" ||
+      scenario === "queue-failure",
     requireQuestion: scenario === "question",
     trace: "rich",
     resumeSupported: scenario !== "restored-comments",
@@ -75,14 +82,7 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
     scopeDir: "Notes",
     conversationId: "123e4567-e89b-42d3-a456-426614174000",
   };
-  const addressedStore = [
-    "addressed",
-    "addressed-approval",
-    "participant-settings",
-    "participant-settings-failure",
-  ].includes(scenario)
-    ? new MemoryTranscriptStore([savedRecipientSnapshot()])
-    : undefined;
+  const addressedStore = recordedReviewStore(scenario);
   const repository = addressedStore
     ? new ConversationRepository(addressedStore)
     : scenario === "unknown-turn"

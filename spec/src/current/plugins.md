@@ -1,5 +1,10 @@
 # Desktop plugins and catalog
 
+AGENT-01C uses public Design Core queue/footer components for editable active
+composers, waiting follow-ups, pause/resume, read-only cold recovery and
+retained failed-save drafts with one App notification. Local queue custody owns
+no native execution authority. Its stories retain visual-pending status.
+
 AGENT-01B2 exposes named participant creation through conversation actions and
 multiple @ recipients in Document/Classic. One authored message retains separate
 local outcomes; failed participant saves preserve the form and use one App

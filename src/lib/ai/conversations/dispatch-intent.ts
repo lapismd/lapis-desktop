@@ -79,10 +79,10 @@ export function validateDispatchIntent(value: unknown): DispatchIntent {
   assertTimestamp(d, "startedAt", "Pending addressed message");
   if (
     !Array.isArray(d.deliveries) ||
-    d.deliveries.length < 2 ||
+    d.deliveries.length < 1 ||
     d.deliveries.length > 4
   )
-    throw new Error("An addressed message requires two to four deliveries");
+    throw new Error("An addressed message requires one to four deliveries");
   const deliveries = d.deliveries.map(validateDelivery);
   validateRecipients(deliveries.map((v) => v.recipient));
   if (new Set(deliveries.map((v) => v.id)).size !== deliveries.length)

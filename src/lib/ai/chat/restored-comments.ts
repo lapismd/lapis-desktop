@@ -34,6 +34,39 @@ export function restoreTranscriptComments(
         // Conflicting anchors remain inspectable in their captured context disclosure.
         if (
           existing &&
+          JSON.stringify(existing.anchor) === JSON.stringify(capture.anchor)
+        ) {
+          const previous = existing.comments.find(
+            (c) => c.id === capture.commentId,
+          );
+          if (
+            previous &&
+            previous.text === capture.text &&
+            previous.status === "queued"
+          ) {
+            next = next.map((t) =>
+              t === existing
+                ? {
+                    ...t,
+                    comments: t.comments.map((c) =>
+                      c === previous
+                        ? {
+                            ...c,
+                            status: "sent" as const,
+                            messageId: item.id,
+                            batchId: block.id,
+                            version: `local:${item.id}`,
+                          }
+                        : c,
+                    ),
+                  }
+                : t,
+            );
+            continue;
+          }
+        }
+        if (
+          existing &&
           (JSON.stringify(existing.anchor) !== JSON.stringify(capture.anchor) ||
             existing.comments.some(
               (comment) => comment.id === capture.commentId,
@@ -69,6 +102,44 @@ export function restoreTranscriptComments(
       }
     }
     seen?.add(item);
+  }
+  return next;
+}
+
+/** Only an explicit acknowledged cancellation can return its current live comments to drafts. */
+export function reclaimQueuedCommentDrafts(
+  current: TranscriptCommentThread[],
+  blocks: readonly import("../core/context.ts").AgentContextBlock[] | undefined,
+) {
+  let next = current;
+  for (const block of persistableCommentContexts(blocks)) {
+    const comments = JSON.parse(block.content)
+      .comments as TranscriptSubmissionComment[];
+    for (const captured of comments)
+      next = next.map((thread) => {
+        if (
+          thread.id !== captured.threadId ||
+          JSON.stringify(thread.anchor) !== JSON.stringify(captured.anchor)
+        )
+          return thread;
+        const previous = thread.comments.find(
+          (c) =>
+            c.id === captured.commentId &&
+            c.text === captured.text &&
+            c.status === "queued" &&
+            c.batchId === block.id,
+        );
+        return previous
+          ? {
+              ...thread,
+              comments: thread.comments.map((c) =>
+                c === previous
+                  ? { ...c, status: "draft" as const, batchId: undefined }
+                  : c,
+              ),
+            }
+          : thread;
+      });
   }
   return next;
 }

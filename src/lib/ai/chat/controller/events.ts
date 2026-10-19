@@ -128,6 +128,8 @@ export async function _consume(
     } else {
       await this._persist(false, agentBindingId);
     }
+    const wasGroup = Boolean(context.delivery);
+    const completed = context.turn?.outcome === "completed";
     await finishTurn(this, session);
     context.pendingBinding = undefined;
     context.pendingSwitch = undefined;
@@ -137,6 +139,7 @@ export async function _consume(
     context.pendingItems = [];
     traceItems = [];
     latestUsage = null;
+    if (!wasGroup) this.queuedMessages.afterTerminal(completed);
   };
   const checkpointTrace = (): Promise<void> => {
     const checkpoint = persistCompletedTrace();

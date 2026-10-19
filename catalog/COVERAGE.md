@@ -612,3 +612,10 @@ participant creation without execution, and failed save with retained name plus
 one toast. In-flight badges/cancellation and repeated native permission IDs
 across two independently approved participants retain separate outcomes. The
 normal menu uses production components and ordinary vault-owned AI settings.
+
+`Desktop/AI/Queued messages` uses the production local queue with Design Core
+MessageQueue and TranscriptFooter. It covers editable active Document/Classic
+composers, FIFO after completion, whole-message cancellation, explicit live and
+cold resume, visible waiting follow-ups and retained failed-save draft/one
+toast. Interrupted-before-checkpoint recovery keeps one notice and renders the
+new approval after explicit Resume without repeating the interrupted prompt.

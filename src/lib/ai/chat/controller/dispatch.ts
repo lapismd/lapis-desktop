@@ -1,3 +1,5 @@
+import { projectTranscriptToChatItems } from "../../conversations/transcript-to-chat.ts";
+import type { QueuedMessage } from "../../conversations/queued-message.ts";
 import type { AgentRequest } from "../../core/runtime.ts";
 import type { SavedAgentRecipient } from "../../conversations/recipients.ts";
 import { validateRecipients } from "../../conversations/recipients.ts";
@@ -17,6 +19,7 @@ export async function submitAudience(
   prompt: string,
   request: Omit<AgentRequest, "prompt">,
   recipients: SavedAgentRecipient[],
+  queued?: { message: QueuedMessage; owner: string },
 ) {
   if (
     this.busy ||
@@ -45,6 +48,7 @@ export async function submitAudience(
   const turnId = ++this._turnId;
   this.busy = true;
   this.error = null;
+  let accepted = false;
   let active: NonNullable<AiChatController["_activeDispatch"]> | undefined;
   try {
     await this._syncSlashCatalog();
@@ -58,20 +62,23 @@ export async function submitAudience(
     const text = (
       resolution?.kind === "literal" ? resolution.text : prompt
     ).trim();
-    const user: AiChatItem = {
-      id: `user-${crypto.randomUUID()}`,
-      type: "message",
-      role: "user",
-      text,
-      recipients: captured.recipients,
-      createdAt: new Date().toISOString(),
-      ...(captured.request.contextBlocks?.length
-        ? { contextBlocks: captured.request.contextBlocks }
-        : {}),
-    };
+    const user: AiChatItem = queued
+      ? projectTranscriptToChatItems([queued.message.user])[0]!
+      : {
+          id: `user-${crypto.randomUUID()}`,
+          type: "message",
+          role: "user",
+          text,
+          recipients: captured.recipients,
+          createdAt: new Date().toISOString(),
+          ...(captured.request.contextBlocks?.length
+            ? { contextBlocks: captured.request.contextBlocks }
+            : {}),
+        };
     await this._ensureConversation();
     if (this._isAbandoned(turnId) || !this.location) return false;
-    const entry = projectChatItemsToTranscript([user])[0];
+    const entry =
+      queued?.message.user ?? projectChatItemsToTranscript([user])[0];
     if (!entry || entry.type !== "message")
       throw new Error("An addressed turn requires its authored message");
     const intent: DispatchIntent = {
@@ -92,6 +99,7 @@ export async function submitAudience(
       intent,
       this._recoveredDispatchId,
       this._recoveredTurn?.id,
+      queued ? { id: queued.message.id, owner: queued.owner } : undefined,
     );
     if (
       this._isAbandoned(turnId) ||
@@ -105,11 +113,13 @@ export async function submitAudience(
       );
       return false;
     }
+    this.publication.prepared();
     this._recoveredDispatchId = undefined;
     this._recoveredTurn = undefined;
     active = { intent, location, cancelled: false };
     this._activeDispatch = active;
     this.items = [...this.items, user];
+    if (queued) await this.queuedMessages.refresh(location);
     await refreshDispatchItems(this, active.location);
     for (let i = 0; i < captured.targets.length; i++) {
       if (active.cancelled || this._isAbandoned(turnId)) break;
@@ -162,7 +172,7 @@ export async function submitAudience(
       );
     await refreshDispatchItems(this, active.location);
     const completed = this.items.find((e) => e.id === user.id);
-    const accepted =
+    accepted =
       completed?.type === "message" &&
       completed.deliveries?.every((d) => d.state === "completed") === true;
     if (accepted && !this._isAbandoned(turnId))
@@ -181,6 +191,7 @@ export async function submitAudience(
   } finally {
     if (this._activeDispatch === active) this._activeDispatch = undefined;
     if (this._turnId === turnId) this.busy = false;
+    this.queuedMessages.afterTerminal(accepted);
   }
 }
 export async function cancelDispatch(controller: AiChatController) {
