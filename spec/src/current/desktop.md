@@ -1,8 +1,8 @@
 # Desktop shell
 
-Footer/composer: E-CATALOG-012/013. Scroll recovery: E-AI-064. Upstream:
-E-REPO-043. E-REPO-035–041 retain backup authority; E-AI-056 retains
-LD-DESK-005. Capture: [local imports](ai-imports.md). Gravatar:
+Footer: E-CATALOG-012/013; scroll: E-AI-064; upstream: E-REPO-043; blame
+wrapping: E-REPO-044. E-REPO-035–041 retain backup authority. E-AI-056 retains
+LD-DESK-005 and [local imports](ai-imports.md). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 Notes starts App-owned watching after metadata/views; leave drains it before

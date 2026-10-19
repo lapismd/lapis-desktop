@@ -853,3 +853,8 @@ Fixtures hold a fake-agent approval; they never dispatch to a real provider.
 PendingPermissionAcrossViews retains that live request and composer through
 Document/Classic preference saves, then answers the same runtime request.
 E-AI-064; visual-pending.
+
+`repository/BlameWrapping.stories.ts` uses the production blame pane with long
+paragraphs and an unbroken path. It verifies default wrapping, logical-line text
+preservation, virtual-group alignment on resize/toggle and saved on/off choices
+after closing/reopening the pane. E-REPO-044; visual-pending.

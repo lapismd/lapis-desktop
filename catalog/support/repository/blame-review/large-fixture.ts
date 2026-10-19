@@ -5,6 +5,11 @@ import { revision, parent } from "../fixture.ts";
 
 export const largeBlamePath = "src/lib/repository/blame-controller.ts";
 export const largeBlameContents = contents;
+export const longLinesBlameContents = [
+  `// ${"Keep source text and recorded attribution readable together, even when a note contains a long paragraph. ".repeat(12)}`,
+  `export const capturedPath = "${"workspace-history/".repeat(30)}retained-conversation-with-an-unusually-long-file-name.md";`,
+  contents,
+].join("\n");
 const subjects = [
   "Keep repository history beside the notes",
   "Pin source and attribution to the same operation",
@@ -66,7 +71,10 @@ export const largeCommitStats = Object.fromEntries(
 );
 
 /** Real source text with synthetic, deterministic review attribution; no git reads. */
-export function attachLargeBlame(reader: HistoryReader) {
+export function attachLargeBlame(
+  reader: HistoryReader,
+  contents = largeBlameContents,
+) {
   const read = reader.read,
     blame = reader.blame!;
   reader.read = async (handle, query) => {

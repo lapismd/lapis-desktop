@@ -15,6 +15,7 @@
     pending,
     onOpen,
     stats,
+    wrap,
   }: {
     chunk: BlameChunk;
     lines: string[];
@@ -24,6 +25,7 @@
     pending: boolean;
     onOpen?: (commit: string) => void;
     stats?: { additions: number; deletions: number };
+    wrap: boolean;
   } = $props();
 </script>
 
@@ -31,6 +33,7 @@
   class="blame-group"
   data-continued={chunk.continued || undefined}
   data-first={chunk.start === 1 || undefined}
+  data-wrap={wrap}
 >
   {#if chunk.end === lines.length + 1}<div
       class="blame-group__end-divider"
@@ -129,6 +132,7 @@
     padding: 0 0.5rem;
   }
   .blame-group__source {
+    min-width: 0;
     box-shadow: inset 0 1px 0 var(--border);
   }
   .blame-group[data-first] .blame-group__gutter {
@@ -159,7 +163,7 @@
   }
   .blame-group__line {
     display: flex;
-    height: 28px;
+    min-height: 28px;
     line-height: 28px;
     white-space: pre;
   }
@@ -172,8 +176,14 @@
     user-select: none;
   }
   code {
+    min-width: 0;
+    flex: 1;
     font: inherit;
     tab-size: 4;
     padding-right: 1rem;
+  }
+  .blame-group[data-wrap="true"] code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
   }
 </style>

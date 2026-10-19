@@ -12,18 +12,24 @@
     attachLargeBlame,
     largeBlamePath,
     largeBlameContents,
+    longLinesBlameContents,
   } from "./large-fixture.ts";
   import { openBlameReview } from "./title-actions.ts";
 
   let {
     initialView = "blame",
     sample = "large",
-  }: { initialView?: "blame" | "editor"; sample?: "small" | "large" } =
-    $props();
+  }: {
+    initialView?: "blame" | "editor";
+    sample?: "small" | "large" | "long-lines";
+  } = $props();
 
   const fixture = untrack(() => operationFixture("blame-progress"));
-  const large = untrack(() => sample === "large");
-  if (large) attachLargeBlame(fixture.reader);
+  const large = untrack(() => sample !== "small");
+  const contents = untrack(() =>
+    sample === "long-lines" ? longLinesBlameContents : largeBlameContents,
+  );
+  if (large) attachLargeBlame(fixture.reader, contents);
   let root: HTMLDivElement, app: App | undefined;
   onMount(() => {
     let opened = false;
@@ -66,7 +72,7 @@
 
 <div bind:this={root} class="blame-review-demo" data-repository-fixture>
   <NotesDemo
-    files={large ? { [largeBlamePath]: largeBlameContents } : {}}
+    files={large ? { [largeBlamePath]: contents } : {}}
     createRepository={(owner) => {
       app = owner;
       bindHistoryFixture(root, { app: owner, fixture });

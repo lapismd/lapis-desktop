@@ -288,3 +288,5 @@
 - [Upstream footer actions, counts and repository location](history/E-REPO-043.md)
 
 - [Chat scroll recovery in both presentations](history/E-AI-064.md)
+
+- [Remembered blame wrapping](history/E-REPO-044.md)

@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-REPO-044 covers remembered blame wrapping, long source lines, viewport resize
+and measured virtual attribution through production plugin components.
+
 E-AI-064 covers viewport recovery and a real held fake-agent turn in both chat
 views, with the existing App-backed shell and public Design Core archive.
 

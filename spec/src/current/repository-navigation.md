@@ -57,6 +57,13 @@ controller, then opens recorded blame. JJ Log and Op Log resting rows use the
 AppShell background; selected/hover states remain distinct. Native identity,
 annotation, pinning and authorization contracts are unchanged.
 
+Blame's header MUST offer a keyboard-accessible Wrap text toggle, enabled by
+default and remembered in application-local browser storage across file panes
+and restarts. Wrapping preserves exact source text and logical line numbers;
+virtual groups MUST remeasure after wrapping or width changes so attribution and
+source remain aligned. Storage unavailability keeps the view usable with the
+default and a session-only choice; no repository operation is performed.
+
 The plugin contributes an enabled-by-default working-copy status split control:
 file/line totals open a details popover and a separate refresh action re-reads
 current data. A Repository History setting MUST hide/remove that contribution,

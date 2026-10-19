@@ -1,5 +1,8 @@
 # Migration inventory and progress
 
+E-REPO-044 adds remembered blame wrapping with measured virtual groups; M13.2
+keeps its original qualified gate and other task statuses remain unchanged.
+
 ## Current checkpoint — 2026-10-19
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and

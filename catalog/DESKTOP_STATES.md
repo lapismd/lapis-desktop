@@ -186,3 +186,7 @@ at-bottom, held running and cancelled/idle states in long Notes transcripts.
 Recorded transcripts opt into the same control without a running glyph.
 PendingPermissionAcrossViews keeps the held request reachable through view
 switches and completes it without another runtime session or prompt.
+
+Blame wrapping: LongLines and RememberedPreference cover default-on wrapping,
+unwrapped horizontal scrolling, narrow viewport remeasurement and remembered
+on/off choices when reopening another blame pane (E-REPO-044).

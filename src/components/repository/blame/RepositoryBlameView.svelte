@@ -19,6 +19,7 @@
     now,
     onOpen,
     commitStats = {},
+    wrap = true,
   }: {
     contents: string;
     path: string;
@@ -28,6 +29,7 @@
     commitStats?: Readonly<
       Record<string, { additions: number; deletions: number }>
     >;
+    wrap?: boolean;
   } = $props();
   const lines = $derived(sourceLines(contents));
   const chunks = $derived(
@@ -69,12 +71,13 @@
     {:else}
       <div
         class="store-blame__track"
-        style:width={`max(100%, calc(28rem + ${columns}ch))`}
+        style:width={wrap ? "100%" : `max(100%, calc(28rem + ${columns}ch))`}
         style:--blame-line-digits={String(lines.length).length}
       >
         <RepositoryBlameRows
           rows={chunks}
           {viewport}
+          layoutKey={wrap}
           getKey={(chunk) => String(chunk.start)}
           estimateSize={(chunk) => (chunk ? chunk.end - chunk.start : 1) * 28}
         >
@@ -83,6 +86,7 @@
               {chunk}
               {lines}
               {tokens}
+              {wrap}
               {now}
               {onOpen}
               commit={chunk.commitId

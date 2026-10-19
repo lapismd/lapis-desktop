@@ -1,5 +1,7 @@
 # Evidence
 
+- [Remembered blame wrapping](E-REPO-044.md)
+
 - [Native source organization](E-STRUCTURE-002.md)
 
 - [E-STRUCTURE-001: Renderer source organization](E-STRUCTURE-001.md)
