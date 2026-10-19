@@ -228,3 +228,5 @@
 - [Remote backup setup and guarded restoration](history/E-REPO-031.md)
 
 - [Automatic vault synchronization](history/E-REPO-032.md)
+
+- [Original vault push recovery](history/E-REPO-033.md)

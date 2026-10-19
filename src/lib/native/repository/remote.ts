@@ -26,6 +26,12 @@ export function nativeRemote(
           typeof value.configuration.target?.url !== "string" ||
           typeof value.configuration.target.branch !== "string" ||
           typeof value.configuration.canPush !== "boolean")) ||
+      (value.publication &&
+        (typeof value.publication.request_id !== "string" ||
+          typeof value.publication.after !== "string" ||
+          !["prepared", "unknown", "complete", "stale", "stopped"].includes(
+            value.publication.outcome,
+          ))) ||
       (value.checkpoint &&
         (typeof value.checkpoint.commit !== "string" ||
           typeof value.checkpoint.operation !== "string"))
@@ -34,6 +40,16 @@ export function nativeRemote(
     return value;
   }
   return {
+    publication: {
+      observe: (revision, requestId) =>
+        snapshot({
+          kind: "observe_publication",
+          revision,
+          request_id: requestId,
+        }),
+      stop: (revision, requestId) =>
+        snapshot({ kind: "stop_publication", revision, request_id: requestId }),
+    },
     status: () => snapshot({ kind: "status" }),
     configure: (revision, account, project, branch) =>
       snapshot({

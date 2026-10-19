@@ -102,3 +102,10 @@ records this stage while cold app/live provider and later stages stay open.
 Automatic failure feedback uses a stable episode: an unchanged failed retry does
 not replay a dismissed notice. A completed synchronization clears it. New
 retained conflicts publish one actionable notice and preserve local files.
+
+Backup settings show an original pending push without exposing native paths or
+credentials. Observe checks that exact request and never republishes it, even
+with read-only access. Explicit stop requires confirmation, retains the stopped
+receipt and cannot cancel or undo remote acceptance. It works without an
+available account. Revision and request identities fence obsolete completions; a
+stopped request cannot clear a newer active pointer or publish on retry.

@@ -86,6 +86,20 @@ export class RemoteController {
       this.service.disconnect(this.#state.data!.revision),
     );
   }
+  observePublication(requestId: string) {
+    if (!this.service.publication || !this.#state.data)
+      return Promise.resolve(false);
+    return this.#run("observing", () =>
+      this.service.publication!.observe(this.#state.data!.revision, requestId),
+    );
+  }
+  stopPublication(requestId: string) {
+    if (!this.service.publication || !this.#state.data)
+      return Promise.resolve(false);
+    return this.#run("stopping", () =>
+      this.service.publication!.stop(this.#state.data!.revision, requestId),
+    );
+  }
   close() {
     this.#closed = true;
     this.#listeners.clear();

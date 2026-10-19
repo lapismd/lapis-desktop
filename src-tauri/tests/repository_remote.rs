@@ -76,3 +76,48 @@ fn pending_publication_cannot_be_rebound_and_credential_urls_fail_closed() {
     fs::write(path, serde_json::to_vec(&saved).unwrap()).unwrap();
     assert!(remote::read(&binding).is_err());
 }
+#[test]
+fn publication_recovery_summary_is_native_derived_and_local_stop_unlocks_configuration() {
+    let (_temp, binding) = setup();
+    remote::configure(&binding, 0, resolved()).unwrap();
+    fs::write(binding.root.join("Note.md"), "retained note").unwrap();
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+        .unwrap()
+        .block_on(async {
+            let access = resolved();
+            let transfer = jj_vault::RemoteTransfer::connect(
+                binding.clone(),
+                access.target,
+                access.credentials,
+            )
+            .await
+            .unwrap();
+            let mut session = jj_store_jj::vault_workspace::Session::open(binding.clone())
+                .await
+                .unwrap();
+            session.capture(&[], "Original").await.unwrap();
+            let intent = session
+                .prepare_push(&transfer, "original", None)
+                .await
+                .unwrap();
+            drop(session);
+            transfer.reserve(&intent).unwrap();
+        });
+    let state = remote::read(&binding).unwrap();
+    assert_eq!(state.publication.unwrap().request_id, "original");
+    assert!(remote::disconnect(&binding, 1).is_err());
+    binding.stop_publication("original").unwrap();
+    assert!(remote::read(&binding).unwrap().publication.is_none());
+    assert!(
+        remote::disconnect(&binding, 1)
+            .unwrap()
+            .configuration
+            .is_none()
+    );
+    assert_eq!(
+        fs::read_to_string(binding.root.join("Note.md")).unwrap(),
+        "retained note"
+    );
+}

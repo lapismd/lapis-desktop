@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import RepositoryShell from "../RepositoryShell.svelte";
   import type { SyncController } from "../../../lib/repository/sync-controller.ts";
   import SyncConflictEditor from "./SyncConflictEditor.svelte";
@@ -23,6 +24,13 @@
     setSyncEnabled?: (enabled: boolean) => Promise<void>;
   } = $props();
   let conflictsOpen = $state(false);
+  onMount(() => {
+    let active = false;
+    return sync?.subscribe((snapshot) => {
+      if (active && !snapshot.busy) void remote?.refresh();
+      active = snapshot.busy;
+    });
+  });
 </script>
 
 <RepositoryShell>

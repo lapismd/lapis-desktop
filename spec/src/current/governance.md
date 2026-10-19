@@ -1,7 +1,7 @@
 # Governance
 
-E-REPO-032 retains LD-GOV-001/002/004 with bounded native sync, serialized
-writer admission, exact recovery and source audits. Original gates remain.
+E-REPO-033 retains LD-GOV-001/002/004 with bounded native observation,
+original-request recovery and source audits. Original gates remain.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

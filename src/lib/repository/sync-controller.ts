@@ -85,13 +85,29 @@ export class SyncController {
       if (this.#closed) return;
       await this.#applyPending();
       if (this.#closed || !this.#state.enabled) return;
-      const remote = await this.remote.status();
+      let remote = await this.remote.status();
       if (this.#closed || !this.#state.enabled) return;
       if (!remote.configuration) {
         this.#set({ phase: "ready" });
         this.#recovered();
         return;
       }
+      if (remote.publication && this.remote.publication) {
+        remote = await this.remote.publication.observe(
+          remote.revision,
+          remote.publication.request_id,
+        );
+        if (this.#closed || !this.#state.enabled) return;
+        if (
+          remote.publication &&
+          (remote.publication.outcome !== "prepared" ||
+            !remote.configuration?.canPush)
+        )
+          throw new Error(
+            "The original push still needs observation; local history is safe",
+          );
+      }
+      if (!remote.configuration) return;
       this.#revision = remote.revision;
       const proposal = await this.service.prepare(remote.revision);
       if (this.#closed || !this.#state.enabled) return;
@@ -154,7 +170,9 @@ export class SyncController {
           throw new Error(
             result === "unknown"
               ? "The original push still needs observation; local history is safe"
-              : "The remote advanced; synchronization will fetch and merge again",
+              : result === "stopped"
+                ? "The original push stopped tracking; synchronize again to create a new request"
+                : "The remote advanced; synchronization will fetch and merge again",
           );
       }
       if (!this.#closed) {

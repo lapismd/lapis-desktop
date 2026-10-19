@@ -53,9 +53,8 @@ listed below. Changes integrate back into the main workspaces after completion.
   were fixed before the three capture regressions passed. First consumer types
   lacked the new workspace's public `jj-history` dist; building that package
   restored a clean type check. These attempts remain in local verification logs.
-- Remote setup/sync, historical search, root-storage migration,
-  existing-repository adoption and Forgejo remain required implementation, not
-  deferred scope.
+- Historical search, root-storage migration, existing-repository adoption and
+  Forgejo remain required implementation, not deferred scope.
 - Nothing has been integrated into the main workspaces yet. Existing review app
   and ordinary vault data remain in their original locations.
 
@@ -81,8 +80,7 @@ listed below. Changes integrate back into the main workspaces after completion.
 - [x] Durable UI restore identity and explicit original-request recovery after
       reopening history.
 - [ ] Complete actual-WebView backup/restore lifecycle acceptance.
-- [ ] Existing repository source selector, GitHub/Forgejo, synchronization and
-      search.
+- [ ] Existing repository source selector, Forgejo and historical search.
 
 First Storybook restore attempts exposed a Vite dependency-optimization reload
 and an assertion racing dialog animation. The exact stories pass after the
@@ -126,11 +124,12 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
       and accepted-ancestor observation without replay. E-VAULT-BACKUP-008.
 - [x] Original apply recovery, cold recovery record matching and native writer
       barrier before keeping current files. E-REPO-032.
-- [ ] Explicit recovery controls when an unknown push cannot be confirmed by
+- [x] Explicit recovery controls when an unknown push cannot be confirmed by
       remote ancestry; preserve its original receipt and never replay blindly.
 - [ ] Focused actual native-app synchronization/lifecycle acceptance.
 
 The current normal and conflict synchronization flows are implemented. Stage 5
-remains Active until the remaining recovery controls and native acceptance are
-addressed; search, root storage/adoption, Forgejo and main integration remain
-required. The review app and original workspaces have not been replaced.
+remains Active while focused recovery verification is completed; cold native
+acceptance remains open. search, root storage/adoption, Forgejo and main
+integration remain required. The review app and original workspaces have not
+been replaced.

@@ -609,3 +609,10 @@ Resolution accepts a local merge-editor side and verifies the saved text. Fresh
 catalog processes cover light/dark and desktop/narrow layouts. Native
 transfer/merge proofs are separate; no live provider or personal credentials.
 Visual approval and actual native WebView qualification remain open.
+
+Repository publication recovery / CheckWithoutReplay, StopWithoutAccount,
+KeepTracking and ActiveRequestAndRecovery exercise the production original-push
+summary, read-only observation, signed-out explicit stop, retained confirmation
+and failure/toast recovery. The original request is asserted throughout; catalog
+services cannot publish. Native receipt/replay proofs remain separate. Visual
+review and cold native/provider gates remain pending.

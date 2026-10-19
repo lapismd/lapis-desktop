@@ -1,6 +1,6 @@
 //! Device-local remote selection. No credential or Git authority is stored here.
 use super::forges::RemoteAccess;
-use jj_vault::{Binding, Checkpoint, RemoteTarget};
+use jj_vault::{Binding, Checkpoint, PendingPublication, RemoteTarget};
 use serde::{Deserialize, Serialize};
 use std::{
     fs,
@@ -22,6 +22,8 @@ pub struct RemoteState {
     pub revision: u64,
     pub configuration: Option<Configuration>,
     pub checkpoint: Option<Checkpoint>,
+    #[serde(default, skip_deserializing, skip_serializing_if = "Option::is_none")]
+    pub publication: Option<PendingPublication>,
 }
 #[derive(Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -38,7 +40,14 @@ pub fn read(binding: &Binding) -> io::Result<RemoteState> {
         .map_err(|_| failure("Vault binding is unavailable"))?;
     let path = binding.state.join("remote-backup.json");
     let metadata = match fs::symlink_metadata(&path) {
-        Err(e) if e.kind() == io::ErrorKind::NotFound => return Ok(RemoteState::default()),
+        Err(e) if e.kind() == io::ErrorKind::NotFound => {
+            return Ok(RemoteState {
+                publication: binding
+                    .pending_publication()
+                    .map_err(|e| failure(&e.to_string()))?,
+                ..RemoteState::default()
+            });
+        }
         value => value?,
     };
     if !metadata.is_file() || metadata.is_symlink() || metadata.len() > 256 * 1024 {
@@ -65,7 +74,11 @@ pub fn read(binding: &Binding) -> io::Result<RemoteState> {
             return Err(failure("Saved account binding is invalid"));
         }
     }
-    Ok(saved.state)
+    let mut state = saved.state;
+    state.publication = binding
+        .pending_publication()
+        .map_err(|e| failure(&e.to_string()))?;
+    Ok(state)
 }
 fn save(path: &Path, state: &RemoteState) -> io::Result<()> {
     let parent = path
@@ -75,9 +88,11 @@ fn save(path: &Path, state: &RemoteState) -> io::Result<()> {
         return Err(failure("Wait for the first local checkpoint"));
     }
     let mut file = tempfile::NamedTempFile::new_in(parent)?;
+    let mut stored = state.clone();
+    stored.publication = None;
     let bytes = serde_json::to_vec(&Saved {
         version: 1,
-        state: state.clone(),
+        state: stored,
     })
     .map_err(|_| failure("Connection could not be encoded"))?;
     file.write_all(&bytes)?;

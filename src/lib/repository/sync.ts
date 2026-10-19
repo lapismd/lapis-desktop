@@ -38,7 +38,7 @@ export interface SyncService {
   publish(
     revision: number,
     requestId: string,
-  ): Promise<"complete" | "unknown" | "stale">;
+  ): Promise<"complete" | "unknown" | "stale" | "stopped">;
 }
 export type PendingSync = {
   version: 1;

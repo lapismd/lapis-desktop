@@ -12,6 +12,7 @@
   import CloudDownload from "@lucide/svelte/icons/cloud-download";
   import KeyRound from "@lucide/svelte/icons/key-round";
   import History from "@lucide/svelte/icons/history";
+  import PublicationRecovery from "./PublicationRecovery.svelte";
   import BackupField from "./BackupField.svelte";
   import BackupSelect from "./BackupSelect.svelte";
   import type { ForgeController } from "../../../lib/repository/forge-controller.ts";
@@ -249,6 +250,15 @@
           </div>
         {/if}
       {/if}
+      {#if snapshot.data?.publication && controller.service.publication}<PublicationRecovery
+          pending={snapshot.data.publication}
+          busy={snapshot.busy}
+          canObserve={available.some(
+            (value) => value.id === snapshot.data?.configuration?.account,
+          )}
+          onObserve={(id) => controller.observePublication(id)}
+          onStop={(id) => controller.stopPublication(id)}
+        />{/if}
     </Card.Content>
   </Card.Root>
 </section>

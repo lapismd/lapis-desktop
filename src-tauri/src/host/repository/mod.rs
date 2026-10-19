@@ -4,6 +4,7 @@ pub(crate) mod backup_restore;
 pub(crate) mod commands;
 pub(crate) mod forges;
 mod policy;
+mod publication;
 pub(crate) mod remote;
 mod remote_transfer;
 pub(crate) mod sync;

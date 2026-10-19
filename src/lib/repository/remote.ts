@@ -10,12 +10,23 @@ export type RemoteConfiguration = {
   target: { url: string; branch: string };
   canPush: boolean;
 };
+export type PendingPublication = {
+  request_id: string;
+  before: string | null;
+  after: string;
+  outcome: "prepared" | "unknown" | "complete" | "stale" | "stopped";
+};
 export type RemoteSnapshot = {
   revision: number;
   configuration: RemoteConfiguration | null;
   checkpoint: BackupCheckpoint | null;
+  publication?: PendingPublication | null;
 };
 export interface RemoteService {
+  publication?: {
+    observe(revision: number, requestId: string): Promise<RemoteSnapshot>;
+    stop(revision: number, requestId: string): Promise<RemoteSnapshot>;
+  };
   status(): Promise<RemoteSnapshot>;
   configure(
     revision: number,

@@ -13,7 +13,10 @@
       | "failed"
       | "loading"
       | "interrupted"
-      | "signed-out";
+      | "signed-out"
+      | "pending"
+      | "pending-signed-out"
+      | "pending-failed";
   } = $props();
   const fixture = untrack(() => operationFixture());
   let root: HTMLDivElement;
@@ -30,10 +33,24 @@
     timestamp_millis: 1792300000000,
   };
   let saved: RemoteSnapshot = untrack(() => ({
-    revision: ["connected", "interrupted", "signed-out"].includes(scenario)
+    revision: [
+      "connected",
+      "interrupted",
+      "signed-out",
+      "pending",
+      "pending-signed-out",
+      "pending-failed",
+    ].includes(scenario)
       ? 1
       : 0,
-    configuration: ["connected", "interrupted", "signed-out"].includes(scenario)
+    configuration: [
+      "connected",
+      "interrupted",
+      "signed-out",
+      "pending",
+      "pending-signed-out",
+      "pending-failed",
+    ].includes(scenario)
       ? {
           account: "account",
           project: "lapis-fixture/notes",
@@ -41,11 +58,26 @@
             url: "https://github.com/lapis-fixture/notes.git",
             branch: "main",
           },
-          canPush: true,
+          canPush: !scenario.startsWith("pending"),
         }
       : null,
-    checkpoint: ["connected", "interrupted", "signed-out"].includes(scenario)
+    checkpoint: [
+      "connected",
+      "interrupted",
+      "signed-out",
+      "pending",
+      "pending-signed-out",
+      "pending-failed",
+    ].includes(scenario)
       ? checkpoint
+      : null,
+    publication: scenario.startsWith("pending")
+      ? {
+          request_id: "original-push",
+          before: null,
+          after: "b".repeat(40),
+          outcome: "unknown" as const,
+        }
       : null,
   }));
 </script>
@@ -65,21 +97,20 @@
         forges: {
           async inventory() {
             return {
-              accounts:
-                scenario === "signed-out"
-                  ? []
-                  : [
-                      {
-                        id: "account",
-                        api_url: "https://api.github.com",
-                        login: "lapis-fixture",
-                        name: "Lapis fixture",
-                        email: "dev@lapis.md",
-                        avatar_url: null,
-                        method: "pat",
-                        available: true,
-                      },
-                    ],
+              accounts: ["signed-out", "pending-signed-out"].includes(scenario)
+                ? []
+                : [
+                    {
+                      id: "account",
+                      api_url: "https://api.github.com",
+                      login: "lapis-fixture",
+                      name: "Lapis fixture",
+                      email: "dev@lapis.md",
+                      avatar_url: null,
+                      method: "pat",
+                      available: true,
+                    },
+                  ],
               oauth_available: false,
               keychain_supported: true,
               authorization: null,
@@ -93,6 +124,22 @@
           async openAuthorization() {},
         },
         remote: {
+          publication: {
+            async observe(_revision, id) {
+              if (id !== "original-push")
+                throw new Error("Original push identity changed");
+              root.dataset.observedPush = id;
+              return (saved = { ...saved, publication: null });
+            },
+            async stop(_revision, id) {
+              if (id !== "original-push")
+                throw new Error("Original push identity changed");
+              if (scenario === "pending-failed" && attempts++ === 0)
+                throw new Error("Original push is still active");
+              root.dataset.stoppedPush = id;
+              return (saved = { ...saved, publication: null });
+            },
+          },
           async status() {
             if (scenario === "loading" && !loadingFinished)
               await new Promise<void>((resolve) => (release = resolve));

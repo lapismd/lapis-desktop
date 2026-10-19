@@ -20,6 +20,14 @@ pub struct Request {
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 enum Action {
     Status,
+    ObservePublication {
+        revision: u64,
+        request_id: String,
+    },
+    StopPublication {
+        revision: u64,
+        request_id: String,
+    },
     Configure {
         revision: u64,
         account: String,
@@ -172,6 +180,42 @@ pub async fn desktop_backup_remote(
             .fetch(revision)
             .await?,
         ),
+        Action::ObservePublication {
+            revision,
+            request_id,
+        } => serde_json::to_value(
+            super::publication::observe(
+                super::remote_transfer::Context {
+                    host: host.inner().clone(),
+                    repository: &repository,
+                    accounts: &accounts,
+                    session: request.session_id,
+                    window: caller.window,
+                    binding,
+                },
+                revision,
+                request_id,
+            )
+            .await?,
+        ),
+        Action::StopPublication {
+            revision,
+            request_id,
+        } => serde_json::to_value(
+            super::publication::stop(
+                super::remote_transfer::Context {
+                    host: host.inner().clone(),
+                    repository: &repository,
+                    accounts: &accounts,
+                    session: request.session_id,
+                    window: caller.window,
+                    binding,
+                },
+                revision,
+                request_id,
+            )
+            .await?,
+        ),
         Action::Preview { checkpoint } => {
             if state.checkpoint.as_ref().map(|c| c.commit.as_str()) != Some(&checkpoint) {
                 return Err(failure(
@@ -229,6 +273,15 @@ mod tests {
             let mut altered = frame.clone();
             altered["action"][key] = serde_json::json!("outside");
             assert!(serde_json::from_value::<Request>(altered).is_err());
+        }
+        for kind in ["observe_publication", "stop_publication"] {
+            let frame = serde_json::json!({"sessionId":"opaque","action":{"kind":kind,"revision":1,"request_id":"original"}});
+            assert!(serde_json::from_value::<Request>(frame.clone()).is_ok());
+            for field in ["root", "endpoint", "token", "account", "window"] {
+                let mut altered = frame.clone();
+                altered["action"][field] = serde_json::json!("outside");
+                assert!(serde_json::from_value::<Request>(altered).is_err());
+            }
         }
         let frame = serde_json::json!({"sessionId":"opaque","action":{"kind":"restore","request":{"request_id":"stable","checkpoint":"abc","expected":"tree","root":"outside"}}});
         assert!(serde_json::from_value::<Request>(frame).is_err());

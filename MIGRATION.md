@@ -9,7 +9,7 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
 M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
-Current work: M14.5 — Finish unknown-push recovery and native app proof
+Current work: M14.5 — Qualify cold app/provider gates later
 
 Oldest pending gate: M7.3 — After M10.4: qualify ordinary native popouts
 
@@ -60,6 +60,6 @@ below.
 | M14.2 | Partial     | Qualify cold native lifecycle later                                                 |
 | M14.3 | Partial     | Qualify cold app restore, then forge setup                                          |
 | M14.4 | Partial     | Qualify cold app/provider flow later                                                |
-| M14.5 | In progress | Finish unknown-push recovery and native app proof                                   |
+| M14.5 | In progress | Qualify cold app/provider gates later                                               |
 | M14.6 | Planned     | Add the disposable projection                                                       |
 | M14.7 | Planned     | Complete advanced storage and providers                                             |
