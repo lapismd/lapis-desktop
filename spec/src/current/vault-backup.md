@@ -61,3 +61,12 @@ metadata and OS credentials have desktop-owned namespaces; only jj-store's
 configured public GitHub client ID is reused. Authorization cancellation
 bypasses busy network slots so a pending poll cannot save credentials after
 cancellation.
+
+Remote setup resolves the explicitly selected account, repository and branch on
+native workers. The host derives and validates the Git endpoint against that
+account's forge origin and stores only versioned configuration outside Git.
+Transfer holds no capture lease or vault-service mutex. Fetch imports a pinned
+head without changing files. Fresh-device restoration reuses the all-writer
+guard, original safety checkpoint and durable request recovery, retaining both
+local and imported ancestry. Remote setup changes cannot reinterpret a pending
+publication intent.

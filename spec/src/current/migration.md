@@ -1,7 +1,7 @@
 # Migration inventory and progress
 
 E-REPO-023–025 and E-AI-039–041 retain their qualified UI scope. M14 adds vault
-backup, restore and forge accounts (E-REPO-029); LD-MIG-002 gates remain.
+backup, restore and forge bindings (E-REPO-030); LD-MIG-002 gates remain.
 
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
 LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and

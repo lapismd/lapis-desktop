@@ -1,7 +1,7 @@
 # Governance
 
-E-REPO-029 retains LD-GOV-001/002/004 with exact installation-account admission,
-worker lifetime and source audits. Original milestone gates stay intact.
+E-REPO-030 retains LD-GOV-001/002/004 with native account/remote validation,
+serialized writer admission and source audits. Original milestone gates remain.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

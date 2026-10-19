@@ -1,5 +1,7 @@
 //! Installation-scoped forge custody. Native workers never lock vault services.
+mod repository;
 use jj_forge::accounts::{Command, Inventory, Manager, now};
+pub use repository::RemoteAccess;
 use std::{
     io,
     path::PathBuf,
@@ -36,6 +38,33 @@ impl ForgeAccounts {
     pub async fn execute(&self, command: Option<Command>) -> io::Result<Inventory> {
         // Revocation must be able to fence a poll waiting on a network reply.
         let cancel = matches!(&command, Some(Command::CancelOauth { .. }));
+        self.work(cancel, move |manager| {
+            let result = match command {
+                None => manager.inventory(),
+                Some(command) => {
+                    runtime()?.block_on(async { manager.execute(command, now()?).await })
+                }
+            };
+            result.map_err(|error| io::Error::other(format!("Forge account action: {error}")))
+        })
+        .await
+    }
+    pub async fn remote(
+        &self,
+        account: String,
+        project: String,
+        branch: Option<String>,
+    ) -> io::Result<RemoteAccess> {
+        self.work(false, move |manager| {
+            runtime()?.block_on(repository::resolve(&manager, &account, &project, branch))
+        })
+        .await
+    }
+    async fn work<T: Send + 'static>(
+        &self,
+        cancel: bool,
+        action: impl FnOnce(Arc<Manager>) -> io::Result<T> + Send + 'static,
+    ) -> io::Result<T> {
         let permit = if cancel {
             self.cancellation
                 .clone()
@@ -73,16 +102,14 @@ impl ForgeAccounts {
                 }
                 saved.as_ref().unwrap().clone()
             };
-            let result = match command {
-                None => manager.inventory(),
-                Some(command) => tokio::runtime::Builder::new_current_thread()
-                    .enable_all()
-                    .build()?
-                    .block_on(async { manager.execute(command, now()?).await }),
-            };
-            result.map_err(|error| io::Error::other(format!("Forge account action: {error}")))
+            action(manager)
         })
         .await
         .map_err(|_| io::Error::other("Forge account worker stopped"))?
     }
+}
+fn runtime() -> io::Result<tokio::runtime::Runtime> {
+    tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
 }

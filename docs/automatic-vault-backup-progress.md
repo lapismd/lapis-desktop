@@ -107,5 +107,10 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
 - [x] Focused account checks: seven source cases, two native worker cases, one
       frame test, 15 renderer/governance cases, strict types and 20 account
       interaction/accessibility executions. E-VAULT-BACKUP-004 / E-REPO-029.
-- [ ] Remote repository/branch setup and fresh-device restore.
+- [x] Native remote transfer/import/guarded restore and exact durable push
+      intents. Actual Git clones and a stalled-HTTPS capture proof pass in
+      source26c4c417 (E-VAULT-BACKUP-005).
+- [x] Native account-scoped repository resolution: validate clone origin,
+      project, branch and observed push permission without exposing credentials.
+- [ ] Desktop remote repository/branch setup and fresh-device restore.
 - [ ] Live forge acceptance after the complete sync flow is implemented.

@@ -222,3 +222,5 @@
 - [Whole-vault restore and retained UI recovery](history/E-REPO-028.md)
 
 - [Native GitHub accounts for vault backup](history/E-REPO-029.md)
+
+- [Native forge repository validation](history/E-REPO-030.md)
