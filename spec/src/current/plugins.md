@@ -1,5 +1,15 @@
 # Desktop plugins and catalog
 
+Catalog browser files run serially through the browser-pool option; the outer
+Vitest file option alone does not bound that pool. Existing assertions and
+deadlines remain unchanged.
+
+The shell reserves a full-width status footer beneath ribbon, sidebars and
+content. Repository/backup controls and Problems occupy the left; activity uses
+the fixed centre; editor information and the permanent bell occupy the right.
+Panels/plugins MUST NOT reserve overlay clearance. Ribbon Settings complements
+the sidebar action (E-CATALOG-009/010).
+
 E-REPO-039–041 embed backup/forge controls in registered plugin Settings,
 retaining plugin-owned work, transient reply fencing and local provenance.
 E-AI-042–061 adds local Codex, explicit imports and the reviewed shared

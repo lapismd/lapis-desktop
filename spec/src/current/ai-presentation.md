@@ -37,11 +37,13 @@ using the jj-store strip (selected trigger, close, separator and actions), with
 local horizontal overflow rather than a second footer row. The folder picker
 uses inline layout without the legacy standalone top margin. Shared footer and
 formatting fixes belong in Design Core and apply to the reference story too. The
-application reserves its floating status-bar clearance outside the compact
-footer; send and formatting controls remain above the overlay in all placements.
-Conversation discovery uses the nested shell list; its compact presentation
-keeps the selected conversation and new-chat composer reachable in a short
-panel.
+workspace reserves a separate status-footer track; chat retains ordinary
+composer spacing without overlay clearance in any placement. Conversation
+discovery uses the nested shell list; its compact presentation keeps the
+selected conversation and new-chat composer reachable in a short panel.
+
+Nested session shells and History/Catalog trees retain ordinary uniform
+container padding; they MUST NOT reserve space for the workspace footer.
 
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.

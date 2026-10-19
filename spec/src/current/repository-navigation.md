@@ -66,6 +66,8 @@ The plugin owns its controls, popover, styles and settings through the public
 status host; custom controls do not require repository UI in the shell. The
 compact split control has no border, minimal vertical padding and a subtle
 background relative to the status bar; refresh uses a slightly stronger fill.
+Its compact buttons remain inset from the footer borders, including populated
+diff statistics; loading and backup states retain the same compact minimum.
 
 Native status resolves the current physical root from existing admission and
 observes it on bounded workers. It MUST NOT initialize, snapshot, write a source

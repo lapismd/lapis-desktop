@@ -3,6 +3,7 @@
   import VaultLauncher from "../vaults/VaultLauncher.svelte";
   import { createNativePluginAssetServer } from "../../lib/native/plugin-assets.ts";
   import NotesWorkspace from "./NotesWorkspace.svelte";
+  import DesktopFailure from "./DesktopFailure.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
   import { createNativeAi } from "../../lib/native/ai/services.ts";
@@ -154,7 +155,6 @@
   }
 </script>
 
-{#if failure}<p class="shell-failure" role="alert">{failure}</p>{/if}
 <main
   class="shell-content"
   data-tauri-drag-region="deep"
@@ -162,30 +162,32 @@
   hidden={session !== null}
   inert={leaving}
 >
-  {#if restoring || openingNotes}
-    <DesktopWorkspaceStartup
-      tasks={[
-        {
-          id: "restore",
-          label: "Restore your notes",
-          status: openingNotes ? "complete" : "active",
-        },
-        {
-          id: "storage",
-          label: "Open notes storage",
-          status: openingNotes ? "active" : "pending",
-        },
-      ]}
-    />
-  {:else}
-    <VaultLauncher
-      {client}
-      {returnProfileId}
-      errorMessage={failure}
-      onError={reportFailure}
-      onOpenNotes={openNotes}
-    />
-  {/if}
+  {#if failure && !session}<DesktopFailure message={failure} />{/if}
+  <div class="shell-stage">
+    {#if restoring || openingNotes}
+      <DesktopWorkspaceStartup
+        tasks={[
+          {
+            id: "restore",
+            label: "Restore your notes",
+            status: openingNotes ? "complete" : "active",
+          },
+          {
+            id: "storage",
+            label: "Open notes storage",
+            status: openingNotes ? "active" : "pending",
+          },
+        ]}
+      />
+    {:else}
+      <VaultLauncher
+        {client}
+        {returnProfileId}
+        onError={reportFailure}
+        onOpenNotes={openNotes}
+      />
+    {/if}
+  </div>
 </main>
 {#if session}
   {#key session}
@@ -194,6 +196,7 @@
       {session}
       {urlDelivery}
       {safeMode}
+      hostFailure={failure}
       {pluginDistributionOptions}
       pluginAssetServer={createNativePluginAssetServer(
         session.vaultAdapter,

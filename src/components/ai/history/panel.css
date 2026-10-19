@@ -72,7 +72,6 @@
   box-sizing: border-box;
   min-height: 100%;
   padding: var(--ui-workspace-explorer-content-padding, 0.5rem);
-  padding-block-end: 2.5rem;
 }
 
 .ai-history .ai-history__tree,

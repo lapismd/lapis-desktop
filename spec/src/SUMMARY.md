@@ -274,3 +274,7 @@
 - [Migration checkpoint and completion-gate reconciliation](history/E-REPO-042.md)
 
 - [AI history landing verification and retirement](history/E-AI-063.md)
+
+- [Full-width workspace status footer](history/E-CATALOG-009.md)
+
+- [Main-workspace footer handoff](history/E-CATALOG-010.md)

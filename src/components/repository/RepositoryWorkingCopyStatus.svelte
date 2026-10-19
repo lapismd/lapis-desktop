@@ -149,6 +149,7 @@
 <style>
   .repository-working-status {
     display: inline-flex;
+    min-height: 1.25rem;
     align-items: stretch;
     gap: 0;
     border: 0;
@@ -185,7 +186,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.1rem 0.4rem;
+    padding: 0 0.4rem;
     border-radius: var(--radius) 0 0 var(--radius);
     line-height: 1;
     white-space: nowrap;
@@ -200,7 +201,7 @@
   .refresh {
     display: flex;
     align-items: center;
-    padding: 0.1rem 0.35rem;
+    padding: 0 0.35rem;
     background: color-mix(
       in oklab,
       var(--ui-workspace-muted-foreground) 12%,

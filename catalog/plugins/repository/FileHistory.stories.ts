@@ -39,6 +39,35 @@ export const NoActiveFile: StoryObj = {
     expect(historyContext(canvasElement).fixture.calls).toHaveLength(0);
   },
 };
+export const MoveHistoryToMainBody: StoryObj = {
+  play: async ({ canvasElement }) => {
+    await sidebar(canvasElement, "Welcome.md");
+    const canvas = within(canvasElement);
+    const page = within(canvasElement.ownerDocument.body);
+    const history = canvas.getByRole("region", { name: "Active file history" });
+    await userEvent.pointer({
+      keys: "[MouseRight]",
+      target: canvas.getByRole("tab", { name: "File history" }),
+    });
+    await userEvent.hover(
+      await page.findByRole("menuitem", { name: /^Move to$/ }),
+    );
+    await userEvent.click(
+      await page.findByRole("menuitem", { name: "Main body" }),
+    );
+    await waitFor(() =>
+      expect(
+        within(canvas.getByRole("main")).getByRole("region", {
+          name: "Active file history",
+        }),
+      ).toBeVisible(),
+    );
+    expect(canvas.queryByRole("tab", { name: "File history" })).toBeNull();
+    expect(canvas.getByRole("region", { name: "Active file history" })).toBe(
+      history,
+    );
+  },
+};
 export const NoRevisions: StoryObj = {
   args: { files: { "Other.md": "# Another note" } },
   play: async ({ canvasElement }) => {

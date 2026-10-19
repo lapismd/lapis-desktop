@@ -2,9 +2,8 @@
 
 E-REPO-016 qualifies [background work](background.md). The
 [repository contract](repository.md) retains native capture/provider gates.
-E-AI-037/038 qualify pinned reads and explicit continuation through native
-privacy, the exclusive owner lease, journals/stores and drained factory
-lifetime.
+E-AI-037/038 retain native privacy, exact pinned reads/continuation, journals,
+stores, exclusive ownership and drained factory lifetime.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
 E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
@@ -14,6 +13,7 @@ deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) keep their
 gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
+E-CATALOG-009/010 removes overlay clearance owned by the shell footer.
 `PLUGIN_MIGRATION.md` and the original M10 task gates remain authoritative.
 Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).

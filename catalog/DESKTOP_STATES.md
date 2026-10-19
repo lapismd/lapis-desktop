@@ -44,7 +44,8 @@ history to review virtual scrolling and varied attribution groups.
 
 `Desktop/Repository file history` reviews default right-sidebar registration, an
 absent editor, active-file revisions, empty path history, busy/disabled refresh,
-toast recovery, rename/deletion and opening the matching JJ Log revision.
+toast recovery, rename/deletion, opening the matching JJ Log revision and moving
+the retained sidebar view into the main body through the shared tab menu.
 `Desktop/Repository row selection` covers non-button row areas and independent
 controls. Both use production components and remain visual-pending.
 
@@ -153,3 +154,7 @@ checks Document default, retained draft/editor while switching, saved Classic
 after reopening and functional submission. A failed preference save shows an
 App-owned toast and preserves the last saved value. Initialization shows the
 representative transcript skeleton until the real controller can be used.
+
+`Desktop/Repository working copy status/Workspace Footer` verifies full-width
+footer geometry, left repository placement, fixed centre activity and shared
+notification-panel opening through the real packed API/workspace shell.

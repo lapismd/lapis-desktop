@@ -202,5 +202,13 @@ export const EmptyLocalSearch: Story = {
     expect(root).not.toBeNull();
     expect(root!.querySelector("svg")).not.toBeNull();
     expect(canvas.queryByLabelText("Tool details")).toBeNull();
+    const shell =
+      canvasElement.querySelector<HTMLElement>(".ai-session-shell")!;
+    const body = shell.querySelector<HTMLElement>(
+      '[data-ui-component="app-shell"][data-ui-part="body"]',
+    )!;
+    const outer = shell.getBoundingClientRect(),
+      inner = body.getBoundingClientRect();
+    expect(outer.bottom - inner.bottom).toBeCloseTo(inner.top - outer.top, 0);
   },
 };

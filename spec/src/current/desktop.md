@@ -1,5 +1,7 @@
 # Desktop shell
 
+Footer: LD-HOST-001; E-CATALOG-009/010.
+
 E-REPO-035–041 retain backup Settings/native authority; E-AI-056 retains
 LD-DESK-005. [Local imports](ai-imports.md) governs capture admission. Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
@@ -258,12 +260,12 @@ and awaits its blur callbacks. This admits Properties and Settings changes that
 commit on blur while their component is still mounted. Teardown must not remove
 an active input before its normal commit can join the owned writer queue.
 
-Last-Notes intent lives in the native OS profile and references a known recent
-profile, never a renderer-selected absolute path. Restoration revalidates the
-physical root using normal recent-vault admission. Missing folders, changed
-roots, corrupt state and failed startup retain visible recovery through the
-launcher. Fresh selection and an intentional return to the launcher remain
-available. No legacy `.obsidian` state import is required.
+Last-Notes intent uses a known native profile, never a renderer-selected path.
+Restoration revalidates its physical root through recent-vault admission.
+Missing folders, changed roots, corrupt state and startup failures retain
+launcher recovery, fresh selection and intentional return. No legacy `.obsidian`
+import is required. Shell failures MUST render once as a destructive body alert
+with an error icon, without a corner duplicate.
 
 M4 remains incomplete until external-edit protection and the entire original
 aggregate gate are qualified. Native watching remains M5; delaying watching does

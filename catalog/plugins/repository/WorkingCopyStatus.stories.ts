@@ -152,3 +152,60 @@ export const SettingsAndDisable: StoryObj = {
     );
   },
 };
+
+export const WorkspaceFooter: StoryObj = {
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    const stats = await canvas.findByRole("button", {
+      name: /^Working copy details/,
+    });
+    const shell = canvasElement.querySelector<HTMLElement>(
+      "[data-app-shell-root]",
+    )!;
+    const footer = canvas.getByLabelText("Workspace status");
+    const bounds = footer.getBoundingClientRect();
+    expect(bounds.width).toBeCloseTo(shell.getBoundingClientRect().width, 0);
+    expect(bounds.bottom).toBeCloseTo(shell.getBoundingClientRect().bottom, 0);
+    const sidebar = shell.querySelector<HTMLElement>(
+      '[data-app-shell-sidebar="left"]',
+    )!;
+    expect(getComputedStyle(sidebar).borderBottomWidth).toBe("0px");
+    expect(sidebar.getBoundingClientRect().bottom).toBeCloseTo(bounds.top, 0);
+    expect(getComputedStyle(footer).borderTopWidth).toBe("1px");
+    expect(stats.closest('[data-ui-part="left"]')).not.toBeNull();
+    const control = stats.getBoundingClientRect();
+    expect(control.top).toBeGreaterThanOrEqual(bounds.top + 2);
+    expect(control.bottom).toBeLessThanOrEqual(bounds.bottom - 1);
+    const app = historyContext(canvasElement).app;
+    let task = app.notifications.createProgress({
+      id: "footer-acceptance",
+      title: "Indexing notes",
+      location: "status",
+    });
+    try {
+      const center = footer.querySelector<HTMLElement>(
+        '[data-ui-part="center"]',
+      )!;
+      await waitFor(() => expect(center).toHaveTextContent("Indexing notes"));
+      const initial = center.getBoundingClientRect();
+      task.complete();
+      task = app.notifications.createProgress({
+        id: "footer-acceptance-long",
+        title:
+          "Synchronizing a very long vault name and indexing its complete revision history",
+        location: "status",
+      });
+      await waitFor(() => expect(center).toHaveTextContent("Synchronizing"));
+      expect(center.getBoundingClientRect().width).toBe(initial.width);
+      expect(footer.getBoundingClientRect().height).toBe(bounds.height);
+      await userEvent.click(within(center).getByRole("button"));
+      await expect(
+        await within(canvasElement.ownerDocument.body).findByRole("dialog", {
+          name: "Notifications",
+        }),
+      ).toBeVisible();
+    } finally {
+      task.complete();
+    }
+  },
+};

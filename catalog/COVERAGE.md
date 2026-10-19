@@ -79,6 +79,8 @@ independent author/copy controls and keyboard selection on both logs.
 follows editor switches/rename/deletion, opens the selected revision at the same
 pin, and covers empty/loading and toast recovery. Native stock-JJ equivalence is
 qualified in jj-store E-FILE-HISTORY-001. Visual baselines remain pending.
+MoveHistoryToMainBody uses the shared tab menu through the packed API and checks
+that the main pane retains the original history view container after transfer.
 
 `plugins/background/Work.stories.ts` mounts the production Notes workspace,
 Repository History and native AI factory. Its owned delayed ports qualify
@@ -819,3 +821,6 @@ controlled AppSettings components; the maintained backup cards use tinted
 headers and body-surface rows/footers. Forges, RemoteBackup, Sync, Publication,
 HistoryStorage and HistoryAdoption remain the complete affected story families.
 No replacement fixtures or dependency-internal CSS selectors are added.
+
+The working-copy WorkspaceFooter scenario extends the production shell
+acceptance for the dedicated footer, repository placement and activity bridge.

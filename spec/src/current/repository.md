@@ -6,8 +6,8 @@ and original JJ identities remain separate, through owned interfaces without
 upstream `jj-lib`. E-AI-055 reuses capture/privacy for read-only local-file
 imports; LD-REPO-001/002/003 pins, identity and publication remain unchanged.
 
-E-REPO-024/025 add the bounded physical working-copy status read and
-plugin-owned status controls. [Repository navigation](repository-navigation.md)
+E-REPO-024/025 add the bounded physical working-copy status read and left-footer
+controls (E-CATALOG-009/010). [Repository navigation](repository-navigation.md)
 owns its read-only authority, lifecycle, setting and presentation contract.
 
 ## Requirements

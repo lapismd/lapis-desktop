@@ -31,6 +31,8 @@ export const MissingSavedVault: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const alerts = await canvas.findAllByRole("alert");
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]!.querySelector("svg")).not.toBeNull();
     for (const alert of alerts)
       await expect(alert).toHaveTextContent("The saved vault folder has moved");
     await expect(
@@ -43,6 +45,8 @@ export const BlockedClose: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const alerts = await canvas.findAllByRole("alert");
+    expect(alerts).toHaveLength(1);
+    expect(alerts[0]!.querySelector("svg")).not.toBeNull();
     for (const alert of alerts)
       await expect(alert).toHaveTextContent("Your session remains available");
     await expect(

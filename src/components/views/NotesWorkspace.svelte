@@ -30,6 +30,7 @@
   import { registerDesktopPluginBrowser } from "../../lib/notes/notes-plugin-browser.ts";
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
+  import DesktopFailure from "./DesktopFailure.svelte";
   import { leaveWithStoppedWatching } from "../../lib/notes/notes-leave.ts";
   import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
   import { attachNotesUrls } from "../../lib/notes/notes-integration.ts";
@@ -42,6 +43,7 @@
 
   let {
     session,
+    hostFailure = "",
     pluginAssetServer,
     pluginDistributionOptions,
     createTerminal,
@@ -54,6 +56,7 @@
     urlDelivery,
   }: {
     session: VaultSession;
+    hostFailure?: string;
     pluginAssetServer?: PluginAssetServer;
     pluginDistributionOptions?: AppPluginDistributionOptions;
     createTerminal?: TerminalFactory;
@@ -260,6 +263,9 @@
   aria-label="Notes workspace"
   aria-busy={busy}
 >
+  {#if error || hostFailure}<DesktopFailure
+      message={error || hostFailure}
+    />{/if}
   {#if ready}
     <div class="notes-session-workspace" inert={busy}>
       <WorkspaceShell
@@ -291,5 +297,4 @@
     registry={app.fileEditingSessions.textConflicts}
     disabled={busy}
   />
-  {#if error}<p role="alert">{error}</p>{/if}
 </section>

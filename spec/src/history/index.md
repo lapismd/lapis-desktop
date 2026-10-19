@@ -218,3 +218,7 @@ by the task ledger, not inferred from this list.
   workspace.
 
 - [AI history landing verification and retirement](E-AI-063.md)
+
+- [Full-width workspace status footer](E-CATALOG-009.md)
+
+- [Main-workspace footer handoff](E-CATALOG-010.md)

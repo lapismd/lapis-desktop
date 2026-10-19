@@ -32,17 +32,13 @@ body {
 }
 .shell-content {
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 }
-.shell-failure {
-  position: fixed;
-  inset: 3rem 1rem auto auto;
-  max-width: min(32rem, calc(100% - 2rem));
-  z-index: 10;
-  padding: 0.75rem;
-  border: 1px solid var(--ui-workspace-border);
-  border-radius: 0.375rem;
-  color: var(--ui-workspace-foreground);
-  background: var(--ui-workspace-background);
+.shell-stage {
+  flex: 1;
+  min-height: 0;
 }
 @media (prefers-color-scheme: dark) {
   :root {

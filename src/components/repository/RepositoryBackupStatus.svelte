@@ -129,6 +129,7 @@
 <style>
   .backup-status {
     display: inline-flex;
+    min-height: 1.25rem;
     align-items: stretch;
     border: 0;
     border-radius: var(--radius);
@@ -165,7 +166,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.1rem 0.4rem;
+    padding: 0 0.4rem;
     line-height: 1;
     white-space: nowrap;
   }

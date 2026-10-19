@@ -396,4 +396,5 @@ success stays distinct from native UI acceptance; original gates remain.
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
 IPC-only checks, headed windows and capture qualification boundaries. The
 private migration link for `@lapismd/jj-conversations` consumes verified built
-exports. Local queues retain host custody; registry intake remains gated.
+exports. Local queues retain host custody; registry intake remains gated. Node
+renderer tests preload tsx for application syntax (E-CATALOG-009/010).

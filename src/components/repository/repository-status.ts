@@ -136,7 +136,7 @@ export class RepositoryStatus {
         this.#remove = this.plugin.app.statusBar.registerItem({
           id: "repository-history:working-copy",
           sourcePlugin: this.plugin.id,
-          alignment: "right",
+          alignment: "left",
           priority: 15,
           mount: (host) => {
             const component = mount(RepositoryBackupStatus, {
@@ -175,7 +175,7 @@ export class RepositoryStatus {
       this.#remove = this.plugin.app.statusBar.registerItem({
         id: "repository-history:working-copy",
         sourcePlugin: this.plugin.id,
-        alignment: "right",
+        alignment: "left",
         priority: 15,
         mount: (host) => {
           const component = mount(RepositoryWorkingCopyStatus, {
