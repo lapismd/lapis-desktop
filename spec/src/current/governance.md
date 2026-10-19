@@ -1,8 +1,7 @@
 # Governance
 
-E-REPO-028 retains exact writer grants and persists restore identity before
-mutation. LD-GOV-001/002/004 ownership, evidence and original milestone gates
-stay intact.
+E-REPO-029 retains LD-GOV-001/002/004 with exact installation-account admission,
+worker lifetime and source audits. Original milestone gates stay intact.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView

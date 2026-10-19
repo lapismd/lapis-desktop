@@ -8,6 +8,7 @@ import { parseWorkingCopyStatus } from "../../repository/working-copy-status.ts"
 import { PreparationQueue } from "./preparation-queue.ts";
 import { nativeBackup } from "./backup.ts";
 import { nativeRestore } from "./restore.ts";
+import { nativeForges } from "./forges.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
@@ -74,6 +75,7 @@ export function createNativeRepository(
     return job;
   }
   return {
+    forges: nativeForges(call),
     restore: nativeRestore(vault.sessionId, call),
     backup,
     workingCopy: () =>

@@ -586,3 +586,10 @@ and recovery.
 Repository restore / WholeVaultSafetyCheckpoint and InterruptedRestore exercise
 production all-writer guards, confirmation, retained request replay and
 feedback.
+
+Repository backup accounts / EmptyAccounts, TokenAccount, DeviceAuthorization,
+FailureAndRecovery and Loading use the production Settings action, backup
+settings view, account controller, real App progress/toasts and injected native
+service port. Copied jj-store account/auth/field/controller sources and
+destinations are recorded in docs/provenance.json. No OS secrets or live forge
+requests occur in catalog execution. Visual review remains pending.

@@ -295,3 +295,7 @@ LD-CAT-001/002/003 teardown, loading, failure-toast and visual gates remain.
 
 E-REPO-028 adds whole-vault restore and interrupted-command review to the
 production-component restore stories; original catalog gates remain unchanged.
+
+E-REPO-029 adds production GitHub account settings with token/device flows,
+skeletons, cancellation and App feedback; native custody and catalog gates stay
+distinct. No live account is required by catalog execution.

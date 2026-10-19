@@ -17,6 +17,7 @@ import { BlameView } from "./blame/blame-view.ts";
 import { registerBlameEditorActions } from "./blame/editor-actions.ts";
 import { RepositoryStatus } from "./repository-status.ts";
 import { RepositoryBackup } from "./repository-backup.ts";
+import { registerBackupSettings } from "./backup/forge-view.ts";
 type RepositoryController =
   | HistoryController
   | OperationController
@@ -30,6 +31,7 @@ export class RepositoryPlugin extends Plugin {
   }
   #services?: RepositoryServices;
   #status?: RepositoryStatus;
+  #closeForges?: () => Promise<void>;
   #controllers = new Set<RepositoryController>();
   #activities = new Map<RepositoryController, () => void>();
   #closing?: Promise<void>;
@@ -122,6 +124,7 @@ export class RepositoryPlugin extends Plugin {
   async onload(): Promise<void> {
     this.#closing = undefined;
     this.#services = ownedRepository(this.app);
+    this.#closeForges = registerBackupSettings(this, this.#services.forges);
     if (this.#services.backup) {
       this.backup = new RepositoryBackup(this, this.#services.backup);
       await this.backup.start();
@@ -273,6 +276,8 @@ export class RepositoryPlugin extends Plugin {
   }
   async onunload(): Promise<void> {
     return (this.#closing ??= (async () => {
+      await this.#closeForges?.();
+      this.#closeForges = undefined;
       await this.#status?.close();
       await this.backup?.close();
       this.backup = undefined;

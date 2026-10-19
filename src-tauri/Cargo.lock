@@ -5417,6 +5417,7 @@ dependencies = [
  "cap-tempfile",
  "jj-agent",
  "jj-collab",
+ "jj-forge",
  "jj-store-conversations",
  "jj-store-core",
  "jj-store-git",

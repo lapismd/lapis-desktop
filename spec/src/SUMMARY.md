@@ -220,3 +220,5 @@
 - [Guarded file restore and live backup follow](history/E-REPO-027.md)
 
 - [Whole-vault restore and retained UI recovery](history/E-REPO-028.md)
+
+- [Native GitHub accounts for vault backup](history/E-REPO-029.md)

@@ -98,6 +98,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::repository::backup::desktop_backup_capture,
             crate::host::repository::backup::desktop_backup_stop,
             crate::host::repository::backup_restore::desktop_backup_restore,
+            crate::host::repository::forges::desktop_forge_accounts,
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
             crate::host::repository::working_copy::desktop_repository_working_copy,

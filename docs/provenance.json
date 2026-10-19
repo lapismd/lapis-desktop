@@ -67,6 +67,24 @@
         "web/src/lib/ui/community-projects/CommunityProjectsGitAuthorAvatar.svelte"
       ],
       "use": "Production author metadata adapted from the referenced source. Public Design Core AuthorCard/Avatar owns image and fallback presentation. SHA-256 Gravatar with d=404, supplied image precedence and name initials; no inferred email or account lookup. E-REPO-015 records focused adoption."
+    },
+    {
+      "repository": "jj-store",
+      "revision": "1d9d7c3eabb8a206517f6870801e3210db2e9dfe",
+      "paths": [
+        "web/src/lib/ui/store-settings/StoreIntegrations.svelte",
+        "web/src/lib/ui/store-settings/StoreIntegrationAuth.svelte",
+        "web/src/lib/ui/store-work/StoreWorkField.svelte",
+        "web/src/lib/controller/integrations.svelte.ts"
+      ],
+      "destinations": [
+        "src/components/repository/backup/ForgeAccounts.svelte",
+        "src/components/repository/backup/ForgeAuthorization.svelte",
+        "src/components/repository/backup/BackupField.svelte",
+        "src/lib/repository/forge-controller.ts"
+      ],
+      "use": "Copied and adapted account list, device authorization, PAT form and controller flow for installation-owned Notes backup settings. Public Design Core Card/Field/Badge replace jj-store settings wrappers. Tokens remain transient; custody, native worker admission and lifecycle remain desktop-owned.",
+      "license": "Apache-2.0"
     }
   ],
   "copies": [

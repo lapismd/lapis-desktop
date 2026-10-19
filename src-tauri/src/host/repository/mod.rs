@@ -2,6 +2,7 @@ pub(crate) mod backup;
 mod backup_provider;
 pub(crate) mod backup_restore;
 pub(crate) mod commands;
+pub(crate) mod forges;
 mod policy;
 pub(crate) mod working_copy;
 use crate::host::state::NativeHost;
@@ -27,6 +28,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
     )
     .map_err(|_| io::Error::other("Repository history is unavailable"))?;
     app.plugin(tauri_plugin_jj_store::Builder::new(history.clone()).build())?;
+    forges::initialize(app)?;
     if !app.manage(RepositoryHost {
         backups: backup::Backups::new({
             #[cfg(not(feature = "e2e"))]

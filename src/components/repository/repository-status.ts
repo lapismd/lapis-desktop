@@ -6,6 +6,7 @@ import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryWorkingCopyStatus from "./RepositoryWorkingCopyStatus.svelte";
 import RepositoryBackupStatus from "./RepositoryBackupStatus.svelte";
 import { RESTORE_NOTICE } from "./restore-controller.ts";
+import { openBackupSettings } from "./backup/forge-view.ts";
 import {
   AUTOMATIC_BACKUP_SETTING,
   automaticBackup,
@@ -50,6 +51,20 @@ export class RepositoryStatus {
         navigationGroupId: "core-plugins",
         sourcePluginId: this.plugin.id,
         fields: [
+          ...(this.services.forges
+            ? [
+                {
+                  id: "repository-history.remoteBackup",
+                  type: "action" as const,
+                  title: "Forge accounts and remote backup",
+                  description:
+                    "Connect GitHub and configure the remote backup for this vault.",
+                  label: "Configure backup",
+                  icon: "cloud-upload",
+                  run: () => openBackupSettings(this.plugin),
+                },
+              ]
+            : []),
           ...(this.services.backup
             ? [
                 {

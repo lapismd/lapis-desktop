@@ -1,4 +1,5 @@
 //! Native repository grants independent of AI admission and renderer authority.
+pub mod forges;
 pub(crate) mod source;
 use crate::vault::{
     VaultManager,

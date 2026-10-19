@@ -19,6 +19,7 @@ fn main() {
         "desktop_backup_capture",
         "desktop_backup_stop",
         "desktop_backup_restore",
+        "desktop_forge_accounts",
         "desktop_repository_admit",
         "desktop_repository_release",
         "desktop_repository_working_copy",

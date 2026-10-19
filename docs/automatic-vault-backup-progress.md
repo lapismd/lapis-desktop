@@ -10,8 +10,8 @@ listed below. Changes integrate back into the main workspaces after completion.
 | -------------------------------------- | ------- | ---------------------------------------------------------------------------------------------- |
 | 1. Vault identity and external storage | Partial | Ordinary folder has durable history without in-vault JJ/Git metadata; reopen/relink retains it |
 | 2. Capture coordinator                 | Partial | Internal/external changes, bounded debounce/reconciliation and crash/close recovery work       |
-| 3. Local history and restore           | Active  | Timeline, guarded file/vault restore, live history and optional status work                    |
-| 4. GitHub integration                  | Pending | Sign-in, remote setup and fresh-device restore work                                            |
+| 3. Local history and restore           | Partial | Timeline, guarded file/vault restore, live history and optional status work                    |
+| 4. GitHub integration                  | Active  | Sign-in, remote setup and fresh-device restore work                                            |
 | 5. Automatic two-way synchronization   | Pending | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
 | 6. Historical search                   | Pending | Find and restore past text, paths and metadata through exact checkpoint anchors                |
 | 7. Advanced storage and Forgejo        | Pending | Root .jj/adoption and Forgejo work, then changes integrate into main                           |
@@ -30,7 +30,7 @@ listed below. Changes integrate back into the main workspaces after completion.
       independent observer lifetime, failure recovery and fenced close.
 - [x] Eleven exact permission/source-audit tests and strict Svelte types pass.
 
-## In the current stage
+## Native capture foundations
 
 - [x] Native durable vault registry; two eviction/move/replacement regressions
       pass.
@@ -53,7 +53,7 @@ listed below. Changes integrate back into the main workspaces after completion.
   were fixed before the three capture regressions passed. First consumer types
   lacked the new workspace's public `jj-history` dist; building that package
   restored a clean type check. These attempts remain in local verification logs.
-- Remote setup/sync, restore, search, root-storage migration,
+- Remote setup/sync, historical search, root-storage migration,
   existing-repository adoption and Forgejo remain required implementation, not
   deferred scope.
 - Nothing has been integrated into the main workspaces yet. Existing review app
@@ -94,3 +94,18 @@ Whole-vault native evidence adds two actual source regressions and the extended
 serialized native worker proof. Unsupported symlink and file/directory type
 transitions fail explicitly before mutation. Full-tree restore does not replace
 `.lapis` runtime data or explicit backup exclusions.
+
+## Current stage: GitHub integration
+
+- [x] Reuse jj-forge account manager with desktop-owned OS secret namespace and
+      private account metadata. Reuse only the configured public OAuth client
+      ID.
+- [x] Main-window-only native account command on bounded workers; cancellation
+      bypasses busy polling and fences late credential persistence.
+- [x] Production backup settings entry, device sign-in, PAT/Enterprise form,
+      loading skeletons, App toasts and progress.
+- [x] Focused account checks: seven source cases, two native worker cases, one
+      frame test, 15 renderer/governance cases, strict types and 20 account
+      interaction/accessibility executions. E-VAULT-BACKUP-004 / E-REPO-029.
+- [ ] Remote repository/branch setup and fresh-device restore.
+- [ ] Live forge acceptance after the complete sync flow is implemented.

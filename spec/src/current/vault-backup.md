@@ -54,3 +54,10 @@ M14 tracks this delivery independently of M13 conversation and M8.5 visual
 gates. The user explicitly deferred heavy suites while implementing a working
 version. The progress checklist records actual focused evidence and all deferred
 lanes; implementation, visual review and release qualification remain distinct.
+
+Forge account commands are main-window-only installation capabilities, separate
+from vault/history admission. Work runs on bounded native workers. Installation
+metadata and OS credentials have desktop-owned namespaces; only jj-store's
+configured public GitHub client ID is reused. Authorization cancellation
+bypasses busy network slots so a pending poll cannot save credentials after
+cancellation.
