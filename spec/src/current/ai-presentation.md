@@ -32,8 +32,8 @@ using the jj-store strip (selected trigger, close, separator and actions), with
 local horizontal overflow rather than a second footer row. The folder picker
 uses inline layout without the legacy standalone top margin. Shared footer and
 formatting fixes belong in Design Core and apply to the reference story too. The
-application reserves its floating status-bar clearance outside the compact
-footer; send and formatting controls remain above the overlay in all placements.
+workspace reserves its status footer as a separate layout track; chat retains
+ordinary composer spacing without overlay clearance in any placement.
 Conversation discovery stays in the transcript scroll region; it cannot consume
 the fixed header or hide the composer in a short bottom panel.
 

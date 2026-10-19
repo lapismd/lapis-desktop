@@ -312,3 +312,21 @@ launch, bundle contents and native behavior without a signing gate (confirmed
   preservation are not general release gates. The later AI/Terminal handover
   preserves the specific plugin data and disabled preferences identified in
   `PLUGIN_MIGRATION.md`.
+
+The approved full-width workspace footer is tracked by E-CATALOG-009 under M8.5.
+Source, API and desktop acceptance resume for this slice; the task ledger
+retains the original native presentation gate and unrelated migration work.
+
+- [x] Approve footer, notification, Problems and ribbon Settings design.
+- [x] Implement shared footer and desktop/plugin integration; commit API bridge.
+- [x] Pass source units/catalog, Notes catalog, renderer and AI policy suites.
+- [x] Pass both desktop light-theme viewport matrices (658 cases).
+- [x] Finish source pointer qualification (16 workspace, 11 shell, 151
+      controls).
+- [x] Install the final verified package archives (14 public import routes).
+- [x] Complete desktop dark-theme matrices (658 cases).
+- [x] Finish desktop renderer/static builds and document checks.
+- [ ] Refresh review previews from the main checkout.
+- [x] Commit the verified desktop slice in its isolated workspace.
+- [ ] Apply after the main checkout's AI-history integration is clean.
+- [ ] Complete the separate original M8.5 native presentation gate.

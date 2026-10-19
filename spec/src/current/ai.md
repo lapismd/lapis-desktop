@@ -13,7 +13,8 @@ E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 The [transcript plan](ai-presentation.md) has standing implementation approval.
 E-AI-041 adopts shared UI and vault presentation preferences after footer
-repair. Catalog fixtures stay isolated; native AI gates remain separate.
+repair. E-CATALOG-009 removes overlay clearance now owned by the shared footer.
+Catalog fixtures stay isolated; native AI gates remain separate.
 
 E-REPO-002 retains LD-AI-001 execution authority: repository history admission
 cannot admit AI or select a target. The existing cold AI admission case passes

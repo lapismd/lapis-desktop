@@ -1,11 +1,10 @@
 # Governance
 
-E-REPO-042 reconciles migration tracking under LD-GOV-001/002/003/004. Generated
-summaries list completion and open gates, without deriving active work from
-Partial/In progress status or table order. Roadmaps separate implemented
-functionality, focused checks and remaining acceptance. All 41 task statuses,
-dependencies, requirements and original gates are retained. E-REPO-035–041
-record integrated backup and settings; native/provider/wider gates remain open.
+E-REPO-042 reconciles tracking under LD-GOV-001/002/003/004. Summaries retain
+all 41 statuses, dependencies, requirements and original gates; row order and
+Partial/In progress never imply active work. Roadmaps distinguish
+implementation, focused checks and remaining acceptance. E-REPO-035–041 record
+integrated backup/settings; native/provider/wider gates remain open.
 
 E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold
 Rust-process proof does not replace M13.3 packaged WebView/restart gates.
@@ -396,4 +395,6 @@ stops animation frames, so browser/service success is separately labelled.
 ## Native acceptance modes
 
 See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
-IPC-only checks, headed windows and capture qualification boundaries.
+IPC-only checks, headed windows and capture qualification boundaries. Node
+renderer tests preload tsx so strip-only parsing cannot reject syntax-bearing
+application modules (E-CATALOG-009; LD-GOV-007).

@@ -153,3 +153,7 @@ checks Document default, retained draft/editor while switching, saved Classic
 after reopening and functional submission. A failed preference save shows an
 App-owned toast and preserves the last saved value. Initialization shows the
 representative transcript skeleton until the real controller can be used.
+
+`Desktop/Repository working copy status/Workspace Footer` verifies full-width
+footer geometry, left repository placement, fixed centre activity and shared
+notification-panel opening through the real packed API/workspace shell.

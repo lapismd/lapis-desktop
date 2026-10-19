@@ -247,3 +247,5 @@
 - [Separate backup settings section and table surfaces](history/E-REPO-041.md)
 
 - [Migration checkpoint and completion-gate reconciliation](history/E-REPO-042.md)
+
+- [Full-width workspace status footer](history/E-CATALOG-009.md)

@@ -195,3 +195,5 @@ by the task ledger, not inferred from this list.
 - [Separate backup settings section and table surfaces](E-REPO-041.md)
 
 - [Migration checkpoint and completion-gate reconciliation](E-REPO-042.md)
+
+- [Full-width workspace status footer](E-CATALOG-009.md)

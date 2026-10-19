@@ -1,5 +1,15 @@
 # Desktop plugins and catalog
 
+Catalog browser files run serially through the browser-pool option; the outer
+Vitest file option alone does not bound that pool. This preserves each real App
+fixture and its assertions while avoiding parallel browser memory exhaustion.
+
+The desktop shell reserves a full-width status footer beneath ribbon, sidebars
+and content. Repository/backup controls and Problems occupy the left region;
+activity uses the fixed centre region and editor information plus the permanent
+notification bell occupy the right. Panels and plugins MUST NOT reserve overlay
+clearance. Ribbon Settings complements the existing sidebar action.
+
 E-REPO-039–041 embed repository backup controls in the registered plugin
 settings, including account authorization, remotes, storage and synchronization.
 Commands open that section; no backup-settings workspace view is registered.

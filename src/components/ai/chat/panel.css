@@ -3,9 +3,7 @@
   --ui-workspace-view-background: var(--background);
   --ui-workspace-view-foreground: var(--foreground);
   --ui-ai-request-gap: 0.5rem;
-  --ui-ai-chat-bottom-clearance: calc(
-    var(--ui-workspace-status-height, 1.5rem) + 0.75rem
-  );
+  --ui-ai-chat-bottom-clearance: 0.75rem;
   --font-sans: "DM Sans Variable", sans-serif;
   --ui-workspace-font-sans: var(--font-sans), ui-sans-serif, system-ui,
     sans-serif;

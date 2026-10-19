@@ -335,3 +335,8 @@ M10.2 completion gates remain open.
 E-AI-030 extends native capture prerequisites with explicit missing-backend
 refusal and real privacy qualification. Original Notes/JJ persistence and
 complete native recovery gates remain open.
+
+E-CATALOG-009 tracks the approved full-width status footer and centre API
+bridge, repository placement, ribbon Settings and removal of overlay clearances.
+This renderer handoff does not promote M8.5 native acceptance or AI/backup
+gates.

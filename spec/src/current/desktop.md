@@ -1,5 +1,7 @@
 # Desktop shell
 
+Shared footer geometry: LD-HOST-001 and E-CATALOG-009.
+
 E-REPO-035–041 retain LD-DESK-003/HOST-001 native authority. Backup controls
 live in plugin Settings; full-screen conflict review remains. Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.

@@ -95,10 +95,10 @@ export const UnavailableAdmission: Story = {
       within(panel).getByText("Fixture native AI is unavailable"),
     ).toBeVisible();
     await userEvent.type(
-      within(panel).getByRole("combobox", { name: "Message" }),
+      within(panel).getByRole("textbox", { name: "Message" }),
       "Cannot execute without admission",
     );
-    await userEvent.keyboard("{Enter}");
+    await userEvent.keyboard("{Control>}{Enter}{/Control}");
     await fixture.plugin()!.application.operations.settle();
     expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);
     const errors = within(panel).getAllByText(

@@ -19,6 +19,7 @@ export default defineConfig({
     testTimeout: 60_000,
     fileParallelism: false,
     browser: {
+      fileParallelism: false,
       enabled: true,
       headless: true,
       provider: playwright({

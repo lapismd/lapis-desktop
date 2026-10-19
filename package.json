@@ -20,7 +20,7 @@
     "progress:generate": "node scripts/progress.mjs --write",
     "format:check": "prettier --check . && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check",
     "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
-    "test": "node --test tests/governance/*.test.mjs tests/renderer/*.test.mjs && pnpm test:ai && cargo test --manifest-path src-tauri/Cargo.toml --locked",
+    "test": "node --import tsx --test tests/governance/*.test.mjs tests/renderer/*.test.mjs && pnpm test:ai && cargo test --manifest-path src-tauri/Cargo.toml --locked",
     "test:desktop": "node scripts/desktop-tests.mjs",
     "desktop:bundle": "tauri build --bundles app",
     "spec:validate": "spec-validator validate",

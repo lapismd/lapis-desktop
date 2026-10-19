@@ -669,3 +669,6 @@ controlled AppSettings components; the maintained backup cards use tinted
 headers and body-surface rows/footers. Forges, RemoteBackup, Sync, Publication,
 HistoryStorage and HistoryAdoption remain the complete affected story families.
 No replacement fixtures or dependency-internal CSS selectors are added.
+
+The working-copy WorkspaceFooter scenario extends the production shell
+acceptance for the dedicated footer, repository placement and activity bridge.
