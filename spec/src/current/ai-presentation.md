@@ -45,9 +45,16 @@ panel.
 
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.
-IME switching MUST defer until composition ends. Display item/block identities
-remain stable as content updates, and display revisions are never storage proof.
-Anchored comments are included in NOTES-08A by the user's review correction.
+Classic attachments MUST share the Composer drawer and rounded input edge;
+collapsed state exposes only a compact summary. Document attachments MUST use an
+expandable section of removable file chips with relative-path tooltips. The file
+picker MUST show an icon, title and smaller truncated relative path, with the
+full path available on hover/focus. Both composers start at three text lines and
+grow with the draft; attachments and pending approvals/questions stay usable and
+retained when switching modes or while input is disabled. IME switching MUST
+defer until composition ends. Display item/block identities remain stable as
+content updates, and display revisions are never storage proof. Anchored
+comments are included in NOTES-08A by the user's review correction.
 NOTES-09-FILES-D1 gives live and durable event projections the same
 application-owned creation identity before display. Binding namespaces are
 idempotent. Native session/request/cursor, permission IDs and tool IDs are
@@ -258,3 +265,8 @@ retained dispatch identity distinguishes local commands from agent tools.
 Reports such as `/help` preserve captured whitespace in a monospaced surface,
 with semantic colours for headings and commands. Saved captures remain plain
 text; presentation never resolves today's registry or executes the command.
+
+Local command reports and tool results opt into the shared plain custom-block
+surface: no extra outer border or inset. Empty Search and inventory results use
+Design Core Empty with an icon and muted description. Captured source and tool
+identities remain unchanged, and local tools keep inline disclosure.

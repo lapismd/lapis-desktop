@@ -10,8 +10,8 @@ E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
 E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
-E-AI-058/060 qualify inbox/link UI; automatic watching remains pending.
-E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
+E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
+E-AI-041/045/052/053 and [participants](ai-addressing.md) keep their gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 `PLUGIN_MIGRATION.md` and the original M10 task gates remain authoritative.

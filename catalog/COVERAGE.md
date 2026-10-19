@@ -708,3 +708,16 @@ nested chat shell, coloured monospaced reports, acknowledgement and inline-only
 search disclosure. SavedLocalCommands reopens retained JSONL results read-only,
 with exact report whitespace and inline tool placement. Agent read inspection
 remains covered separately by LiveInboxControls. No new persistence fields.
+
+AI Attachments mounts the production nested shell: Classic preserves the rounded
+composer edge and compact drawer; Document keeps removable file chips in an
+expandable section with relative-path tooltips. FilePicker covers
+icon/title/path rows, tooltip and keyboard selection; ThreeLineComposer covers
+both default heights and retained multiline drafts across modes. Pending
+approval/question callbacks remain covered by Requests, ToolActivity and
+Cancellation.
+
+InlineLocalCommands additionally asserts that local reports have no outer frame
+or inset. EmptyLocalSearch exercises a real unmatched query and the Search-owned
+Empty state. SavedLocalCommands retains exact captured output and inline-only
+inspection in the JSONL reader.

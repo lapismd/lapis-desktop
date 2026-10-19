@@ -5,7 +5,7 @@ import type {
   TranscriptTool,
 } from "@lapismd/design-core/chat";
 import type { AgentBindingCreatedRecord } from "../conversations/types.ts";
-import type { AiChatItem } from "./chat-items.ts";
+import { isSlashCommandNotice, type AiChatItem } from "./chat-items.ts";
 import { bindingLabels } from "./panel/binding-labels.ts";
 import { toolCallStatus, isLocalCommandTool } from "./chat-tool-display.ts";
 import { discussionReplyContexts } from "./transcript-discussions.ts";
@@ -47,13 +47,16 @@ function tool(item: Extract<AiChatItem, { type: "tool" }>): TranscriptTool {
     title: item.name,
     status: toolCallStatus(item.state),
     blocks: [
-      block(
-        item,
-        item.output ?? item.input ?? "",
-        "custom",
-        `${item.name} details`,
-        "detail",
-      ),
+      {
+        ...block(
+          item,
+          item.output ?? item.input ?? "",
+          "custom",
+          `${item.name} details`,
+          "detail",
+        ),
+        ...(isLocalCommandTool(item) ? { surface: "plain" as const } : {}),
+      },
     ],
     raw: JSON.stringify({
       name: item.name,
@@ -195,6 +198,7 @@ export function projectAiTranscript(
       blocks: [
         {
           ...block(item, value, custom ? "custom" : "markdown", label),
+          ...(isSlashCommandNotice(item) ? { surface: "plain" as const } : {}),
           ...(item.type === "error" ? { commentable: false } : {}),
         },
       ],

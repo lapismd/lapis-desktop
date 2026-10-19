@@ -25,10 +25,10 @@
 <style>
   .command-report {
     margin: 0;
-    padding: 0.75rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md, 0.375rem);
-    background: var(--muted);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
     color: var(--foreground);
     font-family: var(--font-mono, ui-monospace, monospace);
     font-size: 0.8125rem;

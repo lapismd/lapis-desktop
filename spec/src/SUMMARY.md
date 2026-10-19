@@ -244,3 +244,4 @@
 
 - [Unified JSONL shell and sole AI transcript renderer](history/E-AI-059.md)
 - [App-owned note links in shared AI transcripts](history/E-AI-060.md)
+- [Composer attachments and inline local results](history/E-AI-061.md)

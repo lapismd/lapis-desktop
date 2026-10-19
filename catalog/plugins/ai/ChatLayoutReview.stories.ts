@@ -28,6 +28,11 @@ export const InlineLocalCommands: Story = {
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     const report = await canvas.findByLabelText("Command output");
     await expect(report).toBeVisible();
+    const frame = report.closest<HTMLElement>('[role="group"]')!;
+    expect(getComputedStyle(frame).borderTopWidth).toBe("0px");
+    expect(getComputedStyle(frame).paddingTop).toBe("0px");
+    expect(getComputedStyle(report).borderTopWidth).toBe("0px");
+    expect(getComputedStyle(report).paddingTop).toBe("0px");
     expect(report.textContent).toContain("App\n  /help — ");
     expect(getComputedStyle(report).whiteSpace).toBe("pre-wrap");
     expect(getComputedStyle(report).fontFamily).toMatch(/mono/i);
@@ -174,5 +179,28 @@ export const FailedSendRetainsDraft: Story = {
       "Keep this authored message after the failed send",
     );
     expect(error.closest(".ai-session-footer")).toBeNull();
+  },
+};
+
+export const EmptyLocalSearch: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(() =>
+      expect(canvas.getByTestId("ai-chat-panel")).toHaveAttribute(
+        "data-initializing",
+        "false",
+      ),
+    );
+    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(editor);
+    await userEvent.keyboard("/search missing-search-fixture-9841{Escape}");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    const empty = await canvas.findByText("No matching notes.");
+    const root = empty.closest(
+      '[data-ui-component="empty"][data-ui-part="empty"]',
+    );
+    expect(root).not.toBeNull();
+    expect(root!.querySelector("svg")).not.toBeNull();
+    expect(canvas.queryByLabelText("Tool details")).toBeNull();
   },
 };

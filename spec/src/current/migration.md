@@ -1,8 +1,8 @@
 # Migration inventory and progress
 
-E-AI-042–058 cover Codex/inbox adoption; E-AI-059/060 cover renderer/link fixes.
-LD-MIG-002 retains original M10.2/M13 gates and separate import acceptance. JJ
-persistence and automatic capture remain deferred.
+E-AI-042–058 cover Codex/inbox adoption; E-AI-059–061 cover renderer, link and
+attachment UI. LD-MIG-002 retains original M10.2/M13 gates and separate import
+acceptance. JJ persistence and automatic capture remain deferred.
 
 E-REPO-023–025 cover blame/log UI; E-AI-039–041 cover shared transcript UI.
 E-REPO-017/018 cover file history/blame (NOTES-05I7/8); original M13 gates stay.

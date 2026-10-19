@@ -27,7 +27,16 @@
         (controller.busy && !controller.repository),
     ),
   );
+  const framedDrawer = $derived(
+    view === "classic" &&
+      (attachmentsState.attachments.length > 0 ||
+        Boolean(attachmentsState.pendingInteraction)),
+  );
 </script>
+
+{#snippet attachmentsDrawer()}
+  <ChatComposerDrawer {controller} {attachmentsState} {actions} />
+{/snippet}
 
 <div class="transcript-composer">
   <ChatRecipients
@@ -35,13 +44,22 @@
     {disabled}
     onRemove={(id) => composerState.recipients.remove(id)}
   />
-  <ChatComposerDrawer {controller} {attachmentsState} {actions} />
+  {#if view === "document"}
+    <ChatComposerDrawer
+      {controller}
+      {attachmentsState}
+      {actions}
+      presentation="document"
+    />
+  {/if}
   {#if !panel.panelProps.transcriptFrame}<ChatContextUsage
       {controller}
       {composerState}
       {actions}
     />{/if}
   <MarkdownComposer
+    {...framedDrawer ? { drawer: attachmentsDrawer } : {}}
+    interactiveDrawerWhenDisabled
     bind:value={composerState.draft}
     bind:documentActions
     presentation={view === "document" ? "document" : "framed"}
@@ -69,6 +87,8 @@
 
 <style>
   .transcript-composer {
+    --ui-markdown-composer-min-height: calc(3 * 1.4rem + 1rem);
+    --ui-markdown-composer-document-min-height: calc(3 * 0.875rem * 1.65);
     display: grid;
     gap: 0.5rem;
     min-width: 0;

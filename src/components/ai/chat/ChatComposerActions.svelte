@@ -7,6 +7,9 @@
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
+  import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
+  import FileIcon from "@lucide/svelte/icons/file";
+  import VaultPathLabel from "./VaultPathLabel.svelte";
   import ArchiveIcon from "@lucide/svelte/icons/archive";
   import ArchiveRestoreIcon from "@lucide/svelte/icons/archive-restore";
   import HistoryIcon from "@lucide/svelte/icons/history";
@@ -81,12 +84,31 @@
         <CommandView.List aria-label="Vault files">
           <CommandView.Empty>No vault files</CommandView.Empty>
           {#each attachmentsState.attachItems as item (item.id)}
-            <CommandView.Item
-              value={`${item.label} ${item.id}`}
-              onSelect={() => attachmentsState.addAttachment(item)}
+            <Tooltip.Provider
+              ><Tooltip.Root>
+                <Tooltip.Trigger>
+                  {#snippet child({ props })}
+                    <CommandView.Item
+                      {...props}
+                      value={`${item.label} ${item.id}`}
+                      onSelect={() => attachmentsState.addAttachment(item)}
+                    >
+                      <CommandView.ItemIcon
+                        ><FileIcon aria-hidden="true" /></CommandView.ItemIcon
+                      >
+                      <CommandView.ItemLabel>{item.label}</CommandView.ItemLabel
+                      >
+                      <CommandView.ItemDescription
+                        ><VaultPathLabel
+                          path={item.id}
+                        /></CommandView.ItemDescription
+                      >
+                    </CommandView.Item>
+                  {/snippet}
+                </Tooltip.Trigger>
+                <Tooltip.Content>{item.id}</Tooltip.Content>
+              </Tooltip.Root></Tooltip.Provider
             >
-              <CommandView.ItemLabel>{item.label}</CommandView.ItemLabel>
-            </CommandView.Item>
           {/each}
         </CommandView.List>
       </CommandView.Root>
