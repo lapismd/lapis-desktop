@@ -1,8 +1,8 @@
 # Governance
 
-E-REPO-042 and E-AI-062 retain all 41 statuses, dependencies and original gates
-under LD-GOV-001/002/003/004. E-AI-042–061 local AI and E-REPO-035–041 backup
-remain separately qualified; broader integration checks are delegated.
+E-REPO-042 and E-AI-062/063 retain all 41 statuses, dependencies and original
+gates under LD-GOV-001/002/003/004. E-AI-042–061 local AI and E-REPO-035–041
+backup remain separately qualified; broader integration checks are delegated.
 
 E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold Rust proof
 does not replace M13.3 packaged WebView/restart gates.

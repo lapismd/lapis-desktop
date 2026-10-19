@@ -9,7 +9,7 @@ lifetime.
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
 E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
 E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
-E-AI-062 lands local AI into main; JJ persistence and original gates stay
+E-AI-062/063 lands local AI into main; JJ persistence and original gates stay
 deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) keep their
 gates.
 

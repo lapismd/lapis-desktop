@@ -216,3 +216,5 @@ by the task ledger, not inferred from this list.
 - [Local AI history landing](E-AI-062.md): integrate the reviewed AI branch,
   preserve the independent footer slice and retire only its incorporated
   workspace.
+
+- [AI history landing verification and retirement](E-AI-063.md)
