@@ -658,3 +658,7 @@ nested accessible overlay. Compact cards/headings/footers and GitHub/Forgejo
 icons copy and adapt jj-store; exact paths, revisions and licenses are recorded
 in docs/provenance.json. Visual approval and real native/provider gates remain
 separate.
+
+Forge account menus copy jj-store menu-layout.ts: content-sized width, a 14rem
+minimum and a viewport bound keep account choices on one line. Existing Forges
+stories exercise these menus at desktop/narrow widths in both themes.

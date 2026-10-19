@@ -132,7 +132,9 @@
               >Add forge account<Plus data-icon="inline-end" /></Button
             >{/snippet}</Menu.Trigger
         >
-        <Menu.Content align="end"
+        <Menu.Content
+          align="end"
+          style="width:max-content;min-width:14rem;max-width:calc(100dvw - 1rem);white-space:nowrap"
           ><Menu.Group>
             <Menu.Item
               disabled={!snapshot.inventory?.oauth_available}

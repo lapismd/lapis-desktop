@@ -189,3 +189,5 @@ by the task ledger, not inferred from this list.
 - [Shared AI transcript adoption and vault presentation](E-AI-041.md)
 
 - [Embedded repository plugin settings and forge styling](E-REPO-039.md)
+
+- [Content-sized forge account menus](E-REPO-040.md)

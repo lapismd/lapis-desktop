@@ -11,6 +11,9 @@ plugin-owned capture, sync, storage/adoption recovery and progress keep their
 existing lifetimes. Credential custody and exact mutation identities are
 unchanged.
 
+Forge account menus size to their labels with a fourteen-rem minimum and a
+viewport width bound, matching jj-store. Account options stay on one line.
+
 LD-REPO-005 adds default-enabled automatic local history for open vaults. The
 native host binds durable vault IDs to separate repository and working-copy
 paths. Default storage lives in application data and creates no `.jj` or `.git`

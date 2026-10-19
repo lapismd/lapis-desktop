@@ -425,6 +425,10 @@
         {
           "source": "web/src/lib/ui/store-forge/StoreForgeIcon.svelte",
           "destination": "src/components/repository/backup/ForgeIcon.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-forge/menu-layout.ts",
+          "destination": "src/components/repository/backup/ForgeAccounts.svelte"
         }
       ],
       "use": "Copied and adapted compact Settings card/header/footer, account rows and forge icon rendering into the registered Repository History plugin settings. Native controllers, credentials, recovery identities and App ownership remain desktop-owned; public Design Core components and native CSS only."

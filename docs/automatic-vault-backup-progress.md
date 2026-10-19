@@ -213,3 +213,6 @@ E-REPO-039 records 164 affected Storybook executions plus 20 sync reruns, 47
 renderer tests, 67 governance tests, strict types and the renderer build. Real
 native/provider acceptance, visual approval and wider release gates remain
 deferred.
+
+- [x] Forge account choices use jj-store menu sizing so labels fit on one line,
+      bounded by the viewport (E-REPO-040).

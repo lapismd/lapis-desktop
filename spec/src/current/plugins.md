@@ -1,12 +1,13 @@
 # Desktop plugins and catalog
 
-E-REPO-039 embeds repository backup controls in the registered plugin settings,
-including account authorization, remotes, storage and synchronization. Commands
-open that section; no backup-settings workspace view is registered. Maintained
-jj-store card/footer and forge icon adaptations retain local provenance.
-Settings closure fences transient account/remote replies while plugin-owned work
-and progress keep their existing lifetime. Review stories exercise the actual
-Settings host, including close/reopen and nested conflict/restore flows.
+E-REPO-039/040 embed repository backup controls in the registered plugin
+settings, including account authorization, remotes, storage and synchronization.
+Commands open that section; no backup-settings workspace view is registered.
+Maintained jj-store card/footer and forge icon adaptations retain local
+provenance. Settings closure fences transient account/remote replies while
+plugin-owned work and progress keep their existing lifetime. Review stories
+exercise the actual Settings host, including close/reopen and nested
+conflict/restore flows.
 
 E-REPO-036–038 add production storage/adoption settings and source-specific
 history tabs, with loading, empty, recovery and toast stories (LD-CAT-003).
