@@ -5,11 +5,11 @@ retains native gates. E-AI-037/038 retain privacy, exact pinned
 reads/continuation, journals/stores, exclusive ownership and drained lifetime.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
-E-AI-064 adds shared scroll recovery; real controller activity drives its dots.
-E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
-E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
-E-AI-062/063 lands local AI into main; JJ persistence and original gates stay
-deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) keep their
+E-AI-064 adds controller-driven recovery dots; E-CATALOG-015 exposes core
+exclusions. E-AI-054–056 add [imports](ai-imports.md) through native read-only
+workers. E-AI-058/060/061 qualify inbox, links and attachments; watching stays
+pending. E-AI-062/063 lands local AI; JJ persistence and original gates remain
+deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their
 gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.

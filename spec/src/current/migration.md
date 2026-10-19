@@ -44,6 +44,7 @@ E-CATALOG-012 covers long captured tool paths in constrained chat columns using
 the owning Design Core repair; original completion gates remain unchanged.
 E-CATALOG-013 adds core discovery exclusions and a smaller ring-free composer.
 E-CATALOG-014 adopts shared shadcn search chrome and stacked sans suggestions.
+E-CATALOG-015 exposes core discovery exclusions in Workspace settings.
 
 ## Historical checkpoints
 

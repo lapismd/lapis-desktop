@@ -837,6 +837,11 @@ configuration updates in the production folder picker without Repository
 History. `Chat layout review/Compact Composer` covers both two-line modes and
 retained drafts.
 
+`Desktop/AI/Vault file exclusions/Workspace Settings List` exposes the core
+Workspace / File discovery / Excluded paths list through public API Settings,
+proving defaults, add/remove, persistence, empty-list discovery and updates
+without Repository History or changed note bytes.
+
 `repository/UpstreamStatus.stories.ts` uses production footer/header controls in
 the real Notes App for a HeaderReview and incoming/outgoing counts, no fetched
 tip, disconnected, read-only, pending and offline/toast states. Fetch/Pull/Push

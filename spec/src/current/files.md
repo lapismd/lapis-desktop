@@ -1,5 +1,11 @@
 # File management (M5)
 
+E-CATALOG-015 exposes core `files.exclude` at Settings / Workspace / File
+discovery / Excluded paths. The shared API owns the editable string list and
+ordinary App configuration writer; `.git` and `.jj` remain the defaults and an
+empty list shows all discovery paths. Listing preferences do not change native
+watching, physical admission, backup selection or file contents (LD-FILE-002).
+
 E-REPO-036 adds native-owned watch exclusions for the backup writer. Repository
 and runtime names are omitted from both hints and inventory; ordinary renderer
 watch scope, reconciliation, physical admission and teardown remain unchanged

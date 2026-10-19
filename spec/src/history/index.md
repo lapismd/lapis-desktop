@@ -236,3 +236,5 @@ by the task ledger, not inferred from this list.
 - [Chat scroll recovery in both presentations](E-AI-064.md)
 
 - [Shared search input presentation](E-CATALOG-014.md)
+
+- [Workspace file exclusion settings](E-CATALOG-015.md)

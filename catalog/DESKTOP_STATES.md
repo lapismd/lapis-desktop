@@ -171,6 +171,8 @@ list.
 
 AI folder discovery excludes `.git`/`.jj` via core `files.exclude`; the
 shared-core story also updates the setting without changing stored bytes.
+Workspace Settings List adds the visible core string-list control, saved custom
+patterns, remove-all behavior and live refresh without the history plugin.
 Compact Composer reviews both two-line presentations without a focus ring
 (E-CATALOG-013).
 

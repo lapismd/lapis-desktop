@@ -121,3 +121,6 @@ E-CATALOG-013 covers two-line composition and core `files.exclude` discovery.
 
 E-CATALOG-014 verifies shared search presentation through source and archive
 consumer checks.
+
+E-CATALOG-015 covers editable Workspace exclusions, saved patterns and live
+discovery.

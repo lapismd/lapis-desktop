@@ -292,3 +292,5 @@
 - [Remembered blame wrapping](history/E-REPO-044.md)
 
 - [Shared search input presentation](history/E-CATALOG-014.md)
+
+- [Workspace file exclusion settings](history/E-CATALOG-015.md)

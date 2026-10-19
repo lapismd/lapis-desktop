@@ -1,6 +1,6 @@
 # Milestones and gates
 
-E-AI-042–061: local-file AI/UI; native/JJ gates remain.
+E-AI-042–061: local AI/UI; native/JJ gates remain.
 
 ## Current checkpoint — 2026-10-19
 
@@ -18,8 +18,7 @@ forge icons and backup tables. E-REPO-042 preserves all gates. See the
 
 E-AI-031–041 cover journal/privacy, receipts, pinned reads and shared AI UI.
 E-REPO-007–025/E-CATALOG-008 retain history, status and preview evidence.
-E-REPO-012/013/014 remain historical pending previews; fixtures and screenshots
-do not qualify native or visual gates.
+E-REPO-012–014 retain pending native and visual gates.
 
 M0–M7: E-QUALIFICATION-001/002. Task rows own completion. E-PLAN-002 retains the
 shared `.lapis`/pre-release policy; the Deno desktop remains frozen. The
@@ -77,10 +76,10 @@ their original later gates.
 
 ## Quiet testing and desktop review
 
-| ID   | Status      | Depends | Requirements                                 | Gate                                                                                                                                                                                                                             | Next                                            | Evidence                                                                                                                                                                        |
-| ---- | ----------- | ------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| M0.2 | Done        | M0.1    | LD-GOV-002,LD-GOV-003,LD-GOV-009             | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001                                                                                                                                                                      |
-| M8.4 | Done        | M8.0    | LD-GOV-002,LD-GOV-003,LD-CAT-003             | Every implemented desktop-specific UI state and desktop-only plugin maps to a discoverable production-component scenario in a minimal real shell, with both-theme and both-viewport interaction/accessibility checks.            | Complete; extend inventory with new desktop UI  | E-CATALOG-002                                                                                                                                                                   |
-| M8.5 | In progress | M8.4    | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes.                              | Finish original native presentation gate        | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014 |
+| ID   | Status      | Depends | Requirements                                 | Gate                                                                                                                                                                                                                             | Next                                            | Evidence                                                                                                                                                                                      |
+| ---- | ----------- | ------- | -------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| M0.2 | Done        | M0.1    | LD-GOV-002,LD-GOV-003,LD-GOV-009             | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001                                                                                                                                                                                    |
+| M8.4 | Done        | M8.0    | LD-GOV-002,LD-GOV-003,LD-CAT-003             | Every implemented desktop-specific UI state and desktop-only plugin maps to a discoverable production-component scenario in a minimal real shell, with both-theme and both-viewport interaction/accessibility checks.            | Complete; extend inventory with new desktop UI  | E-CATALOG-002                                                                                                                                                                                 |
+| M8.5 | In progress | M8.4    | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes.                              | Finish original native presentation gate        | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014,E-CATALOG-015 |
 
 Footer landed (E-CATALOG-010); M8.5 retains its original native gate.

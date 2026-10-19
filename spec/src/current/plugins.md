@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-CATALOG-015 maps editable core Workspace file exclusions, persistence and live
+discovery to the existing App-backed Settings story without History.
+
 E-REPO-044 covers remembered blame wrapping, long source lines, viewport resize
 and measured virtual attribution through production plugin components.
 
