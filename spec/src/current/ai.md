@@ -1,11 +1,11 @@
 # Desktop AI and optional compute
 
-E-REPO-016 qualifies [background work](background.md). The
-[repository contract](repository.md) retains native capture/provider gates.
-E-AI-037/038 retain native privacy, exact pinned reads/continuation, journals,
-stores, exclusive ownership and drained factory lifetime.
+E-REPO-016 covers [background work](background.md); [repository](repository.md)
+retains native gates. E-AI-037/038 retain privacy, exact pinned
+reads/continuation, journals/stores, exclusive ownership and drained lifetime.
 
 [Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
+E-AI-064 adds shared scroll recovery; real controller activity drives its dots.
 E-AI-054–056 add [local imports](ai-imports.md) with native read-only workers.
 E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
 E-AI-062/063 lands local AI into main; JJ persistence and original gates stay

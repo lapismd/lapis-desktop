@@ -127,6 +127,7 @@
     </div>{/if}
   <Transcript
     {items}
+    scrollButton
     markdown={{ extensions: [promptElementsExtension] }}
     {commentState}
     onInspectTool={inspectTools ? inspect : undefined}

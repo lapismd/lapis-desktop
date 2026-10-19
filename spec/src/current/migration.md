@@ -355,3 +355,7 @@ gates.
 E-REPO-043 extends the integrated history plugin with manual upstream footer
 actions/counts and external-directory reveal. It retains the original M14
 native/provider gates and Partial statuses. Focused UI delivery is complete.
+
+E-AI-064 adds shared chat scroll recovery with controlled activity presentation.
+M10.2/M8.5 retain their original gates; no native/provider qualification
+changes.

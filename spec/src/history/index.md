@@ -230,3 +230,5 @@ by the task ledger, not inferred from this list.
 - [Core file exclusions and compact composer](E-CATALOG-013.md)
 
 - [Upstream footer actions, counts and repository location](E-REPO-043.md)
+
+- [Chat scroll recovery in both presentations](E-AI-064.md)

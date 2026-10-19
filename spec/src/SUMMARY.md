@@ -286,3 +286,5 @@
 - [Core file exclusions and compact composer](history/E-CATALOG-013.md)
 
 - [Upstream footer actions, counts and repository location](history/E-REPO-043.md)
+
+- [Chat scroll recovery in both presentations](history/E-AI-064.md)

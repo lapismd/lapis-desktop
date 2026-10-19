@@ -147,6 +147,8 @@
   {#if panelProps.initializing}<AiTranscriptLoading />{:else}<Transcript
       {items}
       {view}
+      scrollButton
+      busy={controller.busy}
       footer={transcriptBottom}
       classicComposerPlacement={Frame ? "fixed" : "inline"}
       label="AI conversation"

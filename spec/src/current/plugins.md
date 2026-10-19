@@ -1,5 +1,8 @@
 # Desktop plugins and catalog
 
+E-AI-064 covers viewport recovery and a real held fake-agent turn in both chat
+views, with the existing App-backed shell and public Design Core archive.
+
 E-REPO-043 maps upstream action/count states and external repository reveal to
 production plugin settings/status stories. Fixtures inject providers and record
 intent without real network publication or file-manager launch.

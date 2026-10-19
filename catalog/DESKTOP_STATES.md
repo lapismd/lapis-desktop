@@ -180,3 +180,9 @@ notifications. HistoryStorage/External covers directory display/reveal;
 Colocated hides that external row. Native graph counts and reveal admission have
 separate focused service tests. Visual approval and real-provider OS flows
 remain pending.
+
+AI scroll recovery: DocumentRecovery and ClassicRecovery cover displaced,
+at-bottom, held running and cancelled/idle states in long Notes transcripts.
+Recorded transcripts opt into the same control without a running glyph.
+PendingPermissionAcrossViews keeps the held request reachable through view
+switches and completes it without another runtime session or prompt.

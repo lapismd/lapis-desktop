@@ -26,6 +26,7 @@ export function createShellFixture(
   scenario: ShellScenario,
   reviewLayout = false,
   longMessages = false,
+  holdRunning = false,
 ) {
   const files = shellSeed(
     undefined,
@@ -55,7 +56,11 @@ export function createShellFixture(
     const runtime =
       scenario === "sending-error" || scenario === "send-failure"
         ? new SendingErrorRuntime({ id: "acp", trace: "rich" })
-        : new FakeAgentRuntime({ id: "acp", trace: "rich" });
+        : new FakeAgentRuntime({
+            id: "acp",
+            trace: "rich",
+            requireApproval: holdRunning,
+          });
     runtimes.push(runtime);
     return {
       runtime,

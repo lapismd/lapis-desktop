@@ -844,3 +844,12 @@ are separately asserted, with keyboard shadcn tooltips and count refresh.
 `HistoryStorage` shows the native-selected external directory and records OS
 reveal intent without a real file-manager launch or migration. E-REPO-043;
 visual-pending.
+
+`ai/ChatScrollRecovery.stories.ts` mounts the production Notes chat/inbox with
+long captured content. DocumentRecovery and ClassicRecovery verify actual
+viewport end navigation, real controller busy/cancel transitions, three-dot
+activity and sticky-composer clearance through public Design Core components.
+Fixtures hold a fake-agent approval; they never dispatch to a real provider.
+PendingPermissionAcrossViews retains that live request and composer through
+Document/Classic preference saves, then answers the same runtime request.
+E-AI-064; visual-pending.

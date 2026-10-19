@@ -12,13 +12,18 @@ export function observeChatPanel(
   conversations: ConversationsState,
   perform: (operation: () => unknown | Promise<unknown>) => Promise<void>,
 ): void {
+  // Parent bootstrap objects also change when a presentation preference saves.
+  // Restore only when readiness changes, never over an active live transcript.
+  const ready = $derived(
+    !getProps().initializing && !getProps().recordedImport,
+  );
   $effect(() => {
     const { runtime, mcpServers = [] } = getProps();
     controller.runtime = runtime;
     controller.mcpServers = mcpServers;
   });
   $effect(() => {
-    if (getProps().initializing || getProps().recordedImport) return;
+    if (!ready) return;
     untrack(() => {
       void perform(() => controller.restore());
     });

@@ -55,8 +55,21 @@ conversation list in both views, including after sidebar toggles. Both views use
 the shared trailing fade above the fixed footer while history continues below;
 pinned composers and footer controls remain clear.
 
+Both views opt into Design Core's Layout Scroll Button within the transcript
+viewport. It appears when more than eight pixels from the end, uses the actual
+controller busy state for a reduced-motion-aware three-dot activity glyph, and
+returns to the latest content without dispatching a turn. Recorded transcripts
+use the same recovery control without inventing running activity. The button
+clears a pinned Classic composer. Late reader resizing preserves an established
+bottom lock; scrolling up retains the reading position. Current transcript rows
+are mounted, with virtual text/code readers inside them. Future row
+virtualization must delegate end jumps and measured bottom locks to its
+virtualizer API.
+
 Both transcript modes MUST retain controller identity, authored draft,
 attachments, pending approvals/questions and disclosure state through switching.
+Saving presentation settings MUST NOT reload the saved transcript over a live
+turn. Initial restoration follows readiness transitions, not settings updates.
 Classic attachments MUST share the Composer drawer and rounded input edge;
 collapsed state exposes only a compact summary. Document attachments MUST use an
 expandable section of removable file chips with relative-path tooltips. The file
