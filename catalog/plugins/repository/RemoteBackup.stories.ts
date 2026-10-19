@@ -35,7 +35,7 @@ async function open(element: HTMLElement) {
 }
 async function connect(region: ReturnType<typeof within>) {
   await userEvent.type(
-    await region.findByLabelText("GitHub repository"),
+    await region.findByLabelText("Remote repository"),
     "lapis-fixture/notes",
   );
   await userEvent.click(
@@ -99,7 +99,7 @@ export const FailureAndRecovery: StoryObj = {
     const { region, body } = await open(canvasElement);
     await connect(region);
     await expect(await body.findByText("Remote setup failed")).toBeVisible();
-    await expect(region.getByLabelText("GitHub repository")).toHaveValue(
+    await expect(region.getByLabelText("Remote repository")).toHaveValue(
       "lapis-fixture/notes",
     );
     await expect(
@@ -129,7 +129,7 @@ export const Loading: StoryObj = {
       }),
     );
     await expect(
-      await region.findByLabelText("GitHub repository"),
+      await region.findByLabelText("Remote repository"),
     ).toBeVisible();
   },
 };
@@ -197,7 +197,11 @@ export const InterruptedRestore: StoryObj = {
     );
     await open(canvasElement);
     const recovery = within(await body.findByRole("alertdialog"));
-    await waitFor(() => expect(recovery.getByText(/earlier restore was interrupted/)).toBeVisible());
+    await waitFor(() =>
+      expect(
+        recovery.getByText(/earlier restore was interrupted/),
+      ).toBeVisible(),
+    );
     await userEvent.click(
       recovery.getByRole("button", { name: "Restore vault" }),
     );

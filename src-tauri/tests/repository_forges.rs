@@ -158,3 +158,22 @@ fn remote_resolution_keeps_credentials_native_and_enforces_the_account_origin_an
         assert!(!text.contains("fixture-native-secret"));
     });
 }
+
+#[test]
+fn forgejo_custody_and_project_resolution_share_native_workers_and_origin_guards() {
+    let caller = std::thread::current().id();
+    runtime().block_on(async {
+        let temp=tempfile::tempdir().unwrap();let secrets=Arc::new(Secrets::default());
+        let repository=json!({"full_name":"fixture/notes","clone_url":"https://forge.example/fixture/notes.git","default_branch":"main","permissions":{"push":true}});
+        let mut wrong=repository.clone();wrong["clone_url"]=json!("https://other.example/fixture/notes.git");
+        let network=Arc::new(Network{replies:Mutex::new(vec![user(),repository,wrong].into()),hold_poll:false,entered:Notify::new(),release:Notify::new()});
+        let service=ForgeAccounts::new(Manager::new(temp.path().join("accounts"),secrets.clone(),network,None),2).unwrap();
+        let accounts=service.add_forgejo_token("https://forge.example/api/v1".into(),"fixture-forgejo-secret".into()).await.unwrap();
+        let id=accounts.accounts[0].id.clone();
+        let remote=service.remote(id.clone(),"fixture/notes".into(),None).await.unwrap();
+        assert_eq!(remote.target.url,"https://forge.example/fixture/notes.git");assert!(remote.can_push);
+        assert!(service.remote(id,"fixture/notes".into(),None).await.is_err());
+        assert!(secrets.threads.lock().unwrap().iter().all(|id|id!=&caller));
+        assert!(!serde_json::to_string(&accounts).unwrap().contains("fixture-forgejo-secret"));
+    });
+}

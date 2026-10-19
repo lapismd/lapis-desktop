@@ -134,3 +134,22 @@ test("native account frames cannot select custody paths and never forward activa
   );
   assert.equal(calls.length, 2);
 });
+
+test("Forgejo PAT uses its explicit native action without entering observable state", async () => {
+  const f = fixture();
+  await f.c.refresh();
+  f.c.tokenFlow("forgejo");
+  await f.c.addToken("https://forge.example/api/v1", "synthetic-forgejo");
+  assert.deepEqual(
+    f.calls.find((call) => call.kind === "add_forgejo_token"),
+    {
+      kind: "add_forgejo_token",
+      api_url: "https://forge.example/api/v1",
+      token: "synthetic-forgejo",
+    },
+  );
+  assert.equal(f.states.at(-1).flow, "");
+  assert.equal(JSON.stringify(f.states).includes("synthetic-forgejo"), false);
+  await f.c.close();
+  await f.c.drained();
+});

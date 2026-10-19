@@ -8,9 +8,20 @@ use tauri::{Manager as _, State, WebviewWindow};
 #[derive(Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Request {
-    command: Option<Command>,
+    command: Option<AccountCommand>,
 }
 
+#[derive(Deserialize)]
+#[serde(untagged)]
+enum AccountCommand {
+    Forgejo(ForgejoCommand),
+    Standard(Command),
+}
+#[derive(Deserialize)]
+#[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
+enum ForgejoCommand {
+    AddForgejoToken { api_url: String, token: String },
+}
 pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
     #[cfg(not(feature = "e2e"))]
     let root = app.path().app_data_dir()?.join("forge-accounts");
@@ -36,13 +47,27 @@ pub async fn desktop_forge_accounts(
             "Forge account caller unavailable",
         )
     })?;
-    accounts.execute(request.command).await.map_err(Into::into)
+    match request.command {
+        Some(AccountCommand::Forgejo(ForgejoCommand::AddForgejoToken { api_url, token })) => {
+            accounts.add_forgejo_token(api_url, token).await
+        }
+        Some(AccountCommand::Standard(command)) => accounts.execute(Some(command)).await,
+        None => accounts.execute(None).await,
+    }
+    .map_err(Into::into)
 }
 #[cfg(test)]
 mod tests {
     use super::*;
     #[test]
     fn forge_frames_cannot_select_custody_or_caller_authority() {
+        let forgejo = serde_json::json!({"command":{"kind":"add_forgejo_token","api_url":"https://forge.example/api/v1","token":"synthetic"}});
+        assert!(serde_json::from_value::<Request>(forgejo.clone()).is_ok());
+        for key in ["root", "scope", "window", "client_id"] {
+            let mut injected = forgejo.clone();
+            injected["command"][key] = serde_json::json!("outside");
+            assert!(serde_json::from_value::<Request>(injected).is_err());
+        }
         let valid = serde_json::json!({"command":null});
         assert!(serde_json::from_value::<Request>(valid.clone()).is_ok());
         for key in [

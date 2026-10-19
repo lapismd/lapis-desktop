@@ -13,8 +13,8 @@ listed below. Changes integrate back into the main workspaces after completion.
 | 3. Local history and restore           | Partial | Timeline, guarded file/vault restore, live history and optional status work                    |
 | 4. GitHub integration                  | Partial | Sign-in, remote setup and fresh-device restore work                                            |
 | 5. Automatic two-way synchronization   | Partial | Two devices merge/push/pull safely, including conflicts and offline recovery                   |
-| 6. Historical search                   | Active  | Find and restore past text, paths and metadata through exact checkpoint anchors                |
-| 7. Advanced storage and Forgejo        | Pending | Root .jj/adoption and Forgejo work, then changes integrate into main                           |
+| 6. Historical search                   | Partial | Find and restore past text, paths and metadata through exact checkpoint anchors                |
+| 7. Advanced storage and Forgejo        | Active  | Root .jj/adoption and Forgejo work, then changes integrate into main                           |
 
 ## Completed slices
 
@@ -130,11 +130,11 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
 
 Normal, conflict and original-push recovery flows have focused proof in
 E-VAULT-BACKUP-008/009 and E-REPO-032/033. Stage 5 is Partial: cold
-native/provider acceptance remains open. Only stage 6 is Active. Root
+native/provider acceptance remains open. Only stage 7 is Active. Root
 storage/adoption, Forgejo and main integration remain required; original
 workspaces and review data are preserved.
 
-## Current stage: Historical search
+## Historical search
 
 - [x] Bounded immutable checkpoint/text/path/metadata reader and disposable
       cache.
@@ -147,3 +147,17 @@ catalog interaction/accessibility executions. Cold native
 search/restore/lifecycle acceptance remains deferred until all implementation is
 present. Search cache is disposable; content above1MiB and binary/conflicted
 versions remain path-only with an explicit count.
+
+## Current stage: Advanced storage and Forgejo
+
+- [x] Forgejo PAT custody, provider-aware Git authentication and remote setup.
+- [ ] Recoverable external/root .jj migration and explicit existing-repository
+      adoption.
+- [ ] Existing-repository history source selector.
+- [ ] Focused cold native-app acceptance and integration into main workspaces.
+
+Forgejo focused evidence: E-VAULT-BACKUP-011 / E-REPO-035. Source29forge package
+cases, sevencredential/transfer cases, fournative consumer service cases,
+nineframe cases,11renderer cases and84catalog interaction/axe executions pass.
+Live provider/cold app gates remain open. Stage7 now focuses on root metadata
+migration, adoption/source selection and main integration.

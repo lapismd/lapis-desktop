@@ -50,9 +50,11 @@
       <Card.Title
         >{snapshot.flow === "oauth"
           ? "Authorize GitHub Account"
-          : snapshot.flow === "enterprise"
-            ? "Add GitHub Enterprise Account"
-            : "Add Personal Access Token"}</Card.Title
+          : snapshot.flow === "forgejo"
+            ? "Add Forgejo Account"
+            : snapshot.flow === "enterprise"
+              ? "Add GitHub Enterprise Account"
+              : "Add Personal Access Token"}</Card.Title
       >
       <Card.Action
         ><Button
@@ -137,10 +139,12 @@
           }}
         >
           <Field.Group>
-            {#if snapshot.flow === "enterprise"}<BackupField
+            {#if snapshot.flow === "enterprise" || snapshot.flow === "forgejo"}<BackupField
                 label="API Base URL"
                 id={`${id}-api`}
-                description="For example, https://github.example.com/api/v3"
+                description={snapshot.flow === "forgejo"
+                  ? "For example, https://forge.example/api/v1"
+                  : "For example, https://github.example.com/api/v3"}
               >
                 <Input
                   id={`${id}-api`}
@@ -148,7 +152,9 @@
                   required
                   bind:value={api}
                   disabled={snapshot.busy}
-                  placeholder="https://github.example.com/api/v3"
+                  placeholder={snapshot.flow === "forgejo"
+                    ? "https://forge.example/api/v1"
+                    : "https://github.example.com/api/v3"}
                 />
               </BackupField>{/if}
             <BackupField

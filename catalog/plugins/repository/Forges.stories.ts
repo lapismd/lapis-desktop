@@ -39,7 +39,7 @@ async function open(element: HTMLElement) {
 async function choose(element: HTMLElement, name: string) {
   const { body, region } = await open(element);
   const button = await region.findByRole("button", {
-    name: "Add GitHub account",
+    name: "Add forge account",
   });
   await waitFor(() =>
     expect(getComputedStyle(button).pointerEvents).not.toBe("none"),
@@ -53,7 +53,7 @@ export const EmptyAccounts: StoryObj = {
     const { region } = await open(canvasElement);
     await expect(
       await region.findByText(
-        "Connect GitHub to choose a remote backup repository.",
+        "Connect an account to choose a remote backup repository.",
       ),
     ).toBeVisible();
   },
@@ -101,7 +101,7 @@ export const FailureAndRecovery: StoryObj = {
     );
     await expect(
       await region.findByText(
-        "Connect GitHub to choose a remote backup repository.",
+        "Connect an account to choose a remote backup repository.",
       ),
     ).toBeVisible();
     await waitFor(() =>
@@ -116,7 +116,7 @@ export const Loading: StoryObj = {
   play: async ({ canvasElement }) => {
     const { region } = await open(canvasElement);
     await expect(
-      region.getByRole("status", { name: "Loading GitHub accounts" }),
+      region.getByRole("status", { name: "Loading forge accounts" }),
     ).toBeVisible();
     await userEvent.click(
       within(canvasElement).getByRole("button", {
@@ -125,8 +125,32 @@ export const Loading: StoryObj = {
     );
     await expect(
       await region.findByText(
-        "Connect GitHub to choose a remote backup repository.",
+        "Connect an account to choose a remote backup repository.",
       ),
     ).toBeVisible();
+  },
+};
+
+export const ForgejoToken: StoryObj = {
+  play: async ({ canvasElement }) => {
+    const { region } = await choose(canvasElement, "Add Forgejo Account");
+    const api = await region.findByLabelText("API Base URL");
+    await waitFor(() =>
+      expect(getComputedStyle(api).pointerEvents).not.toBe("none"),
+    );
+    await userEvent.type(api, "https://forge.example/api/v1");
+    await userEvent.type(
+      region.getByLabelText("Personal Access Token"),
+      "synthetic-forgejo-story",
+    );
+    await userEvent.click(region.getByRole("button", { name: "Add account" }));
+    await expect(await region.findByText("lapis-fixture")).toBeVisible();
+    await expect(
+      canvasElement.querySelector("[data-forge-kind]"),
+    ).toHaveAttribute("data-forge-kind", "add_forgejo_token");
+    await expect(
+      region.queryByLabelText("Personal Access Token"),
+    ).not.toBeInTheDocument();
+    await expect(region.getByText(/forge.example/)).toBeVisible();
   },
 };

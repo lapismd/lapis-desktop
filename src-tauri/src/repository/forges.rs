@@ -49,6 +49,14 @@ impl ForgeAccounts {
         })
         .await
     }
+    pub async fn add_forgejo_token(&self, api: String, token: String) -> io::Result<Inventory> {
+        self.work(false, move |manager| {
+            runtime()?
+                .block_on(manager.add_forgejo_token(&api, token))
+                .map_err(|error| io::Error::other(format!("Forgejo account action: {error}")))
+        })
+        .await
+    }
     pub async fn remote(
         &self,
         account: String,

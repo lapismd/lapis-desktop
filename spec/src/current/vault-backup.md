@@ -126,3 +126,10 @@ commit replies cannot replace a newer row selection. Restoring a hit uses the
 existing native preview, original safety checkpoint and receipt path, never
 cache bytes. The copied command result layout retains public Design Core
 composition and a noninteractive time label inside each selectable row.
+
+Forgejo account setup explicitly accepts a PAT and HTTPS `/api/v1` instance root
+through installation-owned native workers and the injected account manager.
+GitHub device OAuth and Enterprise validation stay unchanged. Forgejo uses its
+API token header and selected login for Git basic authentication. Remote project
+and origin guards, exact publication receipts and native secret custody remain
+shared. Initial Forgejo OAuth, HTTP and hosted-subpath profiles are deferred.

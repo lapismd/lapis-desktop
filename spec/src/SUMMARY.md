@@ -232,3 +232,5 @@
 - [Original vault push recovery](history/E-REPO-033.md)
 
 - [Historical checkpoint search](history/E-REPO-034.md)
+
+- [Native Forgejo vault backup accounts](history/E-REPO-035.md)

@@ -11,12 +11,13 @@
   let release: (() => void) | undefined;
   let reads = 0;
   let connected = false;
+  let api = "https://api.github.com";
   const inventory = (): ForgeInventory => ({
     accounts: connected
       ? [
           {
             id: "account-42",
-            api_url: "https://api.github.com",
+            api_url: api,
             login: "lapis-fixture",
             name: "Lapis fixture",
             email: "dev@lapis.md",
@@ -50,7 +51,12 @@
             return inventory();
           },
           async command(command) {
-            if (command.kind === "add_token") {
+            if (
+              command.kind === "add_token" ||
+              command.kind === "add_forgejo_token"
+            ) {
+              api = command.api_url;
+              root.dataset.forgeKind = command.kind;
               connected = true;
               root.dataset.connected = "true";
             }

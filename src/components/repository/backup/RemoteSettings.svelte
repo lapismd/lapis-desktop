@@ -82,7 +82,7 @@
       <Card.Description
         >{snapshot.data?.configuration
           ? `${snapshot.data.configuration.project} · ${snapshot.data.configuration.target.branch}`
-          : "Connect a GitHub repository to back up or restore this vault."}</Card.Description
+          : "Connect a GitHub or Forgejo repository to back up or restore this vault."}</Card.Description
       >
       <Card.Action
         ><Button
@@ -128,7 +128,7 @@
             ><Empty.Description
               >{snapshot.data.configuration
                 ? "Your cached backup remains available. Reconnect an account above to fetch more history."
-                : "Add a GitHub account above to choose a remote backup repository."}</Empty.Description
+                : "Add a forge account above to choose a remote backup repository."}</Empty.Description
             ></Empty.Header
           >
           {#if snapshot.data.configuration}<Empty.Content
@@ -157,10 +157,10 @@
           }}
         >
           <Field.Group>
-            <BackupField label="GitHub account" id={`${id}-account`}>
+            <BackupField label="Forge account" id={`${id}-account`}>
               <BackupSelect
                 id={`${id}-account`}
-                aria-label="GitHub account"
+                aria-label="Forge account"
                 bind:value={account}
                 disabled={snapshot.busy}
                 options={available.map((value) => ({
@@ -170,7 +170,7 @@
               />
             </BackupField>
             <BackupField
-              label="GitHub repository"
+              label="Remote repository"
               id={`${id}-project`}
               description="Use an existing repository in owner/repository form."
             >

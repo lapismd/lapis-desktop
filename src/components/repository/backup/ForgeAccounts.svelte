@@ -28,7 +28,7 @@
     void controller.refresh();
     return unsubscribe;
   });
-  async function choose(method: "oauth" | "pat" | "enterprise") {
+  async function choose(method: "oauth" | "pat" | "enterprise" | "forgejo") {
     menu = false;
     await tick();
     if (method === "oauth") await controller.begin();
@@ -55,7 +55,7 @@
     <div class="backup-settings-body">
       <Card.Root>
         <Card.Header
-          ><Card.Title>GitHub</Card.Title><Card.Description
+          ><Card.Title>GitHub and Forgejo</Card.Title><Card.Description
             >Connect an account for remote vault backup.</Card.Description
           ></Card.Header
         >
@@ -63,7 +63,7 @@
           {#if !snapshot.inventory && snapshot.busy}<div
               class="account-row"
               role="status"
-              aria-label="Loading GitHub accounts"
+              aria-label="Loading forge accounts"
             >
               <Skeleton style="height:2.5rem;width:2.5rem" /><Skeleton
                 style="height:1rem;width:60%"
@@ -114,7 +114,7 @@
                 >
               </div>{/each}
             {#if !snapshot.inventory.accounts.length}<p class="guidance">
-                Connect GitHub to choose a remote backup repository.
+                Connect an account to choose a remote backup repository.
               </p>{/if}
           {/if}
         </Card.Content>
@@ -125,8 +125,8 @@
                   {...props}
                   variant="outline"
                   disabled={snapshot.busy || Boolean(snapshot.flow)}
-                  aria-label="Add GitHub account"
-                  >Add GitHub account<Plus data-icon="inline-end" /></Button
+                  aria-label="Add forge account"
+                  >Add forge account<Plus data-icon="inline-end" /></Button
                 >{/snippet}</Menu.Trigger
             >
             <Menu.Content align="end"
@@ -141,6 +141,9 @@
                 >
                 <Menu.Item onSelect={() => void choose("enterprise")}
                   ><Building2 />Add GitHub Enterprise Account</Menu.Item
+                >
+                <Menu.Item onSelect={() => void choose("forgejo")}
+                  ><KeyRound />Add Forgejo Account</Menu.Item
                 >
               </Menu.Group></Menu.Content
             >

@@ -50,7 +50,7 @@ export class ForgeController {
     this.#state = { ...this.#state, ...patch };
     for (const listener of this.#listeners) listener(this.#state);
   }
-  tokenFlow(flow: "pat" | "enterprise") {
+  tokenFlow(flow: "pat" | "enterprise" | "forgejo") {
     if (!this.#state.busy && !this.#closed) this.#set({ flow });
   }
   async refresh() {
@@ -62,7 +62,11 @@ export class ForgeController {
     await this.#run({ kind: "begin_oauth" });
   }
   async addToken(api_url: string, token: string) {
-    return this.#run({ kind: "add_token", api_url, token });
+    return this.#run({
+      kind: this.#state.flow === "forgejo" ? "add_forgejo_token" : "add_token",
+      api_url,
+      token,
+    });
   }
   async forget(account: string) {
     await this.#run({ kind: "forget", account });
@@ -94,6 +98,7 @@ export class ForgeController {
         this.feedback.recovered();
         if (
           command?.kind === "add_token" ||
+          command?.kind === "add_forgejo_token" ||
           inventory.authorization?.state === "complete"
         )
           this.#set({ flow: "" });

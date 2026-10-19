@@ -75,8 +75,12 @@ pub(super) async fn resolve(
         .credential(id, timestamp)
         .await
         .map_err(|_| error("Account needs authorization"))?;
-    let credentials = GitCredentials::token(&credential.access_token)
-        .map_err(|_| error("Account credential is invalid"))?;
+    let credentials = if jj_forge::accounts::forgejo_api_root(&account.api_url).is_ok() {
+        GitCredentials::basic(&account.login, &credential.access_token)
+    } else {
+        GitCredentials::token(&credential.access_token)
+    }
+    .map_err(|_| error("Account credential is invalid"))?;
     let can_push = repository
         .pointer("/permissions/push")
         .and_then(|v| v.as_bool())

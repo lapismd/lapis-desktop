@@ -625,3 +625,10 @@ copy/adapt jj-store's maintained command result composition; provenance is in
 docs/provenance.json. File results open the maintained blame view; checkpoints
 open JJ Log. Full native search/cache/identity proofs remain source-owned.
 Visual review and cold native-app/provider acceptance remain open.
+
+Repository backup accounts / ForgejoToken extends the maintained public
+account/settings composition with explicit HTTPS instance/PAT setup. Existing
+GitHub OAuth/PAT/loading/failure stories, remote setup, synchronization and
+original-publication recovery remain direct consumers. Native worker/custody and
+endpoint/project proof is separate; no personal token or live forge is used in
+catalog. Existing copied provenance remains in docs/provenance.json.

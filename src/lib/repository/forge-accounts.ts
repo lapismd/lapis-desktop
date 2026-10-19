@@ -27,7 +27,7 @@ export type ForgeCommand =
   | { kind: "begin_oauth" }
   | { kind: "poll_oauth" | "cancel_oauth"; session: string }
   | { kind: "forget"; account: string }
-  | { kind: "add_token"; api_url: string; token: string };
+  | { kind: "add_token" | "add_forgejo_token"; api_url: string; token: string };
 export interface ForgeService {
   inventory(): Promise<ForgeInventory>;
   command(command: ForgeCommand): Promise<ForgeInventory>;
@@ -36,5 +36,5 @@ export interface ForgeService {
 export type ForgeState = {
   inventory?: ForgeInventory;
   busy: boolean;
-  flow: "oauth" | "pat" | "enterprise" | "";
+  flow: "oauth" | "pat" | "enterprise" | "forgejo" | "";
 };

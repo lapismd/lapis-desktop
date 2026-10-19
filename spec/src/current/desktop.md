@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-REPO-034 retains LD-DESK-003/HOST-001 with native search workers. Gravatar:
+E-REPO-035 retains LD-DESK-003/HOST-001 with native forge workers. Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 The Notes composition root starts App-owned watching after metadata/view setup.

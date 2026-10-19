@@ -1,7 +1,7 @@
 # Governance
 
-E-REPO-034 retains LD-GOV-001/002/004 with bounded immutable search, exact
-selection and source audits. Original gates remain.
+E-REPO-035 retains LD-GOV-001/002/004 with explicit native forge accounts,
+secret custody and source audits. Original gates remain.
 
 E-AI-031/032/033 qualify private journal, backend profile and native host
 boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
