@@ -8,6 +8,7 @@ export type HistoryReader = Pick<
   Partial<Pick<HistoryClient, "blame">>;
 export type RepositoryLeaveMode = "close" | "reload";
 export interface RepositoryServices {
+  storage?: import("./storage.ts").StorageService;
   search?: import("./search.ts").HistorySearchService;
   sync?: import("./sync.ts").SyncService;
   remote?: import("./remote.ts").RemoteService;

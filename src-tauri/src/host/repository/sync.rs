@@ -5,7 +5,7 @@ use super::{
     remote_transfer::Context,
 };
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::{Binding, SyncResolution, VaultRestoreRequest};
+use jj_vault::{SyncResolution, VaultRestoreRequest};
 use lapis_desktop::repository::forges::ForgeAccounts;
 use serde::Deserialize;
 use serde_json::Value;
@@ -61,11 +61,7 @@ pub async fn desktop_backup_sync(
         Ok(s.vaults.descriptor(&session)?.clone())
     })
     .await?;
-    let binding = Binding {
-        vault_id: descriptor.profile_id.clone(),
-        root: descriptor.path.into(),
-        state: repository.backups.state_path(&descriptor.profile_id),
-    };
+    let binding = super::storage::resolve(&repository, descriptor, false).await?;
     let context = Context {
         host: host.inner().clone(),
         repository: &repository,

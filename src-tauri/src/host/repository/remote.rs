@@ -4,10 +4,7 @@ use jj_vault::{Binding, VaultRestoreRequest};
 use lapis_desktop::repository::{forges::ForgeAccounts, remote};
 use serde::Deserialize;
 use serde_json::Value;
-use std::{
-    io,
-    path::{Path, PathBuf},
-};
+use std::{io, path::Path};
 use tauri::{State, WebviewWindow};
 
 #[derive(Deserialize)]
@@ -108,11 +105,7 @@ pub async fn desktop_backup_remote(
         Ok(s.vaults.descriptor(&session)?.clone())
     })
     .await?;
-    let binding = Binding {
-        vault_id: descriptor.profile_id.clone(),
-        root: PathBuf::from(descriptor.path),
-        state: repository.backups.state_path(&descriptor.profile_id),
-    };
+    let binding = super::storage::resolve(&repository, descriptor, false).await?;
     let state = bound(
         host.inner().clone(),
         request.session_id.clone(),

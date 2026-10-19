@@ -12,6 +12,7 @@ import { nativeForges } from "./forges.ts";
 import { nativeSearch } from "./search.ts";
 import { nativeSync } from "./sync.ts";
 import { nativeRemote } from "./remote.ts";
+import { nativeStorage } from "./storage.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
@@ -79,6 +80,7 @@ export function createNativeRepository(
   }
   const search = nativeSearch(vault.sessionId, call);
   return {
+    storage: nativeStorage(vault.sessionId, call),
     search: { page: (request) => run(() => search.page(request)) },
     sync: nativeSync(vault.sessionId, call),
     remote: nativeRemote(vault.sessionId, call),

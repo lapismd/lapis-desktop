@@ -9,7 +9,7 @@
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
 M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
 
-Current work: M14.7 — Complete advanced storage and providers
+Current work: M14.7 — Complete existing-source adoption and selection
 
 Oldest pending gate: M7.3 — After M10.4: qualify ordinary native popouts
 
@@ -62,4 +62,4 @@ below.
 | M14.4 | Partial     | Qualify cold app/provider flow later                                                |
 | M14.5 | Partial     | Qualify cold app/provider gates later                                               |
 | M14.6 | Partial     | Finish focused search proof; then storage/providers                                 |
-| M14.7 | In progress | Complete advanced storage and providers                                             |
+| M14.7 | In progress | Complete existing-source adoption and selection                                     |

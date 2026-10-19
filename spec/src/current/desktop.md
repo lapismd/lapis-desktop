@@ -1,15 +1,16 @@
 # Desktop shell
 
-E-REPO-035 retains LD-DESK-003/HOST-001 with native forge workers. Gravatar:
-`https://www.gravatar.com`; status: `repository-navigation.md`.
+E-REPO-036: admitted `desktop_backup_storage`, native paths/workers and guarded
+reload; E-REPO-035: forge workers. LD-DESK-003/HOST-001 boundaries remain.
+Gravatar: `https://www.gravatar.com`; status: `repository-navigation.md`.
 
-The Notes composition root starts App-owned watching after metadata/view setup.
-Leave drains it before persistence/teardown and resumes only a still-live App on
-failure (LD-FILE-002/003). M6 registers public Search and Graph with native
-settings recovery and metadata qualification governed by `navigation.md`.
+Notes starts App-owned watching after metadata/views; leave drains it before
+persistence/teardown and resumes a live App on failure (LD-FILE-002/003). M6
+public Search/Graph native settings recovery and metadata follow
+`navigation.md`.
 
-M0.1 establishes the shell; M2 adds admitted folder access and the launcher. M3
-integrates the public Notes workspace and App over native storage.
+M0.1 owns the shell; M2 adds folder admission/launcher; M3 adds Notes/App over
+native storage.
 
 Plugin assets and Terminal follow [plugins](plugins.md).
 

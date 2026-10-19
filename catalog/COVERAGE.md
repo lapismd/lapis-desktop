@@ -1,5 +1,11 @@
 # Desktop catalog coverage
 
+`repository/HistoryStorage.stories.ts` mounts production storage settings in the
+real Notes shell. It covers external/root layouts, move/reload, original-request
+resume/rollback, representative loading and App-toast failure recovery. Native
+storage identity and crash recovery are separate service proofs; visual approval
+and cold native app acceptance remain pending.
+
 Automatic vault backup: `repository/AutomaticBackup.stories.ts` mounts the real
 plugin, independent native-service adapter boundary and production status
 control for saved, saving and failure/recovery states. Native capture is

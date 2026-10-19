@@ -31,11 +31,17 @@ pub async fn desktop_repository_admit(
     })?;
     let _transition = repository.transitions.lock().await;
     let owner = context.window.clone();
-    let backup_root = repository.backups.state_path("");
+    let session = request.session_id.clone();
+    let descriptor = access(host.inner().clone(), move |services| {
+        services.vaults.get(&session)?.verify_physical_root()?;
+        Ok(services.vaults.descriptor(&session)?.clone())
+    })
+    .await?;
+    let binding = super::storage::resolve(&repository, descriptor, false).await?;
     let plan = access(host.inner().clone(), move |services| {
         // Existing backup history remains readable when capture is paused.
         // Discovery only verifies its saved binding; it never initializes JJ.
-        let state = backup_root.join(&services.vaults.descriptor(&request.session_id)?.profile_id);
+        let state = binding.state;
         if state.join("vault.json").is_file() {
             services
                 .repository

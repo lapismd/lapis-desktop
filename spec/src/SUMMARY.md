@@ -234,3 +234,4 @@
 - [Historical checkpoint search](history/E-REPO-034.md)
 
 - [Native Forgejo vault backup accounts](history/E-REPO-035.md)
+- [Recoverable vault history storage selection](history/E-REPO-036.md)

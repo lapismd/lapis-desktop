@@ -1,4 +1,4 @@
-use super::{NativeWatch, WatchBatch};
+use super::{NativeWatch, WatchBatch, WatchOptions};
 use crate::vault::VaultRoot;
 use std::{
     collections::HashMap,
@@ -21,6 +21,26 @@ impl WatchRegistry {
         gate: Arc<Mutex<()>>,
         listener: impl Fn(WatchBatch) -> bool + Send + 'static,
     ) -> io::Result<String> {
+        self.start_filtered(
+            session,
+            root,
+            WatchOptions {
+                scope: scope.into(),
+                recursive,
+                ignored_names: vec![],
+            },
+            gate,
+            listener,
+        )
+    }
+    pub fn start_filtered(
+        &mut self,
+        session: &str,
+        root: &VaultRoot,
+        options: WatchOptions,
+        gate: Arc<Mutex<()>>,
+        listener: impl Fn(WatchBatch) -> bool + Send + 'static,
+    ) -> io::Result<String> {
         if self.entries.len() >= 32
             || self
                 .entries
@@ -34,7 +54,7 @@ impl WatchRegistry {
                 "Native watch subscription limit reached",
             ));
         }
-        let watch = NativeWatch::start(root, scope, recursive, gate, listener)?;
+        let watch = NativeWatch::start_filtered(root, options, gate, listener)?;
         let id = uuid::Uuid::new_v4().to_string();
         self.entries.insert(id.clone(), (session.to_owned(), watch));
         Ok(id)

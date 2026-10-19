@@ -13,6 +13,7 @@ impl Pending {
         scope: &str,
         recursive: bool,
         event: notify::Result<Event>,
+        ignored_names: &[String],
     ) -> bool {
         let Ok(event) = event else {
             self.reconciliation = true;
@@ -35,6 +36,9 @@ impl Pending {
                 relevant = true;
                 continue;
             };
+            if super::ignored(path, ignored_names) {
+                continue;
+            }
             let tail = if scope.is_empty() {
                 Some(path)
             } else {
@@ -66,6 +70,7 @@ mod tests {
                 "",
                 true,
                 Ok(Event::new(EventKind::Any).add_path(format!("/owned/{number}").into())),
+                &[],
             );
         }
         assert_eq!(pending.paths.len(), 2048);
@@ -85,9 +90,30 @@ mod tests {
                 "Notes",
                 false,
                 Ok(Event::new(EventKind::Any).add_path(path.into())),
+                &[],
             );
         }
         assert_eq!(pending.paths, HashSet::from(["Notes/a.md".to_owned()]));
         assert!(pending.reconciliation);
+    }
+    #[test]
+    fn private_metadata_hints_never_schedule_a_backup_of_the_backup() {
+        let mut pending = Pending::default();
+        let names = vec![".jj".into(), ".git".into(), ".lapis".into()];
+        for path in [
+            "/owned/.jj/working_copy/state",
+            "/owned/Notes/.git/objects/a",
+            "/owned/.lapis/vault-history-locks/lock",
+        ] {
+            assert!(!pending.push(
+                Path::new("/owned"),
+                "",
+                true,
+                Ok(Event::new(EventKind::Any).add_path(path.into())),
+                &names
+            ));
+        }
+        assert!(pending.paths.is_empty());
+        assert!(!pending.reconciliation);
     }
 }

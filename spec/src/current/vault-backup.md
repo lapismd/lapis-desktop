@@ -133,3 +133,15 @@ GitHub device OAuth and Enterprise validation stay unchanged. Forgejo uses its
 API token header and selected login for Git basic authentication. Remote project
 and origin guards, exact publication receipts and native secret custody remain
 shared. Initial Forgejo OAuth, HTTP and hosted-subpath profiles are deferred.
+
+Native storage selection resolves every capture, immutable history admission,
+search and remote action through the same vault-owned layout record. Startup
+recovers an interrupted move before initialization. Read-only discovery never
+creates a repository or resumes a move. Layout changes fence capture and drain
+history readers before migration, preserve the original repository archive and
+receipt identities, and bind fresh readers afterward. Renderer storage frames
+carry only the admitted session, selected layout, revision and request identity;
+native code owns all paths. Status visibility does not select a storage layout.
+The backup watcher excludes repository and private runtime names from both event
+hints and recursive inventory. Root metadata writes cannot schedule captures of
+the backup itself. Other native watchers retain their existing default scope.

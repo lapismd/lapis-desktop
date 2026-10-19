@@ -1,7 +1,8 @@
 //! Explicit vault backup writer; immutable history admission does not initialize it.
 use super::{RepositoryHost, policy};
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::{Backup, Binding, NativeRepository, Status, Timing};
+use jj_vault::{Backup, NativeRepository, Status, Timing};
+use lapis_desktop::repository::storage::Locations;
 use serde::Deserialize;
 use std::{
     collections::HashMap,
@@ -26,7 +27,7 @@ pub(super) struct Owner {
     events: Option<tokio::task::JoinHandle<()>>,
 }
 pub struct Backups {
-    root: PathBuf,
+    pub(super) locations: Locations,
     entries: Mutex<HashMap<String, Owner>>,
     active: Arc<AtomicBool>,
 }
@@ -34,9 +35,6 @@ fn error(value: impl std::fmt::Display) -> NativeError {
     io::Error::other(format!("Vault backup: {value}")).into()
 }
 impl Backups {
-    pub(super) fn state_path(&self, vault: &str) -> PathBuf {
-        self.root.join(vault)
-    }
     pub(super) async fn owner(
         &self,
         session: &str,
@@ -55,7 +53,7 @@ impl Backups {
     }
     pub fn new(root: PathBuf) -> Self {
         Self {
-            root,
+            locations: Locations::new(root),
             entries: Mutex::new(HashMap::new()),
             active: Arc::new(AtomicBool::new(true)),
         }
@@ -123,11 +121,7 @@ pub async fn desktop_backup_start(
     .await?;
     let mut entries = repository.backups.entries.lock().await;
     if !entries.contains_key(&request.session_id) {
-        let binding = Binding {
-            vault_id: descriptor.profile_id.clone(),
-            root: PathBuf::from(descriptor.path),
-            state: repository.backups.root.join(&descriptor.profile_id),
-        };
+        let binding = super::storage::resolve(&repository, descriptor, true).await?;
         let backup = Backup::start_idle(
             super::backup_provider::Provider {
                 native: NativeRepository {
@@ -143,11 +137,17 @@ pub async fn desktop_backup_start(
         let changes = backup.changes();
         let session = request.session_id.clone();
         let watch = access(host.inner().clone(), move |s| {
-            s.watches.start(
+            s.watches.start_filtered(
                 &session,
                 s.vaults.get(&session)?,
-                "",
-                true,
+                lapis_desktop::watch::WatchOptions {
+                    scope: String::new(),
+                    recursive: true,
+                    ignored_names: [".jj", ".git", ".lapis", ".DS_Store"]
+                        .into_iter()
+                        .map(str::to_owned)
+                        .collect(),
+                },
                 s.fs_gate.clone(),
                 move |batch| {
                     if !batch.changes.is_empty() || batch.reconciliation {

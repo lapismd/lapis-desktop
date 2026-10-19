@@ -9,6 +9,8 @@ import { BackgroundWork } from "../../../lib/desktop/background-work.ts";
 import type { RepositoryPlugin } from "../repository-plugin.ts";
 import BackupSettings from "./BackupSettings.svelte";
 import { createRemoteRestore } from "./remote-restore.ts";
+import type { StorageController } from "../../../lib/repository/storage-controller.ts";
+import { storageSettings } from "./storage-settings.ts";
 type Controller = ForgeController | RemoteController | RestoreController;
 
 class BackupSettingsView extends View {
@@ -23,6 +25,7 @@ class BackupSettingsView extends View {
     private readonly plugin: RepositoryPlugin,
     private readonly services: RepositoryServices,
     private readonly controllers: Set<Controller>,
+    private readonly storage?: StorageController,
   ) {
     super(leaf);
   }
@@ -74,6 +77,7 @@ class BackupSettingsView extends View {
         controller,
         remote: this.#remote,
         restore: this.#restore,
+        storage: this.storage,
         sync: this.plugin.backup?.sync?.controller,
         setSyncEnabled: (enabled) =>
           this.plugin
@@ -125,9 +129,17 @@ export function registerBackupSettings(
 ) {
   if (!services.forges) return;
   const controllers = new Set<Controller>();
+  const storage = storageSettings(plugin, services.storage);
   plugin.registerView(
     "repository-backup-settings",
-    (leaf) => new BackupSettingsView(leaf, plugin, services, controllers),
+    (leaf) =>
+      new BackupSettingsView(
+        leaf,
+        plugin,
+        services,
+        controllers,
+        storage?.controller,
+      ),
     {
       kind: "command",
       command: {
@@ -138,6 +150,7 @@ export function registerBackupSettings(
     },
   );
   return async () => {
+    await storage?.close();
     await Promise.allSettled(
       [...controllers].map((controller) => controller.close()),
     );

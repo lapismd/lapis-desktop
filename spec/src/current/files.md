@@ -1,5 +1,10 @@
 # File management (M5)
 
+E-REPO-036 adds native-owned watch exclusions for the backup writer. Repository
+and runtime names are omitted from both hints and inventory; ordinary renderer
+watch scope, reconciliation, physical admission and teardown remain unchanged
+(LD-FILE-002). The renderer cannot supply this filter or extend file authority.
+
 E-REPO-016 adds status progress to Notes startup. LD-FILE-002/003 admission,
 watch ownership and drained writer/close behavior remain unchanged; operations
 stay on existing native workers. See [background activity](background.md).

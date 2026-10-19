@@ -38,12 +38,20 @@ pub(super) fn validate_root(root: &VaultRoot) -> io::Result<()> {
     Ok(())
 }
 
-pub(super) fn read(root: &VaultRoot, scope: &str, recursive: bool) -> io::Result<Snapshot> {
+pub(super) fn read(
+    root: &VaultRoot,
+    scope: &str,
+    recursive: bool,
+    ignored_names: &[String],
+) -> io::Result<Snapshot> {
     validate_root(root)?;
     let mut pending = vec![scope.to_owned()];
     let mut cost = scope.len() + 96;
     let mut entries = Snapshot::new();
     while let Some(path) = pending.pop() {
+        if super::ignored(&path, ignored_names) {
+            continue;
+        }
         let relative = root.checked(&path, path.is_empty())?;
         let metadata = match root.dir.symlink_metadata(relative) {
             Ok(metadata) => metadata,

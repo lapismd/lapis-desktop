@@ -4,12 +4,8 @@ use super::{
     remote::{bound, failure},
 };
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::{
-    Binding,
-    search::{NativeHistory, Page, Request as SearchRequest},
-};
+use jj_vault::search::{NativeHistory, Page, Request as SearchRequest};
 use serde::Deserialize;
-use std::path::PathBuf;
 use tauri::{State, WebviewWindow};
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -32,11 +28,7 @@ pub async fn desktop_backup_search(
         Ok(s.vaults.descriptor(&session)?.clone())
     })
     .await?;
-    let binding = Binding {
-        vault_id: descriptor.profile_id.clone(),
-        root: PathBuf::from(descriptor.path),
-        state: repository.backups.state_path(&descriptor.profile_id),
-    };
+    let binding = super::storage::resolve(&repository, descriptor, false).await?;
     let permit = repository
         .search_slots
         .clone()

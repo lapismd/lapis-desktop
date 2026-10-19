@@ -169,6 +169,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-desktop-backup-remote",
     "allow-desktop-backup-sync",
     "allow-desktop-backup-search",
+    "allow-desktop-backup-storage",
     "allow-desktop-repository-release",
     "allow-desktop-repository-working-copy",
     "jj-store:local-history",

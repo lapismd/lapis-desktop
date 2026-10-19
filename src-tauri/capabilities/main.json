@@ -48,6 +48,7 @@
     "allow-desktop-backup-remote",
     "allow-desktop-backup-sync",
     "allow-desktop-backup-search",
+    "allow-desktop-backup-storage",
     "allow-desktop-repository-admit",
     "allow-desktop-repository-release",
     "allow-desktop-repository-working-copy",

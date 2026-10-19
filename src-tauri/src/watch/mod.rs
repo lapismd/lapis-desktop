@@ -4,6 +4,17 @@ mod snapshot;
 
 pub use registry::WatchRegistry;
 
+#[derive(Default)]
+pub struct WatchOptions {
+    pub scope: String,
+    pub recursive: bool,
+    pub ignored_names: Vec<String>,
+}
+fn ignored(path: &str, names: &[String]) -> bool {
+    path.split('/')
+        .any(|part| names.iter().any(|name| part == name))
+}
+
 use crate::vault::VaultRoot;
 use notify::{Config, RecommendedWatcher, RecursiveMode, Watcher};
 use pending::Pending;
@@ -50,8 +61,36 @@ impl NativeWatch {
         io_gate: Arc<Mutex<()>>,
         listener: impl Fn(WatchBatch) -> bool + Send + 'static,
     ) -> io::Result<Self> {
+        Self::start_filtered(
+            root,
+            WatchOptions {
+                scope: scope.into(),
+                recursive,
+                ignored_names: vec![],
+            },
+            io_gate,
+            listener,
+        )
+    }
+    pub fn start_filtered(
+        root: &VaultRoot,
+        options: WatchOptions,
+        io_gate: Arc<Mutex<()>>,
+        listener: impl Fn(WatchBatch) -> bool + Send + 'static,
+    ) -> io::Result<Self> {
         let root = root.clone_for_watch()?;
-        let scope = scope.to_owned();
+        let WatchOptions {
+            scope,
+            recursive,
+            ignored_names,
+        } = options;
+        if ignored_names.len() > 64
+            || ignored_names
+                .iter()
+                .any(|name| name.is_empty() || name.contains(['/', '\\']) || name.len() > 255)
+        {
+            return Err(io::Error::other("Invalid native watch exclusions"));
+        }
         let active = Arc::new(AtomicBool::new(true));
         let pending = Arc::new(Mutex::new(Pending::default()));
         let (wake, receive) = mpsc::sync_channel(1);
@@ -59,6 +98,7 @@ impl NativeWatch {
         let hints = pending.clone();
         let root_path = root.path().to_owned();
         let watched_scope = scope.clone();
+        let hints_ignored = ignored_names.clone();
         let guard = io_gate
             .lock()
             .map_err(|_| io::Error::other("File IO owner is unavailable"))?;
@@ -67,7 +107,7 @@ impl NativeWatch {
         let mut watcher = RecommendedWatcher::new(
             move |event| {
                 if let Ok(mut hints) = hints.lock()
-                    && hints.push(&root_path, &watched_scope, recursive, event)
+                    && hints.push(&root_path, &watched_scope, recursive, event, &hints_ignored)
                 {
                     let _ = signal.try_send(());
                 }
@@ -87,7 +127,7 @@ impl NativeWatch {
                 },
             )
             .map_err(io::Error::other)?;
-        let mut previous = snapshot::read(&root, &scope, recursive)?;
+        let mut previous = snapshot::read(&root, &scope, recursive, &ignored_names)?;
         drop(guard);
         let running = active.clone();
         let worker = thread::spawn(move || {
@@ -116,7 +156,7 @@ impl NativeWatch {
                 let scan = io_gate
                     .lock()
                     .map_err(|_| io::Error::other("File IO owner is unavailable"))
-                    .and_then(|_guard| snapshot::read(&root, &scope, recursive));
+                    .and_then(|_guard| snapshot::read(&root, &scope, recursive, &ignored_names));
                 match scan {
                     Ok(next) => {
                         batch.changes = snapshot::changes(&previous, &next, &hints.paths);

@@ -2,6 +2,7 @@
 pub mod forges;
 pub mod remote;
 pub(crate) mod source;
+pub mod storage;
 use crate::vault::{
     VaultManager,
     admission::{AdmissionPlan, RetiredAdmission, VaultAdmissions, VaultLease},
