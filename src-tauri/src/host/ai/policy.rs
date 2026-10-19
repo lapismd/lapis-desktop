@@ -45,6 +45,13 @@ impl DesktopAiPolicy {
     ) -> io::Result<()> {
         self.0.files.configure(settings, home)
     }
+    #[cfg(not(feature = "e2e"))]
+    pub fn configure_bundle(&self, bundle: std::path::PathBuf) -> io::Result<()> {
+        self.0.files.configure_bundle(bundle)
+    }
+    pub fn bundle_ready(&self) -> bool {
+        self.0.files.bundle_ready()
+    }
     pub fn prepare_file_profile(&self) -> io::Result<()> {
         self.0.files.prepare()
     }

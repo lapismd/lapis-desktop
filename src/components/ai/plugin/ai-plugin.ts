@@ -32,6 +32,9 @@ export class AiPlugin extends Plugin {
     if (!this.#application) throw new Error("AI is disabled");
     return this.#application;
   }
+  get clients() {
+    return this.application.services.clients;
+  }
   get models() {
     return this.application.models;
   }

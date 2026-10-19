@@ -15,7 +15,7 @@ import { nativeSession } from "./native-session.mjs";
 const panel = '[data-ui-component="search-panel"]';
 const result = (browser, path) =>
   browser.$(
-    `${panel} [role="treeitem"][aria-level="1"][aria-label^="${path},"]`,
+    `${panel} [role="treeitem"][aria-level="1"][aria-label*=" · ${path},"]`,
   );
 async function query(browser, value) {
   const input = browser.$(`${panel} .cm-content[contenteditable="true"]`);

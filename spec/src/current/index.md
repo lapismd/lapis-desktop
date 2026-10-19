@@ -13,6 +13,7 @@ gates.
 - [Native workspace windows](windows.md)
 - [Desktop plugins and catalog](plugins.md)
 - [Desktop AI and optional compute](ai.md)
+  - [Installed clients and bundled helpers](ai-clients.md)
   - [AI transcript delivery review](ai-presentation.md)
   - [Local AI turn recovery](ai-recovery.md)
   - [Native application tools](ai-tools.md)

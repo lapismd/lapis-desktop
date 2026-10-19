@@ -7,6 +7,7 @@
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
+  - [Installed AI clients](current/ai-clients.md)
   - [AI transcript delivery review](current/ai-presentation.md)
   - [Local AI turn recovery](current/ai-recovery.md)
   - [Native application tools](current/ai-tools.md)
@@ -294,3 +295,7 @@
 - [Shared search input presentation](history/E-CATALOG-014.md)
 
 - [Workspace file exclusion settings](history/E-CATALOG-015.md)
+
+- [Installed clients and startup repair](history/E-AI-065.md)
+
+- [Unified indexed history in Search](history/E-REPO-045.md)

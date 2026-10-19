@@ -82,3 +82,5 @@ Graph permission-failure acceptance waits for the opened Graph layout to be
 committed before faulting its settings writer. This isolates the intended
 settings recovery from an unrelated debounced layout write and preserves every
 original close, disk-byte and live-control assertion.
+
+Search labels include visible result text while retaining explicit file paths.

@@ -43,7 +43,8 @@
     "test:ai": "vitest run --config vitest.ai.config.mjs",
     "test:desktop:headless": "node scripts/desktop-tests.mjs --headless",
     "test:desktop:headed": "node scripts/desktop-tests.mjs --headed",
-    "test:desktop:api": "node scripts/desktop-api-tests.mjs"
+    "test:desktop:api": "node scripts/desktop-api-tests.mjs",
+    "ai:prepare": "node scripts/prepare-ai.mjs"
   },
   "dependencies": {
     "@lapis-notes/api": "^0.1.4",

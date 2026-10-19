@@ -5,3 +5,5 @@ pub mod imports;
 pub mod journal;
 pub mod tools;
 pub mod user_commands;
+
+pub mod tooling;

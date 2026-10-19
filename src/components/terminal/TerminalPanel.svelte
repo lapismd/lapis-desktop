@@ -59,7 +59,7 @@
         >
         <Empty.Description
           >{snapshot.error ??
-            "Start a shell in this vault. Restoring a workspace does not start a new process."}</Empty.Description
+            "This restored tab has no running shell. Choose Start to launch a new shell in this vault."}</Empty.Description
         >
       </Empty.Header>
       <Empty.Content>

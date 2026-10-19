@@ -1,8 +1,7 @@
 # Governance
 
-E-REPO-042 and E-AI-062/063 retain all 41 statuses, dependencies and original
-gates under LD-GOV-001/002/003/004. E-AI-042–061 local AI and E-REPO-035–041
-backup remain separately qualified; broader integration checks are delegated.
+E-REPO-042/E-AI-062/063 retain statuses and gates under LD-GOV-001–004. Local
+AI/backup qualification and delegated wider checks remain distinct.
 
 E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold Rust proof
 does not replace M13.3 packaged WebView/restart gates.
@@ -391,10 +390,11 @@ exclusive publication, and ordinary AI execution remains unavailable.
 
 The local default is the quiet renderer/native-service/catalog lane; CI selects
 headed native acceptance. Hidden WebKit pauses animation frames, so service
-success stays distinct from native UI acceptance; original gates remain.
-
-See [native acceptance modes](native-acceptance.md) for cold readiness, hidden
+success stays distinct from native UI acceptance; original gates remain. See
+[native acceptance modes](native-acceptance.md) for cold readiness, hidden
 IPC-only checks, headed windows and capture qualification boundaries. The
 private migration link for `@lapismd/jj-conversations` consumes verified built
 exports. Local queues retain host custody; registry intake remains gated. Node
 renderer tests preload tsx for application syntax (E-CATALOG-009/010).
+
+E-AI-065/E-REPO-045 admit fixed main-window commands; no wildcards.

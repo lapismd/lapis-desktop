@@ -208,3 +208,26 @@ workers revalidate that revision, reject pending moves/symlink redirects and
 resolve the selected directory themselves. Revealing cannot initialize/move
 history, stop capture or revoke active readers. Colocated history retains its
 root selector.
+
+Unified Search uses the App-owned result-provider registry. Current files remain
+the default; History and Everything scopes reveal saved file versions grouped by
+path with checkpoint references and metadata-only checkpoint results. Historical
+author/date filters apply to version-changing checkpoints. The separate
+history-search page and ribbon entry are retired; its command and saved leaves
+redirect to Search with History selected. Search being disabled does not enable
+it implicitly or stop backup.
+
+A disposable native Tantivy index records checkpoint ancestry and changed-path
+references while indexing each immutable body once. The plugin schedules bounded
+native batches after captures and reconciles missed work after reopening.
+Indexing/query progress uses the shared status API; errors use App feedback.
+Capture never awaits indexing. Committed pages remain usable during catch-up,
+with incomplete coverage and unsupported filters explicit. Cancellation,
+provider unload and generation changes fence obsolete replies. Result activation
+and expanded context resolve the exact native revision/path; restoration keeps
+its existing preview, safety checkpoint and durable request authority.
+
+`desktop_backup_history_search` is an exact main-window permission. Native code
+selects vault/index identity and bounded workers; frames supply no paths or
+caller authority. Storage relocation drains that search permit. Saved targets
+retain the operation, commit and file (LD-REPO-002/005).

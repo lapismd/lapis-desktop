@@ -41,6 +41,74 @@
       return {
         reader: fixture.reader,
         search: {
+          indexed: {
+            async step() {
+              return { generation: 1, indexed: 42, omitted: 2, complete: true };
+            },
+            async query(request) {
+              root.dataset.searchQuery = JSON.stringify(request.expression);
+              if (scenario === "failed" && attempts++ === 0)
+                throw new Error("Saved history index is unavailable");
+              if (scenario === "loading")
+                await new Promise<void>((resolve) => (release = resolve));
+              const offset = Number(request.cursor ?? 0);
+              if (scenario === "older" && offset < 40)
+                return {
+                  hits: [],
+                  next: String(offset + 1),
+                  status: {
+                    generation: 1,
+                    indexed: 42,
+                    omitted: 0,
+                    complete: true,
+                  },
+                  reset: false,
+                };
+              const path = JSON.stringify(request.expression).includes(
+                '"checkpoint"',
+              )
+                ? null
+                : (hit.path ?? null);
+              return {
+                hits:
+                  scenario === "empty"
+                    ? []
+                    : [
+                        {
+                          record: {
+                            revision: hit.revision,
+                            parents: [],
+                            path,
+                            content_id: path ? "de".repeat(20) : null,
+                            deleted: false,
+                            previous: null,
+                            unavailable: false,
+                          },
+                          excerpt: hit.excerpt,
+                          line: hit.line ?? null,
+                        },
+                      ],
+                next: null,
+                status: {
+                  generation: 1,
+                  indexed: 42,
+                  omitted: scenario === "ready" ? 2 : 0,
+                  complete: true,
+                },
+                reset: false,
+              };
+            },
+            async context(request) {
+              root.dataset.historyContext = JSON.stringify(request);
+              return {
+                text: hit.excerpt,
+                start: 0,
+                end: 1,
+                before: false,
+                after: false,
+              };
+            },
+          },
           async page(request) {
             root.dataset.searchQuery = JSON.stringify(request.query);
             if (scenario === "failed" && attempts++ === 0)

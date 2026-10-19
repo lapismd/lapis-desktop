@@ -130,11 +130,11 @@ export class RepositoryPlugin extends Plugin {
   async onload(): Promise<void> {
     this.#closing = undefined;
     this.#services = ownedRepository(this.app);
-    this.#closeTools = registerRepositoryTools(this, this.#services);
     if (this.#services.backup) {
       this.backup = new RepositoryBackup(this, this.#services);
       await this.backup.start();
     }
+    this.#closeTools = registerRepositoryTools(this, this.#services);
     registerFileHistoryView(this);
     registerBlameEditorActions(this);
     this.registerView(

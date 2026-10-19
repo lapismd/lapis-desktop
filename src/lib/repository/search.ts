@@ -33,6 +33,7 @@ export type HistorySearchPage = {
   unindexed: number;
 };
 export interface HistorySearchService {
+  indexed?: import("./indexed-search.ts").IndexedHistoryService;
   page(request: {
     query: HistorySearchQuery;
     cursor?: HistorySearchCursor | null;

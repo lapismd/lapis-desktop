@@ -1,3 +1,4 @@
+import { clientsFixture } from "./clients-fixture.ts";
 // SPDX-License-Identifier: Apache-2.0
 import {
   App,
@@ -11,9 +12,17 @@ import { AiSettingsStore } from "../../../src/lib/ai/settings/settings-store.ts"
 import { registeredAppToolRefs } from "../../../src/lib/ai/settings/app-tool-setting-rows.ts";
 import { registerCatalogCleanup } from "../lifecycle.ts";
 
-export type SettingsScenario = "normal" | "legacy" | "catalog-error";
+export type SettingsScenario =
+  | "normal"
+  | "legacy"
+  | "catalog-error"
+  | "clients"
+  | "clients-ready"
+  | "clients-loading"
+  | "clients-error";
 
 class SettingsFixturePlugin extends Plugin {
+  clients?: ReturnType<typeof clientsFixture>;
   failNextSave = false;
   calls: string[] = [];
   settings = new AiSettingsStore(
@@ -57,6 +66,8 @@ class SettingsFixturePlugin extends Plugin {
       author: "Lapis Notes catalog",
       description: "Disposable production AI Settings integration.",
     });
+    if (scenario.startsWith("clients"))
+      this.clients = clientsFixture((error) => this.report(error), scenario);
     this.configureRuntime({
       source: "core",
       provenance: "bundled",
@@ -97,6 +108,7 @@ class SettingsFixturePlugin extends Plugin {
     return registration;
   }
   async onunload(): Promise<void> {
+    this.clients?.destroy();
     await this.settings.settle();
   }
 }

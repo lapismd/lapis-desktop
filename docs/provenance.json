@@ -100,6 +100,36 @@
       ],
       "use": "Adapted explicit removable agent audience to the local composer using public Design Core Button/Avatar; reuse the shared token codec through its built public package. Notes owns recipient catalog, local persistence and runtime admission.",
       "license": "Apache-2.0"
+    },
+    {
+      "repository": "jj-store",
+      "revision": "5ed6f237",
+      "paths": [
+        "scripts/lapis-ai.mjs",
+        "scripts/agent-runtime-resources.mjs",
+        "desktop/src/agent_resources.rs",
+        "web/src/lib/ui/store-settings/StoreAgentRuntimes.svelte",
+        "web/src/lib/ui/store-settings/StoreAgentRuntimeSummary.svelte",
+        "web/src/lib/ui/store-settings/StoreSettingsCard.svelte",
+        "web/src/lib/ui/store-settings/StoreSettingsFooter.svelte",
+        "web/src/lib/ui/store-settings/StoreSettingsEmpty.svelte",
+        "web/src/lib/controller/agent-runtimes.svelte.ts",
+        "crates/jj-store-server/src/agent_execution/tooling/install.rs",
+        "crates/jj-store-server/src/agent_execution/tooling/paths.rs",
+        "crates/jj-store-server/src/agent_execution/tooling/status.rs"
+      ],
+      "destinations": [
+        "scripts/prepare-ai.mjs",
+        "src/components/ai/settings/AgentClientsSettings.svelte",
+        "src/components/ai/settings/AgentClientSummary.svelte",
+        "src/components/ai/settings/ClientSettingsCard.svelte",
+        "src/components/ai/settings/ClientSettingsFooter.svelte",
+        "src/components/ai/settings/ClientSettingsEmpty.svelte",
+        "src/lib/ai/settings/clients.svelte.ts",
+        "src-tauri/src/ai/tooling"
+      ],
+      "license": "Apache-2.0",
+      "use": "Copied and adapted verified helper delivery, installed runtime rows, update confirmation and bounded private npm tooling. Design Core Avatar/Badge replace Community presentation. Desktop owns native admission, device receipts and settings lifecycle; no jj-store server or browser dependency."
     }
   ],
   "copies": [

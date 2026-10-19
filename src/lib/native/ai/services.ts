@@ -1,3 +1,8 @@
+import {
+  AgentClients,
+  type ClientStatus,
+  type ClientOutcome,
+} from "../../ai/settings/clients.svelte.ts";
 import { NativeCaptureSources } from "./capture-sources.ts";
 import type { App } from "@lapis-notes/api";
 import { invoke } from "@tauri-apps/api/core";
@@ -58,6 +63,42 @@ export function createNativeAi(
     allowed,
   );
   const background = new BackgroundWork(app.notifications, "ai");
+  const clients = new AgentClients(
+    {
+      status: () =>
+        background.run("Checking installed AI clients", () =>
+          clientCall<ClientStatus>({ type: "status" }),
+        ),
+      install: (request) =>
+        clientCall<ClientOutcome>({ type: "install", request }),
+      outcome: async (request) => {
+        const outcome = await clientCall<ClientOutcome>({
+          type: "outcome",
+          request,
+        });
+        if (outcome.state === "completed") scope.invalidateAdmission();
+        return outcome;
+      },
+    },
+    (error) =>
+      app.notifications.notify({
+        id: "ai-clients",
+        title: "AI clients",
+        source: "ai",
+        severity: "error",
+        message: error instanceof Error ? error.message : String(error),
+      }),
+    () => background.begin("Installing AI client"),
+  );
+  function clientCall<T>(action: Record<string, string>): Promise<T> {
+    if (!allowed())
+      return Promise.reject(
+        new Error("AI client management requires a trusted workspace"),
+      );
+    return native("desktop_ai_clients", {
+      request: { sessionId: vault.sessionId, action },
+    });
+  }
   const parser = new NativeCommandParser();
   const reported = new WeakSet<Error>();
   const bridge = ports.tools
@@ -107,6 +148,7 @@ export function createNativeAi(
   let closing: Promise<void> | undefined;
   function close(mode: AiLeaveMode): Promise<void> {
     scope.fence();
+    clients.destroy();
     return (closing ??= (async () => {
       await Promise.all([
         models.close(),
@@ -123,6 +165,7 @@ export function createNativeAi(
     }));
   }
   return {
+    clients,
     runtime,
     appToolBridge: bridge,
     models: {

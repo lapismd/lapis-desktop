@@ -53,6 +53,10 @@ export class AdmittedAiTransport implements AcpTransport {
       return action(this.#raw);
     });
   }
+  invalidateAdmission(): void {
+    this.#admission = undefined;
+    this.#targetCount = undefined;
+  }
   targets() {
     return this.#run(async (raw) => {
       const targets = await raw.targets();

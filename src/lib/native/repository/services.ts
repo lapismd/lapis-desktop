@@ -1,3 +1,4 @@
+import { nativeIndexedSearch } from "./indexed-search.ts";
 import type { HistoryClient } from "@lapismd/jj-history";
 import { tauriHistory } from "@lapismd/jj-history/tauri";
 import { invoke } from "@tauri-apps/api/core";
@@ -130,10 +131,18 @@ export function createNativeRepository(
     };
   }
   const search = nativeSearch(vault.sessionId, call);
+  const indexed = nativeIndexedSearch(vault.sessionId, call);
   return {
     adoption: nativeAdoption(vault.sessionId, call),
     storage: nativeStorage(vault.sessionId, call),
-    search: { page: (request) => run(() => search.page(request)) },
+    search: {
+      page: (request) => run(() => search.page(request)),
+      indexed: {
+        step: () => track(() => indexed.step()),
+        query: (request) => track(() => indexed.query(request)),
+        context: (request) => track(() => indexed.context(request)),
+      },
+    },
     sync: nativeSync(vault.sessionId, call),
     remote: nativeRemote(vault.sessionId, call),
     forges: nativeForges(call),

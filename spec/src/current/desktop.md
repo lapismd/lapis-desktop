@@ -5,10 +5,8 @@ wrapping: E-REPO-044. E-REPO-035–041 retain backup authority. E-AI-056 retains
 LD-DESK-005 and [local imports](ai-imports.md). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
-Notes starts App-owned watching after metadata/views; leave drains it before
-persistence/teardown and resumes a live App on failure (LD-FILE-002/003). M6
-public Search/Graph native settings recovery and metadata follow
-`navigation.md`.
+App-owned watching starts after metadata/views and drains before leave; failure
+resumes the live App (LD-FILE-002/003). M6 Search/Graph follows `navigation.md`.
 
 E-AI-059–061 retain LD-DESK-001/LD-HOST-001 for nested AI/file views.
 
@@ -51,10 +49,9 @@ Plugin assets and Terminal follow [plugins](plugins.md).
 | LD-REC-001     | Startup failure MUST retain the failed phase, complete message and stack, copyable diagnostic, Retry, vault management, optional-plugin disablement, layout skip and explicit saved-layout reset actions. Retry MUST finish owned teardown before creating a fresh App for the admitted vault.                                                                                                                                                  |
 | LD-REC-002     | Safe Mode MUST use session-scoped AppSafeModeState across renderer reloads without changing saved configuration merely by entering recovery. Its shared banner MUST describe restrictions, offer metadata and Search rebuilds and a normal restart that clears recovery. Unavailable community and notebook controls MUST remain absent.                                                                                                        |
 
-The product name is Lapis Notes Preview and the application identifier is
-`com.lapismd.lapis-desktop.preview`. Development Vite binds literal loopback on
-port 1431. Production loads bundled assets through Tauri's local application
-protocol and permits no network connection except native IPC.
+Lapis Notes Preview uses `com.lapismd.lapis-desktop.preview`. Vite binds
+loopback on port 1431. Production loads bundled assets through Tauri's local
+application protocol and permits no network connection except native IPC.
 
 ## Source organization
 
@@ -346,3 +343,6 @@ or replacement action surface.
 
 [Native qualification](native-acceptance.md) retains AI/repository gates. Local
 participant names, delivery and queues retain native admission.
+
+Verified Lapis AI helpers ship as application resources; device adapters remain
+installation-owned. See [client delivery](ai-clients.md).

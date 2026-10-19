@@ -364,3 +364,7 @@ native/provider gates and Partial statuses. Focused UI delivery is complete.
 E-AI-064 adds shared chat scroll recovery with controlled activity presentation.
 M10.2/M8.5 retain their original gates; no native/provider qualification
 changes.
+
+E-AI-065 adds bundled helper delivery, installed-client settings and startup
+repair. E-REPO-045 integrates indexed history into Search. Original gates
+remain.

@@ -4,9 +4,9 @@
   "version": "0.1.0",
   "identifier": "com.lapismd.lapis-desktop.preview",
   "build": {
-    "beforeDevCommand": "pnpm exec vite",
+    "beforeDevCommand": "pnpm ai:prepare -- --reuse && pnpm exec vite",
     "devUrl": "http://127.0.0.1:1431",
-    "beforeBuildCommand": "pnpm build",
+    "beforeBuildCommand": "pnpm ai:prepare -- --reuse && pnpm build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -47,6 +47,9 @@
     "icon": ["icons/icon.png", "icons/icon.icns"],
     "macOS": {
       "minimumSystemVersion": "13.0"
+    },
+    "resources": {
+      "resources/lapis-ai/": "lapis-ai/"
     }
   }
 }

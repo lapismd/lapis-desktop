@@ -4,6 +4,7 @@ mod backup_provider;
 pub(crate) mod backup_restore;
 pub(crate) mod commands;
 pub(crate) mod forges;
+pub(crate) mod indexed_search;
 mod policy;
 mod publication;
 pub(crate) mod remote;

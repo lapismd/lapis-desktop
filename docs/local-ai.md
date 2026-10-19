@@ -16,28 +16,27 @@ prior feedback keeps its original reply controls and source context. Older
 captures without an exact parent keep their existing Sent state; reopening does
 not rewrite them or send anything.
 
-Install the official `@agentclientprotocol/codex-acp` adapter from npm in a
-device-owned location, and authenticate Codex using its normal native login.
-Keep credentials out of the vault and runtime configuration.
+The application ships verified Lapis ACP, agent, tool and compute helpers.
+Development uses `pnpm ai:prepare` to build and stage them; `pnpm dev` verifies
+the staged bundle before opening the app. To stage an already verified bundle,
+use `pnpm ai:prepare -- --bundle /absolute/path/to/bundle`. Installed apps read
+helpers from their own resources and do not require a source checkout.
 
-Create `ai-runtime.json` in the preview application's native data directory
-(`~/Library/Application Support/com.lapismd.lapis-desktop.preview` on macOS):
+Open Settings → AI → Installed clients to list detected adapters/CLI versions,
+refresh availability, and explicitly install or update Codex in the private
+device tooling directory. The flow and version pins are adapted from jj-store.
+Node.js 22+ and npm must be available on the device; authentication remains
+Codex's normal native login and is separate from installation. Other clients
+keep explicit setup/admission boundaries. No global tools are replaced.
 
-```json
-{
-  "version": 1,
-  "bundle": "/absolute/path/to/verified/lapis-ai-bundle",
-  "path": ["/absolute/path/to/adapter/node_modules/.bin", "/usr/bin", "/bin"]
-}
-```
-
-The bundle must have its verified `runtime-manifest.toml` and matching platform
-helpers. PATH directories must exist, be absolute, include `codex-acp`, and
-include any interpreter required by the adapter. Up to eight entries are
-accepted. The configuration is limited to 16 KiB; symlinks and additional fields
-are refused. Restart after changing it. Without configuration, AI remains
-unavailable. Preparation and bundle hashing run on a blocking worker; model
-discovery reports progress through the App status API.
+Existing device `ai-runtime.json` configurations remain supported in
+`~/Library/Application Support/com.lapismd.lapis-desktop.preview` on macOS.
+`version` remains 1; `bundle` and `path` are optional explicit overrides. A
+selected managed client takes precedence over legacy executable paths. Missing
+directories and verification failures identify the path and repair action.
+Remove transient checkout references when moving development workspaces. Keep
+credentials out of this file. Preparation and hashing run on blocking workers;
+discovery and installation report through the App status API.
 
 Open a trusted vault, enable AI, select Codex and choose a model advertised by
 the agent. Codex must confirm its advertised user-approval (`read-only`) mode

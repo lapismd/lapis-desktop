@@ -28,8 +28,9 @@ retained. Invalid active roots identify exactly their retired generation for
 scoped cleanup. Native caller/origin checks and target policy remain host-owned;
 the renderer cannot choose a root, executable, environment or generation.
 
-Ordinary builds admit only explicitly configured local-file Codex targets. The
-exact main ACP-session grant permits the scoped protocol without executable
+Ordinary builds admit only explicitly configured local-file Codex targets.
+[Installed clients and bundled helpers](ai-clients.md) own delivery and repair.
+The exact main ACP-session grant permits the scoped protocol without executable
 selection. The two admit/release commands accept only a vault token or reload
 flag, reject surplus authority fields and derive window/origin from Tauri.
 Pending scopes stay unavailable until prior worker cleanup succeeds. Failed
@@ -372,26 +373,24 @@ indexes must be non-negative safe integers. Projection and offline reads retain
 them without inventing provider sequences or native acknowledgements. The SDK
 acknowledges only after the complete consumer callback returns; a coverage
 failure remains unknown. This renderer prerequisite does not select production
-native privacy, admit a target or enable JJ persistence.
-
-The [local Codex profile](../../../docs/local-ai.md) uses vault-file transcripts
-and the SDK's explicit unprocessed event profile, without a JJ capture writer.
-JJ capture requires an explicit backend and rechecks current
-physical-vault/window admission and exact generation; it never falls back. The
-adapter constructs native privacy policy with an injected durable sink; it
-chooses no paths or backend. A separate debug-only profile exercises real
-scanner/path/credential handling through native transport with a private fixture
-sink and owned temporary cache. That profile does not admit production targets
-or qualify JJ publication.
-
-The native service journal implements the shared selected-store capture port
-under an exclusive private profile lease. It retains only checked sanitized
-candidate/preparation/confirmation DTOs, rechecks injected current admission
-around bounded IO and atomically syncs each monotonic transition. No detached
-write survives a dropped journal future. Private scope records retain opaque
-capture context and a provider fingerprint; raw device paths and credentials are
-excluded. Constructing the journal does not select a Notes conversation backend,
-admit a target or replace the required native callback drain.
+native privacy, admit a target or enable JJ persistence. The
+[local Codex profile](../../../docs/local-ai.md) uses vault-file transcripts and
+the SDK's explicit unprocessed event profile, without a JJ capture writer. JJ
+capture requires an explicit backend and rechecks current physical-vault/window
+admission and exact generation; it never falls back. The adapter constructs
+native privacy policy with an injected durable sink; it chooses no paths or
+backend. A separate debug-only profile exercises real scanner/path/credential
+handling through native transport with a private fixture sink and owned
+temporary cache. That profile does not admit production targets or qualify JJ
+publication. The native service journal implements the shared selected-store
+capture port under an exclusive private profile lease. It retains only checked
+sanitized candidate/preparation/confirmation DTOs, rechecks injected current
+admission around bounded IO and atomically syncs each monotonic transition. No
+detached write survives a dropped journal future. Private scope records retain
+opaque capture context and a provider fingerprint; raw device paths and
+credentials are excluded. Constructing the journal does not select a Notes
+conversation backend, admit a target or replace the required native callback
+drain.
 
 Ordinary preparation uses the current JJ owner handle and private native IDs.
 The repository topic governs its single ThreadStore publication and receipt

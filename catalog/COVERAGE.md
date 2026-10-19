@@ -782,14 +782,16 @@ and failure/toast recovery. The original request is asserted throughout; catalog
 services cannot publish. Native receipt/replay proofs remain separate. Visual
 review and cold native/provider gates remain pending.
 
-Repository history search / TextAndFileRestore, MetadataAndFilters,
-OlderHistory, NoMatches, Loading and FailureAndRecovery exercise the production
-plugin registration/search panel, fixed-anchor continuation, exact native
-selection, restore preview/apply, real App feedback and progress. Search rows
-copy/adapt jj-store's maintained command result composition; provenance is in
-docs/provenance.json. File results open the maintained blame view; checkpoints
-open JJ Log. Full native search/cache/identity proofs remain source-owned.
-Visual review and cold native-app/provider acceptance remain open.
+Repository history search / ExactFileVersion, MetadataAndFilters, OlderHistory,
+NoMatches, Loading and FailureAndRecovery use the existing Search plugin in its
+real workspace shell. They cover history scope, incremental continuation,
+version-changing author/date filters, representative skeletons, failure/toast
+retry and exact immutable activation. File versions open blame; metadata-only
+checkpoints open JJ Log. Source Search stories independently cover content
+deduplication and retained disclosure/context during page arrival. The cold
+native indexed-search test covers persisted projection/IPC and preserved later
+disk edits. Restore UI and wider native/provider acceptance remain separate;
+visual review remains pending.
 
 Repository backup accounts / ForgejoToken extends the maintained public
 account/settings composition with explicit HTTPS instance/PAT setup. Existing
@@ -863,3 +865,11 @@ E-AI-064; visual-pending.
 paragraphs and an unbroken path. It verifies default wrapping, logical-line text
 preservation, virtual-group alignment on resize/toggle and saved on/off choices
 after closing/reopening the pane. E-REPO-044; visual-pending.
+
+## Installed AI clients
+
+`Desktop/AI installed clients` mounts the production Installed clients custom
+field within AI plugin settings. Installed, update confirmation/cancellation,
+update/refresh, loading and discovery-failure states adapt jj-store runtime
+rows. `Desktop/Repository history search/CurrentFiles` verifies current rows and
+the actual bounded workspace viewport. All remain visual-pending.

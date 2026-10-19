@@ -102,6 +102,12 @@ pub async fn desktop_backup_storage(
         .await;
     }
     let _mutation = repository.remote_mutations.lock().await;
+    let _search = repository
+        .search_slots
+        .clone()
+        .acquire_owned()
+        .await
+        .map_err(|_| failure("History search is closed"))?;
     repository
         .backups
         .close(host.inner().clone(), &request.session_id)

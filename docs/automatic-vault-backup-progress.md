@@ -235,3 +235,9 @@ deferred.
 - [x] Separate Backup and synchronisation section with tinted table headers and
       white light-theme body rows/footers (E-REPO-041). Existing settings source
       values, account cleanup and background work ownership are retained.
+
+E-REPO-045 replaces separate history search with Current files, History and
+Everything in the existing Search view. A disposable native index emits bounded
+worker batches independently of capture; exact historical targets remain owned
+by Repository History. Its cold IPC proof is separate from full visible restore
+and live-provider qualification.

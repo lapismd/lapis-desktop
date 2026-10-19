@@ -8,9 +8,8 @@ imports; LD-REPO-001/002/003 pins, identity and publication remain unchanged.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.
-E-REPO-024/025 and E-CATALOG-009/010/012 govern footer status/clearance in
-[repository navigation](repository-navigation.md); read authority stays
-unchanged.
+E-REPO-024/025 and E-CATALOG-009/010/012 govern footer status/clearance
+([navigation](repository-navigation.md)); read authority is unchanged.
 
 ## Requirements
 
@@ -70,14 +69,15 @@ token; renderer state cannot supply paths, cache policy or generations. History
 is independent of AI. Opening a view admits read access lazily and never
 initializes a repository or captures dirty working files.
 
-The view names its exact operation pin and revision comparison. Refresh observes
-heads without moving an existing selection; multiple initial heads require an
-explicit choice. Bounded commit and changed-path pages remain within that pin.
-Merge revisions require an explicit parent comparison. Binary, conflict,
-structural and bounded-content refusals stay unavailable, never empty diffs.
-Design Core owns diff rendering. Requests retain their selection identities and
-stale responses cannot replace a newer selection. Preparation polling is bounded
-and stops on selection changes or closure; failed reads require explicit retry.
+Unified Search follows [vault backup](vault-backup.md). The view names its exact
+operation pin and revision comparison. Refresh observes heads without moving an
+existing selection; multiple initial heads require an explicit choice. Bounded
+commit and changed-path pages remain within that pin. Merge revisions require an
+explicit parent comparison. Binary, conflict, structural and bounded-content
+refusals stay unavailable, never empty diffs. Design Core owns diff rendering.
+Requests retain their selection identities and stale responses cannot replace a
+newer selection. Preparation polling is bounded and stops on selection changes
+or closure; failed reads require explicit retry.
 
 Restored JJ and operation-log views share one bounded preparation queue over the
 native worker. A second view waits for the prior preparation's terminal status

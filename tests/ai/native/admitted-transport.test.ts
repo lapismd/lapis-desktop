@@ -58,6 +58,16 @@ describe("App-owned admitted ACP transport", () => {
     expect(f.release).toHaveBeenCalledWith(false);
     await expect(f.scope.targets()).rejects.toThrow(/closed/);
   });
+  it("prepares new client selection without revoking retained transport", async () => {
+    const f = fixture();
+    await f.scope.targets();
+    f.scope.invalidateAdmission();
+    await f.scope.targets();
+    expect(f.activate).toHaveBeenCalledTimes(2);
+    expect(f.create).toHaveBeenCalledTimes(1);
+    expect(f.release).not.toHaveBeenCalled();
+    await f.scope.dispose(false);
+  });
   it("closing an unused service neither admits nor releases another owner", async () => {
     const f = fixture();
     await f.scope.dispose(true);

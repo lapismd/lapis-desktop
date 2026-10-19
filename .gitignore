@@ -10,3 +10,5 @@ spec/book/
 storybook-static/
 test-results/
 playwright-report/
+
+src-tauri/resources/lapis-ai/

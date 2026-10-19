@@ -344,3 +344,6 @@ E-CATALOG-012 verifies path tooltips, footer fades and popover clearance.
 E-CATALOG-013 adds core listing exclusions and compact ring-free composition
 through public packages. Native/plugin ownership and release gates stay
 unchanged.
+
+Restored Terminal tabs state that no shell is running and direct the user to
+Start.

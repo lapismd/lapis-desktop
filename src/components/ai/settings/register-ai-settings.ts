@@ -1,3 +1,4 @@
+import AgentClientsField from "./AgentClientsField.svelte";
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from Lapis register-ai-settings; see ../../../lib/ai/NOTICE.md.
 import type { Plugin } from "@lapis-notes/api";
@@ -18,6 +19,7 @@ import {
 import type { AiSettingsStore } from "../../../lib/ai/settings/settings-store.ts";
 
 type SettingsOwner = Pick<Plugin, "app" | "register"> & {
+  clients?: import("../../../lib/ai/settings/clients.svelte.ts").AgentClients;
   settings: AiSettingsStore;
   models: AiModelCatalog;
   report(error: unknown): void;
@@ -50,11 +52,23 @@ export function registerAiSettings(plugin: SettingsOwner): void {
     },
     subscribe: (listener: () => void) => settings.subscribe(() => listener()),
   };
-  const register = () =>
-    controller.settings.registerDefinition({
-      section: createAiSettingsSection(app, settings.get()),
-      source,
-    });
+  const register = () => {
+    const section = createAiSettingsSection(app, settings.get());
+    const management = plugin.clients;
+    if (management)
+      section.fields = [
+        {
+          id: "ai.clients",
+          type: "custom",
+          title: "Installed clients",
+          presentation: "full-width",
+          component: AgentClientsField,
+          management,
+        } as import("@lapis-notes/api").WorkspaceCustomSetting,
+        ...(section.fields ?? []),
+      ];
+    return controller.settings.registerDefinition({ section, source });
+  };
   section = register();
   const refresh = () => {
     if (disposed) return;

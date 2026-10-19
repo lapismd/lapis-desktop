@@ -92,6 +92,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::terminal::desktop_terminal_release,
             crate::host::ai::user_commands::desktop_ai_user_commands,
             crate::host::ai::admission::desktop_ai_admit,
+            crate::host::ai::clients::desktop_ai_clients,
             crate::host::ai::imports::commands::desktop_ai_imports,
             crate::host::ai::admission::desktop_ai_release,
             crate::host::ai::backends::commands::desktop_ai_backends,
@@ -103,6 +104,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::repository::remote::desktop_backup_remote,
             repository::sync::desktop_backup_sync,
             repository::search::desktop_backup_search,
+            repository::indexed_search::desktop_backup_history_search,
             repository::storage::desktop_backup_storage,
             repository::adoption::desktop_backup_adoption,
             repository::sources::desktop_repository_sources,
@@ -148,6 +150,21 @@ pub fn run() -> tauri::Result<()> {
             let ai_config =
                 std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
                     .join("profile/ai-runtime.json");
+            #[cfg(not(feature = "e2e"))]
+            {
+                let packaged = app.path().resource_dir()?.join("lapis-ai");
+                let bundle = if packaged.is_dir() {
+                    packaged
+                } else if cfg!(debug_assertions) && !cfg!(feature = "custom-protocol") {
+                    std::path::PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("resources/lapis-ai")
+                } else {
+                    packaged
+                };
+                ai.configure_bundle(bundle)?;
+            }
+            app.manage(lapis_desktop::ai::tooling::Tooling::open(
+                ai_config.parent().unwrap().to_owned(),
+            )?);
             ai.configure_file_profile(ai_config, app.path().home_dir()?)?;
             ai.initialize(
                 app.state::<crate::host::state::NativeHost>()
