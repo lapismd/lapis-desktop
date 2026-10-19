@@ -1,136 +1,73 @@
 # Migration inventory and progress
 
-E-REPO-023–025/E-AI-039–041 retain UI scope. M14 backup, restore, search,
-forges, storage, adoption and plugin settings are integrated (E-REPO-035–041).
-LD-MIG-002 native/provider, visual and release gates remain unchanged.
+## Current checkpoint — 2026-10-19
 
-E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
-LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and
-restart recovery stay pending.
+The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and
+[main task ledger](progress/milestones.md) now include the M13 repository and
+M14 automatic-backup workstreams. M0–M9 original gates and M10.1/M13.1/M13.2 are
+complete. M7.3 ordinary native pop-outs remain Planned and M8.5 retains its
+presentation gate. M10.2/M13.3 managed conversation/execution, context/skills
+and restart acceptance remain In progress. Native store/privacy/journal
+ownership, exact receipt recovery and bounded transcript reads already have
+evidence; shared AI transcript UI is adopted. M10.3 tools/credentials, M10.4
+compute, M11 distribution and M12 cutover remain Planned.
 
-E-REPO-016 records the focused [responsiveness slice](background.md). LD-MIG-002
-and original M13/M10.2 gates and statuses remain unchanged.
+[Automatic backup](progress/vault-backup.md) has seven implemented stages
+integrated into main: vault-owned external JJ history, internal/external
+capture, restore, GitHub/Forgejo sync, historical search, optional root storage
+and original-history adoption. Account and backup controls are registered plugin
+Settings with forge icons and table-style sections (E-REPO-039–041). Focused
+source/native, renderer, catalog/accessibility, type and renderer-build checks
+pass as recorded. Cold actual-app capture/reopen/close/crash/restore,
+search/storage/adoption and real-provider sign-in/push/pull/recovery remain
+unqualified; final integration/UI has no fresh native review-app acceptance.
+M14/M14.1–7 remain Partial, with no active implementation stage.
 
-E-REPO-015 qualifies reviewed production UI (NOTES-05I2B/2C/3B/6). LD-MIG-002
-progress and original M13 gates stay unchanged. Native queries, evolution/writes
-and managed conversation/restart remain separate. Broader qualification and
-visual approval are deferred by the user.
+E-REPO-042 reconciles the roadmap, plugin plan, task next actions and generated
+summary under unchanged LD-MIG-002/LD-GOV-004. The summary lists completed and
+open gates without inferring current activity from Partial/In progress or table
+order. Task pages alone own completion; no status, dependency, requirement or
+original gate is changed. The 2026-10-17 pause was followed by resumed delivery.
+This documentation refresh starts no implementation or acceptance runs.
 
-E-CATALOG-008 qualifies NOTES-05I0B managed preview commands and cache
-safeguards, with 18 focused/242 Node and 804 catalog checks. NOTES-05I0A/B
-complete the preview workflow; Op Log endpoints and native conversation, restart
-and visual gates stay open.
+## Historical checkpoints
 
-E-REPO-011 qualifies NOTES-05I2A JJ parent Command View cards and NOTES-05I0A
-owned-runtime preview reload. Operation/revision selectors remain open; the
-preview workflow is qualified above. M13.2 stays Done; M13/M13.3, whole-view
-parity and visual approval retain their gates.
+These records describe their own slices. Their earlier next actions do not
+replace the current checkpoint or task ledger; committed evidence is immutable.
 
-E-REPO-009 records NOTES-05H compact JJ Log/Op Log headers matching jj-store.
-Original history pins and native conversation gates remain unchanged.
+- E-REPO-002 completes M13.1 admission. E-REPO-003/005 add owned history UI,
+  public-package/catalog and pane-relative qualification. E-REPO-004 records the
+  blocked native-focus attempt; E-REPO-006 subsequently completes M13.2's
+  original visible native/restored-pin gate. Recoverable JJ-backed chat remains
+  M13.3.
+- E-REPO-007/008 add Column Canvas JJ/Op Log and restore public AppShell tokens;
+  E-REPO-009/010 cover compact headers, stacked operations and file diffs.
+  E-REPO-011 adds parent Command View and preview reload. E-CATALOG-008
+  completes NOTES-05I0A/B with 18 focused/242 Node and 804 catalog checks. Later
+  UI parity, native endpoints and conversations retain separate evidence and
+  gates.
+- E-REPO-015 qualifies reviewed production UI; E-REPO-016 covers responsiveness;
+  E-REPO-017/018 add file history/blame/sidebar; E-REPO-023–025 retain UI scope.
+  Visual approval and broader qualification are separate from these checks.
+- E-AI-024/025 add lazy persistence injection and shared vault admission.
+  E-AI-031/032/033 add private journal, backend profile and host ownership;
+  E-AI-034 retains physical admission through reload; E-AI-035/036 add ordinary
+  native preparation/receipts and selected-store capture construction.
+  E-AI-037/038 qualify bounded pinned conversation reads/continuation. Earlier
+  statements that these prerequisites needed implementation are superseded;
+  managed renderer chat and native restart acceptance remain open.
+- E-AI-039–041 adopt shared transcript presentation, Document default and saved
+  per-vault Classic while retaining requests/drafts and existing controls. UI
+  mocks do not qualify managed provider execution or durable chat recovery.
+- E-CATALOG-005/006/007 cover Problems/recovery, compact merge controls and
+  source-owned reading preview containment. M8.5 retains deferred source/catalog
+  and native acceptance; this does not freeze unrelated later workstreams.
 
-E-AI-037/038 record bounded native conversation reads/continuation with
-same-publication selection and lossless integer text. Renderer projection and
-managed execution/chat/restart remain open; M13/M13.3 keep their original gates.
-
-E-AI-036 records NOTES-07H ordinary selected-store processor construction,
-native privacy/journal ownership and real Agent/Thread receipts. Executable and
-credential admission, runtime dispatch, renderer persistence and managed
-chat/restart retain their original open gates. M13/M13.3 stay In progress.
-
-E-AI-035 records NOTES-07G ordinary native conversation preparation and exact
-receipt recovery. Managed processor, renderer persistence and chat/restart
-remain NOTES-07; M13/M13.3 and original gates remain unchanged.
-
-E-REPO-007 records the requested NOTES-05F Column Canvas History and independent
-Op Log UI slice. Original M13 history/conversation gates are unchanged; real
-store/processor and managed chat/restart remain pending in NOTES-07.
-
-E-REPO-008 corrects the primary review preview and restores public AppShell
-surface tokens. M13.2 stays Done; M13/M13.3 and their original gates stay open.
-
-E-AI-034 records retained physical admission and exact native capture permits
-through renderer reload and old-token closure. This is the NOTES-07F2 lifetime
-prerequisite; M13/M13.3 keep their original gates. The real store processor,
-renderer persistence and managed conversation/restart still require adoption.
-
-E-AI-033 qualifies native backend ownership/IPC and its admission/closure
-transitions. Renderer persistence, managed capture and chat/restart remain
-pending within M13.3; original statuses and gates are retained.
-
-E-AI-032 qualifies native backend profiles and owner fencing/drain as another
-M13.3 prerequisite. Ordinary host/renderer selection and managed conversation
-capture remain pending; original milestones and gates are unchanged.
-
-E-AI-031 adds the Notes private capture journal prerequisite and verifies shared
-capture against actual JJ Agent/Thread publication, privacy and receipt-only
-recovery. M13/M13.3 stay In progress with their original gates; per-vault
-backend selection, native callback ownership/drain and packaged-app restart
-remain open.
-
-The requested M8.5 shell/story review consumes local Design Core 0.5.1 while
-preserving existing desktop contracts. It adds editable Problems-based conflict
-review, shared recovery presentation and product-only Terminal previews. Merge
-settings use compact controls with selected backgrounds (E-CATALOG-005/006).
-Reading previews now fill their pane through the source-owned Markdown adapter
-(E-CATALOG-007). Suites and native builds stay deferred; AI remains paused.
-
-E-REPO-002 completes M13.1's original native admission gate. M13 and M13.2
-remain In progress; visible Notes history/diffs and recoverable JJ-backed chat
-remain required. The shared delivery checklist in jj-store reports these slices
-without replacing this ledger or promoting fixture previews to product gates.
-
-E-REPO-003 implements the admitted history view and its public-package/catalog
-qualification. M13.2 now advances to cold visible native history and restored
-operation pins; its status and original gate remain unchanged.
-
-E-REPO-004 keeps the new actual-window history scenario pending while its
-unresolved native focus condition prevents headed interaction. Compilation and
-the 692-check catalog pass do not substitute for this original native gate.
-
-E-REPO-005 adds pane-relative history presentation qualification under
-LD-REPO-004. It keeps the separate visible native/restoration gate unchanged.
-
-The reusable workflow implementation resumes after the earlier review
-checkpoint. M10.2 adds a lazy conversation-persistence injection seam while
-retaining its original native-chat gate. Legacy vault-file conversations keep
-their existing backend. A receipt-aware JJ backend and native capture ownership
-still require implementation and separate downstream acceptance.
-
-The task ledger alone owns current statuses and selected completion evidence.
-Root `MIGRATION.md` is its generated projection; `PLAN.md` retains every
-original milestone gate. Component success, bookkeeping and screenshots cannot
-replace those gates. The user authorized completion of the current slice
-followed by all M8–M10 plugin-plan stages on 2026-10-17. Commit each verified
-slice. The latest user instruction pauses after the current Notes AI-binding and
-initial-progress correction, then opens the ordinary app for review. Resume only
-when requested: M10.2 execution/context/skills/recovery, M10.3 native tools and
-credentials, M10.4 optional compute, independent M7.3 ordinary pop-outs, then
-M11 distribution and M12 cutover. Original task gates remain unchanged.
-
-Quiet desktop checks and the mapped minimal-shell state catalog are complete
-(M0.2/M8.4). Native AI admission groundwork is selected under M10.2: caller and
-vault lifetime checks have a separate hidden-WebView API lane. Ordinary builds
-expose no AI execution targets; the exact main-window ACP-session grant cannot
-select an executable. Notes now binds admitted services; native execution,
-context/skills and recovery remain open. Full native UI qualification remains
-explicit headed work; both corrected Search consumer regressions pass in
-E-AI-022.
-
-M10.2 now binds Notes to the native AI factory and restores its optional bundled
-registration. Global command files and the retained Settings/History/Catalog
-stay App-owned; native target execution, skills/context integration and mounted
-turn recovery still require qualification. E-AI-023 records this binding slice
-without claiming the aggregate AI gate.
-
-M7.2 qualifies retained live popup projection, guarded shared close and browser
-header clearance through source-owned public archives. Its browser evidence does
-not admit ordinary Tauri windows or replace M7.3 native qualification.
-
-The immutable baseline inventory is `spec/migration-inventory.json`. It retains
-source revisions and validates without sibling checkouts. Capture fresh source
-evidence when extending it; do not treat later checkouts as the original
-baseline. Revised post-M7 destinations are recorded separately at that handoff.
+The immutable inventory `spec/migration-inventory.json` retains original source
+revisions independently of sibling checkouts. Later destinations and evidence
+extend that baseline without rewriting it. The Deno desktop remains frozen;
+M7.1/M7.2 proofs do not admit ordinary native pop-outs. Product qualification
+continues to require the original gates, including explicit headed native runs.
 
 ## Requirements
 

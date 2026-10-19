@@ -193,3 +193,5 @@ by the task ledger, not inferred from this list.
 - [Content-sized forge account menus](E-REPO-040.md)
 
 - [Separate backup settings section and table surfaces](E-REPO-041.md)
+
+- [Migration checkpoint and completion-gate reconciliation](E-REPO-042.md)

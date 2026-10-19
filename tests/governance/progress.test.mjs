@@ -51,27 +51,35 @@ const record = (overrides = {}) => ({
   ...overrides,
 });
 const requirements = new Set(["LD-GOV-004"]);
-test("migration summary separates active implementation from the oldest pending gate", () => {
+test("migration summary lists open gates without labelling deferred qualification as active work", () => {
   const tasks = [
     task("M3", { status: "Done" }),
     task("M4", { status: "In progress", next: "Full gates at M7 end" }),
     task("M5", { status: "In progress", next: "Full gates at M7 end" }),
     task("M6", { status: "In progress", next: "Qualify metadata and Graph" }),
     task("M7", { next: "Desktop integration" }),
+    task("M14.7", {
+      status: "Partial",
+      next: "Deferred native/provider qualification",
+    }),
   ];
   const summary = migrationSummary(tasks);
-  assert.match(summary, /Current work: M6 — Qualify metadata and Graph/u);
-  assert.match(summary, /Oldest pending gate: M4 — Full gates at M7 end/u);
+  assert.match(summary, /Open completion gates: M4, M5, M6, M7, M14\.7\./u);
+  assert.doesNotMatch(summary, /Current work:|Oldest pending gate:/u);
+  assert.match(
+    summary,
+    /\| M14\.7 \| Partial \| Deferred native\/provider qualification \|/u,
+  );
   assert.match(summary, /Completed: M3\./u);
   assert.doesNotMatch(summary, /Next: M4|Native services.*deferred/u);
   assert.doesNotMatch(summary, /post-M7 plugin intake remain deferred/u);
   assert.match(
     migrationSummary([task("M0.0")]),
-    /Current work: M0.0 — Run the native gate/u,
+    /Open completion gates: M0\.0\./u,
   );
   assert.match(
     migrationSummary([task("M0.0", { status: "Done" })]),
-    /No pending task/u,
+    /Open completion gates: None\./u,
   );
 });
 test("Done requires the original gate and completed prerequisites", () => {

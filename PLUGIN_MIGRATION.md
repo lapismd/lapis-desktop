@@ -5,42 +5,44 @@ one delivery sequence. It replaces the earlier separate plugin plans.
 
 ## Authorized delivery and tracking
 
-The user resumed the complete M8–M10 workstream on 2026-10-17, after the current
-M7.2 slice. M0–M7 and M7.2 retain their completed gates. M7.3 remains a separate
-ordinary-window integration task; its pending admission does not block the
-requested plugin delivery.
+As of 2026-10-19, M8/M9 and M10.1 are Done; M10.2 remains In progress. M0–M7 and
+M7.1/M7.2 retain their completed gates. M7.3 ordinary native windows remain
+Planned and M8.5 retains its separate presentation gate. The earlier 2026-10-17
+review pause was followed by resumed delivery.
 
 [PLAN.md](PLAN.md) and the
 [task ledger](spec/src/current/progress/milestones.md) schedule Stages 0–3 as
-M8, Stage 4 as M9 and Stages 5–6 as M10. M9 and M10 are in scope. Continue
-through every stage, recording and committing each verified slice without an
-automatic review stop unless the user requests one. The latest 2026-10-17
-instruction requests a pause after the current Notes AI-binding/initial-progress
-slice and an ordinary-app review. Stop implementation after committing that
-slice until the user resumes. M8/M9 and M10.1 are Done; M10.2 remains In
-progress, with actual execution/context/skills/recovery still open. M10.3 tools
-and credentials follow, then M10.4 optional compute. After this workstream,
-finish M7.3 ordinary pop-out integration before M11 distribution and M12
-cutover. [PLAN.md](PLAN.md#delivery-slices) records the full remaining order.
-Saving or changing this plan does not complete a product gate.
+M8, Stage 4 as M9 and Stages 5–6 as M10. AI UI/shared transcript and native
+store/privacy/read prerequisites are implemented; managed execution,
+context/skills and durable conversation/restart qualification remain open under
+M10.2/M13.3. M10.3 tools/credentials follow, then M10.4 optional compute.
+Complete independent M7.3 ordinary pop-outs before M11 distribution and M12
+cutover. See [the current checkpoint](PLAN.md#current-delivery-checkpoint).
+Record and commit verified slices; a requested pause still stops work. This
+tracking refresh starts no product work and completes no product gate.
 
-The [plugin contract](spec/src/current/plugins.md) owns behavior. The task
-ledger alone owns status; `MIGRATION.md` is generated from it. Keep
-source-to-destination story coverage and current plugin mappings with each
-stage's evidence. Preserve the captured historical inventory and committed
-evidence.
+The subsequent M14 automatic-backup workstream has all seven stages integrated
+into main, including GitHub/Forgejo accounts and backup controls in plugin
+Settings. Its [delivery ledger](spec/src/current/progress/vault-backup.md)
+separates implementation/focused checks from deferred native/provider
+acceptance. It does not revive either legacy Sync plugin excluded below.
 
-| Stage | Task  | Independently qualified result                                                    |
-| ----- | ----- | --------------------------------------------------------------------------------- |
-| 0     | M8.0  | Desktop catalog, real composition, both themes, static build and interactions/axe |
-| 1     | M8.1  | Bundled Terminal, scoped native lifecycle, retained settings and migrated stories |
-| 2     | M8.2  | Web rejects AI/Terminal activation and makes no service connections               |
-| 3     | M8.3  | Portable plugin persistence, freshness and packaged worker/WASM lifecycle         |
-| 4     | M9.1  | Verified dynamic install/update/remove, shared identity and reserved bundled IDs  |
-| 5A    | M10.1 | Reusable native ACP adapter with correlation, ownership and teardown              |
-| 5B    | M10.2 | Desktop-owned AI, preserved conversations/context/memory and migrated stories     |
-| 5C    | M10.3 | Authenticated Rust app tools, exact approvals and native credentials              |
-| 6     | M10.4 | Explicit optional compute lifecycle and mutually admitted peers                   |
+The [plugin contract](spec/src/current/plugins.md) owns behavior; the task
+ledger alone owns status and generates `MIGRATION.md`. Maintain story coverage
+and plugin mappings with evidence; preserve the historical inventory and
+records.
+
+| Stage | Task  | Gate status | Required result                                                                   |
+| ----- | ----- | ----------- | --------------------------------------------------------------------------------- |
+| 0     | M8.0  | Done        | Desktop catalog, real composition, both themes, static build and interactions/axe |
+| 1     | M8.1  | Done        | Bundled Terminal, scoped native lifecycle, retained settings and migrated stories |
+| 2     | M8.2  | Done        | Web rejects AI/Terminal activation and makes no service connections               |
+| 3     | M8.3  | Done        | Portable plugin persistence, freshness and packaged worker/WASM lifecycle         |
+| 4     | M9.1  | Done        | Verified dynamic install/update/remove, shared identity and reserved bundled IDs  |
+| 5A    | M10.1 | Done        | Reusable native ACP adapter with correlation, ownership and teardown              |
+| 5B    | M10.2 | In progress | Desktop-owned AI, preserved conversations/context/memory and migrated stories     |
+| 5C    | M10.3 | Planned     | Authenticated Rust app tools, exact approvals and native credentials              |
+| 6     | M10.4 | Planned     | Explicit optional compute lifecycle and mutually admitted peers                   |
 
 ## 1. Scope and ownership
 

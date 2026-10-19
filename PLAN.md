@@ -1,15 +1,37 @@
 # Lapis Desktop: a sliced Tauri migration
 
-## Summary and first action
+## Current delivery checkpoint
 
-**Before scaffolding or implementing anything, create
-`/Users/stevejuma/code/lapismd/lapis-desktop` and save this complete plan as
-`/Users/stevejuma/code/lapismd/lapis-desktop/PLAN.md`.** Preserve every section,
-slice, completion gate, and deferred item. Track the file in the new repository
-and link it from the migration tracker.
+As of **2026-10-19**, the standalone Jujutsu repository, private npm package,
+Tauri 2 Rust host and Svelte/Vite renderer exist. Saving this plan before
+scaffolding was the completed M0.0 task. This roadmap retains the original
+completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
+[backup ledger](spec/src/current/progress/vault-backup.md) own status.
 
-Create a standalone Jujutsu-managed repository with a private npm package, a
-Tauri 2 Rust host, and a Svelte/Vite renderer.
+| Workstream                        | Implemented and verified                                                                                                                                       | Remaining completion gates                                                                                                                         |
+| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | Ordinary native pop-outs are the separate Planned M7.3 task; M8.5 presentation acceptance remains In progress                                      |
+| AI and conversations, M10/M13     | Reusable ACP adapter, retained AI UI/shared transcript, native privacy/store ownership and bounded conversation reads implemented; M10.1/M13.1/M13.2 qualified | M10.2/M13.3 managed renderer conversation/execution, context/skills and restart recovery; M10.3 tools/credentials and M10.4 compute remain Planned |
+| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14/M14.1–7 retain Partial at cold native-app, real GitHub/Forgejo and wider qualification; visual approval remains separate                       |
+| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                                 |
+
+Repository History now includes automatic internal/external file capture,
+vault-ID-owned external JJ storage, history/blame/diffs and guarded restoration,
+historical search, synchronization, optional root storage and original-history
+adoption. Accounts and backup controls are in **Settings → Repository History**,
+with GitHub/Forgejo icons and table-style sections (E-REPO-039–041). Production
+components are reviewable in Storybook; final integration/settings slices have
+no new actual native review-app acceptance recorded.
+
+No backup implementation stage is currently active. Next useful backup work is
+fresh cold native capture/reopen/close/crash/restore/search/storage/adoption
+acceptance, then real GitHub/Forgejo sign-in, push/pull and sync/recovery. These
+are pending gates, not background jobs. Updating this plan does not start them.
+See the [delivery checklist](docs/automatic-vault-backup-progress.md) for
+focused evidence and deferred checks. The 2026-10-17 review pause was followed
+by resumed implementation; it is not the current instruction to stop.
+
+## Original target and architecture
 
 The agreed first target is **macOS ARM64: open an existing vault, browse and
 edit Markdown, save safely, and restore the session**. Keep the existing Notes
@@ -33,10 +55,9 @@ Ship Rust plus the system WebView. Node/pnpm remain development tools. Use
 The application is unreleased, so pre-release state can be reset or overwritten
 without a legacy-data migration requirement.
 
-The current source provides useful foundations: a native desktop bridge, an
-injectable database connection, and published workspace/editor packages. Two
-upstream changes are needed: recognizing `tauri-desktop` and changing the shared
-application-state default to `.lapis` throughout the app.
+The initial foundations were a native desktop bridge, an injectable database
+connection and published workspace/editor packages. M1 completed the upstream
+`tauri-desktop` classification and shared `.lapis` application-state default.
 
 ## Architecture and ownership
 
@@ -103,37 +124,37 @@ JavaScript runtime.
 Each row is a milestone or milestone task with independently verified work.
 Commit each verified task in its owning repository.
 
-| Slice                                        | Functionality delivered                                                                                                                                                                                               | Completion gate                                                                                                                                                                                                                     |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **M0.0 — Store the full plan**               | Create the new directory and save this entire plan as root `PLAN.md`, before scaffolding.                                                                                                                             | The saved document contains the complete architecture, delivery sequence, tracking rules, acceptance gates, and deferred work. Include it in the initial repository commit.                                                         |
-| **M0.1 — Governed native shell**             | Initialize the repository, toolchains, specification, tracker, CI, branded Tauri window, native controls, and development commands.                                                                                   | Cold launch, resize, drag, close, and relaunch work; a local `.app` launches without Deno; governance checks pass.                                                                                                                  |
-| **M1 — Shared runtime and state defaults**   | Add `tauri-desktop` to public runtime contracts and desktop classification. Make `.lapis` the shared application-state default for configuration, workspace/layout, hotkeys, and plugin persistence across all hosts. | Upstream regressions prove the shared `.lapis` default across every affected package and host. Build and pack verified shared-package changes locally, then validate their public archives in the Tauri app and affected consumers. |
-| **M2 — Native vault access**                 | Native Open/Create folder actions, recent-vault profiles, admitted-root filesystem operations, atomic writes, and scoped resource URLs.                                                                               | Real temporary-folder tests cover cancellation, Unicode paths, binary data, permission failures, traversal/symlink escape, and interrupted writes.                                                                                  |
-| **M3 — Working Notes session**               | Rust database bridge, explicit `App` startup, existing workspace shell, File Explorer, Source Editor, and Markdown editing/reading.                                                                                   | In the actual WebView, open a seeded vault, edit a note, verify disk content, display a local attachment, close the database, and reopen successfully. Database rollback and restart tests pass.                                    |
-| **M4 — Safe everyday use**                   | Restore the last vault and layout; flush pending saves on close, quit, reload, and vault switching; preserve dirty content after failures; detect external changes.                                                   | Cold edit → save → quit → relaunch restores content and session. Failed saves prevent silent close; external edits never silently overwrite dirty buffers; repeated switching leaves no stale sessions or subscriptions.            |
-| **M5 — File management**                     | Native watching, create/rename/move/delete, attachment import, reveal in Finder, and available system-trash behavior.                                                                                                 | UI and disk stay consistent after internal and external changes. Dirty-note rename/delete, collisions, watcher overflow/reconciliation, and teardown are covered.                                                                   |
-| **M6 — Find and navigate**                   | Search, links, backlinks, outline, tags, properties, and normal workspace navigation through existing packages.                                                                                                       | Searches and metadata reflect edits, renames, deletions, and restart; navigation opens the intended note and preserves layout.                                                                                                      |
-| **M7 — Desktop integration**                 | Full native menus and shortcuts, clipboard, notifications, About, single-instance delivery, and application URLs.                                                                                                     | Cold launch and already-running delivery pass; external links open safely; menu actions use the same application commands as the UI.                                                                                                |
-| **M8 — Desktop plugin foundation**           | After M7 qualification, implement plugin-plan Stages 0–3: desktop Storybook, bundled Terminal, web AI/Terminal retirement and remaining portable plugins/workers.                                                     | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths.                                         |
-| **M9 — Installed-plugin support**            | Implement plugin-plan Stage 4: verified registry installation, asset delivery, enable/disable persistence, compatibility and recovery, with bundled plugin IDs reserved.                                              | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app.                                                                    |
-| **M10 — Direct ACP AI and optional compute** | Implement plugin-plan Stages 5–6: desktop-owned AI and copied stories, the reusable lapis-ai Tauri adapter, direct ACP and Rust application tools; optional compute last.                                             | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification.                                           |
-| **M11 — Distribution and other platforms**   | Signed/notarized macOS distribution and update/rollback handling; then separate Linux and Windows qualification tasks.                                                                                                | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                            |
-| **M12 — Desktop cutover**                    | Make Tauri the default desktop application and retire the old desktop host. No legacy application-state import is required.                                                                                           | Every currently supported desktop capability is migrated or explicitly retired, and the replacement has no Deno runtime dependency.                                                                                                 |
+| Slice                                          | Functionality delivered                                                                                                                                                                                               | Completion gate                                                                                                                                                                                                                     |
+| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **M0.0 — Store the full plan**                 | Create the new directory and save this entire plan as root `PLAN.md`, before scaffolding.                                                                                                                             | The saved document contains the complete architecture, delivery sequence, tracking rules, acceptance gates, and deferred work. Include it in the initial repository commit.                                                         |
+| **M0.1 — Governed native shell**               | Initialize the repository, toolchains, specification, tracker, CI, branded Tauri window, native controls, and development commands.                                                                                   | Cold launch, resize, drag, close, and relaunch work; a local `.app` launches without Deno; governance checks pass.                                                                                                                  |
+| **M1 — Shared runtime and state defaults**     | Add `tauri-desktop` to public runtime contracts and desktop classification. Make `.lapis` the shared application-state default for configuration, workspace/layout, hotkeys, and plugin persistence across all hosts. | Upstream regressions prove the shared `.lapis` default across every affected package and host. Build and pack verified shared-package changes locally, then validate their public archives in the Tauri app and affected consumers. |
+| **M2 — Native vault access**                   | Native Open/Create folder actions, recent-vault profiles, admitted-root filesystem operations, atomic writes, and scoped resource URLs.                                                                               | Real temporary-folder tests cover cancellation, Unicode paths, binary data, permission failures, traversal/symlink escape, and interrupted writes.                                                                                  |
+| **M3 — Working Notes session**                 | Rust database bridge, explicit `App` startup, existing workspace shell, File Explorer, Source Editor, and Markdown editing/reading.                                                                                   | In the actual WebView, open a seeded vault, edit a note, verify disk content, display a local attachment, close the database, and reopen successfully. Database rollback and restart tests pass.                                    |
+| **M4 — Safe everyday use**                     | Restore the last vault and layout; flush pending saves on close, quit, reload, and vault switching; preserve dirty content after failures; detect external changes.                                                   | Cold edit → save → quit → relaunch restores content and session. Failed saves prevent silent close; external edits never silently overwrite dirty buffers; repeated switching leaves no stale sessions or subscriptions.            |
+| **M5 — File management**                       | Native watching, create/rename/move/delete, attachment import, reveal in Finder, and available system-trash behavior.                                                                                                 | UI and disk stay consistent after internal and external changes. Dirty-note rename/delete, collisions, watcher overflow/reconciliation, and teardown are covered.                                                                   |
+| **M6 — Find and navigate**                     | Search, links, backlinks, outline, tags, properties, and normal workspace navigation through existing packages.                                                                                                       | Searches and metadata reflect edits, renames, deletions, and restart; navigation opens the intended note and preserves layout.                                                                                                      |
+| **M7 — Desktop integration**                   | Full native menus and shortcuts, clipboard, notifications, About, single-instance delivery, and application URLs.                                                                                                     | Cold launch and already-running delivery pass; external links open safely; menu actions use the same application commands as the UI.                                                                                                |
+| **M8 — Desktop plugin foundation**             | After M7 qualification, implement plugin-plan Stages 0–3: desktop Storybook, bundled Terminal, web AI/Terminal retirement and remaining portable plugins/workers.                                                     | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths.                                         |
+| **M9 — Installed-plugin support**              | Implement plugin-plan Stage 4: verified registry installation, asset delivery, enable/disable persistence, compatibility and recovery, with bundled plugin IDs reserved.                                              | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app.                                                                    |
+| **M10 — Direct ACP AI and optional compute**   | Implement plugin-plan Stages 5–6: desktop-owned AI and copied stories, the reusable lapis-ai Tauri adapter, direct ACP and Rust application tools; optional compute last.                                             | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification.                                           |
+| **M11 — Distribution and other platforms**     | Signed/notarized macOS distribution and update/rollback handling; then separate Linux and Windows qualification tasks.                                                                                                | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                            |
+| **M12 — Desktop cutover**                      | Make Tauri the default desktop application and retire the old desktop host. No legacy application-state import is required.                                                                                           | Every currently supported desktop capability is migrated or explicitly retired, and the replacement has no Deno runtime dependency.                                                                                                 |
+| **M13 — Repository history and conversations** | Reusable admitted JJ history/diffs and privacy-aware AgentStore/ThreadStore conversation persistence.                                                                                                                 | Cold Notes history/diffs and one recoverable AgentStore/ThreadStore AI conversation in an existing Git-backed JJ vault.                                                                                                             |
+| **M14 — Automatic vault backup**               | Vault-owned external history, automatic capture, restore, historical search, GitHub/Forgejo synchronization, root storage and adoption.                                                                               | Functional automatic backup, restore, GitHub/Forgejo synchronization and historical search integrated into main workspaces                                                                                                          |
 
 **M4 completes the first useful milestone.** M0–M3 provide runnable, testable
 increments toward it. Later services do not block that milestone.
 
 M0–M9 meet their original gates, including M7.1–M7.2 and the M8 plugin
-foundation. M10.1's reusable ACP adapter is complete; M10.2 remains in progress.
-The current slice binds native AI services to Notes and fixes initial shared
-progress. It does not enable an ordinary AI execution target.
+foundation. M7.3 ordinary pop-outs remain Planned and M8.5 retains its separate
+presentation gate. M10.1's reusable ACP adapter and M13.1/M13.2
+admission/history are complete; M10.2/M13.3 managed conversations remain In
+progress. Native store construction, privacy/journal ownership, receipts and
+bounded transcript reads are prerequisites already implemented, not a completed
+managed chat flow.
 
-**Review checkpoint (2026-10-17):** the user requested a pause after this slice,
-with the ordinary desktop app opened for review. Commit the qualified slice and
-stop implementation until the user resumes. Keep unfinished tasks In progress or
-Planned; a review pause does not complete their gates.
-
-When resumed, finish the remaining work in this order:
+The remaining AI/distribution sequence is:
 
 1. **M10.2:** finish native chat execution, bootstrap/context/skills, durable
    conversation recovery, active trust revocation and cleanup; qualify remaining
@@ -159,21 +180,21 @@ retain interrupted/unknown outcomes and never replay uncertain prompts.
 M7.3 remains independent of M8–M10 and is scheduled before distribution. Do not
 repeat completed foundation work or restore the frozen Deno host.
 
-### Next workstream after M7: plugins and Storybook
+### Post-M7 plugin and Storybook sequence
 
-The complete combined plan is [PLUGIN_MIGRATION.md](PLUGIN_MIGRATION.md). Begin
-it only after M7's original gate and all deferred M4–M7 checks pass. Follow its
-order: Storybook foundation → Terminal and stories → web AI/Terminal removal →
-portable plugins and workers → installed plugins → direct ACP AI and stories →
-optional compute. Reuse already qualified M5–M7 services and Search integration
-rather than repeating them.
+The complete combined plan is [PLUGIN_MIGRATION.md](PLUGIN_MIGRATION.md). M7's
+original gate and deferred M4–M7 checks qualified its entry. The sequence
+remains Storybook → Terminal → web AI/Terminal removal → portable plugins and
+workers → installed plugins → direct ACP AI → optional compute. M8/M9 and M10.1
+are complete; reuse qualified foundation and Search services.
 
 The M8–M10 rows and detailed tasks now cover the authorized implementation. The
 canonical plugin contract, verification rows and source/evidence mappings must
 accompany each stage. Preserve historical inventory and completed gates. M9 and
 M10 remain in scope. M8/M9 and M10.1 are Done; M10.2 is In progress and
-M10.3/M10.4 remain Planned. The requested review checkpoint governs
-continuation.
+M10.3/M10.4 remain Planned. M13 adds reusable history/conversations; M14 adds
+automatic backup and forge synchronization. Their original gates are recorded
+separately; integration does not qualify deferred native/provider acceptance.
 
 AI and Terminal are bundled, desktop-owned and user-disableable; their services
 start lazily. Preserve their settings, conversations and explicit disabled

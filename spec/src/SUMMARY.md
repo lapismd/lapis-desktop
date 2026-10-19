@@ -245,3 +245,5 @@
 - [Content-sized forge account menus](history/E-REPO-040.md)
 
 - [Separate backup settings section and table surfaces](history/E-REPO-041.md)
+
+- [Migration checkpoint and completion-gate reconciliation](history/E-REPO-042.md)

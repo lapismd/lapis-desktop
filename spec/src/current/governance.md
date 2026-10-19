@@ -1,25 +1,24 @@
 # Governance
 
-E-REPO-035–038 retain LD-GOV-001/002/004 with source/account/storage audits.
-Implementation is integrated; deferred native/provider/full-suite/release gates
-remain Partial with no active implementation stage.
+E-REPO-042 reconciles migration tracking under LD-GOV-001/002/003/004. Generated
+summaries list completion and open gates, without deriving active work from
+Partial/In progress status or table order. Roadmaps separate implemented
+functionality, focused checks and remaining acceptance. All 41 task statuses,
+dependencies, requirements and original gates are retained. E-REPO-035–041
+record integrated backup and settings; native/provider/wider gates remain open.
 
-E-AI-031/032/033 qualify private journal, backend profile and native host
-boundaries. Cold Rust-process lease proof stays distinct from packaged WebView
-acceptance; M13.3 keeps its original backend, native ownership and restart
-gates.
+E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold
+Rust-process proof does not replace M13.3 packaged WebView/restart gates.
 
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
 The repository topic owns JJ reuse and exact history grants. E-REPO-003
 qualifies owned history UI and public packages; native gates remain separate.
 
-App watch startup/leave integration and native reconciliation acceptance map
-explicitly to the M5 file contract. The source-owned public archive supplies
-tree and view behavior; the host retains only startup and teardown policy.
+App watch/leave and native reconciliation map to the M5 file contract. Public
+archives supply tree/view behavior; the host owns startup and teardown.
 
-Archive rewriting is idempotent only for an exact dependency path already
-redirected to a verified tarball. Repeated pnpm hook calls preserve that
-redirect; unverified local paths and file-based peer ranges remain rejected.
+Archive rewriting is idempotent only for an exact path redirected to a verified
+tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
 
 Native readiness covers split/log-batched receipts without longer deadlines. The
 e2e entry shares early progress, then imports runtime instrumentation; ordinary
@@ -70,8 +69,8 @@ Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not
 authored source. No initial file-size exceptions exist.
 
-For the currently resumed M4–M7 delivery session only, the user requests
-targeted tests per slice and defers full repository and consumer suites until M7
+For the historical M4–M7 delivery session only, the user requested targeted
+tests per slice and deferred full repository and consumer suites until M7
 implementation is complete. Record deferred lanes and run them before aggregate
 qualification. This does not change original milestone gates or the standing
 test policy for later sessions.

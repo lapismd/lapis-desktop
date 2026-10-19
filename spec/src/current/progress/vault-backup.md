@@ -1,24 +1,43 @@
 # Automatic vault backup delivery
 
-The user approved the staged plan and isolated implementation workspaces. Heavy
-verification is deferred while getting a working version in place; focused
-checks and all outstanding lanes are recorded. M13/AI and prior visual gates are
-unchanged. The implementation is integrated into main; no stage is Active. M14.6
-focused search proofs pass; cold native qualification remains deferred. M14.5
-recovery focused checks pass; cold app/provider qualification remains deferred.
-M14.3 local restore proofs pass; cold app qualification is deferred. M14.1
-native proofs pass; cold WebView qualification remains deferred.
+## Current checkpoint — 2026-10-19
 
-| ID    | Status  | Depends     | Requirements             | Gate                                                                                                                       | Next                                   | Evidence                                                          |
-| ----- | ------- | ----------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------------- |
-| M14   | Partial | -           | LD-REPO-005              | Functional automatic backup, restore, GitHub/Forgejo synchronization and historical search integrated into main workspaces | Review integrated working version      | E-REPO-026,E-REPO-039,E-REPO-040,E-REPO-041                       |
-| M14.1 | Partial | -           | LD-REPO-005,LD-VAULT-002 | Stable vault IDs and independent external JJ history work in the native app after reopen and recent eviction               | Deferred cold identity/reopen proof    | E-REPO-026                                                        |
-| M14.2 | Partial | M14.1       | LD-REPO-005              | Open-vault internal/external capture, reconciliation and crash/close recovery work                                         | Qualify cold native lifecycle later    | E-REPO-026,E-REPO-027                                             |
-| M14.3 | Partial | M14.2       | LD-REPO-005              | Local timeline, guarded restoration, live history and independent status visibility work                                   | Deferred cold restore qualification    | E-REPO-028                                                        |
-| M14.4 | Partial | M14.3       | LD-REPO-005              | GitHub sign-in, remote setup and fresh-device restore work                                                                 | Qualify cold app/provider flow later   | E-REPO-029,E-REPO-030,E-REPO-031,E-REPO-039,E-REPO-040,E-REPO-041 |
-| M14.5 | Partial | M14.4       | LD-REPO-005              | Two-device automatic pull/merge/push preserves offline work and conflicts                                                  | Qualify cold app/provider gates later  | E-REPO-032,E-REPO-033                                             |
-| M14.6 | Partial | M14.3       | LD-REPO-005              | Historical text and metadata search opens exact restorable checkpoint versions                                             | Deferred cold search/restore proof     | E-REPO-034                                                        |
-| M14.7 | Partial | M14.5,M14.6 | LD-REPO-005              | Root storage/adoption and Forgejo work, then changes integrate into main                                                   | Deferred native/provider qualification | E-REPO-035,E-REPO-036,E-REPO-037,E-REPO-038,E-REPO-039,E-REPO-041 |
+All seven implementation stages are implemented and integrated into main. No
+stage is active. Gate statuses below remain Partial because original cold
+native-app/provider and wider acceptance has not been completed. Focused
+native/service, renderer, Storybook/accessibility, type and renderer-build
+results are recorded per stage. Final integration/settings slices have no fresh
+actual native review-app acceptance; a running Storybook is not that proof.
+M13/AI and prior visual gates remain unchanged. E-REPO-042 reconciles tracking
+without changing any task status, dependency, requirement or original gate.
+
+| ID    | Status  | Depends     | Requirements             | Gate                                                                                                                       | Next                                           | Evidence                                                                     |
+| ----- | ------- | ----------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------------------- |
+| M14   | Partial | -           | LD-REPO-005              | Functional automatic backup, restore, GitHub/Forgejo synchronization and historical search integrated into main workspaces | Cold native app, then real-provider acceptance | E-REPO-026,E-REPO-039,E-REPO-040,E-REPO-041,E-REPO-042                       |
+| M14.1 | Partial | -           | LD-REPO-005,LD-VAULT-002 | Stable vault IDs and independent external JJ history work in the native app after reopen and recent eviction               | Deferred cold identity/reopen proof            | E-REPO-026,E-REPO-042                                                        |
+| M14.2 | Partial | M14.1       | LD-REPO-005              | Open-vault internal/external capture, reconciliation and crash/close recovery work                                         | Qualify cold native lifecycle later            | E-REPO-026,E-REPO-027,E-REPO-042                                             |
+| M14.3 | Partial | M14.2       | LD-REPO-005              | Local timeline, guarded restoration, live history and independent status visibility work                                   | Deferred cold restore qualification            | E-REPO-028,E-REPO-042                                                        |
+| M14.4 | Partial | M14.3       | LD-REPO-005              | GitHub sign-in, remote setup and fresh-device restore work                                                                 | Qualify cold app/provider flow later           | E-REPO-029,E-REPO-030,E-REPO-031,E-REPO-039,E-REPO-040,E-REPO-041,E-REPO-042 |
+| M14.5 | Partial | M14.4       | LD-REPO-005              | Two-device automatic pull/merge/push preserves offline work and conflicts                                                  | Qualify cold app/provider gates later          | E-REPO-032,E-REPO-033,E-REPO-042                                             |
+| M14.6 | Partial | M14.3       | LD-REPO-005              | Historical text and metadata search opens exact restorable checkpoint versions                                             | Deferred cold search/restore proof             | E-REPO-034,E-REPO-042                                                        |
+| M14.7 | Partial | M14.5,M14.6 | LD-REPO-005              | Root storage/adoption and Forgejo work, then changes integrate into main                                                   | Deferred native/provider qualification         | E-REPO-035,E-REPO-036,E-REPO-037,E-REPO-038,E-REPO-039,E-REPO-041,E-REPO-042 |
+
+## Implementation and acceptance
+
+| Stage                | Implementation in main | Focused evidence                                   | Outstanding original acceptance                                |
+| -------------------- | ---------------------- | -------------------------------------------------- | -------------------------------------------------------------- |
+| 1 — Identity/storage | Implemented            | E-REPO-026: registry, native roots and relink      | Cold reopen/eviction and physical identity                     |
+| 2 — Capture          | Implemented            | E-REPO-026/027: worker/watcher and lifetime        | Cold internal/external capture, reconciliation and crash/close |
+| 3 — History/restore  | Implemented            | E-REPO-028: native restore and renderer/catalog    | Actual WebView restore, recovery and live follow               |
+| 4 — GitHub           | Implemented            | E-REPO-029–031/039–041: auth/remote/settings       | Real sign-in, setup and fresh-device restore                   |
+| 5 — Sync             | Implemented            | E-REPO-032/033: convergence and recovery           | Cold app/provider two-device/offline/conflict acceptance       |
+| 6 — Search           | Implemented            | E-REPO-034: immutable search and UI                | Cold exact-version search/restore                              |
+| 7 — Storage/Forgejo  | Implemented            | E-REPO-035–038: migration/adoption and integration | Cold storage/adoption and real Forgejo                         |
+
+Next acceptance proceeds through a fresh native app, then real provider flows;
+full suites/platforms/release remain deferred and visual approval is separate.
+The latest plugin-settings presentation is E-REPO-039–041; this adds no new
+native/provider qualification.
 
 The task checklist is
 [automatic-vault-backup-progress](../../../../docs/automatic-vault-backup-progress.md).
@@ -32,8 +51,9 @@ Partial.
 
 E-REPO-037 adds explicit original-history import/recovery and separate source
 readers/tabs. Focused service, renderer and catalog proof remains distinct from
-cold actual-app/provider qualification. At that slice M14.7 stayed Active;
-earlier stages stay Partial. E-REPO-038 records main integration.
+cold actual-app/provider qualification. At that historical slice M14.7
+implementation was active; its current gate status is Partial after main
+integration. E-REPO-038 records main integration.
 
 E-REPO-038 records main-workspace integration with the verified local package
 archive graph. Focused renderer/catalog checks and the production renderer build
