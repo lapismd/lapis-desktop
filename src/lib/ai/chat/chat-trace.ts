@@ -79,7 +79,8 @@ export function applyAgentEventToChatItems(
     }
     case "tool.start": {
       settleStreamingThinking(next);
-      const index = findToolItemIndex(next, event);
+      const displayId = id("tool", event.id);
+      const index = findToolItemIndex(next, event, displayId);
       const input = preferToolInput(undefined, event.input);
       if (index >= 0) {
         const current = next[index];
@@ -96,7 +97,7 @@ export function applyAgentEventToChatItems(
         }
       } else {
         next.push({
-          id: id("tool", event.id),
+          id: displayId,
           type: "tool",
           toolId: event.id,
           name: preferToolName(undefined, event.name),
@@ -111,7 +112,8 @@ export function applyAgentEventToChatItems(
     }
     case "tool.end": {
       settleStreamingThinking(next);
-      const index = findToolItemIndex(next, event);
+      const displayId = id("tool", event.id);
+      const index = findToolItemIndex(next, event, displayId);
       const output =
         event.error != null
           ? stringifyUnknown(event.error)
@@ -126,14 +128,14 @@ export function applyAgentEventToChatItems(
             server: event.server ?? current.server,
             state: event.error != null ? "error" : "completed",
             input: preferToolInput(current.input, event.input),
-            output,
+            output: output ?? current.output,
             ...source,
           };
         }
         return next;
       }
       next.push({
-        id: id("tool", event.id),
+        id: displayId,
         type: "tool",
         toolId: event.id,
         name: preferToolName(undefined, event.name),

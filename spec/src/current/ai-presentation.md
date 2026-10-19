@@ -83,8 +83,13 @@ answer links back to its captured comments. Document and Classic reuse the
 public controller's reader registrations, not private component selectors.
 Missing parents, unrelated bindings and unacknowledged context retain Sent or
 prepared state without a fabricated reply. Historical files are never
-backfilled. An unavailable reply or reader reports through one stable App
-notification and preserves the authored draft without an inline error.
+backfilled. DISCUSS-01B reuses Reply on the restored source thread. A new
+comment keeps that thread’s original anchor, while Document/Classic share its
+pending capture. Only the new authored comment is dispatched; earlier comments
+keep their own reply controls. Native selection and cold-continuation evidence
+stay separate from catalog fixtures. An unavailable reply or reader reports
+through one stable App notification and preserves the authored draft without an
+inline error.
 
 Application context stays distinct from authored text. Existing tool result
 registrations and authorized note links remain host-owned. Loading uses shared

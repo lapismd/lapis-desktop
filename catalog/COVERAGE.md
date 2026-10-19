@@ -564,6 +564,8 @@ MessageQueue and Footer exports. Source/destination fixture provenance is in
 `support/ai/transcript/REFERENCE.md` (Apache-2.0). Document/Classic are separate
 review states, independent of the Notes controller adapter. TranscriptReview
 also covers two table-row comments/context and long fenced-code folding.
+GroupedToolDisclosures opens captured tools and the real inline comment editor
+in both Document and Classic, including Escape dismissal without submitting.
 
 AI transcript adoption (NOTES-08B/E-AI-041) uses the ordinary `AiViewPanel` in
 `Shell/Transcript adoption`, with no opt-in catalog replacement. Existing Shell
@@ -625,3 +627,7 @@ production local parent/receipt projection and unchanged Design Core controls.
 Code/table/tool captures retain their original anchors; acknowledged feedback
 opens its captured answer, which links back to the same discussion. Both
 presentations restore without a provider prompt. Legacy captures remain Sent.
+
+- `Desktop/AI/Comment history/Continue restored thread` reuses the production
+  Reply composer, pending comments and Document/Classic state. Only the newly
+  authored feedback is submitted; existing saved reply links are retained.

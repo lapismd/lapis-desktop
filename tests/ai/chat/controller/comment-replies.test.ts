@@ -147,6 +147,68 @@ it("restores a replied comment from its exact parent and binding without inventi
   expect(JSON.stringify(saved)).toBe(before);
 });
 
+it.each([false, true])(
+  "keeps continued thread captures independent after cold restore (acknowledged: %s)",
+  (acknowledged) => {
+    const saved = records();
+    const contexts = capture();
+    contexts[0]!.id = "continued-batch";
+    contexts[0]!.metadata.submissionId = "continued-batch";
+    const content = JSON.parse(contexts[0]!.content);
+    content.comments[0].commentId = "continued-comment";
+    content.comments[0].text = "Please clarify this further";
+    contexts[0]!.content = JSON.stringify(content);
+    saved.push({
+      schemaVersion: 3,
+      id: "continued-feedback",
+      type: "message",
+      role: "user",
+      text: "",
+      contextBlocks: contexts,
+      agentBindingId: "accepted-binding",
+      createdAt: "2026-10-19T00:01:00.000Z",
+    });
+    saved.push({
+      schemaVersion: 3,
+      id: "continued-answer",
+      parentId: "continued-feedback",
+      type: "message",
+      role: "assistant",
+      text: "Further clarification",
+      agentBindingId: "accepted-binding",
+      createdAt: "2026-10-19T00:02:00.000Z",
+    });
+    if (acknowledged) saved.push(commentReceipt("continued-feedback"));
+    const before = JSON.stringify(saved);
+    const items = projectTranscriptToChatItems(saved);
+    const threads = restoreTranscriptComments([], items);
+    expect(threads).toHaveLength(1);
+    expect(threads[0]!.comments).toHaveLength(acknowledged ? 2 : 1);
+    expect(threads[0]!.comments[0]).toMatchObject({
+      id: "comment",
+      messageId: "feedback",
+      status: "replied",
+      replyItemId: "reply",
+    });
+    if (acknowledged)
+      expect(threads[0]!.comments[1]).toMatchObject({
+        id: "continued-comment",
+        messageId: "continued-feedback",
+        status: "replied",
+        replyItemId: "continued-answer",
+      });
+    expect(
+      projectAiTranscript(items).find((i) => i.id === "continued-answer")
+        ?.replyContext,
+    ).toEqual(
+      acknowledged
+        ? { threadId: "thread", commentIds: ["continued-comment"] }
+        : undefined,
+    );
+    expect(JSON.stringify(saved)).toBe(before);
+  },
+);
+
 it.each(["unacknowledged", "different-binding", "missing-parent"])(
   "does not infer a reply from proximity for %s history",
   (fault) => {

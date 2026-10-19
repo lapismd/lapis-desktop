@@ -5,11 +5,12 @@ import { APP_TOOL_MCP_SERVER_NAME } from "../tools/mcp-server-registry.ts";
 export function findToolItemIndex(
   items: AiChatItem[],
   event: { id: string; name: string; server?: string; input?: unknown },
+  displayId = event.id,
 ): number {
   const exact = items.findIndex(
     (item) =>
       item.type === "tool" &&
-      (item.toolId === event.id || item.id === event.id),
+      (item.toolId === event.id || item.id === displayId),
   );
   if (exact >= 0) return exact;
 

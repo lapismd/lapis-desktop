@@ -10,8 +10,11 @@ message or be sent on their own. New completed Codex answers retain their exact
 authored-message parent. Once that comment turn is acknowledged locally, use the
 comment's reply control to open the answer, including after reopening History.
 The answer also links back to its feedback. Multiple addressed agents keep
-separate reply destinations. Older captures without an exact parent keep their
-existing Sent state; reopening does not rewrite them or send anything.
+separate reply destinations. Use Reply on an existing inline comment to add
+further feedback in the same thread. Sending includes only the new comments;
+prior feedback keeps its original reply controls and source context. Older
+captures without an exact parent keep their existing Sent state; reopening does
+not rewrite them or send anything.
 
 Install the official `@agentclientprotocol/codex-acp` adapter from npm in a
 device-owned location, and authenticate Codex using its normal native login.

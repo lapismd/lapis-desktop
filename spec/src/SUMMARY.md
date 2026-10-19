@@ -230,3 +230,4 @@
   - [Local queued messages](history/E-AI-051.md)
 
 - [Local discussion reply links](history/E-AI-052.md)
+- [Native local discussion continuation](history/E-AI-053.md)

@@ -147,6 +147,67 @@ it("a failed tool drain cannot clear the local unknown intent or offer a replay"
   }
 });
 
+it("keeps a sibling panel's tool events out of empty and unbound conversations", async () => {
+  const acp = acpFixture(),
+    tools = fixture();
+  const repository = new ConversationRepository(new MemoryTranscriptStore());
+  const empty = await repository.create({ scopeDir: "Notes" });
+  const runtime = new AcpAgentRuntime({
+    ...acp.backend,
+    tools: {
+      target: (_descriptor, base) => base,
+      arm: (id, turn) => tools.bridge.arm(id, turn),
+      end: (id, turn) => tools.bridge.end(id, turn),
+    },
+  });
+  const start = vi.spyOn(runtime, "start");
+  const options = {
+    repository,
+    createConversation: () => ({ scopeDir: "Notes" }),
+    request: { agent: "agent" },
+    appToolBridge: tools.bridge,
+  };
+  const owner = new AiChatController(runtime, null, [], options);
+  const sibling = new AiChatController(runtime, null, [], options);
+  const unbound = new AiChatController(runtime, null, [], options);
+  await sibling.openConversation(empty.location);
+  acp.onPrompt = async (id: string, requestId: string) => {
+    tools.event({
+      type: "call",
+      bridgeId: start.mock.calls[0]![0].appToolSession!.bridgeId!,
+      invocationId: crypto.randomUUID(),
+      turnId: requestId,
+      name: "notes_read",
+      arguments: {},
+    });
+    await vi.waitFor(() => expect(tools.execute).toHaveBeenCalledOnce());
+    acp.emit(id, "record", requestId, { record: { status: "completed" } });
+  };
+  try {
+    await owner.submit("Read only in the owning conversation");
+    await vi.waitFor(async () =>
+      expect(
+        (await repository.read(owner.location!)).metadata.pendingTurn,
+      ).toBeUndefined(),
+    );
+    expect(
+      (await repository.read(owner.location!)).transcript.filter(
+        (e) => e.type === "tool",
+      ),
+    ).toHaveLength(1);
+    expect(sibling.items).toEqual([]);
+    expect(unbound.items).toEqual([]);
+    expect((await repository.read(empty.location)).transcript).toEqual([]);
+    expect(tools.execute).toHaveBeenCalledOnce();
+  } finally {
+    await owner.close();
+    await sibling.close();
+    await unbound.close();
+    await tools.bridge.close();
+    tools.host.close();
+  }
+});
+
 it("Stop retains a cancelled app-tool capture after an earlier parented answer", async () => {
   const acp = acpFixture(),
     tools = fixture("write");

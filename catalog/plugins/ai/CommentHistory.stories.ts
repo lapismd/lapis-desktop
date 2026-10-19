@@ -114,3 +114,59 @@ export const LinkedCodeTableAndToolReplies: Story = {
     expect(c.queryByRole("group", { name: "Pending comments" })).toBeNull();
   },
 };
+
+export const ContinueRestoredThread: Story = {
+  args: { scenario: "restored-discussions" },
+  play: async ({ canvasElement }) => {
+    const c = within(canvasElement);
+    const areas = await c.findAllByRole("group", {
+      name: "Inline comments on Assistant response",
+    });
+    const code = areas.find((area) =>
+      within(area).queryByText("Keep this code feedback after reopening."),
+    )!;
+    expect(code).toBeDefined();
+    await userEvent.click(
+      within(code).getByRole("button", { name: /^Reply$/ }),
+    );
+    const text = "Keep the original example and explain cold recovery.";
+    await userEvent.click(
+      within(code).getByRole("textbox", {
+        name: "Comment on Assistant response",
+      }),
+    );
+    await userEvent.keyboard(text);
+    const pending = c.getByRole("group", { name: "Pending comments" });
+    expect(
+      within(pending).getAllByRole("article", { name: "Comment by You" }),
+    ).toHaveLength(1);
+    expect(pending).toHaveTextContent(text);
+    expect(pending).not.toHaveTextContent(
+      "Keep this code feedback after reopening.",
+    );
+    await userEvent.click(c.getByRole("button", { name: "Classic" }));
+    expect(
+      c.getByRole("group", { name: "Pending comments" }),
+    ).toHaveTextContent(text);
+    await userEvent.click(c.getByRole("button", { name: "Send message" }));
+    await waitFor(() => {
+      const sessions = JSON.parse(aiReviewValue(canvasElement, "runtime"));
+      expect(sessions.at(-1).prompts).toEqual([""]);
+      const context = sessions
+        .at(-1)
+        .context[0].find(
+          (block: { kind: string }) => block.kind === "transcript-comments",
+        );
+      const comments = JSON.parse(context.content).comments;
+      expect(comments).toHaveLength(1);
+      expect(comments[0]).toMatchObject({
+        threadId: "saved-code",
+        text,
+        anchor: { blockId: "review-response/body", quote: "# Daily review" },
+      });
+      expect(comments[0].commentId).not.toBe("saved-code-comment");
+    });
+    expect(c.queryByRole("group", { name: "Pending comments" })).toBeNull();
+    expect(aiReviewValue(canvasElement, "sessions")).not.toBe("[]");
+  },
+};

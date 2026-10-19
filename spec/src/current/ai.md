@@ -9,7 +9,7 @@ native privacy, journal and Agent/Thread stores and drains ownership on close.
 E-AI-037/038 qualify reads/continuation; other capture gates stay open.
 
 The [transcript plan](ai-presentation.md) and [tools](ai-tools.md) retain
-approval. E-AI-041/045/052 qualify UI/comments and exact reply links. Exact
+approval. E-AI-041/045/052/053 qualify UI/comments and continued threads. Exact
 [participant delivery](ai-addressing.md) retains native admission.
 
 E-REPO-002 retains separate AI/history admission under LD-AI-001; history cannot

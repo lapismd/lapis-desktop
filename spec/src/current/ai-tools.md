@@ -1,5 +1,13 @@
 # Native application tools
 
+An AI panel accepts bridge events only for its own active or recorded agent
+binding. An empty or unbound sibling view cannot display or persist another
+conversation's tool captures, even when both share the application bridge.
+Paired provider placeholders and application callbacks retain one original
+namespaced display identity in either event order. A payload-free wrapper
+completion cannot erase the captured application result. Native tool/request
+identities and existing persisted records remain unchanged.
+
 LD-AI-001/002/003/004 retain host-owned registry, vault scope, approvals and
 local transcript files. TOOLS-01B/C connect that policy through the shared MCP
 stdio engine. JJ persistence remains deferred. Source-only fixtures cannot

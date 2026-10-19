@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-DISCUSS-01A reuses Design Core comment/reply controls and public readers for
+DISCUSS-01A/B reuse Design Core comment/reply controls and public readers for
 local captured answers. LD-PLUG-001 identity/admission is unchanged; old files
 remain unlinked. The linked code/table/tool story remains visual-pending.
 

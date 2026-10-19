@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-042–052 cover local Codex, transcripts, recovery, streaming, comments,
+E-AI-042–053 cover local Codex, transcripts, recovery, streaming, comments,
 tools and exact reply navigation. LD-MIG-002 retains original M10.2/M13 gates
 and deferred JJ integration. Mounted tool wiring remains TOOLS-01B2/C; local
 chat/restart does not qualify managed capture.

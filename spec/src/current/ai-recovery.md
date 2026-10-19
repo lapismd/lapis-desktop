@@ -46,6 +46,13 @@ restore reconstructs these links by reading local evidence, without a provider
 start, prompt or new receipt. Document and Classic share the same exact source
 and reply navigation.
 
+DISCUSS-01B retains continued comments as new immutable captures in the same
+thread. Each comment keeps its own authored-message parent and acknowledgement;
+a new reply cannot replace the older comment’s destination. Prepared follow-ups
+remain unacknowledged evidence. Cold restore never turns older feedback into a
+new draft or re-sends it. Native code/table selections and tool-view anchors
+retain the original block/revision, exact quote and captured table-row context.
+
 E-AI-044 advances NOTES-09-FILES-C under LD-AI-001/002: ordinary streamed
 responses must retain complete ordered output through the existing bounded ACP
 client. Shared client fixes belong in Lapis AI and use built public exports.

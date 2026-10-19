@@ -8,7 +8,6 @@ export async function _consumeAppToolEvent(
   { bindingId, event }: AppToolBridgeEvent,
 ): Promise<void> {
   if (
-    this._activeBindingId &&
     bindingId !== this._activeBindingId &&
     !this.bindings.some((binding) => binding.id === bindingId)
   ) {

@@ -71,6 +71,38 @@ export const ClassicConversation: Story = {
     ).resolves.toBeInTheDocument();
   },
 };
+export const GroupedToolDisclosures: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    for (const mode of ["Document", "Classic"]) {
+      await userEvent.click(await canvas.findByRole("button", { name: mode }));
+      await userEvent.click(
+        await canvas.findByRole("button", { name: "Expand Tool activity" }),
+      );
+      const read = await canvas.findByRole("button", {
+        name: "Show details for vault.read",
+      });
+      await expect(
+        canvas.getByRole("button", { name: "Show details for notes_search" }),
+      ).toBeVisible();
+      await userEvent.click(read);
+      const comment = await canvas.findByRole("button", {
+        name: "Comment on vault.read details",
+      });
+      await userEvent.click(comment);
+      await expect(
+        canvas.findByRole("textbox", { name: "Comment on vault.read details" }),
+      ).resolves.toBeVisible();
+      await userEvent.keyboard("{Escape}");
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Hide details for vault.read" }),
+      );
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Collapse Tool activity" }),
+      );
+    }
+  },
+};
 export const SwitchWithDraft: Story = {
   args: { scenario: "empty" },
   play: async ({ canvasElement }) => {
