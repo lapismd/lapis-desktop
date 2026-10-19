@@ -10,7 +10,8 @@
   import X from "@lucide/svelte/icons/x";
   import Eye from "@lucide/svelte/icons/eye";
   import EyeOff from "@lucide/svelte/icons/eye-off";
-  import * as Card from "@lapismd/design-core/shadcn/card";
+  import BackupCard from "./BackupCard.svelte";
+  import ForgeIcon from "./ForgeIcon.svelte";
 
   import BackupField from "./BackupField.svelte";
   import type { ForgeController } from "../../../lib/repository/forge-controller.ts";
@@ -45,163 +46,155 @@
 </script>
 
 {#if snapshot.flow}
-  <Card.Root>
-    <Card.Header>
-      <Card.Title
-        >{snapshot.flow === "oauth"
-          ? "Authorize GitHub Account"
-          : snapshot.flow === "forgejo"
-            ? "Add Forgejo Account"
-            : snapshot.flow === "enterprise"
-              ? "Add GitHub Enterprise Account"
-              : "Add Personal Access Token"}</Card.Title
-      >
-      <Card.Action
-        ><Button
-          variant="ghost"
-          size="icon-sm"
-          aria-label="Cancel authorization"
-          disabled={snapshot.busy && snapshot.flow !== "oauth"}
-          onclick={() => manager.cancel()}><X /></Button
-        ></Card.Action
-      >
-    </Card.Header>
-    <Card.Content>
-      {#if snapshot.flow === "oauth"}
-        {@const auth = snapshot.inventory?.authorization}
-        {#if auth}
-          <div class="integration-auth__device">
-            <ol class="integration-auth__steps">
-              <li>
-                <p>Copy the following verification code:</p>
-                <div class="integration-auth__code">
-                  <strong>{auth.user_code}</strong><Button
-                    variant="outline"
-                    size="sm"
-                    onclick={copy}
-                    >Copy to Clipboard<Copy data-icon="inline-end" /></Button
-                  >
-                </div>
-              </li>
-              <li>
-                <Separator />
-                <p>
-                  Navigate to the GitHub activation page and paste the code you
-                  copied.
-                </p>
-                <Button onclick={() => manager.openAuthorization()}
-                  >Open GitHub activation page<ArrowUpRight
-                    data-icon="inline-end"
-                  /></Button
+  <BackupCard
+    padded={false}
+    title={snapshot.flow === "oauth"
+      ? "Authorize GitHub Account"
+      : snapshot.flow === "forgejo"
+        ? "Add Forgejo Account"
+        : snapshot.flow === "enterprise"
+          ? "Add GitHub Enterprise Account"
+          : "Add Personal Access Token"}
+  >
+    {#snippet icon()}<ForgeIcon
+        provider={snapshot.flow === "forgejo" ? "forgejo" : "github"}
+      />{/snippet}
+    {#snippet actions()}<Button
+        variant="ghost"
+        size="icon-sm"
+        aria-label="Cancel authorization"
+        disabled={snapshot.busy && snapshot.flow !== "oauth"}
+        onclick={() => manager.cancel()}><X /></Button
+      >{/snippet}
+    {#if snapshot.flow === "oauth"}
+      {@const auth = snapshot.inventory?.authorization}
+      {#if auth}
+        <div class="integration-auth__device">
+          <ol class="integration-auth__steps">
+            <li>
+              <p>Copy the following verification code:</p>
+              <div class="integration-auth__code">
+                <strong>{auth.user_code}</strong><Button
+                  variant="outline"
+                  size="sm"
+                  onclick={copy}
+                  >Copy to Clipboard<Copy data-icon="inline-end" /></Button
                 >
-              </li>
-            </ol>
-            <p
-              class="integration-auth__waiting"
-              role="status"
-              aria-live="polite"
-            >
-              {auth.state === "pending"
-                ? "Waiting for GitHub authorization…"
-                : `Authorization ${auth.state}`}
-            </p>
-          </div>
-        {:else if snapshot.busy}<div
-            class="integration-auth__device"
-            role="status"
-            aria-label="Requesting GitHub verification code"
-          >
-            <Skeleton style="height:2rem;width:14rem" /><Skeleton
-              style="height:1rem;width:75%"
-            />
-          </div>
-        {:else}<div class="integration-auth__device">
-            <p>Authorization is unavailable. Start again to request a code.</p>
-            <Button variant="outline" onclick={() => manager.begin()}
-              >Try GitHub sign-in</Button
-            >
-          </div>{/if}
-      {:else}
-        <form
-          onsubmit={(event) => {
-            event.preventDefault();
-            void manager
-              .addToken(
-                snapshot.flow === "pat" ? "https://api.github.com" : api,
-                token,
-              )
-              .then((saved) => {
-                if (saved) {
-                  token = "";
-                  api = "";
-                }
-              });
-          }}
-        >
-          <Field.Group>
-            {#if snapshot.flow === "enterprise" || snapshot.flow === "forgejo"}<BackupField
-                label="API Base URL"
-                id={`${id}-api`}
-                description={snapshot.flow === "forgejo"
-                  ? "For example, https://forge.example/api/v1"
-                  : "For example, https://github.example.com/api/v3"}
+              </div>
+            </li>
+            <li>
+              <Separator />
+              <p>
+                Navigate to the GitHub activation page and paste the code you
+                copied.
+              </p>
+              <Button onclick={() => manager.openAuthorization()}
+                >Open GitHub activation page<ArrowUpRight
+                  data-icon="inline-end"
+                /></Button
               >
-                <Input
-                  id={`${id}-api`}
-                  type="url"
-                  required
-                  bind:value={api}
-                  disabled={snapshot.busy}
-                  placeholder={snapshot.flow === "forgejo"
-                    ? "https://forge.example/api/v1"
-                    : "https://github.example.com/api/v3"}
-                />
-              </BackupField>{/if}
-            <BackupField
-              label="Personal Access Token"
-              id={`${id}-token`}
-              description="Saved in your OS Keychain / Credential Manager."
+            </li>
+          </ol>
+          <p class="integration-auth__waiting" role="status" aria-live="polite">
+            {auth.state === "pending"
+              ? "Waiting for GitHub authorization…"
+              : `Authorization ${auth.state}`}
+          </p>
+        </div>
+      {:else if snapshot.busy}<div
+          class="integration-auth__device"
+          role="status"
+          aria-label="Requesting GitHub verification code"
+        >
+          <Skeleton style="height:2rem;width:14rem" /><Skeleton
+            style="height:1rem;width:75%"
+          />
+        </div>
+      {:else}<div class="integration-auth__device">
+          <p>Authorization is unavailable. Start again to request a code.</p>
+          <Button variant="outline" onclick={() => manager.begin()}
+            >Try GitHub sign-in</Button
+          >
+        </div>{/if}
+    {:else}
+      <form
+        onsubmit={(event) => {
+          event.preventDefault();
+          void manager
+            .addToken(
+              snapshot.flow === "pat" ? "https://api.github.com" : api,
+              token,
+            )
+            .then((saved) => {
+              if (saved) {
+                token = "";
+                api = "";
+              }
+            });
+        }}
+      >
+        <Field.Group style="gap:0">
+          {#if snapshot.flow === "enterprise" || snapshot.flow === "forgejo"}<BackupField
+              label="API Base URL"
+              id={`${id}-api`}
+              description={snapshot.flow === "forgejo"
+                ? "For example, https://forge.example/api/v1"
+                : "For example, https://github.example.com/api/v3"}
             >
-              <InputGroup.Root>
-                <InputGroup.Input
-                  id={`${id}-token`}
-                  type={visible ? "text" : "password"}
-                  autocomplete="off"
-                  required
-                  bind:value={token}
-                  disabled={snapshot.busy}
-                />
-                <InputGroup.Addon align="inline-end"
-                  ><InputGroup.Button
-                    aria-label={visible ? "Hide token" : "Show token"}
-                    onclick={() => (visible = !visible)}
-                    >{#if visible}<EyeOff />{:else}<Eye
-                      />{/if}</InputGroup.Button
-                  ></InputGroup.Addon
-                >
-              </InputGroup.Root>
-            </BackupField>
-          </Field.Group>
-          <div class="auth-actions">
-            <Button
-              variant="outline"
-              type="button"
-              disabled={snapshot.busy}
-              onclick={() => manager.cancel()}>Cancel</Button
-            >
-            <Button
-              type="submit"
-              disabled={snapshot.busy ||
-                !token.trim() ||
-                (snapshot.flow === "enterprise" && !api)}
-            >
-              {snapshot.busy ? "Connecting…" : "Add account"}</Button
-            >
-          </div>
-        </form>
-      {/if}
-    </Card.Content>
-  </Card.Root>
+              <Input
+                id={`${id}-api`}
+                type="url"
+                required
+                bind:value={api}
+                disabled={snapshot.busy}
+                placeholder={snapshot.flow === "forgejo"
+                  ? "https://forge.example/api/v1"
+                  : "https://github.example.com/api/v3"}
+              />
+            </BackupField>{/if}
+          <BackupField
+            label="Personal Access Token"
+            id={`${id}-token`}
+            description="Saved in your OS Keychain / Credential Manager."
+          >
+            <InputGroup.Root>
+              <InputGroup.Input
+                id={`${id}-token`}
+                type={visible ? "text" : "password"}
+                autocomplete="off"
+                required
+                bind:value={token}
+                disabled={snapshot.busy}
+              />
+              <InputGroup.Addon align="inline-end"
+                ><InputGroup.Button
+                  aria-label={visible ? "Hide token" : "Show token"}
+                  onclick={() => (visible = !visible)}
+                  >{#if visible}<EyeOff />{:else}<Eye />{/if}</InputGroup.Button
+                ></InputGroup.Addon
+              >
+            </InputGroup.Root>
+          </BackupField>
+        </Field.Group>
+        <div class="auth-actions">
+          <Button
+            variant="outline"
+            type="button"
+            disabled={snapshot.busy}
+            onclick={() => manager.cancel()}>Cancel</Button
+          >
+          <Button
+            type="submit"
+            disabled={snapshot.busy ||
+              !token.trim() ||
+              (snapshot.flow === "enterprise" && !api)}
+          >
+            {snapshot.busy ? "Connecting…" : "Add account"}</Button
+          >
+        </div>
+      </form>
+    {/if}
+  </BackupCard>
 {/if}
 
 <style>
@@ -209,7 +202,7 @@
     display: flex;
     justify-content: flex-end;
     gap: 0.5rem;
-    margin-block-start: 1rem;
+    padding: 0.85rem 1rem;
   }
   .integration-auth__device {
     padding: 1rem;

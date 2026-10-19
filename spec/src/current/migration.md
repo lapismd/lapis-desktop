@@ -1,8 +1,8 @@
 # Migration inventory and progress
 
-E-REPO-023–025/E-AI-039–041 retain UI scope. M14 adds backup, restore, search,
-forges, storage and adoption (E-REPO-035–038), now integrated into main.
-Deferred native/provider qualification retains LD-MIG-002's original gates.
+E-REPO-023–025/E-AI-039–041 retain UI scope. M14 backup, restore, search,
+forges, storage, adoption and plugin settings are integrated (E-REPO-035–039).
+LD-MIG-002 native/provider, visual and release gates remain unchanged.
 
 E-REPO-017/018 cover file history, blame and sidebar UI (NOTES-05I7/8).
 LD-MIG-002 and original M13 gates/statuses remain unchanged; managed chat and

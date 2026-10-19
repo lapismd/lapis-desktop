@@ -21,13 +21,6 @@ async function open(element: HTMLElement) {
     historyContext(element).app.workspace,
   ).controller;
   host.settings.open({ sectionId: "repository-history" });
-  const button = await within(element).findByRole("button", {
-    name: "Forge accounts and remote backup",
-  });
-  await waitFor(() =>
-    expect(getComputedStyle(button).pointerEvents).not.toBe("none"),
-  );
-  await userEvent.click(button);
   const region = within(
     await within(element).findByRole("region", { name: "History storage" }),
   );
@@ -159,11 +152,7 @@ export const CloseSettingsDuringMove: StoryObj = {
       await region.findByRole("button", { name: "Move history and reload" }),
     );
     await waitFor(() => expect(fixture.dataset.storageRequest).toBeDefined());
-    await expect(
-      host.workspace.closeLeaf(
-        host.workspace.getLeavesOfType("repository-backup-settings")[0],
-      ),
-    ).toBe(true);
+    host.settings.close();
     // The App writer guard can defer view teardown until the admitted move
     // drains. A requested close must still preserve its reload and completion.
     await userEvent.click(

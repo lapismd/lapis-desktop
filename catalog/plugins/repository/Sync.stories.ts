@@ -21,13 +21,6 @@ async function open(element: HTMLElement) {
     historyContext(element).app.workspace,
   ).controller;
   host.settings.open({ sectionId: "repository-history" });
-  const button = await within(element).findByRole("button", {
-    name: "Forge accounts and remote backup",
-  });
-  await waitFor(() =>
-    expect(getComputedStyle(button).pointerEvents).not.toBe("none"),
-  );
-  await userEvent.click(button);
   return { canvas: within(element), body: within(element.ownerDocument.body) };
 }
 export const CleanMergeAndPush: StoryObj = {

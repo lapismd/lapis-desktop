@@ -51,6 +51,8 @@
             return inventory();
           },
           async command(command) {
+            if (command.kind === "cancel_oauth")
+              root.dataset.authCancelled = "true";
             if (
               command.kind === "add_token" ||
               command.kind === "add_forgejo_token"

@@ -396,6 +396,50 @@
         }
       ],
       "use": "Copied and adapted the grouped command-view result layout and two-line excerpt styling. Desktop owns filters, fixed native checkpoint cursors, exact version/checkpoint navigation, independent App progress/toasts and guarded restore. Public Design Core command/scroll/skeleton/empty components and the maintained noninteractive time display replace source-owned wrappers. No catalog authority, dependency-internal selectors or runtime checkout imports."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "efc26dea6b8dab4e0317904a1395ad5a3b901981",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-settings/StoreSettingsCard.svelte",
+          "destination": "src/components/repository/backup/BackupCard.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-settings/StoreSettingsHeading.svelte",
+          "destination": "src/components/repository/backup/BackupCard.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-settings/StoreSettingsFooter.svelte",
+          "destination": "src/components/repository/backup/BackupCard.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-settings/repository-settings.css",
+          "destination": "src/components/repository/backup/BackupCard.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-settings/StoreIntegrations.svelte",
+          "destination": "src/components/repository/backup/ForgeAccounts.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-forge/StoreForgeIcon.svelte",
+          "destination": "src/components/repository/backup/ForgeIcon.svelte"
+        }
+      ],
+      "use": "Copied and adapted compact Settings card/header/footer, account rows and forge icon rendering into the registered Repository History plugin settings. Native controllers, credentials, recovery identities and App ownership remain desktop-owned; public Design Core components and native CSS only."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "efc26dea6b8dab4e0317904a1395ad5a3b901981",
+      "license": "CC0-1.0",
+      "paths": [
+        {
+          "source": "web/src/lib/links/site-icons.ts",
+          "destination": "src/components/repository/backup/forge-icons.ts"
+        }
+      ],
+      "use": "Copied the GitHub and Forgejo Simple Icons SVG paths used by jj-store. Brand paths remain bundled locally; no remote icon fetch or runtime source import."
     }
   ]
 }

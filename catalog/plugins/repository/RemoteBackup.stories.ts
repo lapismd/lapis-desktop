@@ -21,13 +21,6 @@ async function open(element: HTMLElement) {
     historyContext(element).app.workspace,
   ).controller;
   workspace.settings.open({ sectionId: "repository-history" });
-  const configure = await within(element).findByRole("button", {
-    name: "Forge accounts and remote backup",
-  });
-  await waitFor(() =>
-    expect(getComputedStyle(configure).pointerEvents).not.toBe("none"),
-  );
-  await userEvent.click(configure);
   const region = within(
     await within(element).findByRole("region", { name: "Remote vault backup" }),
   );
@@ -183,11 +176,7 @@ export const InterruptedRestore: StoryObj = {
     await waitFor(() =>
       expect(body.queryByRole("alertdialog")).not.toBeInTheDocument(),
     );
-    await expect(
-      workspace.workspace.closeLeaf(
-        workspace.workspace.getLeavesOfType("repository-backup-settings")[0],
-      ),
-    ).toBe(true);
+    workspace.settings.close();
     await waitFor(() =>
       expect(
         within(canvasElement).queryByRole("region", {

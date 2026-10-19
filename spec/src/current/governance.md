@@ -60,11 +60,11 @@ and remote plugin grants remain denied.
 | LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006. |
 | LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit headed option MUST retain the complete native WebView/window/OS suite. Headless success MUST NOT substitute for a native acceptance gate; invalid mode flags MUST reject before launching children.                                                                                    |
 
-The user authorized local pnpm archive consumption and deferred package
-publication to the final release gate. An ignored local install overlay verifies
-archive checksums and source revisions, redirects matching package ranges, and
-preserves the tracked registry manifests and lockfile. Source fixes remain in
-the owning repositories; the overlay does not patch or alias source.
+The user authorized verified local pnpm archives until the publication gate. The
+ignored overlay verifies checksums/revisions, redirects matching ranges and
+preserves tracked manifests/lockfiles. Fixes stay upstream; no source patches or
+aliases. E-REPO-039 retains LD-GOV-004/005 for adapted Settings/forge assets;
+exact source revisions and Apache-2.0 / CC0-1.0 provenance remain local.
 
 Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not

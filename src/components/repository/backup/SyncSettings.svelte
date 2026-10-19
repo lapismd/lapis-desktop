@@ -3,7 +3,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Switch } from "@lapismd/design-core/shadcn/switch";
   import * as Field from "@lapismd/design-core/shadcn/field";
-  import * as Card from "@lapismd/design-core/shadcn/card";
+  import BackupCard from "./BackupCard.svelte";
   import RefreshCw from "@lucide/svelte/icons/refresh-cw";
   import GitMerge from "@lucide/svelte/icons/git-merge";
   import type { SyncController } from "../../../lib/repository/sync-controller.ts";
@@ -39,51 +39,48 @@
   };
 </script>
 
-<Card.Root>
-  <Card.Header
-    ><Card.Title>Automatic synchronization</Card.Title><Card.Description
-      >{descriptions[snapshot.phase]}</Card.Description
-    ></Card.Header
-  >
-  <Card.Content>
-    <div class="sync-actions">
-      <Field.Field orientation="horizontal" data-disabled={snapshot.busy}
-        ><Switch
-          id="automatic-vault-sync"
-          checked={snapshot.enabled}
-          disabled={snapshot.busy}
-          onCheckedChange={(checked) => void setEnabled(checked)}
-        /><Field.Label for="automatic-vault-sync"
-          >Synchronize the connected backup automatically</Field.Label
-        ></Field.Field
-      >
-      <Button
+<BackupCard
+  title="Automatic synchronization"
+  Icon={RefreshCw}
+  description={descriptions[snapshot.phase]}
+>
+  <div class="sync-actions">
+    <Field.Field orientation="horizontal" data-disabled={snapshot.busy}
+      ><Switch
+        id="automatic-vault-sync"
+        checked={snapshot.enabled}
+        disabled={snapshot.busy}
+        onCheckedChange={(checked) => void setEnabled(checked)}
+      /><Field.Label for="automatic-vault-sync"
+        >Synchronize the connected backup automatically</Field.Label
+      ></Field.Field
+    >
+    <Button
+      variant="outline"
+      size="sm"
+      disabled={snapshot.busy || !snapshot.enabled}
+      onclick={() => controller.run()}
+      ><RefreshCw data-icon="inline-start" />Sync now</Button
+    >
+    {#if snapshot.proposal?.conflicts.length}<Button
         variant="outline"
         size="sm"
-        disabled={snapshot.busy || !snapshot.enabled}
-        onclick={() => controller.run()}
-        ><RefreshCw data-icon="inline-start" />Sync now</Button
-      >
-      {#if snapshot.proposal?.conflicts.length}<Button
-          variant="outline"
-          size="sm"
-          disabled={snapshot.busy}
-          onclick={onReview}
-          ><GitMerge data-icon="inline-start" />Review {snapshot.proposal
-            .conflicts.length} conflicts</Button
-        >{/if}
-      {#if snapshot.recovery}<Button
-          variant="outline"
-          size="sm"
-          disabled={snapshot.busy}
-          onclick={() => controller.keepCurrent()}>Keep current files</Button
-        >{/if}
-    </div>
-    {#if snapshot.lastSuccess}<p>
-        Last synchronized {new Date(snapshot.lastSuccess).toLocaleTimeString()}
-      </p>{/if}
-  </Card.Content>
-</Card.Root>
+        disabled={snapshot.busy}
+        onclick={onReview}
+        ><GitMerge data-icon="inline-start" />Review {snapshot.proposal
+          .conflicts.length} conflicts</Button
+      >{/if}
+    {#if snapshot.recovery}<Button
+        variant="outline"
+        size="sm"
+        disabled={snapshot.busy}
+        onclick={() => controller.keepCurrent()}>Keep current files</Button
+      >{/if}
+  </div>
+  {#if snapshot.lastSuccess}<p>
+      Last synchronized {new Date(snapshot.lastSuccess).toLocaleTimeString()}
+    </p>{/if}
+</BackupCard>
 
 <style>
   .sync-actions {

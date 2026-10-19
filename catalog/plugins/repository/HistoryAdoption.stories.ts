@@ -22,13 +22,6 @@ async function settings(element: HTMLElement) {
     historyContext(element).app.workspace,
   ).controller;
   host.settings.open({ sectionId: "repository-history" });
-  const button = await within(element).findByRole("button", {
-    name: "Forge accounts and remote backup",
-  });
-  await waitFor(() =>
-    expect(getComputedStyle(button).pointerEvents).not.toBe("none"),
-  );
-  await userEvent.click(button);
   const region = within(
     await within(element).findByRole("region", {
       name: "Original repository history",

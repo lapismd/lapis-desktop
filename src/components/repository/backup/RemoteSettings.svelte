@@ -5,7 +5,7 @@
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
   import { Badge } from "@lapismd/design-core/shadcn/badge";
-  import * as Card from "@lapismd/design-core/shadcn/card";
+  import BackupCard from "./BackupCard.svelte";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import RefreshCw from "@lucide/svelte/icons/refresh-cw";
@@ -76,191 +76,184 @@
 </script>
 
 <section aria-label="Remote vault backup" aria-busy={snapshot.busy}>
-  <Card.Root>
-    <Card.Header>
-      <Card.Title>Remote backup</Card.Title>
-      <Card.Description
-        >{snapshot.data?.configuration
-          ? `${snapshot.data.configuration.project} · ${snapshot.data.configuration.target.branch}`
-          : "Connect a GitHub or Forgejo repository to back up or restore this vault."}</Card.Description
+  <BackupCard
+    title="Remote backup"
+    Icon={CloudDownload}
+    padded={false}
+    description={snapshot.data?.configuration
+      ? `${snapshot.data.configuration.project} · ${snapshot.data.configuration.target.branch}`
+      : "Connect a GitHub or Forgejo repository to back up or restore this vault."}
+  >
+    {#snippet actions()}<Button
+        variant="ghost"
+        size="icon-sm"
+        disabled={snapshot.busy}
+        aria-label="Refresh remote settings"
+        onclick={() => controller.refresh()}><RefreshCw /></Button
+      >{/snippet}
+    {#if !snapshot.data && snapshot.busy}
+      <div
+        class="remote-loading"
+        role="status"
+        aria-label="Loading remote backup"
       >
-      <Card.Action
-        ><Button
-          variant="ghost"
-          size="icon-sm"
-          disabled={snapshot.busy}
-          aria-label="Refresh remote settings"
-          onclick={() => controller.refresh()}><RefreshCw /></Button
-        ></Card.Action
+        <Skeleton style="height:1rem;width:30%" /><Skeleton
+          style="height:2.25rem;width:100%"
+        />
+        <Skeleton style="height:1rem;width:40%" /><Skeleton
+          style="height:2.25rem;width:100%"
+        />
+      </div>
+    {:else if !snapshot.data}
+      <Empty.Root
+        ><Empty.Header
+          ><Empty.Media variant="icon"><CloudDownload /></Empty.Media
+          ><Empty.Title>Remote settings unavailable</Empty.Title
+          ><Empty.Description
+            >Refresh to read your saved connection.</Empty.Description
+          ></Empty.Header
+        ></Empty.Root
       >
-    </Card.Header>
-    <Card.Content>
-      {#if !snapshot.data && snapshot.busy}
-        <div
-          class="remote-loading"
-          role="status"
-          aria-label="Loading remote backup"
+    {:else if !available.length}
+      <Empty.Root
+        ><Empty.Header
+          ><Empty.Media variant="icon"><KeyRound /></Empty.Media><Empty.Title
+            >{snapshot.data.configuration
+              ? "Reconnect to fetch updates"
+              : "Connect an account first"}</Empty.Title
+          ><Empty.Description
+            >{snapshot.data.configuration
+              ? "Your cached backup remains available. Reconnect an account above to fetch more history."
+              : "Add a forge account above to choose a remote backup repository."}</Empty.Description
+          ></Empty.Header
         >
-          <Skeleton style="height:1rem;width:30%" /><Skeleton
-            style="height:2.25rem;width:100%"
-          />
-          <Skeleton style="height:1rem;width:40%" /><Skeleton
-            style="height:2.25rem;width:100%"
-          />
-        </div>
-      {:else if !snapshot.data}
-        <Empty.Root
-          ><Empty.Header
-            ><Empty.Media variant="icon"><CloudDownload /></Empty.Media
-            ><Empty.Title>Remote settings unavailable</Empty.Title
-            ><Empty.Description
-              >Refresh to read your saved connection.</Empty.Description
-            ></Empty.Header
-          ></Empty.Root
-        >
-      {:else if !available.length}
-        <Empty.Root
-          ><Empty.Header
-            ><Empty.Media variant="icon"><KeyRound /></Empty.Media><Empty.Title
-              >{snapshot.data.configuration
-                ? "Reconnect to fetch updates"
-                : "Connect an account first"}</Empty.Title
-            ><Empty.Description
-              >{snapshot.data.configuration
-                ? "Your cached backup remains available. Reconnect an account above to fetch more history."
-                : "Add a forge account above to choose a remote backup repository."}</Empty.Description
-            ></Empty.Header
+        {#if snapshot.data.configuration}<Empty.Content
+            ><Button
+              variant="outline"
+              disabled={snapshot.busy}
+              onclick={() => controller.disconnect()}>Disconnect remote</Button
+            ></Empty.Content
+          >{/if}
+        {#if snapshot.data.checkpoint && restore}<Empty.Content
+            ><Button
+              variant="outline"
+              disabled={snapshot.busy}
+              onclick={() =>
+                restore?.prepareVault(snapshot.data!.checkpoint!.commit)}
+              ><History data-icon="inline-start" />Review restore</Button
+            ></Empty.Content
+          >{/if}
+      </Empty.Root>
+    {:else}
+      <form
+        onsubmit={(event) => {
+          event.preventDefault();
+          void connect();
+        }}
+      >
+        <Field.Group style="gap:0">
+          <BackupField label="Forge account" id={`${id}-account`}>
+            <BackupSelect
+              id={`${id}-account`}
+              aria-label="Forge account"
+              bind:value={account}
+              disabled={snapshot.busy}
+              options={available.map((value) => ({
+                value: value.id,
+                label: `${value.login} · ${new URL(value.api_url).host}`,
+              }))}
+            />
+          </BackupField>
+          <BackupField
+            label="Remote repository"
+            id={`${id}-project`}
+            description="Use an existing repository in owner/repository form."
           >
-          {#if snapshot.data.configuration}<Empty.Content
-              ><Button
-                variant="outline"
-                disabled={snapshot.busy}
-                onclick={() => controller.disconnect()}
-                >Disconnect remote</Button
-              ></Empty.Content
+            <Input
+              id={`${id}-project`}
+              bind:value={project}
+              required
+              placeholder="owner/notes"
+              disabled={snapshot.busy}
+            />
+          </BackupField>
+          <BackupField
+            label="Backup branch"
+            id={`${id}-branch`}
+            description="Leave empty to use the repository's default branch."
+          >
+            <Input
+              id={`${id}-branch`}
+              bind:value={branch}
+              placeholder="Repository default"
+              disabled={snapshot.busy}
+            />
+          </BackupField>
+        </Field.Group>
+        <div class="remote-actions">
+          <Button
+            type="submit"
+            disabled={snapshot.busy || !account || !project.trim()}
+            >{snapshot.data.configuration
+              ? "Save connection"
+              : "Connect repository"}</Button
+          >
+          {#if snapshot.data.configuration}<Button
+              type="button"
+              variant="outline"
+              disabled={snapshot.busy}
+              onclick={() => controller.disconnect()}>Disconnect</Button
             >{/if}
-          {#if snapshot.data.checkpoint && restore}<Empty.Content
-              ><Button
+        </div>
+      </form>
+      {#if snapshot.data.configuration}
+        <div class="remote-history">
+          {#if !snapshot.data.configuration.canPush}<Badge variant="secondary"
+              >Read-only access</Badge
+            >{/if}
+          <p>
+            Fetch remote history without changing local files. Review a
+            checkpoint to restore it safely, including into a new empty vault.
+          </p>
+          <div class="remote-actions">
+            <Button
+              variant="outline"
+              disabled={snapshot.busy ||
+                !available.some(
+                  (value) => value.id === snapshot.data?.configuration?.account,
+                )}
+              onclick={() => controller.fetch()}
+              ><CloudDownload data-icon="inline-start" />Fetch remote history</Button
+            >
+            {#if snapshot.data.checkpoint && restore}<Button
                 variant="outline"
                 disabled={snapshot.busy}
                 onclick={() =>
                   restore?.prepareVault(snapshot.data!.checkpoint!.commit)}
                 ><History data-icon="inline-start" />Review restore</Button
-              ></Empty.Content
-            >{/if}
-        </Empty.Root>
-      {:else}
-        <form
-          onsubmit={(event) => {
-            event.preventDefault();
-            void connect();
-          }}
-        >
-          <Field.Group>
-            <BackupField label="Forge account" id={`${id}-account`}>
-              <BackupSelect
-                id={`${id}-account`}
-                aria-label="Forge account"
-                bind:value={account}
-                disabled={snapshot.busy}
-                options={available.map((value) => ({
-                  value: value.id,
-                  label: `${value.login} · ${new URL(value.api_url).host}`,
-                }))}
-              />
-            </BackupField>
-            <BackupField
-              label="Remote repository"
-              id={`${id}-project`}
-              description="Use an existing repository in owner/repository form."
-            >
-              <Input
-                id={`${id}-project`}
-                bind:value={project}
-                required
-                placeholder="owner/notes"
-                disabled={snapshot.busy}
-              />
-            </BackupField>
-            <BackupField
-              label="Backup branch"
-              id={`${id}-branch`}
-              description="Leave empty to use the repository's default branch."
-            >
-              <Input
-                id={`${id}-branch`}
-                bind:value={branch}
-                placeholder="Repository default"
-                disabled={snapshot.busy}
-              />
-            </BackupField>
-          </Field.Group>
-          <div class="remote-actions">
-            <Button
-              type="submit"
-              disabled={snapshot.busy || !account || !project.trim()}
-              >{snapshot.data.configuration
-                ? "Save connection"
-                : "Connect repository"}</Button
-            >
-            {#if snapshot.data.configuration}<Button
-                type="button"
-                variant="outline"
-                disabled={snapshot.busy}
-                onclick={() => controller.disconnect()}>Disconnect</Button
               >{/if}
           </div>
-        </form>
-        {#if snapshot.data.configuration}
-          <div class="remote-history">
-            {#if !snapshot.data.configuration.canPush}<Badge variant="secondary"
-                >Read-only access</Badge
-              >{/if}
-            <p>
-              Fetch remote history without changing local files. Review a
-              checkpoint to restore it safely, including into a new empty vault.
-            </p>
-            <div class="remote-actions">
-              <Button
-                variant="outline"
-                disabled={snapshot.busy ||
-                  !available.some(
-                    (value) =>
-                      value.id === snapshot.data?.configuration?.account,
-                  )}
-                onclick={() => controller.fetch()}
-                ><CloudDownload data-icon="inline-start" />Fetch remote history</Button
-              >
-              {#if snapshot.data.checkpoint && restore}<Button
-                  variant="outline"
-                  disabled={snapshot.busy}
-                  onclick={() =>
-                    restore?.prepareVault(snapshot.data!.checkpoint!.commit)}
-                  ><History data-icon="inline-start" />Review restore</Button
-                >{/if}
-            </div>
-            {#if snapshot.data.checkpoint}<p
-                class="checkpoint"
-                title={snapshot.data.checkpoint.description}
-              >
-                Latest remote checkpoint: {snapshot.data.checkpoint.description.split(
-                  "\n",
-                )[0] || "Untitled checkpoint"}
-              </p>{/if}
-          </div>
-        {/if}
+          {#if snapshot.data.checkpoint}<p
+              class="checkpoint"
+              title={snapshot.data.checkpoint.description}
+            >
+              Latest remote checkpoint: {snapshot.data.checkpoint.description.split(
+                "\n",
+              )[0] || "Untitled checkpoint"}
+            </p>{/if}
+        </div>
       {/if}
-      {#if snapshot.data?.publication && controller.service.publication}<PublicationRecovery
-          pending={snapshot.data.publication}
-          busy={snapshot.busy}
-          canObserve={available.some(
-            (value) => value.id === snapshot.data?.configuration?.account,
-          )}
-          onObserve={(id) => controller.observePublication(id)}
-          onStop={(id) => controller.stopPublication(id)}
-        />{/if}
-    </Card.Content>
-  </Card.Root>
+    {/if}
+    {#if snapshot.data?.publication && controller.service.publication}<PublicationRecovery
+        pending={snapshot.data.publication}
+        busy={snapshot.busy}
+        canObserve={available.some(
+          (value) => value.id === snapshot.data?.configuration?.account,
+        )}
+        onObserve={(id) => controller.observePublication(id)}
+        onStop={(id) => controller.stopPublication(id)}
+      />{/if}
+  </BackupCard>
 </section>
 
 <style>
@@ -268,17 +261,18 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    padding: 1rem;
   }
   .remote-actions {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    justify-content: flex-end;
   }
   .remote-history {
-    margin-top: 1.25rem;
-    padding-top: 1rem;
+    padding: 1rem;
     border-top: 1px solid var(--border);
   }
   p {

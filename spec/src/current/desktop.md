@@ -1,8 +1,8 @@
 # Desktop shell
 
-E-REPO-037/038: native source/adoption scope and worker contracts are unchanged.
-Storage/forge boundaries (E-REPO-035/036), LD-DESK-003/HOST-001 remain.
-Gravatar: `https://www.gravatar.com`; status: `repository-navigation.md`.
+E-REPO-035/036/037/038/039 retain LD-DESK-003/HOST-001 native authority. Backup
+controls live in plugin Settings; full-screen conflict review remains. Gravatar:
+`https://www.gravatar.com`; status: `repository-navigation.md`.
 
 Notes starts App-owned watching after metadata/views; leave drains it before
 persistence/teardown and resumes a live App on failure (LD-FILE-002/003). M6

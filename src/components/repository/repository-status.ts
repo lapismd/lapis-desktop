@@ -6,7 +6,7 @@ import type { RepositoryPlugin } from "./repository-plugin.ts";
 import RepositoryWorkingCopyStatus from "./RepositoryWorkingCopyStatus.svelte";
 import RepositoryBackupStatus from "./RepositoryBackupStatus.svelte";
 import { RESTORE_NOTICE } from "./restore-controller.ts";
-import { openBackupSettings } from "./backup/forge-view.ts";
+import { createBackupSettings } from "./backup/backup-settings.ts";
 import { updateRepositoryData } from "../../lib/repository/plugin-data.ts";
 import {
   AUTOMATIC_BACKUP_SETTING,
@@ -27,6 +27,7 @@ export class RepositoryStatus {
   #events?: () => void;
   #closed = false;
   #transition = Promise.resolve();
+  #settings?: ReturnType<typeof createBackupSettings>;
   constructor(
     private readonly plugin: RepositoryPlugin,
     private readonly services: RepositoryServices,
@@ -44,6 +45,7 @@ export class RepositoryStatus {
         severity: "warning",
         persist: false,
       });
+    this.#settings = createBackupSettings(this.plugin, this.services);
     this.plugin.registerSettingsSection({
       section: {
         id: "repository-history",
@@ -54,20 +56,6 @@ export class RepositoryStatus {
         navigationGroupId: "core-plugins",
         sourcePluginId: this.plugin.id,
         fields: [
-          ...(this.services.forges
-            ? [
-                {
-                  id: "repository-history.remoteBackup",
-                  type: "action" as const,
-                  title: "Forge accounts and remote backup",
-                  description:
-                    "Connect GitHub and configure the remote backup for this vault.",
-                  label: "Configure backup",
-                  icon: "cloud-upload",
-                  run: () => openBackupSettings(this.plugin),
-                },
-              ]
-            : []),
           ...(this.services.backup
             ? [
                 {
@@ -88,6 +76,7 @@ export class RepositoryStatus {
               "Show repository status in the status bar. Hiding it does not stop automatic backups.",
             default: true,
           },
+          ...(this.#settings ? [this.#settings.field] : []),
         ],
       },
       source: {
@@ -242,5 +231,6 @@ export class RepositoryStatus {
     this.#closed = true;
     await this.#transition;
     await this.#hide();
+    await this.#settings?.close();
   }
 }

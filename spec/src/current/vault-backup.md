@@ -1,5 +1,16 @@
 # Automatic vault backup
 
+Repository History exposes forge accounts, remote backup, synchronization,
+storage and adoption directly inside its registered plugin settings section.
+Commands open that same section; no independent backup-settings workspace view
+is registered. Forge brands use the maintained jj-store icon assets. Compact
+tinted card headers, divided rows and trailing action footers adapt jj-store's
+Settings composition using public Design Core primitives. Closing settings
+cancels transient authorization and fences late account/remote replies, while
+plugin-owned capture, sync, storage/adoption recovery and progress keep their
+existing lifetimes. Credential custody and exact mutation identities are
+unchanged.
+
 LD-REPO-005 adds default-enabled automatic local history for open vaults. The
 native host binds durable vault IDs to separate repository and working-copy
 paths. Default storage lives in application data and creates no `.jj` or `.git`

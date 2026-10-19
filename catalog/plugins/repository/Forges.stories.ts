@@ -22,18 +22,15 @@ async function open(element: HTMLElement) {
   ).controller;
   host.settings.open({ sectionId: "repository-history" });
   const body = within(element.ownerDocument.body);
-  const configure = await within(element).findByRole("button", {
-    name: "Forge accounts and remote backup",
-  });
-  await waitFor(() =>
-    expect(getComputedStyle(configure).pointerEvents).not.toBe("none"),
-  );
-  await userEvent.click(configure);
   const region = within(
     await within(element).findByRole("region", {
       name: "Repository backup settings",
     }),
   );
+  await expect(
+    host.workspace.getLeavesOfType("repository-backup-settings"),
+  ).toHaveLength(0);
+  await expect(body.getByRole("dialog", { name: "Settings" })).toBeVisible();
   return { body, region };
 }
 async function choose(element: HTMLElement, name: string) {
@@ -56,6 +53,36 @@ export const EmptyAccounts: StoryObj = {
         "Connect an account to choose a remote backup repository.",
       ),
     ).toBeVisible();
+  },
+};
+export const CommandOpensPluginSettings: StoryObj = {
+  play: async ({ canvasElement }) => {
+    await waitFor(
+      () =>
+        expect(
+          canvasElement.querySelector('[data-notes-ready="true"]'),
+        ).not.toBeNull(),
+      { timeout: 30000 },
+    );
+    const { app } = historyContext(canvasElement);
+    await app.commands.executeCommand(
+      "repository-history:open-backup-settings",
+    );
+    await expect(
+      await within(canvasElement).findByRole("region", {
+        name: "Repository backup settings",
+      }),
+    ).toBeVisible();
+    await expect(
+      within(canvasElement.ownerDocument.body).getByRole("dialog", {
+        name: "Settings",
+      }),
+    ).toBeVisible();
+    expect(
+      getWorkspaceHostBinding(
+        app.workspace,
+      ).controller.workspace.getLeavesOfType("repository-backup-settings"),
+    ).toHaveLength(0);
   },
 };
 export const TokenAccount: StoryObj = {
@@ -87,6 +114,25 @@ export const DeviceAuthorization: StoryObj = {
     await expect(
       canvasElement.querySelector("[data-activation-url]"),
     ).toHaveAttribute("data-activation-url", "https://github.com/login/device");
+  },
+};
+export const CloseAndReopenSettings: StoryObj = {
+  play: async ({ canvasElement }) => {
+    await choose(canvasElement, "Authorize GitHub Account");
+    const host = getWorkspaceHostBinding(
+      historyContext(canvasElement).app.workspace,
+    ).controller;
+    host.settings.close();
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector("[data-auth-cancelled]"),
+      ).toHaveAttribute("data-auth-cancelled", "true"),
+    );
+    const { region } = await open(canvasElement);
+    await expect(region.queryByText("ABCD-1234")).not.toBeInTheDocument();
+    await expect(
+      region.getByRole("button", { name: "Add forge account" }),
+    ).toBeEnabled();
   },
 };
 export const FailureAndRecovery: StoryObj = {

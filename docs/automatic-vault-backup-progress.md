@@ -198,3 +198,18 @@ original gates.
 - [x] Generate the source documentation book and rerun the rendered-book link
       audit. E-VAULT-BACKUP-015 records the initial missing input and successful
       repair:3157HTMLpages/120192local references pass.
+
+## Plugin settings presentation
+
+- [x] Account, remote, synchronization, storage and adoption controls live
+      inside Settings → Repository History, without an independent workspace
+      tab.
+- [x] Adapt jj-store's compact tinted card headers, divided rows, trailing
+      action footers and GitHub/Forgejo brand icons; retain local attribution.
+- [x] Preserve transient authorization cleanup, original restore recovery and
+      plugin-owned long-running work when settings closes.
+
+E-REPO-039 records 164 affected Storybook executions plus 20 sync reruns, 47
+renderer tests, 67 governance tests, strict types and the renderer build. Real
+native/provider acceptance, visual approval and wider release gates remain
+deferred.

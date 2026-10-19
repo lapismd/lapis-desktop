@@ -646,3 +646,15 @@ and App-toast recovery. Existing public Design Core Command View/Popover/Card
 components are composed directly; no replacement screens or new copied source
 are introduced. Native source witnesses and ancestry transfer are separately
 qualified. Visual approval and cold native acceptance remain open.
+
+Repository backup accounts and all remote/storage/adoption/sync/publication
+scenarios now open the registered Repository History settings section directly.
+They assert that no independent backup-settings workspace leaf is created.
+CloseAndReopenSettings cancels the transient GitHub device flow and proves a
+fresh embedded panel after reopening. Settings closure during a storage move
+retains plugin-owned completion; interrupted remote restore reopens its original
+request from the same settings section. Fullscreen conflict review remains a
+nested accessible overlay. Compact cards/headings/footers and GitHub/Forgejo
+icons copy and adapt jj-store; exact paths, revisions and licenses are recorded
+in docs/provenance.json. Visual approval and real native/provider gates remain
+separate.
