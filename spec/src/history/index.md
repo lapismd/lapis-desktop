@@ -234,3 +234,5 @@ by the task ledger, not inferred from this list.
 - [Upstream footer actions, counts and repository location](E-REPO-043.md)
 
 - [Chat scroll recovery in both presentations](E-AI-064.md)
+
+- [Shared search input presentation](E-CATALOG-014.md)

@@ -76,7 +76,9 @@ expandable section of removable file chips with relative-path tooltips. The file
 picker MUST show an icon, title and smaller truncated relative path, with the
 full path available on hover/focus. Core `files.exclude` governs file/folder
 discovery, defaulting to `.git` and `.jj` at any depth, without a plugin.
-Explicit admitted metadata reads and native backup policy remain separate. Both
+Explicit admitted metadata reads and native backup policy remain separate.
+Search chrome MUST retain public Design Core shadcn Input border/ring tokens and
+sans suggestions with labels above wrapping descriptions (E-CATALOG-014). Both
 composers start at two text lines without a focus ring and grow with the draft;
 attachments and pending approvals/questions stay usable and retained when
 switching modes or while input is disabled. IME switching MUST defer until

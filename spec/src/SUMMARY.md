@@ -290,3 +290,5 @@
 - [Chat scroll recovery in both presentations](history/E-AI-064.md)
 
 - [Remembered blame wrapping](history/E-REPO-044.md)
+
+- [Shared search input presentation](history/E-CATALOG-014.md)
