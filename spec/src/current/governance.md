@@ -3,8 +3,8 @@
 E-POPOUT-003 starts M7.3 under LD-GOV-001–004. Its native registry and tests map
 to windows.md; ordinary-popup and release gates remain unqualified.
 
-E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold Rust proof
-does not replace M13.3 packaged WebView/restart gates.
+E-AI-031–033 qualify native boundaries; E-REPO-047 qualifies vault identity.
+LD-GOV-002 evidence rules and M13.3 native/restart gates remain unchanged.
 
 E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
 The repository topic owns JJ reuse and exact history grants. E-REPO-003

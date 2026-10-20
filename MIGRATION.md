@@ -9,10 +9,10 @@
 [Evidence](spec/src/history/index.md)
 
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M8, M9, M13.1,
-M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4.
+M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4, M14.1.
 
 Open completion gates: M7.3, M10, M11, M12, M13, M13.3, M10.2, M10.3, M10.4,
-M8.5, M14, M14.1, M14.2, M14.3, M14.4, M14.5, M14.6, M14.7.
+M8.5, M14, M14.2, M14.3, M14.4, M14.5, M14.6, M14.7.
 
 Gate status describes milestone acceptance, not active or background work.
 Partial can retain implemented functionality whose native or provider acceptance
@@ -59,7 +59,7 @@ deferred to their distribution gates.
 | M8.4  | Done        | Complete; extend inventory with new desktop UI                 |
 | M8.5  | In progress | Finish original native presentation gate                       |
 | M14   | Partial     | Cold native app, then real-provider acceptance                 |
-| M14.1 | Partial     | Deferred cold identity/reopen proof                            |
+| M14.1 | Done        | Complete; continue capture lifecycle                           |
 | M14.2 | Partial     | Finish ordinary editor-save/Quit gate                          |
 | M14.3 | Partial     | Deferred cold restore qualification                            |
 | M14.4 | Partial     | Qualify cold app/provider flow later                           |

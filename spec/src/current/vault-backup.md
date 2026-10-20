@@ -1,5 +1,9 @@
 # Automatic vault backup
 
+E-REPO-047 qualifies the original M14.1 identity/storage gate through cold
+native processes, production recent eviction, explicit folder relinking and
+independent external history. Other M14 acceptance gates remain open.
+
 Repository History exposes forge accounts, remote backup, synchronization,
 storage and adoption directly inside its registered plugin settings section.
 Commands open that same section; no independent backup-settings workspace view

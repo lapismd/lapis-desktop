@@ -1,11 +1,10 @@
 # Repository history and conversations
 
-LD-REPO-005 backup/forge controls live in plugin Settings (E-REPO-039–041);
-[automatic vault backup](vault-backup.md) governs M14. E-REPO-048 retains failed
-close for retry. Managed and original JJ identities stay separate through owned
-APIs without upstream `jj-lib`. E-AI-055 reuses read-only import
-capture/privacy; LD-REPO-001/002/003/005 admission, pins and publication remain
-unchanged.
+LD-REPO-005 backup Settings: E-REPO-039–041. [M14](vault-backup.md) owns
+delivery; E-REPO-047 qualifies identity; E-REPO-048 retains failed close for
+retry. Managed and original JJ identities stay separate through owned APIs,
+without upstream `jj-lib`. E-AI-055 reuses read-only import capture/privacy;
+LD-REPO-001/002/003/005 admission, pins and publication remain unchanged.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.

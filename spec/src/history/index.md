@@ -246,3 +246,4 @@ by the task ledger, not inferred from this list.
 
 - [Native workspace-window session registry](E-POPOUT-003.md)
 - [Native backup recovery and close retry](E-REPO-048.md)
+- [Cold native vault-history identity](E-REPO-047.md)

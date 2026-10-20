@@ -303,3 +303,4 @@
 
 - [Native workspace-window session registry](history/E-POPOUT-003.md)
 - [Native backup recovery and close retry](history/E-REPO-048.md)
+- [Cold native vault-history identity](history/E-REPO-047.md)
