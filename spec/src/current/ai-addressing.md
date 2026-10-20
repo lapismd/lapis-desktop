@@ -23,6 +23,11 @@ authored link label. Existing bare `agent:HEX;` and `jj-store-agent:HEX;` tokens
 also render as profile chips; captured message bytes, revisions, hashes and
 comment offsets are never migrated. Code examples remain literal.
 
+Automatic agent mentions default to false, including normalized legacy settings.
+The picker returns the authored agent link while selecting the recipient without
+dispatch; the namespace regression and settings-payload regression MUST retain
+these existing expectations alongside the dedicated link-codec coverage.
+
 The @ picker distinguishes agent choices from file attachments. Selecting an
 agent creates a removable addressed-agent pill without sending, switching a
 provider session or rewriting the authored message. Document and Classic retain

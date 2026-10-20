@@ -1,5 +1,7 @@
 # Migration inventory and progress
 
+E-ARCHIVES-002 refreshes local sources; gates and statuses are unchanged.
+
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;
 M10.2 retains its ordinary ACP completion gate.

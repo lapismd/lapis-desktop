@@ -5,6 +5,7 @@ requirements live here; evidence records actual results and cannot redefine
 gates.
 
 - [Governance](governance.md)
+- [Local dependency intake](local-dependencies.md)
 - [Desktop shell](desktop.md)
 - [Background activity and responsiveness](background.md)
 - [File management](files.md)

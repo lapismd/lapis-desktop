@@ -13,6 +13,7 @@ const chapters = [
   "repository-navigation",
   "vault-backup",
   "governance",
+  "local-dependencies",
   "migration",
 ];
 export function canonicalContractPattern(prefix = "") {

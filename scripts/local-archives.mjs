@@ -54,15 +54,18 @@ export function readArchiveManifest(manifestPath) {
     return { ...entry, tarball, sha256 };
   });
 }
-export function archiveHookSource(entries) {
+export function archiveHookSource(entries, localProjects = []) {
   const packages = entries.map(({ name, version, tarball }) => [
     name,
     { version, tarball },
   ]);
   return `const semver = require(${JSON.stringify(require.resolve("semver"))});
 const archives = new Map(${JSON.stringify(packages)});
+const localProjects = new Set(${JSON.stringify(localProjects)});
 module.exports = { hooks: { readPackage(pkg) {
-  for (const field of ["dependencies", "devDependencies", "optionalDependencies", "peerDependencies"]) {
+  const fields = ["dependencies", "optionalDependencies", "peerDependencies"];
+  if (localProjects.has(pkg.name)) fields.push("devDependencies");
+  for (const field of fields) {
     for (const [name, entry] of archives) {
       const range = pkg[field]?.[name];
       if (!range) continue;
@@ -124,7 +127,19 @@ export async function installLocalArchives(root, manifestPath) {
   const directory = join(root, ".local/archives");
   mkdirSync(directory, { recursive: true });
   const hookPath = join(directory, "install.pnpmfile.cjs");
-  writeFileSync(hookPath, archiveHookSource(entries));
+  const localProjects = JSON.parse(
+    execFileSync("pnpm", ["list", "--recursive", "--depth", "-1", "--json"], {
+      cwd: root,
+      encoding: "utf8",
+    }),
+  );
+  writeFileSync(
+    hookPath,
+    archiveHookSource(
+      entries,
+      localProjects.map((project) => project.name),
+    ),
+  );
   await preserveDependencyFiles(root, () =>
     runPnpm(root, [
       "install",

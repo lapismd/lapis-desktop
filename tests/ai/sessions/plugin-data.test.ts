@@ -12,6 +12,7 @@ describe("AI plugin data", () => {
       parseAiPluginData({ defaultRuntime: "fake", acpAgent: "codex" }),
     ).toEqual({
       settings: {
+        automaticallyMentionAgents: false,
         transcriptView: "document",
         defaultRuntime: "fake",
         acpAgent: "codex",

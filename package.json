@@ -32,6 +32,8 @@
     "check:bundle": "node scripts/check-bundle.mjs",
     "local:install": "node scripts/local-archives.mjs",
     "local:pack": "node scripts/pack-local-core.mjs",
+    "local:refresh": "node scripts/refresh-local-dependencies.mjs",
+    "local:status": "node scripts/refresh-local-dependencies.mjs --check",
     "storybook": "storybook dev --host 127.0.0.1 --port 7480 --no-open --disable-telemetry",
     "storybook:start": "node scripts/storybook.mjs start",
     "storybook:status": "node scripts/storybook.mjs status",
@@ -47,6 +49,7 @@
     "ai:prepare": "node scripts/prepare-ai.mjs"
   },
   "dependencies": {
+    "@lapismd/ai-host": "^0.1.0",
     "@lapis-notes/api": "^0.1.4",
     "@lapis-notes/file-explorer": "^0.1.2",
     "@lapis-notes/graph": "^0.1.3",

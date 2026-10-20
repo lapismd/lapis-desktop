@@ -312,3 +312,5 @@ by the task ledger, not inferred from this list.
 - [Optional native conversation setup and owned storage transitions](E-AI-086.md)
 
 - [E-AI-092: Native JJ chat checkpoint](E-AI-092.md)
+
+- [Complete local dependency refresh](E-ARCHIVES-002.md)

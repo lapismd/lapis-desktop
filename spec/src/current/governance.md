@@ -16,6 +16,9 @@ Development ignores generated docs/build roots while retaining source HMR
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
 
+The [local dependency intake](local-dependencies.md) contract governs complete
+review refreshes from committed default-checkout source under LD-GOV-006/008.
+
 Native readiness covers split/log-batched receipts without longer deadlines. The
 e2e entry shares early progress, then imports runtime instrumentation; ordinary
 bundle audits reject its startup capture marker.
@@ -125,16 +128,9 @@ consumers. After installation, the installer enumerates active pnpm workspace
 projects and verifies their existing local import routes against the root
 archive identities before recording the qualification receipt.
 
-Local core packing records the actual Jujutsu source snapshot and runs each
-owning package's normal prepack lane. Packing that changes tracked generated
-source fails until those changes are reviewed and the snapshot is repacked. Each
-verified implementation slice is committed after source and consumer acceptance.
-When the source workspace is clean, packing records its committed parent;
-otherwise it records the exact working-copy snapshot being qualified.
-
-After the owning public build/prepack lanes pass, `--already-built` packs those
-verified outputs without rerunning scripts. Source snapshot stability and all
-archive integrity/identity/version checks remain required.
+The scoped legacy `local:pack` helper records its selected JJ snapshot;
+`--already-built` requires prior public builds. Source stability, archive
+integrity, identity and version checks remain required.
 
 Archives must be explicitly declared in the consumer so framework peers resolve
 to one owned package graph. Successful local installation invalidates the owned

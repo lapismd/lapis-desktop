@@ -39,8 +39,10 @@ it("namespaces file and agent suggestions independently and selection dispatches
       "agent:reviewer",
       "file:agent:reviewer",
     ]);
-    expect(trigger.onSelect(items[0]!)).toBe("");
-    expect(choose).toHaveBeenCalledExactlyOnceWith("reviewer");
+    expect(trigger.onSelect(items[0]!)).toBe(
+      "[Reviewer](lapis://agent:7265766965776572) ",
+    );
+    expect(choose).toHaveBeenCalledExactlyOnceWith("reviewer", false);
     expect(trigger.onSelect(items[1]!)).toMatchObject({
       value: '@"agent:reviewer"',
     });

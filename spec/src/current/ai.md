@@ -8,7 +8,7 @@ clauses below describe the Deferred checkpoint experiment.
 E-CATALOG-015: core exclusions. E-AI-054–056 [imports](ai-imports.md) use native
 read-only workers. E-AI-058/060/061: inbox/links/attachments; watching pending.
 E-AI-062/063: local AI; original JJ gates deferred. E-AI-041/045/052/053 and
-[participants](ai-addressing.md) retain gates.
+[participants](ai-addressing.md) retain gates; E-ARCHIVES-002 reconciles tests.
 [Edits](ai-conversation-edits.md)/[attribution](ai-native-attribution.md): M13.3
 gates remain; E-AI-079–084 attribution/storage/dispatch drafts are unqualified.
 

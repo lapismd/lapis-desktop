@@ -35,34 +35,42 @@ Vite binds 127.0.0.1:1431. Normal launches use the separate
 ## Local shared-library archives
 
 During migration, source fixes stay in their owning repositories and npm
-publication is deferred. Pack the Notes source snapshot for local acceptance:
+publication is deferred. Refresh the complete local dependency cohort from the
+latest committed source in each sibling's default checkout:
 
 ```sh
-pnpm local:pack ../lapis-notes-desktop-migration
+pnpm local:status
+pnpm local:refresh
+# Quit the review app normally and stop this checkout's Vite/Storybook first.
 pnpm local:install
+pnpm local:status
+pnpm ai:prepare
+pnpm desktop:bundle --debug
 ```
 
-The complete Notes editor cohort also includes source-owned Mira and Markdown
-archives. After qualifying and building each owning source repository:
+`local:refresh` rebuilds public exports for Notes, its bundled plugins, Mira,
+Design Core, Agent Redaction, the API's AI Host file-tools dependency and the
+Node Spec Validator. It also rebuilds the four linked Terminal, AI and JJ
+clients. It selects committed checkout work even when `main` points elsewhere,
+rejects uncommitted package/build inputs, and preserves unrelated documentation
+work. Design Core uses its own prepared CSS/declaration packer. Source
+revisions, archive checksums and linked-export fingerprints live under ignored
+`.local/archives`; a moved source head requires another refresh.
 
-```sh
-pnpm local:pack ../lapis-notes-desktop-migration \
-  --mira ../mira-mde-desktop-migration \
-  --plugins ../lapis-plugins-desktop-migration --already-built
-pnpm local:install
-```
+`local:status` fails for old/missing source receipts, changed linked exports,
+checksum mismatches or installed payloads that differ from the archives. A
+matching package version alone does not establish freshness. `local:refresh`
+prepares the complete manifest without installing it or stopping applications;
+finish with the guarded quit/install/cold-launch sequence above. Native AI
+preparation and the Desktop bundle rebuild consume the current native siblings.
 
-The pack command builds each public package through its normal prepack lane and
-records source snapshot revisions and archive checksums under ignored
-`.local/archives`. After the source's public package build/prepack lanes have
-already passed, `pnpm local:pack <source-workspace> --already-built` packs those
-outputs without rerunning the scripts. The installer verifies the actual packed
-identities, preserves peer ranges, and restores the tracked registry
-manifests/lockfile after installation, including failure. Repeat
-packing/installing after source changes; restart Vite/Tauri for a cold check. A
-normal registry install removes the local development overlay from installed
-dependencies. The source defaults remain unpublished until the final release
-gate. Commit each verified slice in its owning repository.
+The installer verifies packed identities, preserves peer ranges, and restores
+tracked registry manifests/lockfiles even after failure. A normal registry
+install removes the development overlay, so rerun the status/refresh sequence.
+For a deliberately scoped source experiment, the older
+`pnpm local:pack <source-workspace> --already-built` helper remains available;
+it replaces the candidate manifest and does not establish complete freshness.
+Local source changes remain unpublished until the release gate.
 
 ## Verification
 

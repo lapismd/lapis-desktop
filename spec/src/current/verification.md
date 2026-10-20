@@ -11,9 +11,9 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-GOV-003 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-GOV-004 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-GOV-005 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |
-| LD-GOV-006 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-SESSION-002](../history/E-SESSION-002.md) |
+| LD-GOV-006 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-SESSION-002](../history/E-SESSION-002.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md) |
 | LD-GOV-007 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |
-| LD-GOV-008 | Implemented | [E-ARCHIVES-001](../history/E-ARCHIVES-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
+| LD-GOV-008 | Implemented | [E-ARCHIVES-001](../history/E-ARCHIVES-001.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-DESK-001 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md), [E-REPO-016](../history/E-REPO-016.md) |
 | LD-DESK-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-REVIEW-001](../history/E-REVIEW-001.md); [E-REVIEW-002](../history/E-REVIEW-002.md) |
 | LD-DESK-003 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |

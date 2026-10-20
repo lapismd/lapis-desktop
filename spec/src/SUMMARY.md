@@ -376,3 +376,7 @@
 - [Local ACP conversation storage](current/ai-local-history.md)
 
 - [Local ACP transcript backup evidence](history/E-AI-093.md)
+
+- [Complete local dependency refresh](history/E-ARCHIVES-002.md)
+
+- [Local dependency intake](current/local-dependencies.md)
