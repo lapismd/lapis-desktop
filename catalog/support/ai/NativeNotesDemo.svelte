@@ -5,8 +5,9 @@
   import { nativeNotesPorts, registerNativeNotes } from "./native-notes.ts";
   let {
     scenario = "unavailable",
-  }: { scenario?: "unavailable" | "disabled" | "safe-mode" } = $props();
-  const ports = untrack(nativeNotesPorts);
+  }: { scenario?: "available" | "unavailable" | "disabled" | "safe-mode" } =
+    $props();
+  const ports = untrack(() => nativeNotesPorts(scenario === "available"));
   let root = $state<HTMLElement>();
   $effect(() => {
     if (root) return registerNativeNotes(root, ports);

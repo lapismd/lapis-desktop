@@ -55,29 +55,33 @@ export function createNativeAi(
       native("desktop_ai_admit", { request: { sessionId: vault.sessionId } }),
     release: (reload) => native("desktop_ai_release", { request: { reload } }),
   });
-  const models = new NativeAiModels(scope);
+  const background = new BackgroundWork(app.notifications, "ai");
+  const models = new NativeAiModels(scope, {
+    available: allowed,
+    work: (load) => background.run("Preparing AI and loading models", load),
+  });
   const importSources = new NativeImportSources(vault.sessionId, call, allowed);
   const captureSources = new NativeCaptureSources(
     vault.sessionId,
     call,
     allowed,
   );
-  const background = new BackgroundWork(app.notifications, "ai");
   const clients = new AgentClients(
     {
       status: () =>
         background.run("Checking installed AI clients", () =>
           clientCall<ClientStatus>({ type: "status" }),
         ),
-      install: (request) =>
-        clientCall<ClientOutcome>({ type: "install", request }),
+      install: async (request) =>
+        acceptClientOutcome(
+          await clientCall<ClientOutcome>({ type: "install", request }),
+        ),
       outcome: async (request) => {
         const outcome = await clientCall<ClientOutcome>({
           type: "outcome",
           request,
         });
-        if (outcome.state === "completed") scope.invalidateAdmission();
-        return outcome;
+        return acceptClientOutcome(outcome);
       },
     },
     (error) =>
@@ -90,6 +94,13 @@ export function createNativeAi(
       }),
     () => background.begin("Installing AI client"),
   );
+  function acceptClientOutcome(outcome: ClientOutcome): ClientOutcome {
+    if (outcome.state === "completed") {
+      models.invalidate();
+      scope.invalidateAdmission();
+    }
+    return outcome;
+  }
   function clientCall<T>(action: Record<string, string>): Promise<T> {
     if (!allowed())
       return Promise.reject(
@@ -169,16 +180,7 @@ export function createNativeAi(
     clients,
     runtime,
     appToolBridge: bridge,
-    models: {
-      listExecutionModes: (provider, runtime) =>
-        background.run("Loading agent permissions", () =>
-          models.listExecutionModes(provider, runtime),
-        ),
-      listModels: (provider, runtime) =>
-        background.run("Preparing AI and loading models", () =>
-          models.listModels(provider, runtime),
-        ),
-    },
+    models,
     userAgents,
     importSources,
     captureSources,

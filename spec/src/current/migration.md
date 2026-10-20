@@ -395,6 +395,6 @@ E-AI-064 adds shared chat scroll recovery with controlled activity presentation.
 M10.2/M8.5 retain their original gates; no native/provider qualification
 changes.
 
-E-AI-065 adds bundled helper/client setup; E-REPO-045 adds indexed Search.
-E-SHELL-003 restores native HTML tab drops. Original
-native/provider/distribution gates remain.
+E-AI-065 adds helper/client setup; E-REPO-045 adds indexed Search. E-SHELL-003
+restores tab drops; E-AI-095 deduplicates model discovery. Original native,
+provider and distribution gates remain.

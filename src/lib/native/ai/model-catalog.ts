@@ -7,49 +7,95 @@ import type { AiModelCatalog } from "../../ai/settings/model-options.ts";
 import type { ModelRef } from "../../ai/core/models.ts";
 import { record } from "../../ai/runtimes/acp/wire.ts";
 
+export const MODEL_CATALOG_MAX_AGE_MS = 5 * 60_000;
+type ProviderCatalog = { models: ModelRef[]; modes: ExecutionMode[] };
+type DiscoveryOptions = {
+  available?: () => boolean;
+  work?: (
+    load: () => Promise<ProviderCatalog | null>,
+  ) => Promise<ProviderCatalog | null>;
+  now?: () => number;
+};
 /** Read actual advertised models without sending a prompt or choosing a fallback. */
 export class NativeAiModels implements AiModelCatalog {
-  readonly #pending = new Map<string, Promise<unknown>>();
+  readonly #pending = new Map<string, Promise<ProviderCatalog | null>>();
+  readonly #cache = new Map<
+    string,
+    { facts: ProviderCatalog; expires: number }
+  >();
   readonly #cleanup = new Set<string>();
+  #generation = 0;
   #closed = false;
-  constructor(private readonly transport: AcpTransport) {}
+  constructor(
+    private readonly transport: AcpTransport,
+    private readonly options: DiscoveryOptions = {},
+  ) {}
+  invalidate(): void {
+    this.#generation++;
+    this.#cache.clear();
+  }
   async listModels(provider: string, runtime = "acp"): Promise<ModelRef[]> {
-    return modelsFromFacts(await this.#facts(provider, runtime), provider);
+    return structuredClone(
+      (await this.#facts(provider, runtime))?.models ?? [],
+    );
   }
   async listExecutionModes(
     provider: string,
     runtime = "acp",
   ): Promise<ExecutionMode[]> {
-    return executionModesFromSession(
-      record(await this.#facts(provider, runtime)).session,
-    );
+    return structuredClone((await this.#facts(provider, runtime))?.modes ?? []);
   }
-  #facts(provider: string, runtime: string): Promise<unknown> {
+  #facts(provider: string, runtime: string): Promise<ProviderCatalog | null> {
     if (this.#closed)
       return Promise.reject(new Error("AI model catalog is closed"));
+    if (this.options.available?.() === false) {
+      this.invalidate();
+      return Promise.reject(new Error("AI is disabled in this workspace"));
+    }
     if (runtime !== "acp" && runtime !== "auto")
       return Promise.reject(
         new Error(`Saved runtime ${runtime} is unavailable.`),
       );
-    const pending = this.#pending.get(provider);
+    const cached = this.#cache.get(provider);
+    if (cached && cached.expires > (this.options.now?.() ?? Date.now()))
+      return Promise.resolve(cached.facts);
+    const generation = this.#generation;
+    const key = `${generation}:${provider}`;
+    const pending = this.#pending.get(key);
     if (pending) return pending;
-    const reading = this.#load(provider).finally(() =>
-      this.#pending.delete(provider),
+    const load = async () => {
+      const facts = await this.#load(provider);
+      if (generation !== this.#generation)
+        throw new Error("AI model discovery changed; retry the request");
+      if (!this.#closed && facts) {
+        this.#cache.set(provider, {
+          facts,
+          expires:
+            (this.options.now?.() ?? Date.now()) + MODEL_CATALOG_MAX_AGE_MS,
+        });
+      }
+      return facts;
+    };
+    const reading = (this.options.work?.(load) ?? load()).finally(() =>
+      this.#pending.delete(key),
     );
-    this.#pending.set(provider, reading);
+    this.#pending.set(key, reading);
     return reading;
   }
-  async #load(provider: string): Promise<unknown> {
+  async #load(provider: string): Promise<ProviderCatalog | null> {
     const targets = await this.transport.targets();
     if (this.#closed || !targets.some((target) => target.id === provider))
-      return [];
+      return null;
     const requestId = crypto.randomUUID();
     let info: SessionInfo | undefined;
     let failure: unknown;
     try {
       info = await this.transport.open({ targetId: provider, requestId });
       this.#cleanup.add(info.sessionId);
-      return info.facts;
+      return {
+        models: modelsFromFacts(info.facts, provider),
+        modes: executionModesFromSession(record(info.facts).session),
+      };
     } catch (error) {
       failure = error;
       if (!info) {
@@ -89,6 +135,7 @@ export class NativeAiModels implements AiModelCatalog {
   }
   async close(): Promise<void> {
     this.#closed = true;
+    this.#cache.clear();
     await Promise.allSettled(this.#pending.values());
     const results = await Promise.allSettled(
       [...this.#cleanup].map(async (id) => {

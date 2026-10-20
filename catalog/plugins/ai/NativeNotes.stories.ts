@@ -11,6 +11,48 @@ const meta = {
 } satisfies Meta<typeof NativeNotesDemo>;
 export default meta;
 type Story = StoryObj<typeof meta>;
+export const LayoutKeepsModelDiscovery: Story = {
+  args: { scenario: "available" },
+  play: async ({ canvasElement }) => {
+    const f = await ready(canvasElement),
+      canvas = within(canvasElement);
+    await userEvent.click(canvas.getByRole("button", { name: /^Open Chat$/ }));
+    const input = await canvas.findByRole("textbox", { name: "Message" });
+    await waitFor(() => expect(input).toBeEnabled());
+    await waitFor(() => expect(f.probes).toBe(1));
+    await userEvent.type(
+      input,
+      "Retain this draft across bottom panel changes",
+    );
+    const requests = f.modelRequests;
+    f.app!.workspace.getBottomLeaf();
+    await waitFor(() =>
+      expect(
+        canvas.getAllByRole("button", { name: "Close bottom panel" }).length,
+      ).toBeGreaterThan(0),
+    );
+    const close = canvas.queryAllByRole("button", {
+      name: "Close bottom panel",
+    });
+    if (close[0]) await userEvent.click(close[0]);
+    const open = await canvas.findByRole("button", {
+      name: "Open bottom panel",
+    });
+    await userEvent.click(open);
+    await waitFor(() =>
+      expect(
+        canvas.getAllByRole("button", { name: "Close bottom panel" }).length,
+      ).toBeGreaterThan(0),
+    );
+    expect(canvas.getByRole("textbox", { name: "Message" })).toBe(input);
+    expect(input).toHaveTextContent(
+      "Retain this draft across bottom panel changes",
+    );
+    expect(f.factories).toBe(1);
+    expect(f.modelRequests).toBe(requests);
+    expect(f.probes).toBe(1);
+  },
+};
 async function ready(canvasElement: HTMLElement) {
   await waitFor(
     () =>

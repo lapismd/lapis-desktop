@@ -318,3 +318,5 @@ by the task ledger, not inferred from this list.
 - [Complete local dependency refresh](E-ARCHIVES-002.md)
 
 - [Native workspace HTML tab dragging](E-SHELL-003.md)
+
+- [Shared AI model discovery and status](E-AI-095.md)

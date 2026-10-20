@@ -11,6 +11,7 @@ function fixture(
       ],
     },
   },
+  options: ConstructorParameters<typeof NativeAiModels>[1] = {},
 ) {
   const raw = {
     targets: vi.fn(async () => [{ id: "codex", label: "Codex" }]),
@@ -23,7 +24,7 @@ function fixture(
     close: vi.fn(async () => {}),
     list: vi.fn(async () => []),
   };
-  const catalog = new NativeAiModels(raw as unknown as AcpTransport);
+  const catalog = new NativeAiModels(raw as unknown as AcpTransport, options);
   return { raw, catalog };
 }
 describe("native ACP model catalog", () => {
@@ -48,13 +49,18 @@ describe("native ACP model catalog", () => {
     expect(f.raw.open.mock.calls[0]![0]).toMatchObject({ targetId: "codex" });
     await f.catalog.close();
   });
-  it("deduplicates concurrent catalogs without retaining stale cached inventory", async () => {
+  it("shares successful discovery across callers until explicitly invalidated", async () => {
     const f = fixture();
     await Promise.all([
       f.catalog.listModels("codex"),
       f.catalog.listModels("codex"),
     ]);
     expect(f.raw.open).toHaveBeenCalledTimes(1);
+    await f.catalog.listModels("codex");
+    expect(f.raw.open).toHaveBeenCalledTimes(1);
+    await f.catalog.listExecutionModes("codex");
+    expect(f.raw.open).toHaveBeenCalledTimes(1);
+    f.catalog.invalidate();
     await f.catalog.listModels("codex");
     expect(f.raw.open).toHaveBeenCalledTimes(2);
     await f.catalog.close();
@@ -67,6 +73,64 @@ describe("native ACP model catalog", () => {
     );
     expect(f.raw.open).not.toHaveBeenCalled();
     await f.catalog.close();
+  });
+  it("expires successful metadata after five minutes and returns independent projections", async () => {
+    let now = 0;
+    const f = fixture(undefined, { now: () => now });
+    const first = await f.catalog.listModels("codex");
+    first[0]!.model = "consumer mutation";
+    now = 299_999;
+    expect((await f.catalog.listModels("codex"))[0]!.model).toBe("one");
+    expect(f.raw.open).toHaveBeenCalledTimes(1);
+    now = 300_000;
+    await Promise.all([
+      f.catalog.listModels("codex"),
+      f.catalog.listExecutionModes("codex"),
+    ]);
+    expect(f.raw.open).toHaveBeenCalledTimes(2);
+    await f.catalog.close();
+  });
+  it("does not cache failed discovery or bypass revoked workspace trust", async () => {
+    let available = true;
+    const f = fixture(undefined, { available: () => available });
+    f.raw.open.mockRejectedValueOnce(new Error("discovery failed"));
+    await expect(f.catalog.listModels("codex")).rejects.toThrow(
+      "discovery failed",
+    );
+    await f.catalog.listModels("codex");
+    expect(f.raw.open).toHaveBeenCalledTimes(2);
+    available = false;
+    await expect(f.catalog.listModels("codex")).rejects.toThrow(/disabled/);
+    expect(f.raw.open).toHaveBeenCalledTimes(2);
+    available = true;
+    await f.catalog.listModels("codex");
+    expect(f.raw.open).toHaveBeenCalledTimes(3);
+    await f.catalog.close();
+  });
+  it("rejects invalidated in-flight facts without losing their cleanup owner", async () => {
+    const f = fixture();
+    let release!: (value: Awaited<ReturnType<typeof f.raw.open>>) => void;
+    f.raw.open.mockImplementationOnce(
+      () =>
+        new Promise((resolve) => {
+          release = resolve;
+        }),
+    );
+    const reading = f.catalog.listModels("codex");
+    const refused = expect(reading).rejects.toThrow(/discovery changed/);
+    await vi.waitFor(() => expect(f.raw.open).toHaveBeenCalledOnce());
+    f.catalog.invalidate();
+    release({
+      sessionId: "probe",
+      requestId: "probe",
+      targetId: "codex",
+      facts: { session: {} },
+    });
+    await refused;
+    await f.catalog.listModels("codex");
+    expect(f.raw.open).toHaveBeenCalledTimes(2);
+    await f.catalog.close();
+    expect(f.raw.close).toHaveBeenCalledTimes(2);
   });
   it("rejects malformed inventories while still releasing their probe", async () => {
     for (const availableModels of [

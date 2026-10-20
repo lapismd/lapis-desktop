@@ -991,3 +991,14 @@ Markdown file hover content and unframed picker search; `SavedAgents` checks
 that the parent Agents title is not repeated by a Your agents heading. E-AI-094
 owns focused evidence; shared Tab behavior is qualified in Design Core
 separately.
+
+## Model discovery lifetime (E-AI-095)
+
+`Desktop/AI/Native Notes binding/LayoutKeepsModelDiscovery` uses the actual
+Notes shell, AiPlugin/AiView and native service with a non-prompting fixture
+transport. It counts service calls and probes while opening/closing the bottom
+panel and retains the draft and view identity.
+`Desktop/AI/Workspace lifecycle/LayoutDoesNotReloadModels` retains the same
+invariant with AI in the right sidebar. Both remain visual-pending. Model-cache,
+progress sharing, expiry, trust, invalidation and cleanup are checked at their
+native-service boundary, separately from provider and release qualification.

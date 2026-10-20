@@ -371,3 +371,9 @@ table. Disabling AI removes both AI preferences and Agents registrations.
 E-AI-089 adopts reviewed chat presentation in the existing AI plugin. Plugin
 identity, App ownership, disposal and public host boundaries are unchanged.
 Native conversations augment normal ACP; no replacement plugin is introduced.
+
+E-AI-095 extends the existing Native Notes binding and workspace-lifecycle
+review stories with provider-discovery counters and bottom-panel/draft
+assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
+catalog fixture enters production. Cached metadata and status work retain
+App/vault ownership.

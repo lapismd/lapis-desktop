@@ -75,3 +75,28 @@ without an original private creation record. Its explicit one-use grant and
 worker-owned membership/privacy/store fence retain the fixed client authority.
 The original launch path remains supported. Verification and ordinary native
 composer/store adoption remain open.
+
+## Shared discovery lifetime
+
+E-AI-095 makes LD-AI-001/002 model and execution-mode discovery independent of
+view/layout lifetime. The native service shares one probe per provider across
+concurrent chat, agent-editor and permission callers. Successful validated
+metadata stays in that vault service for at most five minutes; the next read
+refreshes after expiry. Cache hits and callers joining a probe MUST NOT create
+additional status work. One App progress item covers admission, discovery and
+probe cleanup, including failures.
+
+Failed, malformed and unavailable results remain retryable. Workspace trust and
+Safe Mode are checked before cached reads; revocation clears cached facts.
+Completed client installation/update invalidates metadata and native admission;
+failed installation retains the existing cache. Invalidated in-flight results
+cannot repopulate it or overwrite newer discovery, and remain owned until
+cleanup. Closing/reloading the vault clears metadata and drains every pending
+generation. The cache is memory-only and stores no prompts, executable grants or
+credentials; Send still confirms actual provider configuration through native
+admission.
+
+Layout-only changes, including opening/closing the bottom panel, MUST retain the
+existing chat controller/draft and MUST NOT launch another model probe. Focused
+production-shell stories assert view identity, source calls and native probes;
+they are separate from live-provider and distribution qualification.

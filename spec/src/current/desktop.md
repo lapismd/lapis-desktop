@@ -342,8 +342,8 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-[Native qualification](native-acceptance.md) retains AI/repository gates. Local
-participant names, delivery and queues retain native admission.
+[Native qualification](native-acceptance.md) retains AI/repository gates.
+E-AI-095 caches model metadata; participant delivery/queues retain admission.
 
 Verified Lapis AI helpers ship as application resources; device adapters remain
 installation-owned. See [client delivery](ai-clients.md).

@@ -112,3 +112,37 @@ export const ExplicitConversationReplacement: Story = {
     expect(fixture.app.workspace.activeLeaf).toBe(active);
   },
 };
+
+export const LayoutDoesNotReloadModels: Story = {
+  args: { layout: "right-sidebar" },
+  play: async ({ canvasElement }) => {
+    const { fixture, canvas, panel } = await chat(canvasElement);
+    const initial = JSON.parse(await fixture.inspect()).modelRequests;
+    const input = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.type(input, "Keep this draft while changing the layout");
+    fixture.app.workspace.getBottomLeaf();
+    await waitFor(() =>
+      expect(
+        canvas.getAllByRole("button", { name: "Close bottom panel" }).length,
+      ).toBeGreaterThan(0),
+    );
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Close bottom panel" })[0]!,
+    );
+    const open = await canvas.findByRole("button", {
+      name: "Open bottom panel",
+    });
+    await userEvent.click(open);
+    await waitFor(() =>
+      expect(
+        canvas.getAllByRole("button", { name: "Close bottom panel" }).length,
+      ).toBeGreaterThan(0),
+    );
+    await fixture.plugin()!.application.operations.settle();
+    expect(canvas.getByTestId("ai-chat-panel")).toBe(panel);
+    expect(input).toHaveTextContent(
+      "Keep this draft while changing the layout",
+    );
+    expect(JSON.parse(await fixture.inspect()).modelRequests).toBe(initial);
+  },
+};

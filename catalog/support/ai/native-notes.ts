@@ -3,10 +3,12 @@ import type { AcpTransport } from "@lapismd/ai";
 import { createNativeAi } from "../../../src/lib/native/ai/services.ts";
 import type { NativeCall } from "../../../src/lib/native/vault-client.ts";
 
-export function nativeNotesPorts() {
+export function nativeNotesPorts(available = false) {
   let app: App | undefined;
   let allocations = 0;
   let factories = 0;
+  let modelRequests = 0;
+  let probes = 0;
   const calls: { command: string; args: unknown }[] = [];
   const files = new Map<string, string>();
   const call: NativeCall = async <T>(command: string, args?: unknown) => {
@@ -47,12 +49,18 @@ export function nativeNotesPorts() {
     get factories() {
       return factories;
     },
+    get modelRequests() {
+      return modelRequests;
+    },
+    get probes() {
+      return probes;
+    },
     calls,
     files,
     create(owner: App) {
       app = owner;
       factories++;
-      return createNativeAi(
+      const services = createNativeAi(
         owner,
         {
           profileId: "catalog",
@@ -66,12 +74,41 @@ export function nativeNotesPorts() {
           createTransport: () => {
             allocations++;
             return {
-              targets: async () => [],
+              targets: async () =>
+                available ? [{ id: "codex", label: "Codex" }] : [],
               list: async () => [],
+              open: async (options: Parameters<AcpTransport["open"]>[0]) => {
+                probes++;
+                return {
+                  sessionId: crypto.randomUUID(),
+                  requestId: options.requestId,
+                  targetId: options.targetId,
+                  facts: {
+                    session: {
+                      models: {
+                        currentModelId: "fixture-model",
+                        availableModels: [{ modelId: "fixture-model" }],
+                      },
+                    },
+                  },
+                };
+              },
+              close: async () => {},
             } as unknown as AcpTransport;
           },
         },
       );
+      const models = services.models;
+      return {
+        ...services,
+        models: {
+          listModels: (provider: string, runtime?: string) => {
+            modelRequests++;
+            return models.listModels(provider, runtime);
+          },
+          listExecutionModes: models.listExecutionModes?.bind(models),
+        },
+      };
     },
   };
 }

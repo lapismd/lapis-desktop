@@ -91,6 +91,7 @@ export function createAiWorkspaceFixture(
   const runtimes: FakeAgentRuntime[] = [];
   let clients = 0;
   let released = 0;
+  let modelRequests = 0;
   const unbind = bindAi(app, () => {
     clients += 1;
     const runtime = new FakeAgentRuntime({ id: "acp", resumeSupported: false });
@@ -100,6 +101,7 @@ export function createAiWorkspaceFixture(
       runtime,
       models: {
         listModels: async (provider) => {
+          modelRequests++;
           await modelReady;
           return [{ provider, model: "fixture-model", isDefault: true }];
         },
@@ -189,6 +191,7 @@ export function createAiWorkspaceFixture(
       return JSON.stringify({
         clients,
         released,
+        modelRequests,
         loaded: ai?.loaded ?? false,
         settings: ai?.getSettings(),
         data: await ai?.loadData(),

@@ -51,8 +51,9 @@ detaches owned streams, and then releases native authority. Failed cleanup stays
 retryable. Full close resolves uncertain detach through awaited whole-scope
 revocation; reload requires successful detach before suspension. Reload retains
 only the native generation; it does not invent resume or replay a prompt. Native
-model catalogs use temporary, non-prompting sessions and release them after
-reading the provider's actual advertised model state.
+model discovery shares non-prompting probes and a five-minute metadata cache;
+[client discovery](ai-clients.md) governs status, trust, invalidation and
+cleanup.
 
 [Local recovery](ai-recovery.md) governs durable dispatch, streaming and unknown
 outcomes.
