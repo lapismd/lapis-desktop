@@ -63,6 +63,12 @@ pub(super) async fn dispatch(
                     lapis_desktop::ai::conversations::status(call, request_id),
                 )?)
             }
+            Operation::ListConversations { handle, cursor } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                Reply::ConversationCatalog(tauri::async_runtime::block_on(
+                    lapis_desktop::ai::conversations::catalog::list(call, cursor),
+                )?)
+            }
             Operation::AppendConversationMessage {
                 handle,
                 request_id,
@@ -130,9 +136,30 @@ pub(super) async fn dispatch(
                     lapis_desktop::ai::conversations::read(call, request_id),
                 )?)
             }
-            Operation::OpenConversationRead { handle, request_id } => Reply::ConversationRead(
-                owner.open_read(&host, &context, &request.session_id, handle, request_id)?,
-            ),
+            Operation::OpenConversationRead { handle, request_id } => {
+                Reply::ConversationRead(owner.open_read(
+                    &host,
+                    &context,
+                    &request.session_id,
+                    handle,
+                    super::reads::Target::Prepared(request_id),
+                )?)
+            }
+            Operation::ReadCanonicalConversation { handle, thread_id } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                Reply::CanonicalConversationView(tauri::async_runtime::block_on(
+                    lapis_desktop::ai::conversations::read_canonical(call, thread_id),
+                )?)
+            }
+            Operation::OpenCanonicalConversationRead { handle, thread_id } => {
+                Reply::ConversationRead(owner.open_read(
+                    &host,
+                    &context,
+                    &request.session_id,
+                    handle,
+                    super::reads::Target::Canonical(thread_id),
+                )?)
+            }
             Operation::ReadConversationTranscript {
                 handle,
                 read_handle,

@@ -1,3 +1,4 @@
+use jj_collab::ThreadId;
 use jj_store_model::RequestId;
 use lapis_desktop::ai::backend::{Backend, Selection, SelectionReceipt};
 use serde::{Deserialize, Serialize};
@@ -40,6 +41,10 @@ pub enum Operation {
         handle: Uuid,
         request_id: RequestId,
     },
+    ListConversations {
+        handle: Uuid,
+        cursor: Option<String>,
+    },
     AppendConversationMessage {
         handle: Uuid,
         request_id: RequestId,
@@ -54,6 +59,14 @@ pub enum Operation {
     ReadConversation {
         handle: Uuid,
         request_id: RequestId,
+    },
+    ReadCanonicalConversation {
+        handle: Uuid,
+        thread_id: ThreadId,
+    },
+    OpenCanonicalConversationRead {
+        handle: Uuid,
+        thread_id: ThreadId,
     },
     OpenConversationRead {
         handle: Uuid,
@@ -124,6 +137,8 @@ pub enum Reply {
     Conversation(Option<lapis_desktop::ai::conversations::Conversation>),
     ConversationMessage(Option<lapis_desktop::ai::conversations::messages::MessageWrite>),
     ConversationView(Option<String>),
+    ConversationCatalog(String),
+    CanonicalConversationView(Option<String>),
     ConversationRead(Option<super::reads::OpenedRead>),
     TranscriptRange(String),
     Capture(super::capture::Prepared),

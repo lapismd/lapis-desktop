@@ -10,7 +10,7 @@ E-AI-054–056 add [imports](ai-imports.md) through native read-only workers.
 E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
 E-AI-062/063 lands local AI; JJ persistence and original gates remain deferred.
 E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
-E-AI-069 adds native authored preparation; managed renderer adoption stays open.
+[Authorship](ai-authored.md) and [catalog](ai-catalog.md): M13.3 stays open.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 E-CATALOG-009–012 retain shell clearance, inert XML and constrained chat

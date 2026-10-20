@@ -9,7 +9,7 @@ E-REPO-035–041/046–054; imports E-AI-056 ([contract](ai-imports.md)). Gravat
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.
 
-AI: E-AI-059–061/066/069. LD-DESK-003 unchanged: native authority; renderer
+AI: E-AI-059–061/066/069/070. LD-DESK-003 unchanged: native authority; renderer
 paths, actors, executables and environment denied.
 
 [Plugins/Terminal](plugins.md); [background](background.md);

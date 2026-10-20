@@ -15,6 +15,7 @@ gates.
 - [Desktop AI and optional compute](ai.md)
   - [Installed clients and bundled helpers](ai-clients.md)
   - [Native authored conversation messages](ai-authored.md)
+  - [Committed native conversation catalog](ai-catalog.md)
   - [AI transcript delivery review](ai-presentation.md)
   - [Local AI turn recovery](ai-recovery.md)
   - [Native application tools](ai-tools.md)

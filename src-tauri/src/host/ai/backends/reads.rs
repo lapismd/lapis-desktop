@@ -1,5 +1,6 @@
 use super::{NativeBackends, denied};
 use crate::host::state::NativeHost;
+use jj_collab::ThreadId;
 use jj_store_model::RequestId;
 use lapis_desktop::ai::conversations::ReadPin;
 use serde::Serialize;
@@ -8,6 +9,10 @@ use tauri_plugin_lapis_ai::HostContext;
 use uuid::Uuid;
 
 const MAX_READS: usize = 8;
+pub(super) enum Target {
+    Prepared(RequestId),
+    Canonical(ThreadId),
+}
 #[derive(Serialize)]
 pub(super) struct OpenedRead {
     handle: Uuid,
@@ -20,7 +25,7 @@ impl NativeBackends {
         context: &HostContext,
         session: &str,
         handle: Uuid,
-        request: RequestId,
+        target: Target,
     ) -> io::Result<Option<OpenedRead>> {
         let call = self.conversation_call(host, context, session, handle)?;
         {
@@ -35,10 +40,17 @@ impl NativeBackends {
                 ));
             }
         }
-        let Some((snapshot, pin)) = tauri::async_runtime::block_on(
-            lapis_desktop::ai::conversations::open_read(call, request),
-        )?
-        else {
+        let opened = tauri::async_runtime::block_on(async move {
+            match target {
+                Target::Prepared(request) => {
+                    lapis_desktop::ai::conversations::open_read(call, request).await
+                }
+                Target::Canonical(thread) => {
+                    lapis_desktop::ai::conversations::open_canonical(call, thread).await
+                }
+            }
+        })?;
+        let Some((snapshot, pin)) = opened else {
             return Ok(None);
         };
         let id = Uuid::new_v4();

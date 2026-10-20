@@ -1,5 +1,7 @@
 //! Native-owned conversation preparation; recovery only reads original receipts.
 mod capture;
+pub mod catalog;
+mod identity;
 pub mod messages;
 mod provider;
 mod read;
@@ -10,6 +12,7 @@ pub use capture::PreparedConversation;
 use jj_collab::ThreadId;
 use jj_store_core::{StoreOutcome, StoreRequest};
 use jj_store_model::{RepositoryId, RequestId};
+pub use read::canonical::{open as open_canonical, read as read_canonical};
 pub use read::{ReadPin, open as open_read, read};
 use records::Record;
 use serde::Serialize;

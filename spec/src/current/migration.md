@@ -8,7 +8,8 @@ unchanged.
 
 Managed Codex launch binds an existing native conversation to a single-use
 target. E-AI-068 adds typed native authored messages and original-receipt
-recovery. E-AI-069 fences native dispatch behind confirmed authorship. Renderer
+recovery. E-AI-069 fences native dispatch behind confirmed authorship. E-AI-070
+adds committed discovery/reads without private creation records. Renderer
 persistence/context adoption and M10.2/M13.3 restart gates remain open; these
 native boundaries alone cannot complete either milestone.
 

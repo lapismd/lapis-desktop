@@ -1,6 +1,9 @@
 //! Native opaque cursors retain only immutable, originally selected read data.
 use super::{confirmed, encode, invalid, reply, streams};
-use crate::ai::{backend::BackendCall, conversations::Conversation};
+use crate::ai::{
+    backend::BackendCall,
+    conversations::{Conversation, identity::Identity, provider},
+};
 use jj_agent::{AgentObjectRef, AgentSessionId, TranscriptStreamV1};
 use jj_store_core::engine::{AgentReader, AgentSnapshotRead};
 use jj_store_model::RequestId;
@@ -36,11 +39,17 @@ impl Cursor {
 /// Detached Agent snapshots contain no host/counted backend call. Every actual
 /// range needs a fresh current call and exact original receipt verification.
 pub struct ReadPin {
-    request: RequestId,
-    conversation: Conversation,
+    origin: Origin,
     selection: Vec<u8>,
     snapshot: Arc<dyn AgentSnapshotRead>,
     cursors: BTreeMap<Uuid, Cursor>,
+}
+enum Origin {
+    Prepared {
+        request: RequestId,
+        conversation: Conversation,
+    },
+    Canonical(Identity),
 }
 impl ReadPin {
     pub(super) fn new(
@@ -51,8 +60,23 @@ impl ReadPin {
         cursors: BTreeMap<Uuid, Cursor>,
     ) -> Self {
         Self {
-            request,
-            conversation,
+            origin: Origin::Prepared {
+                request,
+                conversation,
+            },
+            selection,
+            snapshot,
+            cursors,
+        }
+    }
+    pub(super) fn canonical(
+        identity: Identity,
+        selection: Vec<u8>,
+        snapshot: Arc<dyn AgentSnapshotRead>,
+        cursors: BTreeMap<Uuid, Cursor>,
+    ) -> Self {
+        Self {
+            origin: Origin::Canonical(identity),
             selection,
             snapshot,
             cursors,
@@ -79,9 +103,28 @@ impl ReadPin {
         }
         let call = Arc::new(call);
         let _guard = call.preparation_guard().await?;
-        let (record, _) = confirmed(&call, self.request).await?.ok_or_else(invalid)?;
-        if reply(&record)? != self.conversation {
-            return Err(invalid());
+        match &self.origin {
+            Origin::Prepared {
+                request,
+                conversation,
+            } => {
+                let (record, _) = confirmed(&call, *request).await?.ok_or_else(invalid)?;
+                if reply(&record)? != *conversation {
+                    return Err(invalid());
+                }
+            }
+            Origin::Canonical(identity) => {
+                let stores = provider::read_current(call.clone())?;
+                let current = stores
+                    .thread()
+                    .ok_or_else(invalid)?
+                    .snapshot()
+                    .await
+                    .map_err(|_| invalid())?;
+                if current.scope.repository != identity.repository {
+                    return Err(invalid());
+                }
+            }
         }
         let transcript = streams::range(
             &AgentReader::new(self.snapshot.as_ref()),
@@ -96,15 +139,28 @@ impl ReadPin {
         #[derive(Serialize)]
         struct Page<'a> {
             version: u8,
-            conversation_request_id: RequestId,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            conversation_request_id: Option<RequestId>,
+            #[serde(skip_serializing_if = "Option::is_none")]
+            conversation: Option<&'a Identity>,
             selection: &'a [u8],
             session_id: AgentSessionId,
             after_sequence: u64,
             transcript: &'a streams::Transcript,
         }
         let encoded = encode(&Page {
-            version: 1,
-            conversation_request_id: self.request,
+            version: match &self.origin {
+                Origin::Prepared { .. } => 1,
+                Origin::Canonical(_) => 2,
+            },
+            conversation_request_id: match &self.origin {
+                Origin::Prepared { request, .. } => Some(*request),
+                _ => None,
+            },
+            conversation: match &self.origin {
+                Origin::Canonical(identity) => Some(identity),
+                _ => None,
+            },
             selection: &self.selection,
             session_id: cursor_data.session,
             after_sequence: sequence,

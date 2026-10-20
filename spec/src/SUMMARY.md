@@ -9,6 +9,7 @@
   - [Desktop AI and optional compute](current/ai.md)
   - [Installed AI clients](current/ai-clients.md)
   - [Native authored conversation messages](current/ai-authored.md)
+  - [Committed native conversation catalog](current/ai-catalog.md)
   - [AI transcript delivery review](current/ai-presentation.md)
   - [Local AI turn recovery](current/ai-recovery.md)
   - [Native application tools](current/ai-tools.md)
@@ -324,3 +325,5 @@
 - [Native authored messages and original receipt recovery](history/E-AI-068.md)
 
 - [Native authored preparation before provider dispatch](history/E-AI-069.md)
+
+- [Committed native conversation discovery and reads](history/E-AI-070.md)

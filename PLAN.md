@@ -160,7 +160,8 @@ qualifies conversation-bound Codex launch/capture and cold reads; renderer/store
 adoption, context/skills and full conversation recovery remain open. E-AI-068
 qualifies sanitized native authored writes and original-receipt recovery.
 E-AI-069 connects native outgoing preparation to confirmed authorship; full
-renderer and context/recovery adoption remain open.
+renderer and context/recovery adoption remain open. E-AI-070 adds canonical
+discovery and source-backed reads independent of private creation/actor records.
 
 The remaining AI/distribution sequence is:
 

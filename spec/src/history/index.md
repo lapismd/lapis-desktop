@@ -266,3 +266,5 @@ by the task ledger, not inferred from this list.
 - [Native authored messages and original receipt recovery](E-AI-068.md)
 
 - [Native authored preparation before provider dispatch](E-AI-069.md)
+
+- [Committed native conversation discovery and reads](E-AI-070.md)

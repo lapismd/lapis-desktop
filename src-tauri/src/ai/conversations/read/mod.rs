@@ -1,4 +1,5 @@
 //! Bounded immutable conversation views; original receipts authorize no new write.
+pub(super) mod canonical;
 mod retained;
 mod streams;
 use super::{invalid, provider, records, reply, unknown};
@@ -15,9 +16,9 @@ use serde::Serialize;
 use std::{collections::BTreeMap, io, sync::Arc};
 
 #[derive(Serialize)]
-struct View {
+struct View<C> {
     version: u8,
-    conversation: super::Conversation,
+    conversation: C,
     selection: Vec<u8>,
     thread: ThreadVersionV1,
     metadata: Option<ConversationMetadataV1>,
@@ -199,7 +200,7 @@ fn links(
     }
     Ok(result)
 }
-fn encode(value: &impl Serialize) -> io::Result<String> {
+pub(super) fn encode(value: &impl Serialize) -> io::Result<String> {
     struct Output(Vec<u8>);
     impl io::Write for Output {
         fn write(&mut self, bytes: &[u8]) -> io::Result<usize> {

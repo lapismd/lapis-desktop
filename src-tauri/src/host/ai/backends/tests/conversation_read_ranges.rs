@@ -5,7 +5,7 @@ use tauri_plugin_lapis_ai::HostPolicy;
 fn conversation_read_continuation_keeps_the_original_snapshot_after_capture_advances() {
     let f = Fixture::new();
     run(async {
-        let (handle, _, binding) = setup(&f).await;
+        let (handle, conversation, binding) = setup(&f).await;
         let mut processor = f
             .policy
             .processor(&Fixture::context(), &binding)
@@ -52,6 +52,34 @@ fn conversation_read_continuation_keeps_the_original_snapshot_after_capture_adva
         let remaining = page["transcript"]["chunks"].as_array().unwrap();
         assert_eq!(remaining.len(), 2);
         assert!(page["transcript"]["next_after_sequence"].is_null());
+        let canonical = f
+            .call(super::conversation_read_canonical::open_read(
+                &handle,
+                &conversation["data"]["threadId"],
+            ))
+            .await
+            .unwrap();
+        let canonical_view: Value =
+            serde_json::from_str(canonical["data"]["snapshot"].as_str().unwrap()).unwrap();
+        assert_eq!(canonical_view["version"], 2);
+        let canonical_stream = &canonical_view["sessions"][0]["transcripts"][0];
+        let canonical_request = json!({
+            "type":"readConversationTranscript","handle":handle,
+            "readHandle":canonical["data"]["handle"],"cursor":canonical_stream["cursor"],
+            "afterSequence":canonical_stream["next_after_sequence"].as_u64().unwrap().to_string(),
+        });
+        let canonical_original = f.call(canonical_request.clone()).await.unwrap();
+        let canonical_page: Value =
+            serde_json::from_str(canonical_original["data"].as_str().unwrap()).unwrap();
+        assert_eq!(canonical_page["version"], 2);
+        assert_eq!(
+            canonical_page["transcript"]["chunks"],
+            page["transcript"]["chunks"]
+        );
+        assert_eq!(
+            canonical_page["conversation"],
+            canonical_view["conversation"]
+        );
         assert_eq!(metadata(&f).read().unwrap().unwrap().commit(), before);
         for after in [
             "0",
@@ -92,6 +120,10 @@ fn conversation_read_continuation_keeps_the_original_snapshot_after_capture_adva
         replaced["receipt"]["actor"] = json!(id(9));
         super::conversations::replace(&f, 3, &replaced);
         assert!(f.call(request.clone()).await.is_err());
+        assert_eq!(
+            f.call(canonical_request.clone()).await.unwrap(),
+            canonical_original
+        );
         assert_eq!(super::conversations::record(&f, 3), replaced);
         super::conversations::replace(&f, 3, &original_record);
         assert_eq!(f.call(request.clone()).await.unwrap(), original);
@@ -115,5 +147,18 @@ fn conversation_read_continuation_keeps_the_original_snapshot_after_capture_adva
         f.call(close.clone()).await.unwrap();
         f.call(close).await.unwrap();
         assert!(f.call(request).await.is_err());
+        drop(processor);
+        std::fs::remove_dir_all(super::conversations::private(&f)).unwrap();
+        assert_eq!(
+            f.call(canonical_request.clone()).await.unwrap(),
+            canonical_original
+        );
+        assert!(!super::conversations::private(&f).exists());
+        assert_eq!(metadata(&f).read().unwrap().unwrap().commit(), advanced);
+        f.call(json!({"type":"closeConversationRead","handle":handle,
+            "readHandle":canonical["data"]["handle"]}))
+            .await
+            .unwrap();
+        assert!(f.call(canonical_request).await.is_err());
     });
 }
