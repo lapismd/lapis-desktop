@@ -8,20 +8,20 @@ fn status(handle: &Value, request: u8, conversation: u8) -> Value {
     json!({"type":"conversationMessageStatus","handle":handle,
         "requestId":id(request),"conversationRequestId":id(conversation)})
 }
-fn path(f: &Fixture, request: u8) -> PathBuf {
+pub(super) fn path(f: &Fixture, request: u8) -> PathBuf {
     conversations::private(f)
         .parent()
         .unwrap()
         .join("conversation-messages-v1")
         .join(format!("{}.json", id(request)))
 }
-fn replace(f: &Fixture, request: u8, value: &Value) {
+pub(super) fn replace(f: &Fixture, request: u8, value: &Value) {
     use std::os::unix::fs::PermissionsExt;
     let path = path(f, request);
     std::fs::write(&path, serde_json::to_vec(value).unwrap()).unwrap();
     std::fs::set_permissions(path, std::fs::Permissions::from_mode(0o600)).unwrap();
 }
-fn unpublished(mut record: Value, request: u8) -> Value {
+pub(super) fn unpublished(mut record: Value, request: u8) -> Value {
     use sha2::{Digest, Sha256};
     // Build a valid interrupted intent with a different original request.
     // The digest is bound into its native message ID, not just a mutable field.

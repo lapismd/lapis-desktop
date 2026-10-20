@@ -15,6 +15,7 @@ struct Cache {
     sanitizer: TranscriptSanitizer,
     _directory: tempfile::TempDir,
 }
+#[derive(Clone)]
 pub(super) struct Privacy {
     pub sanitizer: Arc<TranscriptSanitizer>,
     _cache: Arc<Cache>,

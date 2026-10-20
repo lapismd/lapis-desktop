@@ -49,9 +49,32 @@ owner. Authored writes never snapshot or replace working-copy files, start a
 provider or borrow Repository History admission. Confirmed messages are read
 through the existing operation-pinned native conversation reader.
 
+## Managed prompt preparation
+
+A conversation-bound native processor must confirm the prompt's human text in
+the original ThreadStore before its outgoing preparation completes. Its native
+worker binding and canonical UUID prompt request select that exact write;
+renderer-supplied actor, message, repository or filesystem authority is never
+accepted. The shared runtime owns and drains preparation before provider
+dispatch, independently of the renderer's persistence implementation.
+
+The existing sanitizer and original-receipt recovery apply. IO, scanning and
+storage run on an awaited blocking worker retaining the original capture permit
+and privacy owner. Missing or unknown confirmation, changed original text,
+foreign worker identity or revoked ownership rejects preparation. No raw
+fallback or automatic resubmission is allowed. The shared Tauri wrapper also
+requires current command admission; retained inbound capture alone cannot
+authorize a prompt.
+
+Only authored text is sent to the human-message writer. Injected context never
+becomes that message. Context-only prompts and non-prompt controls do not invent
+human records. This fence does not itself persist complete prompt context,
+select renderer storage, project provider envelopes or prove full chat recovery.
+
 M10.2/M13.3 retain managed renderer/store adoption, metadata/bindings, complete
 projection, context/skills/memory and cold conversation/restart gates. Packaged
 tools/credentials and compute retain M10.3/M10.4. Release remains deferred.
 
 E-AI-068 qualifies native writes and original-receipt recovery through two cold
 native API processes. Full mounted renderer adoption retains the gates above.
+E-AI-069 connects native outgoing preparation to the confirmed writer.

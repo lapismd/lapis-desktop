@@ -199,13 +199,16 @@ test(
     );
     assert.equal(configured.modeReady, true);
     const turn = randomUUID();
+    const authored = `Do not use tools or inspect files. Reply with exactly ${marker} and no other text.`;
+    const injected =
+      "Injected vault context must stay separate from human authorship.";
     await invoke(first, "plugin:lapis-ai|submit", {
       sessionId: native.sessionId,
       requestId: turn,
       request: {
         type: "prompt",
-        text: `Do not use tools or inspect files. Reply with exactly ${marker} and no other text.`,
-        context: null,
+        text: authored,
+        context: injected,
         max_duration_ms: 90000,
       },
     });
@@ -233,11 +236,17 @@ test(
       1,
       "The exact assistant projection must survive, independently of the longer authored prompt",
     );
-    assert.deepEqual(
-      view.messages,
-      [],
-      "Provider capture cannot fabricate a ThreadStore authored-message write",
-    );
+    assert.equal(view.messages.length, 1);
+    assert.equal(view.messages[0].body, authored);
+    assert.equal(view.messages[0].body.includes(injected), false);
+    const authoredStatus = await backend(first, vault, {
+      type: "conversationMessageStatus",
+      handle,
+      requestId: turn.replaceAll("-", ""),
+      conversationRequestId: id(3),
+    });
+    assert.ok(authoredStatus.data.receipt);
+    assert.equal(authoredStatus.data.messageId, view.messages[0].message_id);
     assert.equal(
       encoded.includes(path),
       false,
@@ -303,6 +312,7 @@ test(
           conversation: conversation.data,
           selected,
           sessions: view.sessions.length,
+          messages: view.messages.length,
           marker,
         },
         null,

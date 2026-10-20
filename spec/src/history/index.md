@@ -264,3 +264,5 @@ by the task ledger, not inferred from this list.
 - [Conversation-bound managed native launch](E-AI-067.md)
 
 - [Native authored messages and original receipt recovery](E-AI-068.md)
+
+- [Native authored preparation before provider dispatch](E-AI-069.md)

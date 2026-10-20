@@ -322,3 +322,5 @@
 - [Conversation-bound managed native launch](history/E-AI-067.md)
 
 - [Native authored messages and original receipt recovery](history/E-AI-068.md)
+
+- [Native authored preparation before provider dispatch](history/E-AI-069.md)

@@ -15,6 +15,7 @@ mod factory;
 mod managed_launch;
 mod ownership;
 mod processing;
+mod prompt_authorship;
 use super::{NativeBackends, commands::dispatch};
 use crate::host::{
     ai::policy::DesktopAiPolicy,

@@ -21,6 +21,12 @@ pub struct MessageWrite {
     message_id: HumanMessageId,
     receipt: Option<String>,
 }
+impl MessageWrite {
+    /// Only a validated canonical provider receipt establishes native durability.
+    pub fn is_confirmed(&self) -> bool {
+        self.receipt.is_some()
+    }
+}
 async fn recover(
     call: &BackendCall,
     stores: &RepositoryStores,
@@ -45,7 +51,7 @@ async fn recover(
     intent.reply()
 }
 pub async fn append(
-    call: BackendCall,
+    call: impl Into<Arc<BackendCall>>,
     conversation: RequestId,
     request: RequestId,
     text: String,
@@ -58,7 +64,7 @@ pub async fn append(
     digest.update(b"lapis-native-authored-message-v1\0");
     digest.update(text.as_bytes());
     let fingerprint: [u8; 32] = digest.finalize().into();
-    let call = Arc::new(call);
+    let call = call.into();
     let _guard = call.preparation_guard().await?;
     let (original, stores) = read::confirmed(&call, conversation)
         .await?

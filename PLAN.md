@@ -159,6 +159,8 @@ prerequisites already implemented, not a completed managed chat flow. E-AI-067
 qualifies conversation-bound Codex launch/capture and cold reads; renderer/store
 adoption, context/skills and full conversation recovery remain open. E-AI-068
 qualifies sanitized native authored writes and original-receipt recovery.
+E-AI-069 connects native outgoing preparation to confirmed authorship; full
+renderer and context/recovery adoption remain open.
 
 The remaining AI/distribution sequence is:
 

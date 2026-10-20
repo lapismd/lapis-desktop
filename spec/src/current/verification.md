@@ -125,4 +125,5 @@ cases. Source/catalog E-CATALOG-009/010 retained; other gates unchanged.
 
 LD-AI-001/002/004, LD-REPO-003 and LD-DESK-003 managed launch boundary:
 [E-AI-067](../history/E-AI-067.md); authored writes:
-[E-AI-068](../history/E-AI-068.md). Renderer/store adoption remains open.
+[E-AI-068](../history/E-AI-068.md); outgoing native confirmation:
+[E-AI-069](../history/E-AI-069.md). Renderer/store adoption remains open.
