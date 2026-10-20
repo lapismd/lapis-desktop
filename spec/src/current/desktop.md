@@ -1,18 +1,19 @@
 # Desktop shell
 
-Footer: E-CATALOG-012/013; scroll: E-AI-064; upstream: E-REPO-043; blame
-wrapping: E-REPO-044. E-REPO-035–041 retain backup authority. E-AI-056 retains
-LD-DESK-005 and [local imports](ai-imports.md). Gravatar:
+E-POPOUT-003 adds the window registry; ordinary popup admission remains denied
+(LD-DESK-003/LD-POP-005).
+
+Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
+E-REPO-035–041; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
-App-owned watching starts after metadata/views and drains before leave; failure
-resumes the live App (LD-FILE-002/003). M6 Search/Graph follows `navigation.md`.
+App watching starts after metadata/views; leave drains it; failure resumes it
+(LD-FILE-002/003). Search/Graph: `navigation.md`.
 
 E-AI-059–061/066 retain LD-DESK-001/LD-HOST-001 for AI views and Settings.
 
-Plugin assets and Terminal follow [plugins](plugins.md).
-
-[Background](background.md); [history](repository.md).
+[Plugins/Terminal](plugins.md); [background](background.md);
+[history](repository.md).
 
 ## Requirements
 

@@ -10,7 +10,7 @@ completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 
 | Workstream                        | Implemented and verified                                                                                                                                       | Remaining completion gates                                                                                                                         |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | Ordinary native pop-outs are the separate Planned M7.3 task; M8.5 presentation acceptance remains In progress                                      |
+| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | Ordinary native pop-outs are the separate In progress M7.3 task; M8.5 presentation acceptance remains In progress                                  |
 | AI and conversations, M10/M13     | Reusable ACP adapter, retained AI UI/shared transcript, native privacy/store ownership and bounded conversation reads implemented; M10.1/M13.1/M13.2 qualified | M10.2/M13.3 managed renderer conversation/execution, context/skills and restart recovery; M10.3 tools/credentials and M10.4 compute remain Planned |
 | Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14/M14.1–7 retain Partial at cold native-app, real GitHub/Forgejo and wider qualification; visual approval remains separate                       |
 | Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                                 |
@@ -30,6 +30,10 @@ are pending gates, not background jobs. Updating this plan does not start them.
 See the [delivery checklist](docs/automatic-vault-backup-progress.md) for
 focused evidence and deferred checks. The 2026-10-17 review pause was followed
 by resumed implementation; it is not the current instruction to stop.
+
+M7.3 implementation resumed on 2026-10-20. E-POPOUT-003 qualifies the native
+session/window registry; ordinary creation, guarded close and actual-app
+acceptance remain open. Release and distribution work stay deferred.
 
 ## Original target and architecture
 
@@ -147,7 +151,7 @@ Commit each verified task in its owning repository.
 increments toward it. Later services do not block that milestone.
 
 M0–M9 meet their original gates, including M7.1–M7.2 and the M8 plugin
-foundation. M7.3 ordinary pop-outs remain Planned and M8.5 retains its separate
+foundation. M7.3 ordinary pop-outs are In progress and M8.5 retains its separate
 presentation gate. M10.1's reusable ACP adapter and M13.1/M13.2
 admission/history are complete; M10.2/M13.3 managed conversations remain In
 progress. Native store construction, privacy/journal ownership, receipts and

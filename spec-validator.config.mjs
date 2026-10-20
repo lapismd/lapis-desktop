@@ -73,7 +73,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:POPOUT_PLAN\\.md$|src-tauri/src/(?:host/windows/|acceptance/popouts\\.rs$)|tests/desktop/(?:popout-|PopoutProof))",
+              "^(?:POPOUT_PLAN\\.md$|src-tauri/tests/workspace_windows\\.rs$|src-tauri/src/(?:windows/|host/windows/|acceptance/popouts\\.rs$)|tests/desktop/(?:popout-|PopoutProof))",
             chapters: ["spec/src/current/windows.md"],
           },
           {

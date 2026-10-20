@@ -36,7 +36,7 @@ deferred to their distribution gates.
 | M7    | Done        | Complete                                                       |
 | M7.1  | Done        | Complete; proof retained                                       |
 | M7.2  | Done        | Complete; native ordinary integration remains M7.3             |
-| M7.3  | Planned     | After M10.4: qualify ordinary native popouts                   |
+| M7.3  | In progress | Wire native popup admission and close                          |
 | M8    | Done        | Complete; continue to M9.1                                     |
 | M9    | Done        | Complete; continue to M10.1 native ACP adapter                 |
 | M10   | In progress | Continue native AI and persistence qualification               |

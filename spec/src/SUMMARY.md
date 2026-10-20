@@ -300,3 +300,5 @@
 - [Agents settings category and forge-style rows](history/E-AI-066.md)
 
 - [Unified indexed history in Search](history/E-REPO-045.md)
+
+- [Native workspace-window session registry](history/E-POPOUT-003.md)

@@ -42,6 +42,15 @@ unchanged for the main window.
 
 ## Remaining integration
 
+M7.3 begins with a desktop-owned session registry. Only the active main session
+may reserve an exact `about:blank` related window, with at most sixteen pending
+or live windows. Creation tickets and close receipts are native-generated and
+cannot survive retirement or session replacement. Fencing invalidates pending
+creation before close, reload or vault switching; existing drafts retain their
+window until save admission succeeds. Failed saves keep the same window usable
+and require a fresh close request. This registry is a prerequisite for ordinary
+window admission, not acceptance of the complete native pop-out workflow.
+
 Native focus, resize and close use public Tauri operations on registered window
 labels. The renderer's Window and Document remain the shared surface's DOM host.
 Shared popup header clearance is separately governed by LD-POP-006. M7.2

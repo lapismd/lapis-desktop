@@ -243,3 +243,5 @@ by the task ledger, not inferred from this list.
 - [Installed clients and startup repair](E-AI-065.md)
 
 - [Agents settings category and forge-style rows](E-AI-066.md)
+
+- [Native workspace-window session registry](E-POPOUT-003.md)

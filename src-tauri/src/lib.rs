@@ -9,3 +9,4 @@ pub mod repository;
 pub mod terminal;
 pub mod vault;
 pub mod watch;
+pub mod windows;

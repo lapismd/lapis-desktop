@@ -6,12 +6,15 @@ keeps its original qualified gate and other task statuses remain unchanged.
 E-AI-066 adds Agents Settings; LD-MIG-002 milestones and original gates remain
 unchanged.
 
-## Current checkpoint — 2026-10-19
+E-POPOUT-003 begins M7.3 with the session registry. Its ordinary-window gate
+remains open; the user deferred release while resuming other implementation.
+
+## Current checkpoint — 2026-10-20
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and
 [main task ledger](progress/milestones.md) now include the M13 repository and
 M14 automatic-backup workstreams. M0–M9 original gates and M10.1/M13.1/M13.2 are
-complete. M7.3 ordinary native pop-outs remain Planned and M8.5 retains its
+complete. M7.3 ordinary native pop-outs are In progress and M8.5 retains its
 presentation gate. M10.2/M13.3 managed conversation/execution, context/skills
 and restart acceptance remain In progress. Native store/privacy/journal
 ownership, exact receipt recovery and bounded transcript reads already have

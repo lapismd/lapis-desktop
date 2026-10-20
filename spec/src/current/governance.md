@@ -1,7 +1,7 @@
 # Governance
 
-E-REPO-042/E-AI-062/063 retain statuses and gates under LD-GOV-001–004. Local
-AI/backup qualification and delegated wider checks remain distinct.
+E-POPOUT-003 starts M7.3 under LD-GOV-001–004. Its native registry and tests map
+to windows.md; ordinary-popup and release gates remain unqualified.
 
 E-AI-031/032/033 qualify journal/profile/native-host boundaries. Cold Rust proof
 does not replace M13.3 packaged WebView/restart gates.
