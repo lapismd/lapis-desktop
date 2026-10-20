@@ -5,6 +5,10 @@ import type { AcpAgentId } from "./acp-agents.ts";
 import type { AiSettingsStore } from "./settings-store.ts";
 
 export type AiModelCatalog = {
+  listExecutionModes?(
+    provider: string,
+    runtime?: string,
+  ): Promise<import("../core/agent-profile.ts").ExecutionMode[]>;
   listModels(provider: string, runtime?: string): Promise<ModelRef[]>;
 };
 

@@ -56,6 +56,12 @@ export function captureQueuedMessage(
         return {
           id: r.id,
           agent: target.agent as AcpAgentId,
+          ...(target.executionMode
+            ? { executionMode: target.executionMode }
+            : {}),
+          ...(target.agentProfile
+            ? { agentProfile: structuredClone(target.agentProfile) }
+            : {}),
           ...(target.model ? { model: structuredClone(target.model) } : {}),
           ...((target.thinking ?? request.thinking)
             ? { thinking: target.thinking ?? request.thinking }

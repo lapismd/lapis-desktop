@@ -137,3 +137,28 @@ describe("native ACP model catalog", () => {
     await f.catalog.close();
   });
 });
+
+it("discovers provider execution modes through the same non-prompting probe and cleanup", async () => {
+  const f = fixture({
+    configOptions: [
+      {
+        id: "mode",
+        category: "mode",
+        options: [{ value: "ask", name: "Ask before tools" }],
+      },
+    ],
+    modes: {
+      availableModes: [{ id: "ask", description: "Review every action" }],
+    },
+  });
+  const [modes] = await Promise.all([
+    f.catalog.listExecutionModes("codex"),
+    f.catalog.listModels("codex"),
+  ]);
+  expect(modes).toEqual([
+    { id: "ask", name: "Ask before tools", description: "Review every action" },
+  ]);
+  expect(f.raw.open).toHaveBeenCalledTimes(1);
+  expect(f.raw.close).toHaveBeenCalledWith("probe");
+  await f.catalog.close();
+});

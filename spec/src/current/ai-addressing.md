@@ -125,11 +125,11 @@ footer or from Conversation actions. The picker copies/adapts jj-store's agent
 and repository selectors, retaining public Design Core Popover, Command View,
 Avatar and buttons. Add/Edit uses its inset DialogFrame editor, client icons and
 searchable model/custom-ID control, adapted to Desktop-owned settings and
-bounded model discovery. Unsupported provider, secrets and instructions controls
-are omitted. Closing the editor starts no provider. Late model replies cannot
-replace another client’s choices. Both it and @ selection use the same removable
-recipient state through Document/Classic changes. Selecting or saving does not
-prompt.
+bounded model and execution-mode discovery. Unsupported provider and secrets
+controls are omitted. Closing the editor starts no provider. Late model replies
+cannot replace another client’s choices. Both it and @ selection use the same
+removable recipient state through Document/Classic changes. Selecting or saving
+does not prompt.
 
 The bounded vault setting retains ID, label, client kind, optional model/effort
 defaults, an optional avatar image and its background colour. The editor MUST
@@ -186,3 +186,44 @@ still-unstarted items; it cannot retry a previously started item. Separate live
 owners cannot claim or bypass each other's queue. Lost metadata acknowledgements
 cannot overwrite immutable terminal queue receipts. JJ persistence remains
 deferred.
+
+## Saved agent context and permissions
+
+E-AI-094 adds an optional short description (280 Unicode code points), agent
+instructions (32 KiB UTF-8) and provider-defined execution-mode default.
+Existing profiles remain readable. Instructions are user-authored session
+context, kept separate from the authored message and supplied on the first
+explicit prompt; opening, editing or discovering a profile never prompts. A live
+session retains its original instructions when its profile changes. A new
+session captures the latest profile. Description remains visible in profile
+presentation.
+
+The compact icon-only ghost shield with a tooltip in both chat layouts selects a
+conversation-local mode for the selected participant, falling back to its saved
+agent default and then the existing reviewed provider default. Overrides persist
+with local conversation metadata and remain scoped to the participant; clearing
+restores inheritance. Multiple-recipient sends resolve each participant
+independently. Mode choices come from negotiated ACP mode configuration, never
+guessed universal modes. Unavailable saved choices stay visible but cannot
+silently fall back. Native configuration acknowledgement and mode readiness
+precede any prompt. Provider modes do not alter AppToolHost approvals, workspace
+trust or native admission.
+
+Queued messages capture instructions and mode along with model/effort; later
+profile changes cannot rewrite them. Context and modes are bounded on load as
+well as save. Cold reopen restores choices without execution or prompt replay.
+Imported snapshots carry no permission overrides. Failures retain drafts and use
+the App notification service. M10.2 remains In progress; native provider
+qualification is separate from deterministic renderer and Storybook evidence.
+
+## Composer presentation
+
+E-AI-094 removes the redundant gallery heading under Agents. The footer people
+picker uses one unframed search row, composing the public Command View token.
+Inline agent, person and resource chips retain vertical separation across
+wrapped lines. File chips use Design Core Hover Card and the public app-bound
+Markdown FileEmbed for read-only previews; resolution/navigation remain
+Desktop-owned, internal app paths remain unavailable and missing files retain
+their label. Suggestions accept the selected item on Enter or Tab through the
+shared Markdown composer; acceptance only edits the draft and never dispatches a
+message.

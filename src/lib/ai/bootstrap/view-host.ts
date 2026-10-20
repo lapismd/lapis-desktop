@@ -6,7 +6,6 @@ import type {
   AgentRuntime,
   McpServerContribution,
 } from "../core/runtime.ts";
-import type { ModelRef } from "../core/models.ts";
 import type {
   ConversationRepository,
   CreateConversationInput,
@@ -44,8 +43,6 @@ export type AiViewHost = {
   subscribeSettings?(
     listener: (patch: Partial<AiPluginSettings>) => void,
   ): () => void;
-  models: {
-    listModels(provider: string, runtime?: string): Promise<ModelRef[]>;
-  };
+  models: import("../settings/model-options.ts").AiModelCatalog;
   workspace?: string;
 };

@@ -1,3 +1,4 @@
+import { reviewExecutionModes } from "./execution-modes.ts";
 import { clientsFixture } from "./clients-fixture.ts";
 import { agentReviewProfiles } from "./transcript/agent-profiles.ts";
 // SPDX-License-Identifier: Apache-2.0
@@ -40,6 +41,7 @@ class SettingsFixturePlugin extends Plugin {
     () => registeredAppToolRefs(this.app.agentTools),
   );
   models = {
+    listExecutionModes: async () => reviewExecutionModes,
     listModels: async (provider: string, runtime?: string) => {
       this.calls.push(`${provider}:${runtime}`);
       if (this.scenario === "catalog-error")

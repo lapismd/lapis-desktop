@@ -970,3 +970,24 @@ and Document/Classic), and Repository/Transcript history (portable paths and
 diffs). Shared editable avatars, mention links, hover cards and follow-up
 tagging retain their existing Agent setup review/Agent mention links stories.
 Visual approval remains pending.
+
+## Agent context and permissions (E-AI-094)
+
+`Desktop/AI/Agent profiles/ContextAndPermissions` mounts the shared saved-agent
+editor with Design Core MarkdownComposer fields, description/instructions and
+advertised per-agent permission defaults. SavedAgents/NoSavedAgents retain the
+fixed-width gallery and tinted Add agent icon.
+`Desktop/AI/Local ACP conversations/PermissionsInFooter` reviews the icon-only
+shield with Tooltip, approval rows, inheritance and conversation override in the
+ordinary embedded shell. AgentSetupReview and TranscriptReview retain shared
+Document/Classic composition. Deterministic modes are fixtures, not live
+provider qualification. Copied/adapted paths are recorded in
+docs/provenance.json; all changed stories remain visual-pending with no baseline
+update.
+
+`Desktop/AI/Agent setup review/TabAcceptsAgentSuggestion` accepts the selected
+agent on Tab without dispatch. `InlineTagsAndFollowUps` checks chip margins,
+Markdown file hover content and unframed picker search; `SavedAgents` checks
+that the parent Agents title is not repeated by a Your agents heading. E-AI-094
+owns focused evidence; shared Tab behavior is qualified in Design Core
+separately.

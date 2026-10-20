@@ -20,6 +20,9 @@ export type AgentRecipientOption = {
   label: string;
   agent: AcpAgentId;
   model?: string;
+  description?: string;
+  instructions?: string;
+  executionMode?: string;
   thinking?: import("../core/models.ts").AiThinkingLevel;
   avatar?: string;
   avatarBackground?: string;

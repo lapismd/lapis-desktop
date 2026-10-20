@@ -11,6 +11,10 @@ export type AgentProfileEditorContext = {
   settings?: Partial<AiPluginSettings>;
   initializing?: boolean;
   models?: ModelRef[];
+  loadExecutionModes?: (
+    agent: AcpAgentId,
+    runtime: AiPluginSettings["defaultRuntime"],
+  ) => Promise<import("../core/agent-profile.ts").ExecutionMode[]>;
   loadModels?: (
     agent: AcpAgentId,
     runtime: AiPluginSettings["defaultRuntime"],
@@ -24,4 +28,5 @@ export type AgentProfileManagement = {
   update: (patch: Partial<AiPluginSettings>) => Promise<void>;
   remove: (id: string) => Promise<void>;
   loadModels: NonNullable<AgentProfileEditorContext["loadModels"]>;
+  loadExecutionModes?: AgentProfileEditorContext["loadExecutionModes"];
 };

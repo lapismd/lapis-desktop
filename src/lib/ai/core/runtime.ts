@@ -63,6 +63,8 @@ export type AgentRequest = {
   skillSnapshot?: SkillSnapshot;
   skillActivations?: SkillActivation[];
   restricted?: boolean;
+  agentProfile?: import("./agent-profile.ts").AgentProfileContext;
+  executionMode?: string;
   approvalPolicy?: "ask" | "allow-all";
   requireApprovals?: boolean;
   requirePolicyAmendments?: boolean;

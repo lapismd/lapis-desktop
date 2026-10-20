@@ -4,7 +4,7 @@ E-ARCHIVES-002 refreshes local sources; gates and statuses are unchanged.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;
-M10.2 retains its ordinary ACP completion gate.
+M10.2 retains its ordinary ACP gate; E-AI-094 adds agent context/permissions.
 
 E-REPO-044 adds remembered blame wrapping with measured virtual groups; M13.2
 keeps its original qualified gate and other task statuses remain unchanged.

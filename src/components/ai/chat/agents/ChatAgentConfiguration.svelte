@@ -1,5 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0; adapted from jj-store StoreAgentConfiguration. -->
 <script lang="ts">
+  import AgentExecutionModeSelect from "./AgentExecutionModeSelect.svelte";
+  import type { ExecutionMode } from "../../../../lib/ai/core/agent-profile.ts";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import * as Select from "@lapismd/design-core/shadcn/select";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
@@ -22,6 +24,7 @@
     agent = $bindable("codex"),
     model = $bindable(null),
     thinking = $bindable("inherit"),
+    executionMode = $bindable(""),
     panelProps,
     active,
     disabled = false,
@@ -30,10 +33,43 @@
     agent: AcpAgentId;
     model: string | null;
     thinking: AiThinkingLevel | "inherit";
+    executionMode?: string;
     panelProps: AgentProfileEditorContext;
     active: boolean;
     disabled?: boolean;
   } = $props();
+  let modes = $state<ExecutionMode[]>([]),
+    modesLoading = $state(false);
+  $effect(() => {
+    const client = agent,
+      load = panelProps.loadExecutionModes;
+    if (!active) return;
+    modes = [];
+    modesLoading = false;
+    if (!load) return;
+    let disposed = false;
+    modesLoading = true;
+    void load(client, "acp")
+      .then((values) => {
+        if (!disposed) modes = values;
+      })
+      .catch((error) => {
+        if (!disposed)
+          panelProps.app?.notifications.notify({
+            id: "ai-agent-editor-permissions",
+            source: "ai",
+            severity: "error",
+            title: "Agent permissions",
+            message: error instanceof Error ? error.message : String(error),
+          });
+      })
+      .finally(() => {
+        if (!disposed) modesLoading = false;
+      });
+    return () => {
+      disposed = true;
+    };
+  });
   const labels = { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" };
   const efforts = ["inherit", "off", "low", "medium", "high"] as const;
   const effortLabel = (value: typeof thinking) =>
@@ -95,6 +131,7 @@
         agent = next;
         model = null;
         thinking = "inherit";
+        executionMode = "";
       }
     }}
   />
@@ -136,6 +173,14 @@
     >
   </Select.Root>
 </Field.Field>
+
+<AgentExecutionModeSelect
+  id={`${id}-permissions`}
+  bind:value={executionMode}
+  options={modes}
+  loading={modesLoading}
+  {disabled}
+/>
 
 <style>
   .model-loading {

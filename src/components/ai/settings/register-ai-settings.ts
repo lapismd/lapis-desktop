@@ -73,6 +73,13 @@ export function registerAiSettings(plugin: SettingsOwner): void {
           ),
         };
       }),
+    loadExecutionModes: async (agent, runtime) => {
+      if (disposed) throw new Error("AI settings are unavailable");
+      const modes =
+        (await plugin.models.listExecutionModes?.(agent, runtime)) ?? [];
+      if (disposed) throw new Error("AI settings are unavailable");
+      return modes;
+    },
     loadModels: async (agent, runtime) => {
       if (disposed) throw new Error("AI settings are unavailable");
       const result = await plugin.models.listModels(agent, runtime);

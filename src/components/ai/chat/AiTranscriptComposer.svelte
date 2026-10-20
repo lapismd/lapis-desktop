@@ -47,6 +47,7 @@
   triggers={composerState.mentionTriggers}
   agentOptions={composerState.recipientOptions}
   people={panel.panelProps.mentionPeople}
+  app={panel.panelProps.app}
   showHint={!panel.panelProps.transcriptFrame}
   {onSend}
 >

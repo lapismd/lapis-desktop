@@ -1,3 +1,7 @@
+import {
+  executionModesFromSession,
+  type ExecutionMode,
+} from "../../ai/core/agent-profile.ts";
 import type { AcpTransport, SessionInfo } from "@lapismd/ai";
 import type { AiModelCatalog } from "../../ai/settings/model-options.ts";
 import type { ModelRef } from "../../ai/core/models.ts";
@@ -5,11 +9,22 @@ import { record } from "../../ai/runtimes/acp/wire.ts";
 
 /** Read actual advertised models without sending a prompt or choosing a fallback. */
 export class NativeAiModels implements AiModelCatalog {
-  readonly #pending = new Map<string, Promise<ModelRef[]>>();
+  readonly #pending = new Map<string, Promise<unknown>>();
   readonly #cleanup = new Set<string>();
   #closed = false;
   constructor(private readonly transport: AcpTransport) {}
-  listModels(provider: string, runtime = "acp"): Promise<ModelRef[]> {
+  async listModels(provider: string, runtime = "acp"): Promise<ModelRef[]> {
+    return modelsFromFacts(await this.#facts(provider, runtime), provider);
+  }
+  async listExecutionModes(
+    provider: string,
+    runtime = "acp",
+  ): Promise<ExecutionMode[]> {
+    return executionModesFromSession(
+      record(await this.#facts(provider, runtime)).session,
+    );
+  }
+  #facts(provider: string, runtime: string): Promise<unknown> {
     if (this.#closed)
       return Promise.reject(new Error("AI model catalog is closed"));
     if (runtime !== "acp" && runtime !== "auto")
@@ -24,7 +39,7 @@ export class NativeAiModels implements AiModelCatalog {
     this.#pending.set(provider, reading);
     return reading;
   }
-  async #load(provider: string): Promise<ModelRef[]> {
+  async #load(provider: string): Promise<unknown> {
     const targets = await this.transport.targets();
     if (this.#closed || !targets.some((target) => target.id === provider))
       return [];
@@ -34,7 +49,7 @@ export class NativeAiModels implements AiModelCatalog {
     try {
       info = await this.transport.open({ targetId: provider, requestId });
       this.#cleanup.add(info.sessionId);
-      return modelsFromFacts(info.facts, provider);
+      return info.facts;
     } catch (error) {
       failure = error;
       if (!info) {

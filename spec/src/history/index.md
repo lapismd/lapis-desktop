@@ -1,5 +1,7 @@
 # Evidence
 
+- [Saved agent context and footer permissions](E-AI-094.md)
+
 - [Local ACP conversations and transcript backup](E-AI-093.md)
 
 - [Native history subsection within AI settings](E-AI-091.md)

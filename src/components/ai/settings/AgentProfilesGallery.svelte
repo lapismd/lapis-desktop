@@ -25,7 +25,6 @@
 
 <section class="agent-profiles" aria-label="Your agents">
   <header>
-    <h2>Your agents</h2>
     <p>
       Named agents available to chats in this vault. Choose them with @ or the
       Agents picker.
@@ -39,7 +38,9 @@
       disabled={pending || profiles.length >= 16}
       onclick={onAdd}
     >
-      <PlusIcon aria-hidden="true" /><span>Add agent</span>
+      <span class="agent-profiles__add-image"
+        ><PlusIcon aria-hidden="true" /></span
+      ><span>Add agent</span>
     </button>
     {#each profiles as profile (profile.id)}
       <div class="agent-profiles__card" data-agent-id={profile.id}>
@@ -62,6 +63,9 @@
         </div>
         <div class="agent-profiles__details">
           <strong>{profile.label}</strong>
+          {#if profile.description}<span title={profile.description}
+              >{profile.description}</span
+            >{/if}
           <span>{labels[profile.agent]}</span><span
             >{profile.model || "Chat default model"}{profile.thinking
               ? ` · ${profile.thinking}`

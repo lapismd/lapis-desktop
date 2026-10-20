@@ -1,3 +1,7 @@
+import {
+  assertExecutionMode,
+  validateAgentProfile,
+} from "../core/agent-profile.ts";
 import type { TranscriptEntry } from "./types.ts";
 import {
   record,
@@ -16,6 +20,8 @@ export type QueueSelection = {
     agent: AcpAgentId;
     model?: ModelRef;
     thinking?: AiThinkingLevel;
+    executionMode?: string;
+    agentProfile?: import("../core/agent-profile.ts").AgentProfileContext;
   }[];
   runtime: "acp" | "codex-native" | "opencode-native" | "fake";
   thinking?: AiThinkingLevel;
@@ -99,7 +105,16 @@ export function validateQueuedMessage(value: unknown): QueuedMessage {
     throw new Error("Queue targets do not match recipients");
   for (const [i, value] of s.targets.entries()) {
     const t = record(value, "Queue target");
-    fields(t, ["id", "agent", "model", "thinking"]);
+    fields(t, [
+      "id",
+      "agent",
+      "model",
+      "thinking",
+      "executionMode",
+      "agentProfile",
+    ]);
+    assertExecutionMode(t.executionMode);
+    validateAgentProfile(t.agentProfile);
     assertThinking(t.thinking, "Queued target thinking");
     if (
       t.id !== recipients[i]!.id ||

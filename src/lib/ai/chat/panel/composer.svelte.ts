@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat presentation state; see ../../NOTICE.md.
+import { ComposerPermissions } from "./permissions.svelte.ts";
 import { changeComposerAgent } from "./composer-agent.ts";
 import { runChatAction } from "./action-errors.ts";
 import { onDestroy } from "svelte";
@@ -32,6 +33,7 @@ import {
 import type { AiChatPanelProps } from "./props.ts";
 import type { AgentRecipientOption } from "../../conversations/recipients.ts";
 class ComposerPanelState {
+  readonly permissions: ComposerPermissions;
   catalogState = $state<ComposerModelCatalogState | null>(null);
   catalog = new ComposerModelCatalog(
     (agent, runtime) =>
@@ -208,6 +210,7 @@ class ComposerPanelState {
     private readonly getProps: () => AiChatPanelProps,
     private readonly controller: AiChatController,
   ) {
+    this.permissions = new ComposerPermissions(getProps, controller);
     this.persistComposerDefaults = this.persistComposerDefaults.bind(this);
     this.changeAgent = this.changeAgent.bind(this);
     this.changeModel = this.changeModel.bind(this);

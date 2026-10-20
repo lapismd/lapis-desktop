@@ -20,13 +20,19 @@ export function queuedRequest(
       recipient: q.user.recipients![i]!,
       request: {
         agent: target.agent,
+        ...(target.executionMode
+          ? { executionMode: target.executionMode }
+          : {}),
+        ...(target.agentProfile
+          ? { agentProfile: structuredClone(target.agentProfile) }
+          : {}),
         ...(target.model ? { model: target.model } : {}),
         thinking: target.thinking ?? q.selection.thinking,
       },
     };
   });
   return {
-    agent: deliveryTargets[0]!.request.agent,
+    ...deliveryTargets[0]!.request,
     recipients: q.user.recipients,
     deliveryTargets,
     thinking: q.selection.thinking,

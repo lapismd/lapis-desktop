@@ -729,6 +729,22 @@
         }
       ],
       "use": "Copy/adapt the source's explicitly recognized owned-controller sent-context and OpenCode text-part extraction. Desktop retains original sanitized payload text, shows unknown JSON as inert exact code and preserves context as its original JSON text without numeric rewriting. Captured context implies no delivery receipt. No source API client/model import, controller, provider or runtime authority is copied. The native reader composes existing application-owned AiSessionShell, AiRecordedTranscript and ToolInspector with public Design Core; this adds no parallel shared primitive or checkout dependency. E-AI-075 remains a catalog-visible unqualified draft."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "3998e2b01cb4a1c4f4dba0e1e81f9c3e72f6e15b",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-agent-execution/StoreAgentExecutionMode.svelte",
+          "destination": "src/components/ai/chat/agents/AgentExecutionModeSelect.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-agents/agents.css",
+          "destination": "src/components/ai/settings/agent-profiles.css"
+        }
+      ],
+      "use": "E-AI-094 adapts saved provider execution-mode selection, unavailable saved values and fixed-width gallery cards. Desktop owns local profile context, permissions, admission and persistence. Description/instructions compose the public Design Core MarkdownComposer; footer approval presentation follows the user-supplied reference using public Popover, Tooltip and CommandView."
     }
   ]
 }

@@ -123,13 +123,13 @@ and preserves unknown extensions. Permission options retain exact IDs and
 unknown semantic kinds; no default options or automatic approval are invented.
 Interrupted or uncertain terminal outcomes remain explicit failures.
 
-The adapted ACP runtime attaches before configuration and never submits its
-request prompt during startup. It confirms the requested approval mode and
-selected configuration before a turn: Codex uses its advertised `read-only`
-user-approval mode; other profiles use `ask`. Preparation belongs to the active
-turn, so cancel/close can fence late dispatch. Unknown submission or unusable
-outcomes block that session without replay. Detach preserves the native worker;
-close releases it. Failed startup locates its original request for cleanup and
+The adapted ACP runtime attaches before configuration and never prompts during
+startup. It confirms model/effort and an advertised execution mode before Send.
+E-AI-094 adds saved-agent defaults and conversation overrides; defaults remain
+Codex `read-only` and `ask` elsewhere. The footer cannot bypass AppToolHost.
+Preparation belongs to the active turn; cancel/close fence late dispatch.
+Unknown submissions block the session without replay. Detach retains the worker;
+close releases it. Failed startup finds its original request for cleanup and
 retains cleanup errors. ACP omits unsupported automatic skill snapshots from
 plain-chat preparation; explicit activations, resume, restricted work and
 arbitrary MCP remain refused.

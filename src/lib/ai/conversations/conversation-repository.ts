@@ -1,3 +1,4 @@
+import { ConversationPermissions } from "./conversation-permissions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import { normalizeApprovalGrants } from "./approval-grants.ts";
@@ -65,6 +66,7 @@ export class ConversationRepository {
     (change: ConversationRepositoryChange) => void
   >();
 
+  readonly permissions: ConversationPermissions;
   readonly messages: ConversationMessageQueue;
   readonly turns: ConversationTurns;
   readonly dispatches: ConversationDispatches;
@@ -73,6 +75,11 @@ export class ConversationRepository {
     private readonly store: TranscriptStore,
     private readonly sanitization: DurableSanitizationOptions = {},
   ) {
+    this.permissions = new ConversationPermissions(
+      store,
+      this.queue,
+      (location) => this.emit({ type: "upsert", location }),
+    );
     this.imports = new SessionImports(
       store,
       this.queue,

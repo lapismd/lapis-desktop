@@ -14,14 +14,15 @@ import { prepareAgentTurn, type AgentTurnOptions } from "../../core/context.ts";
 import { AsyncEventQueue } from "../../core/event-queue.ts";
 import { mapAcpActivity, mapAcpTerminal } from "./event-mapper.ts";
 import { mapAcpPermission } from "./permissions.ts";
-import { configureAcpSession } from "./configuration.ts";
+import { AcpSessionConfiguration } from "./configuration.ts";
+import {
+  InitialAgentContext,
+  type AgentProfileContext,
+} from "../../core/agent-profile.ts";
 import { AgentTurnFailure } from "./wire.ts";
 import { acpTurnRequestId } from "./turn-id.ts";
 import { ToolTurn, type ToolTurnPort } from "./tool-turn.ts";
-import {
-  isGenericToolName,
-  toolNameFromInput,
-} from "../../chat/chat-tool-identity.ts";
+import { rememberToolName } from "./tool-names.ts";
 
 type ActiveTurn = {
   abort: AbortController;
@@ -36,7 +37,8 @@ export class AcpAgentSession implements AgentSession {
   readonly #deciding = new Set<string>();
   readonly #toolNames = new Map<string, string>();
   #turn?: ActiveTurn;
-  #configuring = false;
+  readonly #configuration: AcpSessionConfiguration;
+  readonly #profile: InitialAgentContext;
   #state: "active" | "detached" | "closed" = "active";
   #fatal?: Error;
   #close?: Promise<void>;
@@ -47,10 +49,13 @@ export class AcpAgentSession implements AgentSession {
     maxDurationMs = 120_000,
     tools?: ToolTurnPort,
     provider?: string,
+    profile?: AgentProfileContext,
   ) {
     this.#maxDurationMs = maxDurationMs;
     this.#tools = tools;
     this.#provider = provider;
+    this.#configuration = new AcpSessionConfiguration(provider);
+    this.#profile = new InitialAgentContext(profile);
   }
   get id(): string {
     return this.#native?.info.sessionId ?? "starting";
@@ -84,14 +89,7 @@ export class AcpAgentSession implements AgentSession {
               ? "lapis-tools"
               : undefined,
           );
-          if (event.type === "tool.start" || event.type === "tool.end") {
-            const title = event.title ?? toolNameFromInput(event.input);
-            if (title && !isGenericToolName(title)) {
-              if (!this.#toolNames.has(event.id) && this.#toolNames.size >= 256)
-                this.#toolNames.delete(this.#toolNames.keys().next().value!);
-              this.#toolNames.set(event.id, title.slice(0, 1024));
-            }
-          }
+          rememberToolName(this.#toolNames, event);
           this.#events.push(event);
         }
         if (frame.type === "permission") {
@@ -150,7 +148,8 @@ export class AcpAgentSession implements AgentSession {
   }
   async send(text: string, options: AgentTurnOptions = {}): Promise<void> {
     const native = this.#ready();
-    if (this.#turn || this.#configuring) throw new Error("ACP session busy");
+    if (this.#turn || this.#configuration.busy)
+      throw new Error("ACP session busy");
     const requestId = acpTurnRequestId(options.requestId);
     const turn: ActiveTurn = { abort: new AbortController() };
     this.#toolNames.clear();
@@ -165,6 +164,7 @@ export class AcpAgentSession implements AgentSession {
         await turn.tools.arm();
         turn.abort.signal.throwIfAborted();
       }
+      this.#profile.apply(prepared);
       const frame = await native.send(turn.requestId, {
         type: "prompt",
         ...prepared,
@@ -208,13 +208,8 @@ export class AcpAgentSession implements AgentSession {
   }
   async configure(input: AgentSessionConfiguration) {
     const native = this.#ready();
-    if (this.#turn || this.#configuring) throw new Error("ACP session busy");
-    this.#configuring = true;
-    try {
-      return await configureAcpSession(native, input, this.#provider);
-    } finally {
-      this.#configuring = false;
-    }
+    if (this.#turn) throw new Error("ACP session busy");
+    return this.#configuration.apply(native, input);
   }
   async respondToApproval(requestId: string, optionId: string): Promise<void> {
     const request = this.#permissions.get(requestId);

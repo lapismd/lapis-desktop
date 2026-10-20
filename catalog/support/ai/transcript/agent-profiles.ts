@@ -6,6 +6,10 @@ export const agentReviewProfiles: AgentRecipientOption[] = [
   {
     id: "reviewer",
     label: "Reviewer",
+    description: "Reviews notes for accuracy and clarity",
+    instructions:
+      "Keep the author’s examples. Explain proposed changes before editing.",
+    executionMode: "read-only",
     agent: "codex",
     model: "gpt-5.6-sol",
     thinking: "high",
@@ -15,6 +19,8 @@ export const agentReviewProfiles: AgentRecipientOption[] = [
   {
     id: "writer",
     label: "Writer",
+    description: "Drafts and improves notes",
+    instructions: "Write clearly and preserve the author’s voice.",
     agent: "codex",
     thinking: "medium",
     avatar: image("✍️", "#3b82f6"),

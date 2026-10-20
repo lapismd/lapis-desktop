@@ -24,6 +24,9 @@ export function reduceAgentBindings(
       if (!binding) continue;
       bindings.set(record.agentBindingId, {
         ...binding,
+        ...(record.executionMode !== undefined
+          ? { executionMode: record.executionMode ?? undefined }
+          : {}),
         ...(record.model ? { model: { ...record.model } } : {}),
         ...(record.thinking ? { thinking: record.thinking } : {}),
       });

@@ -20,6 +20,7 @@ export type AgentUsage = {
 };
 
 export type AgentSessionConfiguration = {
+  executionMode?: string;
   model?: ModelRef;
   thinking?: AiThinkingLevel;
 };
@@ -30,6 +31,7 @@ export type AgentSessionConfigurationFieldResult = {
 };
 
 export type AgentSessionConfigurationResult = {
+  executionMode?: AgentSessionConfigurationFieldResult;
   model?: AgentSessionConfigurationFieldResult;
   thinking?: AgentSessionConfigurationFieldResult;
 };

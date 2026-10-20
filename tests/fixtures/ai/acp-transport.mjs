@@ -36,6 +36,7 @@ export function acpFixture() {
         f.emit(id, "configured", requestId, {
           modeReady: f.modeReady,
           configuration: f.configuration ?? {
+            mode: { status: "applied" },
             model: { status: "applied" },
             effort: { status: "applied" },
           },

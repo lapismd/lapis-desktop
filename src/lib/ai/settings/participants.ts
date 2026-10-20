@@ -1,3 +1,7 @@
+import {
+  validateAgentProfile,
+  assertExecutionMode,
+} from "../core/agent-profile.ts";
 import { ACP_AGENT_IDS } from "./acp-agents.ts";
 import {
   validateAgentAvatar,
@@ -26,6 +30,9 @@ export function validateAgentParticipants(
             "id",
             "label",
             "agent",
+            "description",
+            "instructions",
+            "executionMode",
             "model",
             "thinking",
             "avatar",
@@ -36,6 +43,10 @@ export function validateAgentParticipants(
       throw new Error("Invalid agent participant");
     const { id, label, agent, model, thinking, avatar, avatarBackground } =
       entry as AgentRecipientOption;
+    const { description, instructions, executionMode } =
+      entry as AgentRecipientOption;
+    validateAgentProfile({ description, instructions });
+    assertExecutionMode(executionMode);
     const image = validateAgentAvatar(avatar),
       background = validateAgentAvatarBackground(avatarBackground);
     if (!ACP_AGENT_IDS.includes(agent) || ids.has(id))
@@ -60,6 +71,9 @@ export function validateAgentParticipants(
       label,
       agent,
       ...(model ? { model: model.trim() } : {}),
+      ...(description ? { description } : {}),
+      ...(instructions ? { instructions } : {}),
+      ...(executionMode ? { executionMode } : {}),
       ...(thinking ? { thinking } : {}),
       ...(image ? { avatar: image } : {}),
       ...(background ? { avatarBackground: background } : {}),

@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from jj-store composer-chip-widgets.ts and composer-decorations.ts.
 import { mount, unmount } from "svelte";
+import type { App } from "@lapis-notes/api";
 import {
   Decoration,
   EditorView,
@@ -18,11 +19,17 @@ import {
 import ChatInlineReference from "./ChatInlineReference.svelte";
 
 class ReferenceWidget extends WidgetType {
-  constructor(readonly reference: ComposerReference) {
+  constructor(
+    readonly reference: ComposerReference,
+    readonly app?: App,
+  ) {
     super();
   }
   eq(other: ReferenceWidget) {
-    return JSON.stringify(this.reference) === JSON.stringify(other.reference);
+    return (
+      this.app === other.app &&
+      JSON.stringify(this.reference) === JSON.stringify(other.reference)
+    );
   }
   toDOM(view: EditorView) {
     const host = view.dom.ownerDocument.createElement("span");
@@ -31,6 +38,7 @@ class ReferenceWidget extends WidgetType {
       target: host,
       props: {
         ...props,
+        app: this.app,
         onRemove: () => {
           if (view.state.readOnly) return;
           view.dispatch({
@@ -61,15 +69,15 @@ const cleanup = new WeakMap<HTMLElement, () => void>();
 export function composerReferences(
   profiles: () => readonly AgentRecipientOption[],
   people: () => readonly import("../../../lib/ai/conversations/recipients.ts").ComposerPersonOption[] = () => [],
+  app: () => App | undefined = () => undefined,
 ): MiraExtension {
   const decorate = (view: EditorView) =>
     Decoration.set(
       composerReferenceRanges(view.state, profiles(), people()).map(
         (reference) =>
-          Decoration.replace({ widget: new ReferenceWidget(reference) }).range(
-            reference.from,
-            reference.to,
-          ),
+          Decoration.replace({
+            widget: new ReferenceWidget(reference, app()),
+          }).range(reference.from, reference.to),
       ),
       true,
     );

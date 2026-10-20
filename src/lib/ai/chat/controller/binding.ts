@@ -38,6 +38,7 @@ export function _activateNewBinding(
       : {}),
     model: request.model ? { ...request.model } : undefined,
     thinking: request.thinking,
+    executionMode: request.executionMode,
     nativeSessionId: session.id,
     handoffThroughEntryId: handoff?.throughEntryId,
     replacesBindingId,
@@ -135,7 +136,8 @@ export function _bindingMatchesConfiguration(
   return (
     binding.model?.provider === request.model?.provider &&
     binding.model?.model === request.model?.model &&
-    binding.thinking === request.thinking
+    binding.thinking === request.thinking &&
+    binding.executionMode === request.executionMode
   );
 }
 
@@ -160,14 +162,19 @@ export async function _configureBinding(
     binding.model?.provider !== request.model?.provider ||
     binding.model?.model !== request.model?.model;
   const thinkingChanged = binding.thinking !== request.thinking;
-  if (!modelChanged && !thinkingChanged) return { binding };
+  const modeChanged = binding.executionMode !== request.executionMode;
+  if (!modelChanged && !thinkingChanged && !modeChanged) return { binding };
   if (!session.configure) return undefined;
   try {
     const result = await session.configure({
+      executionMode: request.executionMode,
       ...(modelChanged ? { model: request.model } : {}),
       ...(thinkingChanged ? { thinking: request.thinking } : {}),
     });
     if (
+      (modeChanged &&
+        result.executionMode?.status !== "applied" &&
+        result.executionMode?.status !== "unchanged") ||
       (modelChanged &&
         result.model?.status !== "applied" &&
         result.model?.status !== "unchanged") ||
@@ -183,6 +190,7 @@ export async function _configureBinding(
 
   const updated: EffectiveAgentBinding = {
     ...binding,
+    ...(modeChanged ? { executionMode: request.executionMode } : {}),
     ...(modelChanged
       ? { model: request.model ? { ...request.model } : undefined }
       : {}),
@@ -200,6 +208,9 @@ export async function _configureBinding(
         type: "binding.config.updated",
         createdAt,
         agentBindingId: binding.id,
+        ...(modeChanged
+          ? { executionMode: request.executionMode ?? null }
+          : {}),
         ...(modelChanged && request.model
           ? { model: { ...request.model } }
           : {}),
@@ -213,6 +224,9 @@ export async function _configureBinding(
         type: "agent.config",
         createdAt,
         agentBindingId: binding.id,
+        ...(modeChanged
+          ? { executionMode: request.executionMode ?? null }
+          : {}),
         ...(modelChanged && request.model
           ? { model: { ...request.model } }
           : {}),

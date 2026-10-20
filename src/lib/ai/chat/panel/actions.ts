@@ -36,7 +36,13 @@ export function createChatPanelActions(
     submissionRefused = false;
     const { initializing = false, workspace, mcpServers = [] } = getProps();
 
-    if (initializing || composer.catalogState?.loading) return;
+    if (
+      initializing ||
+      composer.catalogState?.loading ||
+      composer.permissions.loading ||
+      composer.permissions.saving
+    )
+      return;
     const addressed = composer.recipients.snapshot();
     const agent = addressed?.agent ?? composer.selectedAgent;
     const primary = addressed?.options[0];
@@ -61,6 +67,12 @@ export function createChatPanelActions(
                       recipient: addressed.recipients[i]!,
                       request: {
                         agent: option.agent,
+                        executionMode: composer.permissions.modeFor(option),
+                        agentProfile: {
+                          name: option.label,
+                          description: option.description,
+                          instructions: option.instructions,
+                        },
                         model: modelId
                           ? {
                               provider: model?.provider ?? option.agent,
@@ -85,6 +97,16 @@ export function createChatPanelActions(
             model: modelId,
           }
         : undefined,
+      executionMode: composer.permissions.modeFor(primary ?? { id: agent }),
+      ...(primary
+        ? {
+            agentProfile: {
+              name: primary.label,
+              description: primary.description,
+              instructions: primary.instructions,
+            },
+          }
+        : {}),
       thinking: primary?.thinking ?? composer.selectedThinking,
       metadata: {
         ...(extra.length > 0 ? { attachments: extra } : {}),

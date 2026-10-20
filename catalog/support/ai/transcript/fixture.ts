@@ -1,3 +1,4 @@
+import { reviewExecutionModes } from "../execution-modes.ts";
 import { interruptedSnapshot } from "./interrupted-snapshot.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
@@ -185,6 +186,7 @@ export function createTranscriptFixture(
               value: "[Sam Chen](lapis://people/review-sam)",
             },
           ],
+          loadExecutionModes: async () => reviewExecutionModes,
           models: [{ provider: "codex", model: "gpt-5.6-sol" }],
           initializing: scenario === "loading",
           fileSearch: async (query) =>

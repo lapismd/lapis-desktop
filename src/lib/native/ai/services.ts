@@ -170,6 +170,10 @@ export function createNativeAi(
     runtime,
     appToolBridge: bridge,
     models: {
+      listExecutionModes: (provider, runtime) =>
+        background.run("Loading agent permissions", () =>
+          models.listExecutionModes(provider, runtime),
+        ),
       listModels: (provider, runtime) =>
         background.run("Preparing AI and loading models", () =>
           models.listModels(provider, runtime),

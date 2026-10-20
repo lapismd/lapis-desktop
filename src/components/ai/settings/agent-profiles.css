@@ -23,7 +23,7 @@
 }
 .agent-profiles__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  grid-template-columns: repeat(auto-fill, min(100%, 13rem));
   gap: 1rem;
   align-items: start;
 }
@@ -131,4 +131,13 @@
   position: absolute;
   top: 0.5rem;
   right: 0.5rem;
+}
+
+.agent-profiles__add-image {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  border-radius: 0.75rem;
+  background: var(--muted);
 }

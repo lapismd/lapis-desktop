@@ -44,6 +44,7 @@ export type ConversationMetadata = {
   };
   activeAgentBindingId?: string;
   approvalGrants?: ConversationApprovalGrant[];
+  executionModes?: Record<string, string>;
   pinned?: boolean;
   pendingTurn?: ConversationTurnIntent;
   queuedMessages?: import("./queued-message.ts").QueuedMessage[];
@@ -60,6 +61,7 @@ export type AgentBindingCreatedRecord = {
   createdAt: string;
   runtime: string;
   agent?: string;
+  executionMode?: string;
   model?: ModelRef;
   thinking?: AiThinkingLevel;
   nativeSessionId?: string;
@@ -100,6 +102,7 @@ export type AgentBindingConfigUpdatedRecord = {
   id: string;
   createdAt: string;
   agentBindingId: string;
+  executionMode?: string | null;
   model?: ModelRef;
   thinking?: AiThinkingLevel;
 };
@@ -222,6 +225,7 @@ export type TranscriptEntry =
     })
   | (TranscriptEntryBase & {
       type: "agent.config";
+      executionMode?: string | null;
       model?: ModelRef;
       thinking?: AiThinkingLevel;
     })

@@ -85,6 +85,7 @@ it("preserves unconsumed attachments after a local command completes", async () 
   } as unknown as AttachmentsState;
   const composer = {
     catalogState: null,
+    permissions: { loading: false, saving: false, modeFor: () => undefined },
     selectedAgent: "codex",
     catalogModels: [],
     selectedModel: "",

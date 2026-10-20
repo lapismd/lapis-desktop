@@ -1,5 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0; adapted from JJ Store CommunityComposerRemovableChip/ChipDismiss. -->
 <script lang="ts">
+  import type { App } from "@lapis-notes/api";
+  import ChatFileReference from "./ChatFileReference.svelte";
   import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
   import FileTextIcon from "@lucide/svelte/icons/file-text";
   import LinkIcon from "@lucide/svelte/icons/link";
@@ -12,6 +14,8 @@
     background,
     identityId,
     description,
+    app,
+    sourcePath = "",
     onRemove,
   }: {
     label: string;
@@ -21,6 +25,8 @@
     background?: string;
     identityId?: string;
     description?: string;
+    app?: App;
+    sourcePath?: string;
     onRemove?: () => void;
   } = $props();
 </script>
@@ -29,7 +35,7 @@
   class="chat-inline-reference"
   data-member={kind === "agent" || kind === "person" || undefined}
   data-agent-reference={kind === "agent" ? identityId : undefined}
-  title={kind === "agent" || kind === "person" ? undefined : title}
+  title={kind === "link" || (kind === "file" && !app) ? title : undefined}
   contenteditable="false"
 >
   {#if kind === "agent" || kind === "person"}
@@ -49,6 +55,8 @@
       label={`About ${label}`}
       class="chat-inline-author"
     />
+  {:else if kind === "file" && app}
+    <ChatFileReference {app} path={title} {sourcePath} {label} />
   {:else}<span class="reference-label">
       {#if kind === "file"}<FileTextIcon aria-hidden="true" />
       {:else}<LinkIcon aria-hidden="true" />{/if}
@@ -78,6 +86,7 @@
     align-items: stretch;
     max-width: min(18rem, 100%);
     height: 1lh;
+    margin-block: 0.15em;
     vertical-align: baseline;
     border-radius: calc(var(--radius) - 0.2rem);
     background: var(--secondary);

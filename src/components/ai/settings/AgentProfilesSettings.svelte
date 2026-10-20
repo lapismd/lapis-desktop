@@ -20,6 +20,7 @@
     settings,
     onSettingsChange: management.update,
     loadModels: management.loadModels,
+    loadExecutionModes: management.loadExecutionModes,
   });
   onMount(() => {
     const owner = management;

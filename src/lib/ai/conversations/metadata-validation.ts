@@ -1,3 +1,4 @@
+import { validateExecutionModes } from "./conversation-permissions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import {
@@ -62,12 +63,14 @@ export function validateConversationMetadata(
         "queuedMessages",
         "activeAgentBindingId",
         "approvalGrants",
+        "executionModes",
       ].some((k) => data[k] !== undefined)
     )
       throw new Error(
         "Imported snapshots cannot retain execution or permission authority",
       );
   }
+  validateExecutionModes(data.executionModes);
   if (data.approvalGrants != null) {
     if (!Array.isArray(data.approvalGrants)) {
       throw new Error("Conversation metadata.approvalGrants must be an array");

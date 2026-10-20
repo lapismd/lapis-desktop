@@ -66,7 +66,12 @@ export class AcpAgentRuntime implements AgentRuntime {
             end: (id) => tools.end(descriptor.bridgeId!, id),
           }
         : undefined;
-    const session = new AcpAgentSession(120_000, turnTools, target.id);
+    const session = new AcpAgentSession(
+      120_000,
+      turnTools,
+      target.id,
+      request.agentProfile,
+    );
     const requestId = crypto.randomUUID();
     let bound = false;
     try {
@@ -80,10 +85,12 @@ export class AcpAgentRuntime implements AgentRuntime {
       session.bind(native);
       bound = true;
       const configuration = await session.configure({
+        executionMode: request.executionMode,
         ...(request.model ? { model: request.model } : {}),
         ...(request.thinking ? { thinking: request.thinking } : {}),
       });
       if (
+        configuration.executionMode?.status === "unsupported" ||
         configuration.model?.status === "unsupported" ||
         configuration.thinking?.status === "unsupported"
       )

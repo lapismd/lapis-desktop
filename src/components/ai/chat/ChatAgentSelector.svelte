@@ -241,11 +241,11 @@
 
 <style>
   .agent-picker-search {
+    --ui-command-view-border-color: transparent;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
     gap: 0.25rem;
     padding-inline: 0.5rem;
-    border-bottom: 1px solid var(--border);
   }
 </style>

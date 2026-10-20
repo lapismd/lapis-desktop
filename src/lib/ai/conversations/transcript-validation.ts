@@ -1,3 +1,4 @@
+import { assertExecutionMode } from "../core/agent-profile.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import type { TranscriptEntry } from "./types.ts";
@@ -192,7 +193,12 @@ export function validateTranscriptEntry(value: unknown): TranscriptEntry {
       assertCurrentSchemaVersion(data, "Transcript agent config");
       assertModelRef(data.model, "Transcript agent config model");
       assertThinking(data.thinking, "Transcript agent config thinking");
-      if (data.model == null && data.thinking == null) {
+      if (data.executionMode !== null) assertExecutionMode(data.executionMode);
+      if (
+        data.model == null &&
+        data.thinking == null &&
+        data.executionMode === undefined
+      ) {
         throw new Error("Transcript agent config must change a field");
       }
       break;

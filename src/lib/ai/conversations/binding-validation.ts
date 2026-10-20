@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
+import { assertExecutionMode } from "../core/agent-profile.ts";
 import { validateRecipients } from "./recipients.ts";
 import type { AgentBindingRecord } from "./types.ts";
 import {
@@ -20,6 +21,7 @@ export function validateAgentBindingRecord(value: unknown): AgentBindingRecord {
   requiredString(data, "id", "Agent record");
   assertTimestamp(data, "createdAt", "Agent record");
   if (data.type === "binding.created") {
+    assertExecutionMode(data.executionMode);
     if (data.participant !== undefined) validateRecipients([data.participant]);
     requiredString(data, "runtime", "Agent record");
     for (const key of [
@@ -66,7 +68,12 @@ export function validateAgentBindingRecord(value: unknown): AgentBindingRecord {
     requiredString(data, "agentBindingId", "Agent record");
     assertModelRef(data.model, "Agent record.model");
     assertThinking(data.thinking, "Agent record.thinking");
-    if (data.model == null && data.thinking == null) {
+    if (data.executionMode !== null) assertExecutionMode(data.executionMode);
+    if (
+      data.model == null &&
+      data.thinking == null &&
+      data.executionMode === undefined
+    ) {
       throw new Error("Agent configuration record must change a field");
     }
   } else if (data.type === "handoff.summary.created") {

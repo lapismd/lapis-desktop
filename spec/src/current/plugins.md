@@ -1,5 +1,10 @@
 # Desktop plugins and catalog
 
+E-AI-094 adds agent context/permissions review stories using production editors,
+MarkdownComposer and the embedded chat shell. Shared mode icons are preoptimized
+for cold catalog runs. Plugin registration, isolation and lifecycle are
+unchanged.
+
 The active chat/settings profile is [local ACP](ai-local-history.md). Native
 conversation storage controls and catalog fixtures are retired; grouped AI
 settings and production-backed agent/mention stories remain.

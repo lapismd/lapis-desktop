@@ -70,6 +70,10 @@ export type AiChatPanelProps = {
   fileSearch?: ComposerSearchSource;
   models?: ModelRef[];
   modelCatalogError?: string | null;
+  loadExecutionModes?: (
+    agent: AcpAgentId,
+    runtime: AiPluginSettings["defaultRuntime"],
+  ) => Promise<import("../../core/agent-profile.ts").ExecutionMode[]>;
   loadModels?: (
     agent: AcpAgentId,
     runtime: AiPluginSettings["defaultRuntime"],

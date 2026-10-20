@@ -3,6 +3,7 @@
   // SPDX-License-Identifier: Apache-2.0
   // Retained Lapis chat presentation; see src/lib/ai/NOTICE.md.
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import ChatPermissions from "./ChatPermissions.svelte";
   import ChatAgentOptions from "./ChatAgentOptions.svelte";
   import PinIcon from "@lucide/svelte/icons/pin";
   import PinOffIcon from "@lucide/svelte/icons/pin-off";
@@ -45,6 +46,7 @@
     <PinIcon aria-hidden="true" />
   {/if}
 </Button>
+<ChatPermissions {panelProps} {controller} {composerState} />
 <ChatAgentOptions
   {composerState}
   {initializing}

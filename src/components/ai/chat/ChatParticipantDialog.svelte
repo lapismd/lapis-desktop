@@ -5,6 +5,7 @@
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import { AvatarPicker } from "@lapismd/design-core/forms/avatar-picker";
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import { MarkdownComposer } from "@lapismd/design-core/chat";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import ChatAgentConfiguration from "./agents/ChatAgentConfiguration.svelte";
@@ -37,6 +38,9 @@
     draftId = $state("");
   let agent = $state<AcpAgentId>("codex"),
     model = $state<string | null>(null);
+  let description = $state(""),
+    instructions = $state(""),
+    executionMode = $state("");
   let thinking = $state<AiThinkingLevel | "inherit">("inherit");
   let avatar = $state(""),
     avatarBackground = $state("#6e56cf"),
@@ -54,6 +58,9 @@
     const initial = participant;
     untrack(() => {
       label = initial?.label ?? "";
+      description = initial?.description ?? "";
+      instructions = initial?.instructions ?? "";
+      executionMode = initial?.executionMode ?? "";
       agent =
         initial?.agent ?? normalizeAcpAgent(panelProps.settings?.acpAgent);
       model = initial?.model ?? null;
@@ -85,6 +92,9 @@
       const value = {
         id: draftId,
         label: label.trim(),
+        ...(description.trim() ? { description: description.trim() } : {}),
+        ...(instructions.trim() ? { instructions: instructions.trim() } : {}),
+        ...(executionMode ? { executionMode } : {}),
         agent,
         ...(model?.trim() ? { model: model.trim() } : {}),
         ...(thinking !== "inherit" ? { thinking } : {}),
@@ -171,11 +181,47 @@
             {disabled}
           />
         </Field.Field>
+        <Field.Field>
+          <Field.Label>Description <span>Optional</span></Field.Label>
+          <MarkdownComposer
+            bind:value={description}
+            label="Description composer"
+            inputLabel="Description"
+            placeholder="What this agent does, in a sentence"
+            showSendButton={false}
+            showHint={false}
+            submitOnEnter={false}
+            onSubmit={() => {}}
+            style="--ui-markdown-composer-min-height: 4rem"
+            {disabled}
+          />
+          <Field.Description>Up to 280 characters.</Field.Description>
+        </Field.Field>
+        <Field.Field>
+          <Field.Label>Agent instructions</Field.Label>
+          <MarkdownComposer
+            bind:value={instructions}
+            label="Agent instructions composer"
+            inputLabel="Agent instructions"
+            placeholder="Describe how this agent should work."
+            showSendButton={false}
+            showHint={false}
+            submitOnEnter={false}
+            onSubmit={() => {}}
+            style="--ui-markdown-composer-min-height: 7rem"
+            {disabled}
+          />
+          <Field.Description
+            >Used with the first prompt of new sessions. Existing sessions
+            retain their original instructions.</Field.Description
+          >
+        </Field.Field>
         <ChatAgentConfiguration
           id={editorId}
           bind:agent
           bind:model
           bind:thinking
+          bind:executionMode
           {panelProps}
           active={open}
           {disabled}

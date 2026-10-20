@@ -1,5 +1,9 @@
 # Governance
 
+E-AI-094 retains LD-GOV-005 source limits by separating ACP configuration and
+tool-title projection. Added mode icons are preoptimized for cold catalog
+imports; no ownership, admission, baseline or dependency policy is relaxed.
+
 E-AI-093 defers M13/M13.3 at their original native conversation gates. M10.2
 continues with local ACP; historical evidence remains immutable.
 

@@ -1,6 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0; shared production message input. -->
 <script lang="ts">
   import type { Snippet } from "svelte";
+  import type { App } from "@lapis-notes/api";
   import {
     MarkdownComposer,
     type MarkdownComposerHandle,
@@ -19,6 +20,7 @@
     triggers = [],
     agentOptions = [],
     people = [],
+    app,
     handle = $bindable(null),
     before,
     drawer,
@@ -33,6 +35,7 @@
     triggers?: ComposerTrigger[];
     agentOptions?: readonly AgentRecipientOption[];
     people?: readonly import("../../../lib/ai/conversations/recipients.ts").ComposerPersonOption[];
+    app?: App;
     handle?: MarkdownComposerHandle | null;
     before?: Snippet;
     drawer?: Snippet;
@@ -41,6 +44,7 @@
   const references = composerReferences(
     () => agentOptions,
     () => people,
+    () => app,
   );
 </script>
 

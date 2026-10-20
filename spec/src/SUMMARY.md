@@ -380,3 +380,5 @@
 - [Complete local dependency refresh](history/E-ARCHIVES-002.md)
 
 - [Local dependency intake](current/local-dependencies.md)
+
+- [Saved agent context and permissions evidence](history/E-AI-094.md)

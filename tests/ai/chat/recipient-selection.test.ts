@@ -63,6 +63,7 @@ it("a removed catalog entry blocks Send and reports a toast while retaining text
   const composer = {
     draft: "Keep this draft",
     catalogState: null,
+    permissions: { loading: false, saving: false, modeFor: () => undefined },
     recipients,
   } as unknown as ComposerState;
   const attachments = {
@@ -110,6 +111,7 @@ it("an unconfirmed Send retains its recipient and attachment draft", async () =>
   const composer = {
     draft: "Keep this draft",
     catalogState: null,
+    permissions: { loading: false, saving: false, modeFor: () => undefined },
     recipients,
     catalogModels: [],
     selectedAgent: "codex",
@@ -158,6 +160,7 @@ it("reports a failed addressed send once through notifications and retains the c
   const composer = {
     draft: "Keep both recipients",
     catalogState: null,
+    permissions: { loading: false, saving: false, modeFor: () => undefined },
     recipients,
     catalogModels: [],
     selectedAgent: "codex",
