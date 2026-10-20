@@ -220,7 +220,7 @@ Ordinary unavailable capture targets remain unavailable until separately
 admitted; selection/opening is not a raw-event processor, prompt grant or
 renderer persistence adapter.
 
-## Native conversation preparation
+## Native conversation preparation and [authored writes](ai-authored.md)
 
 An explicitly opened JJ backend may prepare a conversation through the same
 bounded native command. Native code generates and retains the conversation,

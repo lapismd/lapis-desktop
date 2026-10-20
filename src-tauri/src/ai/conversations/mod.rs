@@ -1,5 +1,6 @@
 //! Native-owned conversation preparation; recovery only reads original receipts.
 mod capture;
+pub mod messages;
 mod provider;
 mod read;
 mod records;

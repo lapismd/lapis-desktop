@@ -115,8 +115,7 @@ E-CATALOG-012 verifies LD-AI-002/004 and LD-CAT-001/002/003 constrained chat
 layout through the source repair and public package; original gates remain.
 E-CATALOG-013 covers two-line composition and core `files.exclude` discovery.
 
-E-CATALOG-014 verifies shared search presentation through source and archive
-consumer checks.
+E-CATALOG-014: shared search source/archive checks.
 
 E-CATALOG-015 covers editable Workspace exclusions, saved patterns and live
 discovery.
@@ -125,4 +124,5 @@ E-CATALOG-016: M8.5 native/retired-writer proof, thirty catalog and eight native
 cases. Source/catalog E-CATALOG-009/010 retained; other gates unchanged.
 
 LD-AI-001/002/004, LD-REPO-003 and LD-DESK-003 managed launch boundary:
-[E-AI-067](../history/E-AI-067.md). Full renderer/store adoption remains open.
+[E-AI-067](../history/E-AI-067.md); authored writes:
+[E-AI-068](../history/E-AI-068.md). Renderer/store adoption remains open.

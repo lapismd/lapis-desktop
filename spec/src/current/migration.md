@@ -7,8 +7,9 @@ E-AI-066 adds Agents Settings; LD-MIG-002 milestones and original gates remain
 unchanged.
 
 Managed Codex launch binds an existing native conversation to a single-use
-target. Renderer persistence/context adoption and M10.2/M13.3 restart gates
-remain open; the admission boundary alone cannot complete either milestone.
+target. E-AI-068 adds typed native authored messages and original-receipt
+recovery. Renderer persistence/context adoption and M10.2/M13.3 restart gates
+remain open; these native boundaries alone cannot complete either milestone.
 
 E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
 archive refresh. E-REPO-047 completes M14.1 native identity/storage;

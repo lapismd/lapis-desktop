@@ -157,7 +157,8 @@ M10.2/M13.3 managed conversations remain In progress. Native store construction,
 privacy/journal ownership, receipts and bounded transcript reads are
 prerequisites already implemented, not a completed managed chat flow. E-AI-067
 qualifies conversation-bound Codex launch/capture and cold reads; renderer/store
-adoption, context/skills and full conversation recovery remain open.
+adoption, context/skills and full conversation recovery remain open. E-AI-068
+qualifies sanitized native authored writes and original-receipt recovery.
 
 The remaining AI/distribution sequence is:
 

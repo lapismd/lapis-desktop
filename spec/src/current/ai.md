@@ -1,16 +1,15 @@
 # Desktop AI and optional compute
 
-E-REPO-016 covers [background work](background.md); [repository](repository.md)
-retains native gates. E-AI-037/038 retain privacy, exact pinned
-reads/continuation, journals/stores, exclusive ownership and drained lifetime.
+E-REPO-016: [background](background.md); [repository](repository.md) gates stay.
+E-AI-037/038 retain private stores/journals, pinned reads and drained ownership.
 
-[Presentation](ai-presentation.md) and [tools](ai-tools.md) retain admission.
-E-AI-064 adds controller-driven recovery dots; E-CATALOG-015 exposes core
-exclusions. E-AI-054–056 add [imports](ai-imports.md) through native read-only
-workers. E-AI-058/060/061 qualify inbox, links and attachments; watching stays
-pending. E-AI-062/063 lands local AI; JJ persistence and original gates remain
-deferred. E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their
-gates.
+[Presentation](ai-presentation.md), [tools](ai-tools.md) and
+[authored writes](ai-authored.md) retain native admission. E-AI-064 adds
+controller-driven recovery dots; E-CATALOG-015 exposes core exclusions.
+E-AI-054–056 add [imports](ai-imports.md) through native read-only workers.
+E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
+E-AI-062/063 lands local AI; JJ persistence and original gates remain deferred.
+E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 E-CATALOG-009–012 retain shell clearance, inert XML and constrained chat

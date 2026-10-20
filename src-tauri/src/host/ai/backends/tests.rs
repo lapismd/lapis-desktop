@@ -1,3 +1,4 @@
+mod authored_messages;
 mod cancellation;
 mod capture_cases;
 mod capture_guards;

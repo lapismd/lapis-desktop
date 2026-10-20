@@ -8,6 +8,7 @@
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
   - [Installed AI clients](current/ai-clients.md)
+  - [Native authored conversation messages](current/ai-authored.md)
   - [AI transcript delivery review](current/ai-presentation.md)
   - [Local AI turn recovery](current/ai-recovery.md)
   - [Native application tools](current/ai-tools.md)
@@ -319,3 +320,5 @@
 - [Sync recovery outside writer protection](history/E-REPO-054.md)
 
 - [Conversation-bound managed native launch](history/E-AI-067.md)
+
+- [Native authored messages and original receipt recovery](history/E-AI-068.md)

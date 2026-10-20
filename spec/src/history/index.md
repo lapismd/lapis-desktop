@@ -262,3 +262,5 @@ by the task ledger, not inferred from this list.
 - [Sync recovery outside writer protection](E-REPO-054.md)
 
 - [Conversation-bound managed native launch](E-AI-067.md)
+
+- [Native authored messages and original receipt recovery](E-AI-068.md)

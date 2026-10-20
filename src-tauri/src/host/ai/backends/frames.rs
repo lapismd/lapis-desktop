@@ -40,6 +40,17 @@ pub enum Operation {
         handle: Uuid,
         request_id: RequestId,
     },
+    AppendConversationMessage {
+        handle: Uuid,
+        request_id: RequestId,
+        conversation_request_id: RequestId,
+        text: String,
+    },
+    ConversationMessageStatus {
+        handle: Uuid,
+        request_id: RequestId,
+        conversation_request_id: RequestId,
+    },
     ReadConversation {
         handle: Uuid,
         request_id: RequestId,
@@ -81,11 +92,18 @@ impl Request {
                 "Invalid conversation backend frame",
             )
         };
-        if text.len() > 4096 {
+        if text.len() > 1024 * 1024 {
             return Err(bad());
         }
         let value: Self = serde_json::from_str(text).map_err(|_| bad())?;
-        if value.version != 1 || value.session_id.len() > 128 {
+        if value.version != 1
+            || value.session_id.len() > 128
+            || text.len() > 4096
+                && !matches!(
+                    &value.operation,
+                    Operation::AppendConversationMessage { .. }
+                )
+        {
             return Err(bad());
         }
         Ok(value)
@@ -104,6 +122,7 @@ pub enum Reply {
     Receipt(Option<SelectionReceipt>),
     Opened(Opened),
     Conversation(Option<lapis_desktop::ai::conversations::Conversation>),
+    ConversationMessage(Option<lapis_desktop::ai::conversations::messages::MessageWrite>),
     ConversationView(Option<String>),
     ConversationRead(Option<super::reads::OpenedRead>),
     TranscriptRange(String),

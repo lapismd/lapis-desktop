@@ -63,6 +63,36 @@ pub(super) async fn dispatch(
                     lapis_desktop::ai::conversations::status(call, request_id),
                 )?)
             }
+            Operation::AppendConversationMessage {
+                handle,
+                request_id,
+                conversation_request_id,
+                text,
+            } => Reply::ConversationMessage(Some(owner.append_message(
+                &host,
+                &context,
+                &request.session_id,
+                handle,
+                super::messages::MessageInput {
+                    conversation: conversation_request_id,
+                    request: request_id,
+                    text,
+                },
+            )?)),
+            Operation::ConversationMessageStatus {
+                handle,
+                request_id,
+                conversation_request_id,
+            } => {
+                let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;
+                Reply::ConversationMessage(tauri::async_runtime::block_on(
+                    lapis_desktop::ai::conversations::messages::status(
+                        call,
+                        conversation_request_id,
+                        request_id,
+                    ),
+                )?)
+            }
             Operation::PrepareCapture {
                 handle,
                 request_id,
