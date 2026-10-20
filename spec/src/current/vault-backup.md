@@ -201,6 +201,11 @@ before native work and retains it across a lost reply or restart. Source
 unavailability keeps pending recovery controls available; feedback uses App
 toasts. Stopping fences even a request not yet delivered and cannot undo
 accepted ancestry, change capture preferences or enable remote synchronization.
+Adoption first prepares editor writers, saves its recovery identity outside the
+all-file guard, then reacquires that guard for native import. Clearing recovery
+also follows guard release: App configuration writers remain protected during
+native work and must never be reentered from its callback. Failed or cancelled
+preparation creates no intent; later failures retain the original request.
 
 The status popover header MUST offer Fetch, Pull and Push upstream actions in
 that order, right-aligned with shadcn tooltips. Fetch only imports history; Pull

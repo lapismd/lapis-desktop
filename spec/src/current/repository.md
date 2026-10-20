@@ -1,10 +1,10 @@
 # Repository history and conversations
 
-LD-REPO-005 backup Settings: E-REPO-039–041; [M14](vault-backup.md) owns
-delivery. E-REPO-047–050 cover identity, retry, watching and persistence;
-E-REPO-051/052 cover restore/search. JJ identities use owned APIs without
-`jj-lib`; E-AI-055 retains import capture/privacy. LD-REPO-001/002/003/005
-admission, pins and publication remain unchanged.
+LD-REPO-005: [M14](vault-backup.md) owns backup delivery. E-REPO-047–052 cover
+native identity, capture, restore and search; E-REPO-053 covers storage and
+adoption. Recovery writes stay outside the all-file native import guard. JJ uses
+owned APIs without `jj-lib`; E-AI-055 retains capture/privacy.
+LD-REPO-001/002/003/005 admission, pins and publication remain unchanged.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.

@@ -85,44 +85,45 @@ export class AdoptionController {
       source: this.#state.data.source,
     });
     return this.#run("importing", async () => {
-      const accepted = await this.guard(async () => {
-        if (this.#closed) return;
-        await this.recovery.save(request);
-        this.#set({ request });
-        const data = await this.service.adopt(request);
-        await this.recovery.save(undefined);
-        this.#set({ data, request: undefined });
-        return true;
+      // Recovery uses App-owned file writers, which the native mutation guard
+      // protects too. Prepare before persisting, then reacquire for import.
+      const prepared = await this.guard(async () => !this.#closed);
+      if (prepared !== true) return false;
+      await this.recovery.save(request);
+      this.#set({ request });
+      const data = await this.guard(async () => {
+        if (!this.#closed) return this.service.adopt(request);
       });
-      return accepted === true;
+      if (!data) return false;
+      await this.recovery.save(undefined);
+      this.#set({ data, request: undefined });
+      return true;
     });
   }
   resume() {
     const request = this.#state.request;
     if (!request) return Promise.resolve(false);
     return this.#run("recovering", async () => {
-      const accepted = await this.guard(async () => {
-        if (this.#closed) return;
-        const data = await this.service.adopt(request);
-        await this.recovery.save(undefined);
-        this.#set({ data, request: undefined });
-        return true;
+      const data = await this.guard(async () => {
+        if (!this.#closed) return this.service.adopt(request);
       });
-      return accepted === true;
+      if (!data) return false;
+      await this.recovery.save(undefined);
+      this.#set({ data, request: undefined });
+      return true;
     });
   }
   stop() {
     const request = this.#state.request;
     if (!request) return Promise.resolve(false);
     return this.#run("stopping", async () => {
-      const accepted = await this.guard(async () => {
-        if (this.#closed) return;
-        const data = await this.service.stop(request.request_id);
-        await this.recovery.save(undefined);
-        this.#set({ data, request: undefined });
-        return true;
+      const data = await this.guard(async () => {
+        if (!this.#closed) return this.service.stop(request.request_id);
       });
-      return accepted === true;
+      if (!data) return false;
+      await this.recovery.save(undefined);
+      this.#set({ data, request: undefined });
+      return true;
     });
   }
   close() {

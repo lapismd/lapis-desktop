@@ -10,9 +10,9 @@ retain those gates. M10.3 tools/credentials, M10.4 compute, M11 distribution and
 M12 cutover remain Planned.
 
 [Automatic backup M14](vault-backup.md) has seven stages integrated into main
-through E-REPO-052; M14.1–3/M14.6 are Done, remaining stages retain
-native/provider gates. Settings use forge icons and backup tables. E-REPO-042
-preserves all gates. See the
+through E-REPO-053; M14.1–3/M14.6 are Done. Storage/adoption is qualified;
+remaining stages retain provider gates. Settings use forge icons and backup
+tables. E-REPO-042 preserves all gates. See the
 [roadmap](../../../../PLAN.md#current-delivery-checkpoint).
 
 E-AI-031–041 cover journal/privacy, receipts, pinned reads and shared AI UI.

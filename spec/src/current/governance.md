@@ -1,6 +1,6 @@
 # Governance
 
-E-POPOUT-004: native pop-outs/IPC denial. E-REPO-051/052 retain LD-GOV-002/009:
+E-POPOUT-004: native pop-outs/IPC denial. E-REPO-051–053 retain LD-GOV-002/009:
 actual native proof, debug e2e-only response faults and deferred release.
 
 E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain

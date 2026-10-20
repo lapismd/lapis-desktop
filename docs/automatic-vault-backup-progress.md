@@ -3,11 +3,12 @@
 ## Current checkpoint — 2026-10-20
 
 All seven implementation stages are **implemented and integrated into main**.
-M14.1 identity/storage, M14.2 capture/recovery and M14.3 restore/live history
-are qualified on macOS ARM64 (E-REPO-046–051). The source ledger is jj-store
-M34; the desktop [M14 ledger](../spec/src/current/progress/vault-backup.md)
-alone owns desktop completion status. Remaining Partial stages retain their
-original actual-app search/storage and real-provider gates.
+M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and
+M14.6 search are qualified on macOS ARM64 (E-REPO-046–053). The source ledger is
+jj-store M34; the desktop
+[M14 ledger](../spec/src/current/progress/vault-backup.md) alone owns desktop
+completion status. Remaining Partial stages retain their original real-provider
+and synchronization gates.
 
 | Stage                                  | Implementation         | Recorded focused checks                                                                                             | Remaining acceptance                                                       |
 | -------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
@@ -17,7 +18,7 @@ original actual-app search/storage and real-provider gates.
 | 4. GitHub integration                  | Implemented/integrated | Account/remote/restore native boundaries, renderer and settings stories (E-REPO-029–031/039–041)                    | Live sign-in, remote setup and fresh-device restore                        |
 | 5. Automatic two-way synchronization   | Implemented/integrated | Native two-device convergence and recovery, renderer/catalog checks (E-REPO-032/033)                                | Cold app/provider push/pull, offline/conflict and unknown-outcome recovery |
 | 6. Historical search                   | Implemented/qualified  | E-REPO-034/052: source plus cold native filtering, pinned version and guarded restore                               | Complete on macOS ARM64                                                    |
-| 7. Advanced storage and Forgejo        | Implemented/integrated | Forgejo auth, storage migration, ancestry adoption/source tabs and main renderer build (E-REPO-035–038)             | Cold native storage/adoption and live Forgejo acceptance                   |
+| 7. Advanced storage and Forgejo        | Implemented/integrated | Forgejo auth, storage migration, ancestry adoption/source tabs and main renderer build (E-REPO-035–038)             | Native storage/adoption qualified (E-REPO-053); live Forgejo remains       |
 
 Settings now live in **Settings → Repository History**, with GitHub/Forgejo
 icons, full-width forge tables and a separate Backup and synchronisation
@@ -27,8 +28,8 @@ audits and a production renderer build. These are production-component previews;
 final integration/settings slices have no new actual native review-app
 acceptance recorded.
 
-The next delivery is native historical search/storage acceptance, followed by
-real providers and wider qualification. Full suites, other platforms, release
+Native search and storage/adoption are qualified (E-REPO-052/053). Next are real
+providers and synchronization acceptance. Full suites, other platforms, release
 and visual approval remain deferred. E-REPO-042 reconciles tracking only;
 M13/AI, original gates and visual baselines are unchanged. Checkmarks below
 identify completed slices; unchecked items identify pending acceptance.
@@ -72,8 +73,8 @@ identify completed slices; unchecked items identify pending acceptance.
   lacked the new workspace's public `jj-history` dist; building that package
   restored a clean type check. These attempts remain in local verification logs.
 - Historical search and Forgejo focused implementation are recorded below.
-  Existing-repository adoption/source selection now have focused implementation;
-  native/provider acceptance remains deferred and recorded.
+  E-REPO-053 adds native storage/adoption and source-reader acceptance;
+  real-provider acceptance remains open.
 - [x] Source and desktop code integrated into the main workspaces. Existing
       review-app and ordinary vault data remain in their original locations.
 
@@ -153,9 +154,9 @@ transitions fail explicitly before mutation. Full-tree restore does not replace
 Normal, conflict and original-push recovery flows have focused proof in
 E-VAULT-BACKUP-008/009 and E-REPO-032/033. Stage 5 implementation is complete;
 its gate remains Partial because cold native/provider acceptance remains open.
-Implementation is integrated; no stage is Active. Root storage, adoption and
-Forgejo have focused implementations; cold native/provider qualification remains
-deferred. Main code is integrated; original review and vault data are preserved.
+Implementation is integrated. E-REPO-053 qualifies cold native storage/adoption;
+real-provider synchronization and Forgejo remain open. Original review and vault
+data are preserved.
 
 ## Historical search
 
@@ -187,7 +188,9 @@ versions remain path-only with an explicit count.
 - [x] Explicit existing-repository adoption with original-request recovery.
 - [x] Separate backup/original JJ Log and Op Log source tabs with pinned reads.
 - [x] Focused source/desktop implementation integrated into main.
-- [ ] Cold native-app acceptance remains deferred.
+- [x] Cold native storage round trip, explicit ancestry adoption and both source
+      readers retain exact data through restart (E-REPO-053).
+- [ ] Live Forgejo and the M14.5 synchronization dependency remain open.
 
 Forgejo focused evidence: E-VAULT-BACKUP-011 / E-REPO-035. Source 29 forge
 package cases, seven credential/transfer cases, four native consumer service
@@ -201,8 +204,9 @@ request recovery and source-specific tabs. The original repository stays
 independent and unchanged; imported Git ancestry joins the current managed tree.
 Original native operations/evolution remain available through separate read
 tokens. Capture, search, status and ordinary file history stay backup-scoped.
-Current focused results are recorded in the ledgers. Cold native/provider
-qualification remains open; E-REPO-038 records main integration.
+E-REPO-053 qualifies actual native storage/adoption and independent source
+readers through cold reopening. Live providers remain open; E-REPO-038 records
+main integration.
 
 ## Main workspace acceptance
 
@@ -213,8 +217,9 @@ strict types, affected cold Storybook/theme/width checks and the production
 renderer build pass. Source production code is unchanged from
 E-VAULT-BACKUP-013. The unrelated source progress edit and review/vault data are
 preserved. Heavy actual-native-app, live-forge, full-suite, other-platform and
-release qualification remain deferred; focused evidence does not complete those
-original gates.
+release qualification were deferred at E-REPO-038. E-REPO-046–053 add the
+subsequent native capture, restore/search and storage/adoption qualification;
+real providers and release remain separate.
 
 - [x] Generate the source documentation book and rerun the rendered-book link
       audit. E-VAULT-BACKUP-015 records the initial missing input and successful

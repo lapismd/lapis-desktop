@@ -313,3 +313,5 @@
 - [Actual native history restore](history/E-REPO-051.md)
 
 - [Native saved-version Search and exact restore](history/E-REPO-052.md)
+
+- [Native storage and original-history adoption](history/E-REPO-053.md)

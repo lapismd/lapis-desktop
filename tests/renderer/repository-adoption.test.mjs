@@ -71,7 +71,7 @@ test("import is guarded and durably records the original request before native w
   });
   await f.controller.refresh();
   await f.controller.adopt();
-  assert.equal(guarded, 1);
+  assert.equal(guarded, 2);
   assert.deepEqual(
     f.calls.map(([kind]) => kind),
     ["save", "adopt", "save"],
@@ -79,6 +79,59 @@ test("import is guarded and durably records the original request before native w
   assert.deepEqual(f.calls[0][1], f.calls[1][1]);
   assert.deepEqual(f.calls[1][1].source, source);
   assert.equal(await f.recovery.load(), undefined);
+});
+for (const action of ["adopt", "resume", "stop"]) {
+  test(`${action} persists recovery outside the all-file guard while protecting native work`, async () => {
+    let protectedFiles = false;
+    const f = fixture(async (run) => {
+      protectedFiles = true;
+      try {
+        return await run();
+      } finally {
+        protectedFiles = false;
+      }
+    });
+    const save = f.recovery.save;
+    f.recovery.save = async (request) => {
+      assert.equal(
+        protectedFiles,
+        false,
+        "App state writers cannot reenter protection",
+      );
+      await save(request);
+    };
+    for (const key of ["adopt", "stop"]) {
+      const native = f.service[key];
+      f.service[key] = async (request) => {
+        assert.equal(
+          protectedFiles,
+          true,
+          "Native mutation keeps all writers protected",
+        );
+        return native(request);
+      };
+    }
+    if (action !== "adopt")
+      await f.recovery.save({ request_id: "original-native", source });
+    await f.controller.refresh();
+    assert.equal(await f.controller[action](), true);
+    assert.equal(await f.recovery.load(), undefined);
+  });
+}
+test("failed protection after durable preparation retains the exact import without invoking native work", async () => {
+  let attempts = 0;
+  const f = fixture(async (run) => {
+    if (++attempts === 2) throw new Error("Writer changed during preparation");
+    return run();
+  });
+  await f.controller.refresh();
+  assert.equal(await f.controller.adopt(), false);
+  const request = await f.recovery.load();
+  assert.deepEqual(request.source, source);
+  assert.deepEqual(f.calls, [["save", request]]);
+  assert.deepEqual(f.states.at(-1).request, request);
+  assert.equal(await f.controller.adopt(), false);
+  assert.match(f.errors[0].message, /Writer changed/);
 });
 test("canceling editor preparation neither saves a request nor starts native adoption", async () => {
   const f = fixture(async () => undefined);

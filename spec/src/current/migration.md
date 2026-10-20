@@ -9,10 +9,9 @@ unchanged.
 E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
 archive refresh. E-REPO-047 completes M14.1 native identity/storage;
 E-REPO-048–050 and E-REPO-046 qualify M14.2 capture/final persistence and retry.
-E-REPO-051/052 qualify native restore/live history and exact-version search
-under unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover
-gates remain open; release stays deferred. Historical failed attempts are
-retained.
+E-REPO-051–053 qualify native restore/search and storage/adoption under
+unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover gates
+remain open; release stays deferred. Historical failed attempts are retained.
 
 E-CATALOG-016 qualifies the original M8.5 native gate, including retired-writer
 recovery. Shared close policy belongs in the API; release remains deferred.

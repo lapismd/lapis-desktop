@@ -256,3 +256,5 @@ by the task ledger, not inferred from this list.
 - [Actual native history restore](E-REPO-051.md)
 
 - [Native saved-version Search and exact restore](E-REPO-052.md)
+
+- [Native storage and original-history adoption](E-REPO-053.md)

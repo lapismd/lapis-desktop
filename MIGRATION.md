@@ -59,11 +59,11 @@ deferred to their distribution gates.
 | M0.2  | Done        | Complete; native qualification remains explicit                |
 | M8.4  | Done        | Complete; extend inventory with new desktop UI                 |
 | M8.5  | Done        | Complete; continue AI and backup                               |
-| M14   | Partial     | Storage and provider acceptance                                |
+| M14   | Partial     | Real-provider acceptance                                       |
 | M14.1 | Done        | Complete; continue capture lifecycle                           |
 | M14.2 | Done        | Complete; continue restore/provider acceptance                 |
 | M14.3 | Done        | Complete; continue search/providers                            |
 | M14.4 | Partial     | Qualify cold app/provider flow later                           |
 | M14.5 | Partial     | Qualify cold app/provider gates later                          |
 | M14.6 | Done        | Complete; continue storage/providers                           |
-| M14.7 | Partial     | Deferred native/provider qualification                         |
+| M14.7 | Partial     | Real Forgejo and sync acceptance                               |
