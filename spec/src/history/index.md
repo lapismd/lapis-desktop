@@ -253,3 +253,5 @@ by the task ledger, not inferred from this list.
 - [Retain the workspace on final persistence failure](E-REPO-050.md)
 
 - [Actual native history restore](E-REPO-051.md)
+
+- [Native saved-version Search and exact restore](E-REPO-052.md)

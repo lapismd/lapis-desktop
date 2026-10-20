@@ -9,16 +9,17 @@ unchanged.
 E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
 archive refresh. E-REPO-047 completes M14.1 native identity/storage;
 E-REPO-048–050 and E-REPO-046 qualify M14.2 capture/final persistence and retry.
-E-REPO-051 adds actual WebView restore/receipt/live-follow acceptance under
-unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover gates
-remain open; release stays deferred. Historical failed attempts are retained.
+E-REPO-051/052 qualify native restore/live history and exact-version search
+under unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover
+gates remain open; release stays deferred. Historical failed attempts are
+retained.
 
 ## Current checkpoint — 2026-10-20
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and
 [main task ledger](progress/milestones.md) now include the M13 repository and
 M14 automatic-backup workstreams. M0–M9 original gates and M10.1/M13.1/M13.2 are
-complete. M7.3 ordinary native pop-outs are In progress and M8.5 retains its
+complete. M7.3 ordinary native pop-outs are qualified and M8.5 retains its
 presentation gate. M10.2/M13.3 managed conversation/execution, context/skills
 and restart acceptance remain In progress. Native store/privacy/journal
 ownership, exact receipt recovery and bounded transcript reads already have

@@ -1,7 +1,7 @@
 # Governance
 
-E-POPOUT-004 qualifies native pop-outs/IPC denial. E-REPO-051 retains
-LD-GOV-002/009: response faults are debug e2e only; release stays deferred.
+E-POPOUT-004: native pop-outs/IPC denial. E-REPO-051/052 retain LD-GOV-002/009:
+actual native proof, debug e2e-only response faults and deferred release.
 
 E-AI-031–033 qualify native boundaries; E-REPO-047 qualifies vault identity.
 LD-GOV-002 evidence rules and M13.3 native/restart gates remain unchanged.

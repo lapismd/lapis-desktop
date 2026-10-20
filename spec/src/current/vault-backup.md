@@ -156,8 +156,10 @@ Search versions open the retained file in the main-panel blame reader or its
 exact checkpoint in JJ Log, including commits beyond graph paging. Late exact
 commit replies cannot replace a newer row selection. Restoring a hit uses the
 existing native preview, original safety checkpoint and receipt path, never
-cache bytes. The copied command result layout retains public Design Core
-composition and a noninteractive time label inside each selectable row.
+cache bytes. E-REPO-052 tests the native Search → pinned blame → JJ Log →
+guarded restore path under unchanged LD-REPO-005. The copied command result
+layout retains public Design Core composition and a noninteractive time label
+inside each selectable row.
 
 Forgejo account setup explicitly accepts a PAT and HTTPS `/api/v1` instance root
 through installation-owned native workers and the injected account manager.

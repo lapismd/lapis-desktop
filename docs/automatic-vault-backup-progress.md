@@ -16,7 +16,7 @@ original actual-app search/storage and real-provider gates.
 | 3. Local history and restore           | Implemented/qualified  | E-REPO-028/051: source plus cold App restore, receipts and live/status acceptance                                   | Complete on macOS ARM64 (E-REPO-051)                                       |
 | 4. GitHub integration                  | Implemented/integrated | Account/remote/restore native boundaries, renderer and settings stories (E-REPO-029–031/039–041)                    | Live sign-in, remote setup and fresh-device restore                        |
 | 5. Automatic two-way synchronization   | Implemented/integrated | Native two-device convergence and recovery, renderer/catalog checks (E-REPO-032/033)                                | Cold app/provider push/pull, offline/conflict and unknown-outcome recovery |
-| 6. Historical search                   | Implemented/integrated | Source search, native frames, renderer and catalog checks (E-REPO-034)                                              | Cold native exact-version search and guarded restore                       |
+| 6. Historical search                   | Implemented/qualified  | E-REPO-034/052: source plus cold native filtering, pinned version and guarded restore                               | Complete on macOS ARM64                                                    |
 | 7. Advanced storage and Forgejo        | Implemented/integrated | Forgejo auth, storage migration, ancestry adoption/source tabs and main renderer build (E-REPO-035–038)             | Cold native storage/adoption and live Forgejo acceptance                   |
 
 Settings now live in **Settings → Repository History**, with GitHub/Forgejo
@@ -163,13 +163,16 @@ deferred. Main code is integrated; original review and vault data are preserved.
       cache.
 - [x] Plugin search UI, exact selection and guarded restoration.
 - [x] Focused source/consumer proofs and mapped loading/empty/recovery stories.
+- [x] Cold native exact-version search, retained query and guarded restore
+      (E-REPO-052).
 
 Source E-VAULT-BACKUP-010 qualifies 20 native and nine worker/search cases.
 Desktop E-REPO-034 qualifies 46 renderer cases, nine native frame cases and 116
-affected catalog interaction/accessibility executions. Cold native
-search/restore/lifecycle acceptance remains deferred after implementation.
-Search cache is disposable; content above 1 MiB and binary/conflicted versions
-remain path-only with an explicit count.
+affected catalog interaction/accessibility executions. E-REPO-052 completes
+M14.6 with text/author filters, exact immutable version selection, query
+retention across two cold native processes and guarded restore through the
+actual UI. Search cache is disposable; content above 1 MiB and binary/conflicted
+versions remain path-only with an explicit count.
 
 ## Advanced storage and Forgejo
 

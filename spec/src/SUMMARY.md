@@ -310,3 +310,5 @@
 - [Retain the workspace on final persistence failure](history/E-REPO-050.md)
 
 - [Actual native history restore](history/E-REPO-051.md)
+
+- [Native saved-version Search and exact restore](history/E-REPO-052.md)
