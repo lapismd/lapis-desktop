@@ -46,7 +46,14 @@ pub async fn desktop_backup_restore(
                 .map_err(failure)?,
         ),
         Action::ApplyVault { request } => {
-            serde_json::to_value(owner.backup.restore_vault(request).await.map_err(failure)?)
+            #[cfg(all(debug_assertions, feature = "e2e"))]
+            let original = request.clone();
+            let capture = owner.backup.restore_vault(request).await.map_err(failure)?;
+            #[cfg(all(debug_assertions, feature = "e2e"))]
+            crate::acceptance::backup_restore::after_apply("vault", original)
+                .await
+                .map_err(failure)?;
+            serde_json::to_value(capture)
         }
         Action::Preview { checkpoint, path } => serde_json::to_value(
             owner
@@ -56,7 +63,14 @@ pub async fn desktop_backup_restore(
                 .map_err(failure)?,
         ),
         Action::Apply { request } => {
-            serde_json::to_value(owner.backup.restore(request).await.map_err(failure)?)
+            #[cfg(all(debug_assertions, feature = "e2e"))]
+            let original = request.clone();
+            let capture = owner.backup.restore(request).await.map_err(failure)?;
+            #[cfg(all(debug_assertions, feature = "e2e"))]
+            crate::acceptance::backup_restore::after_apply("file", original)
+                .await
+                .map_err(failure)?;
+            serde_json::to_value(capture)
         }
     };
     result.map_err(|_| failure("Invalid restore response"))

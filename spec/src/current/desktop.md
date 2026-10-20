@@ -3,7 +3,7 @@
 E-POPOUT-004: main-owned native pop-outs and save guards; no child IPC.
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
-E-REPO-035–041/046–050; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
+E-REPO-035–041/046–051; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 App watching starts after metadata/views; leave drains it; failure resumes it

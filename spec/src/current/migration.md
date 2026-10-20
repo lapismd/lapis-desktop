@@ -6,16 +6,12 @@ keeps its original qualified gate and other task statuses remain unchanged.
 E-AI-066 adds Agents Settings; LD-MIG-002 milestones and original gates remain
 unchanged.
 
-E-POPOUT-003 begins M7.3 with the session registry. Its ordinary-window gate
-remains open; the user deferred release while resuming other implementation.
-E-POPOUT-004 adds ordinary integration and retains the failed cold-window
-attempt. The shared live-layout repair is qualified upstream; Desktop archive
-refresh and native save/close acceptance remain open under LD-MIG-002.
-
-E-REPO-047 completes M14.1 native identity/storage. E-REPO-048 qualifies
-final-capture retry; M14.2 retains its original gate. E-REPO-049 repairs native
-watch recovery; E-REPO-050 retains the pending final-persistence preflight. No
-original completion gate changes.
+E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
+archive refresh. E-REPO-047 completes M14.1 native identity/storage;
+E-REPO-048–050 and E-REPO-046 qualify M14.2 capture/final persistence and retry.
+E-REPO-051 adds actual WebView restore/receipt/live-follow acceptance under
+unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover gates
+remain open; release stays deferred. Historical failed attempts are retained.
 
 ## Current checkpoint — 2026-10-20
 

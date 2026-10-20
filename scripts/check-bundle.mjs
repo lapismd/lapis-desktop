@@ -47,6 +47,8 @@ for (const marker of [
   "__lapisNativeWatchAcceptance",
   "file-actions.jsonl",
   "integration-actions.jsonl",
+  "restore-response-loss.arm",
+  "Acceptance restore response lost after native receipt",
   "Integration receipt unavailable",
   "Acceptance action receipt unavailable",
   "Native controls could not be measured",

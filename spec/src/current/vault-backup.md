@@ -2,7 +2,10 @@
 
 E-REPO-047 qualifies the original M14.1 identity/storage gate through cold
 native processes, production recent eviction, explicit folder relinking and
-independent external history. Other M14 acceptance gates remain open.
+independent external history. E-REPO-051 tests native restore under unchanged
+LD-REPO-005 safety checkpoints, writer guards, exact receipts and live pins. An
+e2e-only one-shot fault may discard the response after the real native receipt;
+ordinary builds contain no hook or fault control. Remaining M14 gates stay open.
 
 Repository History exposes forge accounts, remote backup, synchronization,
 storage and adoption directly inside its registered plugin settings section.

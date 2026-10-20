@@ -12,7 +12,7 @@ completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | M7.3 ordinary native pop-outs are qualified; M8.5 presentation acceptance remains In progress                                                      |
 | AI and conversations, M10/M13     | Reusable ACP adapter, retained AI UI/shared transcript, native privacy/store ownership and bounded conversation reads implemented; M10.1/M13.1/M13.2 qualified | M10.2/M13.3 managed renderer conversation/execution, context/skills and restart recovery; M10.3 tools/credentials and M10.4 compute remain Planned |
-| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14.1 identity/storage and M14.2 capture/recovery are Done; restore/search/storage and real-provider gates remain                                  |
+| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14.1 identity/storage, M14.2 capture/recovery and M14.3 restore/live history are Done; search/storage and real-provider gates remain              |
 | Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                                 |
 
 Repository History now includes automatic internal/external file capture,
@@ -24,8 +24,9 @@ components are reviewable in Storybook. Native identity/storage (M14.1) and
 capture/recovery (M14.2) are qualified. E-REPO-046/048–050 prove automatic
 internal/external capture, cold crash reconciliation, final-save failure,
 retained live editors, resumed watching, Quit retry and exact retained diffs
-after cold reopening. Restore/search/storage/adoption and real-provider gates
-remain open; see the
+after cold reopening. E-REPO-051 qualifies actual file/vault restore, safety
+history, cold receipt recovery and live history with footer status hidden.
+Historical search, storage/adoption and real-provider gates remain open; see the
 [delivery checklist](docs/automatic-vault-backup-progress.md).
 
 M7.3 is qualified by E-POPOUT-004: all fourteen actual Notes/native-window

@@ -1,7 +1,7 @@
 # Governance
 
-E-POPOUT-004 extends M7.3 with the named main-owned window command. Its exact
-permission audit retains child IPC denial; release gates stay deferred.
+E-POPOUT-004 qualifies native pop-outs/IPC denial. E-REPO-051 retains
+LD-GOV-002/009: response faults are debug e2e only; release stays deferred.
 
 E-AI-031–033 qualify native boundaries; E-REPO-047 qualifies vault identity.
 LD-GOV-002 evidence rules and M13.3 native/restart gates remain unchanged.

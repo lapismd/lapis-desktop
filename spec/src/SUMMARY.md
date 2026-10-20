@@ -308,3 +308,5 @@
 - [Native backup recovery and close retry](history/E-REPO-048.md)
 - [Native backup watch recovery](history/E-REPO-049.md)
 - [Retain the workspace on final persistence failure](history/E-REPO-050.md)
+
+- [Actual native history restore](history/E-REPO-051.md)

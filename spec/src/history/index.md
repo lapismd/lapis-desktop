@@ -251,3 +251,5 @@ by the task ledger, not inferred from this list.
 - [Native backup recovery and close retry](E-REPO-048.md)
 - [Native backup watch recovery](E-REPO-049.md)
 - [Retain the workspace on final persistence failure](E-REPO-050.md)
+
+- [Actual native history restore](E-REPO-051.md)

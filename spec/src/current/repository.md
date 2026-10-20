@@ -2,8 +2,8 @@
 
 LD-REPO-005 backup Settings: E-REPO-039–041. [M14](vault-backup.md) owns
 delivery. E-REPO-047/048/049 cover identity, retry and watching; E-REPO-050
-retains the final-persistence gate. Managed/original JJ identities use owned
-APIs without `jj-lib`; E-AI-055 retains read-only import capture/privacy.
+retains final persistence; E-REPO-051 tests native restore. JJ identities use
+owned APIs without `jj-lib`; E-AI-055 retains read-only import capture/privacy.
 LD-REPO-001/002/003/005 admission, pins and publication remain unchanged.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in

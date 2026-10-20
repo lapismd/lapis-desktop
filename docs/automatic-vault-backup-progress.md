@@ -3,17 +3,17 @@
 ## Current checkpoint — 2026-10-20
 
 All seven implementation stages are **implemented and integrated into main**.
-M14.1 identity/storage and M14.2 capture/recovery are qualified on macOS ARM64
-(E-REPO-046–050). The source ledger is jj-store M34; the desktop
-[M14 ledger](../spec/src/current/progress/vault-backup.md) alone owns desktop
-completion status. Remaining Partial stages retain their original actual-app
-restore/search/storage and real-provider gates.
+M14.1 identity/storage, M14.2 capture/recovery and M14.3 restore/live history
+are qualified on macOS ARM64 (E-REPO-046–051). The source ledger is jj-store
+M34; the desktop [M14 ledger](../spec/src/current/progress/vault-backup.md)
+alone owns desktop completion status. Remaining Partial stages retain their
+original actual-app search/storage and real-provider gates.
 
 | Stage                                  | Implementation         | Recorded focused checks                                                                                             | Remaining acceptance                                                       |
 | -------------------------------------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
 | 1. Vault identity and external storage | Implemented/qualified  | Native registry plus two cold processes, actual recent eviction, relinking and independent history (E-REPO-026/047) | Complete on macOS ARM64                                                    |
 | 2. Capture coordinator                 | Implemented/qualified  | E-REPO-026/027/046/048–050: native/App capture, crash, failed-save recovery and guarded Quit                        | Complete on macOS ARM64                                                    |
-| 3. Local history and restore           | Implemented/integrated | Actual source restore, worker/frame, renderer and catalog checks (E-REPO-028)                                       | Actual WebView file/vault restore, recovery, live follow and status        |
+| 3. Local history and restore           | Implemented/qualified  | E-REPO-028/051: source plus cold App restore, receipts and live/status acceptance                                   | Complete on macOS ARM64 (E-REPO-051)                                       |
 | 4. GitHub integration                  | Implemented/integrated | Account/remote/restore native boundaries, renderer and settings stories (E-REPO-029–031/039–041)                    | Live sign-in, remote setup and fresh-device restore                        |
 | 5. Automatic two-way synchronization   | Implemented/integrated | Native two-device convergence and recovery, renderer/catalog checks (E-REPO-032/033)                                | Cold app/provider push/pull, offline/conflict and unknown-outcome recovery |
 | 6. Historical search                   | Implemented/integrated | Source search, native frames, renderer and catalog checks (E-REPO-034)                                              | Cold native exact-version search and guarded restore                       |
@@ -27,11 +27,11 @@ audits and a production renderer build. These are production-component previews;
 final integration/settings slices have no new actual native review-app
 acceptance recorded.
 
-The next useful delivery slice is cold native-app acceptance, followed by real
-providers and wider qualification. Full suites, other platforms, release and
-visual approval remain deferred. E-REPO-042 reconciles tracking only; M13/AI,
-original gates and visual baselines are unchanged. Checkmarks below identify
-completed slices; unchecked items identify pending acceptance.
+The next delivery is native historical search/storage acceptance, followed by
+real providers and wider qualification. Full suites, other platforms, release
+and visual approval remain deferred. E-REPO-042 reconciles tracking only;
+M13/AI, original gates and visual baselines are unchanged. Checkmarks below
+identify completed slices; unchecked items identify pending acceptance.
 
 ## Completed slices
 
@@ -98,7 +98,9 @@ completed slices; unchecked items identify pending acceptance.
       and complete-tree verification.
 - [x] Durable UI restore identity and explicit original-request recovery after
       reopening history.
-- [ ] Complete actual-WebView backup/restore lifecycle acceptance.
+- [x] Complete actual-WebView backup/restore lifecycle acceptance (E-REPO-051):
+      exact safety history, stale preview refusal, file/vault restore, cold
+      original-request recovery, live follow and hidden footer status.
 - [x] Forgejo and historical search focused implementation (recorded below).
 - [x] Existing repository source selector and explicit ancestry adoption.
 
