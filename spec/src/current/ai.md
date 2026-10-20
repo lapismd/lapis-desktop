@@ -1,7 +1,7 @@
 # Desktop AI and optional compute
 
-[Local ACP/file storage](ai-local-history.md) is active (E-AI-093). Native-store
-clauses below describe the Deferred checkpoint experiment.
+[Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
+Native-store clauses below preserve the Deferred checkpoint experiment.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and
 [authored writes](ai-authored.md): native admission. E-AI-064: recovery dots;

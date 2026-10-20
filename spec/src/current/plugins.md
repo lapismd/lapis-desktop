@@ -7,7 +7,9 @@ unchanged.
 
 The active chat/settings profile is [local ACP](ai-local-history.md). Native
 conversation storage controls and catalog fixtures are retired; grouped AI
-settings and production-backed agent/mention stories remain.
+settings and production-backed agent/mention stories remain. E-AI-096 adds
+conversation-scoped private drafts across Document/Classic, reopening and first
+publication, with production-backed failure and race stories.
 
 E-CATALOG-016 completes the M8.5 native conflict gate with current production
 components and the shared API close policy. Catalog states and native IO remain

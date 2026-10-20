@@ -29,6 +29,7 @@
   import { transcriptLinks } from "./transcript-agent-links.ts";
   import { formatAgentMention } from "../../../lib/ai/chat/agent-mentions.ts";
   import "../../../styles/ai/transcript-links.css";
+  import { observeDraftComments } from "../../../lib/ai/chat/panel/draft-comments.svelte.ts";
 
   let panel: TranscriptPanelProps = $props();
   const { panelProps, controller, composerState, conversationsState, actions } =
@@ -68,7 +69,11 @@
   );
   const items = $derived(inspection.items);
   const blocked = $derived(
-    Boolean(panelProps.initializing || composerState.catalogState?.loading),
+    Boolean(
+      panelProps.initializing ||
+        !composerState.draftReady ||
+        composerState.catalogState?.loading,
+    ),
   );
   const commentState: TranscriptController = new TranscriptController(() => ({
     ...transcriptLinks(panelProps.app, "", composerState.recipientOptions),
@@ -118,6 +123,7 @@
           };
     },
   }));
+  observeDraftComments(() => composerState, commentState);
   const restoredCommentItems = new WeakSet<object>();
   $effect(() => {
     const source = controller.items;
@@ -134,6 +140,7 @@
   });
   async function send() {
     const value = composerState.draft;
+    const draftKey = composerState.draftKey;
     const followup = composerState.automaticallyMentionAgents
       ? composerState.recipients.display
           .map((recipient) => formatAgentMention(recipient.id, recipient.label))
@@ -142,7 +149,11 @@
     if (blocked || (!value.trim() && !commentState.pending.length)) return;
     commentState.message = value;
     const accepted = await commentState.send();
-    if (accepted && composerState.draft === value)
+    if (
+      accepted &&
+      composerState.matchesDraft(draftKey) &&
+      composerState.draft === value
+    )
       composerState.draft = followup ? `${followup} ` : "";
   }
 </script>

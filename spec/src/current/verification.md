@@ -162,3 +162,6 @@ separate native-history settings review; original AI/native gates remain open.
 
 E-AI-091 groups AI settings and places the native-history table directly beneath
 its subsection heading; storage, admission and milestone gates are unchanged.
+
+Conversation-scoped private drafts and cold reload:
+[E-AI-096](../history/E-AI-096.md).

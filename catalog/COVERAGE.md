@@ -1008,3 +1008,10 @@ the actual Notes right sidebar at 320/400/480px keeps its inset surface and
 header action inside the host. Long source lines wrap internally or scroll
 horizontally with wrapping off. Existing history, operation and backup settings
 consumers retain their shell. Visual baselines remain pending.
+
+E-AI-096 adds `AI/Conversation drafts`: separate text, attachments and pending
+source comments in the production embedded session shell, Document/Classic
+switching, plugin reopen over the retained Vault, empty new chats, first-send
+identity adoption, acknowledged clearing, late-read fencing and save-failure
+notifications. No prompt executes merely from reopening. All remain
+visual-pending.

@@ -322,3 +322,5 @@ by the task ledger, not inferred from this list.
 - [Shared AI model discovery and status](E-AI-095.md)
 
 - [Inset repository sidebar sizing](E-REPO-055.md)
+
+- [Conversation-scoped private drafts](E-AI-096.md)

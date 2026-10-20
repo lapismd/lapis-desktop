@@ -343,7 +343,7 @@ Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
 [Native qualification](native-acceptance.md) retains AI/repository gates.
-E-AI-095 caches model metadata; participant delivery/queues retain admission.
+E-AI-095/096: cached models and scoped drafts; runtime admission unchanged.
 
 Verified Lapis AI helpers ship as application resources; device adapters remain
 installation-owned. See [client delivery](ai-clients.md).

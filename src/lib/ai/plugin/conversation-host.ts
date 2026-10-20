@@ -20,6 +20,7 @@ import type { AiSettingsStore } from "../settings/settings-store.ts";
 import type { AiPluginSettings } from "../settings/ai-settings.ts";
 import { AI_VIEW, AI_HISTORY_VIEW, AI_CATALOG_VIEW } from "./view-types.ts";
 import { AiOperations } from "./operations.ts";
+import { ConversationDraftStore } from "../drafts/store.ts";
 
 export function conversationLocationFromLeaf(
   leaf: WorkspaceLeaf,
@@ -31,6 +32,7 @@ export class AiConversationHost {
   active = true;
   readonly operations = new AiOperations();
   readonly persistence;
+  readonly drafts: ConversationDraftStore;
   readonly releaseTranscriptWriters;
   readonly conversations: ConversationRepository;
   readonly conversationIndex: AiConversationIndex;
@@ -42,6 +44,7 @@ export class AiConversationHost {
     readonly settings: AiSettingsStore,
   ) {
     this.persistence = ownedConversationPersistence(app);
+    this.drafts = new ConversationDraftStore(app.vault);
     this.conversations = new ConversationRepository(this.persistence.store);
     this.conversations.protection = new ConversationProtection(
       app.fileEditingSessions,

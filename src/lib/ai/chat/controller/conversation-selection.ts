@@ -209,6 +209,7 @@ export async function _ensureConversation(
       : (this._createConversation?.() ?? { scopeDir: "" });
   const created = await this.repository.create(input);
   this.location = created.location;
+  this._onConversationCreated?.(created.location);
   this.conversationStatus = created.metadata.status;
   this.conversationPinned = Boolean(created.metadata.pinned);
   this.directoryContext = created.location.scopeDir;

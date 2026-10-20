@@ -96,6 +96,7 @@
   skillContext={host.skillContext}
   workspace={host.workspace}
   repository={host.conversations}
+  drafts={host.drafts}
   {initialLocation}
   createConversation={(explicitFolder) =>
     host.createConversationInput(explicitFolder)}

@@ -55,6 +55,7 @@ export type AiChatPanelProps = {
   sessionStore?: AgentSessionStore;
   sessionId?: string;
   repository?: ConversationRepository;
+  drafts?: import("../../drafts/store.ts").ConversationDraftStore;
   initialLocation?: ConversationLocation | null;
   createConversation?: (explicitFolder?: string) => CreateConversationInput;
   subscribeConversationMoves?: (

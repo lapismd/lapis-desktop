@@ -11,16 +11,25 @@
   import { observeChatPanel } from "../../../lib/ai/chat/panel/lifecycle.svelte.ts";
   import AiTranscriptPanel from "./AiTranscriptPanel.svelte";
   import ImportedConversation from "../imports/ImportedConversation.svelte";
+  import { observeConversationDraft } from "../../../lib/ai/chat/panel/drafts.svelte.ts";
   import "./panel.css";
 
   const panelProps: AiChatPanelProps = $props();
   const controller = untrack(() =>
-    createChatPanelController(panelProps, (next) =>
-      composerState.acceptDefaults(next),
+    createChatPanelController(
+      panelProps,
+      (next) => composerState.acceptDefaults(next),
+      (location) => composerState.adoptDraft(location),
     ),
   );
   const composerState = createComposerState(() => panelProps, controller);
   const attachmentsState = createAttachmentsState(() => panelProps, controller);
+  observeConversationDraft(
+    () => panelProps,
+    controller,
+    composerState,
+    attachmentsState,
+  );
   const conversationsState = createConversationsState(
     () => panelProps,
     controller,
@@ -47,6 +56,7 @@
   data-ui-component="ai-chat-panel"
   data-testid="ai-chat-panel"
   data-initializing={panelProps.initializing ?? false}
+  data-draft-ready={composerState.draftReady}
   data-model-catalog-loading={composerState.catalogState?.loading ?? false}
 >
   {#if imported}

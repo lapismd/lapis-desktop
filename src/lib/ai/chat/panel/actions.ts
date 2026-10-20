@@ -38,12 +38,14 @@ export function createChatPanelActions(
 
     if (
       initializing ||
+      !composer.draftReady ||
       composer.catalogState?.loading ||
       composer.permissions.loading ||
       composer.permissions.saving
     )
       return;
     const addressed = composer.recipients.snapshot();
+    const draftKey = composer.draftKey;
     const agent = addressed?.agent ?? composer.selectedAgent;
     const primary = addressed?.options[0];
     const modelId = primary?.model ?? composer.selectedModel;
@@ -136,7 +138,11 @@ export function createChatPanelActions(
       queueError(error);
       return false;
     }
-    if (accepted === true && consumesAttachments) {
+    if (
+      accepted === true &&
+      consumesAttachments &&
+      composer.matchesDraft(draftKey)
+    ) {
       attachmentState.attachments = attachmentState.attachments.filter(
         (file) => !extra.includes(file.path),
       );
@@ -145,6 +151,7 @@ export function createChatPanelActions(
     if (
       accepted === true &&
       consumesAttachments &&
+      composer.matchesDraft(draftKey) &&
       addressed &&
       composer.recipients.matches(addressed.recipients.map((r) => r.id))
     )

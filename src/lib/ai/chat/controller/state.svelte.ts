@@ -106,6 +106,7 @@ export class AiChatControllerState {
     explicitFolder?: string,
   ) => CreateConversationInput;
   readonly _onLocationChange?: (location: ConversationLocation | null) => void;
+  readonly _onConversationCreated?: (location: ConversationLocation) => void;
   readonly _selectRuntime?: (request: AgentRequest) => Promise<AgentRuntime>;
   readonly _appToolBridge?: AppToolBridgeCoordinator;
   _unsubscribeAppToolEvents?: () => void;
@@ -145,6 +146,7 @@ export class AiChatControllerState {
       location?: ConversationLocation | null;
       createConversation?: (explicitFolder?: string) => CreateConversationInput;
       onLocationChange?: (location: ConversationLocation | null) => void;
+      onConversationCreated?: (location: ConversationLocation) => void;
       selectRuntime?: (request: AgentRequest) => Promise<AgentRuntime>;
       appToolBridge?: AppToolBridgeCoordinator;
       skills?: SkillRegistry;
@@ -174,6 +176,7 @@ export class AiChatControllerState {
     }
     this._createConversation = options.createConversation;
     this._onLocationChange = options.onLocationChange;
+    this._onConversationCreated = options.onConversationCreated;
     this._selectRuntime = options.selectRuntime;
     this._appToolBridge = options.appToolBridge;
     this._skills = options.skills;

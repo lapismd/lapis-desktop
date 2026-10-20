@@ -182,6 +182,7 @@ export class AiApplication extends AiConversationHost {
     // close retries the same backend's drain before releasing the runtime.
     try {
       await this.persistence.drain();
+      await this.drafts.drain();
       await this.conversations.protection?.dispose();
       this.releaseTranscriptWriters();
     } catch (error) {

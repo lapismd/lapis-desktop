@@ -388,3 +388,5 @@
 - [Shared AI model discovery and status](history/E-AI-095.md)
 
 - [Inset repository sidebar sizing](history/E-REPO-055.md)
+
+- [Conversation-scoped private drafts](history/E-AI-096.md)

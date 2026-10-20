@@ -396,5 +396,5 @@ M10.2/M8.5 retain their original gates; no native/provider qualification
 changes.
 
 E-AI-065 adds helper/client setup; E-REPO-045 adds indexed Search. E-SHELL-003
-restores tab drops; E-AI-095 deduplicates model discovery. Original native,
-provider and distribution gates remain.
+restores tab drops; E-AI-095/096 cover model discovery and private drafts.
+Original native, provider and distribution gates remain.

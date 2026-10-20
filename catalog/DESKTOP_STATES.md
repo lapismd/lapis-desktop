@@ -201,3 +201,7 @@ layout-only close policy; original editor and application guards remain active.
 `Desktop/Repository blame wrapping/RightSidebar` retains the right surface
 border and header actions at three sidebar widths, with long source lines in
 both wrap modes (E-REPO-055).
+
+`AI/Conversation drafts` covers conversation isolation, private durable restart
+recovery, both transcript views, first publication, obsolete reads and a failed
+save with retained input (E-AI-096).

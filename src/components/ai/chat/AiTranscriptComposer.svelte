@@ -21,6 +21,7 @@
   const disabled = $derived(
     Boolean(
       panel.panelProps.initializing ||
+        !composerState.draftReady ||
         composerState.catalogState?.loading ||
         (controller.busy && !controller.repository),
     ),

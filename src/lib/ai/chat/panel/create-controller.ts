@@ -11,6 +11,9 @@ export function createChatPanelController(
       ConstructorParameters<typeof AiChatController>[3]
     >["onComposerDefaults"]
   >,
+  onConversationCreated?: (
+    location: import("../../conversations/types.ts").ConversationLocation,
+  ) => void,
 ): AiChatController {
   const {
     app,
@@ -61,6 +64,7 @@ export function createChatPanelController(
             scopeDir: explicitFolder ?? "",
           },
         onLocationChange: onConversationLocationChange,
+        onConversationCreated,
         selectRuntime,
         appToolBridge,
         skills,
