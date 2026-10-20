@@ -15,7 +15,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-GOV-007 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |
 | LD-GOV-008 | Implemented | [E-ARCHIVES-001](../history/E-ARCHIVES-001.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-DESK-001 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md), [E-REPO-016](../history/E-REPO-016.md) |
-| LD-DESK-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-REVIEW-001](../history/E-REVIEW-001.md); [E-REVIEW-002](../history/E-REVIEW-002.md) |
+| LD-DESK-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-REVIEW-001](../history/E-REVIEW-001.md); [E-REVIEW-002](../history/E-REVIEW-002.md); [E-SHELL-003](../history/E-SHELL-003.md): native HTML drag routing. |
 | LD-DESK-003 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-DESK-004 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-DESK-005 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-SESSION-002](../history/E-SESSION-002.md); [E-REVIEW-002](../history/E-REVIEW-002.md) |
@@ -73,7 +73,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-INT-009 | Implemented | [E-INTEGRATION-001](../history/E-INTEGRATION-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native menus, bounded services, cold/running URL delivery, ownership and ordinary-bundle gates pass. |
 | LD-POP-001 | Implemented | [E-POPOUT-001](../history/E-POPOUT-001.md): Related native hosting, independent focus/resize/close, observer cleanup and ordinary-bundle exclusion pass. |
 | LD-POP-002 | Implemented | [E-POPOUT-002](../history/E-POPOUT-002.md): Retained source/editor identity, session-only restoration, failed creation and real draft/history browser transfer pass. |
-| LD-POP-003 | Planned | [E-POPOUT-002](../history/E-POPOUT-002.md): Popup-local menus, palettes, focus and live appearance pass; native dragging/action integration remains M7.3. |
+| LD-POP-003 | Planned | [E-POPOUT-002](../history/E-POPOUT-002.md): Popup-local menus, palettes, focus and live appearance pass; native dragging/action integration remains M7.3.; [E-SHELL-003](../history/E-SHELL-003.md): inherited HTML drag routing. |
 | LD-POP-004 | Planned | [E-POPOUT-002](../history/E-POPOUT-002.md): Shared admission and main-tab save retention pass; [E-POPOUT-003](../history/E-POPOUT-003.md) qualifies registry close receipts. Complete native popup teardown remains M7.3. |
 | LD-POP-005 | Planned | [E-POPOUT-001](../history/E-POPOUT-001.md): [E-POPOUT-003](../history/E-POPOUT-003.md): session/ticket ownership and fencing pass; ordinary native admission remains in progress. |
 | LD-POP-006 | Planned | [E-POPOUT-002](../history/E-POPOUT-002.md): Top/stacked browser clearance passes at three widths; measured native popup clearance remains M7.3. |

@@ -316,3 +316,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-092: Native JJ chat checkpoint](E-AI-092.md)
 
 - [Complete local dependency refresh](E-ARCHIVES-002.md)
+
+- [Native workspace HTML tab dragging](E-SHELL-003.md)

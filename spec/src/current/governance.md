@@ -384,17 +384,17 @@ E-AI-030 records the compatible macro/TOML lock selection, both native profiles
 and the real-policy fixture; no registry patch or synthetic policy substitutes
 for that qualification.
 
-AI user-command IO adds only its named main-window operation. Rust chooses the
-user directory; acceptance uses its existing isolated root. Default seeding uses
-exclusive publication, and ordinary AI execution remains unavailable.
+AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
+Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-The local default is the quiet renderer/native-service/catalog lane; CI selects
-headed native acceptance. Hidden WebKit pauses animation frames, so service
-success stays distinct from native UI acceptance; original gates remain. See
-[native acceptance modes](native-acceptance.md) for cold readiness, hidden
-IPC-only checks, headed windows and capture qualification boundaries. The
-private migration link for `@lapismd/jj-conversations` consumes verified built
-exports. Local queues retain host custody; registry intake remains gated. Node
-renderer tests preload tsx for application syntax (E-CATALOG-009/010).
+Local checks use quiet renderer/native-service/catalog lanes; CI uses headed
+acceptance. Hidden WebKit pauses frames; service success cannot qualify native
+UI. [Acceptance modes](native-acceptance.md) retain cold/hidden/headed/capture
+gates. The private `@lapismd/jj-conversations` link consumes verified exports;
+queues stay host-owned and registry intake gated. Renderer tests preload tsx
+(E-CATALOG-009/010).
 
 E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.
+
+E-SHELL-003 retains LD-GOV-002/004/007 and debug acceptance gates; physical
+input remains distinct from synthetic DOM events.

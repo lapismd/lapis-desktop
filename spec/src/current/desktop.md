@@ -94,14 +94,14 @@ clearances through public Design Core window-control tokens, subtracting the
 ribbon width where appropriate. Expanded and collapsed sidebar states keep their
 controls clear without shifting tabs vertically.
 
-The host translates public `data-desktop-drag-region` backgrounds to Tauri's
-`data-tauri-drag-region="deep"`; explicit `false` descendants remain excluded.
-It observes newly mounted and reconfigured regions and releases the observer on
-page teardown. Tauri owns native dragging and double-click zoom. The launcher
-uses the same native HTML handles on empty background, excluding its interactive
-content. Back to vaults lives in the workspace navigation menu; Mod+R retains
-the existing guarded reload boundary. Recovery stays below the workspace so tabs
-remain at the top edge even when conflicts are visible.
+The host maps shared `data-desktop-drag-region` backgrounds to Tauri's
+`data-tauri-drag-region="deep"`, excluding explicit `false` controls. It tracks
+mounted/reconfigured regions and releases its observer on teardown. Tauri owns
+native movement and double-click zoom; launcher controls remain excluded.
+`dragDropEnabled` MUST be false so HTML workspace tab drops reach WebKit. Main
+and related windows inherit this policy; native file-drop events have no
+consumer. Back to vaults and Mod+R retain guarded leave/reload. Recovery stays
+below the top-edge tabs.
 
 The private `shell_info` command reports runtime, platform, process identity and
 application version. `shell_ready` acknowledges renderer readiness. Native

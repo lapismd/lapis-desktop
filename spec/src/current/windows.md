@@ -116,3 +116,9 @@ code remains forbidden unsafe.
 E-POPOUT-004 qualifies M7.3 on macOS ARM64 with fourteen real Notes/native
 checks and both related-host allow/deny cases. E-REPO-050 additionally proves
 failed final persistence preserves the live editor before a successful retry.
+
+Workspace WebViews inherit `dragDropEnabled: false` from the shared main-window
+configuration. HTML tab dragging within each window remains WebKit-owned;
+Tauri's native file-drop interception cannot consume its drag updates/drops.
+This is separate from native titlebar movement and does not enable cross-window
+tab transfer, external file imports or new popup admission.

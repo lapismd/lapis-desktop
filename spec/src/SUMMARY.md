@@ -382,3 +382,5 @@
 - [Local dependency intake](current/local-dependencies.md)
 
 - [Saved agent context and permissions evidence](history/E-AI-094.md)
+
+- [Native workspace HTML tab dragging](history/E-SHELL-003.md)
