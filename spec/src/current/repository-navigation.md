@@ -64,6 +64,12 @@ virtual groups MUST remeasure after wrapping or width changes so attribution and
 source remain aligned. Storage unavailability keeps the view usable with the
 default and a session-only choice; no repository operation is performed.
 
+Embedded repository shells MUST fit the owning pane, including a narrow right
+sidebar, without an application-level minimum main width extending their inset
+surface beyond the pane. The right border and header actions remain visible.
+Wrapped blame stays within its source viewport; disabling wrapping scrolls the
+source internally without widening the shell (LD-REPO-004, E-REPO-055).
+
 The plugin contributes an enabled-by-default working-copy status split control:
 file/line totals open a details popover and a separate refresh action re-reads
 current data. A Repository History setting MUST hide/remove that contribution,

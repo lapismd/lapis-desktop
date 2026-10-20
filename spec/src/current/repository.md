@@ -57,7 +57,8 @@ A visible but unfocused window does not qualify the headed interaction gate.
 ## Notes history view
 
 [File history and blame](repository-navigation.md) govern the sidebar, row
-actions, loading and remembered wrapping (LD-REPO-002/004; E-REPO-018/044).
+actions, loading, wrapping and inset pane sizing (LD-REPO-002/004;
+E-REPO-018/044/055).
 
 The optional bundled Repository History plugin uses the public history client
 and an injected, App-owned reader. Its native factory retains the admitted vault

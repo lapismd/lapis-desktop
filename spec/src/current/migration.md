@@ -6,8 +6,8 @@ E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;
 M10.2 retains its ordinary ACP gate; E-AI-094 adds agent context/permissions.
 
-E-REPO-044 adds remembered blame wrapping with measured virtual groups; M13.2
-keeps its original qualified gate and other task statuses remain unchanged.
+E-REPO-044/055 retain measured blame wrapping and inset right-sidebar sizing;
+M13.2 keeps its qualified gate and other task statuses remain unchanged.
 
 E-AI-066 adds Agents Settings. E-AI-072–086 retain unqualified agent/native-chat
 drafts; LD-MIG-002 milestones and original gates remain unchanged. Normal ACP

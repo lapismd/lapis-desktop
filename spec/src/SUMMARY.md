@@ -386,3 +386,5 @@
 - [Native workspace HTML tab dragging](history/E-SHELL-003.md)
 
 - [Shared AI model discovery and status](history/E-AI-095.md)
+
+- [Inset repository sidebar sizing](history/E-REPO-055.md)

@@ -320,3 +320,5 @@ by the task ledger, not inferred from this list.
 - [Native workspace HTML tab dragging](E-SHELL-003.md)
 
 - [Shared AI model discovery and status](E-AI-095.md)
+
+- [Inset repository sidebar sizing](E-REPO-055.md)

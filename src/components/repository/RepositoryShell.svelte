@@ -11,7 +11,11 @@
 </script>
 
 <div class="repository-shell">
-  <AppShell.Root controller={shell} displayMode="desktop">
+  <AppShell.Root
+    controller={shell}
+    displayMode="desktop"
+    desktopMinMainWidth={0}
+  >
     <AppShell.Main>
       <AppShell.Body layout="regions" element="div">
         <div class="repository-body-frame">{@render children()}</div>

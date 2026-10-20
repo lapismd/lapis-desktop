@@ -1002,3 +1002,9 @@ panel and retains the draft and view identity.
 invariant with AI in the right sidebar. Both remain visual-pending. Model-cache,
 progress sharing, expiry, trust, invalidation and cleanup are checked at their
 native-service boundary, separately from provider and release qualification.
+
+E-REPO-055 adds `Repository blame wrapping/RightSidebar`: production blame in
+the actual Notes right sidebar at 320/400/480px keeps its inset surface and
+header action inside the host. Long source lines wrap internally or scroll
+horizontally with wrapping off. Existing history, operation and backup settings
+consumers retain their shell. Visual baselines remain pending.

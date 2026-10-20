@@ -101,7 +101,8 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-REPO-004 | Implemented | [M13.2 ledger](progress/milestones.md): repository UI history and original gates; [E-REPO-016](../history/E-REPO-016.md): loading progress. |
 | LD-REPO-005 | Planned | [E-REPO-053](../history/E-REPO-053.md): native storage/adoption; [E-REPO-054](../history/E-REPO-054.md): sync persistence; [M14](progress/vault-backup.md) retains provider gates.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI. |
 
-LD-REPO-004 picker sizing preview: [E-REPO-014](../history/E-REPO-014.md).
+LD-REPO-004 picker sizing preview: [E-REPO-014](../history/E-REPO-014.md). Inset
+right-sidebar blame sizing: [E-REPO-055](../history/E-REPO-055.md).
 
 LD-REPO-002/004: [E-REPO-015](../history/E-REPO-015.md); native gates remain.
 

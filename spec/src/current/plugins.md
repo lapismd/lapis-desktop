@@ -22,6 +22,8 @@ discovery to the existing App-backed Settings story without History.
 
 E-REPO-044 covers remembered blame wrapping, long source lines, viewport resize
 and measured virtual attribution through production plugin components.
+E-REPO-055 checks the inset repository shell in a 320–480px right sidebar,
+retaining its right border and internal source scrolling in both wrap modes.
 
 E-AI-064 covers viewport recovery and a real held fake-agent turn in both chat
 views, with the existing App-backed shell and public Design Core archive.

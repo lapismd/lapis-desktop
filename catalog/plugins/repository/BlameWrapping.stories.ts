@@ -6,6 +6,7 @@ import { historyContext } from "../../support/repository/context.ts";
 import { openBlameReview } from "../../support/repository/blame-review/title-actions.ts";
 import { largeBlamePath } from "../../support/repository/blame-review/large-fixture.ts";
 import { operation, revision } from "../../support/repository/fixture.ts";
+import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 
 const key = "lapis.desktop.repository.blame.wrap";
 const meta = {
@@ -136,6 +137,51 @@ export const RememberedPreference: Story = {
       expect(
         current.view.getByRole("button", { name: "Wrap text" }),
       ).toHaveAttribute("aria-pressed", String(pressed));
+    }
+  },
+};
+
+export const RightSidebar: Story = {
+  play: async ({ canvasElement }) => {
+    await blame(canvasElement);
+    const { app } = historyContext(canvasElement);
+    const { renderer } = getWorkspaceHostBinding(app.workspace).controller;
+    const leaf = app.workspace.getLeavesOfType(
+      "repository-file-blame-review",
+    )[0]!;
+    expect(renderer.moveTabToDock(leaf.id, "right")).toBe(true);
+    renderer.setSidebarOpen("left", false);
+    for (const width of [320, 400, 480]) {
+      renderer.setSidebarSize("right", width);
+      const { view, viewport } = await blame(canvasElement);
+      const panel = view
+        .getByRole("button", { name: "Refresh blame" })
+        .closest(".repository-shell")!;
+      const frame = panel.querySelector(".repository-body-frame")!;
+      await waitFor(() => {
+        expect(panel.getBoundingClientRect().width).toBeLessThanOrEqual(
+          width + 1,
+        );
+        expect(frame.getBoundingClientRect().right).toBeLessThanOrEqual(
+          panel.getBoundingClientRect().right - 1,
+        );
+        expect(
+          view
+            .getByRole("button", { name: "Refresh blame" })
+            .getBoundingClientRect().right,
+        ).toBeLessThanOrEqual(frame.getBoundingClientRect().right);
+        expect(viewport.scrollWidth).toBeLessThanOrEqual(
+          viewport.clientWidth + 1,
+        );
+      });
+      await userEvent.click(view.getByRole("button", { name: "Wrap text" }));
+      await waitFor(() => {
+        expect(viewport.scrollWidth).toBeGreaterThan(viewport.clientWidth);
+        expect(frame.getBoundingClientRect().right).toBeLessThanOrEqual(
+          panel.getBoundingClientRect().right - 1,
+        );
+      });
+      await userEvent.click(view.getByRole("button", { name: "Wrap text" }));
     }
   },
 };

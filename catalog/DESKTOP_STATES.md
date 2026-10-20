@@ -197,3 +197,7 @@ on/off choices when reopening another blame pane (E-REPO-044).
 control and Problems navigation to retain an edited merge across review closure,
 then save its exact bytes and clear the diagnostic. It exercises the public
 layout-only close policy; original editor and application guards remain active.
+
+`Desktop/Repository blame wrapping/RightSidebar` retains the right surface
+border and header actions at three sidebar widths, with long source lines in
+both wrap modes (E-REPO-055).
