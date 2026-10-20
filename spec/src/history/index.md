@@ -308,3 +308,5 @@ by the task ledger, not inferred from this list.
 - [Additive native conversation tabs and normal ACP navigation](E-AI-085.md)
 
 - [Optional native conversation setup and owned storage transitions](E-AI-086.md)
+
+- [E-AI-092: Native JJ chat checkpoint](E-AI-092.md)

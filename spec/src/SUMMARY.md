@@ -370,3 +370,5 @@
 - [Markdown agent badges and visible suggestions](history/E-AI-090.md)
 
 - [Native history subsection within AI settings](history/E-AI-091.md)
+
+  - [Native JJ chat checkpoint](history/E-AI-092.md)
