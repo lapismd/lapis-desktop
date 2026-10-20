@@ -28,7 +28,8 @@ retained. Invalid active roots identify exactly their retired generation for
 scoped cleanup. Native caller/origin checks and target policy remain host-owned;
 the renderer cannot choose a root, executable, environment or generation.
 
-Ordinary builds admit only explicitly configured local-file Codex targets.
+Ordinary builds admit configured Codex clients; managed targets additionally
+require explicit conversation-bound launch preparation.
 [Agents and bundled helpers](ai-clients.md) own settings, delivery and repair.
 The exact main ACP-session grant permits the scoped protocol without executable
 selection. The two admit/release commands accept only a vault token or reload

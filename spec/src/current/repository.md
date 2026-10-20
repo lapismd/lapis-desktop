@@ -38,9 +38,7 @@ fences retired grants. A same-root reload can retain its generation only after
 revalidating all source witnesses. Failed or stale completion cannot activate a
 replacement. Source proof failure and explicit retirement deny existing access.
 
-The native transport, application history UI, raw-event owner and durable JJ
-conversation adapters require their own later qualification. A service-only test
-or successful compilation cannot complete the first usable milestone.
+Native capture and JJ adapters require product proof beyond service tests.
 
 ## Qualification
 
@@ -128,12 +126,12 @@ select through standard input/change events because the embedded driver cannot
 select an option through its JavaScript click. Unattended foreground activation
 remains a separate test-infrastructure gap; durable conversations remain M13.3.
 
-The native managed-capture adapter accepts the shared capture port with an
-injected admitted policy and durability sink. It preserves whole ordered frame
-batches and stops on unknown or mismatched receipts. Its synthetic cold native
-acceptance supplies private fixture records, rather than a selected Notes
-AgentStore/ThreadStore backend. Native privacy, durable backend adoption and
-conversation restart recovery remain the M13.3 gate.
+The native managed-capture adapter preserves ordered frame batches and stops on
+unknown or mismatched receipts. Synthetic cold acceptance supplies fixture
+records. E-AI-067 separately qualifies actual Codex through ordinary policy,
+native Agent/Thread capture, unchanged cold reads and refused launch replay.
+Renderer authored writes, backend adoption and full managed chat/context
+recovery remain the M13.3 gate.
 
 Native grouped-frame provenance distinguishes each frame at a shared cursor in
 both legacy transcript backends. Omitted indexes preserve historical identity
@@ -249,7 +247,9 @@ confirmed conversation under the current JJ owner. Repeated requests retain the
 same target and exact conversation intent; another intent cannot claim that
 request. Preparations are bounded and belong to their backend owner. They retain
 no counted backend call while idle, so closure can drain and release the owner.
-Preparing capture grants neither an executable nor a prompt.
+Capture-only preparation grants neither an executable nor a prompt. Explicit
+managed launch preparation uses the [admitted-client contract](ai-clients.md),
+retains its client identity and permits one launch attempt with native capture.
 
 The ordinary native processor factory MUST require the matching prepared target,
 active reattached owner and exact native worker/open/window/generation binding.
@@ -265,8 +265,8 @@ Sanitized candidates and original provider confirmations precede safe output;
 unknown writes cannot fall back or re-execute. Renderer suspension may retain an
 existing exact processor; a new factory still needs active admission and the
 reattached owner. Close fences callbacks and drains the retained call before
-releasing its lease. Executable/credential admission, ordinary runtime dispatch,
-renderer transcript adoption and managed chat/restart retain separate gates.
+releasing its lease. Managed launches reuse admitted client/environment policy;
+renderer adoption, credentials and full chat/restart retain separate gates.
 
 ## Native conversation reads
 

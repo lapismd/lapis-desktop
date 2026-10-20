@@ -2,6 +2,7 @@ mod capture;
 pub(crate) mod commands;
 mod conversations;
 mod frames;
+mod managed;
 mod privacy;
 mod processing;
 mod reads;

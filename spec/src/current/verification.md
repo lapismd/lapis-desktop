@@ -1,7 +1,6 @@
 # Verification
 
-E-REPO-012/013 record manual catalog previews; automated qualification remains
-deferred pending visual confirmation.
+E-REPO-012/013 retain manual previews and visual gates.
 
 | ID             | Status      | Evidence                                                                                                                                                                                                                                                                                         |
 | -------------- | ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -103,13 +102,10 @@ deferred pending visual confirmation.
 
 LD-REPO-004 picker sizing preview: [E-REPO-014](../history/E-REPO-014.md).
 
-LD-REPO-002/004 focused production adoption:
-[E-REPO-015](../history/E-REPO-015.md). Native authority and broader
-qualification remain separate.
+LD-REPO-002/004: [E-REPO-015](../history/E-REPO-015.md); native gates remain.
 
-Footer qualification for LD-HOST-001, LD-DESK-001, LD-CAT-001/002/003 and
-LD-GOV-002: [E-CATALOG-009](../history/E-CATALOG-009.md). Original native
-presentation gates remain separate.
+Footer LD-HOST-001/LD-DESK-001/LD-CAT-001–003/LD-GOV-002:
+[E-CATALOG-009](../history/E-CATALOG-009.md); native gate: E-CATALOG-016.
 
 Footer safe-area and imported XML follow-up:
 [E-CATALOG-011](../history/E-CATALOG-011.md). Focused source/consumer evidence
@@ -127,3 +123,6 @@ discovery.
 
 E-CATALOG-016: M8.5 native/retired-writer proof, thirty catalog and eight native
 cases. Source/catalog E-CATALOG-009/010 retained; other gates unchanged.
+
+LD-AI-001/002/004, LD-REPO-003 and LD-DESK-003 managed launch boundary:
+[E-AI-067](../history/E-AI-067.md). Full renderer/store adoption remains open.

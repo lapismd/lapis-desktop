@@ -10,6 +10,7 @@ use tauri_plugin_lapis_ai::{
     AcpHost, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
     runtime::SessionProcessor,
 };
+mod managed_launch;
 mod tool_launch;
 
 #[derive(Clone, Default)]
@@ -156,6 +157,9 @@ impl HostPolicy for DesktopAiPolicy {
     fn resolve(&self, context: &HostContext, target: &str, resume: Option<&str>) -> Result<Launch> {
         let current = self.current(context)?;
         if let Some(launch) = self.tool_launch(context, &current, target, resume)? {
+            return Ok(launch);
+        }
+        if let Some(launch) = self.managed_launch(context, &current, target, resume)? {
             return Ok(launch);
         }
         if resume.is_some() && self.0.files.contains(target) {

@@ -1,15 +1,16 @@
 # Desktop shell
 
-E-POPOUT-004 native pop-outs/IPC denial; E-CATALOG-016 conflict proof.
+E-POPOUT-004: pop-outs; E-CATALOG-016: conflicts.
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
 E-REPO-035–041/046–054; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
-App watching starts after metadata/views; leave drains it; failure resumes it
-(LD-FILE-002/003). Search/Graph: `navigation.md`.
+LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
+Search/Graph: `navigation.md`.
 
-E-AI-059–061/066 retain LD-DESK-001/LD-HOST-001 for AI views and Settings.
+AI presentation: E-AI-059–061/066. Managed launch retains LD-DESK-003: native
+conversation/client authority; no renderer executable/environment.
 
 [Plugins/Terminal](plugins.md); [background](background.md);
 [history](repository.md).

@@ -41,3 +41,28 @@ and separate from installation.
 M10.2 remains In progress at its original full native chat/capture/context
 gates. Focused tooling and presentation proof does not close managed JJ capture,
 release/signing, other-platform or provider acceptance.
+
+## Managed conversation launch admission
+
+LD-AI-001/002 and LD-REPO-003 permit explicit managed capture preparation for
+the already admitted Codex client. The main-window frame carries only the live
+vault token, current backend handle, original conversation/preparation IDs and
+the closed client selector. Native code retains its opaque target and checks the
+original conversation, source, window and generation. Repeated preparation
+retains the same target; it cannot upgrade a capture-only request or change
+clients.
+
+The opaque managed target may claim one launch attempt using the existing
+verified helper, native working directory and fixed client environment. Resume,
+arbitrary executable/environment fields, substituted owners and consumed launch
+targets are refused. Processor construction must use native managed capture and
+recheck the original private conversation before starting a provider.
+Capture-only preparation keeps its existing inert launch contract. Client
+installation, legacy file storage and non-prompting model discovery retain their
+own admission; this does not select a persistence backend or migrate existing
+conversations.
+
+M10.2/M13.3 retain full renderer/store adoption, context and cold
+conversation/restart gates. Native launch qualification is one required
+boundary, not completion of those product gates. Packaged agent
+credentials/tools and compute retain M10.3/M10.4.

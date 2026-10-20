@@ -317,3 +317,5 @@
 - [Native storage and original-history adoption](history/E-REPO-053.md)
 
 - [Sync recovery outside writer protection](history/E-REPO-054.md)
+
+- [Conversation-bound managed native launch](history/E-AI-067.md)

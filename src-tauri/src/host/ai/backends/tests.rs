@@ -11,6 +11,7 @@ mod conversation_read_ranges;
 mod conversation_reads;
 mod conversations;
 mod factory;
+mod managed_launch;
 mod ownership;
 mod processing;
 use super::{NativeBackends, commands::dispatch};

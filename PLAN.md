@@ -155,7 +155,9 @@ foundation. M7.3 ordinary pop-outs and M8.5 native presentation are qualified.
 M10.1's reusable ACP adapter and M13.1/M13.2 admission/history are complete;
 M10.2/M13.3 managed conversations remain In progress. Native store construction,
 privacy/journal ownership, receipts and bounded transcript reads are
-prerequisites already implemented, not a completed managed chat flow.
+prerequisites already implemented, not a completed managed chat flow. E-AI-067
+qualifies conversation-bound Codex launch/capture and cold reads; renderer/store
+adoption, context/skills and full conversation recovery remain open.
 
 The remaining AI/distribution sequence is:
 

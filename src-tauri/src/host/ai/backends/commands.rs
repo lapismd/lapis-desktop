@@ -72,8 +72,27 @@ pub(super) async fn dispatch(
                 &context,
                 &request.session_id,
                 handle,
+                super::capture::Preparation {
+                    request: request_id,
+                    conversation: conversation_request_id,
+                    client: None,
+                },
+            )?),
+            Operation::PrepareManagedCapture {
+                handle,
                 request_id,
                 conversation_request_id,
+                client_id,
+            } => Reply::Capture(owner.prepare_capture(
+                &host,
+                &context,
+                &request.session_id,
+                handle,
+                super::capture::Preparation {
+                    request: request_id,
+                    conversation: conversation_request_id,
+                    client: Some(client_id),
+                },
             )?),
             Operation::ReadConversation { handle, request_id } => {
                 let call = owner.conversation_call(&host, &context, &request.session_id, handle)?;

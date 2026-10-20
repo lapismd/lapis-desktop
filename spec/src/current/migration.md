@@ -6,6 +6,10 @@ keeps its original qualified gate and other task statuses remain unchanged.
 E-AI-066 adds Agents Settings; LD-MIG-002 milestones and original gates remain
 unchanged.
 
+Managed Codex launch binds an existing native conversation to a single-use
+target. Renderer persistence/context adoption and M10.2/M13.3 restart gates
+remain open; the admission boundary alone cannot complete either milestone.
+
 E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
 archive refresh. E-REPO-047 completes M14.1 native identity/storage;
 E-REPO-048–050 and E-REPO-046 qualify M14.2 capture/final persistence and retry.
@@ -36,11 +40,10 @@ capture, restore, GitHub/Forgejo sync, historical search, optional root storage
 and original-history adoption. Account and backup controls are registered plugin
 Settings with forge icons and table-style sections (E-REPO-039–041). Focused
 source/native, renderer, catalog/accessibility, type and renderer-build checks
-pass as recorded. Cold actual-app capture/reopen/close/crash/restore,
-search/storage/adoption and real-provider sign-in/push/pull/recovery remain
-unqualified; final integration/UI has no fresh native review-app acceptance.
-E-REPO-047 qualifies M14.1 cold identity/storage. Other M14 tasks retain
-Partial; E-REPO-046 continues ordinary-App capture/close acceptance.
+pass as recorded. E-REPO-046–053 qualify native identity, capture/recovery,
+restore/live history, search and storage/adoption. M14.1–3/M14.6 are Done;
+M14.4/M14.5/M14.7 retain real-provider sign-in/setup/restore and two-device
+offline/conflict/unknown-outcome synchronization gates.
 
 E-REPO-042 reconciles the roadmap, plugin plan, task next actions and generated
 summary under unchanged LD-MIG-002/LD-GOV-004. The summary lists completed and

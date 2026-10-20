@@ -260,3 +260,5 @@ by the task ledger, not inferred from this list.
 - [Native storage and original-history adoption](E-REPO-053.md)
 
 - [Sync recovery outside writer protection](E-REPO-054.md)
+
+- [Conversation-bound managed native launch](E-AI-067.md)

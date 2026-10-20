@@ -63,6 +63,12 @@ pub enum Operation {
         request_id: RequestId,
         conversation_request_id: RequestId,
     },
+    PrepareManagedCapture {
+        handle: Uuid,
+        request_id: RequestId,
+        conversation_request_id: RequestId,
+        client_id: super::managed::Client,
+    },
     Close {
         handle: Uuid,
     },

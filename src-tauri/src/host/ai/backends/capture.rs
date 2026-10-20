@@ -1,4 +1,4 @@
-use super::{NativeBackends, denied, privacy};
+use super::{NativeBackends, denied, managed::Client, privacy};
 use crate::host::state::NativeHost;
 use jj_store_conversations::capture::{Binding, CaptureError};
 use jj_store_model::RequestId;
@@ -20,8 +20,15 @@ pub(super) struct Prepared {
 }
 pub(super) struct Plan {
     pub prepared: Prepared,
-    context: HostContext,
-    conversation: Arc<PreparedConversation>,
+    pub(super) context: HostContext,
+    pub(super) conversation: Arc<PreparedConversation>,
+    pub(super) client: Option<Client>,
+    pub(super) claimed: bool,
+}
+pub(super) struct Preparation {
+    pub request: RequestId,
+    pub conversation: RequestId,
+    pub client: Option<Client>,
 }
 impl NativeBackends {
     /// Caller owns native transitions through completion, even if IPC disappears.
@@ -31,9 +38,13 @@ impl NativeBackends {
         context: &HostContext,
         session: &str,
         handle: Uuid,
-        request: RequestId,
-        conversation: RequestId,
+        preparation: Preparation,
     ) -> io::Result<Prepared> {
+        let Preparation {
+            request,
+            conversation,
+            client,
+        } = preparation;
         let call = self.conversation_call(host, context, session, handle)?;
         let prior = {
             let owners = self.owners.lock().map_err(|_| denied())?;
@@ -41,6 +52,7 @@ impl NativeBackends {
             if let Some(prior) = owner.captures.get(&request) {
                 if prior.prepared.conversation_request_id != conversation
                     || prior.context.url != context.url
+                    || prior.client != client
                 {
                     return Err(denied());
                 }
@@ -81,6 +93,8 @@ impl NativeBackends {
                     prepared: prepared.clone(),
                     context: context.clone(),
                     conversation,
+                    client,
+                    claimed: false,
                 },
             );
         drop(owners);
@@ -112,14 +126,15 @@ impl NativeBackends {
                     plan.prepared.target_id == target
                         && plan.context.window == context.window
                         && plan.context.url == context.url
+                        && (plan.client.is_none() || plan.claimed)
                 })
                 .map(|plan| plan.conversation.clone())
                 .ok_or_else(denied)?
         };
         let permit = Arc::new(self.register_processing(host, context, binding)?);
         let call = permit.call();
-        // No executable is admitted in this capture-only preparation. Future
-        // native launch admission must supply its exact resolved credentials.
+        // The admitted Codex profile forwards no credential values. Other
+        // launch profiles must supply their own exact native secret seeds.
         let privacy = self
             .privacy
             .get()
