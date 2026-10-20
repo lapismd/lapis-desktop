@@ -37,6 +37,7 @@ import type { ConversationListEntry } from "../../conversations/transcript-store
 import type { AcpAgentId } from "../../settings/acp-agents.ts";
 export class AiChatControllerState {
   _disposed = false;
+  _filesProtected = 0;
   _activeDispatch?: import("./dispatch-state.ts").ActiveDispatch;
   _recoveredDispatchId?: string;
   readonly _backgroundWork = new OwnedAiWork();

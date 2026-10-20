@@ -10,6 +10,7 @@ export async function submit(
   prompt: string,
   request: Omit<AgentRequest, "prompt"> = {},
 ): Promise<boolean | undefined> {
+  if (this._filesProtected) return false;
   if (this.importedSnapshot)
     assertConversationWritable(this.importedSnapshot.metadata);
   if (this._activeDispatch) return false;
@@ -32,6 +33,7 @@ export async function submit(
     ];
     return;
   }
+  if (this._filesProtected) return false;
   const resolution = this._slashRouter?.resolve(prompt, this._activeBindingId);
   if (resolution?.kind === "unknown" || resolution?.kind === "command") {
     return this._executeSlash(resolution, {

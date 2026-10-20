@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-POPOUT-004: pop-outs; E-CATALOG-016: conflicts.
+E-AI-093: [local ACP](ai-local-history.md).
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
 E-REPO-035–041/046–054; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:

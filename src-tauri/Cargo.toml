@@ -23,14 +23,10 @@ tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", 
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
 jj-store-service = { path = "../../jj-store/crates/jj-store-service", version = "0.1.0" }
 jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1.0" }
-jj-store-conversations = { path = "../../jj-store/crates/jj-store-conversations", version = "0.1.0", features = ["native-privacy", "store-capture"] }
-jj-store-core = { path = "../../jj-store/crates/jj-store-core", version = "0.1.0" }
-jj-collab = { path = "../../jj-store/crates/jj-collab", version = "0.1.0" }
 lapis-ai-capture = { path = "../../lapis-ai/crates/lapis-ai-capture", version = "0.1.1" }
 jj-store-capture = { path = "../../jj-store/crates/jj-store-capture", version = "0.1.0", default-features = false }
 chrono = { version = "0.4", default-features = false, features = ["std"] }
 jj-agent = { path = "../../jj-store/crates/jj-agent", version = "0.1.0" }
-jj-store-git = { path = "../../jj-store/crates/jj-store-git", version = "0.1.0" }
 
 cap-std = "=4.0.3"
 cap-tempfile = "=4.0.3"

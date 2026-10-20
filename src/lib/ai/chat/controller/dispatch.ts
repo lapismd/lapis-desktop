@@ -22,6 +22,7 @@ export async function submitAudience(
   queued?: { message: QueuedMessage; owner: string },
 ) {
   if (
+    this._filesProtected ||
     this.busy ||
     this._activeDispatch ||
     (!prompt.trim() && !request.contextBlocks?.length)

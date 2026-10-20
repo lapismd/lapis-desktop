@@ -220,3 +220,49 @@ fn oversized_delivery_requests_complete_reconciliation_without_partial_events() 
     }
     watch.close().unwrap();
 }
+
+#[test]
+fn backup_watch_includes_root_and_nested_transcripts_but_not_runtime_state() {
+    use lapis_desktop::watch::WatchOptions;
+    let directory = tempdir().unwrap();
+    let id = "7297795f-c00b-475e-b430-5b0e2e11a2e3";
+    let paths = [
+        format!(".lapis/agents/sessions/{id}/transcript.jsonl"),
+        format!("Notes/.lapis/agents/sessions/{id}/metadata.yaml"),
+    ];
+    for path in &paths {
+        fs::create_dir_all(directory.path().join(path).parent().unwrap()).unwrap();
+        fs::write(directory.path().join(path), "initial").unwrap();
+    }
+    fs::create_dir_all(directory.path().join(".lapis/cache")).unwrap();
+    fs::create_dir_all(directory.path().join(".jj")).unwrap();
+    fs::write(directory.path().join(".lapis/cache/state"), "private").unwrap();
+    fs::write(directory.path().join(".jj/state"), "private").unwrap();
+    let root = VaultRoot::open(directory.path()).unwrap();
+    let (send, receive) = mpsc::channel();
+    let mut watch = NativeWatch::start_filtered(
+        &root,
+        WatchOptions {
+            recursive: true,
+            backup_content: true,
+            ..Default::default()
+        },
+        Arc::new(Mutex::new(())),
+        move |batch| send.send(batch).is_ok(),
+    )
+    .unwrap();
+    // External and app-owned IO must both reach the same backup observer.
+    fs::write(directory.path().join(&paths[0]), "external update").unwrap();
+    wait_for(&receive, |b| b.changes.iter().any(|c| c.path == paths[0]));
+    root.write(&paths[1], b"internal update", &WriteOptions::default())
+        .unwrap();
+    wait_for(&receive, |b| b.changes.iter().any(|c| c.path == paths[1]));
+    while receive.try_recv().is_ok() {}
+    fs::write(directory.path().join(".lapis/cache/state"), "ignored cache").unwrap();
+    fs::write(directory.path().join(".jj/state"), "ignored checkpoint").unwrap();
+    assert!(
+        receive.recv_timeout(Duration::from_millis(300)).is_err(),
+        "backup metadata must not trigger another capture"
+    );
+    watch.close().unwrap();
+}

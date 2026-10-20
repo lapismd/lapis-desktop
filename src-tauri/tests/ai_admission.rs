@@ -184,7 +184,8 @@ fn reload_cannot_reuse_a_generation_after_the_physical_root_is_replaced() {
         .prepare(&vaults.manager, "main", &vaults.selected.session_id)
         .unwrap();
     fs::remove_dir_all(parked).unwrap();
-    assert_eq!(vaults.selected.profile_id, profile);
+    // A different physical vault at the same path gets an independent vault ID.
+    assert_ne!(vaults.selected.profile_id, profile);
     assert!(!plan.preserves_workers());
     assert_ne!(
         registry

@@ -9,8 +9,16 @@ pub struct WatchOptions {
     pub scope: String,
     pub recursive: bool,
     pub ignored_names: Vec<String>,
+    pub backup_content: bool,
 }
-fn ignored(path: &str, names: &[String]) -> bool {
+fn ignored(path: &str, names: &[String], backup_content: bool) -> bool {
+    if backup_content
+        && !path.is_empty()
+        && jj_store_jj::vault_workspace::backup_path(path)
+            == jj_store_jj::vault_workspace::BackupPath::Excluded
+    {
+        return true;
+    }
     path.split('/')
         .any(|part| names.iter().any(|name| part == name))
 }
@@ -67,6 +75,7 @@ impl NativeWatch {
                 scope: scope.into(),
                 recursive,
                 ignored_names: vec![],
+                backup_content: false,
             },
             io_gate,
             listener,
@@ -83,6 +92,7 @@ impl NativeWatch {
             scope,
             recursive,
             ignored_names,
+            backup_content,
         } = options;
         if ignored_names.len() > 64
             || ignored_names
@@ -107,7 +117,14 @@ impl NativeWatch {
         let mut watcher = RecommendedWatcher::new(
             move |event| {
                 if let Ok(mut hints) = hints.lock()
-                    && hints.push(&root_path, &watched_scope, recursive, event, &hints_ignored)
+                    && hints.push(
+                        &root_path,
+                        &watched_scope,
+                        recursive,
+                        event,
+                        &hints_ignored,
+                        backup_content,
+                    )
                 {
                     let _ = signal.try_send(());
                 }
@@ -127,7 +144,8 @@ impl NativeWatch {
                 },
             )
             .map_err(io::Error::other)?;
-        let mut previous = snapshot::read(&root, &scope, recursive, &ignored_names)?;
+        let mut previous =
+            snapshot::read(&root, &scope, recursive, &ignored_names, backup_content)?;
         drop(guard);
         let running = active.clone();
         let worker = thread::spawn(move || {
@@ -156,7 +174,9 @@ impl NativeWatch {
                 let scan = io_gate
                     .lock()
                     .map_err(|_| io::Error::other("File IO owner is unavailable"))
-                    .and_then(|_guard| snapshot::read(&root, &scope, recursive, &ignored_names));
+                    .and_then(|_guard| {
+                        snapshot::read(&root, &scope, recursive, &ignored_names, backup_content)
+                    });
                 match scan {
                     Ok(next) => {
                         batch.changes = snapshot::changes(&previous, &next, &hints.paths);

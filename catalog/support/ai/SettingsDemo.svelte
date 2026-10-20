@@ -50,6 +50,10 @@
       },
       actions: {
         "Inspect saved settings": inspect,
+        "Verify retired conversation tabs": async () => {
+          const { checkRetiredTabs } = await import("./retired-tabs-checks.ts");
+          await checkRetiredTabs(fixture);
+        },
         "Fail next settings write": () => {
           fixture.plugin.failNextSave = true;
         },

@@ -1,7 +1,8 @@
 # Migration inventory and progress
 
-E-AI-090/091 adds focused mention/menu/settings fixes to the existing v0;
-LD-MIG-002 and M10.2/M13.3 completion gates remain unchanged.
+E-AI-093 makes local ACP and vault transcript files the active desktop profile.
+M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;
+M10.2 retains its ordinary ACP completion gate.
 
 E-REPO-044 adds remembered blame wrapping with measured virtual groups; M13.2
 keeps its original qualified gate and other task statuses remain unchanged.

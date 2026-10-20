@@ -960,3 +960,13 @@ the embedded production shell across Document/Classic. `ComposerSuggestions`
 checks actual option hit targets and removable inline insertion after the shared
 tooltip portal refresh. No provider is connected. E-AI-090 records focused
 Chromium/WebKit and native observations; visual review remains pending.
+
+E-AI-093 retires desktop native-store fixtures to the preserved checkpoint
+`codex/desktop-jj-chat-checkpoint-20261020`. Their older inventory/evidence
+above is historical. Current review stories are Local conversation storage
+(grouped AI settings without native controls and guarded transcript
+replacement), Local ACP conversations (embedded AppShell, agent tags, approvals
+and Document/Classic), and Repository/Transcript history (portable paths and
+diffs). Shared editable avatars, mention links, hover cards and follow-up
+tagging retain their existing Agent setup review/Agent mention links stories.
+Visual approval remains pending.

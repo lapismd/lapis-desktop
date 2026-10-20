@@ -1,10 +1,8 @@
 # Repository history and conversations
 
-LD-REPO-005: [M14](vault-backup.md) owns backup delivery. E-REPO-047–053 cover
-native identity, capture, restore/search and storage/adoption. E-REPO-054 keeps
-recovery writes outside native import/sync guards. JJ uses owned APIs without
-`jj-lib`; E-AI-055 retains capture/privacy. LD-REPO-001/002/003/005 admission,
-pins and publication remain unchanged.
+[Local ACP transcripts](ai-local-history.md) join LD-REPO-005 backup by default.
+The LD-REPO-003 native conversation experiment is Deferred; history, search,
+restore, synchronization and storage/adoption remain active.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.

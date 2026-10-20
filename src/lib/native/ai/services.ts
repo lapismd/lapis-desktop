@@ -17,8 +17,6 @@ import { NativeAiModels } from "./model-catalog.ts";
 import { NativeUserAgentsStore } from "./user-commands.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../../ai/bootstrap/runtime-unavailable.ts";
 import { NativeCommandParser } from "./command-parser.ts";
-import { NativeConversationBackend } from "./backends/client.ts";
-import { NativeManagedAgents } from "./managed-agents.ts";
 import { BackgroundWork } from "../../desktop/background-work.ts";
 import type { AppToolHost } from "../../ai/tools/app-tool-host.ts";
 import { NativeAppTools } from "./app-tools/coordinator.ts";
@@ -65,16 +63,6 @@ export function createNativeAi(
     allowed,
   );
   const background = new BackgroundWork(app.notifications, "ai");
-  const conversationBackend = new NativeConversationBackend(
-    vault.sessionId,
-    (request, cleanup) =>
-      background.run("AI conversation storage", () =>
-        scope.withAdmission(
-          () => native<string>("desktop_ai_backends", { request }),
-          cleanup,
-        ),
-      ),
-  );
   const clients = new AgentClients(
     {
       status: () =>
@@ -157,19 +145,7 @@ export function createNativeAi(
     close: (id) => scope.close(id),
     tools: bridge,
   });
-  const managedAgents = new NativeManagedAgents(
-    {
-      client: createAcpClient(scope),
-      close: (id) => scope.close(id),
-    },
-    {
-      preparation: (operation) =>
-        background.run("Preparing native conversation agent", operation),
-      turn: (operation) =>
-        background.run("Running native conversation agent", operation),
-    },
-    (id) => scope.retireClosedSession(id),
-  );
+
   let closing: Promise<void> | undefined;
   function close(mode: AiLeaveMode): Promise<void> {
     scope.fence();
@@ -181,7 +157,6 @@ export function createNativeAi(
         bridge?.close(),
         importSources.close(),
         captureSources.close(),
-        managedAgents.close(),
       ]);
       parser.close();
       await scope.dispose(mode === "reload");
@@ -191,8 +166,6 @@ export function createNativeAi(
     }));
   }
   return {
-    managedAgents,
-    conversationBackend,
     clients,
     runtime,
     appToolBridge: bridge,

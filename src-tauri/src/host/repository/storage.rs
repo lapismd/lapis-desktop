@@ -10,7 +10,6 @@ use lapis_desktop::vault::VaultDescriptor;
 use serde::Deserialize;
 use tauri::Manager;
 use tauri::{State, WebviewWindow};
-use tauri_plugin_lapis_ai::AiExt;
 use tauri_plugin_opener::OpenerExt;
 
 // Local layout discovery and capture startup never queue behind networking.
@@ -112,10 +111,6 @@ pub async fn desktop_backup_storage(
     repository
         .backups
         .close(host.inner().clone(), &request.session_id)
-        .await?;
-    let backends = window.state::<std::sync::Arc<crate::host::ai::backends::NativeBackends>>();
-    let _ai_transition = backends
-        .prepare_storage_move(&window.ai(), &request.session_id)
         .await?;
     let owner = caller.window.clone();
     access(host.inner().clone(), move |services| {

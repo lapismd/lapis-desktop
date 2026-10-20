@@ -1,16 +1,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Plugin } from "@lapis-notes/api";
 import type { AiApplication } from "../../../lib/ai/plugin/application.ts";
+import { RetiredConversationView } from "../views/retired-conversation-view.ts";
 import { AiView } from "../views/ai-view.ts";
 import { AiHistoryView } from "../views/history-view.ts";
-import { AiNativeHistoryView } from "../views/native-history-view.ts";
 import { AiCatalogView } from "../views/catalog-view.ts";
 import { AiJsonlView } from "../views/jsonl-view.ts";
 import { AiImportView } from "../views/import-view.ts";
 import {
   AI_VIEW,
   AI_HISTORY_VIEW,
-  AI_NATIVE_HISTORY_VIEW,
   AI_CATALOG_VIEW,
   AI_JSONL_VIEW,
   AI_IMPORT_VIEW,
@@ -22,6 +21,10 @@ import {
   conversationPaletteItem,
 } from "../../../lib/ai/conversations/conversation-palette.ts";
 export function registerAiViews(plugin: Plugin, host: AiApplication): void {
+  plugin.registerView(
+    "ai-native-conversation-history",
+    (leaf) => new RetiredConversationView(leaf, host),
+  );
   plugin.registerView(AI_JSONL_VIEW, (leaf) => new AiJsonlView(leaf, host), {
     kind: "file",
   });
@@ -83,19 +86,6 @@ export function registerAiViews(plugin: Plugin, host: AiApplication): void {
         id: "open-history",
         name: "Open History",
         callback: () => perform(() => host.revealConversationHistory()),
-      },
-    },
-  );
-  plugin.registerView(
-    AI_NATIVE_HISTORY_VIEW,
-    (leaf) => new AiNativeHistoryView(leaf, host),
-    {
-      kind: "command",
-      command: {
-        id: "open-native-history",
-        name: "Open native conversation history",
-        callback: () =>
-          perform(() => host.revealPanel(AI_NATIVE_HISTORY_VIEW, "right")),
       },
     },
   );

@@ -1,5 +1,7 @@
 # Evidence
 
+- [Local ACP conversations and transcript backup](E-AI-093.md)
+
 - [Native history subsection within AI settings](E-AI-091.md)
 
 - [Markdown agent badges and visible suggestions](E-AI-090.md)

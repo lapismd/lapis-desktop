@@ -28,6 +28,7 @@ impl WatchRegistry {
                 scope: scope.into(),
                 recursive,
                 ignored_names: vec![],
+                backup_content: false,
             },
             gate,
             listener,

@@ -26,12 +26,7 @@ export async function openConversationRoute(
     if (route && sameConversationRoute(current, route)) match ??= leaf;
   });
   const leaves = app.workspace.getLeavesOfType(AI_VIEW);
-  const existing = route
-    ? match
-    : leaves.find(
-        (leaf) =>
-          conversationRouteFromState(leaf.view.getState())?.backend !== "jj",
-      );
+  const existing = route ? match : leaves[0];
   const target =
     existing ??
     (route

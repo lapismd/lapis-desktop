@@ -1,5 +1,11 @@
 # Native backend profiles
 
+**Deferred desktop experiment.** This guide describes the implementation
+preserved at `codex/desktop-jj-chat-checkpoint-20261020`, not the active desktop
+build. E-AI-092 records its source/dependency identities and original open
+gates. Existing native data is retained without export or migration. Active
+desktop chat uses [local ACP and vault files](local-ai.md).
+
 `ai::backend::BackendProfiles` is Notes' native persistence-selection service.
 Construct it with an installation-owned profile `Dir` and a callback that reads
 the current native `VaultLease`. The callback owns window/origin admission; the

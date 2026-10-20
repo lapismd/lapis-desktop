@@ -1,4 +1,4 @@
-use super::backends::{NativeBackends, revoke};
+use super::owner::{NativeAiOwner, revoke};
 use super::policy::caller;
 use crate::host::state::{NativeError, NativeHost, access};
 use serde::Deserialize;
@@ -26,7 +26,7 @@ pub async fn desktop_ai_admit(
     request: AdmitRequest,
 ) -> Result<(), NativeError> {
     let context = caller(&window).map_err(|error| io::Error::other(error.to_string()))?;
-    let backends = window.app_handle().state::<Arc<NativeBackends>>();
+    let backends = window.app_handle().state::<Arc<NativeAiOwner>>();
     let transition = backends.transitions.clone().lock_owned().await;
     let session = request.session_id;
     let validating = session.clone();
@@ -76,7 +76,7 @@ pub async fn desktop_ai_release(
     request: ReleaseRequest,
 ) -> Result<(), NativeError> {
     let context = caller(&window).map_err(|error| io::Error::other(error.to_string()))?;
-    let backends = window.app_handle().state::<Arc<NativeBackends>>();
+    let backends = window.app_handle().state::<Arc<NativeAiOwner>>();
     let transition = backends.transitions.clone().lock_owned().await;
     let owner = context.window.clone();
     let backends = backends.inner().clone();
@@ -100,7 +100,7 @@ pub async fn close_vault(
     host: NativeHost,
     session: &str,
 ) -> Result<(), NativeError> {
-    let backends = app.state::<Arc<NativeBackends>>();
+    let backends = app.state::<Arc<NativeAiOwner>>();
     let transition = backends.transitions.clone().lock_owned().await;
     let session = session.to_owned();
     let (windows, _transition) = access(host, move |services| {
@@ -128,7 +128,7 @@ pub async fn close_vault(
 
 pub fn window_destroyed(app: &AppHandle, window: &str) {
     let backends = app
-        .try_state::<Arc<NativeBackends>>()
+        .try_state::<Arc<NativeAiOwner>>()
         .map(|s| s.inner().clone());
     if let Some(backends) = &backends
         && let Err(error) = backends.destroy_window(window)

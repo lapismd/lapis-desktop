@@ -10,9 +10,10 @@ pub(super) async fn start(
             &session,
             s.vaults.get(&session)?,
             lapis_desktop::watch::WatchOptions {
+                backup_content: true,
                 scope: String::new(),
                 recursive: true,
-                ignored_names: [".jj", ".git", ".lapis", ".DS_Store"]
+                ignored_names: [".jj", ".git", ".DS_Store"]
                     .into_iter()
                     .map(str::to_owned)
                     .collect(),

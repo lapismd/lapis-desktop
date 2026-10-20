@@ -2,8 +2,6 @@ import AgentClientsField from "./AgentClientsField.svelte";
 import AgentClientsPage from "./AgentClientsPage.svelte";
 import AgentProfilesField from "./AgentProfilesField.svelte";
 import AiSettingsPage from "./AiSettingsPage.svelte";
-import NativeConversationStorageField from "./NativeConversationStorageField.svelte";
-import type { NativeConversationSettingsManagement } from "../../../lib/ai/settings/native-conversation-settings.ts";
 import type { AgentProfileManagement } from "../../../lib/ai/settings/agent-profile-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from Lapis register-ai-settings; see ../../../lib/ai/NOTICE.md.
@@ -26,7 +24,6 @@ import type { AiSettingsStore } from "../../../lib/ai/settings/settings-store.ts
 
 type SettingsOwner = Pick<Plugin, "app" | "register"> & {
   clients?: import("../../../lib/ai/settings/clients.svelte.ts").AgentClients;
-  nativeConversationSettings?: NativeConversationSettingsManagement;
   settings: AiSettingsStore;
   models: AiModelCatalog;
   report(error: unknown): void;
@@ -118,27 +115,6 @@ export function registerAiSettings(plugin: SettingsOwner): void {
   const register = () => {
     const definition = createAiSettingsSection(app, settings.get());
     definition.page = AiSettingsPage;
-    const management = plugin.nativeConversationSettings;
-    if (management)
-      definition.fields = [
-        ...(definition.fields ?? []),
-        {
-          id: "ai.nativeHistory",
-          type: "group",
-          presentation: "section",
-          title: "Native conversation history",
-          fields: [
-            {
-              id: "ai.nativeConversationStorage",
-              type: "custom",
-              presentation: "full-width",
-              title: "Conversation storage",
-              component: NativeConversationStorageField,
-              management,
-            } as import("@lapis-notes/api").WorkspaceCustomSetting,
-          ],
-        },
-      ];
     return controller.settings.registerDefinition({
       section: definition,
       source,

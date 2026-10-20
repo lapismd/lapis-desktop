@@ -1,10 +1,10 @@
 # Governance
 
-E-AI-090/091 retains LD-GOV-002/009. E-POPOUT-004 covers pop-outs/IPC denial;
-E-REPO-051–053 retain native proof, debug e2e-only faults and deferred release.
+E-AI-093 defers M13/M13.3 at their original native conversation gates. M10.2
+continues with local ACP; historical evidence remains immutable.
 
 E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain
-boundary/identity evidence; LD-GOV-002 rules and M13.3 gates are unchanged.
+boundary/identity evidence; LD-GOV-002 rules remain unchanged.
 
 E-AI-024/025 retain injected persistence/native admission; E-REPO-003 owns
 history/public packages. The repository chapter retains exact JJ grants.

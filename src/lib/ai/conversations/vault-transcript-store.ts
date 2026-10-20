@@ -41,6 +41,15 @@ export class VaultTranscriptStore implements TranscriptStore {
   private readonly queue = new ConversationWriteQueue();
 
   constructor(private readonly vault: Vault) {}
+  dirty(key: string) {
+    return this.queue.dirty(key);
+  }
+  protect(key: string) {
+    return this.queue.protect(key);
+  }
+  drain() {
+    return this.queue.drain();
+  }
 
   async prepareImport(
     location: ConversationLocation,

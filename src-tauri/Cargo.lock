@@ -4847,22 +4847,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "jj-store-conversations"
-version = "0.1.0"
-dependencies = [
- "async-trait",
- "jj-agent",
- "jj-collab",
- "jj-store-core",
- "jj-store-model",
- "lapis-agent-redaction",
- "serde",
- "serde_json",
- "sha2 0.10.9",
- "thiserror 2.0.21",
-]
-
-[[package]]
 name = "jj-store-core"
 version = "0.1.0"
 dependencies = [
@@ -5470,12 +5454,8 @@ dependencies = [
  "cap-tempfile",
  "chrono",
  "jj-agent",
- "jj-collab",
  "jj-forge",
  "jj-store-capture",
- "jj-store-conversations",
- "jj-store-core",
- "jj-store-git",
  "jj-store-jj",
  "jj-store-model",
  "jj-store-service",

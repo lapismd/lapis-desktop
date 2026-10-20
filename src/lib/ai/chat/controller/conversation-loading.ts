@@ -112,6 +112,7 @@ export async function openConversation(
 
 export async function _restoreConversation(
   this: AiChatController,
+  resume = true,
 ): Promise<void> {
   const turnId = this._turnId;
   if (this._isAbandoned(turnId)) return;
@@ -161,7 +162,12 @@ export async function _restoreConversation(
   const hasDispatch = restoreDispatch(this, snapshot);
   const unconfirmed = await restoreTurn(this);
   if (this._isAbandoned(turnId)) return;
-  if (unconfirmed || hasDispatch || snapshot.metadata.queuedMessages?.length) {
+  if (
+    !resume ||
+    unconfirmed ||
+    hasDispatch ||
+    snapshot.metadata.queuedMessages?.length
+  ) {
     this.items = interruptPendingInteractions(this.items);
     return;
   }

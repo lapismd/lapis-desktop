@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat lifecycle; see ../../NOTICE.md.
+import { protectChatTranscript } from "../controller/transcript-protection.ts";
 import { onMount, untrack } from "svelte";
 import type { WorkspaceLeaf } from "@lapis-notes/api";
 import type { AiChatController } from "../chat-controller.svelte.ts";
@@ -27,6 +28,12 @@ export function observeChatPanel(
     untrack(() => {
       void perform(() => controller.restore());
     });
+  });
+  $effect(() => {
+    const location = controller.location;
+    const protection = getProps().repository?.protection;
+    if (!location || !protection) return;
+    return protection.attach(location, protectChatTranscript(controller));
   });
   onMount(() => {
     return () => {

@@ -1,5 +1,5 @@
 //! Tauri authority adapter. Launch and credential material never crosses IPC.
-use super::{backends::NativeBackends, policy};
+use super::{owner::NativeAiOwner, policy};
 use crate::host::state::{NativeError, NativeHost};
 use lapis_desktop::ai::tools::{Authorize, Event, EventSink, Outcome, Owner, ToolSpec};
 use serde::Deserialize;
@@ -43,7 +43,7 @@ fn denied() -> io::Error {
     )
 }
 pub(super) async fn dispatch(
-    backends: Arc<NativeBackends>,
+    backends: Arc<NativeAiOwner>,
     host: NativeHost,
     context: HostContext,
     text: String,
@@ -127,7 +127,7 @@ pub(super) async fn dispatch(
 pub async fn desktop_ai_tools(
     window: WebviewWindow,
     host: tauri::State<'_, NativeHost>,
-    backends: tauri::State<'_, Arc<NativeBackends>>,
+    backends: tauri::State<'_, Arc<NativeAiOwner>>,
     request: String,
 ) -> Result<(), NativeError> {
     let context = policy::caller(&window).map_err(|_| denied())?;

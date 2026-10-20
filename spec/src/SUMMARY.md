@@ -372,3 +372,7 @@
 - [Native history subsection within AI settings](history/E-AI-091.md)
 
   - [Native JJ chat checkpoint](history/E-AI-092.md)
+
+- [Local ACP conversation storage](current/ai-local-history.md)
+
+- [Local ACP transcript backup evidence](history/E-AI-093.md)

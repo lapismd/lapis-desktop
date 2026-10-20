@@ -12,12 +12,8 @@ import { registerAiSettings } from "../../../src/components/ai/settings/register
 import { AiSettingsStore } from "../../../src/lib/ai/settings/settings-store.ts";
 import { registeredAppToolRefs } from "../../../src/lib/ai/settings/app-tool-setting-rows.ts";
 import { registerCatalogCleanup } from "../lifecycle.ts";
-import { nativeSetupFixture } from "./native/setup-fixture.ts";
-import type { NativeSetupScenario } from "./native/setup-port.ts";
-import type { NativeConversationSettingsManagement } from "../../../src/lib/ai/settings/native-conversation-settings.ts";
 
 export type SettingsScenario =
-  | NativeSetupScenario
   | "normal"
   | "legacy"
   | "catalog-error"
@@ -31,8 +27,6 @@ export type SettingsScenario =
 
 class SettingsFixturePlugin extends Plugin {
   clients?: ReturnType<typeof clientsFixture>;
-  nativeConversationSettings?: NativeConversationSettingsManagement;
-  native?: ReturnType<typeof nativeSetupFixture>;
   failNextSave = false;
   calls: string[] = [];
   settings = new AiSettingsStore(
@@ -98,15 +92,7 @@ class SettingsFixturePlugin extends Plugin {
   }
   async onload(): Promise<void> {
     this.settings.hydrate(await this.loadData());
-    if (this.scenario.startsWith("native")) {
-      this.native = nativeSetupFixture(
-        this.app,
-        this.settings,
-        this.scenario as NativeSetupScenario,
-      );
-      this.nativeConversationSettings = this.native.management;
-      this.native.registerViews(this);
-    }
+
     this.registerTool("read", "official");
     this.registerTool("community_count", "community");
     registerAiSettings(this);
@@ -131,7 +117,6 @@ class SettingsFixturePlugin extends Plugin {
   }
   async onunload(): Promise<void> {
     this.clients?.destroy();
-    await this.native?.close();
     await this.settings.settle();
   }
 }

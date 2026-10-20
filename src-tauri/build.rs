@@ -16,7 +16,6 @@ fn main() {
         "desktop_ai_clients",
         "desktop_ai_imports",
         "desktop_ai_release",
-        "desktop_ai_backends",
         "desktop_backup_start",
         "desktop_backup_capture",
         "desktop_backup_stop",

@@ -43,13 +43,14 @@ pub(super) fn read(
     scope: &str,
     recursive: bool,
     ignored_names: &[String],
+    backup_content: bool,
 ) -> io::Result<Snapshot> {
     validate_root(root)?;
     let mut pending = vec![scope.to_owned()];
     let mut cost = scope.len() + 96;
     let mut entries = Snapshot::new();
     while let Some(path) = pending.pop() {
-        if super::ignored(&path, ignored_names) {
+        if super::ignored(&path, ignored_names, backup_content) {
             continue;
         }
         let relative = root.checked(&path, path.is_empty())?;

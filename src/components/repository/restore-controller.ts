@@ -1,3 +1,4 @@
+import { guardTranscriptReplacement } from "../../lib/repository/transcript-writers.ts";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import { RestoreController } from "../../lib/repository/restore.ts";
 import { restoreRecovery } from "../../lib/repository/restore-recovery.ts";
@@ -25,7 +26,7 @@ export function createRestoreController(
   );
   const controller = new RestoreController(
     service,
-    (path, action) => plugin.app.fileEditingSessions.guard(path, action),
+    (path, action) => guardTranscriptReplacement(plugin.app, path, action),
     feedback,
     async (pending) => {
       if (pending) original = pending.request.request_id;

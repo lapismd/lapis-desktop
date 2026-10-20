@@ -1,35 +1,34 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis AiView identity and in-place assignment policy; see lib/ai/NOTICE.md.
+import { redirectRetiredConversation } from "./retired-conversation-view.ts";
 import { mount } from "svelte";
 import type { ViewStateResult } from "@lapis-notes/api";
 import { OwnedAiPanelView } from "./owned-panel-view.ts";
 import AiViewPanel from "./AiViewPanel.svelte";
 import {
   conversationRouteFromState,
+  retiredNativeRoute,
   sameConversationRoute,
   stateWithConversationRoute,
   type ConversationRoute,
 } from "../../../lib/ai/conversations/conversation-route.ts";
-import {
-  AI_VIEW,
-  AI_HISTORY_VIEW,
-  AI_NATIVE_HISTORY_VIEW,
-} from "../../../lib/ai/plugin/view-types.ts";
+import { AI_VIEW, AI_HISTORY_VIEW } from "../../../lib/ai/plugin/view-types.ts";
 import type { AiChatPanelProps } from "../../../lib/ai/chat/panel/props.ts";
 import AiChatSession from "../sessions/AiChatSession.svelte";
-import NativeConversationPanel from "./NativeConversationPanel.svelte";
 export class AiView extends OwnedAiPanelView {
   #routeEpoch = 0;
-  protected nativeCatalog = false;
+  #retired = false;
+  onload(): void {
+    if (this.#retired) redirectRetiredConversation(this.leaf, this.host);
+    else super.onload();
+  }
   protected transcriptFrame: AiChatPanelProps["transcriptFrame"] =
     AiChatSession;
   getViewType() {
     return AI_VIEW;
   }
   getDisplayText(): string {
-    return conversationRouteFromState(this.getState())?.backend === "jj"
-      ? "Native conversation"
-      : "AI";
+    return "AI";
   }
   getIcon() {
     return "sparkles";
@@ -46,14 +45,8 @@ export class AiView extends OwnedAiPanelView {
         id: "ai",
         label: "AI",
         onSelect: () => {
-          const native =
-            this.nativeCatalog ||
-            conversationRouteFromState(this.getState())?.backend === "jj";
           void this.host
-            .revealPanel(
-              native ? AI_NATIVE_HISTORY_VIEW : AI_HISTORY_VIEW,
-              "right",
-            )
+            .revealPanel(AI_HISTORY_VIEW, "right")
             .catch((error) => this.host.report(error));
         },
       },
@@ -65,11 +58,14 @@ export class AiView extends OwnedAiPanelView {
   ): Promise<void> {
     const previous = conversationRouteFromState(this.getState());
     const next = conversationRouteFromState(state);
-    if (this.nativeCatalog && next && next.backend !== "jj")
-      throw new Error("Native history cannot open a file conversation route");
+    this.#retired = retiredNativeRoute(state);
     if (!sameConversationRoute(previous, next)) this.#routeEpoch++;
     await super.setState(stateWithConversationRoute(state, next), result);
     if (!this.hasPanel) return;
+    if (this.#retired) {
+      redirectRetiredConversation(this.leaf, this.host);
+      return;
+    }
     if (sameConversationRoute(previous, next)) return;
     await this.refreshPanel();
   }
@@ -92,26 +88,6 @@ export class AiView extends OwnedAiPanelView {
   protected mountPanel() {
     const epoch = this.#routeEpoch;
     const route = conversationRouteFromState(this.getState());
-    if (route?.backend === "jj" || this.nativeCatalog)
-      return mount(NativeConversationPanel, {
-        target: this.containerEl,
-        props: {
-          app: this.app,
-          host: this.host,
-          initialConversation:
-            route?.backend === "jj" ? route.conversation : undefined,
-          chatEnabled: !this.nativeCatalog,
-          onConversationChange: (conversation) =>
-            this.rememberConversation(
-              {
-                version: 1,
-                backend: "jj",
-                conversation,
-              },
-              epoch,
-            ),
-        },
-      });
     return mount(AiViewPanel, {
       target: this.containerEl,
       props: {

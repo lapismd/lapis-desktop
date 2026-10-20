@@ -89,17 +89,17 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-INSTALL-001 | Implemented | [E-INSTALL-001](../history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. |
 | LD-INSTALL-002 | Implemented | [E-INSTALL-001](../history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. |
 | LD-AI-001 | Planned | [E-AI-002](../history/E-AI-002.md): Reusable adapter passes; production orchestration and tools/credentials retain M10.2-M10.3 gates. |
-| LD-AI-002 | Planned | [E-AI-011](../history/E-AI-011.md): Memory/tool policy qualified; mounted UI and native recovery remain required., [E-REPO-016](../history/E-REPO-016.md) |
+| LD-AI-002 | Planned | [E-AI-011](../history/E-AI-011.md): Memory/tool policy qualified; mounted UI and native recovery remain required., [E-REPO-016](../history/E-REPO-016.md); [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI. |
 | LD-AI-003 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
-| LD-AI-004 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
+| LD-AI-004 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI. |
 | LD-GOV-009 | Implemented | [E-TEST-001](../history/E-TEST-001.md): quiet default, fail-closed modes, complete retained headed runner and explicit native CI gate; all quiet lanes pass. |
 | LD-CAT-003 | Implemented | [E-CATALOG-002](../history/E-CATALOG-002.md): qualified state inventory; [E-CATALOG-007](../history/E-CATALOG-007.md): Lapis Reading review added, suites deferred.; [E-REPO-011](../history/E-REPO-011.md); [E-REPO-012](../history/E-REPO-012.md); [E-REPO-013](../history/E-REPO-013.md). |
 | LD-COMP-001 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-REPO-001 | Implemented | [E-REPO-002](../history/E-REPO-002.md): physical admission, real caller/origin frames and independent history/AI grants; M13.1. |
 | LD-REPO-002 | Implemented | [E-REPO-006](../history/E-REPO-006.md): cold native pins/diffs/restart; [M13.2 ledger](progress/milestones.md): transport and presentation history; [E-REPO-016](../history/E-REPO-016.md): background work. |
-| LD-REPO-003 | Planned | JJ-backed native conversation recovery; M13.3.; [E-AI-036](../history/E-AI-036.md): native factory prerequisite; managed path remains open; [E-AI-037](../history/E-AI-037.md): confirmed native read prerequisite; [E-AI-038](../history/E-AI-038.md): retained native continuation. |
+| LD-REPO-003 | Planned | Native-store experiment **Deferred** at `codex/desktop-jj-chat-checkpoint-20261020`; [E-AI-092](../history/E-AI-092.md) preserves evidence/gates; [E-AI-093](../history/E-AI-093.md) makes local ACP the active profile. |
 | LD-REPO-004 | Implemented | [M13.2 ledger](progress/milestones.md): repository UI history and original gates; [E-REPO-016](../history/E-REPO-016.md): loading progress. |
-| LD-REPO-005 | Planned | [E-REPO-053](../history/E-REPO-053.md): native storage/adoption; [E-REPO-054](../history/E-REPO-054.md): sync persistence; [M14](progress/vault-backup.md) retains provider gates. |
+| LD-REPO-005 | Planned | [E-REPO-053](../history/E-REPO-053.md): native storage/adoption; [E-REPO-054](../history/E-REPO-054.md): sync persistence; [M14](progress/vault-backup.md) retains provider gates.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI. |
 
 LD-REPO-004 picker sizing preview: [E-REPO-014](../history/E-REPO-014.md).
 

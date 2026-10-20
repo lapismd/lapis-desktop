@@ -36,9 +36,7 @@ fn fixture() -> Fixture {
     })));
     let policy = DesktopAiPolicy::default();
     let workers = Arc::new(AcpHost::new(Arc::new(policy.clone()), Config::default()).unwrap());
-    let backends = Arc::new(crate::host::ai::backends::NativeBackends::new(
-        cap_std::fs::Dir::open_ambient_dir(profile.path(), cap_std::ambient_authority()).unwrap(),
-    ));
+    let backends = Arc::new(crate::host::ai::owner::NativeAiOwner::default());
     policy.initialize(host.clone(), &workers, backends).unwrap();
     Fixture {
         _profile: profile,
@@ -157,7 +155,7 @@ fn native_ai_policy_owner_cannot_be_rebound_to_another_host() {
 }
 
 #[test]
-fn native_capture_requires_current_admission_and_an_explicit_backend() {
+fn local_processing_requires_current_admission_and_an_explicit_target() {
     let fixture = fixture();
     let generation = activate(&fixture);
     let mut binding = tauri_plugin_lapis_ai::SessionBinding {
@@ -172,7 +170,7 @@ fn native_capture_requires_current_admission_and_an_explicit_backend() {
             .processor(&caller(), &binding)
             .err()
             .map(|error| error.0),
-        Some("capture_backend_not_admitted")
+        Some("agent_not_admitted")
     );
     binding.admission = "stale-generation".into();
     assert_eq!(

@@ -1,3 +1,4 @@
+import { fixtureDiffContent } from "./fixture-diff-content.ts";
 import { attachBlameFixture } from "./blame.ts";
 import { stats } from "./query-stats.ts";
 import { richCommitMessage } from "./rich-commit.ts";
@@ -72,7 +73,10 @@ export function historyFixture(scenario = "ready") {
     }));
   }
   const change = {
-    path: "Welcome.md",
+    path:
+      scenario === "transcripts"
+        ? "Notes/.lapis/agents/sessions/7297795f-c00b-475e-b430-5b0e2e11a2e3/transcript.jsonl"
+        : "Welcome.md",
     before: [],
     after: [],
     sources: [],
@@ -240,21 +244,7 @@ export function historyFixture(scenario = "ready") {
             changes: [
               {
                 ...change,
-                content:
-                  scenario === "binary"
-                    ? { status: "unavailable", reason: "binary" }
-                    : {
-                        status: "text",
-                        hunks: [
-                          {
-                            kind: "different",
-                            before_start: 0,
-                            after_start: 0,
-                            before: "# Notes\nOld title\n",
-                            after: "# Notes\nHistory is retained\n",
-                          },
-                        ],
-                      },
+                content: fixtureDiffContent(scenario),
               },
             ],
             stats: stats(),

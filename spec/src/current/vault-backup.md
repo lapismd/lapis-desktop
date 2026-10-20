@@ -1,5 +1,10 @@
 # Automatic vault backup
 
+E-AI-093 includes the three portable local-ACP transcript files at each valid
+scope in LD-REPO-005 capture, search, guarded restore and configured sync. Other
+private application data remains excluded; explicit backup exclusions win. See
+[local conversation storage](ai-local-history.md).
+
 E-REPO-047 qualifies the original M14.1 identity/storage gate through cold
 native processes, production recent eviction, explicit folder relinking and
 independent external history. E-REPO-051 tests native restore under unchanged

@@ -1,5 +1,11 @@
 # Native conversation capture journal
 
+**Deferred desktop experiment.** This guide describes the implementation
+preserved at `codex/desktop-jj-chat-checkpoint-20261020`, not the active desktop
+build. E-AI-092 records its source/dependency identities and original open
+gates. Existing native data is retained without export or migration. Active
+desktop chat uses [local ACP and vault files](local-ai.md).
+
 `ai::journal::ProfileJournal` is Notes' native implementation of the shared
 `jj_store_conversations::store_capture::Journal` port. It stores private
 recovery records outside the vault checkout. AgentStore and ThreadStore remain

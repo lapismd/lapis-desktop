@@ -2,6 +2,8 @@
 // Retained Lapis AiPlugin conversation integration; see ../NOTICE.md.
 import type { App, WorkspaceLeaf } from "@lapis-notes/api";
 import type { ComposerTriggerItem } from "@lapismd/design-core/ai/chat";
+import { bindTranscriptWriters } from "../../repository/transcript-writers.ts";
+import { ConversationProtection } from "../conversations/transcript-protection.ts";
 import { ConversationRepository } from "../conversations/conversation-repository.ts";
 import { ownedConversationPersistence } from "./conversation-persistence.ts";
 import { AiConversationIndex } from "../conversations/conversation-index.ts";
@@ -29,6 +31,7 @@ export class AiConversationHost {
   active = true;
   readonly operations = new AiOperations();
   readonly persistence;
+  readonly releaseTranscriptWriters;
   readonly conversations: ConversationRepository;
   readonly conversationIndex: AiConversationIndex;
   readonly scopeResolver = new ConversationScopeResolver();
@@ -40,6 +43,20 @@ export class AiConversationHost {
   ) {
     this.persistence = ownedConversationPersistence(app);
     this.conversations = new ConversationRepository(this.persistence.store);
+    this.conversations.protection = new ConversationProtection(
+      app.fileEditingSessions,
+      this.conversations,
+      this.persistence.store,
+      async () => {
+        await app.vault.reconcile();
+        await this.conversationIndex.rebuild();
+      },
+    );
+    this.conversations.protection.onError = (error) =>
+      app.logger.error("Conversation reload failed", error);
+    this.releaseTranscriptWriters = bindTranscriptWriters(app, (path, apply) =>
+      this.conversations.protection!.guard(path, apply),
+    );
     this.conversationIndex = new AiConversationIndex(
       this.conversations,
       app.appDatabase,

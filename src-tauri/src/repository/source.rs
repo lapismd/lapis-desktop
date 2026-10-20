@@ -62,27 +62,6 @@ pub(crate) struct Source {
     witnesses: Vec<Witness>,
 }
 impl Source {
-    /// AI resolves its own admitted vault identity; no History grant is reused.
-    pub fn managed(binding: &jj_vault::Binding) -> io::Result<Self> {
-        binding.validate().map_err(|_| super::denied())?;
-        let source = Self::external(&binding.root, &binding.state)?;
-        let record = source
-            .witnesses
-            .iter()
-            .find(|w| w.path == binding.state.join("vault.json"))
-            .and_then(|w| w.contents.as_deref())
-            .ok_or_else(super::denied)?;
-        let record: serde_json::Value = serde_json::from_slice(record)?;
-        let identity = std::fs::symlink_metadata(&binding.root)?;
-        let root_identity = format!("{}:{}", identity.dev(), identity.ino());
-        if record["binding"]["vault_id"].as_str() != Some(binding.vault_id.as_str())
-            || record["root_identity"].as_str() != Some(root_identity.as_str())
-        {
-            return Err(super::denied());
-        }
-        source.verify()?;
-        Ok(source)
-    }
     /// Both paths come from the admitted native backup owner, never a read frame.
     pub fn external(root: &Path, state: &Path) -> io::Result<Self> {
         let metadata = state.join("repo");
@@ -120,23 +99,6 @@ impl Source {
         };
         source.verify()?;
         Ok(source)
-    }
-    pub fn fingerprint(&self) -> [u8; 32] {
-        use sha2::{Digest, Sha256};
-        use std::os::unix::ffi::OsStrExt;
-        let mut hash = Sha256::new_with_prefix(b"lapis-desktop/repository-binding/v1\0");
-        for w in &self.witnesses {
-            let path = w.path.as_os_str().as_bytes();
-            hash.update((path.len() as u64).to_be_bytes());
-            hash.update(path);
-            hash.update(w.identity.0.to_be_bytes());
-            hash.update(w.identity.1.to_be_bytes());
-            hash.update([u8::from(w.directory)]);
-            let data = w.contents.as_deref().unwrap_or_default();
-            hash.update((data.len() as u64).to_be_bytes());
-            hash.update(data);
-        }
-        hash.finalize().into()
     }
     pub fn capture(root: &Path) -> io::Result<Self> {
         let WorkspaceInfo {

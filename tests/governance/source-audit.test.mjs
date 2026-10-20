@@ -156,13 +156,12 @@ test("AI session permission stays exact and bound to the admitted main window", 
         "allow-desktop-ai-admit",
         "allow-desktop-ai-imports",
         "allow-desktop-ai-release",
-        "allow-desktop-ai-backends",
         "allow-desktop-ai-tools",
       ]),
     ],
   };
   assert.deepEqual(auditManifest(manifest, admitted, config), []);
-  assert.ok(capabilities.permissions.includes("allow-desktop-ai-backends"));
+  assert.ok(!capabilities.permissions.includes("allow-desktop-ai-backends"));
   for (const altered of [
     { ...admitted, windows: ["other"] },
     { ...admitted, local: false },
@@ -170,7 +169,7 @@ test("AI session permission stays exact and bound to the admitted main window", 
     {
       ...admitted,
       permissions: admitted.permissions.filter(
-        (p) => p !== "allow-desktop-ai-backends",
+        (p) => p !== "allow-desktop-ai-admit",
       ),
     },
     {

@@ -81,7 +81,11 @@ export class QueuedMessages {
     this.project(await this.controller.repository.read(l));
   }
   async enqueue(prompt: string, request: Omit<AgentRequest, "prompt">) {
-    if (this.saving || this.controller._disposed)
+    if (
+      this.saving ||
+      this.controller._disposed ||
+      this.controller._filesProtected
+    )
       throw new Error("A queued message is already being saved");
     if (!this.controller.repository)
       throw new Error("Queueing requires local conversation files");
@@ -142,6 +146,7 @@ export class QueuedMessages {
   }
   async resume() {
     if (
+      this.controller._filesProtected ||
       this.controller.busy ||
       this.running ||
       this.resuming ||
@@ -199,6 +204,7 @@ export class QueuedMessages {
     if (
       this.paused ||
       this.running ||
+      this.controller._filesProtected ||
       this.controller.busy ||
       this.controller._disposed ||
       !this.location ||

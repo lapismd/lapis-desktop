@@ -1,4 +1,4 @@
-use super::backends::NativeBackends;
+use super::owner::NativeAiOwner;
 use crate::host::state::{NativeHost, NativeServices};
 use lapis_desktop::vault::admission::{RetiredAdmission, VaultLease};
 use std::{
@@ -10,7 +10,6 @@ use tauri_plugin_lapis_ai::{
     AcpHost, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
     runtime::SessionProcessor,
 };
-mod managed_launch;
 mod tool_launch;
 
 #[derive(Clone, Default)]
@@ -18,7 +17,7 @@ pub struct DesktopAiPolicy(Arc<PolicyState>);
 #[derive(Default)]
 struct PolicyState {
     host: OnceLock<NativeHost>,
-    backends: OnceLock<Arc<NativeBackends>>,
+    backends: OnceLock<Arc<NativeAiOwner>>,
     files: super::file_profile::FileProfile,
 }
 pub fn local(context: &HostContext) -> Result<()> {
@@ -60,7 +59,7 @@ impl DesktopAiPolicy {
         &self,
         host: NativeHost,
         workers: &Arc<AcpHost>,
-        backends: Arc<NativeBackends>,
+        backends: Arc<NativeAiOwner>,
     ) -> io::Result<()> {
         self.0
             .host
@@ -114,14 +113,20 @@ impl HostPolicy for DesktopAiPolicy {
         context: &HostContext,
         binding: &SessionBinding,
     ) -> Result<String> {
-        local(context)?;
-        self.0
-            .backends
-            .get()
-            .ok_or(Error("host_unavailable"))?
-            .authorize_processing(context, binding)
-            .map_err(|_| Error("capture_scope_unavailable"))
+        let lease = self.current(context)?;
+        if lease.generation() != binding.admission {
+            return Err(Error("admission_revoked"));
+        }
+        if !self.0.files.contains(&binding.target_id)
+            && self
+                .tool_binding(context, &lease, &binding.target_id, false)?
+                .is_none()
+        {
+            return Err(Error("agent_not_admitted"));
+        }
+        Ok(lease.generation().into())
     }
+
     fn targets(&self, context: &HostContext) -> Result<Vec<Target>> {
         self.current(context)?;
         Ok(self.0.files.targets())
@@ -144,22 +149,12 @@ impl HostPolicy for DesktopAiPolicy {
         {
             return Ok(None);
         }
-        let host = self.0.host.get().ok_or(Error("host_unavailable"))?;
-        let processor = self
-            .0
-            .backends
-            .get()
-            .ok_or(Error("host_unavailable"))?
-            .processor(host, context, binding)
-            .map_err(|_| Error("capture_backend_not_admitted"))?;
-        Ok(Some(processor))
+        Err(Error("agent_not_admitted"))
     }
+
     fn resolve(&self, context: &HostContext, target: &str, resume: Option<&str>) -> Result<Launch> {
         let current = self.current(context)?;
         if let Some(launch) = self.tool_launch(context, &current, target, resume)? {
-            return Ok(launch);
-        }
-        if let Some(launch) = self.managed_launch(context, &current, target, resume)? {
             return Ok(launch);
         }
         if resume.is_some() && self.0.files.contains(target) {

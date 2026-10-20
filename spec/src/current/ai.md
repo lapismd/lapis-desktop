@@ -1,8 +1,7 @@
 # Desktop AI and optional compute
 
-E-REPO-016: [background](background.md); [repository](repository.md) gates stay.
-E-AI-037/038 retain private stores/journals, pinned reads and drained ownership.
-E-AI-090/091: Mentions and grouped AI settings; admission unchanged.
+[Local ACP/file storage](ai-local-history.md) is active (E-AI-093). Native-store
+clauses below describe the Deferred checkpoint experiment.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and
 [authored writes](ai-authored.md): native admission. E-AI-064: recovery dots;

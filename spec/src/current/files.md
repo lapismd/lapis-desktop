@@ -1,5 +1,11 @@
 # File management (M5)
 
+E-AI-093 keeps LD-FILE-002/003 ordinary watch, picker and containment contracts
+unchanged. Backup-only watches use the shared native transcript allowlist;
+private runtime/JJ writes remain excluded and cannot trigger backup loops.
+Transcript replacement joins the App writer guard
+([contract](ai-local-history.md)).
+
 E-REPO-049 restores backup watching after failed native capture. E-REPO-050
 retains the pending final-persistence preflight: failure must precede
 destructive workspace teardown and preserve the original editors/watch owners

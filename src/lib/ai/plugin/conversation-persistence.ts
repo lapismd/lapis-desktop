@@ -37,11 +37,8 @@ export function ownedConversationPersistence(
 ): ConversationPersistence {
   const binding = bindings.get(app);
   if (binding) return binding.factory(app);
-  // Compatibility selection for existing installations. An injected failure
-  // must propagate; it must never enter this legacy backend.
-  return {
-    backend: "vault-files",
-    store: new VaultTranscriptStore(app.vault),
-    drain: async () => {},
-  };
+  // Ordinary desktop startup always selects vault files. In-memory catalog/test
+  // injection cannot change a running application or read obsolete native selections.
+  const store = new VaultTranscriptStore(app.vault);
+  return { backend: "vault-files", store, drain: () => store.drain() };
 }

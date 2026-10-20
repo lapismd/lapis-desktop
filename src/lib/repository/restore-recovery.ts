@@ -1,3 +1,4 @@
+import { portableBackupFile } from "./transcript-paths.ts";
 import type { PendingRestore } from "./restore.ts";
 /** Saved view/config state is input, never native authority. */
 export function restoreRecovery(value: unknown): PendingRestore | undefined {
@@ -26,10 +27,10 @@ export function restoreRecovery(value: unknown): PendingRestore | undefined {
       saved.request.path.includes("\\") ||
       saved.request.path
         .split("/")
-        .some((part) =>
-          ["", ".", "..", ".jj", ".git", ".lapis"].includes(part),
-        ))
+        .some((part) => ["", ".", "..", ".jj", ".git"].includes(part)))
   )
+    throw new Error("Invalid interrupted file restore path");
+  if (saved.scope === "file" && !portableBackupFile(saved.request.path))
     throw new Error("Invalid interrupted file restore path");
   return saved;
 }

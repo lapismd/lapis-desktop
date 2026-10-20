@@ -1,3 +1,4 @@
+import { guardTranscriptReplacement } from "../../lib/repository/transcript-writers.ts";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
 import type { RepositoryServices } from "../../lib/repository/history-reader.ts";
 import { SyncController } from "../../lib/repository/sync-controller.ts";
@@ -24,7 +25,7 @@ export class RepositorySync {
     this.controller = new SyncController(
       services.remote!,
       services.sync!,
-      (action) => plugin.app.fileEditingSessions.guard(undefined, action),
+      (action) => guardTranscriptReplacement(plugin.app, undefined, action),
       plugin.feedback("Vault synchronization", "repository-history:sync"),
       syncRecovery(plugin),
     );

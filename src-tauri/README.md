@@ -46,67 +46,20 @@ vault-filtered immutable observations and transient retry-safe confirmation for
 an injected opt-in capture coordinator. This source API alone watches/saves
 nothing. See the local AI guide above.
 
-For explicitly selected JJ conversations, the ordinary host can prepare an
-opaque native capture target and construct the real AgentStore/ThreadStore
-processor with native privacy and a private receipt journal. This is separate
-from executable admission and renderer chat integration. See
-[`native backend profiles`](../docs/native-backend-profiles.md) for the command
-and ownership details.
+Local ACP is the desktop's sole conversation runtime and vault files are its
+conversation persistence. The three portable session files join ordinary
+Repository History checkpoints by default. Restore/sync uses the App-owned
+editing-session barrier to fence sends, drain saves, refuse active/unsettled
+turns and reload restored state without dispatching prompts.
+
+The native AgentStore/ThreadStore experiment is Deferred at local bookmark
+`codex/desktop-jj-chat-checkpoint-20261020`. See
+[checkpoint E-AI-092](../spec/src/history/E-AI-092.md) for dependencies and
+reopening instructions. Its existing native objects, journals, receipts and
+backend-selection files remain untouched. No ordinary startup opens that state,
+exports it or migrates it.
 
 Use the repository's development and acceptance commands from its root. Native
-service tests use `cargo test --manifest-path src-tauri/Cargo.toml --locked`;
-the actual WebView/platform lanes are separate. Full contracts and documentation
-live in [`spec/src/current`](../spec/src/current/index.md) and
-[`docs`](../docs).
-
-`ManagedCapture::with_native_privacy` selects the shared optional native policy
-with host-admitted roots/credentials and an injected sink. JJ capture policy
-rejects missing backend selection and stale admission. The debug-only
-real-scanner profile uses an owned temporary cache and private fixture
-candidates. Production JJ publication and restart remain separate gates.
-
-`ai::journal::ProfileJournal` supplies the private durable journal for shared
-selected-store capture. Construct it from an admitted profile `Dir`, exact
-capture/provider context and current native admission callback, then inject it
-into `StoreCapture`. It retains an exclusive lease and checked atomic records.
-See the [journal guide](../docs/native-conversation-journal.md) for ownership,
-recovery and the remaining Notes integration gates.
-
-`ai::backend::BackendProfiles` retains the admitted physical vault's explicit
-writer choice and original selection receipts. An opened `BackendScope` pins
-that choice; hold a `BackendCall` through each admitted operation, then drain
-and drop the owner before changing writers. The native host still supplies
-admission and connects its runtime/persistence adapters. See the
-[backend guide](../docs/native-backend-profiles.md).
-
-The `desktop_ai_backends` command exposes bounded, versioned text frames for
-current-vault selection, receipt recovery and retained owner handles. Native
-admission, worker revocation and vault closure share its transition owner. See
-the [backend guide](../docs/native-backend-profiles.md) for transport and reload
-semantics; renderer persistence and managed capture remain separate adapters.
-
-Native capture permits retain an exact worker binding and counted backend call
-through renderer reload. The physical witness survives old-token closure;
-renderer commands still need active admission. See the backend guide for
-revocation, drain and remaining real-processor qualification.
-
-`ai::conversations` prepares a ThreadStore conversation through the explicitly
-selected JJ owner. It privately retains native identities and the exact command
-before publication; retries recover the original Git receipt without executing
-again. The app's backend command exposes preparation/status with the current
-opaque owner handle. See the backend guide for usage and unknown outcomes.
-Actual agent capture and renderer transcript selection remain separate adapters.
-
-`ai::conversations::read` returns a bounded, same-publication view of a
-confirmed conversation, its native thread and linked sanitized capture as
-lossless JSON text. Use `readConversation` with the original preparation request
-and current owner handle. It verifies provider proof without publishing or
-repairing private state; see the backend guide for bounds and incomplete
-transcript ranges.
-
-For remaining transcript ranges, `openConversationRead` retains an immutable
-snapshot behind a bounded native read handle. Read its issued stream cursor with
-`readConversationTranscript`, passing the next sequence as exact decimal text;
-close with `closeConversationRead`. Each page rechecks admission and the
-original receipt. Rust hosts use `open_read` and `ReadPin::transcript`. See the
-[backend guide](../docs/native-backend-profiles.md) for lifetime and bounds.
+service checks and actual WebView/platform acceptance are separate. Full
+contracts and evidence live in
+[the specification](../spec/src/current/index.md).

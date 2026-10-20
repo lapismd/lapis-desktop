@@ -6,10 +6,7 @@ import { ConversationDispatches } from "./conversation-dispatches.ts";
 import { ConversationTurns } from "./conversation-turns.ts";
 import { SessionImports } from "./session-imports.ts";
 import { assertConversationWritable } from "./import-types.ts";
-import {
-  normalizePortableVaultPath,
-  relativePathWithinScope,
-} from "./paths.ts";
+import { createMetadata } from "./create-metadata.ts";
 import type { DurableSanitizationOptions } from "./redaction.ts";
 import { sanitizeTranscriptEntry } from "./sanitize-entry.ts";
 import type {
@@ -21,7 +18,6 @@ import {
   ConversationWriteQueue,
 } from "./transcript-store.ts";
 import {
-  CONVERSATION_SCHEMA_VERSION,
   type AgentBindingRecord,
   type ConversationApprovalGrant,
   type ConversationLocation,
@@ -49,7 +45,22 @@ export function deriveConversationTitle(text: string): string | undefined {
 }
 
 export class ConversationRepository {
-  private readonly queue = new ConversationWriteQueue();
+  protection?: import("./transcript-protection.ts").ConversationProtection;
+  dirtyWrites(key: string) {
+    return this.queue.dirty(key);
+  }
+  protectWrites(key: string) {
+    return this.queue.protect(key);
+  }
+  drainWrites() {
+    return this.queue.drain();
+  }
+  async refreshAfterReplacement(location: ConversationLocation) {
+    this.emit({ type: "upsert", location });
+  }
+  private readonly queue = new ConversationWriteQueue((key) =>
+    this.protection?.admit(key),
+  );
   private readonly listeners = new Set<
     (change: ConversationRepositoryChange) => void
   >();
@@ -96,49 +107,32 @@ export class ConversationRepository {
   async create(input: CreateConversationInput): Promise<ConversationSnapshot> {
     const conversationId = input.id ?? crypto.randomUUID();
     const location = { scopeDir: input.scopeDir, conversationId };
-    const now = input.now ?? new Date().toISOString();
-    const metadata: ConversationMetadata = {
-      schemaVersion: CONVERSATION_SCHEMA_VERSION,
-      id: conversationId,
-      createdAt: now,
-      updatedAt: now,
-      status: "active",
-      ...(input.launchNotePath
-        ? {
-            launchContext: {
-              notePath: relativePathWithinScope(
-                input.scopeDir,
-                input.launchNotePath,
-              ),
-            },
-          }
-        : {}),
-      ...(input.workspacePath
-        ? {
-            workspace: {
-              path: normalizePortableVaultPath(input.workspacePath, {
-                allowRoot: true,
-                label: "Workspace reference",
-              }),
-            },
-          }
-        : {}),
-    };
-    const snapshot = await this.store.create(location, metadata);
+    const metadata = createMetadata(input, conversationId);
+    const snapshot = await this.queue.run(
+      conversationStorageKey(location),
+      () => this.store.create(location, metadata),
+    );
     this.emit({ type: "upsert", location: snapshot.location });
     return snapshot;
   }
 
   read(location: ConversationLocation): Promise<ConversationSnapshot> {
+    this.protection?.ensure(conversationStorageKey(location));
     return this.store.read(location);
   }
 
-  list(scopeDir: string): Promise<ConversationListEntry[]> {
-    return this.store.list(scopeDir);
+  async list(scopeDir: string): Promise<ConversationListEntry[]> {
+    const entries = await this.store.list(scopeDir);
+    for (const e of entries)
+      this.protection?.ensure(conversationStorageKey(e.location));
+    return entries;
   }
 
-  listAll(): Promise<ConversationListEntry[]> {
-    return this.store.listAll();
+  async listAll(): Promise<ConversationListEntry[]> {
+    const entries = await this.store.listAll();
+    for (const e of entries)
+      this.protection?.ensure(conversationStorageKey(e.location));
+    return entries;
   }
 
   subscribe(
@@ -294,7 +288,9 @@ export class ConversationRepository {
   }
 
   async delete(location: ConversationLocation): Promise<void> {
-    await this.store.delete(location);
+    await this.queue.run(conversationStorageKey(location), () =>
+      this.store.delete(location),
+    );
     this.emit({ type: "delete", location: { ...location } });
   }
 

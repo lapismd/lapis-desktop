@@ -14,6 +14,7 @@ impl Pending {
         recursive: bool,
         event: notify::Result<Event>,
         ignored_names: &[String],
+        backup_content: bool,
     ) -> bool {
         let Ok(event) = event else {
             self.reconciliation = true;
@@ -36,7 +37,7 @@ impl Pending {
                 relevant = true;
                 continue;
             };
-            if super::ignored(path, ignored_names) {
+            if super::ignored(path, ignored_names, backup_content) {
                 continue;
             }
             let tail = if scope.is_empty() {
@@ -71,6 +72,7 @@ mod tests {
                 true,
                 Ok(Event::new(EventKind::Any).add_path(format!("/owned/{number}").into())),
                 &[],
+                false,
             );
         }
         assert_eq!(pending.paths.len(), 2048);
@@ -91,6 +93,7 @@ mod tests {
                 false,
                 Ok(Event::new(EventKind::Any).add_path(path.into())),
                 &[],
+                false,
             );
         }
         assert_eq!(pending.paths, HashSet::from(["Notes/a.md".to_owned()]));
@@ -110,7 +113,8 @@ mod tests {
                 "",
                 true,
                 Ok(Event::new(EventKind::Any).add_path(path.into())),
-                &names
+                &names,
+                false
             ));
         }
         assert!(pending.paths.is_empty());

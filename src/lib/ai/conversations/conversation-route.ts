@@ -1,15 +1,19 @@
-import type { CanonicalConversationIdentity } from "./backend-port.ts";
-import { sameCanonicalConversation } from "./catalog-pages.ts";
 import { normalizeConversationScope } from "./paths.ts";
 import { CONVERSATION_ID_PATTERN, type ConversationLocation } from "./types.ts";
 
-export type NativeConversationReference = CanonicalConversationIdentity & {
-  repository: string;
+export type ConversationRoute = {
+  version: 1;
+  backend: "vault-files";
+  location: ConversationLocation;
 };
-/** Persist references only. Handles, selections and transcripts never enter tab state. */
-export type ConversationRoute =
-  | { version: 1; backend: "vault-files"; location: ConversationLocation }
-  | { version: 1; backend: "jj"; conversation: NativeConversationReference };
+export function retiredNativeRoute(state: Record<string, unknown>): boolean {
+  const route = state.conversationRoute;
+  return Boolean(
+    route &&
+      typeof route === "object" &&
+      (route as { backend?: unknown }).backend === "jj",
+  );
+}
 function invalid(): never {
   throw new Error("Invalid conversation route");
 }
@@ -23,34 +27,6 @@ function fields(value: unknown, keys: readonly string[]) {
   )
     return invalid();
   return record;
-}
-function id(value: unknown): string {
-  if (typeof value !== "string" || !/^[a-f0-9]{32}$/u.test(value))
-    return invalid();
-  return value;
-}
-export function nativeConversationReference(
-  value: unknown,
-): NativeConversationReference {
-  const v = fields(value, ["target", "threadId", "repository"]);
-  const t = v.target as Record<string, unknown> | null;
-  if (!t || typeof t !== "object" || Array.isArray(t)) return invalid();
-  let target: CanonicalConversationIdentity["target"];
-  if (t.type === "conversation") {
-    fields(t, ["type", "id"]);
-    if (
-      typeof t.id !== "string" ||
-      !t.id.trim() ||
-      new TextEncoder().encode(t.id).length > 512 ||
-      /[\u0000-\u001f\u007f-\u009f]/u.test(t.id)
-    )
-      return invalid();
-    target = { type: "conversation", id: t.id };
-  } else if (t.type === "recorded") {
-    fields(t, ["type", "session"]);
-    target = { type: "recorded", session: id(t.session) };
-  } else return invalid();
-  return { target, threadId: id(v.threadId), repository: id(v.repository) };
 }
 export function fileConversationLocation(value: unknown): ConversationLocation {
   const v = fields(value, ["scopeDir", "conversationId"]);
@@ -68,14 +44,6 @@ export function conversationRoute(value: unknown): ConversationRoute {
     return invalid();
   const v = value as Record<string, unknown>;
   if (v.version !== 1) return invalid();
-  if (v.backend === "jj") {
-    fields(v, ["version", "backend", "conversation"]);
-    return {
-      version: 1,
-      backend: "jj",
-      conversation: nativeConversationReference(v.conversation),
-    };
-  }
   if (v.backend === "vault-files") {
     fields(v, ["version", "backend", "location"]);
     return {
@@ -89,6 +57,7 @@ export function conversationRoute(value: unknown): ConversationRoute {
 export function conversationRouteFromState(
   state: Record<string, unknown>,
 ): ConversationRoute | null {
+  if (retiredNativeRoute(state)) return null;
   if (Object.hasOwn(state, "conversationRoute")) {
     if (
       Object.hasOwn(state, "scopeDir") ||
@@ -126,8 +95,6 @@ export function sameConversationRoute(
   b: ConversationRoute | null,
 ): boolean {
   if (!a || !b) return a === b;
-  if (a.backend === "jj" && b.backend === "jj")
-    return sameCanonicalConversation(a.conversation, b.conversation);
   return (
     a.backend === "vault-files" &&
     b.backend === "vault-files" &&

@@ -14,11 +14,11 @@ gates.
 - [Desktop plugins and catalog](plugins.md)
 - [Desktop AI and optional compute](ai.md)
   - [Installed clients and bundled helpers](ai-clients.md)
-  - [Native authored conversation messages](ai-authored.md)
-  - [Canonical managed capture](ai-managed-capture.md)
-  - [Native agent attribution](ai-native-attribution.md)
-  - [Committed native conversation catalog](ai-catalog.md)
-  - [Native canonical conversation editing](ai-conversation-edits.md)
+  - [Deferred: Native authored conversation messages](ai-authored.md)
+  - [Deferred: Canonical managed capture](ai-managed-capture.md)
+  - [Deferred: Native agent attribution](ai-native-attribution.md)
+  - [Deferred: Committed native conversation catalog](ai-catalog.md)
+  - [Deferred: Native canonical conversation editing](ai-conversation-edits.md)
   - [AI transcript delivery review](ai-presentation.md)
   - [Local AI turn recovery](ai-recovery.md)
   - [Native application tools](ai-tools.md)
@@ -31,3 +31,5 @@ gates.
 - [Requirement verification](verification.md)
 
 - [Automatic vault backup](vault-backup.md)
+
+- [Local ACP conversation storage](ai-local-history.md)

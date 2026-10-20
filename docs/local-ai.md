@@ -2,8 +2,23 @@
 
 The preview can run an installed Codex ACP adapter through a verified Lapis AI
 runtime. Conversations use the existing vault-owned `.lapis/agents/sessions`
-files. This profile does not publish transcripts through JJ, create
-AgentStore/ThreadStore records or migrate existing conversations.
+files as their sole conversation persistence. Repository History includes
+metadata.yaml, agents.jsonl and transcript.jsonl at each root/nested UUIDv4
+session scope by default. Existing chats enter the next normal checkpoint;
+earlier versions cannot be reconstructed. Other private .lapis contents stay
+excluded, and explicit backup exclusions win. No forge account is needed for
+local capture; configured remote backup/sync includes the same portable files.
+
+Restoring or pulling transcript replacements fences new sends, drains saved work
+and refuses active/unsettled turns. Idle chats and indexes reload after
+application. Restored pending messages remain unknown/interrupted and never
+execute automatically. Ordinary file/folder-picker exclusions are separate.
+
+The native AgentStore/ThreadStore experiment is Deferred at
+`codex/desktop-jj-chat-checkpoint-20261020`; its objects, journals, receipts and
+selection records are retained in place without migration or automatic export.
+Agent profiles/avatars, Markdown and legacy mentions, profile hover cards,
+automatic follow-up tags and Document/Classic views remain available.
 
 Comments on a recorded answer, code, table or tool result can accompany a
 message or be sent on their own. New completed Codex answers retain their exact

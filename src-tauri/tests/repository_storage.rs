@@ -159,6 +159,7 @@ fn backup_watches_skip_large_metadata_trees_and_do_not_react_to_their_own_writes
                 scope: String::new(),
                 recursive: true,
                 ignored_names: vec![".jj".into(), ".git".into(), ".lapis".into()],
+                backup_content: false,
             },
             Arc::new(Mutex::new(())),
             move |batch| sender.send(batch).is_ok(),

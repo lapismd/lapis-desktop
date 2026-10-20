@@ -23,25 +23,12 @@ const native = {
   },
 };
 
-it("preserves opaque native identity without synthesizing a file location or UUID", () => {
-  const state = stateWithConversationRoute(
-    { label: "AI", ...location },
-    native,
-  );
-  expect(state).toEqual({ label: "AI", conversationRoute: native });
-  expect(conversationRouteFromState(JSON.parse(JSON.stringify(state)))).toEqual(
-    native,
-  );
-  expect(state).not.toHaveProperty("scopeDir");
-  expect(state).not.toHaveProperty("conversationId");
-  const recorded = {
-    ...native,
-    conversation: {
-      ...native.conversation,
-      target: { type: "recorded" as const, session: "c".repeat(32) },
-    },
-  };
-  expect(conversationRoute(recorded)).toEqual(recorded);
+it("ignores retired native routes without treating their identifiers as local files", () => {
+  expect(conversationRouteFromState({ conversationRoute: native })).toBeNull();
+  expect(() => conversationRoute(native)).toThrow(/route/);
+  expect(
+    stateWithConversationRoute({ conversationRoute: native }, null),
+  ).toEqual({});
 });
 
 it("retains explicit file routes and reads legacy state only as a file reference", () => {
@@ -63,17 +50,14 @@ it("retains explicit file routes and reads legacy state only as a file reference
   expect(conversationRouteFromState({ title: "New conversation" })).toBeNull();
 });
 
-it("never falls through a malformed or ambiguous native route into legacy state", () => {
+it("never interprets obsolete native IDs as a file route, even with legacy fields", () => {
   for (const state of [
     { ...location, conversationRoute: native },
     { conversationRoute: { ...native, version: 2 } },
+  ])
+    expect(conversationRouteFromState(state)).toBeNull();
+  for (const state of [
     { conversationRoute: { ...native, backend: "automatic" } },
-    {
-      conversationRoute: {
-        ...native,
-        conversation: { ...native.conversation, repository: null },
-      },
-    },
     { scopeDir: "Notes" },
     { conversationId: location.conversationId },
   ])
@@ -115,29 +99,13 @@ it("rejects handles, selections, content and other authority in persisted routes
     ).toThrow(/route/);
 });
 
-it("does not alias repositories, target kinds or file scopes when matching panes", () => {
-  expect(sameConversationRoute(native, structuredClone(native))).toBe(true);
-  expect(
-    sameConversationRoute(native, {
-      ...native,
-      conversation: { ...native.conversation, repository: "d".repeat(32) },
-    }),
-  ).toBe(false);
-  expect(
-    sameConversationRoute(native, {
-      ...native,
-      conversation: {
-        ...native.conversation,
-        target: { type: "recorded", session: "a".repeat(32) },
-      },
-    }),
-  ).toBe(false);
+it("does not alias local file scopes when matching panes", () => {
   const file = {
     version: 1 as const,
     backend: "vault-files" as const,
     location,
   };
-  expect(sameConversationRoute(native, file)).toBe(false);
+  expect(sameConversationRoute(file, structuredClone(file))).toBe(true);
   expect(
     sameConversationRoute(file, {
       ...file,
