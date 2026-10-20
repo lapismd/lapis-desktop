@@ -13,6 +13,7 @@ export class RepositoryBackup {
   readonly controller: BackupController;
   #progress?: () => void;
   readonly sync?: RepositorySync;
+  #enabled = false;
   constructor(
     readonly plugin: RepositoryPlugin,
     services: RepositoryServices,
@@ -38,6 +39,7 @@ export class RepositoryBackup {
         ),
     });
     const enabled = automaticBackup((await this.plugin.loadData()) ?? {});
+    this.#enabled = enabled;
     // Admit the worker now; its first scan must not hold plugin/shell startup.
     if (enabled)
       void this.controller.start().catch((error) => this.plugin.report(error));
@@ -45,9 +47,16 @@ export class RepositoryBackup {
     await this.sync?.start();
   }
   async setEnabled(enabled: boolean) {
+    this.#enabled = enabled;
     if (enabled) await this.controller.start();
     else await this.controller.pause();
     await this.sync?.start();
+  }
+  async prepareLeave() {
+    await this.controller.pause();
+  }
+  async resumeLeave() {
+    if (this.#enabled) await this.controller.resume();
   }
   async close() {
     this.sync?.close();

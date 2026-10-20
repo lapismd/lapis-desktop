@@ -23,15 +23,15 @@ pub struct Request {
 pub(super) struct Owner {
     pub window: String,
     pub backup: Backup,
-    watch: String,
-    events: Option<tokio::task::JoinHandle<()>>,
+    pub(super) watch: Option<String>,
+    pub(super) events: Option<tokio::task::JoinHandle<()>>,
 }
 pub struct Backups {
     pub(super) locations: Locations,
-    entries: Mutex<HashMap<String, Owner>>,
+    pub(super) entries: Mutex<HashMap<String, Owner>>,
     active: Arc<AtomicBool>,
 }
-fn error(value: impl std::fmt::Display) -> NativeError {
+pub(super) fn error(value: impl std::fmt::Display) -> NativeError {
     io::Error::other(format!("Vault backup: {value}")).into()
 }
 impl Backups {
@@ -61,40 +61,35 @@ impl Backups {
     pub fn fence(&self) {
         self.active.store(false, Ordering::Release);
     }
-    pub async fn close_window(&self, host: NativeHost, window: &str) -> Result<(), NativeError> {
-        let sessions: Vec<_> = self
-            .entries
-            .lock()
-            .await
-            .iter()
-            .filter(|(_, owner)| owner.window == window)
-            .map(|(session, _)| session.clone())
-            .collect();
-        let mut failure = None;
-        for session in sessions {
-            if let Err(error) = self.close(host.clone(), &session).await {
-                failure.get_or_insert(error);
+    async fn prepare_start(
+        &self,
+        host: NativeHost,
+        session: &str,
+        window: &str,
+    ) -> Result<(), NativeError> {
+        let draining = {
+            let entries = self.entries.lock().await;
+            if let Some(owner) = entries.get(session) {
+                if owner.window != window {
+                    return Err(error("Backup belongs to another window"));
+                }
+                owner.watch.is_none()
+            } else {
+                false
             }
-        }
-        match failure {
-            Some(error) => Err(error),
-            None => Ok(()),
-        }
-    }
-    pub async fn close(&self, host: NativeHost, session: &str) -> Result<(), NativeError> {
-        let mut entries = self.entries.lock().await;
-        let Some(owner) = entries.get_mut(session) else {
-            return Ok(());
         };
-        let key = session.to_owned();
-        let watch = owner.watch.clone();
-        // Stop delivery before the final capture, after editor persistence.
-        access(host, move |s| s.watches.close(&key, &watch)).await?;
-        // Keep the original owner and status stream on failure or cancellation.
-        owner.backup.try_close().await.map_err(error)?;
-        let owner = entries.remove(session).unwrap();
-        if let Some(events) = owner.events {
-            events.abort();
+        if draining && let Err(failure) = self.close(host, session).await {
+            // Failed capture restores watching; an unknown close is resolved
+            // before this owner is reattached or a replacement is created.
+            if !self
+                .entries
+                .lock()
+                .await
+                .get(session)
+                .is_some_and(|owner| owner.watch.is_some())
+            {
+                return Err(failure);
+            }
         }
         Ok(())
     }
@@ -117,6 +112,10 @@ pub async fn desktop_backup_start(
         Ok((s.vaults.descriptor(&session)?.clone(), s.fs_gate.clone()))
     })
     .await?;
+    repository
+        .backups
+        .prepare_start(host.inner().clone(), &request.session_id, &caller.window)
+        .await?;
     let mut entries = repository.backups.entries.lock().await;
     if !entries.contains_key(&request.session_id) {
         let binding = super::storage::resolve(&repository, descriptor, true).await?;
@@ -132,29 +131,11 @@ pub async fn desktop_backup_start(
             Timing::default(),
         )
         .map_err(error)?;
-        let changes = backup.changes();
-        let session = request.session_id.clone();
-        let watch = access(host.inner().clone(), move |s| {
-            s.watches.start_filtered(
-                &session,
-                s.vaults.get(&session)?,
-                lapis_desktop::watch::WatchOptions {
-                    scope: String::new(),
-                    recursive: true,
-                    ignored_names: [".jj", ".git", ".lapis", ".DS_Store"]
-                        .into_iter()
-                        .map(str::to_owned)
-                        .collect(),
-                },
-                s.fs_gate.clone(),
-                move |batch| {
-                    if !batch.changes.is_empty() || batch.reconciliation {
-                        changes.changed();
-                    }
-                    true
-                },
-            )
-        })
+        let watch = super::backup_watch::start(
+            host.inner().clone(),
+            request.session_id.clone(),
+            backup.changes(),
+        )
         .await;
         let watch = match watch {
             Ok(watch) => watch,
@@ -196,7 +177,7 @@ pub async fn desktop_backup_start(
             Owner {
                 window: caller.window.clone(),
                 backup,
-                watch,
+                watch: Some(watch),
                 events: None,
             },
         );

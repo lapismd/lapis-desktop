@@ -2,10 +2,12 @@
 #[allow(unsafe_code)]
 pub(crate) mod macos_chrome;
 pub(crate) mod navigation;
+pub(crate) mod popups;
+pub(crate) mod related;
 
-use tauri::{
-    AppHandle, Emitter, Manager, WebviewWindow, WebviewWindowBuilder, webview::NewWindowResponse,
-};
+#[cfg(feature = "e2e")]
+use tauri::webview::NewWindowResponse;
+use tauri::{AppHandle, Emitter, Manager, WebviewWindow, WebviewWindowBuilder};
 
 fn route_link(app: &AppHandle, url: &url::Url) {
     if lapis_desktop::integration::urls::supported_scheme(url.scheme()) {
@@ -39,7 +41,23 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
                 let host = resources.state::<crate::host::state::NativeHost>();
                 let result = match host.0.lock() {
                     Ok(services) => {
-                        lapis_desktop::plugins::assets::response(&services.vaults, &request)
+                        let path = request
+                            .uri()
+                            .path()
+                            .trim_start_matches(lapis_desktop::plugins::assets::PREFIX);
+                        if related::resource_allowed(
+                            &resources,
+                            "main",
+                            &format!("/{path}"),
+                            &services.vaults,
+                        ) {
+                            lapis_desktop::plugins::assets::response(&services.vaults, &request)
+                        } else {
+                            tauri::http::Response::builder()
+                                .status(403)
+                                .body(Vec::new())
+                                .unwrap()
+                        }
                     }
                     Err(_) => tauri::http::Response::builder()
                         .status(503)
@@ -65,11 +83,12 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
         })
         .on_new_window(move |url, _features| {
             #[cfg(feature = "e2e")]
-            if let Some(response) = crate::acceptance::popouts::open(&popup, &url, _features) {
-                return response;
+            if matches!(crate::acceptance::popouts::mode(), Some("allow" | "deny")) {
+                return crate::acceptance::popouts::open(&popup, &url, _features)
+                    .unwrap_or(NewWindowResponse::Deny);
             }
             route_link(&popup, &url);
-            NewWindowResponse::Deny
+            related::open(&popup, &url, _features)
         })
         .on_page_load(|window, payload| {
             if payload.event() == tauri::webview::PageLoadEvent::Finished {

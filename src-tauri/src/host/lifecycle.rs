@@ -49,6 +49,7 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             event: WindowEvent::Destroyed,
             ..
         } => {
+            crate::host::windows::popups::destroyed(app, &label);
             crate::host::ai::imports::window_destroyed(app, &label);
             crate::host::ai::admission::window_destroyed(app, &label);
             crate::host::repository::commands::window_destroyed(app, &label);
@@ -61,6 +62,16 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
                 crate::host::integration::enqueue(app, url.to_string());
             }
             crate::host::integration::raise(app);
+        }
+        RunEvent::WindowEvent {
+            label,
+            event: WindowEvent::CloseRequested { api, .. },
+            ..
+        } if label.starts_with("workspace-popup-") => {
+            api.prevent_close();
+            if let Err(error) = crate::host::windows::popups::request_close(app, &label) {
+                let _ = app.emit_to("main", "lapis-integration-error", error);
+            }
         }
         RunEvent::WindowEvent {
             label,

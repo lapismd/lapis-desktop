@@ -9,6 +9,7 @@
   import { createNativeAi } from "../../lib/native/ai/services.ts";
   import { createNativeRepository } from "../../lib/native/repository/services.ts";
   import type { AiServices } from "../../lib/ai/plugin/services.ts";
+  import type { DesktopPopouts } from "../../lib/desktop/workspace-popouts.ts";
   import { openNotesSession } from "../../lib/notes/notes-session.ts";
   import {
     normalRecovery,
@@ -29,11 +30,16 @@
     client,
     urlDelivery,
     pluginDistributionOptions,
+    createPopouts,
     createAi = (app, vault, tools) => createNativeAi(app, vault, { tools }),
   }: {
     client: VaultClient;
     urlDelivery: DesktopUrlDelivery;
     pluginDistributionOptions?: AppPluginDistributionOptions;
+    createPopouts?: (
+      app: import("@lapis-notes/api").App,
+      vault: VaultDescriptor,
+    ) => Promise<DesktopPopouts>;
     createAi?: (
       app: import("@lapis-notes/api").App,
       vault: VaultDescriptor,
@@ -205,6 +211,9 @@
       createTerminal={(app) => createNativeTerminal(app, selected!)}
       createAi={(app, tools) => createAi(app, selected!, tools)}
       createRepository={() => createNativeRepository(selected!)}
+      createPopouts={createPopouts
+        ? (app) => createPopouts!(app, selected!)
+        : undefined}
       onRestart={restartNotes}
       onBack={back}
       onReady={async () => {

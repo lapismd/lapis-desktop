@@ -245,5 +245,9 @@ by the task ledger, not inferred from this list.
 - [Agents settings category and forge-style rows](E-AI-066.md)
 
 - [Native workspace-window session registry](E-POPOUT-003.md)
-- [Native backup recovery and close retry](E-REPO-048.md)
+- [Native workspace popout integration](E-POPOUT-004.md)
+- [Cold ordinary-app automatic backup](E-REPO-046.md)
 - [Cold native vault-history identity](E-REPO-047.md)
+- [Native backup recovery and close retry](E-REPO-048.md)
+- [Native backup watch recovery](E-REPO-049.md)
+- [Retain the workspace on final persistence failure](E-REPO-050.md)

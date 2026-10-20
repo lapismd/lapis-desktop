@@ -19,6 +19,9 @@ import { createNativeBridge } from "../native/native-bridge.ts";
 import { installDesktopLifecycle } from "./desktop-lifecycle.ts";
 import { installWindowDragRegions } from "./window-drag.ts";
 import { invoke } from "@tauri-apps/api/core";
+import { Notice } from "@lapis-notes/api";
+import { createNativeWorkspaceWindows } from "../native/workspace-windows.ts";
+import type { DesktopPopouts } from "./workspace-popouts.ts";
 import { installDesktopMenu } from "./desktop-integration.ts";
 import { DesktopUrlDelivery } from "../native/integration-urls.ts";
 import {
@@ -31,6 +34,8 @@ export async function bootstrapDesktop(
   pluginDistributionOptions?: AppPluginDistributionOptions,
 ): Promise<void> {
   const vaultClient = new VaultClient();
+  const openPopup = window.open.bind(window);
+  let popouts: DesktopPopouts | undefined;
 
   const stopDragRegions = installWindowDragRegions(document.documentElement);
   addEventListener("pagehide", stopDragRegions, { once: true });
@@ -54,6 +59,7 @@ export async function bootstrapDesktop(
     report,
     urlDelivery,
     () => shell?.canEdit() ?? false,
+    () => popouts?.focusedDocument(document) ?? document,
   );
   addEventListener(
     "pagehide",
@@ -101,6 +107,20 @@ export async function bootstrapDesktop(
           client: vaultClient,
           urlDelivery,
           pluginDistributionOptions,
+          createPopouts: async (app, selected) => {
+            popouts = await createNativeWorkspaceWindows(
+              selected.sessionId,
+              openPopup,
+              (failure) => {
+                new Notice(
+                  failure instanceof Error ? failure.message : String(failure),
+                  undefined,
+                  app,
+                );
+              },
+            );
+            return popouts;
+          },
         },
       });
       return shell;

@@ -64,38 +64,43 @@ export function externalLink(value: string, origin: string): string | null {
 export function installDesktopExternalLinks(
   ports: DesktopIntegrationPorts,
   report: (error: unknown) => void,
+  owner: Window = window,
+  origin = location.origin,
 ): () => void {
-  const original = window.open;
+  const original = owner.open;
   const open = (value: string) => {
     if (/^(?:lapis|lapis-notes|web\+lapis|obsidian):/iu.test(value)) {
       void ports.openAppUrl(value).catch(report);
       return;
     }
-    const url = externalLink(value, location.origin);
+    const url = externalLink(value, origin);
     if (url) void ports.openExternal(url).catch(report);
   };
-  window.open = (value) => {
+  owner.open = (value) => {
     if (value) open(String(value));
     return null;
   };
   const click = (event: MouseEvent) => {
     if (event.defaultPrevented) return;
+    const target = event.target as Element | null;
     const anchor =
-      event.target instanceof Element ? event.target.closest("a[href]") : null;
-    if (!(anchor instanceof HTMLAnchorElement)) return;
+      typeof target?.closest === "function"
+        ? target.closest<HTMLAnchorElement>("a[href]")
+        : null;
+    if (!anchor) return;
     if (/^(?:lapis|lapis-notes|web\+lapis|obsidian):/iu.test(anchor.href)) {
       event.preventDefault();
       void ports.openAppUrl(anchor.href).catch(report);
       return;
     }
-    const url = externalLink(anchor.href, location.origin);
+    const url = externalLink(anchor.href, origin);
     if (!url) return;
     event.preventDefault();
     void ports.openExternal(url).catch(report);
   };
-  window.addEventListener("click", click);
+  owner.addEventListener("click", click);
   return () => {
-    window.open = original;
-    window.removeEventListener("click", click);
+    owner.open = original;
+    owner.removeEventListener("click", click);
   };
 }

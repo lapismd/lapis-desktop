@@ -8,9 +8,14 @@ unchanged.
 
 E-POPOUT-003 begins M7.3 with the session registry. Its ordinary-window gate
 remains open; the user deferred release while resuming other implementation.
+E-POPOUT-004 adds ordinary integration and retains the failed cold-window
+attempt. The shared live-layout repair is qualified upstream; Desktop archive
+refresh and native save/close acceptance remain open under LD-MIG-002.
 
 E-REPO-047 completes M14.1 native identity/storage. E-REPO-048 qualifies
-final-capture retry; M14.2 retains its original gate.
+final-capture retry; M14.2 retains its original gate. E-REPO-049 repairs native
+watch recovery; E-REPO-050 retains the pending final-persistence preflight. No
+original completion gate changes.
 
 ## Current checkpoint — 2026-10-20
 
@@ -33,7 +38,8 @@ source/native, renderer, catalog/accessibility, type and renderer-build checks
 pass as recorded. Cold actual-app capture/reopen/close/crash/restore,
 search/storage/adoption and real-provider sign-in/push/pull/recovery remain
 unqualified; final integration/UI has no fresh native review-app acceptance.
-M14/M14.1–7 remain Partial, with no active implementation stage.
+E-REPO-047 qualifies M14.1 cold identity/storage. Other M14 tasks retain
+Partial; E-REPO-046 continues ordinary-App capture/close acceptance.
 
 E-REPO-042 reconciles the roadmap, plugin plan, task next actions and generated
 summary under unchanged LD-MIG-002/LD-GOV-004. The summary lists completed and

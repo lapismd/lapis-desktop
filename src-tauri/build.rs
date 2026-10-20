@@ -35,6 +35,7 @@ fn main() {
         "desktop_repository_working_copy",
         "shell_info",
         "shell_ready",
+        "desktop_workspace_windows",
         "desktop_clipboard_read",
         "desktop_clipboard_write",
         "desktop_external_open",

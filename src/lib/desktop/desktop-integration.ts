@@ -28,12 +28,13 @@ export async function installDesktopMenu(
   report: (failure: unknown) => void,
   urls: DesktopUrlDelivery,
   canEdit: () => boolean,
+  focusedDocument: () => Document = () => document,
 ): Promise<() => void> {
   const stopMenu = await listen<string>("lapis-menu-action", ({ payload }) => {
     if (payload === "open-vault") void openVaults().catch(report);
     else if ((payload === "undo" || payload === "redo") && canEdit())
       runFocusedHistory(
-        document,
+        focusedDocument(),
         payload,
         document.documentElement.dataset.lapisPlatform === "macos",
       );

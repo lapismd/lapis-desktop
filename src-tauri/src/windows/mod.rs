@@ -1,5 +1,5 @@
 //! Session-only related windows. This registry grants no filesystem or IPC access.
-use std::collections::HashMap;
+use std::collections::{HashMap, VecDeque};
 use uuid::Uuid;
 
 const MAX_WINDOWS: usize = 16;
@@ -12,6 +12,9 @@ pub struct WindowTicket {
 impl WindowTicket {
     pub fn label(&self) -> &str {
         &self.label
+    }
+    pub fn url(&self) -> String {
+        "about:blank".into()
     }
 }
 
@@ -34,6 +37,7 @@ pub enum CloseOutcome {
 }
 
 enum WindowState {
+    Issued,
     Reserved,
     Open,
     CloseRequested(Uuid),
@@ -49,9 +53,48 @@ struct Session {
 pub struct WorkspaceWindows {
     session: Option<Session>,
     windows: HashMap<String, WindowState>,
+    issued: VecDeque<String>,
 }
 
 impl WorkspaceWindows {
+    pub fn session_id(&self) -> Option<&str> {
+        self.session.as_ref().map(|session| session.id.as_str())
+    }
+
+    pub fn window_session(&self, label: &str) -> Option<&str> {
+        self.session_id()
+            .filter(|session| self.authorizes(label, session))
+    }
+
+    /// Related macOS views share scheme handlers; every App resource stays scoped.
+    pub fn resource_session(&self, label: &str) -> Option<&str> {
+        if label == "main" {
+            self.session_id()
+        } else {
+            self.window_session(label)
+        }
+    }
+
+    pub fn pending_close(&self, label: &str) -> Option<CloseRequest> {
+        match self.windows.get(label) {
+            Some(WindowState::CloseRequested(request_id)) => Some(CloseRequest {
+                label: label.into(),
+                request_id: *request_id,
+            }),
+            _ => None,
+        }
+    }
+
+    pub fn has_windows(&self) -> bool {
+        self.windows
+            .values()
+            .any(|state| !matches!(state, WindowState::Issued))
+    }
+
+    pub fn available_capacity(&self) -> usize {
+        MAX_WINDOWS.saturating_sub(self.windows.len())
+    }
+
     /// The host must verify the vault session before beginning window admission.
     pub fn begin(&mut self, id: &str) -> Result<(), &'static str> {
         if id.is_empty() || id.len() > 256 || id.chars().any(char::is_control) {
@@ -73,11 +116,19 @@ impl WorkspaceWindows {
     }
 
     pub fn reserve(&mut self, opener: &str, url: &str) -> Result<WindowTicket, &'static str> {
+        if url != "about:blank" {
+            return Err("Related window creation is unavailable");
+        }
+        let ticket = self.issue(opener)?;
+        self.claim(opener, &ticket.url())
+    }
+
+    pub fn issue(&mut self, opener: &str) -> Result<WindowTicket, &'static str> {
         let session = self
             .session
             .as_ref()
             .ok_or("No workspace session is active")?;
-        if opener != "main" || url != "about:blank" || !session.accepting {
+        if opener != "main" || !session.accepting {
             return Err("Related window creation is unavailable");
         }
         if self.windows.len() >= MAX_WINDOWS {
@@ -88,8 +139,47 @@ impl WorkspaceWindows {
             generation: session.generation,
         };
         self.windows
-            .insert(ticket.label.clone(), WindowState::Reserved);
+            .insert(ticket.label.clone(), WindowState::Issued);
+        self.issued.push_back(ticket.label.clone());
         Ok(ticket)
+    }
+
+    pub fn claim(&mut self, opener: &str, url: &str) -> Result<WindowTicket, &'static str> {
+        let session = self
+            .session
+            .as_ref()
+            .filter(|session| session.accepting)
+            .ok_or("No workspace session is active")?;
+        if opener != "main" || url != "about:blank" {
+            return Err("Related windows require the main blank-window opener");
+        }
+        let label = self
+            .issued
+            .front()
+            .ok_or("A native creation ticket is required")?
+            .clone();
+        if !matches!(self.windows.get(&label), Some(WindowState::Issued)) {
+            return Err("Related window creation ticket is stale");
+        }
+        let ticket = WindowTicket {
+            label: label.clone(),
+            generation: session.generation,
+        };
+        self.issued.pop_front();
+        self.windows.insert(label, WindowState::Reserved);
+        Ok(ticket)
+    }
+
+    pub fn cancel_ticket(&mut self, label: &str) -> Result<(), &'static str> {
+        if matches!(
+            self.windows.get(label),
+            Some(WindowState::Open | WindowState::CloseRequested(_) | WindowState::Closing)
+        ) {
+            return Err("A live related window requires guarded close");
+        }
+        self.windows.remove(label);
+        self.issued.retain(|issued| issued != label);
+        Ok(())
     }
 
     pub fn commit(&mut self, ticket: &WindowTicket) -> Result<(), &'static str> {
@@ -130,7 +220,9 @@ impl WorkspaceWindows {
                 }))
             }
             WindowState::CloseRequested(_) | WindowState::Closing => Ok(None),
-            WindowState::Reserved => Err("Related window creation is incomplete"),
+            WindowState::Issued | WindowState::Reserved => {
+                Err("Related window creation is incomplete")
+            }
         }
     }
 
@@ -161,6 +253,7 @@ impl WorkspaceWindows {
 
     pub fn retire(&mut self, label: &str) {
         self.windows.remove(label);
+        self.issued.retain(|issued| issued != label);
     }
 
     pub fn fence(&mut self, id: &str) -> Result<(), &'static str> {
@@ -170,8 +263,9 @@ impl WorkspaceWindows {
             .filter(|session| session.id == id)
             .ok_or("Workspace session is stale")?;
         session.accepting = false;
+        self.issued.clear();
         self.windows
-            .retain(|_, state| !matches!(state, WindowState::Reserved));
+            .retain(|_, state| !matches!(state, WindowState::Issued | WindowState::Reserved));
         Ok(())
     }
 

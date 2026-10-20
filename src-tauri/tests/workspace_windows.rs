@@ -1,6 +1,86 @@
 use lapis_desktop::windows::{CloseOutcome, WorkspaceWindows};
 
 #[test]
+fn issued_blank_window_tickets_are_bounded_and_can_be_claimed_only_once() {
+    let mut windows = WorkspaceWindows::default();
+    windows.begin("vault-a").unwrap();
+    let issued = windows.issue("main").unwrap();
+    assert!(!windows.authorizes(issued.label(), "vault-a"));
+    assert!(windows.claim("foreign", &issued.url()).is_err());
+    assert!(windows.claim("main", "about:blank#arbitrary").is_err());
+    let claimed = windows.claim("main", &issued.url()).unwrap();
+    assert_eq!(claimed.label(), issued.label());
+    assert!(windows.claim("main", &issued.url()).is_err());
+    windows.commit(&claimed).unwrap();
+    assert!(windows.authorizes(claimed.label(), "vault-a"));
+    assert!(windows.cancel_ticket(claimed.label()).is_err());
+    assert_eq!(windows.window_session(claimed.label()), Some("vault-a"));
+    let request = windows.request_close(claimed.label()).unwrap().unwrap();
+    assert_eq!(
+        windows.pending_close(claimed.label()).unwrap().request_id(),
+        request.request_id()
+    );
+}
+
+#[test]
+fn cancelled_and_fenced_creation_tickets_cannot_be_reused_after_resume() {
+    let mut windows = WorkspaceWindows::default();
+    windows.begin("vault-a").unwrap();
+    let first = windows.issue("main").unwrap();
+    windows.cancel_ticket(first.label()).unwrap();
+    assert!(windows.claim("main", &first.url()).is_err());
+    let second = windows.issue("main").unwrap();
+    windows.fence("vault-a").unwrap();
+    windows.resume("vault-a").unwrap();
+    assert!(windows.claim("main", &second.url()).is_err());
+    assert_eq!(windows.available_capacity(), 16);
+    assert!(!windows.has_windows());
+}
+
+#[test]
+fn blank_requests_claim_issued_identities_in_order_and_skip_cancelled_tickets() {
+    let mut windows = WorkspaceWindows::default();
+    windows.begin("vault-a").unwrap();
+    let first = windows.issue("main").unwrap();
+    let cancelled = windows.issue("main").unwrap();
+    let retired = windows.issue("main").unwrap();
+    let last = windows.issue("main").unwrap();
+    assert!(windows.claim("main", "about:blank#forged").is_err());
+    windows.cancel_ticket(cancelled.label()).unwrap();
+    let claimed_first = windows.claim("main", "about:blank").unwrap();
+    assert_eq!(claimed_first.label(), first.label());
+    windows.retire(retired.label());
+    let claimed_last = windows.claim("main", "about:blank").unwrap();
+    assert_eq!(claimed_last.label(), last.label());
+    assert!(windows.claim("main", "about:blank").is_err());
+    windows.commit(&claimed_first).unwrap();
+    windows.commit(&claimed_last).unwrap();
+    assert!(windows.authorizes(first.label(), "vault-a"));
+    assert!(windows.authorizes(last.label(), "vault-a"));
+    assert_eq!(windows.available_capacity(), 14);
+}
+
+#[test]
+fn shared_resource_handlers_keep_the_main_app_and_related_windows_in_one_vault() {
+    let mut windows = WorkspaceWindows::default();
+    assert_eq!(windows.resource_session("main"), None);
+    windows.begin("vault-a").unwrap();
+    assert_eq!(windows.resource_session("main"), Some("vault-a"));
+    assert_eq!(windows.resource_session("unowned"), None);
+    let ticket = windows.reserve("main", "about:blank").unwrap();
+    assert_eq!(windows.resource_session(ticket.label()), None);
+    windows.commit(&ticket).unwrap();
+    assert_eq!(windows.resource_session(ticket.label()), Some("vault-a"));
+    windows.fence("vault-a").unwrap();
+    assert_eq!(windows.resource_session("main"), Some("vault-a"));
+    assert_eq!(windows.resource_session(ticket.label()), Some("vault-a"));
+    windows.retire(ticket.label());
+    assert_eq!(windows.resource_session(ticket.label()), None);
+    windows.end("vault-a").unwrap();
+    assert_eq!(windows.resource_session("main"), None);
+}
+
+#[test]
 fn requires_an_active_session_main_opener_and_exact_blank_url() {
     let mut windows = WorkspaceWindows::default();
     assert!(windows.reserve("main", "about:blank").is_err());

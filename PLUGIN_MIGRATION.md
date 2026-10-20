@@ -5,21 +5,21 @@ one delivery sequence. It replaces the earlier separate plugin plans.
 
 ## Authorized delivery and tracking
 
-As of 2026-10-19, M8/M9 and M10.1 are Done; M10.2 remains In progress. M0–M7 and
-M7.1/M7.2 retain their completed gates. M7.3 ordinary native windows remain
-Planned and M8.5 retains its separate presentation gate. The earlier 2026-10-17
-review pause was followed by resumed delivery.
+As of 2026-10-20, M8/M9 and M10.1 are Done; M10.2 remains In progress. M0–M7 and
+M7.1/M7.2 retain their completed gates. M7.3 ordinary native windows are
+qualified and M8.5 retains its separate presentation gate. The earlier
+2026-10-17 review pause was followed by resumed delivery.
 
 [PLAN.md](PLAN.md) and the
 [task ledger](spec/src/current/progress/milestones.md) schedule Stages 0–3 as
 M8, Stage 4 as M9 and Stages 5–6 as M10. AI UI/shared transcript and native
 store/privacy/read prerequisites are implemented; managed execution,
 context/skills and durable conversation/restart qualification remain open under
-M10.2/M13.3. M10.3 tools/credentials follow, then M10.4 optional compute.
-Complete independent M7.3 ordinary pop-outs before M11 distribution and M12
-cutover. See [the current checkpoint](PLAN.md#current-delivery-checkpoint).
-Record and commit verified slices; a requested pause still stops work. This
-tracking refresh starts no product work and completes no product gate.
+M10.2/M13.3. M10.3 tools/credentials follow, then M10.4 optional compute. M7.3
+ordinary pop-outs are complete before M11 distribution and M12 cutover. See
+[the current checkpoint](PLAN.md#current-delivery-checkpoint). Record and commit
+verified slices; a requested pause still stops work. This tracking refresh
+starts no product work and completes no product gate.
 
 The subsequent M14 automatic-backup workstream has all seven stages integrated
 into main, including GitHub/Forgejo accounts and backup controls in plugin

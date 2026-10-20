@@ -4,6 +4,27 @@ use tauri::http::{Request, StatusCode};
 use tempfile::tempdir;
 
 #[test]
+fn resource_scope_decodes_tauri_paths_once_without_accepting_another_identity() {
+    for path in [
+        "/active/caf%C3%A9.png",
+        "/active%2Fcaf%C3%A9.png",
+        "/%61ctive%2Fpixel.png",
+    ] {
+        assert!(resources::matches_token(path, "active"), "refused {path}");
+    }
+    for path in [
+        "/other%2Fpixel.png",
+        "/active-other/pixel.png",
+        "/active%252Fpixel.png",
+        "/active",
+        "active/pixel.png",
+        "/%FF/pixel.png",
+    ] {
+        assert!(!resources::matches_token(path, "active"), "admitted {path}");
+    }
+}
+
+#[test]
 fn scoped_binary_resources_have_headers_and_are_revoked_on_close() {
     let profile = tempdir().unwrap();
     let root = tempdir().unwrap();

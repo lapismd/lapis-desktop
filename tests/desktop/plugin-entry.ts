@@ -1,5 +1,6 @@
 import { Plugin, type App } from "@lapis-notes/api";
 import { installDistributionAcceptance } from "./distribution-entry.ts";
+import { installWorkspacePopupAcceptance } from "./popout-session.ts";
 
 /** Passive ownership/worker observation confined to the compiled e2e entry. */
 export function installPluginAcceptance(): void {
@@ -49,6 +50,7 @@ export function installPluginAcceptance(): void {
     return owned;
   }
   installDistributionAcceptance(application);
+  installWorkspacePopupAcceptance(application);
   Object.assign(globalThis, {
     __lapisPluginAcceptance: {
       async open(path: string) {

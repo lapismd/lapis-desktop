@@ -7,6 +7,17 @@ pub struct VaultResource {
     pub bytes: Vec<u8>,
 }
 
+/// Match the same once-decoded identity as the resource reader and Tauri URLs.
+pub fn matches_token(encoded_path: &str, expected: &str) -> bool {
+    percent_decode_str(encoded_path)
+        .decode_utf8()
+        .is_ok_and(|path| {
+            path.strip_prefix('/')
+                .and_then(|path| path.split_once('/'))
+                .is_some_and(|(token, _)| token == expected)
+        })
+}
+
 pub fn read(manager: &VaultManager, uri: &str) -> io::Result<VaultResource> {
     // Decode before path validation; URL normalization must not erase traversal.
     let parsed: tauri::http::Uri = uri.parse().map_err(|_| invalid("Invalid resource URL"))?;

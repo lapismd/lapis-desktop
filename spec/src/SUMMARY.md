@@ -302,5 +302,9 @@
 - [Unified indexed history in Search](history/E-REPO-045.md)
 
 - [Native workspace-window session registry](history/E-POPOUT-003.md)
-- [Native backup recovery and close retry](history/E-REPO-048.md)
+- [Native workspace popout integration](history/E-POPOUT-004.md)
+- [Cold ordinary-app automatic backup](history/E-REPO-046.md)
 - [Cold native vault-history identity](history/E-REPO-047.md)
+- [Native backup recovery and close retry](history/E-REPO-048.md)
+- [Native backup watch recovery](history/E-REPO-049.md)
+- [Retain the workspace on final persistence failure](history/E-REPO-050.md)

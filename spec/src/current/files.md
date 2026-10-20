@@ -1,5 +1,19 @@
 # File management (M5)
 
+E-REPO-049 restores backup watching after failed native capture. E-REPO-050
+retains the pending final-persistence preflight: failure must precede
+destructive workspace teardown and preserve the original editors/watch owners
+for retry.
+
+E-POPOUT-004 keeps detached editors under the original App writer guard. Leave
+fences creation and flushes controls in every owned document before disposing
+workspace windows, metadata or plugins. A failed guard preserves those owners
+and resumes watching and window admission. Native vault close rejects live
+related windows (LD-FILE-003/LD-LIFE-001/LD-POP-004). Resource scope checks
+decode Tauri URL paths once before comparing the active vault token; filesystem
+path, origin, media and close-time revocation checks remain enforced by the
+existing resource reader.
+
 E-CATALOG-015 exposes core `files.exclude` at Settings / Workspace / File
 discovery / Excluded paths. The shared API owns the editable string list and
 ordinary App configuration writer; `.git` and `.jj` remain the defaults and an

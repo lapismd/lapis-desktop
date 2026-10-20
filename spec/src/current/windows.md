@@ -1,5 +1,8 @@
 # Native workspace windows
 
+E-REPO-050 retains LD-POP-004's original final-persistence-before-teardown gate;
+failed backup preparation must preserve the same related editors and drafts.
+
 This post-M7 workstream follows [POPOUT_PLAN.md](../../../POPOUT_PLAN.md). M7.1
 proves the native hosting boundary before shared workspace changes or
 ordinary-app popup admission. M7.2 and M7.3 remain separate review slices.
@@ -26,8 +29,8 @@ M7.1 permits `about:blank` only from the main window's new-window callback in
 debug acceptance builds with `LAPIS_DESKTOP_POPOUT_PROOF=1`. A proof window
 inherits shell presentation, has a generated native label, and denies nested
 windows and nonblank navigation. It receives no new IPC capability grant. The
-ordinary renderer and native callback keep denying popup creation until M7.3
-supplies safe admission and shared close coordination.
+qualified M7.3 implementation supplies ordinary renderer admission and shared
+close coordination through the session registry below.
 
 Explicit background API acceptance creates only the hidden, unfocused main
 window and prohibits macOS activation. Its launcher removes popup-proof opt-in
@@ -40,16 +43,39 @@ destruction or host exit. No raw native pointer survives its live main-thread
 callback. The original 40px strip and y=20 native-control centers remain
 unchanged for the main window.
 
-## Remaining integration
+## Session integration
 
-M7.3 begins with a desktop-owned session registry. Only the active main session
-may reserve an exact `about:blank` related window, with at most sixteen pending
-or live windows. Creation tickets and close receipts are native-generated and
-cannot survive retirement or session replacement. Fencing invalidates pending
-creation before close, reload or vault switching; existing drafts retain their
-window until save admission succeeds. Failed saves keep the same window usable
-and require a fresh close request. This registry is a prerequisite for ordinary
-window admission, not acceptance of the complete native pop-out workflow.
+M7.3 uses a desktop-owned session registry. Only the active main session may
+open related blank windows, with at most sixteen issued, pending or live
+windows. The synchronous shared opener uses exact `about:blank`, preserving the
+initial related document without a later fragment navigation. Native claims
+consume preissued one-use identities in order; failed opens await cancellation
+or acknowledged fencing before another open can proceed. Arbitrary fragments and
+stale tickets are denied. Creation tickets and close receipts are
+native-generated and cannot survive retirement or session replacement. Fencing
+invalidates pending creation before close, reload or vault switching; existing
+drafts retain their window until save admission succeeds. Failed saves keep the
+same window usable and require a fresh close request. This registry is a
+prerequisite for ordinary window admission, not acceptance of the complete
+native pop-out workflow.
+
+The ordinary host supplies tickets before exposing the shared opener. Native
+close awaits the main App's existing asynchronous save guard. Only that App
+finishes a correlated close request; detached windows receive no IPC grants.
+Attachment/plugin reads remain restricted to the window's admitted vault. On
+macOS the supplied related configuration gets its own content controller before
+creation, retaining WebKit's opener/process relationship and separate message
+IPC callers. Before framework scripts run, `connect-src 'none'` confines fetch
+and network services to the main App, including scheme-based IPC. The detached
+SDK's message fallback retains its own native caller and receives no grant.
+Shared resource handlers, including main, are confined to the active App's
+vault; another admitted native vault cannot widen that scope. Main-window
+network and protocol IPC remain unchanged. Resource token checks use the same
+once-decoded path as the reader, including Tauri-encoded separators. Popup
+focus, dragging and zoom use named main-owned operations. Focus restores the
+native window and explicitly focuses its related webview before editor input.
+Closing the vault rejects while related windows remain; failed leave resumes the
+original owner.
 
 Native focus, resize and close use public Tauri operations on registered window
 labels. The renderer's Window and Document remain the shared surface's DOM host.
@@ -73,9 +99,9 @@ lifecycle and ordinary-bundle qualification. A passing proof is not evidence
 that tab transfer or native editing is implemented.
 
 Detached windows last for the current session only. Native cross-window drag
-transfer, independent-vault windows and restart restoration remain deferred. M8
-remains paused. Signing, publication and other-platform qualification retain
-their original deferred gates.
+transfer, independent-vault windows and restart restoration remain deferred.
+Signing, publication and other-platform qualification retain their original
+deferred gates.
 
 The main window’s bundled-origin resource hook validates installed plugin assets
 under the existing vault admission. This adds no popup admission or window
@@ -86,3 +112,7 @@ Window creation, navigation admission and macOS chrome group under
 `acceptance/popouts.rs`. The window contract maps those paths explicitly. The
 native chrome module alone retains its binary unsafe-code allowance; service
 code remains forbidden unsafe.
+
+E-POPOUT-004 qualifies M7.3 on macOS ARM64 with fourteen real Notes/native
+checks and both related-host allow/deny cases. E-REPO-050 additionally proves
+failed final persistence preserves the live editor before a successful retry.

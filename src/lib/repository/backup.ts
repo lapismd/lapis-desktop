@@ -23,6 +23,7 @@ export class BackupController {
   #running = false;
   #attempted = false;
   #epoch = 0;
+  #starting?: Promise<BackupStatus>;
   readonly service: BackupService;
   readonly feedback: { report(error: unknown): void; recovered(): void };
   constructor(
@@ -46,23 +47,34 @@ export class BackupController {
     for (const listener of this.#listeners) listener(status);
   }
   async start() {
+    await this.#start(true);
+  }
+  /** Reattach after a cancelled leave without consuming the retained worker. */
+  async resume() {
+    await this.#start(false);
+  }
+  async #start(drain: boolean) {
     if (this.#running || this.#closed) return;
     // A lost response can leave a native owner. Drain it before admitting a
     // replacement rather than treating an unknown stop as successful.
-    if (this.#attempted) await this.pause();
+    if (drain && this.#attempted) await this.pause();
     if (this.#closed) return;
     this.#running = true;
     this.#attempted = true;
     const epoch = ++this.#epoch;
     try {
       let events = 0;
-      const initial = await this.service.start((state) => {
+      const opening = this.service.start((state) => {
         if (epoch !== this.#epoch) return;
         events++;
         this.#set(state);
       });
+      this.#starting = opening;
+      const initial = await opening;
+      if (this.#starting === opening) this.#starting = undefined;
       if (events === 0 && epoch === this.#epoch) this.#set(initial);
     } catch (error) {
+      this.#starting = undefined;
       if (epoch !== this.#epoch) return;
       this.#running = false;
       this.#set({
@@ -96,6 +108,9 @@ export class BackupController {
     this.#epoch++;
     this.#running = false;
     try {
+      // A startup already admitted by the host must finish before its stop;
+      // otherwise a late start could outlive the close barrier.
+      if (this.#starting) await Promise.allSettled([this.#starting]);
       if (this.#attempted) await this.service.stop();
     } catch (error) {
       this.#set({

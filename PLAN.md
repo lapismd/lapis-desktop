@@ -2,7 +2,7 @@
 
 ## Current delivery checkpoint
 
-As of **2026-10-19**, the standalone Jujutsu repository, private npm package,
+As of **2026-10-20**, the standalone Jujutsu repository, private npm package,
 Tauri 2 Rust host and Svelte/Vite renderer exist. Saving this plan before
 scaffolding was the completed M0.0 task. This roadmap retains the original
 completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
@@ -10,9 +10,9 @@ completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 
 | Workstream                        | Implemented and verified                                                                                                                                       | Remaining completion gates                                                                                                                         |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | Ordinary native pop-outs are the separate In progress M7.3 task; M8.5 presentation acceptance remains In progress                                  |
+| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | M7.3 ordinary native pop-outs are qualified; M8.5 presentation acceptance remains In progress                                                      |
 | AI and conversations, M10/M13     | Reusable ACP adapter, retained AI UI/shared transcript, native privacy/store ownership and bounded conversation reads implemented; M10.1/M13.1/M13.2 qualified | M10.2/M13.3 managed renderer conversation/execution, context/skills and restart recovery; M10.3 tools/credentials and M10.4 compute remain Planned |
-| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14.1 native identity/storage is Done (E-REPO-047); other cold native/provider gates remain open                                                   |
+| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14.1 identity/storage and M14.2 capture/recovery are Done; restore/search/storage and real-provider gates remain                                  |
 | Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                                 |
 
 Repository History now includes automatic internal/external file capture,
@@ -20,20 +20,18 @@ vault-ID-owned external JJ storage, history/blame/diffs and guarded restoration,
 historical search, synchronization, optional root storage and original-history
 adoption. Accounts and backup controls are in **Settings → Repository History**,
 with GitHub/Forgejo icons and table-style sections (E-REPO-039–041). Production
-components are reviewable in Storybook; final integration/settings slices have
-no new actual native review-app acceptance recorded.
+components are reviewable in Storybook. Native identity/storage (M14.1) and
+capture/recovery (M14.2) are qualified. E-REPO-046/048–050 prove automatic
+internal/external capture, cold crash reconciliation, final-save failure,
+retained live editors, resumed watching, Quit retry and exact retained diffs
+after cold reopening. Restore/search/storage/adoption and real-provider gates
+remain open; see the
+[delivery checklist](docs/automatic-vault-backup-progress.md).
 
-No backup implementation stage is currently active. Next useful backup work is
-fresh cold native capture/reopen/close/crash/restore/search/storage/adoption
-acceptance, then real GitHub/Forgejo sign-in, push/pull and sync/recovery. These
-are pending gates, not background jobs. Updating this plan does not start them.
-See the [delivery checklist](docs/automatic-vault-backup-progress.md) for
-focused evidence and deferred checks. The 2026-10-17 review pause was followed
-by resumed implementation; it is not the current instruction to stop.
-
-M7.3 implementation resumed on 2026-10-20. E-POPOUT-003 qualifies the native
-session/window registry; ordinary creation, guarded close and actual-app
-acceptance remain open. Release and distribution work stay deferred.
+M7.3 is qualified by E-POPOUT-004: all fourteen actual Notes/native-window
+checks and both related-host allow/deny cases pass against the verified API and
+Design Core archives. M8.5 retains its original presentation gate. Release,
+signing and publication remain deferred.
 
 ## Original target and architecture
 
@@ -151,7 +149,7 @@ Commit each verified task in its owning repository.
 increments toward it. Later services do not block that milestone.
 
 M0–M9 meet their original gates, including M7.1–M7.2 and the M8 plugin
-foundation. M7.3 ordinary pop-outs are In progress and M8.5 retains its separate
+foundation. M7.3 ordinary pop-outs are qualified and M8.5 retains its separate
 presentation gate. M10.1's reusable ACP adapter and M13.1/M13.2
 admission/history are complete; M10.2/M13.3 managed conversations remain In
 progress. Native store construction, privacy/journal ownership, receipts and
@@ -168,21 +166,18 @@ The remaining AI/distribution sequence is:
    approvals and guarded reads/edits with the packaged Rust agent.
 3. **M10.4:** optional compute model lifecycle and peer admission, separately
    enabled and qualified.
-4. **M7.3:** integrate ordinary native pop-out windows and qualify editing,
-   saving, redocking, multiple-window isolation and safe closing. M7.1–M7.2's
-   proofs do not make the ordinary Open in new window action available.
-5. **M11:** publication/distribution prerequisites, signing/notarization,
+4. **M11:** publication/distribution prerequisites, signing/notarization,
    updates/rollback and separate Linux/Windows qualification. Signing remains
    deferred until this stage and requires the governing release authorization.
-6. **M12:** final capability audit, Tauri default and frozen Deno host removal.
+5. **M12:** final capability audit, Tauri default and frozen Deno host removal.
 
 Before admitting an AI execution target, cover full service shutdown after an
 uncertain model-probe close and revocation of running work when workspace trust
 changes. Native reload recovery still needs a durable consumed-event cursor;
 retain interrupted/unknown outcomes and never replay uncertain prompts.
 
-M7.3 remains independent of M8–M10 and is scheduled before distribution. Do not
-repeat completed foundation work or restore the frozen Deno host.
+M7.3 is complete independently of M8–M10. Retain its qualified window and
+resource boundaries; do not restore the frozen Deno host.
 
 ### Post-M7 plugin and Storybook sequence
 

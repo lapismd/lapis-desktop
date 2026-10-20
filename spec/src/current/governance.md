@@ -1,7 +1,7 @@
 # Governance
 
-E-POPOUT-003 starts M7.3 under LD-GOV-001–004. Its native registry and tests map
-to windows.md; ordinary-popup and release gates remain unqualified.
+E-POPOUT-004 extends M7.3 with the named main-owned window command. Its exact
+permission audit retains child IPC denial; release gates stay deferred.
 
 E-AI-031–033 qualify native boundaries; E-REPO-047 qualifies vault identity.
 LD-GOV-002 evidence rules and M13.3 native/restart gates remain unchanged.

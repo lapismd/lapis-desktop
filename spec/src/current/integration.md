@@ -9,6 +9,12 @@ Startup recovery's existing Copy error details action must copy the complete
 displayed diagnostic through the same native clipboard adapter, including when
 Notes startup failed before a ready workspace existed.
 
+Detached-window menus resolve the focused owned document for editor history.
+Clipboard/external links and reload continue through the original main-owned
+ports. Drag/zoom/focus accept only registered native window labels; a child
+document receives no IPC permission. E-POPOUT-004 retains
+LD-INT-003/004/008/009.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                          |

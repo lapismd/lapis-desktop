@@ -1,10 +1,13 @@
 //! Align native controls in the 40px Lapis header after AppKit relayout.
 //! Adapted from the jj-store Tauri shell; no native pointer leaves a live callback.
 use block2::RcBlock;
-use objc2::{rc::Retained, runtime::ProtocolObject};
+use objc2::{
+    rc::{Allocated, Retained},
+    runtime::ProtocolObject,
+};
 use objc2_app_kit::{NSWindow, NSWindowButton, NSWindowDidUpdateNotification, NSWindowStyleMask};
 use objc2_foundation::{
-    MainThreadMarker, NSNotification, NSNotificationCenter, NSObjectProtocol, NSPoint,
+    MainThreadMarker, NSNotification, NSNotificationCenter, NSObjectProtocol, NSPoint, NSString,
 };
 use std::{
     cell::{Cell, RefCell},
@@ -32,6 +35,34 @@ impl Drop for UpdateObserver {
 thread_local! {
     static OBSERVERS: RefCell<HashMap<String, UpdateObserver>> = RefCell::new(HashMap::new());
     static ALIGNING: Cell<bool> = const { Cell::new(false) };
+}
+
+/// Preserve WebKit's related configuration, with this window's own native caller.
+pub fn isolate_related_configuration(features: &tauri::webview::NewWindowFeatures) -> bool {
+    if MainThreadMarker::new().is_none() {
+        return false;
+    }
+    let Some(class) = objc2::runtime::AnyClass::get(c"WKUserContentController") else {
+        return false;
+    };
+    let Some(script_class) = objc2::runtime::AnyClass::get(c"WKUserScript") else {
+        return false;
+    };
+    // SAFETY: WebKit supplies this live target configuration on its main-thread
+    // new-window callback. A fresh retained controller lets Wry install the
+    // child's own scripts/message handler instead of reusing the opener's.
+    // The configuration, process pool and opener relationship stay unchanged.
+    unsafe {
+        let configuration = &features.opener().target_configuration;
+        let controller: Retained<_> = objc2::msg_send![class, new];
+        configuration.setUserContentController(&controller);
+        let script: Allocated<_> = objc2::msg_send![script_class, alloc];
+        let script: Retained<_> = objc2::msg_send![script,
+            initWithSource: &*NSString::from_str(include_str!("related-policy.js")),
+            injectionTime: 0isize, forMainFrameOnly: true];
+        controller.addUserScript(&script);
+    }
+    true
 }
 
 pub fn shutdown() {

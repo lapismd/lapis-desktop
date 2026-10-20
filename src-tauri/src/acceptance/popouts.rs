@@ -9,6 +9,7 @@ pub fn mode() -> Option<&'static str> {
     match std::env::var("LAPIS_DESKTOP_POPOUT_PROOF").as_deref() {
         Ok("1") => Some("allow"),
         Ok("deny") => Some("deny"),
+        Ok("session") => Some("session"),
         _ => None,
     }
 }
@@ -22,6 +23,10 @@ pub fn open(
     crate::acceptance::integration::record("popup-request", &format!("{url};enabled={enabled}"));
     if url.as_str() != "about:blank" || !enabled {
         return None;
+    }
+    #[cfg(target_os = "macos")]
+    if !crate::host::windows::macos_chrome::isolate_related_configuration(&features) {
+        return Some(NewWindowResponse::Deny);
     }
     let mut configuration = app.config().app.windows[0].clone();
     configuration.label = format!("popout-proof-{}", uuid::Uuid::new_v4());
@@ -66,7 +71,9 @@ pub struct ProofWindow {
 pub async fn windows(app: &AppHandle) -> Vec<ProofWindow> {
     let mut result = Vec::new();
     for window in app.webview_windows().into_values() {
-        if !window.label().starts_with("popout-proof-") {
+        if !window.label().starts_with("popout-proof-")
+            && !window.label().starts_with("workspace-popup-")
+        {
             continue;
         }
         let Ok(size) = window.inner_size() else {

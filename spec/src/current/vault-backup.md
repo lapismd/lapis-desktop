@@ -46,8 +46,11 @@ Native code chooses roots and paths. Source replacements revoke the binding. The
 writer shares the guarded file-IO gate and drains after normal editor saves.
 Vault/plugin close stops watching and completes final local capture before
 native release. A failed final capture retains the original native owner and
-visible failure; retry captures repaired saved files before release. Network
-failure cannot block saved-file closure.
+visible failure; retry captures repaired saved files before release. Final
+capture MUST complete before destructive workspace teardown. Failed leave MUST
+retain the same editor, views and plugin owners, resume both ordinary and backup
+watching, and permit a later retry. Reattachment MUST resolve any previous close
+outcome before starting another worker. Network failure cannot block closure.
 
 Automatic history enablement is independent of status visibility. The status
 control reports saving, saved, paused or attention; background work uses the

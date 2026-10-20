@@ -31,7 +31,7 @@
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
   import DesktopFailure from "./DesktopFailure.svelte";
-  import { leaveWithStoppedWatching } from "../../lib/notes/notes-leave.ts";
+  import { disposeNotesWorkspace } from "../../lib/notes/notes-dispose.ts";
   import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
   import { attachNotesUrls } from "../../lib/notes/notes-integration.ts";
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
@@ -39,6 +39,10 @@
   import type { TerminalFactory } from "../../lib/terminal/terminal-binding.ts";
   import type { AiFactory } from "../../lib/ai/plugin/services.ts";
   import type { RepositoryFactory } from "../../lib/repository/services.ts";
+  import type {
+    DesktopPopouts,
+    PopoutFactory,
+  } from "../../lib/desktop/workspace-popouts.ts";
   import { notesBundledPlugins } from "./notes-bundled-plugins.ts";
 
   let {
@@ -49,6 +53,7 @@
     createTerminal,
     createAi,
     createRepository,
+    createPopouts,
     onBack,
     onReady,
     onRestart,
@@ -62,6 +67,7 @@
     createTerminal?: TerminalFactory;
     createAi?: AiFactory;
     createRepository?: RepositoryFactory;
+    createPopouts?: PopoutFactory;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
     onRestart(mode: AppSafeModeState): Promise<void>;
@@ -90,6 +96,7 @@
   const disposePluginSettings = registerPluginManagementSettings(app);
   const disposePluginBrowser = registerDesktopPluginBrowser(app);
   let ready = $state(false);
+  let popouts = $state.raw<DesktopPopouts>();
   let busy = $state(true);
   let error = $state("");
   let startupFailure = $state<WorkspaceStartupFailure | null>(null);
@@ -141,6 +148,7 @@
         },
         onReady,
       });
+      if (!shutdown) popouts = await createPopouts?.(app);
       ready = true;
       await tick();
       try {
@@ -192,42 +200,41 @@
       if (focused instanceof HTMLElement) focused.blur();
       await tick();
       await startup;
+      await popouts?.fence();
+      popouts?.blurFocused();
+      await tick();
       busy = true;
       if (!coreDisposed) {
-        await leaveWithStoppedWatching(
-          app,
-          async () => {
-            await app.workspace.flushPluginChanges();
-            await app.plugins.flushPendingConfigWrites();
-            await app.fileEditingSessions.settleOperations();
-            await app.fileEditingSessions.guard(undefined, async () => {
-              await app.workspace.flushLayout();
-              bundled.prepareLeave(mode);
-              ready = false;
-              await app.workspace.disposeWorkspaceHost();
-              stopMetadataTracking?.();
-              await app.metadataCache.dispose();
-              for (const plugin of [...app.plugins.plugins.values()].reverse())
-                await plugin.disable();
-              await sync.dispose();
-              disposePluginSettings();
-              disposePluginBrowser();
-              coreDisposed = true;
-            });
+        await disposeNotesWorkspace(app, {
+          popouts,
+          prepareLeave: () => bundled.prepareLeave(mode),
+          resumeLeave: () => bundled.resumeLeave(),
+          beforeDispose: () => {
+            ready = false;
           },
-          () => ready && !coreDisposed,
-        );
+          stopMetadataTracking,
+          disposeSync: () => sync.dispose(),
+          disposeSettings: disposePluginSettings,
+          disposeBrowser: disposePluginBrowser,
+          complete: () => {
+            coreDisposed = true;
+          },
+          canResume: () => ready && !coreDisposed,
+        });
       }
       await app.fileEditingSessions.dispose();
       await session.close();
       bundled.dispose();
       releaseCompatibility();
       disposed = true;
-    })().catch((failure) => {
+    })().catch(async (failure) => {
       shutdown = undefined;
       error = message(failure);
       busy = false;
-      if (ready && !coreDisposed) stopUrls = attachNotesUrls(app, urlDelivery);
+      if (ready && !coreDisposed) {
+        await popouts?.resume();
+        stopUrls = attachNotesUrls(app, urlDelivery);
+      }
       throw failure;
     });
     return shutdown;
@@ -270,6 +277,7 @@
     <div class="notes-session-workspace" inert={busy}>
       <WorkspaceShell
         {app}
+        popoutHost={popouts?.host ?? null}
         {workspaceNavigation}
         displayMode="desktop"
         workspaceLabel={session.profile?.name}

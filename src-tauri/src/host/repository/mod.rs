@@ -1,7 +1,9 @@
 pub(crate) mod adoption;
 pub(crate) mod backup;
+mod backup_close;
 mod backup_provider;
 pub(crate) mod backup_restore;
+mod backup_watch;
 pub(crate) mod commands;
 pub(crate) mod forges;
 pub(crate) mod indexed_search;

@@ -73,7 +73,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:POPOUT_PLAN\\.md$|src-tauri/tests/workspace_windows\\.rs$|src-tauri/src/(?:windows/|host/windows/|acceptance/popouts\\.rs$)|tests/desktop/(?:popout-|PopoutProof))",
+              "^(?:POPOUT_PLAN\\.md$|src-tauri/tests/workspace_windows\\.rs$|src-tauri/src/(?:windows/|host/windows/|acceptance/popouts\\.rs$)|src/lib/(?:desktop/(?:popup-|workspace-popouts)|native/workspace-windows)|tests/renderer/(?:popout-|notes-dispose)|tests/desktop/(?:popout-|PopoutProof))",
             chapters: ["spec/src/current/windows.md"],
           },
           {
@@ -88,7 +88,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:src-tauri/src/(?:host/vault/|acceptance/actions\\.rs$|watch/|vault/(?:(?:action_targets|mutations|creates|staged|writes|resources)\\.rs|system_actions/))|src-tauri/tests/(?:system_action_targets|macos_system_actions|vault_(?:mutations|watch|creates)|watch_registry)\\.rs|src/lib/native/(?:native-bridge|file-watch|vault-client|vault-path)\\.ts|src/lib/notes/(?:notes-leave|notes-startup)\\.ts|src/components/views/NotesWorkspace\\.svelte|tests/renderer/notes-leave\\.test\\.mjs|tests/desktop/system-file-actions\\.test\\.mjs|tests/renderer/native-system-actions\\.test\\.mjs|tests/(?:desktop/file-|renderer/native-file-))",
+              "^(?:src-tauri/src/(?:host/vault/|acceptance/actions\\.rs$|watch/|vault/(?:(?:action_targets|mutations|creates|staged|writes|resources)\\.rs|system_actions/))|src-tauri/tests/(?:system_action_targets|macos_system_actions|vault_(?:mutations|watch|creates)|watch_registry)\\.rs|src/lib/native/(?:native-bridge|file-watch|vault-client|vault-path)\\.ts|src/lib/notes/(?:notes-leave|notes-startup|notes-dispose)\\.ts|src/components/views/NotesWorkspace\\.svelte|tests/renderer/notes-leave\\.test\\.mjs|tests/desktop/system-file-actions\\.test\\.mjs|tests/renderer/native-system-actions\\.test\\.mjs|tests/(?:desktop/file-|renderer/native-file-))",
             chapters: ["spec/src/current/files.md"],
           },
           {

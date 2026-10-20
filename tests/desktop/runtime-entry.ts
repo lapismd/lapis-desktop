@@ -121,3 +121,5 @@ Object.assign(globalThis, {
 
 const { runPopoutProof } = await import("./popout-runner.ts");
 await runPopoutProof();
+const { runWorkspacePopupAcceptance } = await import("./popout-session.ts");
+await runWorkspacePopupAcceptance();

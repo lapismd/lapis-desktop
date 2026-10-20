@@ -120,3 +120,45 @@ test("failed pause retains cleanup ownership and retries before enabling", async
   assert.equal(f.states.at(-1).phase, "ready");
   await f.controller.close();
 });
+
+test("pause waits for admitted startup before stopping its original owner", async () => {
+  const gate = Promise.withResolvers();
+  const f = fixture(async () => gate.promise);
+  const starting = f.controller.start();
+  const pausing = f.controller.pause();
+  assert.equal(f.calls.includes("stop"), false);
+  gate.resolve(ready);
+  await Promise.all([starting, pausing]);
+  assert.equal(f.calls.filter((value) => value === "stop").length, 1);
+  assert.equal(f.states.at(-1).phase, "closed");
+  f.changed(ready);
+  assert.equal(f.states.at(-1).phase, "closed");
+  await f.controller.close();
+});
+
+test("cancelled leave reattaches events without consuming the failed native owner again", async () => {
+  const f = fixture();
+  await f.controller.start();
+  f.service.stop = async () => {
+    f.calls.push("stop");
+    throw new Error("Final capture failed");
+  };
+  await assert.rejects(f.controller.pause(), /Final capture failed/);
+  await f.controller.resume();
+  assert.deepEqual(
+    f.calls.filter((value) => value === "start" || value === "stop"),
+    ["start", "stop", "start"],
+  );
+  f.changed({ ...ready, phase: "saving" });
+  assert.equal(f.states.at(-1).phase, "saving");
+  f.service.stop = async () => {};
+  await f.controller.close();
+});
+
+test("successful preflight is not repeated during final plugin disposal", async () => {
+  const f = fixture();
+  await f.controller.start();
+  await f.controller.pause();
+  await f.controller.close();
+  assert.equal(f.calls.filter((value) => value === "stop").length, 1);
+});

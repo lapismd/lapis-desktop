@@ -3,7 +3,7 @@ import { Window as NativeWindow } from "@tauri-apps/api/window";
 import { LogicalSize } from "@tauri-apps/api/dpi";
 
 type NativeInfo = {
-  popoutProofMode: "allow" | "deny" | null;
+  popoutProofMode: "allow" | "deny" | "session" | null;
   nativeChromeObservers: number;
   nativePopouts: {
     label: string;
@@ -47,7 +47,7 @@ async function until(check: () => boolean | Promise<boolean>, message: string) {
 export async function runPopoutProof(): Promise<void> {
   const info = () => invoke<NativeInfo>("shell_info");
   const mode = (await info()).popoutProofMode;
-  if (!mode) return;
+  if (mode !== "allow" && mode !== "deny") return;
   const driver = (globalThis as unknown as { __lapisPopoutProof: Driver })
     .__lapisPopoutProof;
   const checks: string[] = [];

@@ -1,10 +1,9 @@
 # Desktop shell
 
-E-POPOUT-003 adds the window registry; ordinary popup admission remains denied
-(LD-DESK-003/LD-POP-005).
+E-POPOUT-004: main-owned native pop-outs and save guards; no child IPC.
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
-E-REPO-035–041/047/048; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
+E-REPO-035–041/046–050; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 App watching starts after metadata/views; leave drains it; failure resumes it
@@ -86,13 +85,13 @@ pixels, and the control centers stay at y=20 in the 40px tabs. A macOS-only
 helper retains native button geometry and hover tracking after AppKit relayout.
 It borrows the live NSWindow only inside Tauri's main-thread callback or the
 window's own update notification. Each window's observer retires on destruction,
-with a reentrancy guard and no polling or stored raw pointers. Native interop
-stays in that one audited module; the rest of the binary denies unsafe code and
-the service library forbids it. No HTML traffic lights or tab transforms are
-added. Host CSS maps the Deno shell's 65px main-pane and 80px sidebar clearances
-through public Design Core window-control tokens, subtracting the ribbon width
-where appropriate. Expanded and collapsed sidebar states keep their controls
-clear without shifting tabs vertically.
+with a reentrancy guard and no polling or stored raw pointers. Native interop,
+including related script isolation, stays there. Other binary code denies unsafe
+code; the service library forbids it. No HTML traffic lights or tab transforms
+are added. Host CSS maps the Deno shell's 65px main-pane and 80px sidebar
+clearances through public Design Core window-control tokens, subtracting the
+ribbon width where appropriate. Expanded and collapsed sidebar states keep their
+controls clear without shifting tabs vertically.
 
 The host translates public `data-desktop-drag-region` backgrounds to Tauri's
 `data-tauri-drag-region="deep"`; explicit `false` descendants remain excluded.

@@ -53,10 +53,18 @@ export function notesBundledPlugins(
           },
         ]);
     },
-    prepareLeave(mode: "close" | "reload"): void {
+    async prepareLeave(mode: "close" | "reload"): Promise<void> {
+      const history = app.plugins.plugins.get("repository-history");
+      if (history instanceof RepositoryPlugin)
+        await history.backup?.prepareLeave();
       prepareTerminalLeave(app, mode);
       prepareAiLeave(app, mode);
       prepareRepositoryLeave(app, mode);
+    },
+    async resumeLeave(): Promise<void> {
+      const history = app.plugins.plugins.get("repository-history");
+      if (history instanceof RepositoryPlugin)
+        await history.backup?.resumeLeave();
     },
     dispose() {
       unbindHistory();

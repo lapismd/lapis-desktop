@@ -34,6 +34,7 @@ pub fn run() -> tauri::Result<()> {
         .manage(crate::host::integration::IntegrationState::default())
         .manage(commands_state())
         .manage(crate::host::lifecycle::NativeLifecycle::default())
+        .manage(crate::host::windows::popups::NativeWorkspaceWindows::default())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_clipboard_manager::init())
@@ -43,17 +44,22 @@ pub fn run() -> tauri::Result<()> {
                 .build(),
         )
         .register_uri_scheme_protocol("lapis-vault", |context, request| {
-            if context.webview_label() != "main" {
-                return tauri::http::Response::builder()
-                    .status(403)
-                    .body(Vec::new())
-                    .unwrap();
-            }
             let host = context
                 .app_handle()
                 .state::<crate::host::state::NativeHost>();
             match host.0.lock() {
                 Ok(services) => {
+                    if !crate::host::windows::related::resource_allowed(
+                        context.app_handle(),
+                        context.webview_label(),
+                        request.uri().path(),
+                        &services.vaults,
+                    ) {
+                        return tauri::http::Response::builder()
+                            .status(403)
+                            .body(Vec::new())
+                            .unwrap();
+                    }
                     lapis_desktop::vault::resources::response(&services.vaults, &request)
                 }
                 Err(_) => tauri::http::Response::builder()
@@ -114,6 +120,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::repository::working_copy::desktop_repository_working_copy,
             crate::host::shell::shell_info,
             crate::host::shell::shell_ready,
+            crate::host::windows::popups::desktop_workspace_windows,
             crate::host::integration::services::desktop_clipboard_read,
             crate::host::integration::services::desktop_clipboard_write,
             crate::host::integration::services::desktop_external_open,
