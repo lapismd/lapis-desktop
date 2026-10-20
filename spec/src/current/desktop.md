@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-POPOUT-004: main-owned native pop-outs and save guards; no child IPC.
+E-POPOUT-004 native pop-outs/IPC denial; E-CATALOG-016 conflict proof.
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
 E-REPO-035–041/046–052; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:

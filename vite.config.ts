@@ -71,7 +71,21 @@ export default defineConfig(({ mode }) => ({
       "@lezer/lr",
     ],
   },
-  server: { host: "127.0.0.1", port: 1431, strictPort: true },
+  server: {
+    host: "127.0.0.1",
+    port: 1431,
+    strictPort: true,
+    watch: {
+      ignored: [
+        "**/.jj/**",
+        "**/.local/**",
+        "**/src-tauri/target/**",
+        "**/spec/book/**",
+        "**/spec/.generated/**",
+        "**/storybook-static/**",
+      ],
+    },
+  },
   clearScreen: false,
   build: {
     target: "safari16",

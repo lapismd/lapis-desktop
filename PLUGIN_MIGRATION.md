@@ -7,7 +7,7 @@ one delivery sequence. It replaces the earlier separate plugin plans.
 
 As of 2026-10-20, M8/M9 and M10.1 are Done; M10.2 remains In progress. M0–M7 and
 M7.1/M7.2 retain their completed gates. M7.3 ordinary native windows are
-qualified and M8.5 retains its separate presentation gate. The earlier
+qualified, and E-CATALOG-016 completes M8.5 native presentation. The earlier
 2026-10-17 review pause was followed by resumed delivery.
 
 [PLAN.md](PLAN.md) and the

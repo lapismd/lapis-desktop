@@ -1,9 +1,23 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdtempSync,
+  mkdirSync,
+  readFileSync,
+  unlinkSync,
+  writeFileSync,
+} from "node:fs";
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  acceptConflictSide,
+  nativeFailure,
+  openConflictReview,
+  reviewedText,
+  saveConflictResult,
+} from "./conflict-review.mjs";
 
 const acceptance = process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
 const card = "[data-mira-link-preview-content]";
@@ -17,7 +31,17 @@ async function fixture(context, name) {
   const file = join(vault, "Target.md");
   writeFileSync(file, "# Target\n\nOriginal preview content.\n");
   const session = await nativeSession(name, root);
-  context.after(session.cleanup);
+  context.after(async () => {
+    try {
+      if (session.isRunning())
+        writeFileSync(
+          join(root, "conflict-body.txt"),
+          await session.browser.execute(() => document.body.innerText),
+        );
+    } finally {
+      await session.cleanup();
+    }
+  });
   const { browser } = session;
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
   await browser.$("button*=Open Vault").click();
@@ -78,17 +102,15 @@ async function edit(browser, contents) {
   await editor.addValue(contents);
 }
 async function diskVersion(browser, contents) {
-  await browser.waitUntil(
-    async () =>
-      (await browser
-        .$('textarea[aria-label="Disk version of Target.md"]')
-        .getValue()) === contents,
-  );
+  await reviewedText(browser, "Target.md", "Disk version", contents);
 }
 async function recover(browser, name) {
-  const button = browser.$(`button=${name}`);
-  await button.waitForEnabled();
-  await button.click();
+  await acceptConflictSide(
+    browser,
+    "Target.md",
+    name === "Use disk version" ? "Right" : "Left",
+  );
+  await saveConflictResult(browser, "Target.md");
 }
 
 test("external changes in a Markdown preview block Close and require a fresh recovery decision", async (context) => {
@@ -100,16 +122,11 @@ test("external changes in a Markdown preview block Close and require a fresh rec
   await edit(browser, local);
   writeFileSync(file, "External preview one\n");
   await session.requestClose();
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
+  await openConflictReview(browser, "Target.md");
   assert.equal(session.isRunning(), true);
   assert.equal(readFileSync(file, "utf8"), "External preview one\n");
-  assert.equal(
-    await browser
-      .$('textarea[aria-label="Your version of Target.md"]')
-      .getValue(),
-    local,
-  );
+  await reviewedText(browser, "Target.md", "Your version", local);
   await diskVersion(browser, "External preview one\n");
   writeFileSync(file, "External preview two\n");
   await recover(browser, "Keep my version");
@@ -135,7 +152,7 @@ test("accepting the disk version replaces a preview draft and permits later save
   const { browser, session, file } = await fixture(context, "preview-disk");
   await edit(browser, "Discard this preview draft\n");
   writeFileSync(file, "Reviewed preview disk content\n");
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, "Target.md");
   await browser.execute(
     readFileSync(
       new URL("../../node_modules/axe-core/axe.min.js", import.meta.url),
@@ -177,23 +194,18 @@ test("closing a preview's owning tab retains its failed draft and App shutdown b
   const local = "Retained draft from a closed preview\n";
   await edit(browser, local);
   writeFileSync(file, "External retired-preview content\n");
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, "Target.md");
   await browser.$('button[aria-label="Close Home.md"]').click();
-  await browser.$(card).waitForDisplayed();
-  assert.equal(
-    await browser
-      .$('textarea[aria-label="Your version of Target.md"]')
-      .getValue(),
-    local,
-  );
+  await browser.$('button[aria-label="Close Home.md"]').waitForExist();
+  await reviewedText(browser, "Target.md", "Your version", local);
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   assert.equal(
     await browser.$('button[aria-label="Close Home.md"]').isExisting(),
     true,
   );
-  assert.equal(await browser.$(card).isExisting(), true);
+  await reviewedText(browser, "Target.md", "Your version", local);
   assert.equal(
     readFileSync(file, "utf8"),
     "External retired-preview content\n",
@@ -204,3 +216,44 @@ test("closing a preview's owning tab retains its failed draft and App shutdown b
   await browser.waitUntil(async () => !(await browser.$(card).isExisting()));
   await session.close();
 });
+
+test(
+  "deleted preview recovery resets a retired writer and permits native shutdown",
+  { timeout: 60000 },
+  async (context) => {
+    const { browser, session, file } = await fixture(
+      context,
+      "preview-deleted-retired",
+    );
+    const draft = "Retained draft before native deletion\n";
+    const merged =
+      "# Recovered retired preview\n\nNative reviewed result — café\n";
+    await edit(browser, draft);
+    unlinkSync(file);
+    await browser.$(editable).waitForExist({ reverse: true, timeout: 15000 });
+    const review = await openConflictReview(browser, "Target.md");
+    await reviewedText(browser, "Target.md", "Your version", draft);
+    assert.ok(
+      (await review.getText()).includes("The file was deleted from disk."),
+    );
+    assert.equal(existsSync(file), false);
+    await session.requestClose();
+    await browser.$(nativeFailure).waitForDisplayed();
+    assert.equal(
+      session.isRunning(),
+      true,
+      "Retiring an editor cannot waive its failed write",
+    );
+    assert.equal(existsSync(file), false);
+    await review
+      .$('textarea[aria-label="Edit Merged version"]')
+      .setValue(merged);
+    await saveConflictResult(browser, "Target.md");
+    await browser.waitUntil(
+      () => existsSync(file) && readFileSync(file, "utf8") === merged,
+      { timeout: 15000 },
+    );
+    await session.close();
+    assert.equal(readFileSync(file, "utf8"), merged);
+  },
+);

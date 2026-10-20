@@ -14,17 +14,20 @@ under unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover
 gates remain open; release stays deferred. Historical failed attempts are
 retained.
 
+E-CATALOG-016 qualifies the original M8.5 native gate, including retired-writer
+recovery. Shared close policy belongs in the API; release remains deferred.
+
 ## Current checkpoint — 2026-10-20
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and
 [main task ledger](progress/milestones.md) now include the M13 repository and
 M14 automatic-backup workstreams. M0–M9 original gates and M10.1/M13.1/M13.2 are
-complete. M7.3 ordinary native pop-outs are qualified and M8.5 retains its
-presentation gate. M10.2/M13.3 managed conversation/execution, context/skills
-and restart acceptance remain In progress. Native store/privacy/journal
-ownership, exact receipt recovery and bounded transcript reads already have
-evidence; shared AI transcript UI is adopted. M10.3 tools/credentials, M10.4
-compute, M11 distribution and M12 cutover remain Planned.
+complete. M7.3 ordinary pop-outs and M8.5 native presentation are qualified.
+M10.2/M13.3 managed conversation/execution, context/skills and restart
+acceptance remain In progress. Native store/privacy/journal ownership, exact
+receipt recovery and bounded transcript reads already have evidence; shared AI
+transcript UI is adopted. M10.3 tools/credentials, M10.4 compute, M11
+distribution and M12 cutover remain Planned.
 
 [Automatic backup](progress/vault-backup.md) has seven implemented stages
 integrated into main: vault-owned external JJ history, internal/external
@@ -88,8 +91,8 @@ replace the current checkpoint or task ledger; committed evidence is immutable.
   per-vault Classic while retaining requests/drafts and existing controls. UI
   mocks do not qualify managed provider execution or durable chat recovery.
 - E-CATALOG-005/006/007 cover Problems/recovery, compact merge controls and
-  source-owned reading preview containment. M8.5 retains deferred source/catalog
-  and native acceptance; this does not freeze unrelated later workstreams.
+  source-owned reading preview containment. E-CATALOG-016 completes M8.5 native
+  acceptance; unrelated later workstreams retain their gates.
 
 The immutable inventory `spec/migration-inventory.json` retains original source
 revisions independently of sibling checkouts. Later destinations and evidence

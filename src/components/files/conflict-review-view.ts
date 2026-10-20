@@ -29,6 +29,9 @@ export class ConflictReviewView extends View {
   getIcon(): string {
     return "git-compare-arrows";
   }
+  getClosePersistenceScope(): "layout" {
+    return "layout";
+  }
   getState(): Record<string, unknown> {
     return { path: this.selection.path };
   }

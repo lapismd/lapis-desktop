@@ -268,6 +268,46 @@ export const EditedMergeResult: Story = {
     ).toBe("# Reviewed merged note\nIncludes both changes.\n");
   },
 };
+export const RetainedMergeAfterReviewClose: Story = {
+  play: async ({ canvasElement }) => {
+    const { canvas } = await retained(canvasElement);
+    const merged = "# Retained reviewed merge\nBoth changes remain staged.\n";
+    const input = canvas.getByRole("textbox", { name: "Edit Merged version" });
+    await userEvent.clear(input);
+    await userEvent.type(input, merged);
+    await userEvent.click(
+      canvas.getByRole("button", {
+        name: "Close Resolve Note.md",
+      }),
+    );
+    await waitFor(() =>
+      expect(
+        canvas.queryByRole("region", { name: "File conflict: Note.md" }),
+      ).toBeNull(),
+    );
+    const fixture = conflictFixture(canvasElement);
+    expect(fixture.app.fileEditingSessions.textConflicts.entries).toHaveLength(
+      1,
+    );
+    await expect(await fixture.adapter.read("Note.md")).toBe(
+      "# Changed outside Lapis\n",
+    );
+    await userEvent.click(
+      await canvas.findByRole("button", {
+        name: /Review your draft before saving/,
+      }),
+    );
+    await expect(
+      await canvas.findByRole("textbox", { name: "Edit Merged version" }),
+    ).toHaveValue(merged);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Save merged version" }),
+    );
+    await waitFor(() => expect(fixture.app.workspace.diagnostics.size).toBe(0));
+    await expect(await fixture.adapter.read("Note.md")).toBe(merged);
+  },
+};
+
 export const MergeEditorSettings: Story = {
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);

@@ -85,6 +85,11 @@ Core component styles remain unchanged.
 
 ## Conflict review presentation
 
+E-CATALOG-016 covers actual native Problems/merge acceptance. The review
+declares the shared API layout-only close policy because staged results belong
+to its App-owned model; editor tabs and application leave retain full writer
+protection.
+
 Conflicts publish an App-owned diagnostic collection and reveal Problems.
 Opening a diagnostic reveals or reuses the file's conflict review leaf. The
 shared three-way MergeEditor compares the retained draft and disk snapshot with

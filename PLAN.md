@@ -10,7 +10,7 @@ completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 
 | Workstream                        | Implemented and verified                                                                                                                                       | Remaining completion gates                                                                                                                         |
 | --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | M7.3 ordinary native pop-outs are qualified; M8.5 presentation acceptance remains In progress                                                      |
+| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                                  |
 | AI and conversations, M10/M13     | Reusable ACP adapter, retained AI UI/shared transcript, native privacy/store ownership and bounded conversation reads implemented; M10.1/M13.1/M13.2 qualified | M10.2/M13.3 managed renderer conversation/execution, context/skills and restart recovery; M10.3 tools/credentials and M10.4 compute remain Planned |
 | Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; storage/provider gates remain                |
 | Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                                 |
@@ -32,7 +32,7 @@ real-provider gates remain open; see the
 
 M7.3 is qualified by E-POPOUT-004: all fourteen actual Notes/native-window
 checks and both related-host allow/deny cases pass against the verified API and
-Design Core archives. M8.5 retains its original presentation gate. Release,
+Design Core archives. E-CATALOG-016 completes M8.5 native presentation. Release,
 signing and publication remain deferred.
 
 ## Original target and architecture
@@ -151,12 +151,11 @@ Commit each verified task in its owning repository.
 increments toward it. Later services do not block that milestone.
 
 M0–M9 meet their original gates, including M7.1–M7.2 and the M8 plugin
-foundation. M7.3 ordinary pop-outs are qualified and M8.5 retains its separate
-presentation gate. M10.1's reusable ACP adapter and M13.1/M13.2
-admission/history are complete; M10.2/M13.3 managed conversations remain In
-progress. Native store construction, privacy/journal ownership, receipts and
-bounded transcript reads are prerequisites already implemented, not a completed
-managed chat flow.
+foundation. M7.3 ordinary pop-outs and M8.5 native presentation are qualified.
+M10.1's reusable ACP adapter and M13.1/M13.2 admission/history are complete;
+M10.2/M13.3 managed conversations remain In progress. Native store construction,
+privacy/journal ownership, receipts and bounded transcript reads are
+prerequisites already implemented, not a completed managed chat flow.
 
 The remaining AI/distribution sequence is:
 
@@ -315,8 +314,8 @@ launch, bundle contents and native behavior without a signing gate (confirmed
   `PLUGIN_MIGRATION.md`.
 
 The approved full-width workspace footer is tracked by E-CATALOG-009 under M8.5.
-Source, API and desktop acceptance resume for this slice; the task ledger
-retains the original native presentation gate and unrelated migration work.
+Source/API/footer acceptance is complete; E-CATALOG-016 qualifies the original
+native presentation gate. Other migration work retains its own ledger gates.
 
 - [x] Approve footer, notification, Problems and ribbon Settings design.
 - [x] Implement shared footer and desktop/plugin integration; commit API bridge.
@@ -332,7 +331,7 @@ retains the original native presentation gate and unrelated migration work.
 - [x] Repair stale review profile and show startup errors once in the body.
 - [x] Commit the verified desktop slice in its isolated workspace.
 - [x] Apply after the main checkout's AI-history integration is clean.
-- [ ] Complete the separate original M8.5 native presentation gate.
+- [x] Complete the original M8.5 native presentation gate (E-CATALOG-016).
 
 E-CATALOG-010 records default-workspace landing and retirement of the three
 temporary footer/readiness checkouts. Main review previews and focused

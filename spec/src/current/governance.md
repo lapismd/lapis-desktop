@@ -3,15 +3,15 @@
 E-POPOUT-004: native pop-outs/IPC denial. E-REPO-051/052 retain LD-GOV-002/009:
 actual native proof, debug e2e-only response faults and deferred release.
 
-E-AI-031–033 qualify native boundaries; E-REPO-047 qualifies vault identity.
-LD-GOV-002 evidence rules and M13.3 native/restart gates remain unchanged.
+E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain
+boundary/identity evidence; LD-GOV-002 rules and M13.3 gates are unchanged.
 
-E-AI-024 covers injected persistence; E-AI-025 shares native vault admission.
-The repository topic owns JJ reuse and exact history grants. E-REPO-003
-qualifies owned history UI and public packages; native gates remain separate.
+E-AI-024/025 retain injected persistence/native admission; E-REPO-003 owns
+history/public packages. The repository chapter retains exact JJ grants.
 
-App watch/leave and native reconciliation map to the M5 file contract. Public
-archives supply tree/view behavior; the host owns startup and teardown.
+M5 owns App watch/leave; archives own tree/views and hosts own teardown.
+Development ignores generated docs/build roots while retaining source HMR
+(E-CATALOG-016); vault watching and native admission remain unchanged.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.

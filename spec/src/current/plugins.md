@@ -1,5 +1,9 @@
 # Desktop plugins and catalog
 
+E-CATALOG-016 completes the M8.5 native conflict gate with current production
+components and the shared API close policy. Catalog states and native IO remain
+separate evidence; provider, managed AI and release gates are unchanged.
+
 E-CATALOG-015 maps editable core Workspace file exclusions, persistence and live
 discovery to the existing App-backed Settings story without History.
 

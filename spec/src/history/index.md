@@ -238,6 +238,7 @@ by the task ledger, not inferred from this list.
 - [Shared search input presentation](E-CATALOG-014.md)
 
 - [Workspace file exclusion settings](E-CATALOG-015.md)
+- [Native editable conflict presentation](E-CATALOG-016.md)
 
 - [Unified indexed history in Search](E-REPO-045.md)
 - [Installed clients and startup repair](E-AI-065.md)

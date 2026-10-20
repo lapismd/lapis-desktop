@@ -124,3 +124,6 @@ consumer checks.
 
 E-CATALOG-015 covers editable Workspace exclusions, saved patterns and live
 discovery.
+
+E-CATALOG-016: M8.5 native/retired-writer proof, thirty catalog and eight native
+cases. Source/catalog E-CATALOG-009/010 retained; other gates unchanged.

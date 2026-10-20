@@ -874,3 +874,8 @@ Installed, update confirmation/cancellation, update/refresh, loading and
 discovery-failure states adapt jj-store runtime rows.
 `Desktop/Repository history search/CurrentFiles` verifies current rows and the
 actual bounded workspace viewport. All remain visual-pending.
+
+`Desktop/File conflicts/RetainedMergeAfterReviewClose` uses the real tab close
+control and Problems navigation to retain an edited merge across review closure,
+then save its exact bytes and clear the diagnostic. It exercises the public
+layout-only close policy; original editor and application guards remain active.
