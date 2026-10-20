@@ -9,3 +9,6 @@ mod tools_tests;
 pub(crate) mod user_commands;
 
 pub(crate) mod clients;
+pub(crate) mod providers;
+
+pub(crate) mod compute;

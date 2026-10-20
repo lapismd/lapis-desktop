@@ -84,6 +84,9 @@ it("preserves unconsumed attachments after a local command completes", async () 
     drawerCollapsed: false,
   } as unknown as AttachmentsState;
   const composer = {
+    draftReady: true,
+    draftKey: "test-draft",
+    matchesDraft: () => true,
     catalogState: null,
     permissions: { loading: false, saving: false, modeFor: () => undefined },
     selectedAgent: "codex",

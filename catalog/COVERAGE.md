@@ -1015,3 +1015,12 @@ switching, plugin reopen over the retained Vault, empty new chats, first-send
 identity adoption, acknowledged clearing, late-read fencing and save-failure
 notifications. No prompt executes merely from reopening. All remain
 visual-pending.
+
+`Desktop/AI setup` uses production AI Settings with in-memory native ports.
+Providers and compute covers explicit model/resource/peer configuration; Loading
+uses representative skeletons; Setup failure and Provider save failure assert
+App notifications and retained drafts; Running compute covers Stop. Source
+presentation is copied/adapted from JJ Store’s StoreComputeSettings,
+StoreComputeModels, StoreComputePeers, StoreWorkField and environment key field.
+Native/real-provider qualification is separate; all stories remain
+visual-pending.

@@ -30,6 +30,6 @@ export interface HandoffSummaryProvider {
 
 export type HandoffSummaryProcessorIdentity = {
   runtime: "acp";
-  agent: "codex" | "cursor";
+  agent: "codex" | "cursor" | "local";
   model: string;
 };

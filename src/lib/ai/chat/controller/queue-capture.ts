@@ -23,9 +23,12 @@ export function captureQueuedMessage(
       recipientFromOption({
         id: request.agent ?? "",
         label:
-          { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" }[
-            request.agent as AcpAgentId
-          ] ?? "",
+          {
+            codex: "Codex",
+            cursor: "Cursor",
+            opencode: "OpenCode",
+            local: "Lapis AI",
+          }[request.agent as AcpAgentId] ?? "",
         agent: request.agent as AcpAgentId,
       }),
     );

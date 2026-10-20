@@ -165,3 +165,7 @@ its subsection heading; storage, admission and milestone gates are unchanged.
 
 Conversation-scoped private drafts and cold reload:
 [E-AI-096](../history/E-AI-096.md).
+
+[E-AI-097](../history/E-AI-097.md) records LD-AI-001–004/LD-COMP-001 v0
+implementation and focused acceptance. Original full native/provider/model gates
+retain their current verification status; no completion is inferred.

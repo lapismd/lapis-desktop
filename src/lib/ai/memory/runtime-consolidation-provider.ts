@@ -18,7 +18,7 @@ const DEFAULT_TIMEOUT_MS = 60_000;
 
 export type RuntimeConsolidationConfiguration = {
   runtimeId: "acp";
-  agent: "codex" | "cursor";
+  agent: "codex" | "cursor" | "local";
   model: string;
 };
 

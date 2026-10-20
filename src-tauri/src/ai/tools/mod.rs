@@ -1,9 +1,12 @@
 //! Authenticated application-tool transport. The host retains policy and effects.
 mod binding;
+mod binding_transport;
 mod client;
 mod events;
 mod files;
 mod framing;
+mod http;
+mod http_listener;
 mod listener;
 mod protocol;
 mod registry;

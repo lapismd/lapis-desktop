@@ -70,7 +70,12 @@
       disposed = true;
     };
   });
-  const labels = { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" };
+  const labels = {
+    codex: "Codex",
+    cursor: "Cursor",
+    opencode: "OpenCode",
+    local: "Lapis AI",
+  };
   const efforts = ["inherit", "off", "low", "medium", "high"] as const;
   const effortLabel = (value: typeof thinking) =>
     value === "inherit"

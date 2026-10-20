@@ -24,6 +24,8 @@ export default defineConfig({
       "@lapismd/design-core > @lezer/markdown",
       "@cfworker/json-schema",
       "@lucide/svelte/icons/shield",
+      "@lucide/svelte/icons/gauge",
+      "@lucide/svelte/icons/key-round",
       "@lucide/svelte/icons/shield-alert",
       "@lucide/svelte/icons/shield-check",
       "@lucide/svelte/icons/hand",

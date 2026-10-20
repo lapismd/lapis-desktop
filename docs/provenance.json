@@ -170,6 +170,25 @@
       ],
       "license": "Apache-2.0",
       "use": "Adapted exact identity decoding and Markdown mention-link rendering into Notes-owned lapis://agent links, immutable reader decorations and shared AuthorCard hover badges. Canonical recipient metadata still uses the public SDK token; no JJ Store UI dependency or execution authority is introduced."
+    },
+    {
+      "repository": "jj-store",
+      "revision": "3998e2b01cb4a1c4f4dba0e1e81f9c3e72f6e15b",
+      "license": "Apache-2.0",
+      "paths": [
+        "web/src/lib/ui/store-settings/StoreComputeSettings.svelte",
+        "web/src/lib/ui/store-settings/StoreComputeModels.svelte",
+        "web/src/lib/ui/store-settings/StoreComputePeers.svelte",
+        "web/src/lib/ui/store-work/StoreWorkField.svelte",
+        "web/src/lib/ui/store-agent-execution/StoreAgentEnvironmentEditor.svelte"
+      ],
+      "destinations": [
+        "src/components/ai/settings/AiComputeSettings.svelte",
+        "src/components/ai/settings/AiComputeSharing.svelte",
+        "src/components/ai/settings/ComputeSettingRow.svelte",
+        "src/components/ai/settings/AiProvidersSettings.svelte"
+      ],
+      "use": "Copied/adapted Settings card, divided label/control rows, joined action footers, explicit model/resource/peer controls and write-only secret field. Reuses existing desktop ClientSettingsCard/Footer and public Design Core components. Native admission, credential custody, durable commands and local ACP authority remain desktop-owned; advanced hardware/catalog/relay controls remain deferred."
     }
   ],
   "copies": [

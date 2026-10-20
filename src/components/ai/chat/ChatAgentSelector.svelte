@@ -151,7 +151,9 @@
                   ? "Codex"
                   : option.agent === "opencode"
                     ? "OpenCode"
-                    : "Cursor"} · {option.model ??
+                    : option.agent === "local"
+                      ? "Lapis AI"
+                      : "Cursor"} · {option.model ??
                   "Default model"}</CommandView.ItemDescription
               >
               {#if selected.includes(option.id)}<CheckIcon

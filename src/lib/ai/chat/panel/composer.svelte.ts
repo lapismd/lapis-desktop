@@ -74,9 +74,12 @@ class ComposerPanelState extends ComposerDraftState {
       ).map((agent) => ({
         id: agent,
         agent,
-        label: { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" }[
-          agent
-        ],
+        label: {
+          codex: "Codex",
+          cursor: "Cursor",
+          opencode: "OpenCode",
+          local: "Lapis AI",
+        }[agent],
       })),
   );
   recipients = new ComposerRecipients(() => this.recipientOptions);

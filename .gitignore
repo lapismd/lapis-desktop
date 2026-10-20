@@ -12,3 +12,7 @@ test-results/
 playwright-report/
 
 src-tauri/resources/lapis-ai/
+
+# Temporary siblings used by atomic verified helper staging.
+/src-tauri/resources/lapis-ai.pending-*/
+/src-tauri/resources/lapis-ai.previous-*/

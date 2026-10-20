@@ -13,6 +13,9 @@ it("namespaces file and agent suggestions independently and selection dispatches
   const choose = vi.fn();
   const controller = new AiChatController(new FakeAgentRuntime());
   const composer = {
+    draftReady: true,
+    draftKey: "test-draft",
+    matchesDraft: () => true,
     recipientOptions: [reviewer],
     selectRecipient: choose,
   } as unknown as ComposerState;
@@ -61,6 +64,9 @@ it("a removed catalog entry blocks Send and reports a toast while retaining text
   const recipients = new ComposerRecipients(() => options);
   recipients.select("reviewer");
   const composer = {
+    draftReady: true,
+    draftKey: "test-draft",
+    matchesDraft: () => true,
     draft: "Keep this draft",
     catalogState: null,
     permissions: { loading: false, saving: false, modeFor: () => undefined },
@@ -109,6 +115,9 @@ it("an unconfirmed Send retains its recipient and attachment draft", async () =>
   const recipients = new ComposerRecipients(() => [reviewer]);
   recipients.select("reviewer");
   const composer = {
+    draftReady: true,
+    draftKey: "test-draft",
+    matchesDraft: () => true,
     draft: "Keep this draft",
     catalogState: null,
     permissions: { loading: false, saving: false, modeFor: () => undefined },
@@ -158,6 +167,9 @@ it("reports a failed addressed send once through notifications and retains the c
   recipients.select("reviewer");
   recipients.select("writer");
   const composer = {
+    draftReady: true,
+    draftKey: "test-draft",
+    matchesDraft: () => true,
     draft: "Keep both recipients",
     catalogState: null,
     permissions: { loading: false, saving: false, modeFor: () => undefined },

@@ -59,6 +59,7 @@ export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
     codex: "gpt-5.6-sol",
     cursor: "",
     opencode: "",
+    local: "",
   },
   defaultModel: "gpt-5.6-sol",
   thinking: "medium",
@@ -208,6 +209,7 @@ export function mergeAiSettings(
       DEFAULT_AI_SETTINGS.defaultModels.codex,
     cursor: storedModels?.cursor?.trim() || "",
     opencode: storedModels?.opencode?.trim() || "",
+    local: storedModels?.local?.trim() || "",
   };
   const thinking = value?.thinking;
   const participants = validateAgentParticipants(value?.agentParticipants);

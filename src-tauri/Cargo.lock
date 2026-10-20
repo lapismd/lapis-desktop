@@ -5449,6 +5449,7 @@ name = "lapis-desktop"
 version = "0.1.0"
 dependencies = [
  "async-trait",
+ "axum",
  "block2",
  "cap-std",
  "cap-tempfile",
@@ -5471,6 +5472,7 @@ dependencies = [
  "objc2-foundation",
  "percent-encoding",
  "rustix 1.1.5",
+ "security-framework 3.7.0",
  "serde",
  "serde_json",
  "sha2 0.10.9",

@@ -160,6 +160,8 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-desktop-ai-user-commands",
     "allow-desktop-ai-admit",
     "allow-desktop-ai-clients",
+    "allow-desktop-ai-providers",
+    "allow-desktop-ai-compute",
     "allow-desktop-ai-imports",
     "allow-desktop-ai-release",
     "allow-desktop-ai-tools",

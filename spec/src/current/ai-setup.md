@@ -1,0 +1,95 @@
+# Local AI setup and optional compute
+
+LD-AI-001–004 and LD-COMP-001 govern this active local ACP profile. Native
+AgentStore/ThreadStore conversation persistence remains Deferred. Existing
+file-backed conversations, private per-conversation drafts and ordinary ACP
+sessions stay supported.
+
+## Clients and context
+
+Codex, OpenCode and Cursor are independently admitted from the fixed installed
+runner catalog. A missing or unconfigured client never disables another client.
+The bundled Lapis agent becomes available only after explicit provider setup.
+Model, reasoning effort and execution mode are confirmed through advertised ACP
+configuration before sending. Running workers keep their captured configuration.
+
+A binding freezes bounded application bootstrap, the available-skills manifest
+and selected skill instructions into initial context. This is separate from
+saved authored text, attachments and per-turn context. The initial aggregate has
+a 128 KiB UTF-8 limit; snapshots and activations retain their own bounds. Skill
+text cannot grant execution permission. Restricted memory/handoff work uses only
+the native-admitted bundled Lapis profile, without MCP tools or filesystem hint
+discovery; it never delegates to an external client.
+
+## Providers and application tools
+
+The existing AI Settings page owns provider and compute sections; named agent
+profiles remain in Agents. Provider choices use the public native catalog,
+excluding subscription OAuth. This machine and Paired machine are explicit
+inference selections. A missing cloud credential cannot select compute, and
+unavailable compute cannot select cloud inference.
+
+Device configuration contains opaque Keychain references. API-key input is
+transient and write-only; status, JSON diagnostics, transcripts, vault settings
+and browser persistence never expose it. Conditional saves retain exact request
+identities, revisions and receipts. Unknown saves are observed or retried with
+the same identity. Adopting a superseding revision is explicit. Provider changes
+invalidate discovery and new admission without interrupting running workers.
+
+Codex, OpenCode and Lapis use the existing private stdio MCP bridge. Cursor uses
+an authenticated stateless HTTP MCP endpoint on literal loopback with an
+explicit ephemeral port. Trusted declarations contain environment references,
+not bearer values. Browser Origins, foreign Hosts, malformed/oversized frames,
+duplicate request IDs and excess concurrency refuse. Both transports delegate to
+the same original AppToolHost binding, registration checks, schema validation,
+exact approvals, guarded Vault edits, cancellation and unknown-effect policy.
+They create no second tool implementation or repository authority.
+
+Close, disable, root/generation changes and shutdown fence calls before draining
+owned execution and listeners. Cleanup remains available after revocation.
+
+## Optional compute
+
+Status reads, Settings mount and startup allocate no compute process, model
+download, inference request or sharing session. Save changes only configuration
+while off. Prepare, Download, Import and Start are explicit independent actions.
+Start uses installed weights and a prepared native runtime. Import validates and
+copies a selected absolute GGUF path into managed storage. Model/resource/peer
+controls adapt JJ Store’s Settings components through public Design Core fields.
+
+The verified bundled helper owns inference. Its working directory, HOME, native
+runtime and model caches stay in device-owned managed storage outside the vault.
+The persistent machine identity uses Keychain; loopback bearer tokens stay
+native and process-local. A locked/unavailable identity store cannot silently
+replace an existing identity. Memory allocation is optional and bounded to
+1–1024 GB. Sharing defaults off. Peers require explicit mutual admission, and
+inference access never grants application tools. Local versus paired selection
+is explicit.
+
+Model/configuration commands retain conditional revisions and exact durable
+request receipts. Stop is idempotent cleanup with observed process retirement.
+Repeated requests observe their original result, including while pending; they
+never repeat a download/import/start implicitly. Restart marks an interrupted
+request unknown. Stop remains available after trust revocation and drains the
+owned process before reporting off. Successful process cleanup does not complete
+an interrupted model operation. Native work runs off the UI thread and owned
+commands use the App status API; Settings show representative skeletons and
+bounded download progress.
+
+## Remaining qualification and secondary work
+
+| Surface                                   | Implementation                                              | Qualification remaining                      |
+| ----------------------------------------- | ----------------------------------------------------------- | -------------------------------------------- |
+| Local ACP chat, context/skills and drafts | Implemented v0; ordinary sessions retained                  | Mounted real-provider/recovery/trust matrix  |
+| Provider/Keychain and application tools   | Implemented v0; native and cold setup tests                 | Real bundled/external-client tool turns      |
+| Optional compute                          | Implemented v0; explicit controls and isolated helper tests | Loaded GGUF inference and two-device pairing |
+
+E-AI-097 records actual focused, catalog, native and source results. Scripted
+helpers and in-memory Settings do not qualify a real provider or loaded model.
+Real external-client/Lapis tool turns, cold mounted restart/trust cleanup,
+native inference with prepared weights and two-device mutual pairing retain the
+original M10.2–M10.4 acceptance gates. Signing/publication and other platforms
+remain M11. Hardware recommendations, richer model catalogs, model removal,
+native GGUF browsing and editable relay settings are secondary work, separate
+from v0’s explicit model/resource/peer lifecycle. No deferred JJ-store chat
+implementation is resumed by this profile.

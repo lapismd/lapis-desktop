@@ -10,7 +10,9 @@ import { ACP_APPROVAL_CAPABILITIES } from "../core/approvals.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../bootstrap/runtime-unavailable.ts";
 export type AiLeaveMode = "close" | "reload";
 export interface AiServices {
+  compute?: import("../settings/compute.svelte.ts").AiCompute;
   clients?: import("../settings/clients.svelte.ts").AgentClients;
+  providers?: import("../settings/providers.svelte.ts").AiProviders;
   captureSources?: import("../capture/source-port.ts").AiCaptureSources;
   importSources?: import("../imports/source-port.ts").AiImportSources;
   runtime: AgentRuntime;

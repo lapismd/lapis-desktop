@@ -7,7 +7,10 @@ use std::sync::Arc;
 use tauri_plugin_lapis_ai::{Error, HostContext, Launch, Result};
 use uuid::Uuid;
 
-const PREFIX: &str = "codex:tools:";
+fn target_parts(target: &str) -> Option<(&str, &str)> {
+    let (provider, id) = target.split_once(":tools:")?;
+    matches!(provider, "codex" | "local" | "opencode" | "cursor").then_some((provider, id))
+}
 impl DesktopAiPolicy {
     pub(super) fn tool_binding(
         &self,
@@ -16,10 +19,10 @@ impl DesktopAiPolicy {
         target: &str,
         claim: bool,
     ) -> Result<Option<Arc<Binding>>> {
-        let Some(id) = target.strip_prefix(PREFIX) else {
+        let Some((provider, id)) = target_parts(target) else {
             return Ok(None);
         };
-        if !self.0.files.contains("codex") {
+        if claim && !self.0.files.contains(provider) {
             return Err(Error("agent_not_admitted"));
         }
         let id = Uuid::parse_str(id).map_err(|_| Error("agent_not_admitted"))?;
@@ -50,20 +53,25 @@ impl DesktopAiPolicy {
         target: &str,
         resume: Option<&str>,
     ) -> Result<Option<Launch>> {
-        if !target.starts_with(PREFIX) {
+        let Some((provider, _)) = target_parts(target) else {
             return Ok(None);
-        }
+        };
         if resume.is_some() {
             return Err(Error("resume_not_admitted"));
         }
         let binding = self
             .tool_binding(context, lease, target, true)?
             .ok_or(Error("agent_not_admitted"))?;
-        let (config, environment) = binding.launch().map_err(|_| Error("agent_not_admitted"))?;
+        let (config, environment) = if provider == "cursor" {
+            binding.http_launch()
+        } else {
+            binding.launch()
+        }
+        .map_err(|_| Error("agent_not_admitted"))?;
         let mut launch = self
             .0
             .files
-            .launch("codex", lease.root())
+            .launch(provider, lease.root())
             .map_err(|_| Error("agent_not_admitted"))?
             .ok_or(Error("agent_not_admitted"))?;
         // The session adapter fixes argv; reuse its trusted launch environment.

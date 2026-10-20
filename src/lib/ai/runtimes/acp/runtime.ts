@@ -8,6 +8,7 @@ import type {
 } from "../../core/runtime.ts";
 import { ACP_APPROVAL_CAPABILITIES } from "../../core/approvals.ts";
 import { AcpAgentSession } from "./session.ts";
+import { initialAcpContext } from "./initial-context.ts";
 import type { AcpAppTools, ToolTurnPort } from "./tool-turn.ts";
 
 export type AcpRuntimeBackend = {
@@ -26,7 +27,7 @@ export class AcpAgentRuntime implements AgentRuntime {
   capabilities(): AgentCapabilities {
     return {
       preparesContext: true,
-      skillSnapshots: false,
+      skillSnapshots: true,
       sessions: true,
       resume: false,
       cancel: true,
@@ -47,6 +48,7 @@ export class AcpAgentRuntime implements AgentRuntime {
   async start(request: AgentRequest): Promise<AcpAgentSession> {
     if (!supported(request))
       throw new Error("ACP request unsupported by current native policy");
+    const initialContext = initialAcpContext(request);
     const targets = await this.#backend.client.targets();
     const target = targets.find((target) =>
       request.agent ? target.id === request.agent : true,
@@ -71,6 +73,7 @@ export class AcpAgentRuntime implements AgentRuntime {
       turnTools,
       target.id,
       request.agentProfile,
+      initialContext,
     );
     const requestId = crypto.randomUUID();
     let bound = false;
@@ -135,9 +138,11 @@ export class AcpAgentRuntime implements AgentRuntime {
 function supported(request: AgentRequest): boolean {
   return (
     !request.requirePolicyAmendments &&
-    !request.restricted &&
-    !request.mcpServers?.length &&
-    !request.skillActivations?.length &&
-    !request.skillSnapshot
+    (!request.restricted ||
+      (request.agent === "local" &&
+        !request.appToolSession &&
+        !request.skillSnapshot &&
+        !request.skillActivations?.length)) &&
+    !request.mcpServers?.length
   );
 }

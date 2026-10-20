@@ -1,3 +1,4 @@
+import { setupFixture } from "./setup-fixture.ts";
 import { reviewExecutionModes } from "./execution-modes.ts";
 import { clientsFixture } from "./clients-fixture.ts";
 import { agentReviewProfiles } from "./transcript/agent-profiles.ts";
@@ -15,6 +16,11 @@ import { registeredAppToolRefs } from "../../../src/lib/ai/settings/app-tool-set
 import { registerCatalogCleanup } from "../lifecycle.ts";
 
 export type SettingsScenario =
+  | "setup"
+  | "setup-loading"
+  | "setup-error"
+  | "setup-save-error"
+  | "setup-running"
   | "normal"
   | "legacy"
   | "catalog-error"
@@ -28,6 +34,13 @@ export type SettingsScenario =
 
 class SettingsFixturePlugin extends Plugin {
   clients?: ReturnType<typeof clientsFixture>;
+  setup?: ReturnType<typeof setupFixture>;
+  get providers() {
+    return this.setup?.providers;
+  }
+  get compute() {
+    return this.setup?.compute;
+  }
   failNextSave = false;
   calls: string[] = [];
   settings = new AiSettingsStore(
@@ -72,6 +85,7 @@ class SettingsFixturePlugin extends Plugin {
       author: "Lapis Notes catalog",
       description: "Disposable production AI Settings integration.",
     });
+    if (scenario.startsWith("setup")) this.setup = setupFixture(app, scenario);
     if (scenario.startsWith("clients") || scenario.startsWith("profiles"))
       this.clients = clientsFixture(
         (error) => this.report(error),
@@ -119,6 +133,7 @@ class SettingsFixturePlugin extends Plugin {
   }
   async onunload(): Promise<void> {
     this.clients?.destroy();
+    await this.setup?.close();
     await this.settings.settle();
   }
 }

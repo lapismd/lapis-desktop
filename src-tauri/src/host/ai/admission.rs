@@ -51,6 +51,12 @@ pub async fn desktop_ai_admit(
     let workers = window.app_handle().ai();
     if !plan.preserves_workers() {
         revoke(&workers, &backends, &context.window, None).await?;
+        // Revocation may have stopped device compute. Never admit a new root
+        // using the old helper's endpoint/token captured during preflight.
+        let refreshed = policy.inner().clone();
+        tauri::async_runtime::spawn_blocking(move || refreshed.prepare_file_profile())
+            .await
+            .map_err(|_| io::Error::other("Local AI refresh was interrupted"))??;
     }
     let generation = plan.generation().to_owned();
     let checking = backends.inner().clone();

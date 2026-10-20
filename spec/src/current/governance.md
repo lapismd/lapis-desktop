@@ -1,17 +1,17 @@
 # Governance
 
+E-AI-097 adds exact main-window provider and compute grants. Unknown fields and
+launch authority remain refused; the source audit retains its closed permission
+inventory.
+
 E-AI-094 retains LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog
 imports; no ownership, admission, baseline or dependency policy is relaxed.
 
-E-AI-093 defers M13/M13.3 at their original native conversation gates. M10.2
-continues with local ACP; historical evidence remains immutable.
+E-AI-093 retains Deferred M13 gates and immutable evidence.
 
 E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain
 boundary/identity evidence; LD-GOV-002 rules remain unchanged.
-
-E-AI-024/025 retain injected persistence/native admission; E-REPO-003 owns
-history/public packages. The repository chapter retains exact JJ grants.
 
 M5 owns App watch/leave; archives own tree/views and hosts own teardown.
 Development ignores generated docs/build roots while retaining source HMR

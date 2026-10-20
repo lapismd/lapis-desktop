@@ -7,6 +7,8 @@
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
+    - [Local AI setup](current/ai-setup.md)
+    - [Native adapter records](current/ai-adapter.md)
   - [Installed AI clients](current/ai-clients.md)
   - [Native authored conversation messages](current/ai-authored.md)
   - [Canonical managed capture](current/ai-managed-capture.md)
@@ -390,3 +392,5 @@
 - [Inset repository sidebar sizing](history/E-REPO-055.md)
 
 - [Conversation-scoped private drafts](history/E-AI-096.md)
+
+- [Local AI setup v0](history/E-AI-097.md)

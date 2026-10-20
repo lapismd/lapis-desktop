@@ -5,17 +5,20 @@ one delivery sequence. It replaces the earlier separate plugin plans.
 
 ## Authorized delivery and tracking
 
-As of 2026-10-20, M8/M9 and M10.1 are Done; M10.2 remains In progress. M0–M7 and
-M7.1/M7.2 retain their completed gates. M7.3 ordinary native windows are
-qualified, and E-CATALOG-016 completes M8.5 native presentation. The earlier
-2026-10-17 review pause was followed by resumed delivery.
+As of 2026-10-21, M8/M9 and M10.1 are Done; M10.2–M10.4 remain In progress at
+their original acceptance gates. E-AI-097 implements the local ACP
+setup/tool/compute v0. M0–M7 and M7.1/M7.2 retain their completed gates. M7.3
+ordinary native windows are qualified, and E-CATALOG-016 completes M8.5 native
+presentation. The earlier 2026-10-17 review pause was followed by resumed
+delivery.
 
 [PLAN.md](PLAN.md) and the
 [task ledger](spec/src/current/progress/milestones.md) schedule Stages 0–3 as
 M8, Stage 4 as M9 and Stages 5–6 as M10. AI UI/shared transcript and native
 store/privacy/read prerequisites are implemented; managed execution,
 context/skills and durable conversation/restart qualification remain open under
-M10.2/M13.3. M10.3 tools/credentials follow, then M10.4 optional compute. M7.3
+M10.2. M13/M13.3 remain Deferred. M10.3 tools/credentials and M10.4 optional
+compute are implemented v0 with native/provider acceptance still required. M7.3
 ordinary pop-outs are complete before M11 distribution and M12 cutover. See
 [the current checkpoint](PLAN.md#current-delivery-checkpoint). Record and commit
 verified slices; a requested pause still stops work. This tracking refresh
@@ -41,8 +44,8 @@ records.
 | 4     | M9.1  | Done        | Verified dynamic install/update/remove, shared identity and reserved bundled IDs  |
 | 5A    | M10.1 | Done        | Reusable native ACP adapter with correlation, ownership and teardown              |
 | 5B    | M10.2 | In progress | Desktop-owned AI, preserved conversations/context/memory and migrated stories     |
-| 5C    | M10.3 | Planned     | Authenticated Rust app tools, exact approvals and native credentials              |
-| 6     | M10.4 | Planned     | Explicit optional compute lifecycle and mutually admitted peers                   |
+| 5C    | M10.3 | In progress | Authenticated Rust app tools, exact approvals and native credentials              |
+| 6     | M10.4 | In progress | Explicit optional compute lifecycle and mutually admitted peers                   |
 
 ## 1. Scope and ownership
 

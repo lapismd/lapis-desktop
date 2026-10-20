@@ -1,5 +1,10 @@
 # Desktop plugins and catalog
 
+E-AI-097 maps provider and optional-compute Settings loading, failure/toast,
+disabled and explicit lifecycle controls through production components in
+Desktop/AI setup. Catalog icon preoptimization prevents cold dependency reloads;
+visual baselines remain pending.
+
 E-AI-094 adds agent context/permissions review stories using production editors,
 MarkdownComposer and the embedded chat shell. Shared mode icons are preoptimized
 for cold catalog runs. Plugin registration, isolation and lifecycle are

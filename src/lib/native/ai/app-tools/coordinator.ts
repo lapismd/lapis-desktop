@@ -143,10 +143,10 @@ export class NativeAppTools implements AppToolBridgeCoordinator {
       record.closing ||
       record.failed ||
       record.bridgeId !== descriptor.bridgeId ||
-      base !== "codex"
+      !["codex", "local", "opencode", "cursor"].includes(base)
     )
       throw new Error("Application tool binding is unavailable");
-    return `codex:tools:${record.bridgeId}`;
+    return `${base}:tools:${record.bridgeId}`;
   }
   #record(bridgeId: string): BridgeRecord {
     const record = [...this.#records.values()].find(

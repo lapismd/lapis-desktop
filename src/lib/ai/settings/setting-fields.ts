@@ -32,6 +32,7 @@ export const ACP_AGENT_LABELS = {
   codex: "Codex",
   cursor: "Cursor",
   opencode: "OpenCode",
+  local: "Lapis AI",
 } as const;
 export const aiModelSourceId = (provider: string) => `ai.models.${provider}`;
 

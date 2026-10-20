@@ -1,5 +1,15 @@
 # Installed AI clients and bundled helpers
 
+The M10.2/M10.3 completion profile admits Codex, OpenCode and Cursor
+independently through the verified ACP helper and fixed shared runner catalog. A
+missing Codex adapter MUST NOT prevent another installed client from starting.
+Only actually discovered adapters are advertised; unavailable clients retain
+setup guidance. The bundled Lapis agent is admitted separately after native
+provider configuration, not merely because its executable is staged. Cursor's
+application tools require the authenticated HTTP MCP bridge; its ACP chat
+capability alone cannot claim application-tool support. Existing local
+transcripts, private drafts, exact approvals and unknown-outcome rules remain.
+
 LD-AI-001 and LD-AI-002 retain execution, admission, privacy and transcript
 ownership. Device tooling does not authorize a conversation or send a prompt.
 
@@ -18,11 +28,11 @@ vault-owned and separate from installed-client authority (E-AI-072, unqualified
 while verification is parked). Its Installed clients table adapts Repository
 History's forge entries: a tinted header, body-surface rows with separators and
 a distinct footer. It lists the bundled helpers, detected Codex adapter/CLI
-versions, managed/device origin and Cursor availability with its current
-unsupported execution boundary. Skeletons represent loading. Refresh and
-installation report through the App status API. Errors identify missing paths,
-adapter prerequisites or failed verification and provide a repair action; they
-never echo credentials or configuration contents.
+versions, managed/device origin and independent Cursor/OpenCode availability.
+Skeletons represent loading. Refresh and installation report through the App
+status API. Errors identify missing paths, adapter prerequisites or failed
+verification and provide a repair action; they never echo credentials or
+configuration contents.
 
 Explicit Codex installation and update use jj-store's fixed adapter 1.13.1 and
 CLI 0.156.1 catalog. Native code resolves Node.js 22+ and npm on the device,
@@ -41,9 +51,10 @@ present. Existing sessions retain their launch identity; newly prepared
 connections use the selected managed client. Authentication remains device-owned
 and separate from installation.
 
-M10.2 remains In progress at its original full native chat/capture/context
-gates. Focused tooling and presentation proof does not close managed JJ capture,
-release/signing, other-platform or provider acceptance.
+M10.2 remains In progress at its original local ACP chat/context/recovery gate.
+Deferred native-store capture is not active scope. Focused tooling and
+presentation proof does not close managed JJ capture, release/signing,
+other-platform or provider acceptance.
 
 ## Managed conversation launch admission
 

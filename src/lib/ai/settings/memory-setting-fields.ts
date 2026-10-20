@@ -2,7 +2,6 @@
 // Retained Lapis AI memory and handoff settings; see ../NOTICE.md.
 import type { WorkspaceSettingsSection } from "@lapis-notes/api";
 import { DEFAULT_AI_SETTINGS, type AiPluginSettings } from "./ai-settings.ts";
-import { PROCESSOR_AGENT_IDS } from "./acp-agents.ts";
 
 export function runtimeDescription(description: string, saved: string): string {
   if (saved === "acp" || saved === "auto") return description;
@@ -51,12 +50,11 @@ export function memorySettingFields(
       id: "ai.memoryConsolidationAgent",
       type: "enum",
       title: "Memory processor agent",
-      description: "Pinned independently from the interactive chat agent.",
+      description:
+        "Restricted background work uses the configured bundled Lapis agent. Saved external-client choices remain inert until replaced.",
+      allowUnknownOptions: true,
       default: DEFAULT_AI_SETTINGS.memoryConsolidationAgent,
-      options: PROCESSOR_AGENT_IDS.map((value) => ({
-        value,
-        label: value === "cursor" ? "Cursor" : "Codex",
-      })),
+      options: [{ value: "local", label: "Lapis AI" }],
     },
     {
       id: "ai.memoryConsolidationModel",
@@ -90,12 +88,11 @@ export function memorySettingFields(
       id: "ai.handoffSummaryAgent",
       type: "enum",
       title: "Handoff summary agent",
-      description: "Pinned independently from the interactive chat agent.",
+      description:
+        "Restricted background work uses the configured bundled Lapis agent. Saved external-client choices remain inert until replaced.",
+      allowUnknownOptions: true,
       default: DEFAULT_AI_SETTINGS.handoffSummaryAgent,
-      options: PROCESSOR_AGENT_IDS.map((value) => ({
-        value,
-        label: value === "cursor" ? "Cursor" : "Codex",
-      })),
+      options: [{ value: "local", label: "Lapis AI" }],
     },
     {
       id: "ai.handoffSummaryModel",

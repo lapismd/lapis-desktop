@@ -9,6 +9,14 @@ export default defineConfig({
     include: ["tests/ai/**/*.test.ts"],
     setupFiles: ["tests/ai/setup.ts"],
     fileParallelism: false,
-    server: { deps: { inline: [/@lapis-notes\/(?:api|ui)/] } },
+    server: {
+      deps: {
+        inline: [
+          /@lapis-notes\/(?:api|ui)/,
+          /@lapismd\/design-core/,
+          /lucide-static/,
+        ],
+      },
+    },
   },
 });

@@ -45,7 +45,12 @@
   let avatar = $state(""),
     avatarBackground = $state("#6e56cf"),
     avatarUploads = $state(0);
-  const labels = { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" };
+  const labels = {
+    codex: "Codex",
+    cursor: "Cursor",
+    opencode: "OpenCode",
+    local: "Lapis AI",
+  };
   const editorId = $props.id();
   const disabled = $derived(
     saving ||

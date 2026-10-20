@@ -16,9 +16,9 @@ import { mapAcpActivity, mapAcpTerminal } from "./event-mapper.ts";
 import { mapAcpPermission } from "./permissions.ts";
 import { AcpSessionConfiguration } from "./configuration.ts";
 import {
-  InitialAgentContext,
+  AcpInitialContext,
   type AgentProfileContext,
-} from "../../core/agent-profile.ts";
+} from "./session-context.ts";
 import { AgentTurnFailure } from "./wire.ts";
 import { acpTurnRequestId } from "./turn-id.ts";
 import { ToolTurn, type ToolTurnPort } from "./tool-turn.ts";
@@ -38,24 +38,23 @@ export class AcpAgentSession implements AgentSession {
   readonly #toolNames = new Map<string, string>();
   #turn?: ActiveTurn;
   readonly #configuration: AcpSessionConfiguration;
-  readonly #profile: InitialAgentContext;
+  readonly #profile: AcpInitialContext;
   #state: "active" | "detached" | "closed" = "active";
   #fatal?: Error;
   #close?: Promise<void>;
   readonly #maxDurationMs: number;
   readonly #tools?: ToolTurnPort;
-  readonly #provider?: string;
   constructor(
     maxDurationMs = 120_000,
     tools?: ToolTurnPort,
     provider?: string,
     profile?: AgentProfileContext,
+    initialContext?: string,
   ) {
     this.#maxDurationMs = maxDurationMs;
     this.#tools = tools;
-    this.#provider = provider;
     this.#configuration = new AcpSessionConfiguration(provider);
-    this.#profile = new InitialAgentContext(profile);
+    this.#profile = new AcpInitialContext(profile, initialContext);
   }
   get id(): string {
     return this.#native?.info.sessionId ?? "starting";
@@ -85,9 +84,7 @@ export class AcpAgentSession implements AgentSession {
           const event = mapAcpActivity(
             frame.update,
             source,
-            this.#tools && this.#provider === "codex"
-              ? "lapis-tools"
-              : undefined,
+            this.#tools ? "lapis-tools" : undefined,
           );
           rememberToolName(this.#toolNames, event);
           this.#events.push(event);

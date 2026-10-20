@@ -1,3 +1,4 @@
+import { nativeCompute } from "./compute.ts";
 import {
   AgentClients,
   type ClientStatus,
@@ -23,6 +24,10 @@ import { NativeAppTools } from "./app-tools/coordinator.ts";
 import { createToolPort, type ToolListen } from "./app-tools/port.ts";
 
 import { NativeImportSources } from "./import-sources.ts";
+import {
+  AiProviders,
+  type ProviderStatus,
+} from "../../ai/settings/providers.svelte.ts";
 
 export type NativeAiPorts = {
   call?: NativeCall;
@@ -60,7 +65,46 @@ export function createNativeAi(
     available: allowed,
     work: (load) => background.run("Preparing AI and loading models", load),
   });
+  const compute = nativeCompute(
+    app,
+    vault.sessionId,
+    native,
+    background,
+    () => scope.targets(),
+    () => {
+      models.invalidate();
+      scope.invalidateAdmission();
+    },
+    allowed,
+  );
   const importSources = new NativeImportSources(vault.sessionId, call, allowed);
+  const providers = new AiProviders(
+    (action) =>
+      background.run(
+        action.type === "save"
+          ? "Saving AI provider settings"
+          : "Loading AI provider settings",
+        async () => {
+          if (!allowed())
+            throw new Error("AI provider settings require a trusted workspace");
+          return native<ProviderStatus>("desktop_ai_providers", {
+            request: { sessionId: vault.sessionId, action },
+          });
+        },
+      ),
+    () => {
+      models.invalidate();
+      scope.invalidateAdmission();
+    },
+    (error) =>
+      app.notifications.notify({
+        id: "ai-provider-settings",
+        title: "AI provider settings",
+        source: "ai",
+        severity: "error",
+        message: error instanceof Error ? error.message : String(error),
+      }),
+  );
   const captureSources = new NativeCaptureSources(
     vault.sessionId,
     call,
@@ -155,6 +199,10 @@ export function createNativeAi(
     client: createAcpClient(scope),
     close: (id) => scope.close(id),
     tools: bridge,
+    launchTarget: async (request, provider) =>
+      request.restricted
+        ? "local:restricted"
+        : (bridge?.target(request.appToolSession, provider) ?? provider),
   });
 
   let closing: Promise<void> | undefined;
@@ -164,6 +212,8 @@ export function createNativeAi(
     return (closing ??= (async () => {
       await Promise.all([
         models.close(),
+        providers.close(),
+        compute.close(),
         userAgents.close(),
         bridge?.close(),
         importSources.close(),
@@ -178,6 +228,8 @@ export function createNativeAi(
   }
   return {
     clients,
+    providers,
+    compute,
     runtime,
     appToolBridge: bridge,
     models,

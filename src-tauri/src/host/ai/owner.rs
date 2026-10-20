@@ -15,6 +15,7 @@ use tauri_plugin_lapis_ai::AcpHost;
 pub struct NativeAiOwner {
     pub tools: lapis_desktop::ai::tools::Registry,
     pub transitions: Arc<tokio::sync::Mutex<()>>,
+    pub compute: OnceLock<Arc<lapis_desktop::ai::compute::Compute>>,
     workers: OnceLock<Weak<AcpHost>>,
     destroyed: AtomicBool,
 }
@@ -48,10 +49,21 @@ impl NativeAiOwner {
         self.ensure_live()
     }
     pub fn fence(&self, window: &str, generation: Option<&str>) -> io::Result<()> {
+        if window == "main"
+            && let Some(compute) = self.compute.get()
+        {
+            compute.fence(generation)?;
+        }
         self.tools.fence(window, generation)
     }
     pub async fn drain(&self, window: &str, generation: Option<&str>) -> io::Result<()> {
-        self.tools.drain(window, generation).await
+        self.tools.drain(window, generation).await?;
+        if window == "main"
+            && let Some(compute) = self.compute.get()
+        {
+            compute.shutdown(generation).await?;
+        }
+        Ok(())
     }
     pub fn destroy_window(&self, window: &str) -> io::Result<()> {
         if window == "main" {

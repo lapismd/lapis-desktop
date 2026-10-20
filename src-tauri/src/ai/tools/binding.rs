@@ -4,7 +4,6 @@ use super::{Event, Outcome, ToolSpec, files::Files, unavailable, unknown};
 use serde_json::Value;
 use std::{
     io,
-    path::PathBuf,
     sync::{Arc, Mutex},
     time::Duration,
 };
@@ -39,6 +38,7 @@ pub struct Binding {
     changed: Notify,
     pub(super) stop: watch::Sender<bool>,
     listener: tokio::sync::Mutex<Option<tokio::task::JoinHandle<io::Result<()>>>>,
+    http: tokio::sync::Mutex<Option<tokio::task::JoinHandle<io::Result<()>>>>,
     closing: tokio::sync::Mutex<()>,
 }
 impl Binding {
@@ -75,6 +75,7 @@ impl Binding {
             changed: Notify::new(),
             stop: watch::channel(false).0,
             listener: tokio::sync::Mutex::new(None),
+            http: tokio::sync::Mutex::new(None),
             closing: tokio::sync::Mutex::new(()),
         });
         let task = tokio::spawn(super::listener::serve(
@@ -83,26 +84,8 @@ impl Binding {
             binding.stop.subscribe(),
         ));
         *binding.listener.lock().await = Some(task);
+        *binding.http.lock().await = Some(super::http::start(&binding).await?);
         Ok(binding)
-    }
-    /// Only the native launch policy may use these values. Never return via IPC.
-    pub fn launch(&self) -> io::Result<(PathBuf, std::collections::BTreeMap<String, String>)> {
-        self.check()?;
-        let files = self.files.lock().map_err(|_| unavailable())?;
-        let files = files.as_ref().ok_or_else(unavailable)?;
-        Ok((
-            files.config.clone(),
-            std::collections::BTreeMap::from([
-                (
-                    super::files::SOCKET_ENV.into(),
-                    files.path.to_str().ok_or_else(unavailable)?.to_owned(),
-                ),
-                (
-                    super::files::CREDENTIAL_ENV.into(),
-                    files.credential.to_string(),
-                ),
-            ]),
-        ))
     }
     pub fn arm(&self, turn: Uuid) -> io::Result<()> {
         self.check()?;
@@ -280,6 +263,11 @@ impl Binding {
         if let Some(task) = listener.as_mut() {
             task.await.map_err(|_| unknown())??;
             listener.take();
+        }
+        let mut http = self.http.lock().await;
+        if let Some(task) = http.as_mut() {
+            task.await.map_err(|_| unknown())??;
+            http.take();
         }
         let mut files = self.files.lock().map_err(|_| unavailable())?;
         if let Some(owned) = files.as_ref() {

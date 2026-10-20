@@ -89,13 +89,16 @@ it("plain chat works through ACP when the ordinary controller discovers app skil
     )![3];
     expect(prompt.text).toBe("Synthetic plain chat");
     expect(prompt.context).toContain("Synthetic attached note content");
-    expect(start.mock.calls[0]![0].skillSnapshot).toBeUndefined();
-    expect(
-      start.mock.calls[0]![0].metadata?.availableSkillsManifest,
-    ).toBeUndefined();
-    await expect(
-      runtime.start({ prompt: "", skillSnapshot: snapshot }),
-    ).rejects.toThrow(/unsupported/);
+    expect(start.mock.calls[0]![0].skillSnapshot).toEqual(snapshot);
+    expect(prompt.context).toContain("notes");
+    expect(start.mock.calls[0]![0].metadata?.availableSkillsManifest).toContain(
+      "notes",
+    );
+    const configured = await runtime.start({
+      prompt: "",
+      skillSnapshot: snapshot,
+    });
+    await configured.close();
   } finally {
     await controller.close();
   }

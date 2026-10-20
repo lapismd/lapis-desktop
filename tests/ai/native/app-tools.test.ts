@@ -25,6 +25,11 @@ it("publishes the captured snapshot and waits for transcript-event persistence b
   expect(f.bridge.target(descriptor, "codex")).toBe(
     `codex:tools:${descriptor.bridgeId}`,
   );
+  for (const provider of ["local", "opencode", "cursor"])
+    expect(f.bridge.target(descriptor, provider)).toBe(
+      `${provider}:tools:${descriptor.bridgeId}`,
+    );
+  expect(() => f.bridge.target(descriptor, "unknown")).toThrow(/unavailable/);
   const turnId = crypto.randomUUID(),
     invocationId = crypto.randomUUID();
   await f.bridge.arm(descriptor.bridgeId!, turnId);

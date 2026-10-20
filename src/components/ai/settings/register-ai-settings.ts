@@ -1,7 +1,9 @@
+import AiComputeField from "./AiComputeField.svelte";
 import AgentClientsField from "./AgentClientsField.svelte";
 import AgentClientsPage from "./AgentClientsPage.svelte";
 import AgentProfilesField from "./AgentProfilesField.svelte";
 import AiSettingsPage from "./AiSettingsPage.svelte";
+import AiProvidersField from "./AiProvidersField.svelte";
 import type { AgentProfileManagement } from "../../../lib/ai/settings/agent-profile-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from Lapis register-ai-settings; see ../../../lib/ai/NOTICE.md.
@@ -24,6 +26,8 @@ import type { AiSettingsStore } from "../../../lib/ai/settings/settings-store.ts
 
 type SettingsOwner = Pick<Plugin, "app" | "register"> & {
   clients?: import("../../../lib/ai/settings/clients.svelte.ts").AgentClients;
+  compute?: import("../../../lib/ai/settings/compute.svelte.ts").AiCompute;
+  providers?: import("../../../lib/ai/settings/providers.svelte.ts").AiProviders;
   settings: AiSettingsStore;
   models: AiModelCatalog;
   report(error: unknown): void;
@@ -122,6 +126,22 @@ export function registerAiSettings(plugin: SettingsOwner): void {
   const register = () => {
     const definition = createAiSettingsSection(app, settings.get());
     definition.page = AiSettingsPage;
+    if (plugin.providers)
+      definition.fields?.push({
+        id: "ai.providers",
+        type: "custom",
+        title: "Lapis provider",
+        component: AiProvidersField,
+        management: plugin.providers,
+      } as import("@lapis-notes/api").WorkspaceCustomSetting);
+    if (plugin.compute)
+      definition.fields?.push({
+        id: "ai.compute",
+        type: "custom",
+        title: "Optional compute",
+        component: AiComputeField,
+        management: plugin.compute,
+      } as import("@lapis-notes/api").WorkspaceCustomSetting);
     return controller.settings.registerDefinition({
       section: definition,
       source,

@@ -16,11 +16,12 @@ impl Tooling {
                 }
             }
         };
-        let (node_version, adapter_version, cli_version, cursor_version) = tokio::join!(
+        let (node_version, adapter_version, cli_version, cursor_version, opencode_version) = tokio::join!(
             probe("node"),
             probe("codex-acp"),
             probe("codex"),
-            probe("cursor-agent")
+            probe("cursor-agent"),
+            probe("opencode")
         );
         let npm_available = paths::resolve(&paths, "npm").is_some();
         let prerequisites = node_version
@@ -79,10 +80,14 @@ impl Tooling {
         } else {
             None
         };
-        let cursor_detail = if cursor_version.is_some() {
-            "Detected on this device. Cursor execution is not yet admitted by this Desktop profile."
-        } else {
-            "Install using Cursor's setup guide. Cursor execution is not yet admitted by this Desktop profile."
+        let external_state = |command| {
+            if !bundle_ready {
+                "bundle_needed"
+            } else if paths::resolve(&paths, command).is_some() {
+                "ready"
+            } else {
+                "cli_missing"
+            }
         };
         Ok(Status {
             version: 1, node_version, npm_available,
@@ -94,8 +99,11 @@ impl Tooling {
                 detail: format!("Codex CLI and ACP adapter. Private install uses adapter {ADAPTER_VERSION} and CLI {CODEX_VERSION}. Authenticate with Codex before connecting."),
                 guide_url: "https://developers.openai.com/codex/cli".into(), target_version: Some(ADAPTER_VERSION.into()), target_cli_version: Some(CODEX_VERSION.into()),
             }, Runtime {
-                id: "cursor".into(), label: "Cursor".into(), state: "not_admitted".into(), adapter_version: None, cli_version: cursor_version, managed: false, action: None,
-                detail: cursor_detail.into(), guide_url: "https://cursor.com/docs/cli/installation".into(), target_version: None, target_cli_version: None,
+                id: "cursor".into(), label: "Cursor".into(), state: external_state("cursor-agent").into(), adapter_version: None, cli_version: cursor_version, managed: false, action: None,
+                detail: "Uses cursor-agent acp and the existing Cursor CLI sign-in. Install and authenticate with Cursor before connecting.".into(), guide_url: "https://cursor.com/docs/cli/installation".into(), target_version: None, target_cli_version: None,
+            }, Runtime {
+                id: "opencode".into(), label: "OpenCode".into(), state: external_state("opencode").into(), adapter_version: None, cli_version: opencode_version, managed: false, action: None,
+                detail: "Uses opencode acp and the provider authentication configured in OpenCode.".into(), guide_url: "https://opencode.ai/docs/acp/".into(), target_version: None, target_cli_version: None,
             }, Runtime {
                 id: "local".into(), label: "Lapis AI".into(), state: if bundle_ready { "ready" } else { "bundle_needed" }.into(),
                 adapter_version: None, cli_version: None, managed: true, action: None,

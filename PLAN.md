@@ -8,12 +8,12 @@ scaffolding was the completed M0.0 task. This roadmap retains the original
 completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 [backup ledger](spec/src/current/progress/vault-backup.md) own status.
 
-| Workstream                        | Implemented and verified                                                                                                                                               | Remaining completion gates                                                                                                       |
-| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                                  | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                |
-| AI and conversations, M10/M13     | Local ACP, agent profiles/avatars/tagging and Document/Classic UI retained; transcripts join Repository History by default; native experiment preserved (E-AI-092/093) | M13/M13.3 native chat Deferred at checkpoint; M10.2 full qualification and secondary features remain open                        |
-| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                         | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain |
-| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                              | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                               |
+| Workstream                        | Implemented and verified                                                                                                                                     | Remaining completion gates                                                                                                       |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                        | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                |
+| AI and conversations, M10/M13     | Local ACP UI/drafts/context, independent clients, native providers/tools and optional compute v0 implemented (E-AI-097); transcripts join Repository History | M13/M13.3 native chat Deferred; M10.2–M10.4 keep real-provider/model/recovery gates and documented secondary work                |
+| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded               | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain |
+| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                    | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                               |
 
 Repository History now includes automatic internal/external file capture,
 vault-ID-owned external JJ storage, history/blame/diffs and guarded restoration,
@@ -176,14 +176,15 @@ the separately selected native capture authority.
 
 The remaining AI/distribution sequence is:
 
-1. **M10.2:** finish native chat execution, bootstrap/context/skills, durable
-   conversation recovery, active trust revocation and cleanup; qualify remaining
-   native AI scenarios. Retained UI, conversations, memory and stories are
-   already migrated; unavailable AI is intentional until targets are admitted.
-2. **M10.3:** authenticated Rust application tools, native credentials, exact
-   approvals and guarded reads/edits with the packaged Rust agent.
-3. **M10.4:** optional compute model lifecycle and peer admission, separately
-   enabled and qualified.
+1. **M10.2:** [Local ACP setup](spec/src/current/ai-setup.md), initial
+   context/skills, private drafts and ordinary conversation UI are implemented.
+   Qualify the remaining mounted provider, recovery and trust-cleanup scenarios.
+2. **M10.3:** native provider/Keychain settings and admitted stdio/HTTP
+   application tools are implemented. Qualify real bundled/external-agent
+   approvals and guarded reads/edits.
+3. **M10.4:** explicit compute model/resource/peer lifecycle is implemented.
+   Qualify loaded native inference and mutual two-device admission independently
+   of ACP.
 4. **M11:** publication/distribution prerequisites, signing/notarization,
    updates/rollback and separate Linux/Windows qualification. Signing remains
    deferred until this stage and requires the governing release authorization.

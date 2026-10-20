@@ -1,5 +1,7 @@
 # Desktop shell
 
+E-AI-097: native AI setup.
+
 E-AI-093: [local ACP](ai-local-history.md).
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044/055;

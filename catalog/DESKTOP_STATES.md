@@ -205,3 +205,12 @@ both wrap modes (E-REPO-055).
 `AI/Conversation drafts` covers conversation isolation, private durable restart
 recovery, both transcript views, first publication, obsolete reads and a failed
 save with retained input (E-AI-096).
+
+`Desktop/AI setup` uses production AI Settings with in-memory native ports.
+Providers and compute covers explicit model/resource/peer configuration; Loading
+uses representative skeletons; Setup failure and Provider save failure assert
+App notifications and retained drafts; Running compute covers Stop. Source
+presentation is copied/adapted from JJ Store’s StoreComputeSettings,
+StoreComputeModels, StoreComputePeers, StoreWorkField and environment key field.
+Native/real-provider qualification is separate; all stories remain
+visual-pending.

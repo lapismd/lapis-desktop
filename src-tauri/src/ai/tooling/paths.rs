@@ -105,8 +105,11 @@ pub(super) async fn probe(bin: &Path, paths: &[PathBuf]) -> Option<String> {
         if bytes.len() > 4096 || !child.0.wait().await.ok()?.success() {
             return None;
         }
-        let (a, b, c) = version(std::str::from_utf8(&bytes).ok()?)?;
-        Some(format!("{a}.{b}.{c}"))
+        let value = std::str::from_utf8(&bytes).ok()?.lines().next()?.trim();
+        if value.is_empty() || value.len() > 256 || value.chars().any(char::is_control) {
+            return None;
+        }
+        Some(value.to_owned())
     })
     .await
     .ok()

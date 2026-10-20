@@ -20,7 +20,12 @@
     onEdit: (profile: AgentRecipientOption) => void;
     onRemove: (profile: AgentRecipientOption) => void;
   } = $props();
-  const labels = { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" };
+  const labels = {
+    codex: "Codex",
+    cursor: "Cursor",
+    opencode: "OpenCode",
+    local: "Lapis AI",
+  };
 </script>
 
 <section class="agent-profiles" aria-label="Your agents">

@@ -53,9 +53,9 @@ deferred to their distribution gates.
 | M8.3  | Done        | Complete; continue to M9.1                                                                           |
 | M9.1  | Done        | Complete; continue to M10.1 native ACP adapter                                                       |
 | M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI                                                         |
-| M10.2 | In progress | Qualify local ACP with backed-up transcript files; secondary AI work deferred                        |
-| M10.3 | Planned     | Implement and qualify native tools and credentials                                                   |
-| M10.4 | Planned     | Integrate optional compute last                                                                      |
+| M10.2 | In progress | v0: independent clients, context and private drafts implemented; qualify mounted provider/recovery   |
+| M10.3 | In progress | v0: native credentials and all-client tool transports implemented; qualify live agent tools          |
+| M10.4 | In progress | v0: explicit model/resource/peer controls implemented; qualify loaded model and two devices          |
 | M0.2  | Done        | Complete; native qualification remains explicit                                                      |
 | M8.4  | Done        | Complete; extend inventory with new desktop UI                                                       |
 | M8.5  | Done        | Complete; continue AI and backup                                                                     |

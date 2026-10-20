@@ -32,10 +32,12 @@
   const current = $derived(rows.find((row) => key(row.location) === activeId));
   const agent = $derived(
     (
-      { codex: "Codex", cursor: "Cursor", opencode: "OpenCode" } as Record<
-        string,
-        string
-      >
+      {
+        codex: "Codex",
+        cursor: "Cursor",
+        opencode: "OpenCode",
+        local: "Lapis AI",
+      } as Record<string, string>
     )[composerState.selectedAgent] ?? composerState.selectedAgent,
   );
   const items = $derived(

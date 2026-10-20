@@ -264,6 +264,15 @@ fn codex_tool_alias_is_native_scoped_single_claim_and_never_constructs_jj_captur
             .unwrap()
             .is_none()
     );
+    // Configuration refresh only changes new admission, not the owned worker.
+    std::fs::remove_file(_runtime.path().join("bin/codex-acp")).unwrap();
+    fixture.policy.prepare_file_profile().unwrap();
+    assert!(
+        fixture
+            .policy
+            .authorize_processing(&caller(), &binding)
+            .is_ok()
+    );
     assert!(fixture.policy.resolve(&caller(), &alias, None).is_err());
     assert!(
         fixture

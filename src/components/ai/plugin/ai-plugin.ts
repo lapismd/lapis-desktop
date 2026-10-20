@@ -35,6 +35,12 @@ export class AiPlugin extends Plugin {
   get clients() {
     return this.application.services.clients;
   }
+  get compute() {
+    return this.application.services.compute;
+  }
+  get providers() {
+    return this.application.services.providers;
+  }
   get models() {
     return this.application.models;
   }

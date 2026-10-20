@@ -19,6 +19,7 @@ struct PolicyState {
     host: OnceLock<NativeHost>,
     backends: OnceLock<Arc<NativeAiOwner>>,
     files: super::file_profile::FileProfile,
+    compute: OnceLock<Arc<lapis_desktop::ai::compute::Compute>>,
 }
 pub fn local(context: &HostContext) -> Result<()> {
     let url = url::Url::parse(&context.url).map_err(|_| Error("denied"))?;
@@ -43,6 +44,17 @@ impl DesktopAiPolicy {
         settings: std::path::PathBuf,
         home: std::path::PathBuf,
     ) -> io::Result<()> {
+        let profile = settings
+            .parent()
+            .ok_or_else(|| io::Error::other("AI profile unavailable"))?
+            .to_owned();
+        self.0
+            .compute
+            .set(Arc::new(lapis_desktop::ai::compute::Compute::open(
+                profile.clone(),
+                lapis_desktop::ai::configuration::device_secrets(&profile),
+            )?))
+            .map_err(|_| io::Error::other("Compute already configured"))?;
         self.0.files.configure(settings, home)
     }
     #[cfg(not(feature = "e2e"))]
@@ -53,7 +65,29 @@ impl DesktopAiPolicy {
         self.0.files.bundle_ready()
     }
     pub fn prepare_file_profile(&self) -> io::Result<()> {
-        self.0.files.prepare()
+        let paired = self
+            .providers()
+            .ok()
+            .and_then(|providers| providers.status().ok())
+            .is_some_and(|status| status.configuration.provider == "paired");
+        self.0.files.prepare_with_compute(
+            self.compute()
+                .ok()
+                .and_then(|compute| compute.environment(paired).ok()),
+        )
+    }
+    pub fn providers(&self) -> io::Result<lapis_desktop::ai::configuration::ProviderStore> {
+        self.0.files.providers()
+    }
+    pub fn compute(&self) -> io::Result<Arc<lapis_desktop::ai::compute::Compute>> {
+        self.0
+            .compute
+            .get()
+            .cloned()
+            .ok_or_else(|| io::Error::other("Compute unavailable"))
+    }
+    pub fn compute_plan(&self) -> io::Result<tauri_plugin_lapis_ai::runtime::PreparedLaunch> {
+        self.0.files.compute_plan()
     }
     pub fn initialize(
         &self,
@@ -66,6 +100,12 @@ impl DesktopAiPolicy {
             .set(host)
             .map_err(|_| io::Error::other("AI policy is already initialized"))?;
         backends.bind_workers(workers)?;
+        if let Some(compute) = self.0.compute.get() {
+            backends
+                .compute
+                .set(compute.clone())
+                .map_err(|_| io::Error::other("Compute already bound"))?;
+        }
         self.0
             .backends
             .set(backends)
@@ -117,7 +157,7 @@ impl HostPolicy for DesktopAiPolicy {
         if lease.generation() != binding.admission {
             return Err(Error("admission_revoked"));
         }
-        if !self.0.files.contains(&binding.target_id)
+        if !self.0.files.retains(&binding.target_id)
             && self
                 .tool_binding(context, &lease, &binding.target_id, false)?
                 .is_none()
@@ -142,7 +182,7 @@ impl HostPolicy for DesktopAiPolicy {
         }
         // This explicit profile uses the existing local transcript writer. It
         // does not construct a JJ capture processor or publish store metadata.
-        if self.0.files.contains(&binding.target_id)
+        if self.0.files.retains(&binding.target_id)
             || self
                 .tool_binding(context, &current, &binding.target_id, false)?
                 .is_some()

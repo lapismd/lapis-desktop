@@ -1,9 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see src/lib/ai/NOTICE.md.
-export const ACP_AGENT_IDS = ["codex", "cursor", "opencode"] as const;
+export const ACP_AGENT_IDS = ["codex", "cursor", "opencode", "local"] as const;
 
 export type AcpAgentId = (typeof ACP_AGENT_IDS)[number];
-export const PROCESSOR_AGENT_IDS = ["codex", "cursor"] as const;
+export const PROCESSOR_AGENT_IDS = ["codex", "cursor", "local"] as const;
 export type ProcessorAgentId = (typeof PROCESSOR_AGENT_IDS)[number];
 
 export const DEFAULT_ACP_AGENT: AcpAgentId = "codex";

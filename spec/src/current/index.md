@@ -14,6 +14,8 @@ gates.
 - [Native workspace windows](windows.md)
 - [Desktop plugins and catalog](plugins.md)
 - [Desktop AI and optional compute](ai.md)
+  - [Local AI setup and optional compute](ai-setup.md)
+  - [Native adapter records](ai-adapter.md)
   - [Installed clients and bundled helpers](ai-clients.md)
   - [Deferred: Native authored conversation messages](ai-authored.md)
   - [Deferred: Canonical managed capture](ai-managed-capture.md)

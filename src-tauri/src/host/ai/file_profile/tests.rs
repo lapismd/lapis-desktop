@@ -44,7 +44,7 @@ pub(in crate::host::ai) fn fixture() -> (tempfile::TempDir, PathBuf, PathBuf) {
 }
 
 #[test]
-fn explicit_file_profile_has_exact_codex_target_and_no_inherited_launch_authority() {
+fn explicit_file_profile_advertises_only_detected_targets_and_no_inherited_launch_authority() {
     let (temp, settings, home) = fixture();
     let files = FileProfile::default();
     files.configure(settings, home.clone()).unwrap();
@@ -157,9 +157,8 @@ fn absent_adapter_and_invalid_bundle_have_distinct_repair_messages() {
     std::fs::remove_file(&adapter).unwrap();
     let files = FileProfile::default();
     files.configure(settings.clone(), home.clone()).unwrap();
-    let message = files.prepare().unwrap_err().to_string();
-    assert!(message.contains("codex-acp"), "{message}");
-    assert!(message.contains("Install"), "{message}");
+    files.prepare().unwrap();
+    assert!(files.targets().is_empty());
     std::fs::write(adapter, "fixture, never executed").unwrap();
     std::fs::write(temp.path().join("bundle/lapis-acp"), "tampered").unwrap();
     let files = FileProfile::default();

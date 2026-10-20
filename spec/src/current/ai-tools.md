@@ -1,5 +1,19 @@
 # Native application tools
 
+[Local setup](ai-setup.md) extends stdio to admitted Lapis/OpenCode and adds a
+private authenticated HTTP MCP adapter for Cursor. AppToolHost retains execution
+and effect ownership.
+
+M10.3 provider configuration is device-owned and exposed inside the existing AI
+settings. Fixed provider metadata comes from the public native catalog; the
+desktop excludes subscription OAuth. API keys are write-only inputs to native
+Keychain custody, represented in persisted settings by opaque references.
+Conditional settings saves retain an exact request identity and committed
+receipt; uncertain saves retain their draft/request for observation or exact
+retry. Provider changes apply to newly admitted workers and invalidate
+discovery; running workers retain their captured configuration. No credential
+enters a transcript, vault setting, browser storage, Debug output or diagnostic.
+
 An AI panel accepts bridge events only for its own active or recorded agent
 binding. An empty or unbound sibling view cannot display or persist another
 conversation's tool captures, even when both share the application bridge.

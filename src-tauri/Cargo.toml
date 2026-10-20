@@ -56,8 +56,10 @@ tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin
 tauri-plugin-lapis-ai = { path = "../../lapis-ai/crates/tauri-plugin-lapis-ai" }
 lapis-ai-app-tools = { path = "../../lapis-ai/crates/lapis-ai-app-tools", version = "0.1.1" }
 zeroize = "1"
+axum = { version = "0.8", default-features = false, features = ["http1", "json", "tokio"] }
 
 [target.'cfg(target_os = "macos")'.dependencies]
+security-framework = "3.7"
 mac-usernotifications = { version = "=0.3.1", default-features = false }
 objc2 = "=0.6.5"
 block2 = "=0.6.2"

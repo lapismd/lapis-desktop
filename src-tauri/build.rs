@@ -14,6 +14,8 @@ fn main() {
         "desktop_ai_user_commands",
         "desktop_ai_admit",
         "desktop_ai_clients",
+        "desktop_ai_providers",
+        "desktop_ai_compute",
         "desktop_ai_imports",
         "desktop_ai_release",
         "desktop_backup_start",
