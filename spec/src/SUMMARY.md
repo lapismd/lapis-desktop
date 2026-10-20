@@ -302,3 +302,4 @@
 - [Unified indexed history in Search](history/E-REPO-045.md)
 
 - [Native workspace-window session registry](history/E-POPOUT-003.md)
+- [Native backup recovery and close retry](history/E-REPO-048.md)

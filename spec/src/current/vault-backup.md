@@ -41,7 +41,9 @@ immutable history admission and accept only an opaque admitted vault session.
 Native code chooses roots and paths. Source replacements revoke the binding. The
 writer shares the guarded file-IO gate and drains after normal editor saves.
 Vault/plugin close stops watching and completes final local capture before
-native release. Network failure cannot block saved-file closure.
+native release. A failed final capture retains the original native owner and
+visible failure; retry captures repaired saved files before release. Network
+failure cannot block saved-file closure.
 
 Automatic history enablement is independent of status visibility. The status
 control reports saving, saved, paused or attention; background work uses the

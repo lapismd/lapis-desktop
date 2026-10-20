@@ -4,7 +4,7 @@ E-POPOUT-003 adds the window registry; ordinary popup admission remains denied
 (LD-DESK-003/LD-POP-005).
 
 Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044; backup
-E-REPO-035–041; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
+E-REPO-035–041/048; imports E-AI-056 ([contract](ai-imports.md)). Gravatar:
 `https://www.gravatar.com`; status: `repository-navigation.md`.
 
 App watching starts after metadata/views; leave drains it; failure resumes it

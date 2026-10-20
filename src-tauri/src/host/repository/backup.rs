@@ -83,22 +83,20 @@ impl Backups {
     }
     pub async fn close(&self, host: NativeHost, session: &str) -> Result<(), NativeError> {
         let mut entries = self.entries.lock().await;
-        let Some(owner) = entries.remove(session) else {
+        let Some(owner) = entries.get_mut(session) else {
             return Ok(());
         };
         let key = session.to_owned();
-        let session = key.clone();
         let watch = owner.watch.clone();
         // Stop delivery before the final capture, after editor persistence.
-        if let Err(error) = access(host, move |s| s.watches.close(&session, &watch)).await {
-            entries.insert(key, owner);
-            return Err(error);
-        }
-        let result = owner.backup.close().await.map_err(error);
+        access(host, move |s| s.watches.close(&key, &watch)).await?;
+        // Keep the original owner and status stream on failure or cancellation.
+        owner.backup.try_close().await.map_err(error)?;
+        let owner = entries.remove(session).unwrap();
         if let Some(events) = owner.events {
             events.abort();
         }
-        result
+        Ok(())
     }
 }
 #[tauri::command]

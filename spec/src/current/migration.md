@@ -9,6 +9,8 @@ unchanged.
 E-POPOUT-003 begins M7.3 with the session registry. Its ordinary-window gate
 remains open; the user deferred release while resuming other implementation.
 
+E-REPO-048 qualifies final-capture retry; M14.2 retains its original gate.
+
 ## Current checkpoint — 2026-10-20
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and

@@ -60,7 +60,7 @@ deferred to their distribution gates.
 | M8.5  | In progress | Finish original native presentation gate                       |
 | M14   | Partial     | Cold native app, then real-provider acceptance                 |
 | M14.1 | Partial     | Deferred cold identity/reopen proof                            |
-| M14.2 | Partial     | Qualify cold native lifecycle later                            |
+| M14.2 | Partial     | Finish ordinary editor-save/Quit gate                          |
 | M14.3 | Partial     | Deferred cold restore qualification                            |
 | M14.4 | Partial     | Qualify cold app/provider flow later                           |
 | M14.5 | Partial     | Qualify cold app/provider gates later                          |

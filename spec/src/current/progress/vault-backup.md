@@ -15,7 +15,7 @@ without changing any task status, dependency, requirement or original gate.
 | ----- | ------- | ----------- | ------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | --------------------------------------------------------------------------------------- |
 | M14   | Partial | -           | LD-REPO-005              | Functional automatic backup, restore, GitHub/Forgejo synchronization and historical search integrated into main workspaces | Cold native app, then real-provider acceptance | E-REPO-026,E-REPO-039,E-REPO-040,E-REPO-041,E-REPO-042,E-REPO-043,E-REPO-045            |
 | M14.1 | Partial | -           | LD-REPO-005,LD-VAULT-002 | Stable vault IDs and independent external JJ history work in the native app after reopen and recent eviction               | Deferred cold identity/reopen proof            | E-REPO-026,E-REPO-042                                                                   |
-| M14.2 | Partial | M14.1       | LD-REPO-005              | Open-vault internal/external capture, reconciliation and crash/close recovery work                                         | Qualify cold native lifecycle later            | E-REPO-026,E-REPO-027,E-REPO-042                                                        |
+| M14.2 | Partial | M14.1       | LD-REPO-005              | Open-vault internal/external capture, reconciliation and crash/close recovery work                                         | Finish ordinary editor-save/Quit gate          | E-REPO-026,E-REPO-027,E-REPO-042,E-REPO-048                                             |
 | M14.3 | Partial | M14.2       | LD-REPO-005              | Local timeline, guarded restoration, live history and independent status visibility work                                   | Deferred cold restore qualification            | E-REPO-028,E-REPO-042,E-REPO-043                                                        |
 | M14.4 | Partial | M14.3       | LD-REPO-005              | GitHub sign-in, remote setup and fresh-device restore work                                                                 | Qualify cold app/provider flow later           | E-REPO-029,E-REPO-030,E-REPO-031,E-REPO-039,E-REPO-040,E-REPO-041,E-REPO-042            |
 | M14.5 | Partial | M14.4       | LD-REPO-005              | Two-device automatic pull/merge/push preserves offline work and conflicts                                                  | Qualify cold app/provider gates later          | E-REPO-032,E-REPO-033,E-REPO-042,E-REPO-043                                             |
@@ -85,3 +85,6 @@ original cold app/provider and wider gates are unchanged.
 E-REPO-045 integrates retained indexed history into unified Search. Its cold IPC
 proof preserves later unsnapshotted edits; full visible Search/restore and
 provider gates remain open. Statuses and original gates are unchanged.
+
+E-REPO-048 qualifies native watcher/crash/final-capture recovery and retry of
+failed final capture. M14.2 stays Partial at its ordinary editor-save/Quit gate.
