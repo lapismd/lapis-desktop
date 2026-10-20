@@ -31,6 +31,7 @@ pub(super) async fn sessions(
     links: Vec<ThreadLinkV1>,
     retain: bool,
     cursors: &mut BTreeMap<Uuid, super::retained::Cursor>,
+    records: &mut super::record_cursors::RecordReads,
 ) -> io::Result<Vec<Session>> {
     let reader = AgentReader::new(snapshot);
     let mut result = Vec::new();
@@ -95,10 +96,16 @@ pub(super) async fn sessions(
                 transcripts.push(transcript);
             }
         }
+        let records_cursor = if retain {
+            Some(records.register(&session)?)
+        } else {
+            None
+        };
         result.push(Session {
             link,
             snapshot: session,
             transcripts,
+            records_cursor,
         });
     }
     Ok(result)

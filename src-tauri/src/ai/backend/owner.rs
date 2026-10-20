@@ -47,7 +47,7 @@ impl BackendScope {
         self.context.check()?;
         self.lease.verify()?;
         if let Some(source) = &self.source {
-            source.verify()?;
+            self.context.source.check(&self.context.lease, source)?;
         }
         Ok(())
     }

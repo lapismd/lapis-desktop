@@ -1,14 +1,23 @@
 //! Native-owned conversation preparation; recovery only reads original receipts.
+mod canonical_capture;
 mod capture;
+pub mod capture_facts;
+mod capture_sink;
+mod capture_stores;
 pub mod catalog;
+pub mod dispatch;
+pub mod edits;
 mod identity;
+mod member;
 pub mod messages;
 mod provider;
 mod read;
 mod records;
 use crate::{ai::backend::BackendCall, vault::private_profile as storage};
+pub use canonical_capture::PreparedCanonicalConversation;
 use cap_std::fs::Dir;
 pub use capture::PreparedConversation;
+pub use identity::Identity as CanonicalIdentity;
 use jj_collab::ThreadId;
 use jj_store_core::{StoreOutcome, StoreRequest};
 use jj_store_model::{RepositoryId, RequestId};
@@ -102,9 +111,7 @@ pub async fn prepare(
         return recover(call, &root, &dir, &mut record).await;
     }
     let actor = records::actor(&dir, true)?.ok_or_else(invalid)?;
-    let repository = jj_store_jj::local_repository::inspect_workspace(&root)
-        .map_err(|_| invalid())?
-        .repository;
+    let repository = provider::repository(&call)?;
     let mut record = Record::new(
         source,
         call.selection().clone(),

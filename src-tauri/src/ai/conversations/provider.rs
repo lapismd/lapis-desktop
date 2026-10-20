@@ -55,12 +55,37 @@ pub(super) fn open(
             .repository
             .or_else(|| record.receipt.as_ref().map(|r| r.repository)),
         false,
+        None,
     )
 }
 /// Committed source reads require neither a private creation intent nor actor.
 pub(super) fn read_current(call: Arc<BackendCall>) -> io::Result<RepositoryStores> {
     let (_, root, _) = call.conversation_location()?;
-    open_with_policy(call, &root, None, None, true)
+    open_with_policy(call, &root, None, None, true, None)
+}
+pub(super) fn write_current(
+    call: Arc<BackendCall>,
+    actor: PrincipalId,
+    repository: RepositoryId,
+) -> io::Result<RepositoryStores> {
+    let (_, root, _) = call.conversation_location()?;
+    open_with_policy(call, &root, Some(actor), Some(repository), false, None)
+}
+pub(super) fn capture_current(
+    call: Arc<BackendCall>,
+    actor: PrincipalId,
+    identity: super::identity::Identity,
+) -> io::Result<RepositoryStores> {
+    let (_, root, _) = call.conversation_location()?;
+    let repository = identity.repository.ok_or_else(invalid)?;
+    open_with_policy(
+        call,
+        &root,
+        Some(actor),
+        Some(repository),
+        false,
+        Some(identity),
+    )
 }
 fn open_with_policy(
     call: Arc<BackendCall>,
@@ -68,19 +93,16 @@ fn open_with_policy(
     actor: Option<PrincipalId>,
     expected_repository: Option<RepositoryId>,
     read_only: bool,
+    capture_identity: Option<super::identity::Identity>,
 ) -> io::Result<RepositoryStores> {
     call.check()?;
-    let info = jj_store_jj::local_repository::inspect_workspace(root).map_err(|_| invalid())?;
-    if Some(&info.metadata) != call.repository_metadata()?.as_ref() {
-        return Err(invalid());
-    }
-    let metadata = info
-        .open_metadata()
+    let metadata = metadata(&call)?;
+    let observed_repository = metadata
+        .identity()
         .map_err(|_| invalid())?
-        .carrier()
-        .clone();
+        .map(|id| id.repository);
     let mut repository = LocalRepository::new(root, metadata);
-    if let Some(id) = expected_repository.or(info.repository) {
+    if let Some(id) = expected_repository.or(observed_repository) {
         repository = repository.bound_to(id);
     }
     let provider = GitProvider::new(repository);
@@ -94,25 +116,40 @@ fn open_with_policy(
     let mut config = StoreConfig::default();
     config.enable(StoreKind::Agent, "git");
     config.enable(StoreKind::Thread, "git");
-    let stores = factories
+    let context = StoreContext::new(
+        provider.scope(),
+        Arc::new(Host {
+            call: call.clone(),
+            actor,
+            read_only,
+        }),
+    );
+    let mut stores = factories
         .loader()
-        .open(
-            &config,
-            StoreContext::new(
-                provider.scope(),
-                Arc::new(Host {
-                    call: call.clone(),
-                    actor,
-                    read_only,
-                }),
-            ),
-        )
+        .open(&config, context.clone())
         .map_err(|_| invalid())?;
+    if let Some(identity) = capture_identity {
+        stores = super::capture_stores::guard(stores, context, identity).map_err(|_| invalid())?;
+    }
     stores
         .require_shared_publication(&[StoreKind::Agent, StoreKind::Thread])
         .map_err(|_| invalid())?;
     call.check()?;
     Ok(stores)
+}
+fn metadata(call: &BackendCall) -> io::Result<jj_store_git::metadata::MetadataStore> {
+    let path = call.repository_metadata()?.ok_or_else(invalid)?;
+    let metadata = jj_store_jj::local_repository::default_metadata_store(&path)
+        .map_err(|_| invalid())?
+        .carrier()
+        .clone();
+    call.check()?;
+    Ok(metadata)
+}
+pub(super) fn repository(call: &BackendCall) -> io::Result<Option<RepositoryId>> {
+    let identity = metadata(call)?.identity().map_err(|_| invalid())?;
+    call.check()?;
+    Ok(identity.map(|id| id.repository))
 }
 pub(super) fn confirm(
     record: &mut Record,

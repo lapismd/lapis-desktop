@@ -21,7 +21,7 @@ impl NativeBackends {
         target: Uuid,
     ) -> io::Result<()> {
         let lease = self.current(host, &context.window)?;
-        let (handle, conversation) = {
+        let original = {
             let owners = self.owners.lock().map_err(|_| denied())?;
             let owner = owners
                 .get(&context.window)
@@ -31,7 +31,7 @@ impl NativeBackends {
                         && !owner.rebindable
                 })
                 .ok_or_else(denied)?;
-            let plan = owner
+            owner
                 .captures
                 .values()
                 .find(|plan| {
@@ -41,8 +41,10 @@ impl NativeBackends {
                         && plan.client == Some(Client::Codex)
                         && !plan.claimed
                 })
-                .ok_or_else(denied)?;
-            (owner.opened.handle, plan.conversation.clone())
+                .map(|plan| (owner.opened.handle, plan.conversation.clone()))
+        };
+        let Some((handle, conversation)) = original else {
+            return self.claim_canonical_launch(host, context, target);
         };
         let call = self.conversation_call(host, context, lease.session(), handle)?;
         conversation.check(&call)?;

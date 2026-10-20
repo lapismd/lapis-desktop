@@ -1,5 +1,8 @@
 //! Bounded immutable conversation views; original receipts authorize no new write.
 pub(super) mod canonical;
+mod capture_evidence;
+mod record_cursors;
+mod record_values;
 mod retained;
 mod streams;
 use super::{invalid, provider, records, reply, unknown};
@@ -24,12 +27,46 @@ struct View<C> {
     metadata: Option<ConversationMetadataV1>,
     messages: Vec<HumanMessageRevisionV1>,
     sessions: Vec<Session>,
+    references: References,
+}
+#[derive(Serialize)]
+struct References {
+    thread: jj_collab::CollabObjectRef,
+    metadata: Option<jj_collab::CollabObjectRef>,
+    messages: BTreeMap<jj_collab::HumanMessageId, jj_collab::CollabObjectRef>,
+}
+fn references(
+    state: &ThreadStateV1,
+    thread: jj_collab::CollabObjectRef,
+    target: &ConversationMetadataTargetV1,
+    messages: &[HumanMessageRevisionV1],
+) -> io::Result<References> {
+    Ok(References {
+        thread,
+        metadata: state
+            .metadata
+            .get(&target.key().map_err(|_| invalid())?)
+            .copied(),
+        messages: messages
+            .iter()
+            .map(|v| {
+                state
+                    .messages
+                    .get(&v.message_id)
+                    .copied()
+                    .map(|r| (v.message_id, r))
+                    .ok_or_else(invalid)
+            })
+            .collect::<io::Result<_>>()?,
+    })
 }
 #[derive(Serialize)]
 struct Session {
     link: ThreadLinkV1,
     snapshot: AgentSessionSnapshotV1,
     transcripts: Vec<streams::Transcript>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    records_cursor: Option<uuid::Uuid>,
 }
 /// The returned JSON text preserves every native integer. Missing private intent
 /// is explicit absence; an unknown receipt is never converted to an empty view.
@@ -129,9 +166,18 @@ async fn load(
         )
         .transpose()?;
     let messages = messages(&threads.data, &state, conversation.thread_id)?;
+    let references = references(&state, *reference, &target, &messages)?;
     let links = links(&threads.data, &state, conversation.thread_id)?;
     let mut cursors = BTreeMap::new();
-    let sessions = streams::sessions(agent.data.as_ref(), links, retain, &mut cursors).await?;
+    let mut records = record_cursors::RecordReads::default();
+    let sessions = streams::sessions(
+        agent.data.as_ref(),
+        links,
+        retain,
+        &mut cursors,
+        &mut records,
+    )
+    .await?;
     call.check()?;
     let pin = ReadPin::new(
         request,
@@ -139,6 +185,7 @@ async fn load(
         threads.selection.clone(),
         agent.data,
         cursors,
+        records,
     );
     let view = View {
         version: 1,
@@ -148,6 +195,7 @@ async fn load(
         metadata,
         messages,
         sessions,
+        references,
     };
     let encoded = encode(&view)?;
     call.check()?;

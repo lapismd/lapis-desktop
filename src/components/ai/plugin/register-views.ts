@@ -3,12 +3,14 @@ import type { Plugin } from "@lapis-notes/api";
 import type { AiApplication } from "../../../lib/ai/plugin/application.ts";
 import { AiView } from "../views/ai-view.ts";
 import { AiHistoryView } from "../views/history-view.ts";
+import { AiNativeHistoryView } from "../views/native-history-view.ts";
 import { AiCatalogView } from "../views/catalog-view.ts";
 import { AiJsonlView } from "../views/jsonl-view.ts";
 import { AiImportView } from "../views/import-view.ts";
 import {
   AI_VIEW,
   AI_HISTORY_VIEW,
+  AI_NATIVE_HISTORY_VIEW,
   AI_CATALOG_VIEW,
   AI_JSONL_VIEW,
   AI_IMPORT_VIEW,
@@ -81,6 +83,19 @@ export function registerAiViews(plugin: Plugin, host: AiApplication): void {
         id: "open-history",
         name: "Open History",
         callback: () => perform(() => host.revealConversationHistory()),
+      },
+    },
+  );
+  plugin.registerView(
+    AI_NATIVE_HISTORY_VIEW,
+    (leaf) => new AiNativeHistoryView(leaf, host),
+    {
+      kind: "command",
+      command: {
+        id: "open-native-history",
+        name: "Open native conversation history",
+        callback: () =>
+          perform(() => host.revealPanel(AI_NATIVE_HISTORY_VIEW, "right")),
       },
     },
   );

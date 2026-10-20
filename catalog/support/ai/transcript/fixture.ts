@@ -1,6 +1,8 @@
+import { interruptedSnapshot } from "./interrupted-snapshot.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
+import AiChatSession from "../../../../src/components/ai/sessions/AiChatSession.svelte";
 import { createMemorySessionStore } from "../../../../src/lib/ai/sessions/session-store.ts";
 import { DEFAULT_AI_SETTINGS } from "../../../../src/lib/ai/settings/ai-settings.ts";
 import {
@@ -16,6 +18,7 @@ import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memo
 import { savedCommentSnapshot } from "./saved-comments.ts";
 import { savedDiscussionSnapshot } from "./saved-discussions.ts";
 import { ParticipantSettings } from "./participant-settings.svelte.ts";
+import { agentReviewProfiles } from "./agent-profiles.ts";
 import { recordedReviewStore } from "./queue-store.ts";
 import { savedRecipientSnapshot } from "./saved-recipients.ts";
 
@@ -40,11 +43,20 @@ export type TranscriptScenario =
   | "failure";
 const type = "ai-transcript-review";
 
-export function createTranscriptFixture(scenario: TranscriptScenario) {
+export function createTranscriptFixture(
+  scenario: TranscriptScenario,
+  embeddedShell = false,
+) {
   const base = createChatApp(() => {});
   const participantSettings = new ParticipantSettings(
     scenario === "participant-settings-failure",
   );
+  if (scenario === "addressed" || scenario === "addressed-approval")
+    participantSettings.value = {
+      ...participantSettings.value,
+      agentParticipants: agentReviewProfiles,
+      automaticallyMentionAgents: true,
+    };
   const runtime = new FakeAgentRuntime({
     requireApproval:
       scenario === "approval" ||
@@ -89,38 +101,7 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
     ? new ConversationRepository(addressedStore)
     : scenario === "unknown-turn"
       ? new ConversationRepository(
-          new MemoryTranscriptStore([
-            {
-              location,
-              metadata: {
-                schemaVersion: 1,
-                id: location.conversationId,
-                status: "active",
-                createdAt: "2026-10-19T00:00:00.000Z",
-                updatedAt: "2026-10-19T00:00:00.000Z",
-                title: "An interrupted local turn",
-                pendingTurn: {
-                  version: 1,
-                  id: "interrupted-turn",
-                  userEntryId: "original-user",
-                  agentBindingId: "unconfirmed-binding",
-                  startedAt: "2026-10-19T00:00:00.000Z",
-                },
-              },
-              transcript: [
-                {
-                  schemaVersion: 1,
-                  id: "original-user",
-                  type: "message",
-                  role: "user",
-                  text: "Keep this authored prompt after an interrupted session.",
-                  createdAt: "2026-10-19T00:00:00.000Z",
-                },
-              ],
-              agents: [],
-              warnings: [],
-            },
-          ]),
+          new MemoryTranscriptStore([interruptedSnapshot(location)]),
         )
       : scenario === "restored-comments" || scenario === "restored-discussions"
         ? new ConversationRepository(
@@ -168,16 +149,10 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
         target: this.containerEl,
         props: {
           app: base.app,
+          transcriptFrame: embeddedShell ? AiChatSession : undefined,
           initialTranscriptView:
             scenario === "classic" ? "classic" : "document",
           runtime,
-          agentOptions:
-            scenario === "addressed" || scenario === "addressed-approval"
-              ? [
-                  { id: "reviewer", label: "Reviewer", agent: "codex" },
-                  { id: "writer", label: "Writer", agent: "codex" },
-                ]
-              : undefined,
           sessionStore: repository ? undefined : store,
           repository,
           initialLocation: repository ? location : undefined,
@@ -185,6 +160,18 @@ export function createTranscriptFixture(scenario: TranscriptScenario) {
             return participantSettings.value;
           },
           onSettingsChange: participantSettings.save,
+          mentionPeople: [
+            {
+              id: "review-alex",
+              label: "Alex Morgan",
+              value: "[Alex Morgan](lapis://people/review-alex)",
+            },
+            {
+              id: "review-sam",
+              label: "Sam Chen",
+              value: "[Sam Chen](lapis://people/review-sam)",
+            },
+          ],
           models: [{ provider: "codex", model: "gpt-5.6-sol" }],
           initializing: scenario === "loading",
           fileSearch: async (query) =>

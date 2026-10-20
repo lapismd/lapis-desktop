@@ -397,4 +397,4 @@ private migration link for `@lapismd/jj-conversations` consumes verified built
 exports. Local queues retain host custody; registry intake remains gated. Node
 renderer tests preload tsx for application syntax (E-CATALOG-009/010).
 
-E-AI-066 retains LD-GOV-006; E-AI-065/E-REPO-045 forbid wildcards.
+E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.

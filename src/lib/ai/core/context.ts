@@ -44,6 +44,8 @@ export type AgentContextBlock =
     };
 
 export type AgentTurnOptions = {
+  /** Exact host-owned prompt identity, shared across recipients of one authored turn. */
+  requestId?: string;
   /** Called by the desktop when this turn is eligible for dispatch. */
   prepareContext?(signal: AbortSignal): Promise<AgentContextBlock[]>;
   authorizeContext?(signal: AbortSignal): Promise<boolean>;

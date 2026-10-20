@@ -6,9 +6,13 @@
     createTranscriptFixture,
     type TranscriptScenario,
   } from "./fixture.ts";
-  let { scenario = "conversation" }: { scenario?: TranscriptScenario } =
-    $props();
-  const fixture = untrack(() => createTranscriptFixture(scenario));
+  let {
+    scenario = "conversation",
+    embeddedShell = false,
+  }: { scenario?: TranscriptScenario; embeddedShell?: boolean } = $props();
+  const fixture = untrack(() =>
+    createTranscriptFixture(scenario, embeddedShell),
+  );
   let ready = $state(false);
   let root = $state<HTMLDivElement>();
   $effect(() => {

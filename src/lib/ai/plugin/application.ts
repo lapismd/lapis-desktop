@@ -24,6 +24,15 @@ import type { CatalogToolRow } from "../catalog/types.ts";
 import { AiMemory } from "./memory.ts";
 import { AiMaintenance } from "./maintenance.ts";
 import { BackgroundWork } from "../../desktop/background-work.ts";
+import type { ManagedConversationTurn } from "../conversations/managed-turn.ts";
+import { NativeConversationWorkspace } from "../conversations/native-workspace.ts";
+import { NativeConversationSetup } from "../conversations/native-setup.ts";
+import { NativeConversationTurns } from "../conversations/native-turns.ts";
+import type {
+  CanonicalConversationRead,
+  OpenedConversationBackend,
+} from "../conversations/backend-port.ts";
+import type { ManagedTurnRecipient } from "../conversations/managed-turn-types.ts";
 export class AiApplication extends AiConversationHost {
   readonly appToolHost: AppToolHost;
   readonly services;
@@ -38,6 +47,9 @@ export class AiApplication extends AiConversationHost {
   readonly maintenance: AiMaintenance;
   readonly lifetime = new AbortController();
   readonly background: BackgroundWork;
+  readonly nativeConversations: NativeConversationWorkspace;
+  readonly nativeConversationSetup: NativeConversationSetup;
+  readonly #nativeTurns: NativeConversationTurns;
   leaveMode: AiLeaveMode = "close";
   #closing?: Promise<void>;
   #commandRefresh = 0;
@@ -53,6 +65,31 @@ export class AiApplication extends AiConversationHost {
       this.appToolHost.close();
       throw error;
     }
+    this.nativeConversations = new NativeConversationWorkspace(
+      this.services.conversationBackend,
+      (error) => this.report(error),
+      () => this.getSettings().agentParticipants ?? [],
+      () => this.nativeConversationSetup.openingAllowed,
+    );
+    this.nativeConversationSetup = new NativeConversationSetup(
+      this.services.conversationBackend,
+      this.nativeConversations,
+      (error) => {
+        this.app.notifications.notify({
+          id: "ai-native-conversation-setup",
+          title: "Native conversation history",
+          source: "ai",
+          severity: "error",
+          persist: false,
+          message: error instanceof Error ? error.message : String(error),
+        });
+      },
+    );
+    this.#nativeTurns = new NativeConversationTurns(
+      this.services.conversationBackend,
+      this.services.managedAgents,
+      this.nativeConversations,
+    );
     this.skills = new SkillRegistry({
       vault: app.vault,
       appSkills: app.agentSkills,
@@ -90,6 +127,15 @@ export class AiApplication extends AiConversationHost {
   async selectRuntime(request: AgentRequest) {
     if (!this.active) throw new Error("AI is disabled");
     return selectAiRuntime(this.services, request);
+  }
+  createManagedTurn(
+    opened: OpenedConversationBackend,
+    read: CanonicalConversationRead,
+    text: string,
+    recipients: readonly ManagedTurnRecipient[],
+  ): ManagedConversationTurn {
+    this.assertActive();
+    return this.#nativeTurns.create(opened, read, text, recipients);
   }
   skillContext = () => ({
     scopeDir: this.createConversationInput().scopeDir,
@@ -167,6 +213,8 @@ export class AiApplication extends AiConversationHost {
     this.lifetime.abort();
     this.maintenance.stop();
     this.appToolHost.close();
+    await this.nativeConversationSetup.close();
+    await this.#nativeTurns.close();
     const results = await Promise.allSettled([
       this.operations.closeViews(),
       this.services.appToolBridge?.close(),
@@ -189,6 +237,17 @@ export class AiApplication extends AiConversationHost {
       throw new AggregateError(
         [...earlier, error],
         "AI persistence cleanup failed",
+      );
+    }
+    try {
+      await this.nativeConversations.close();
+    } catch (error) {
+      const earlier = results.flatMap((result) =>
+        result.status === "rejected" ? [result.reason] : [],
+      );
+      throw new AggregateError(
+        [...earlier, error],
+        "Native conversation workspace cleanup failed",
       );
     }
     results.push(

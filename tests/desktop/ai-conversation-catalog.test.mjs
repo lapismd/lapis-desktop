@@ -93,7 +93,7 @@ async function launch(context, name, root) {
 }
 
 test(
-  "cold native catalog and canonical read retain source data after private creation records are lost",
+  "cold native catalog, edits and canonical read retain source data after private creation records are lost",
   { timeout: 180000 },
   async (context) => {
     const base = resolve(
@@ -156,6 +156,29 @@ test(
       })
     ).data;
     assert.ok(message.receipt);
+    const observed = JSON.parse(
+      (
+        await backend(first, vault, {
+          type: "readCanonicalConversation",
+          handle,
+          threadId: conversation.threadId,
+        })
+      ).data,
+    );
+    const editIntent = {
+      requestId: id(6),
+      threadId: conversation.threadId,
+      expectedSelection: observed.selection,
+      action: { type: "rename", title: "Renamed in native ThreadStore" },
+    };
+    const edit = (
+      await backend(first, vault, {
+        type: "editCanonicalConversation",
+        handle,
+        edit: editIntent,
+      })
+    ).data;
+    assert.ok(edit.receipt);
     const listing = (
       await backend(first, vault, { type: "listConversations", handle })
     ).data;
@@ -166,6 +189,7 @@ test(
       conversation.conversationId,
     );
     assert.equal(catalog.conversations[0].threadId, conversation.threadId);
+    assert.equal(catalog.conversations[0].title, editIntent.action.title);
     const encoded = (
       await backend(first, vault, {
         type: "readCanonicalConversation",
@@ -199,6 +223,15 @@ test(
     // Fault injection affects only this test's private recovery cache, after Quit.
     rmSync(privateRecords, { recursive: true });
     rmSync(privateMessages, { recursive: true });
+    const editRecordPath = join(
+      profiles,
+      names[0],
+      "conversation-edits-v1",
+      `${id(6)}.json`,
+    );
+    const editRecord = JSON.parse(readFileSync(editRecordPath, "utf8"));
+    editRecord.receipt = null;
+    writeFileSync(editRecordPath, JSON.stringify(editRecord));
 
     const cold = await launch(context, "ai-canonical-catalog-reopen", root);
     const reopened = await admit(cold, root, path);
@@ -250,6 +283,39 @@ test(
       "source reads must not rebuild a private actor or intent",
     );
     assert.equal(existsSync(privateMessages), false);
+    assert.deepEqual(
+      (
+        await backend(cold, reopened, {
+          type: "canonicalConversationEditStatus",
+          handle: owner,
+          requestId: id(6),
+          threadId: conversation.threadId,
+        })
+      ).data,
+      edit,
+    );
+    assert.deepEqual(
+      (
+        await backend(cold, reopened, {
+          type: "editCanonicalConversation",
+          handle: owner,
+          edit: editIntent,
+        })
+      ).data,
+      edit,
+    );
+    await assert.rejects(() =>
+      backend(cold, reopened, {
+        type: "editCanonicalConversation",
+        handle: owner,
+        edit: { ...editIntent, requestId: id(8) },
+      }),
+    );
+    assert.equal(
+      existsSync(privateRecords),
+      false,
+      "edit receipt recovery cannot regenerate actor records",
+    );
     assert.deepEqual(await invoke(cold, "plugin:lapis-ai|list"), []);
     assert.equal(readFileSync(ref, "utf8"), selected);
     assert.equal(readFileSync(join(path, "Note.md"), "utf8"), note);
@@ -276,6 +342,7 @@ test(
           conversation,
           selected,
           messageId: message.messageId,
+          edit,
           rows: catalog.conversations.length,
         },
         null,

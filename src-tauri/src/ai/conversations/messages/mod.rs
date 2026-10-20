@@ -1,4 +1,6 @@
 //! Typed human authorship; never a serialized renderer transcript or provider replay.
+pub mod canonical;
+mod canonical_intent;
 mod intent;
 use super::{invalid, read, unknown};
 use crate::{ai::backend::BackendCall, vault::private_profile as storage};

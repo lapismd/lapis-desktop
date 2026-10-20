@@ -10,6 +10,7 @@ import { bindingLabels } from "./panel/binding-labels.ts";
 import { toolCallStatus, isLocalCommandTool } from "./chat-tool-display.ts";
 import { discussionReplyContexts } from "./transcript-discussions.ts";
 import { agentAvatar } from "../presentation/agent-avatar.ts";
+import type { AgentRecipientOption } from "../conversations/recipients.ts";
 
 /** Display-only revision. Native source IDs and receipt authority remain untouched. */
 function revision(text: string): string {
@@ -72,6 +73,7 @@ function tool(item: Extract<AiChatItem, { type: "tool" }>): TranscriptTool {
 export function projectAiTranscript(
   source: readonly AiChatItem[],
   bindings: readonly AgentBindingCreatedRecord[] = [],
+  profiles: readonly AgentRecipientOption[] = [],
 ): TranscriptItem[] {
   const agents = new Map(bindings.map((binding) => [binding.id, binding]));
   const items: TranscriptItem[] = [];
@@ -82,6 +84,11 @@ export function projectAiTranscript(
   for (const item of source) {
     const binding = item.agentBindingId
       ? agents.get(item.agentBindingId)
+      : undefined;
+    const profile = binding?.participant
+      ? profiles.find(
+          (p) => p.id === binding.participant?.id && p.agent === binding.agent,
+        )
       : undefined;
     if (
       (item.type === "approval" || item.type === "question") &&
@@ -173,8 +180,9 @@ export function projectAiTranscript(
                 binding?.participant?.id ?? item.agentBindingId ?? "assistant",
               name:
                 binding?.participant?.label ?? binding?.agent ?? "Assistant",
-              initials: "AI",
-              image: agentAvatar(binding?.agent),
+              initials: profile ? undefined : "AI",
+              image: profile ? profile.avatar : agentAvatar(binding?.agent),
+              background: profile?.avatarBackground,
               shape: "rounded",
             }
         : undefined,

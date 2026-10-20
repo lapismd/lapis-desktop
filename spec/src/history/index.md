@@ -1,5 +1,9 @@
 # Evidence
 
+- [Local desktop chat v0 candidate](E-AI-089.md)
+
+- [Chat UI review: sources, system messages and inline tags](E-AI-088.md)
+
 - [Remembered blame wrapping](E-REPO-044.md)
 
 - [Native source organization](E-STRUCTURE-002.md)
@@ -268,3 +272,35 @@ by the task ledger, not inferred from this list.
 - [Native authored preparation before provider dispatch](E-AI-069.md)
 
 - [Committed native conversation discovery and reads](E-AI-070.md)
+
+- [Native canonical conversation editing](E-AI-071.md)
+
+- [jj-store agent UI and shared avatar editor review](E-AI-072.md)
+
+- [Native renderer conversation adapter draft](E-AI-073.md)
+
+- [Retained typed conversation records](E-AI-074.md)
+
+- [Embedded native conversation reader](E-AI-075.md)
+
+- [Canonical native authored messages](E-AI-076.md)
+
+- [Managed capture worker ownership](E-AI-077.md)
+
+- [Canonical managed capture](E-AI-078.md)
+
+- [Native agent attribution and prepared-turn correspondence](E-AI-079.md)
+
+- [Native AI vault storage discovery and move fencing](E-AI-080.md)
+
+- [Canonical turn orchestration and native agent launcher](E-AI-081.md)
+
+- [Native canonical dispatch journal and worker observations](E-AI-082.md)
+
+- [Durable native request claims and bounded launch-plan lifetime](E-AI-083.md)
+
+- [App-owned native conversation workspace and exact backend routes](E-AI-084.md)
+
+- [Additive native conversation tabs and normal ACP navigation](E-AI-085.md)
+
+- [Optional native conversation setup and owned storage transitions](E-AI-086.md)

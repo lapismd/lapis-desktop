@@ -45,6 +45,15 @@ pub enum Operation {
         handle: Uuid,
         cursor: Option<String>,
     },
+    EditCanonicalConversation {
+        handle: Uuid,
+        edit: lapis_desktop::ai::conversations::edits::Input,
+    },
+    CanonicalConversationEditStatus {
+        handle: Uuid,
+        request_id: RequestId,
+        thread_id: ThreadId,
+    },
     AppendConversationMessage {
         handle: Uuid,
         request_id: RequestId,
@@ -55,6 +64,15 @@ pub enum Operation {
         handle: Uuid,
         request_id: RequestId,
         conversation_request_id: RequestId,
+    },
+    AppendCanonicalConversationMessage {
+        handle: Uuid,
+        message: lapis_desktop::ai::conversations::messages::canonical::Input,
+    },
+    CanonicalConversationMessageStatus {
+        handle: Uuid,
+        request_id: RequestId,
+        thread_id: ThreadId,
     },
     ReadConversation {
         handle: Uuid,
@@ -78,6 +96,12 @@ pub enum Operation {
         cursor: Uuid,
         after_sequence: String,
     },
+    ReadConversationRecords {
+        handle: Uuid,
+        read_handle: Uuid,
+        cursor: Uuid,
+        after_index: u32,
+    },
     CloseConversationRead {
         handle: Uuid,
         read_handle: Uuid,
@@ -92,6 +116,34 @@ pub enum Operation {
         request_id: RequestId,
         conversation_request_id: RequestId,
         client_id: super::managed::Client,
+    },
+    PrepareCanonicalManagedCapture {
+        handle: Uuid,
+        request_id: RequestId,
+        thread_id: ThreadId,
+        expected_selection: Vec<u8>,
+        client_id: super::managed::Client,
+        participant: Option<lapis_desktop::ai::conversations::capture_facts::Participant>,
+        dispatch_request_id: Option<RequestId>,
+    },
+    BeginCanonicalDispatch {
+        handle: Uuid,
+        input: lapis_desktop::ai::conversations::dispatch::Input,
+    },
+    CanonicalDispatchStatus {
+        handle: Uuid,
+        request_id: Option<RequestId>,
+        thread_id: ThreadId,
+    },
+    StopCanonicalDispatch {
+        handle: Uuid,
+        request_id: RequestId,
+        thread_id: ThreadId,
+    },
+    FenceCanonicalDispatch {
+        handle: Uuid,
+        request_id: RequestId,
+        thread_id: ThreadId,
     },
     Close {
         handle: Uuid,
@@ -109,14 +161,13 @@ impl Request {
             return Err(bad());
         }
         let value: Self = serde_json::from_str(text).map_err(|_| bad())?;
-        if value.version != 1
-            || value.session_id.len() > 128
-            || text.len() > 4096
-                && !matches!(
-                    &value.operation,
-                    Operation::AppendConversationMessage { .. }
-                )
-        {
+        let maximum = match &value.operation {
+            Operation::AppendConversationMessage { .. }
+            | Operation::AppendCanonicalConversationMessage { .. } => 1024 * 1024,
+            Operation::BeginCanonicalDispatch { .. } => 8 * 1024,
+            _ => 4096,
+        };
+        if value.version != 1 || value.session_id.len() > 128 || text.len() > maximum {
             return Err(bad());
         }
         Ok(value)
@@ -136,12 +187,19 @@ pub enum Reply {
     Opened(Opened),
     Conversation(Option<lapis_desktop::ai::conversations::Conversation>),
     ConversationMessage(Option<lapis_desktop::ai::conversations::messages::MessageWrite>),
+    CanonicalConversationMessage(
+        Option<lapis_desktop::ai::conversations::messages::canonical::MessageWrite>,
+    ),
     ConversationView(Option<String>),
     ConversationCatalog(String),
+    ConversationEdit(Option<lapis_desktop::ai::conversations::edits::EditWrite>),
     CanonicalConversationView(Option<String>),
     ConversationRead(Option<super::reads::OpenedRead>),
     TranscriptRange(String),
+    ConversationRecords(String),
     Capture(super::capture::Prepared),
+    CanonicalCapture(super::canonical_capture::Prepared),
+    CanonicalDispatch(Option<lapis_desktop::ai::conversations::dispatch::View>),
     Closed,
 }
 impl Reply {

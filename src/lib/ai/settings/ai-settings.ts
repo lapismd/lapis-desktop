@@ -21,6 +21,7 @@ export type AppToolEnablementRef = {
 };
 
 export type AiPluginSettings = {
+  automaticallyMentionAgents?: boolean;
   agentParticipants?: import("../conversations/recipients.ts").AgentRecipientOption[];
   transcriptView: "document" | "classic";
   defaultRuntime: "auto" | "acp" | "codex-native" | "opencode-native" | "fake";
@@ -50,6 +51,7 @@ export type StoredAiSettings = Partial<AiPluginSettings> & {
 };
 
 export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
+  automaticallyMentionAgents: false,
   transcriptView: "document",
   defaultRuntime: "auto",
   acpAgent: DEFAULT_ACP_AGENT,
@@ -210,6 +212,7 @@ export function mergeAiSettings(
   const thinking = value?.thinking;
   const participants = validateAgentParticipants(value?.agentParticipants);
   const merged: AiPluginSettings = {
+    automaticallyMentionAgents: value?.automaticallyMentionAgents === true,
     ...(participants ? { agentParticipants: participants } : {}),
     transcriptView:
       value?.transcriptView === "classic" ? "classic" : "document",

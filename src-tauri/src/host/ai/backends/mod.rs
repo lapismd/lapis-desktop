@@ -1,7 +1,12 @@
+mod canonical_capture;
+mod canonical_capture_owner;
 mod capture;
+mod capture_owner;
 pub(crate) mod commands;
 mod conversations;
+mod dispatch;
 mod frames;
+pub(crate) mod ipc;
 mod managed;
 mod messages;
 mod privacy;
@@ -14,6 +19,7 @@ use frames::Opened;
 use jj_store_model::RequestId;
 use lapis_desktop::{
     ai::backend::{BackendProfiles, BackendScope},
+    repository::storage::Locations,
     vault::admission::VaultLease,
 };
 use std::{
@@ -37,11 +43,13 @@ struct Owner {
     scope: Arc<BackendScope>,
     rebindable: bool,
     captures: HashMap<RequestId, capture::Plan>,
+    canonical_captures: HashMap<RequestId, canonical_capture::Plan>,
     reads: HashMap<Uuid, Arc<lapis_desktop::ai::conversations::ReadPin>>,
 }
 pub struct NativeBackends {
     pub tools: lapis_desktop::ai::tools::Registry,
     profile: Dir,
+    storage: Option<Locations>,
     owners: Mutex<HashMap<String, Owner>>,
     pub transitions: Arc<tokio::sync::Mutex<()>>,
     workers: OnceLock<Weak<tauri_plugin_lapis_ai::AcpHost>>,
@@ -63,8 +71,9 @@ fn busy() -> io::Error {
         "Close the original conversation backend owner first",
     )
 }
-pub fn initialize(app: &tauri::AppHandle, profile: &Path) -> io::Result<()> {
-    let owner = NativeBackends::new(Dir::open_ambient_dir(profile, ambient_authority())?);
+pub fn initialize(app: &tauri::AppHandle, profile: &Path, storage: Locations) -> io::Result<()> {
+    let owner = NativeBackends::new(Dir::open_ambient_dir(profile, ambient_authority())?)
+        .with_storage(storage);
     let home = app.path().home_dir().map_err(|_| denied())?;
     owner
         .privacy
@@ -80,6 +89,7 @@ impl NativeBackends {
         Self {
             tools: lapis_desktop::ai::tools::Registry::default(),
             profile,
+            storage: None,
             owners: Mutex::new(HashMap::new()),
             transitions: Arc::new(tokio::sync::Mutex::new(())),
             workers: OnceLock::new(),
@@ -89,6 +99,10 @@ impl NativeBackends {
             #[cfg(test)]
             blocking_started: std::sync::atomic::AtomicUsize::new(0),
         }
+    }
+    fn with_storage(mut self, storage: Locations) -> Self {
+        self.storage = Some(storage);
+        self
     }
     fn profiles(
         self: &Arc<Self>,
@@ -105,16 +119,27 @@ impl NativeBackends {
         let weak = Arc::downgrade(&host.0);
         let owner = Arc::downgrade(self);
         let generation = lease.generation().to_owned();
-        let profiles = BackendProfiles::new(
-            self.profile.try_clone()?,
-            Arc::new(move || {
-                let host = NativeHost(weak.upgrade().ok_or_else(denied)?);
-                owner
-                    .upgrade()
-                    .ok_or_else(denied)?
-                    .retained(&host, &window, &generation)
-            }),
-        )?;
+        let admit: lapis_desktop::ai::backend::Admission = Arc::new(move || {
+            let host = NativeHost(weak.upgrade().ok_or_else(denied)?);
+            owner
+                .upgrade()
+                .ok_or_else(denied)?
+                .retained(&host, &window, &generation)
+        });
+        let profile = self.profile.try_clone()?;
+        let profiles = match &self.storage {
+            Some(storage) => {
+                let vault = host
+                    .0
+                    .lock()
+                    .map_err(|_| denied())?
+                    .vaults
+                    .descriptor(lease.session())?
+                    .clone();
+                BackendProfiles::for_vault(profile, admit, storage.clone(), vault)?
+            }
+            None => BackendProfiles::new(profile, admit)?,
+        };
         Ok((profiles, lease))
     }
     fn open(
@@ -177,6 +202,7 @@ impl NativeBackends {
                 scope: scope.clone(),
                 rebindable: false,
                 captures: HashMap::new(),
+                canonical_captures: HashMap::new(),
                 reads: HashMap::new(),
             },
         );

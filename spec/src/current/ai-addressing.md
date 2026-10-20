@@ -96,11 +96,46 @@ This is immediate explicit addressed delivery. AGENT-01C below governs sending
 another message while a turn is busy and persisted bounded queues. Automatic
 restart replay and JJ-backed transcript persistence remain unavailable.
 
-Named participants can be added from Conversation actions using the currently
-selected admitted agent. The bounded vault setting retains only ID, label and
-agent kind; executable routes, credentials and tools are rejected. Creating or
-selecting a participant does not create a conversation or prompt. Failed saves
-retain the name and existing settings and report one application notification.
+The existing Agents settings category lists saved profiles in a jj-store-derived
+agent gallery. Add/Edit shares the composer’s editor and public AvatarPicker;
+removal requires confirmation and updates only profile settings, preserving
+saved conversations, attribution, active dispatch captures and queued values.
+Removed recipient IDs cannot silently fall back to a different target. The
+picker links to this settings section when registered; profile management works
+without an active chat or starting a provider. Settings teardown disposes its
+subscription and refuses later saves/model discovery.
+
+Named agents can be added from the searchable Agents picker in the composer
+footer or from Conversation actions. The picker copies/adapts jj-store's agent
+and repository selectors, retaining public Design Core Popover, Command View,
+Avatar and buttons. Add/Edit uses its inset DialogFrame editor, client icons and
+searchable model/custom-ID control, adapted to Desktop-owned settings and
+bounded model discovery. Unsupported provider, secrets and instructions controls
+are omitted. Closing the editor starts no provider. Late model replies cannot
+replace another client’s choices. Both it and @ selection use the same removable
+recipient state through Document/Classic changes. Selecting or saving does not
+prompt.
+
+The bounded vault setting retains ID, label, client kind, optional model/effort
+defaults, an optional avatar image and its background colour. The editor MUST
+use the public Design Core AvatarPicker for image upload/URL, emoji, background
+and removal. Raster uploads are bounded at 1 MiB; settings accept bounded image
+data URLs or credential-free HTTP(S) URLs and hex colours. Picker/@ rows,
+recipient chips and bound assistant authors use these display values; missing or
+failed images retain the shared Avatar name fallback. Images grant no file,
+execution or provider authority and are not duplicated into saved recipient
+identities. Old entries inherit chat defaults. Client selection grants no
+executable, credential, tool or native admission authority; unsupported targets
+and configuration retain their ordinary native refusals. Each explicit Send
+freezes the selected agent's model/effort, independently for multiple
+recipients. Queue captures retain each target’s model and effort; older queue
+entries use the original shared effort. Later profile edits cannot rewrite a
+queued request. Failed saves retain all draft fields and existing settings,
+reporting one application notification. The initial default client is retained
+when adding the first named profile for a different client.
+
+E-AI-072 is an unqualified UI review slice. Verification is parked at the user's
+request; native storage/admission and full restart gates remain open.
 
 Native approval and question IDs are scoped to their originating logical
 binding. Reused IDs cannot select or update another participant's request; UI

@@ -78,3 +78,55 @@ tools/credentials and compute retain M10.3/M10.4. Release remains deferred.
 E-AI-068 qualifies native writes and original-receipt recovery through two cold
 native API processes. Full mounted renderer adoption retains the gates above.
 E-AI-069 connects native outgoing preparation to the confirmed writer.
+
+E-AI-077 moves the complete admitted processor's prompt preparation and capture
+batches onto an awaited blocking worker. The worker owns the original processor,
+including its counted permit and native privacy/journal owners, until completion
+even when the waiting caller disappears. Inputs retain exact request, frame,
+ordinal and publication identities. Durable receipt confirmation still precedes
+output. A failed or panicked worker, or an abandoned polled operation, cannot
+recreate a processor or replay its input. Successful operations return the same
+processor for the next serial operation. This draft does not adapt the existing
+synchronous launch/factory hooks or enable canonical managed participation;
+verification remains parked.
+
+E-AI-073 exposes typed append/status through the owned renderer adapter. It
+passes only exact original conversation/message request IDs and bounded human
+text. Proof strings remain opaque and absent proof remains unknown. No renderer
+transcript blob or event writer is admitted. Full composer/store adoption and
+its qualification remain open while verification is parked.
+
+## Canonical authorship under implementation
+
+E-AI-076 adds explicit authored append/status for a listed canonical native
+thread, including an opaque application target or recorded-session target. A new
+append supplies its original request, thread, observed source selection and
+bounded human text. Native code revalidates current conversation purpose,
+repository and writable lifecycle before allocating a device actor or syncing an
+intent. Annotation, archived/tombstoned, stale-selection and foreign-source
+requests fail without creating a replacement conversation or file backend.
+Bounded frame parsing runs on an awaited blocking worker before native write
+admission; a parse-worker failure cannot imply a publication attempt.
+
+The retained intent binds the exact canonical target/thread/repository, physical
+source and backend selection, native actor and message seed, original input
+digest, observed selection and sanitized typed command. Human-message identity
+is derived in a distinct native domain; canonical conversation identity is never
+remapped to a UUID. The one publication and exact original-receipt recovery
+rules remain unchanged. Repeating an intent or reading status cannot execute it
+again, even with an unknown outcome. Loss of private conversation creation/actor
+records does not invalidate committed source identity or a separately retained
+message intent. Missing message status remains read-only absence.
+
+This command does not itself admit a worker or persist a complete participant
+binding. Canonical managed launch, durable binding/correspondence and ordinary
+composer/store adoption retain M10.2/M13.3 gates. Verification remains parked.
+
+E-AI-078's [canonical worker](ai-managed-capture.md) now confirms human prompt
+text through this writer. Worker-owned new messages resolve current writable
+membership; repeated requests recover the original selection/intent rather than
+selecting a new precondition after capture advances metadata. Direct renderer
+append retains its exact observed-selection requirement. The same input digest,
+sanitization, original-proof recovery and no-replay policy govern both paths.
+This draft does not persist participant facts or authored/captured
+correspondence.

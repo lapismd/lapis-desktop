@@ -165,11 +165,11 @@ drain retain their separate integration gates.
 ## Admitted backend profiles
 
 A device profile selects `vault-files` or `jj` for an exact physical vault.
-Reading an absent selection retains the named legacy backend without creating
-repository or profile state. Malformed selections fail; they never choose a
-different writer. JJ selection verifies existing source witnesses without
-initialization. Opaque private source fingerprints are rechecked when opening
-and using an owner. A changed JJ binding requires an explicit new selection.
+Native JJ augments ACP; existing file sessions remain independent and
+unmigrated. Absent selections retain file storage without repository/profile
+creation. Malformed selections fail without selecting another writer. JJ
+selection checks existing witnesses without initialization; opening/use rechecks
+private source fingerprints. Changed JJ bindings require explicit selection.
 Selection requests retain exact identities and original receipts across later
 choices. Atomic synced state includes those receipts; uncertain writes are
 resolved by reading status, not inventing another request. A native owner holds

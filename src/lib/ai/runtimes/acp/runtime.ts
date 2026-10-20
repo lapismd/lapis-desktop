@@ -14,6 +14,8 @@ export type AcpRuntimeBackend = {
   client: ReturnType<typeof createAcpClient>;
   close(sessionId: string): Promise<void>;
   tools?: AcpAppTools;
+  /** Host-owned launch preparation; never read from persisted request metadata. */
+  launchTarget?: (request: AgentRequest, provider: string) => Promise<string>;
 };
 export class AcpAgentRuntime implements AgentRuntime {
   readonly id = "acp";
@@ -54,7 +56,9 @@ export class AcpAgentRuntime implements AgentRuntime {
     const tools = this.#backend.tools;
     if (descriptor?.status === "available" && !tools)
       throw new Error("Application tools are unavailable");
-    const targetId = tools?.target(descriptor, target.id) ?? target.id;
+    const targetId = this.#backend.launchTarget
+      ? await this.#backend.launchTarget(request, target.id)
+      : (tools?.target(descriptor, target.id) ?? target.id);
     const turnTools: ToolTurnPort | undefined =
       descriptor?.status === "available" && descriptor.bridgeId && tools
         ? {

@@ -17,6 +17,14 @@ worker; invalid Markdown retains per-file diagnostics, infrastructure failures
 use App error notifications, and older discoveries cannot replace a newer scope.
 Provider execution and durable conversation qualification remain separate.
 
+E-AI-077's admitted managed processor runs prompt preparation and capture-batch
+scanning, normalization, journaling and publication on an awaited blocking
+worker. The processor and its counted native authority remain owned through an
+abandoned caller or unknown outcome; neither a raw fallback nor a replacement
+processor may bypass the receipt fence. The synchronous launch/factory hooks
+remain a separate adaptation gap. This implementation draft is unqualified while
+verification is parked.
+
 Progress publication and imperative task setup stay outside reactive dependency
 tracking. Publishing status MUST NOT retrigger a chat or view effect that
 started the work. The unchanged native-factory Chat/catalog story qualifies this

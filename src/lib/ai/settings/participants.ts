@@ -1,5 +1,9 @@
 import { ACP_AGENT_IDS } from "./acp-agents.ts";
 import {
+  validateAgentAvatar,
+  validateAgentAvatarBackground,
+} from "./agent-avatar.ts";
+import {
   recipientFromOption,
   type AgentRecipientOption,
 } from "../conversations/recipients.ts";
@@ -16,14 +20,49 @@ export function validateAgentParticipants(
       !entry ||
       typeof entry !== "object" ||
       Array.isArray(entry) ||
-      Object.keys(entry).some((key) => !["id", "label", "agent"].includes(key))
+      Object.keys(entry).some(
+        (key) =>
+          ![
+            "id",
+            "label",
+            "agent",
+            "model",
+            "thinking",
+            "avatar",
+            "avatarBackground",
+          ].includes(key),
+      )
     )
       throw new Error("Invalid agent participant");
-    const { id, label, agent } = entry as AgentRecipientOption;
+    const { id, label, agent, model, thinking, avatar, avatarBackground } =
+      entry as AgentRecipientOption;
+    const image = validateAgentAvatar(avatar),
+      background = validateAgentAvatarBackground(avatarBackground);
     if (!ACP_AGENT_IDS.includes(agent) || ids.has(id))
       throw new Error("Agent participant target or identity is invalid");
     recipientFromOption({ id, label, agent });
+    if (
+      model !== undefined &&
+      (typeof model !== "string" ||
+        !model.trim() ||
+        model.length > 256 ||
+        /[\x00-\x1f\x7f]/u.test(model))
+    )
+      throw new Error("Invalid agent model");
+    if (
+      thinking !== undefined &&
+      !["off", "low", "medium", "high"].includes(thinking)
+    )
+      throw new Error("Invalid agent effort");
     ids.add(id);
-    return { id, label, agent };
+    return {
+      id,
+      label,
+      agent,
+      ...(model ? { model: model.trim() } : {}),
+      ...(thinking ? { thinking } : {}),
+      ...(image ? { avatar: image } : {}),
+      ...(background ? { avatarBackground: background } : {}),
+    };
   });
 }

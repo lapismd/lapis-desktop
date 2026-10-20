@@ -1,6 +1,6 @@
 <script lang="ts">
+  import AiTranscriptMessageMeta from "./AiTranscriptMessageMeta.svelte";
   import AiQueuedMessages from "./AiQueuedMessages.svelte";
-  import ChatRecipients from "./ChatRecipients.svelte";
   import { untrack, type Snippet } from "svelte";
   import {
     Transcript,
@@ -10,11 +10,8 @@
   import AiTranscriptToolbar from "./AiTranscriptToolbar.svelte";
   import AiTranscriptFooter from "./AiTranscriptFooter.svelte";
   import AiTranscriptSendHint from "./AiTranscriptSendHint.svelte";
-  import { Button } from "@lapismd/design-core/shadcn/button";
-  import CopyIcon from "@lucide/svelte/icons/copy";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import AiTranscriptEmpty from "./AiTranscriptEmpty.svelte";
-  import AiRetryTurn from "./AiRetryTurn.svelte";
   import { transcriptSourceItem } from "../../../lib/ai/chat/transcript-projection.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import { transcriptCommentContext } from "../../../lib/ai/chat/transcript-context.ts";
@@ -136,10 +133,16 @@
   });
   async function send() {
     const value = composerState.draft;
+    const followup = composerState.automaticallyMentionAgents
+      ? composerState.recipients.display
+          .map((recipient) => recipient.token)
+          .join(" ")
+      : "";
     if (blocked || (!value.trim() && !commentState.pending.length)) return;
     commentState.message = value;
     const accepted = await commentState.send();
-    if (accepted && composerState.draft === value) composerState.draft = "";
+    if (accepted && composerState.draft === value)
+      composerState.draft = followup ? `${followup} ` : "";
   }
 </script>
 
@@ -172,27 +175,7 @@
           </div>{/if}
       {/snippet}
       {#snippet metadataSupplement(item)}
-        {@const source = controller.items.find((entry) => entry.id === item.id)}
-        {#if source?.type === "error"}<AiRetryTurn
-            {panel}
-            errorId={source.id}
-          />{/if}
-        {#if source?.type === "message" && source.role === "user" && source.recipients?.length}
-          <ChatRecipients
-            recipients={source.recipients}
-            deliveries={source.deliveries}
-            label="Sent to"
-          />
-        {/if}
-        {#if source?.type === "message" && source.role === "assistant"}
-          <Button
-            size="icon-xs"
-            variant="ghost"
-            aria-label="Copy response"
-            onclick={() => void actions.copyResponse(source.text)}
-            ><CopyIcon aria-hidden="true" /></Button
-          >
-        {/if}
+        <AiTranscriptMessageMeta {panel} itemId={item.id} />
       {/snippet}
       {#snippet emptyState()}
         <AiTranscriptEmpty />

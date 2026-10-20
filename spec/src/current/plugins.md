@@ -358,3 +358,7 @@ Start.
 
 The AI plugin owns the Agents Settings category and its forge-style client
 table. Disabling AI removes both AI preferences and Agents registrations.
+
+E-AI-089 adopts reviewed chat presentation in the existing AI plugin. Plugin
+identity, App ownership, disposal and public host boundaries are unchanged.
+Native conversations augment normal ACP; no replacement plugin is introduced.

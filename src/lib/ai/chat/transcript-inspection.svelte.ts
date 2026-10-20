@@ -20,10 +20,11 @@ export function transcriptToolInspection(
       });
   });
   const items = $derived.by(() => {
-    const { controller, panelProps } = panel();
+    const { controller, panelProps, composerState } = panel();
     const projected = projectAiTranscript(
       controller.items,
       controller.bindings,
+      composerState.recipientOptions,
     );
     if (!enabled()) return projected;
     const source = new Map(controller.items.map((item) => [item.id, item]));

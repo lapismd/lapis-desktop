@@ -1,0 +1,134 @@
+/* SPDX-License-Identifier: Apache-2.0; adapted from jj-store community-agents/agents.css. */
+.agent-profiles {
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+}
+.agent-profiles h2,
+.agent-profiles p {
+  margin: 0;
+}
+.agent-profiles h2 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.agent-profiles p {
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+.agent-profiles header {
+  display: grid;
+  gap: 0.35rem;
+}
+.agent-profiles__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 12rem), 1fr));
+  gap: 1rem;
+  align-items: start;
+}
+.agent-profiles__add {
+  height: 15rem;
+  box-sizing: border-box;
+  min-width: 0;
+  border: 1px dashed var(--border);
+  border-radius: 1rem;
+  background: transparent;
+  color: var(--muted-foreground);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.agent-profiles__add:not(:disabled):hover {
+  border-color: color-mix(in oklab, var(--border) 70%, var(--foreground));
+  background: color-mix(in oklab, var(--muted) 70%, transparent);
+  color: var(--foreground);
+}
+.agent-profiles__add:focus-visible,
+.agent-profiles__open:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+}
+.agent-profiles__add:disabled,
+.agent-profiles__open:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.agent-profiles__add svg {
+  width: 2rem;
+  height: 2rem;
+}
+.agent-profiles__card {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  position: relative;
+  min-width: 0;
+  height: 15rem;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: color-mix(in oklab, var(--muted) 50%, var(--background));
+  transition: background-color 150ms;
+}
+.agent-profiles__open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  color: var(--foreground);
+  font: inherit;
+  cursor: pointer;
+}
+.agent-profiles__card:hover {
+  background: color-mix(in oklab, var(--muted) 75%, var(--background));
+}
+.agent-profiles__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 7rem;
+  flex: 1;
+  padding-bottom: 0.75rem;
+}
+.agent-profiles__details {
+  display: grid;
+  gap: 0.25rem;
+  justify-items: start;
+  width: 100%;
+  min-width: 0;
+}
+.agent-profiles__details strong {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+.agent-profiles__details span {
+  color: var(--muted-foreground);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.agent-profiles__menu {
+  z-index: 2;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+}

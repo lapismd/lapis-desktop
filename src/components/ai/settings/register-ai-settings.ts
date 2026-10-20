@@ -1,5 +1,9 @@
 import AgentClientsField from "./AgentClientsField.svelte";
 import AgentClientsPage from "./AgentClientsPage.svelte";
+import AgentProfilesField from "./AgentProfilesField.svelte";
+import NativeConversationStorageField from "./NativeConversationStorageField.svelte";
+import type { NativeConversationSettingsManagement } from "../../../lib/ai/settings/native-conversation-settings.ts";
+import type { AgentProfileManagement } from "../../../lib/ai/settings/agent-profile-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from Lapis register-ai-settings; see ../../../lib/ai/NOTICE.md.
 import type { Plugin } from "@lapis-notes/api";
@@ -21,6 +25,7 @@ import type { AiSettingsStore } from "../../../lib/ai/settings/settings-store.ts
 
 type SettingsOwner = Pick<Plugin, "app" | "register"> & {
   clients?: import("../../../lib/ai/settings/clients.svelte.ts").AgentClients;
+  nativeConversationSettings?: NativeConversationSettingsManagement;
   settings: AiSettingsStore;
   models: AiModelCatalog;
   report(error: unknown): void;
@@ -53,36 +58,81 @@ export function registerAiSettings(plugin: SettingsOwner): void {
     },
     subscribe: (listener: () => void) => settings.subscribe(() => listener()),
   };
-  if (plugin.clients)
-    cleanups.push(
-      controller.settings.registerDefinition({
-        section: {
-          id: "ai-agents",
-          title: "Agents",
-          description: "Manage the agent clients installed on this device.",
-          icon: "bot",
-          order: 36,
-          navigationGroupId: "core-plugins",
-          sourcePluginId: "ai",
-          page: AgentClientsPage,
-          fields: [
-            {
-              id: "ai.clients",
-              type: "custom",
-              title: "Installed clients",
-              component: AgentClientsField,
-              management: plugin.clients,
-            } as import("@lapis-notes/api").WorkspaceCustomSetting,
-          ],
-        },
-        source,
+  const profiles: AgentProfileManagement = {
+    app,
+    settings,
+    update: (patch) =>
+      settings.update(() => {
+        if (disposed) throw new Error("AI settings are unavailable");
+        return patch;
       }),
-    );
-  const register = () =>
+    remove: (id) =>
+      settings.update((current) => {
+        if (disposed) throw new Error("AI settings are unavailable");
+        return {
+          agentParticipants: (current.agentParticipants ?? []).filter(
+            (entry) => entry.id !== id,
+          ),
+        };
+      }),
+    loadModels: async (agent, runtime) => {
+      if (disposed) throw new Error("AI settings are unavailable");
+      const result = await plugin.models.listModels(agent, runtime);
+      if (disposed) throw new Error("AI settings are unavailable");
+      return result;
+    },
+  };
+  cleanups.push(
     controller.settings.registerDefinition({
-      section: createAiSettingsSection(app, settings.get()),
+      section: {
+        id: "ai-agents",
+        title: "Agents",
+        description:
+          "Manage named agents for this vault and the clients installed on this device.",
+        icon: "bot",
+        order: 36,
+        navigationGroupId: "core-plugins",
+        sourcePluginId: "ai",
+        page: AgentClientsPage,
+        fields: [
+          {
+            id: "ai.participants",
+            type: "custom",
+            title: "Your agents",
+            component: AgentProfilesField,
+            management: profiles,
+          } as import("@lapis-notes/api").WorkspaceCustomSetting,
+          {
+            id: "ai.clients",
+            type: "custom",
+            title: "Installed clients",
+            component: AgentClientsField,
+            management: plugin.clients,
+          } as import("@lapis-notes/api").WorkspaceCustomSetting,
+        ],
+      },
+      source,
+    }),
+  );
+  const register = () => {
+    const definition = createAiSettingsSection(app, settings.get());
+    const management = plugin.nativeConversationSettings;
+    if (management)
+      definition.fields = [
+        ...(definition.fields ?? []),
+        {
+          id: "ai.nativeConversationStorage",
+          type: "custom",
+          title: "Native conversation history",
+          component: NativeConversationStorageField,
+          management,
+        } as import("@lapis-notes/api").WorkspaceCustomSetting,
+      ];
+    return controller.settings.registerDefinition({
+      section: definition,
       source,
     });
+  };
   section = register();
   const refresh = () => {
     if (disposed) return;

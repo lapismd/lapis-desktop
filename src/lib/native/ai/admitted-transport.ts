@@ -16,7 +16,7 @@ export interface AiAdmissionPort {
 /** One App's admission and channel lifetime, independent of presentation. */
 export class AdmittedAiTransport implements AcpTransport {
   readonly #work = new OwnedAiWork();
-  readonly #streams = new Map<string, string>();
+  readonly #streams = new Map<string, { session: string; fence(): void }>();
   #raw?: AcpTransport;
   #admission?: Promise<void>;
   #attempted = false;
@@ -33,6 +33,16 @@ export class AdmittedAiTransport implements AcpTransport {
     action: (transport: AcpTransport) => Promise<T>,
     cleanup = false,
   ): Promise<T> {
+    return this.#authorized(() => {
+      this.#raw ??= this.port.create();
+      return action(this.#raw);
+    }, cleanup);
+  }
+  /** Native store commands share admission and drain without constructing ACP. */
+  withAdmission<T>(operation: () => Promise<T>, cleanup = false): Promise<T> {
+    return this.#authorized(operation, cleanup);
+  }
+  #authorized<T>(operation: () => Promise<T>, cleanup = false): Promise<T> {
     const closed = () => this.#closed || (!cleanup && this.#leaving);
     if (closed()) return Promise.reject(new Error("AI transport is closed"));
     if (!cleanup && !this.port.allowed())
@@ -49,8 +59,7 @@ export class AdmittedAiTransport implements AcpTransport {
       if (closed()) throw new Error("AI transport is closed");
       if (!cleanup && !this.port.allowed())
         throw new Error("AI is disabled in this workspace");
-      this.#raw ??= this.port.create();
-      return action(this.#raw);
+      return operation();
     });
   }
   invalidateAdmission(): void {
@@ -78,15 +87,23 @@ export class AdmittedAiTransport implements AcpTransport {
   }
   attach(id: string, after: number, receive: (message: StreamMessage) => void) {
     return this.#run(async (raw) => {
+      let active = true;
       const token = await raw.attach(id, after, (message) => {
-        if (!this.#closed && !this.#leaving) receive(message);
+        if (active && !this.#closed && !this.#leaving) receive(message);
       });
-      this.#streams.set(token, id);
+      this.#streams.set(token, {
+        session: id,
+        fence: () => {
+          active = false;
+        },
+      });
       return token;
     });
   }
   detach(id: string, token: string) {
     return this.#run(async (raw) => {
+      const stream = this.#streams.get(token);
+      if (stream?.session === id) stream.fence();
       await raw.detach(id, token);
       this.#streams.delete(token);
     }, true);
@@ -97,12 +114,19 @@ export class AdmittedAiTransport implements AcpTransport {
   close(id: string) {
     return this.#run(async (raw) => {
       await raw.close(id);
-      for (const [token, session] of this.#streams)
-        if (session === id) this.#streams.delete(token);
+      this.retireClosedSession(id);
     }, true);
   }
   fence(): void {
     this.#leaving = true;
+  }
+  /** Called only after the dispatch service confirms the exact worker closed. */
+  retireClosedSession(id: string): void {
+    for (const [token, stream] of this.#streams)
+      if (stream.session === id) {
+        stream.fence();
+        this.#streams.delete(token);
+      }
   }
   dispose(reload: boolean): Promise<void> {
     this.#closed = true;
@@ -114,8 +138,9 @@ export class AdmittedAiTransport implements AcpTransport {
   async #dispose(reload: boolean): Promise<void> {
     await this.#work.settle();
     const results = await Promise.allSettled(
-      [...this.#streams].map(async ([token, id]) => {
-        await this.#raw!.detach(id, token);
+      [...this.#streams].map(async ([token, stream]) => {
+        stream.fence();
+        await this.#raw!.detach(stream.session, token);
         this.#streams.delete(token);
       }),
     );

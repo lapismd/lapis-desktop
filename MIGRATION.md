@@ -24,46 +24,46 @@ dependencies; table order does not schedule work.
 The Deno desktop is superseded and frozen. Signing and publication remain
 deferred to their distribution gates.
 
-| Task  | Gate status | Next action                                                    |
-| ----- | ----------- | -------------------------------------------------------------- |
-| M0.0  | Done        | Complete                                                       |
-| M0.1  | Done        | Complete                                                       |
-| M1    | Done        | Complete; proceed to M2 native vault access                    |
-| M2    | Done        | Complete; proceed to the M3 native database gate               |
-| M3    | Done        | Complete; proceed to M4 safe everyday-use qualification        |
-| M4    | Done        | Complete                                                       |
-| M5    | Done        | Complete                                                       |
-| M6    | Done        | Complete                                                       |
-| M7    | Done        | Complete                                                       |
-| M7.1  | Done        | Complete; proof retained                                       |
-| M7.2  | Done        | Complete; native ordinary integration remains M7.3             |
-| M7.3  | Done        | Complete; continue AI and backup                               |
-| M8    | Done        | Complete; continue to M9.1                                     |
-| M9    | Done        | Complete; continue to M10.1 native ACP adapter                 |
-| M10   | In progress | Continue native AI and persistence qualification               |
-| M11   | Planned     | Qualify signed distribution and each additional platform       |
-| M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop          |
-| M13   | In progress | Adopt managed conversations and prove native restart           |
-| M13.1 | Done        | Complete; continue visible history and durable chat            |
-| M13.2 | Done        | Complete; continue durable conversations in M13.3              |
-| M13.3 | In progress | Connect managed renderer chat to native capture; prove restart |
-| M8.0  | Done        | Complete; continue to M8.1 Terminal                            |
-| M8.1  | Done        | Complete; continue to M8.2 Web retirement                      |
-| M8.2  | Done        | Complete; continue to M8.3 portable plugins                    |
-| M8.3  | Done        | Complete; continue to M9.1                                     |
-| M9.1  | Done        | Complete; continue to M10.1 native ACP adapter                 |
-| M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI                   |
-| M10.2 | In progress | Qualify native execution/context/skills and chat recovery      |
-| M10.3 | Planned     | Implement and qualify native tools and credentials             |
-| M10.4 | Planned     | Integrate optional compute last                                |
-| M0.2  | Done        | Complete; native qualification remains explicit                |
-| M8.4  | Done        | Complete; extend inventory with new desktop UI                 |
-| M8.5  | Done        | Complete; continue AI and backup                               |
-| M14   | Partial     | Real-provider acceptance                                       |
-| M14.1 | Done        | Complete; continue capture lifecycle                           |
-| M14.2 | Done        | Complete; continue restore/provider acceptance                 |
-| M14.3 | Done        | Complete; continue search/providers                            |
-| M14.4 | Partial     | Qualify cold app/provider flow later                           |
-| M14.5 | Partial     | Qualify cold app/provider gates later                          |
-| M14.6 | Done        | Complete; continue storage/providers                           |
-| M14.7 | Partial     | Real Forgejo and sync acceptance                               |
+| Task  | Gate status | Next action                                                            |
+| ----- | ----------- | ---------------------------------------------------------------------- |
+| M0.0  | Done        | Complete                                                               |
+| M0.1  | Done        | Complete                                                               |
+| M1    | Done        | Complete; proceed to M2 native vault access                            |
+| M2    | Done        | Complete; proceed to the M3 native database gate                       |
+| M3    | Done        | Complete; proceed to M4 safe everyday-use qualification                |
+| M4    | Done        | Complete                                                               |
+| M5    | Done        | Complete                                                               |
+| M6    | Done        | Complete                                                               |
+| M7    | Done        | Complete                                                               |
+| M7.1  | Done        | Complete; proof retained                                               |
+| M7.2  | Done        | Complete; native ordinary integration remains M7.3                     |
+| M7.3  | Done        | Complete; continue AI and backup                                       |
+| M8    | Done        | Complete; continue to M9.1                                             |
+| M9    | Done        | Complete; continue to M10.1 native ACP adapter                         |
+| M10   | In progress | Continue native AI and persistence qualification                       |
+| M11   | Planned     | Qualify signed distribution and each additional platform               |
+| M12   | Planned     | Qualify Tauri coverage and remove frozen Deno desktop                  |
+| M13   | In progress | Adopt managed conversations and prove native restart                   |
+| M13.1 | Done        | Complete; continue visible history and durable chat                    |
+| M13.2 | Done        | Complete; continue durable conversations in M13.3                      |
+| M13.3 | In progress | Local chat v0 testing; provider/restart and advanced features deferred |
+| M8.0  | Done        | Complete; continue to M8.1 Terminal                                    |
+| M8.1  | Done        | Complete; continue to M8.2 Web retirement                              |
+| M8.2  | Done        | Complete; continue to M8.3 portable plugins                            |
+| M8.3  | Done        | Complete; continue to M9.1                                             |
+| M9.1  | Done        | Complete; continue to M10.1 native ACP adapter                         |
+| M10.1 | Done        | Complete; continue to M10.2 desktop-owned AI                           |
+| M10.2 | In progress | Local chat v0 testing; context/skills and full qualification deferred  |
+| M10.3 | Planned     | Implement and qualify native tools and credentials                     |
+| M10.4 | Planned     | Integrate optional compute last                                        |
+| M0.2  | Done        | Complete; native qualification remains explicit                        |
+| M8.4  | Done        | Complete; extend inventory with new desktop UI                         |
+| M8.5  | Done        | Complete; continue AI and backup                                       |
+| M14   | Partial     | Real-provider acceptance                                               |
+| M14.1 | Done        | Complete; continue capture lifecycle                                   |
+| M14.2 | Done        | Complete; continue restore/provider acceptance                         |
+| M14.3 | Done        | Complete; continue search/providers                                    |
+| M14.4 | Partial     | Qualify cold app/provider flow later                                   |
+| M14.5 | Partial     | Qualify cold app/provider gates later                                  |
+| M14.6 | Done        | Complete; continue storage/providers                                   |
+| M14.7 | Partial     | Real Forgejo and sync acceptance                                       |

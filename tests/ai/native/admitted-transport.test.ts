@@ -23,6 +23,47 @@ function fixture(activate = vi.fn(async () => {})) {
   return { scope, raw, create, release, activate, allowed };
 }
 describe("App-owned admitted ACP transport", () => {
+  it("permits cleanup in an existing admission after disable while rejecting new storage work", async () => {
+    const f = fixture();
+    await f.scope.withAdmission(async () => {});
+    f.allowed.mockReturnValue(false);
+    const write = vi.fn(async () => {}),
+      cleanup = vi.fn(async () => {});
+    await expect(f.scope.withAdmission(write)).rejects.toThrow(/disabled/);
+    await f.scope.withAdmission(cleanup, true);
+    expect(write).not.toHaveBeenCalled();
+    expect(cleanup).toHaveBeenCalledOnce();
+    expect(f.create).not.toHaveBeenCalled();
+    await f.scope.dispose(false);
+    await expect(f.scope.withAdmission(cleanup, true)).rejects.toThrow(
+      /closed/,
+    );
+  });
+  it("retires only a confirmed closed worker's uncertain stream and fences late callbacks", async () => {
+    const f = fixture();
+    vi.mocked(f.raw.attach)
+      .mockResolvedValueOnce("one")
+      .mockResolvedValueOnce("two");
+    const receive = vi.fn(),
+      other = vi.fn();
+    await f.scope.attach("closed-worker", 0, receive);
+    await f.scope.attach("other-worker", 0, other);
+    const late = vi.mocked(f.raw.attach).mock.calls[0]![2];
+    vi.mocked(f.raw.detach).mockRejectedValueOnce(
+      new Error("Detach reply lost"),
+    );
+    await expect(f.scope.detach("closed-worker", "one")).rejects.toThrow(
+      /reply lost/,
+    );
+    f.scope.retireClosedSession("closed-worker");
+    late({} as never);
+    vi.mocked(f.raw.attach).mock.calls[1]![2]({} as never);
+    expect(receive).not.toHaveBeenCalled();
+    expect(other).toHaveBeenCalledOnce();
+    await f.scope.dispose(true);
+    expect(f.raw.detach).toHaveBeenCalledTimes(2);
+    expect(f.raw.detach).toHaveBeenLastCalledWith("other-worker", "two");
+  });
   it("recovers an uncertain detach by awaiting complete native revocation on close", async () => {
     const f = fixture();
     await f.scope.attach("session", 0, () => {});

@@ -1,7 +1,7 @@
 use super::*;
 use std::process::Command;
 
-fn jj(f: &Fixture, args: &[&str]) -> String {
+pub(super) fn jj(f: &Fixture, args: &[&str]) -> String {
     let mut command = Command::new("/opt/homebrew/bin/jj");
     command.current_dir(&f.vault).arg("--no-pager");
     if args.first() == Some(&"op") {

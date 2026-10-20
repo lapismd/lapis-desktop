@@ -9,6 +9,7 @@
     promptElementsExtension,
     type TranscriptBlock,
     type TranscriptTool,
+    type TranscriptItem,
   } from "@lapismd/design-core/chat";
   import TranscriptViewToggle from "../sessions/TranscriptViewToggle.svelte";
   import AiTranscriptToolInspector from "../chat/AiTranscriptToolInspector.svelte";
@@ -25,7 +26,8 @@
   let {
     app,
     sourcePath = "",
-    entries,
+    entries = [],
+    projectedItems,
     view = $bindable<"document" | "classic">("document"),
     showViewToolbar = true,
     assistant,
@@ -33,10 +35,13 @@
     toolInspector = $bindable<Snippet | undefined>(),
     capturedUser = true,
     label = "Imported transcript preview",
+    composer,
+    busy = false,
   }: {
     app?: App | undefined;
     sourcePath?: string;
-    entries: TranscriptEntry[];
+    entries?: TranscriptEntry[];
+    projectedItems?: readonly TranscriptItem[];
     view?: "document" | "classic";
     showViewToolbar?: boolean;
     assistant?: { name: string; image: string };
@@ -44,6 +49,8 @@
     toolInspector?: Snippet;
     capturedUser?: boolean;
     label?: string;
+    composer?: Snippet<["document" | "classic"]>;
+    busy?: boolean;
   } = $props();
   function block(b: TranscriptBlock): TranscriptBlock {
     const item = transcriptSourceItem(b, source);
@@ -64,7 +71,7 @@
   );
   const source = $derived(projectTranscriptToChatItems(entries));
   const items = $derived(
-    projectAiTranscript(source).map((item) => ({
+    (projectedItems ?? projectAiTranscript(source)).map((item) => ({
       ...item,
       label:
         capturedUser && item.role === "user"
@@ -132,6 +139,9 @@
     {commentState}
     onInspectTool={inspectTools ? inspect : undefined}
     {view}
+    {composer}
+    {busy}
+    classicComposerPlacement={composer ? "fixed" : "inline"}
     label="Captured conversation"
     logLabel="Captured messages"
     canComment={false}

@@ -3,13 +3,15 @@
 E-REPO-044 adds remembered blame wrapping with measured virtual groups; M13.2
 keeps its original qualified gate and other task statuses remain unchanged.
 
-E-AI-066 adds Agents Settings; LD-MIG-002 milestones and original gates remain
-unchanged.
+E-AI-066 adds Agents Settings. E-AI-072–086 retain unqualified agent/native-chat
+drafts; LD-MIG-002 milestones and original gates remain unchanged. Normal ACP
+chat/sessions stay supported alongside optional native JJ history/persistence;
+native adoption does not automatically migrate or replace them.
 
 Managed Codex launch binds an existing native conversation to a single-use
 target. E-AI-068 adds typed native authored messages and original-receipt
 recovery. E-AI-069 fences native dispatch behind confirmed authorship. E-AI-070
-adds committed discovery/reads without private creation records. Renderer
+adds committed discovery/reads; E-AI-071 adds exact canonical edits. Renderer
 persistence/context adoption and M10.2/M13.3 restart gates remain open; these
 native boundaries alone cannot complete either milestone.
 

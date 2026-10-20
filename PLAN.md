@@ -8,12 +8,12 @@ scaffolding was the completed M0.0 task. This roadmap retains the original
 completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 [backup ledger](spec/src/current/progress/vault-backup.md) own status.
 
-| Workstream                        | Implemented and verified                                                                                                                                       | Remaining completion gates                                                                                                                         |
-| --------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                          | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                                  |
-| AI and conversations, M10/M13     | Reusable ACP adapter, retained AI UI/shared transcript, native privacy/store ownership and bounded conversation reads implemented; M10.1/M13.1/M13.2 qualified | M10.2/M13.3 managed renderer conversation/execution, context/skills and restart recovery; M10.3 tools/credentials and M10.4 compute remain Planned |
-| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                 | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain                   |
-| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                                 |
+| Workstream                        | Implemented and verified                                                                                                                       | Remaining completion gates                                                                                                        |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified          | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                 |
+| AI and conversations, M10/M13     | ACP and native JJ live-chat v0 integrated with focused checks and cold review startup; M10.1/M13.1/M13.2 qualified                             | M10.2/M13.3 full provider/restart, context/skills and advanced features; M10.3 tools/credentials and M10.4 compute remain Planned |
+| Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain  |
+| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                      | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                                |
 
 Repository History now includes automatic internal/external file capture,
 vault-ID-owned external JJ storage, history/blame/diffs and guarded restoration,
@@ -162,6 +162,17 @@ qualifies sanitized native authored writes and original-receipt recovery.
 E-AI-069 connects native outgoing preparation to confirmed authorship; full
 renderer and context/recovery adoption remain open. E-AI-070 adds canonical
 discovery and source-backed reads independent of private creation/actor records.
+
+E-AI-072–086 draft saved profiles, canonical native reading/authoring, owned
+capture, dispatch, native tabs and optional storage/creation controls. They are
+unqualified while verification is parked. Ordinary native composer/store
+adoption, context/skills/memory and mounted restart remain open.
+
+Normal ACP chat/sessions remain supported. Native JJ conversation history and
+persistence augment them without automatic migration or replacement. E-AI-085
+adds explicit native tab references alongside the normal ACP view; its native
+reader is still read-only. Keep the existing ACP path when removing bypasses of
+the separately selected native capture authority.
 
 The remaining AI/distribution sequence is:
 
@@ -343,3 +354,22 @@ E-CATALOG-010 records default-workspace landing and retirement of the three
 temporary footer/readiness checkouts. Main review previews and focused
 acceptance pass; new broad matrices are deferred at the user's request. Older
 independent migration workspaces remain separate.
+
+## Chat v0 for local desktop testing
+
+E-AI-089 resumes the main components after the Storybook review. Normal ACP
+sessions remain supported; optional native JJ conversations add canonical human
+messages, worker capture, source browsing and live Codex ACP chat in the same
+embedded AppShell. The reviewed agent/avatar, inline tags, follow-up tagging and
+centered status presentation are used by the main components.
+
+The local candidate includes focused send/Stop, exact permission response,
+unknown-authorship observation, capture reconciliation, settings and navigation
+checks, plus a cold review-app launch. This is not the complete migration gate.
+M10.2 and M13.3 remain In progress.
+
+Deferred: native queues, attachments/context, slash commands, skills/memory,
+handoff, additional managed clients, live people directory, full native editing,
+durable drafts and renderer-intent restart recovery, broad browser matrices,
+real-provider restart/fault qualification, signing and distribution. Continue
+with these only after live desktop feedback; see the evidence record for limits.

@@ -7,6 +7,7 @@
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import ChatComposerActions from "./ChatComposerActions.svelte";
   import ChatComposerOptions from "./ChatComposerOptions.svelte";
+  import ChatAgentPicker from "./ChatAgentPicker.svelte";
   import ChatScopeFooter from "./ChatScopeFooter.svelte";
   import ChatContextUsage from "./ChatContextUsage.svelte";
   let {
@@ -62,6 +63,7 @@
 
   {#snippet controls()}
     <div class="transcript-controls">
+      <ChatAgentPicker {panel} />
       {#if panelProps.transcriptFrame}<ChatContextUsage
           {controller}
           {composerState}

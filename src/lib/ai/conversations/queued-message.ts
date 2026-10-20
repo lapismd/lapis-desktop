@@ -11,7 +11,12 @@ import { normalizePortableVaultPath } from "./paths.ts";
 import { ACP_AGENT_IDS, type AcpAgentId } from "../settings/acp-agents.ts";
 import type { ModelRef, AiThinkingLevel } from "../core/models.ts";
 export type QueueSelection = {
-  targets: { id: string; agent: AcpAgentId; model?: ModelRef }[];
+  targets: {
+    id: string;
+    agent: AcpAgentId;
+    model?: ModelRef;
+    thinking?: AiThinkingLevel;
+  }[];
   runtime: "acp" | "codex-native" | "opencode-native" | "fake";
   thinking?: AiThinkingLevel;
   attachments: string[];
@@ -94,7 +99,8 @@ export function validateQueuedMessage(value: unknown): QueuedMessage {
     throw new Error("Queue targets do not match recipients");
   for (const [i, value] of s.targets.entries()) {
     const t = record(value, "Queue target");
-    fields(t, ["id", "agent", "model"]);
+    fields(t, ["id", "agent", "model", "thinking"]);
+    assertThinking(t.thinking, "Queued target thinking");
     if (
       t.id !== recipients[i]!.id ||
       !ACP_AGENT_IDS.includes(t.agent as AcpAgentId)

@@ -12,14 +12,17 @@ opening the app. Installed builds resolve application resources rather than a
 source checkout. Explicit legacy device configuration remains supported.
 
 The AI plugin registers its own Agents category in Settings, alongside AI
-preferences. Its Installed clients table adapts Repository History's forge
-entries: a tinted header, body-surface rows with separators and a distinct
-footer. It lists the bundled helpers, detected Codex adapter/CLI versions,
-managed/device origin and Cursor availability with its current unsupported
-execution boundary. Skeletons represent loading. Refresh and installation report
-through the App status API. Errors identify missing paths, adapter prerequisites
-or failed verification and provide a repair action; they never echo credentials
-or configuration contents.
+preferences. Its Your agents gallery copies/adapts jj-store agent cards and
+shares the composer editor for name/avatar/runtime defaults. Profiles remain
+vault-owned and separate from installed-client authority (E-AI-072, unqualified
+while verification is parked). Its Installed clients table adapts Repository
+History's forge entries: a tinted header, body-surface rows with separators and
+a distinct footer. It lists the bundled helpers, detected Codex adapter/CLI
+versions, managed/device origin and Cursor availability with its current
+unsupported execution boundary. Skeletons represent loading. Refresh and
+installation report through the App status API. Errors identify missing paths,
+adapter prerequisites or failed verification and provide a repair action; they
+never echo credentials or configuration contents.
 
 Explicit Codex installation and update use jj-store's fixed adapter 1.13.1 and
 CLI 0.156.1 catalog. Native code resolves Node.js 22+ and npm on the device,
@@ -66,3 +69,9 @@ M10.2/M13.3 retain full renderer/store adoption, context and cold
 conversation/restart gates. Native launch qualification is one required
 boundary, not completion of those product gates. Packaged agent
 credentials/tools and compute retain M10.3/M10.4.
+
+E-AI-078 adds a draft [canonical managed capture](ai-managed-capture.md) path
+without an original private creation record. Its explicit one-use grant and
+worker-owned membership/privacy/store fence retain the fixed client authority.
+The original launch path remains supported. Verification and ordinary native
+composer/store adoption remain open.

@@ -29,6 +29,7 @@ import type { AppToolHost } from "../../tools/app-tool-host.ts";
 import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
+  mentionPeople?: readonly import("../../conversations/recipients.ts").ComposerPersonOption[];
   agentOptions?: readonly import("../../conversations/recipients.ts").AgentRecipientOption[];
   /** Optional frame for standalone embeddings; the ordinary plugin supplies the session shell. */
   transcriptFrame?: Component<TranscriptFrameProps>;

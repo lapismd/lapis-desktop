@@ -61,6 +61,7 @@ async fn load(
         )
         .transpose()?;
     let messages = messages(&threads.data, &state, thread)?;
+    let references = super::references(&state, *reference, target, &messages)?;
     let links = links(&threads.data, &state, thread)?;
     let agent = stores
         .agent()
@@ -74,12 +75,22 @@ async fn load(
         ));
     }
     let mut cursors = BTreeMap::new();
-    let sessions = streams::sessions(agent.data.as_ref(), links, retain, &mut cursors).await?;
+    let mut records = super::record_cursors::RecordReads::default();
+    let sessions = streams::sessions(
+        agent.data.as_ref(),
+        links,
+        retain,
+        &mut cursors,
+        &mut records,
+    )
+    .await?;
     let pin = ReadPin::canonical(
         identity.clone(),
         threads.selection.clone(),
         agent.data,
         cursors,
+        records,
+        threads.data.graph.clone(),
     );
     let view = View {
         version: 2,
@@ -89,6 +100,7 @@ async fn load(
         metadata,
         messages,
         sessions,
+        references,
     };
     call.check()?;
     let encoded = encode(&view)?;

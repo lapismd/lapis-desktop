@@ -46,6 +46,28 @@ function gate() {
 }
 
 describe("App-owned conversation persistence", () => {
+  it("keeps native admission until the app-owned catalog and reader cleanup succeeds", async () => {
+    const app = owner(),
+      selected = persistence();
+    bindConversationPersistence(app, () => selected);
+    const close = vi.fn(async () => {});
+    bindAi(app, () => ({
+      runtime: new FakeAgentRuntime({ id: "acp" }),
+      models: { listModels: async () => [] },
+      unavailableReason: () => null,
+      close,
+    }));
+    const host = new AiApplication(app, settings());
+    const native = vi
+      .spyOn(host.nativeConversations, "close")
+      .mockRejectedValueOnce(new Error("Native read close unknown"));
+    await expect(host.close()).rejects.toThrow(/workspace cleanup failed/);
+    expect(close).not.toHaveBeenCalled();
+    expect(native).toHaveBeenCalledOnce();
+    await host.close();
+    expect(native).toHaveBeenCalledTimes(2);
+    expect(close).toHaveBeenCalledOnce();
+  });
   it("allocates only for its exact App and the real host writes only its selected store", async () => {
     const app = owner(),
       other = owner();

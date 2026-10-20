@@ -1,6 +1,7 @@
 //! Device-owned backend selection; native authority and publication stay injected.
 mod model;
 mod owner;
+mod source;
 #[cfg(test)]
 mod tests;
 use crate::{
@@ -25,6 +26,7 @@ pub(super) struct Context {
     physical: [u64; 2],
     key: String,
     admit: Admission,
+    source: source::Selection,
 }
 pub(super) struct Lease {
     pub dir: Dir,
@@ -41,6 +43,19 @@ fn unknown() -> io::Error {
 }
 impl BackendProfiles {
     pub fn new(profile: Dir, admit: Admission) -> io::Result<Self> {
+        Self::create(profile, admit, source::Selection::Workspace)
+    }
+    /// Uses existing vault-ID-owned history without borrowing History admission,
+    /// initializing backup, recovering a move or falling back to root metadata.
+    pub fn for_vault(
+        profile: Dir,
+        admit: Admission,
+        locations: crate::repository::storage::Locations,
+        vault: crate::vault::VaultDescriptor,
+    ) -> io::Result<Self> {
+        Self::create(profile, admit, source::Selection::Vault(locations, vault))
+    }
+    fn create(profile: Dir, admit: Admission, source: source::Selection) -> io::Result<Self> {
         let lease = admit()?;
         if uuid::Uuid::parse_str(lease.profile())
             .ok()
@@ -65,6 +80,7 @@ impl BackendProfiles {
             physical,
             key,
             admit,
+            source,
         });
         context.check()?;
         Ok(Self { context })
@@ -102,7 +118,7 @@ impl BackendProfiles {
             return Err(invalid());
         }
         let source = if backend == Backend::Jj {
-            Some(Source::capture(self.context.lease.root())?)
+            Some(self.context.source.capture(&self.context.lease)?)
         } else {
             None
         };
@@ -138,7 +154,7 @@ impl BackendProfiles {
         let lease = self.context.lock()?;
         let state = self.context.read()?;
         let source = if state.selection.backend == Backend::Jj {
-            let source = Source::capture(self.context.lease.root())?;
+            let source = self.context.source.capture(&self.context.lease)?;
             if Some(source.fingerprint()) != state.source {
                 return Err(storage::denied());
             }

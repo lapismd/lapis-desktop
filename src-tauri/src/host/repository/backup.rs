@@ -35,6 +35,9 @@ pub(super) fn error(value: impl std::fmt::Display) -> NativeError {
     io::Error::other(format!("Vault backup: {value}")).into()
 }
 impl Backups {
+    pub(crate) fn locations(&self) -> Locations {
+        self.locations.clone()
+    }
     pub(super) async fn owner(
         &self,
         session: &str,

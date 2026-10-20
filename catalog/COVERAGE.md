@@ -868,6 +868,16 @@ after closing/reopening the pane. E-REPO-044; visual-pending.
 
 ## Installed AI clients
 
+`Desktop/AI/Agent setup review/AgentsAndMentions` mounts the production chat and
+searchable footer agent picker. Reviewer and Writer profiles come from the
+fixture's reactive settings, so Add agent updates both that picker and @
+choices. The story embeds the current AiChatSession Design Core AppShell with
+its conversation sidebar. The jj-store-derived inset editor retains name, shared
+AvatarPicker image/emoji/background, client, searchable model and effort
+defaults. Document/Classic share selected recipients and drafts. This is a
+manual review story; tests and native execution/storage qualification are
+explicitly deferred in E-AI-072.
+
 `Desktop/AI installed clients` mounts the production Installed clients table in
 the AI-owned Agents settings category, matching Repository History forge rows.
 Installed, update confirmation/cancellation, update/refresh, loading and
@@ -879,3 +889,63 @@ actual bounded workspace viewport. All remain visual-pending.
 control and Problems navigation to retain an edited merge across review closure,
 then save its exact bytes and clear the diagnostic. It exercises the public
 layout-only close policy; original editor and application guards remain active.
+
+`Desktop/AI/Agent profiles/SavedAgents`, `NoSavedAgents` and
+`FailureAndRecovery` mount the production Agents settings category with the
+jj-store-derived gallery and shared profile editor/AvatarPicker. These are
+manual design-review targets; automated checks, save/removal recovery and native
+acceptance remain parked in E-AI-072.
+
+`Desktop/AI/Native conversations/CapturedMessagesAndTools` and
+`AuthoredThreadMessages` mount the production native reader in the embedded
+Design Core session shell. Catalog-only native text envelopes pass through the
+real adapter, pinned catalog/read leases, typed record cache and shared
+Transcript. The sample retains separate authored/captured origins, linked
+sessions, Markdown/code, captured tool input/output, inert permission history,
+an unfinished tool and a capture gap with partial source coverage. Document and
+Classic share the same retained records and tool inspector. `Loading`, `Empty`,
+`FailureAndRecovery` and `ReadFailureRetainsPreviousView` cover representative
+skeletons, neutral empty states, one App failure notice/retry and retention of
+the previous successful view. E-AI-075 records warm observation only; automated,
+cold/native/provider, large-history and full managed-chat acceptance remain
+parked.
+
+`Desktop/AI/Native conversations/ManagedAgentProfile` adds typed native host
+attribution, a locally owned saved-profile avatar and explicit authored-revision
+turn grouping in the same embedded shell. Preferences remain separate from
+observed configuration and source identities remain separate. This uses a
+simulated native projection; E-AI-079's native and renderer regression sources
+and all qualification remain unexecuted while verification is parked.
+
+`Desktop/AI/Native conversation routes/RestoredNativeTab` mounts the production
+AiView with a versioned opaque native reference and the App-owned native
+workspace. `ForeignReference` exercises identity refusal without a file-store
+fallback. `NormalAcpAndNativeHistory` mounts the existing ACP chat/composer and
+native history side by side in the real WorkspaceShell; both retain the embedded
+Design Core session shell. Catalog ports and ACP runtime are simulated. These
+E-AI-085 source scenarios are unexecuted and visual-pending; they do not qualify
+native live chat, provider execution, recovery or coexistence.
+
+`Desktop/AI/Native conversation storage/NormalSessionsRemainDefault` and
+`NativeHistoryEnabled` mount the production AI settings registration, native
+setup owner and copied settings card/footer. `Loading`, `FailureAndRecovery`,
+`UncertainChoice`, `UncertainCreation` and `Unavailable` cover a representative
+skeleton, neutral unavailable states and explicit receipt-status recovery.
+Catalog frames go through the production native adapter; no real repository or
+provider is used. `Desktop/AI/Native conversation routes/NativeHistoryCatalog`
+adds the real native-history view without an initial selection, in the existing
+embedded Design Core AppShell. These E-AI-086 sources are unexecuted and
+visual-pending; none qualifies live/native/restart or provider gates.
+
+`Desktop/AI/Agent setup review/InlineTagsAndFollowUps` previews removable inline
+agent, file-reference and resource-link chips in the embedded production chat
+shell, with the optional automatic-agent-tag preference enabled in memory. The
+existing native route story also reviews the compact source Command View and
+centered timestamped system facts. UI review only; qualification deferred.
+
+E-AI-089 runs focused light/desktop coverage for Agent setup review, Native
+conversation routes and Native conversation storage. `NativeLiveComposer` mounts
+the main native chat component and reviewed composer in the embedded shell with
+an explicitly unconfigured synthetic launcher. It cannot launch a provider;
+send/Stop/capture boundaries have separate orchestration and native tests. This
+supplements the existing read-only stories without replacing them.

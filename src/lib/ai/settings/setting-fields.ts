@@ -10,6 +10,7 @@ import {
 } from "./memory-setting-fields.ts";
 
 export const AI_FIELD_IDS = {
+  automaticallyMentionAgents: "ai.automaticallyMentionAgents",
   transcriptView: "ai.transcriptView",
   defaultRuntime: "ai.defaultRuntime",
   acpAgent: "ai.acpAgent",
@@ -39,6 +40,14 @@ export function createAiSettingsSection(
   current: AiPluginSettings,
 ): WorkspaceSettingsSection {
   const fields: NonNullable<WorkspaceSettingsSection["fields"]> = [
+    {
+      id: AI_FIELD_IDS.automaticallyMentionAgents,
+      type: "boolean",
+      title: "Automatically tag agents",
+      description:
+        "Keep the same agent tags in follow-up messages. You can also change this in the @ picker.",
+      default: false,
+    },
     {
       id: AI_FIELD_IDS.transcriptView,
       type: "enum",

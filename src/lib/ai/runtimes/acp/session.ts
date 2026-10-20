@@ -16,6 +16,7 @@ import { mapAcpActivity, mapAcpTerminal } from "./event-mapper.ts";
 import { mapAcpPermission } from "./permissions.ts";
 import { configureAcpSession } from "./configuration.ts";
 import { AgentTurnFailure } from "./wire.ts";
+import { acpTurnRequestId } from "./turn-id.ts";
 import { ToolTurn, type ToolTurnPort } from "./tool-turn.ts";
 import {
   isGenericToolName,
@@ -150,6 +151,7 @@ export class AcpAgentSession implements AgentSession {
   async send(text: string, options: AgentTurnOptions = {}): Promise<void> {
     const native = this.#ready();
     if (this.#turn || this.#configuring) throw new Error("ACP session busy");
+    const requestId = acpTurnRequestId(options.requestId);
     const turn: ActiveTurn = { abort: new AbortController() };
     this.#toolNames.clear();
     this.#turn = turn;
@@ -157,7 +159,7 @@ export class AcpAgentSession implements AgentSession {
       const prepared = await prepareAgentTurn(text, options, turn.abort.signal);
       this.#ready();
       turn.abort.signal.throwIfAborted();
-      turn.requestId = crypto.randomUUID();
+      turn.requestId = requestId;
       if (this.#tools) {
         turn.tools = new ToolTurn(this.#tools, turn.requestId);
         await turn.tools.arm();
@@ -277,7 +279,10 @@ export class AcpAgentSession implements AgentSession {
     }
   }
   close(): Promise<void> {
-    this.#close ??= this.#stop();
+    this.#close ??= this.#stop().catch((error) => {
+      this.#close = undefined;
+      throw error;
+    });
     return this.#close;
   }
   async #stop(): Promise<void> {

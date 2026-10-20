@@ -21,6 +21,7 @@ export function queuedRequest(
       request: {
         agent: target.agent,
         ...(target.model ? { model: target.model } : {}),
+        thinking: target.thinking ?? q.selection.thinking,
       },
     };
   });

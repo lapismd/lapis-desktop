@@ -2,9 +2,13 @@
   // Adapted from RepositorySettingsPage: retain the public settings shell.
   import type { WorkspaceSettingsPageProps } from "@lapismd/design-core/workspace/settings";
   import AgentClientsField from "./AgentClientsField.svelte";
+  import AgentProfilesField from "./AgentProfilesField.svelte";
   let { section }: WorkspaceSettingsPageProps = $props();
   const clients = $derived(
     section.fields?.find((field) => field.id === "ai.clients"),
+  );
+  const profiles = $derived(
+    section.fields?.find((field) => field.id === "ai.participants"),
   );
 </script>
 
@@ -13,6 +17,11 @@
     <h1>{section.title}</h1>
     {#if section.description}<p>{section.description}</p>{/if}
   </header>
+  {#if profiles?.type === "custom"}
+    <div data-setting-id={profiles.id}>
+      <AgentProfilesField field={profiles} />
+    </div>
+  {/if}
   {#if clients?.type === "custom"}
     <div data-setting-id={clients.id}>
       <AgentClientsField field={clients} />

@@ -9,7 +9,10 @@
   - [Desktop AI and optional compute](current/ai.md)
   - [Installed AI clients](current/ai-clients.md)
   - [Native authored conversation messages](current/ai-authored.md)
+  - [Canonical managed capture](current/ai-managed-capture.md)
+  - [Native agent attribution](current/ai-native-attribution.md)
   - [Committed native conversation catalog](current/ai-catalog.md)
+  - [Native canonical conversation editing](current/ai-conversation-edits.md)
   - [AI transcript delivery review](current/ai-presentation.md)
   - [Local AI turn recovery](current/ai-recovery.md)
   - [Native application tools](current/ai-tools.md)
@@ -327,3 +330,39 @@
 - [Native authored preparation before provider dispatch](history/E-AI-069.md)
 
 - [Committed native conversation discovery and reads](history/E-AI-070.md)
+
+- [Native canonical conversation editing](history/E-AI-071.md)
+
+- [jj-store agent UI and shared avatar editor review](history/E-AI-072.md)
+
+- [Native renderer conversation adapter draft](history/E-AI-073.md)
+
+- [Retained typed conversation records](history/E-AI-074.md)
+
+- [Embedded native conversation reader](history/E-AI-075.md)
+
+- [Canonical native authored messages](history/E-AI-076.md)
+
+- [Managed capture worker ownership](history/E-AI-077.md)
+
+- [Canonical managed capture draft](history/E-AI-078.md)
+
+- [Native participant and prepared-turn attribution draft](history/E-AI-079.md)
+
+- [Native AI vault storage discovery and move fencing](history/E-AI-080.md)
+
+- [Canonical turn orchestration and native agent launcher](history/E-AI-081.md)
+
+- [Native canonical dispatch journal and worker observations](history/E-AI-082.md)
+
+- [Durable native request claims and bounded launch-plan lifetime](history/E-AI-083.md)
+
+- [App-owned native conversation workspace and backend-specific references](history/E-AI-084.md)
+
+- [Additive native conversation tabs and normal ACP navigation](history/E-AI-085.md)
+
+- [Optional native conversation setup and owned storage transitions](history/E-AI-086.md)
+
+- [Chat UI review: footer sources, system facts and inline tags](history/E-AI-088.md)
+
+- [Local desktop chat v0 candidate](history/E-AI-089.md)

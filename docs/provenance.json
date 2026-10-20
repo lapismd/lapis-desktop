@@ -130,6 +130,29 @@
       ],
       "license": "Apache-2.0",
       "use": "Copied and adapted verified helper delivery, installed runtime rows, update confirmation and bounded private npm tooling. Design Core Avatar/Badge replace Community presentation. Desktop owns native admission, device receipts and settings lifecycle; no jj-store server or browser dependency. E-AI-066 adapts the maintained Desktop Repository History BackupCard/ForgeAccounts structure and spacing for a separate Agents settings category; no repository-domain dependency is introduced."
+    },
+    {
+      "repository": "jj-store",
+      "revision": "a26372c2794e18e70c2a1394648a33d0be78b4fc",
+      "paths": [
+        "web/src/lib/ui/community-chat-composer/CommunityComposerRemovableChip.svelte",
+        "web/src/lib/ui/community-chat-composer/CommunityComposerChipDismiss.svelte",
+        "web/src/lib/ui/community-chat-composer/composer-chip-widgets.ts",
+        "web/src/lib/ui/community-chat-composer/composer-reference-decorations.ts",
+        "web/src/lib/ui/community-chat-composer/composer-chip-remove.ts",
+        "web/src/lib/ui/community-composer-mention-button/CommunityComposerMentionButton.svelte",
+        "web/src/lib/ui/community-chat-composer/CommunityComposerMemberChip.svelte",
+        "web/src/lib/ui/community-chat-composer/CommunityComposerMemberReference.svelte",
+        "web/src/lib/ui/community-member-hover-card/CommunityMemberHoverCard.svelte"
+      ],
+      "destinations": [
+        "src/components/ai/chat/ChatInlineReference.svelte",
+        "src/components/ai/chat/composer-references.ts",
+        "src/lib/ai/chat/composer-reference-ranges.ts",
+        "src/components/ai/chat/ChatMentionButton.svelte"
+      ],
+      "use": "Copied/adapted inline removable chip styling, public CodeMirror widget composition and addressed mention-button/avatar-dismiss styling. Notes owns syntax and draft selection. Profile previews reuse public Design Core AuthorCard with its mention/hover presentation; no JJ Store UI runtime or source dependency. UI review only; qualification deferred.",
+      "license": "Apache-2.0"
     }
   ],
   "copies": [
@@ -613,6 +636,82 @@
         }
       ],
       "use": "Copied the tool-panel composition and adapted it to the public AppShell SurfaceLayer for the approved ordinary AI inbox. Public Transcript readers retain exact capture/comment identity and the controller owns source selection. One view control presents Markdown preview, exact Markdown source and the captured request/response. Notes retains registered result views; no native execution, current-file read or persistence is added. The tool icon precedes the title. The layer uses the public inset token to cover the complete main body, with full-width content, 32px horizontal and 16px vertical padding. E-AI-058 resumes source and consumer qualification for live adoption."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "df31b5caeaabd562b0b76806f89bc50dec073ec5",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-agent-execution/StoreAgentPicker.svelte",
+          "destination": "src/components/ai/chat/ChatAgentPicker.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-application/StoreRepositoryPicker.svelte",
+          "destination": "src/components/ai/chat/ChatAgentPicker.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-agent-editor/CommunityAgentEditorDialog.svelte",
+          "destination": "src/components/ai/chat/ChatParticipantDialog.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-agent-editor/agent-editor.css",
+          "destination": "src/components/ai/chat/ChatParticipantDialog.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-agent-execution/StoreAgentConfiguration.svelte",
+          "destination": "src/components/ai/chat/agents/ChatAgentConfiguration.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-agent-execution/StoreAgentModelSelect.svelte",
+          "destination": "src/components/ai/chat/agents/ChatAgentModelSelect.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-agent-execution/StoreAgentHarnessSelect.svelte",
+          "destination": "src/components/ai/chat/agents/ChatAgentHarnessSelect.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-agent-editor/CommunityAgentEditorHarnessIcon.svelte",
+          "destination": "src/components/ai/chat/agents/ChatAgentIcon.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-avatar-picker/image-files.ts",
+          "destination": "src/components/ai/chat/agents/avatar-image.ts"
+        },
+        {
+          "source": "web/src/lib/ui/community-agents/CommunityAgents.svelte",
+          "destination": "src/components/ai/settings/AgentProfilesGallery.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/community-agents/agents.css",
+          "destination": "src/components/ai/settings/agent-profiles.css"
+        }
+      ],
+      "use": "Copied and adapted searchable agent selection, avatar rows, selection checks, compact trigger, bounded popover, inset DialogFrame editor, client icons and searchable model/custom-ID controls. Desktop owns named participant settings, selected recipients, Add/Edit agent persistence, model discovery and per-recipient request preferences. The editor includes supported name, avatar, client, model and effort controls. Avatar editing uses the public Design Core AvatarPicker rather than vendoring the source picker. The copied image reader adapts the source 1 MiB bound to AbortSignal and local settings persistence. Instructions, providers and secrets are not imported as inert controls. Public Design Core components remain dependencies; no source controller, runtime, credentials or catalog imports enter production. E-AI-072 records this UI review with verification parked by the user. The Agents settings page also adapts the source gallery cards and menus for saved vault profiles; runtime start/stop, sessions, remote grants and invented presence are omitted. Add/Edit shares the same editor with chat. Confirmed removal updates only profile settings and retains historical identities."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "df31b5caeaabd562b0b76806f89bc50dec073ec5",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "packages/jj-history/src/parse.ts",
+          "destination": "src/lib/native/ai/backends/json.ts"
+        }
+      ],
+      "use": "Copied/adapted bounded integer-only JSON token decoding for the Desktop-owned native conversation catalog DTO. This decoder is private to the new Desktop transport, preserves unsafe integer tokens as bigint, rejects duplicate keys and retains string decoding through platform JSON. It does not replace the public history client, change a foundational dependency, import an internal package module, or add a source alias/runtime checkout dependency. E-AI-073/074/075 remain unqualified with verification parked."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "df31b5caeaabd562b0b76806f89bc50dec073ec5",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/collaboration/agent-message-content.ts",
+          "destination": "src/lib/ai/conversations/native-message-content.ts"
+        }
+      ],
+      "use": "Copy/adapt the source's explicitly recognized owned-controller sent-context and OpenCode text-part extraction. Desktop retains original sanitized payload text, shows unknown JSON as inert exact code and preserves context as its original JSON text without numeric rewriting. Captured context implies no delivery receipt. No source API client/model import, controller, provider or runtime authority is copied. The native reader composes existing application-owned AiSessionShell, AiRecordedTranscript and ToolInspector with public Design Core; this adds no parallel shared primitive or checkout dependency. E-AI-075 remains a catalog-visible unqualified draft."
     }
   ]
 }

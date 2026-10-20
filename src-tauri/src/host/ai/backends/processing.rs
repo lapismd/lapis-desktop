@@ -27,6 +27,25 @@ impl Authority {
     }
 }
 impl NativeBackends {
+    pub(super) fn processing_for_targets(
+        &self,
+        context: &HostContext,
+        targets: &std::collections::BTreeSet<String>,
+    ) -> io::Result<Vec<String>> {
+        Ok(self
+            .processing
+            .lock()
+            .map_err(|_| denied())?
+            .values()
+            .filter_map(Weak::upgrade)
+            .filter(|a| {
+                a.context.window == context.window
+                    && a.context.url == context.url
+                    && targets.contains(&a.binding.target_id)
+            })
+            .map(|a| a.binding.session_id.clone())
+            .collect())
+    }
     /// Called only by native processor construction under current admission.
     pub fn register_processing(
         self: &Arc<Self>,

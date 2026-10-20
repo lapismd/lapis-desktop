@@ -62,11 +62,33 @@ pub(crate) struct Source {
     witnesses: Vec<Witness>,
 }
 impl Source {
+    /// AI resolves its own admitted vault identity; no History grant is reused.
+    pub fn managed(binding: &jj_vault::Binding) -> io::Result<Self> {
+        binding.validate().map_err(|_| super::denied())?;
+        let source = Self::external(&binding.root, &binding.state)?;
+        let record = source
+            .witnesses
+            .iter()
+            .find(|w| w.path == binding.state.join("vault.json"))
+            .and_then(|w| w.contents.as_deref())
+            .ok_or_else(super::denied)?;
+        let record: serde_json::Value = serde_json::from_slice(record)?;
+        let identity = std::fs::symlink_metadata(&binding.root)?;
+        let root_identity = format!("{}:{}", identity.dev(), identity.ino());
+        if record["binding"]["vault_id"].as_str() != Some(binding.vault_id.as_str())
+            || record["root_identity"].as_str() != Some(root_identity.as_str())
+        {
+            return Err(super::denied());
+        }
+        source.verify()?;
+        Ok(source)
+    }
     /// Both paths come from the admitted native backup owner, never a read frame.
     pub fn external(root: &Path, state: &Path) -> io::Result<Self> {
         let metadata = state.join("repo");
+        let manifest = Witness::capture(state.join("vault.json"), false)?;
         let record: serde_json::Value =
-            serde_json::from_slice(&std::fs::read(state.join("vault.json"))?)?;
+            serde_json::from_slice(manifest.contents.as_deref().ok_or_else(super::denied)?)?;
         if record["version"].as_u64() != Some(1)
             || record["binding"]["root"].as_str() != root.to_str()
             || record["binding"]["state"].as_str() != state.to_str()
@@ -84,8 +106,8 @@ impl Source {
         ] {
             witnesses.push(Witness::capture(path, true)?);
         }
+        witnesses.push(manifest);
         for path in [
-            state.join("vault.json"),
             state.join("working_copy/type"),
             metadata.join("store/type"),
             metadata.join("store/git_target"),

@@ -6,11 +6,23 @@ import type { AcpAgentId } from "../settings/acp-agents.ts";
 
 /** Saved attribution, never a native execution or provider-session capability. */
 export type SavedAgentRecipient = { id: string; token: string; label: string };
+/** Host-owned person-reference text; mentions do not grant execution or delivery. */
+export type ComposerPersonOption = {
+  id: string;
+  label: string;
+  value: string;
+  avatar?: string;
+  avatarBackground?: string;
+};
 /** Application-owned setup catalog; routing stays separate from the saved tag. */
 export type AgentRecipientOption = {
   id: string;
   label: string;
   agent: AcpAgentId;
+  model?: string;
+  thinking?: import("../core/models.ts").AiThinkingLevel;
+  avatar?: string;
+  avatarBackground?: string;
 };
 export function validateRecipients(value: unknown): SavedAgentRecipient[] {
   if (value === undefined) return [];

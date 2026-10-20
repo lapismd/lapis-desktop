@@ -39,8 +39,10 @@ export function createChatPanelActions(
     if (initializing || composer.catalogState?.loading) return;
     const addressed = composer.recipients.snapshot();
     const agent = addressed?.agent ?? composer.selectedAgent;
+    const primary = addressed?.options[0];
+    const modelId = primary?.model ?? composer.selectedModel;
     const selected = catalogModelsForAgent(agent, composer.catalogModels).find(
-      (model) => model.model === composer.selectedModel,
+      (model) => model.model === modelId,
     );
     const extra = attachmentState.attachments.map((file) => file.path);
     const request = {
@@ -50,17 +52,22 @@ export function createChatPanelActions(
             ...(addressed.recipients.length > 1
               ? {
                   deliveryTargets: addressed.options.map((option, i) => {
+                    const modelId = option.model ?? composer.selectedModel;
                     const model = catalogModelsForAgent(
                       option.agent,
                       composer.catalogModels,
-                    ).find((m) => m.model === composer.selectedModel);
+                    ).find((m) => m.model === modelId);
                     return {
                       recipient: addressed.recipients[i]!,
                       request: {
                         agent: option.agent,
-                        model: model
-                          ? { provider: model.provider, model: model.model }
+                        model: modelId
+                          ? {
+                              provider: model?.provider ?? option.agent,
+                              model: modelId,
+                            }
                           : undefined,
+                        thinking: option.thinking ?? composer.selectedThinking,
                       },
                     };
                   }),
@@ -72,13 +79,13 @@ export function createChatPanelActions(
       workspace,
       mcpServers,
       agent,
-      model: composer.selectedModel
+      model: modelId
         ? {
             provider: selected?.provider ?? agent,
-            model: composer.selectedModel,
+            model: modelId,
           }
         : undefined,
-      thinking: composer.selectedThinking,
+      thinking: primary?.thinking ?? composer.selectedThinking,
       metadata: {
         ...(extra.length > 0 ? { attachments: extra } : {}),
         runtime: composer.selectedRuntime,

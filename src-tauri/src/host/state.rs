@@ -90,7 +90,9 @@ impl From<io::Error> for NativeError {
     }
 }
 
-pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
+pub fn initialize(
+    app: &tauri::AppHandle,
+) -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
     crate::host::ai::user_commands::initialize(app);
     crate::host::ai::imports::initialize(app)?;
     #[cfg(not(feature = "e2e"))]
@@ -107,8 +109,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
         watches: WatchRegistry::default(),
         fs_gate: Arc::new(Mutex::new(())),
     }))));
-    crate::host::ai::backends::initialize(app, &profile)?;
-    Ok(())
+    Ok(profile)
 }
 
 pub async fn access<T: Send + 'static>(

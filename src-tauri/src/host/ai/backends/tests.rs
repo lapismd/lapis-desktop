@@ -1,20 +1,37 @@
 mod authored_messages;
 mod cancellation;
+mod canonical_capture;
+mod canonical_capture_attribution;
+mod canonical_capture_cases;
+mod canonical_capture_guards;
+mod canonical_dispatch;
+mod canonical_dispatch_cases;
+mod canonical_dispatch_claims;
+mod canonical_dispatch_guards;
+mod canonical_launch_lifetime;
+mod canonical_message_cases;
+mod canonical_message_guards;
+mod canonical_messages;
 mod capture_cases;
 mod capture_guards;
 mod capture_lifetime;
 mod capture_privacy;
 mod conversation_cancel;
 mod conversation_catalog;
+mod conversation_edit_guards;
+mod conversation_edit_metadata;
+mod conversation_edits;
 mod conversation_read_canonical;
 mod conversation_read_content;
 mod conversation_read_guards;
 mod conversation_read_lifetime;
 mod conversation_read_ranges;
 mod conversation_reads;
+mod conversation_record_reads;
 mod conversations;
 mod factory;
 mod managed_launch;
+mod managed_storage;
 mod ownership;
 mod processing;
 mod prompt_authorship;
@@ -47,6 +64,12 @@ struct Fixture {
 }
 impl Fixture {
     fn new() -> Self {
+        Self::create(false)
+    }
+    fn managed() -> Self {
+        Self::create(true)
+    }
+    fn create(managed: bool) -> Self {
         let root = tempfile::tempdir().unwrap();
         let profile = root.path().join("profile");
         let vault = root.path().join("vault");
@@ -66,9 +89,14 @@ impl Fixture {
             watches: WatchRegistry::default(),
             fs_gate: Arc::new(Mutex::new(())),
         })));
-        let backends = Arc::new(NativeBackends::new(
-            Dir::open_ambient_dir(&profile, ambient_authority()).unwrap(),
-        ));
+        let mut backends =
+            NativeBackends::new(Dir::open_ambient_dir(&profile, ambient_authority()).unwrap());
+        if managed {
+            backends = backends.with_storage(lapis_desktop::repository::storage::Locations::new(
+                root.path().canonicalize().unwrap().join("vault-history"),
+            ));
+        }
+        let backends = Arc::new(backends);
         let policy = DesktopAiPolicy::default();
         let workers = Arc::new(AcpHost::new(Arc::new(policy.clone()), Config::default()).unwrap());
         policy

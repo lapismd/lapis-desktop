@@ -57,6 +57,9 @@ export function captureQueuedMessage(
           id: r.id,
           agent: target.agent as AcpAgentId,
           ...(target.model ? { model: structuredClone(target.model) } : {}),
+          ...((target.thinking ?? request.thinking)
+            ? { thinking: target.thinking ?? request.thinking }
+            : {}),
         };
       }),
       runtime: (request.metadata?.runtime ??

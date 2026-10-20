@@ -7,7 +7,11 @@ import { ownedConversationPersistence } from "./conversation-persistence.ts";
 import { AiConversationIndex } from "../conversations/conversation-index.ts";
 import { ConversationScopeResolver } from "../conversations/scope-resolver.ts";
 import { hasHiddenApplicationSegment } from "../conversations/paths.ts";
-import { revealConversationScope } from "../conversations/reveal-scope.ts";
+import {
+  conversationRouteFromState,
+  type ConversationRoute,
+} from "../conversations/conversation-route.ts";
+import { openConversationRoute } from "./conversation-navigation.ts";
 import type { ConversationLocation } from "../conversations/types.ts";
 import { formatFileMention, searchVaultFiles } from "../chat/chat-mentions.ts";
 import type { AiSettingsStore } from "../settings/settings-store.ts";
@@ -18,11 +22,8 @@ import { AiOperations } from "./operations.ts";
 export function conversationLocationFromLeaf(
   leaf: WorkspaceLeaf,
 ): ConversationLocation | null {
-  const state = leaf.view.getState();
-  return typeof state.scopeDir === "string" &&
-    typeof state.conversationId === "string"
-    ? { scopeDir: state.scopeDir, conversationId: state.conversationId }
-    : null;
+  const route = conversationRouteFromState(leaf.view.getState());
+  return route?.backend === "vault-files" ? route.location : null;
 }
 export class AiConversationHost {
   active = true;
@@ -135,41 +136,14 @@ export class AiConversationHost {
     }));
   };
   async openAiConversation(location?: ConversationLocation): Promise<void> {
-    this.assertActive();
-    let mainMatch: WorkspaceLeaf | undefined;
-    let unbound: WorkspaceLeaf | undefined;
-    this.app.workspace.iterateRootLeaves((leaf) => {
-      if (leaf.view.getViewType() !== AI_VIEW) return;
-      const current = conversationLocationFromLeaf(leaf);
-      if (!current) unbound ??= leaf;
-      if (
-        location &&
-        current?.scopeDir === location.scopeDir &&
-        current?.conversationId === location.conversationId
-      )
-        mainMatch ??= leaf;
-    });
-    const existing = location
-      ? mainMatch
-      : this.app.workspace.getLeavesOfType(AI_VIEW)[0];
-    const target =
-      existing ??
-      (location
-        ? (unbound ?? this.app.workspace.getLeaf("tab"))
-        : this.app.workspace.ensureSideLeaf(AI_VIEW, "right"));
-    if (!existing)
-      await target.setViewState({
-        type: AI_VIEW,
-        state: location ? { ...location } : {},
-      });
-    this.assertActive();
-    this.app.workspace.activateLeaf(target, {
-      focusRootHost: false,
-      source: "api",
-      operation: "open-ai-chat",
-    });
-    await this.app.workspace.revealLeaf(target);
-    if (location) revealConversationScope(this.app, location.scopeDir);
+    return openConversationRoute(
+      this.app,
+      () => this.assertActive(),
+      location ? { version: 1, backend: "vault-files", location } : null,
+    );
+  }
+  openAiConversationRoute(route: ConversationRoute): Promise<void> {
+    return openConversationRoute(this.app, () => this.assertActive(), route);
   }
   async createAiConversation(scopeDir: string): Promise<void> {
     this.assertActive();

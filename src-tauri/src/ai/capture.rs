@@ -1,4 +1,5 @@
 //! Native runtime adaptation; the caller injects admitted privacy and durability.
+mod worker;
 use jj_store_conversations::{
     capture::{Binding, CaptureError, DurableCapture, Input, NativeCapture, Publication},
     native_privacy::TranscriptSanitizer,
@@ -7,6 +8,7 @@ use std::sync::Arc;
 use tauri_plugin_lapis_ai::runtime::{
     BatchProcessorFuture, Error, FrameBatch, FrameInput, FramePublication, SessionProcessor,
 };
+pub use worker::WorkerProcessor;
 
 pub struct ManagedCapture(NativeCapture);
 impl ManagedCapture {

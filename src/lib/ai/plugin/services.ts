@@ -10,6 +10,8 @@ import { ACP_APPROVAL_CAPABILITIES } from "../core/approvals.ts";
 import { LIVE_RUNTIME_UNAVAILABLE_REASON } from "../bootstrap/runtime-unavailable.ts";
 export type AiLeaveMode = "close" | "reload";
 export interface AiServices {
+  managedAgents?: import("../conversations/managed-turn-types.ts").ManagedAgentLauncher;
+  conversationBackend?: import("../conversations/backend-port.ts").ConversationBackendPort;
   clients?: import("../settings/clients.svelte.ts").AgentClients;
   captureSources?: import("../capture/source-port.ts").AiCaptureSources;
   importSources?: import("../imports/source-port.ts").AiImportSources;

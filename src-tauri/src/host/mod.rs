@@ -101,7 +101,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::ai::clients::desktop_ai_clients,
             crate::host::ai::imports::commands::desktop_ai_imports,
             crate::host::ai::admission::desktop_ai_release,
-            crate::host::ai::backends::commands::desktop_ai_backends,
+            crate::host::ai::backends::ipc::desktop_ai_backends,
             crate::host::repository::backup::desktop_backup_start,
             crate::host::repository::backup::desktop_backup_capture,
             crate::host::repository::backup::desktop_backup_stop,
@@ -149,8 +149,15 @@ pub fn run() -> tauri::Result<()> {
             if crate::acceptance::background::enabled() {
                 app.set_activation_policy(tauri::ActivationPolicy::Prohibited);
             }
-            crate::host::state::initialize(app.handle())?;
+            let profile = crate::host::state::initialize(app.handle())?;
             crate::host::repository::initialize(app.handle())?;
+            crate::host::ai::backends::initialize(
+                app.handle(),
+                &profile,
+                app.state::<crate::host::repository::RepositoryHost>()
+                    .backups
+                    .locations(),
+            )?;
             #[cfg(not(feature = "e2e"))]
             let ai_config = app.path().app_data_dir()?.join("ai-runtime.json");
             #[cfg(feature = "e2e")]

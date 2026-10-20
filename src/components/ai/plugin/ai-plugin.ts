@@ -11,6 +11,8 @@ import AiInventoryResult from "../chat/AiInventoryResult.svelte";
 import { registerAiSettings } from "../settings/register-ai-settings.ts";
 import { registerAiViews } from "./register-views.ts";
 import { registerAiCommands } from "./register-commands.ts";
+import type { NativeConversationSettingsManagement } from "../../../lib/ai/settings/native-conversation-settings.ts";
+import { AI_NATIVE_HISTORY_VIEW } from "../../../lib/ai/plugin/view-types.ts";
 export class AiPlugin extends Plugin {
   readonly settings = new AiSettingsStore(
     (data) => this.saveData(data),
@@ -37,6 +39,19 @@ export class AiPlugin extends Plugin {
   }
   get models() {
     return this.application.models;
+  }
+  get nativeConversationSettings(): NativeConversationSettingsManagement {
+    const host = this.application;
+    return {
+      setup: host.nativeConversationSetup,
+      openHistory: () => host.revealPanel(AI_NATIVE_HISTORY_VIEW, "right"),
+      openConversation: (conversation) =>
+        host.openAiConversationRoute({
+          version: 1,
+          backend: "jj",
+          conversation,
+        }),
+    };
   }
   getSettings() {
     return this.settings.get();

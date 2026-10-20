@@ -5,29 +5,40 @@
   import { Avatar } from "@lapismd/design-core/shadcn/avatar";
   import XIcon from "@lucide/svelte/icons/x";
   import type { SavedAgentRecipient } from "../../../lib/ai/conversations/recipients.ts";
+  import type { AgentRecipientOption } from "../../../lib/ai/conversations/recipients.ts";
   let {
     recipients,
     onRemove,
     disabled = false,
     label = "Message recipients",
     deliveries = [],
+    options = [],
   }: {
     recipients: readonly SavedAgentRecipient[];
     onRemove?: (id: string) => void;
     disabled?: boolean;
     label?: string;
     deliveries?: readonly import("../../../lib/ai/conversations/dispatch-intent.ts").Delivery[];
+    options?: readonly AgentRecipientOption[];
   } = $props();
 </script>
 
 {#if recipients.length}
   <div class="chat-recipients" role="group" aria-label={label}>
     {#each recipients as recipient (recipient.id)}
+      {@const profile = options.find((option) => option.id === recipient.id)}
       {@const delivery = deliveries.find(
         (d) => d.recipient.id === recipient.id,
       )}
       <Badge variant="secondary">
-        <Avatar name={recipient.label} size="xs" shape="rounded" decorative />
+        <Avatar
+          src={profile?.avatar}
+          background={profile?.avatarBackground}
+          name={recipient.label}
+          size="xs"
+          shape="rounded"
+          decorative
+        />
         <span>@{recipient.label}</span>
         {#if delivery}<span
             >{{

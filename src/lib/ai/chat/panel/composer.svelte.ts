@@ -1,8 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat presentation state; see ../../NOTICE.md.
+import { changeComposerAgent } from "./composer-agent.ts";
 import { runChatAction } from "./action-errors.ts";
 import { onDestroy } from "svelte";
 import { observeComposerDefaults } from "./defaults.svelte.ts";
+import {
+  appendInlineRecipient,
+  removeInlineRecipient,
+  observeInlineAudience,
+} from "./inline-audience.svelte.ts";
 import type {
   ComposerStatus,
   ComposerTrigger,
@@ -19,12 +25,12 @@ import { mentionTriggers } from "./mention-triggers.ts";
 import { ACP_AGENT_IDS } from "../../settings/acp-agents.ts";
 import { shouldShowWorkingIndicator } from "../chat-status.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
-import { composerAgentLabel } from "../../commands/agent.ts";
 import {
   ComposerModelCatalog,
   type ComposerModelCatalogState,
 } from "../composer-model-catalog.ts";
 import type { AiChatPanelProps } from "./props.ts";
+import type { AgentRecipientOption } from "../../conversations/recipients.ts";
 class ComposerPanelState {
   catalogState = $state<ComposerModelCatalogState | null>(null);
   catalog = new ComposerModelCatalog(
@@ -48,7 +54,14 @@ class ComposerPanelState {
     return this.catalogState?.models ?? models;
   });
   draft = $state("");
-  recipientOptions = $derived.by(
+  input = $state<
+    import("@lapismd/design-core/chat").MarkdownComposerHandle | null
+  >(null);
+  insertReference(value: string) {
+    if (this.input) this.input.insertText(`${value} `);
+    else this.draft += `${value} `;
+  }
+  recipientOptions = $derived.by<readonly AgentRecipientOption[]>(
     () =>
       this.getProps().agentOptions ??
       this.getProps().settings?.agentParticipants ??
@@ -121,7 +134,18 @@ class ComposerPanelState {
   mentionTriggers = $derived.by<ComposerTrigger[]>(() => {
     return mentionTriggers(this.getProps(), this, this.controller);
   });
-  selectRecipient(id: string): void {
+  get automaticallyMentionAgents() {
+    return this.getProps().settings?.automaticallyMentionAgents === true;
+  }
+  setAutomaticallyMentionAgents(value: boolean) {
+    void runChatAction(this.getProps, this.controller, () =>
+      this.getProps().onSettingsChange?.({ automaticallyMentionAgents: value }),
+    );
+  }
+  removeRecipient(id?: string) {
+    removeInlineRecipient(this, id);
+  }
+  selectRecipient(id: string, inline = true): void {
     void runChatAction(this.getProps, this.controller, () => {
       const option = this.recipientOptions.find((entry) => entry.id === id);
       if (!option) {
@@ -134,6 +158,7 @@ class ComposerPanelState {
       )
         this.changeAgent(option.agent, "acp");
       this.recipients.select(id);
+      if (inline) appendInlineRecipient(this, id);
     });
   }
   composerError = $derived.by(() => {
@@ -190,6 +215,7 @@ class ComposerPanelState {
     this.acceptDefaults = this.acceptDefaults.bind(this);
     onDestroy(() => this.catalog.cancel());
     observeComposerDefaults(this.getProps, this);
+    observeInlineAudience(this);
   }
   persistComposerDefaults(
     agent: AcpAgentId,
@@ -212,36 +238,7 @@ class ComposerPanelState {
     agent: AcpAgentId,
     runtimePreference: "acp" | "codex-native" | "opencode-native",
   ): void {
-    if (
-      this.recipients.selectedId !== null &&
-      this.recipientOptions.find(
-        (entry) => entry.id === this.recipients.selectedId,
-      )?.agent !== agent
-    )
-      this.recipients.remove();
-    const { settings, models = [], loadModels } = this.getProps();
-
-    this.localAgent = agent;
-    this.localRuntime = runtimePreference;
-    const configured = settings?.defaultModels?.[agent];
-    this.localModel =
-      configured ||
-      catalogModelsForAgent(agent, models).find((model) => model.isDefault)
-        ?.model ||
-      catalogModelsForAgent(agent, models)[0]?.model ||
-      "";
-    this.persistComposerDefaults(
-      agent,
-      runtimePreference,
-      this.localModel,
-      this.selectedThinking,
-    );
-    if (loadModels)
-      void this.catalog.refresh(
-        agent,
-        runtimePreference,
-        configured ?? this.localModel ?? "",
-      );
+    changeComposerAgent(this, this.getProps(), agent, runtimePreference);
   }
   changeModel(value: string): void {
     this.localModel = value;

@@ -1,20 +1,11 @@
-use super::{NativeBackends, denied, managed::Client, privacy};
+use super::{NativeBackends, capture_owner::OwnedCapture, denied, managed::Client};
 use crate::host::state::NativeHost;
 use jj_store_conversations::capture::{Binding, CaptureError};
 use jj_store_model::RequestId;
-use lapis_desktop::ai::{
-    capture::ManagedCapture,
-    conversations::{PreparedConversation, messages},
-};
+use lapis_desktop::ai::{capture::WorkerProcessor, conversations::PreparedConversation};
 use serde::Serialize;
 use std::{io, sync::Arc};
-use tauri_plugin_lapis_ai::{
-    HostContext, SessionBinding,
-    runtime::{
-        BatchProcessorFuture, Error, FrameInput, RequestInput, RequestProcessorFuture,
-        SessionProcessor, SessionRequest,
-    },
-};
+use tauri_plugin_lapis_ai::{HostContext, SessionBinding, runtime::SessionProcessor};
 use uuid::Uuid;
 
 #[derive(Clone, Debug, PartialEq, Eq, Serialize)]
@@ -52,9 +43,13 @@ impl NativeBackends {
             client,
         } = preparation;
         let call = self.conversation_call(host, context, session, handle)?;
+        lapis_desktop::ai::conversations::dispatch::ensure_unclaimed(&call, request)?;
         let prior = {
             let owners = self.owners.lock().map_err(|_| denied())?;
             let owner = owners.get(&context.window).ok_or_else(denied)?;
+            if owner.canonical_captures.contains_key(&request) {
+                return Err(denied());
+            }
             if let Some(prior) = owner.captures.get(&request) {
                 if prior.prepared.conversation_request_id != conversation
                     || prior.context.url != context.url
@@ -64,7 +59,7 @@ impl NativeBackends {
                 }
                 Some((prior.prepared.clone(), prior.conversation.clone()))
             } else {
-                if owner.captures.len() >= 64 {
+                if owner.captures.len() + owner.canonical_captures.len() >= 64 {
                     return Err(super::busy());
                 }
                 None
@@ -135,7 +130,9 @@ impl NativeBackends {
                         && (plan.client.is_none() || plan.claimed)
                 })
                 .map(|plan| plan.conversation.clone())
-                .ok_or_else(denied)?
+        };
+        let Some(conversation) = conversation else {
+            return self.canonical_processor(host, context, binding);
         };
         let permit = Arc::new(self.register_processing(host, context, binding)?);
         let call = permit.call();
@@ -161,81 +158,12 @@ impl NativeBackends {
             Arc::new(move || retained.check().map_err(|_| CaptureError::Rejected)),
         )?;
         permit.check()?;
-        Ok(Box::new(OwnedCapture {
+        Ok(Box::new(WorkerProcessor::new(Box::new(OwnedCapture {
             inner,
             permit,
             privacy,
             worker: binding.session_id.clone(),
             conversation: conversation.request_id(),
-        }))
-    }
-}
-struct OwnedCapture {
-    inner: ManagedCapture,
-    permit: Arc<super::processing::CapturePermit>,
-    privacy: privacy::Privacy,
-    worker: String,
-    conversation: RequestId,
-}
-impl SessionProcessor for OwnedCapture {
-    fn prepare_request<'a>(&'a mut self, input: RequestInput<'a>) -> RequestProcessorFuture<'a> {
-        Box::pin(async move {
-            if input.session_id != self.worker {
-                return Err(Error("capture_scope_unavailable"));
-            }
-            let SessionRequest::Prompt { text, .. } = input.request else {
-                return self
-                    .permit
-                    .check()
-                    .map_err(|_| Error("capture_scope_unavailable"));
-            };
-            let request = Uuid::parse_str(input.request_id)
-                .ok()
-                .filter(|id| id.to_string() == input.request_id)
-                .ok_or(Error("invalid_authored_request_identity"))?;
-            let text = text.clone();
-            let permit = self.permit.clone();
-            let privacy = self.privacy.clone();
-            let conversation = self.conversation;
-            // Retain every native owner through scanning, IO and confirmation.
-            // The actor drains this future even if the renderer stops waiting.
-            tauri::async_runtime::spawn_blocking(move || {
-                permit
-                    .check()
-                    .map_err(|_| Error("capture_scope_unavailable"))?;
-                if !text.trim().is_empty() {
-                    let write = tauri::async_runtime::block_on(messages::append(
-                        permit.call(),
-                        conversation,
-                        RequestId::new(*request.as_bytes()),
-                        text,
-                        privacy.sanitizer.clone(),
-                    ))
-                    .map_err(|_| Error("authored_message_preparation_failed"))?;
-                    if !write.is_confirmed() {
-                        return Err(Error("authored_message_outcome_unknown"));
-                    }
-                }
-                let result = permit
-                    .check()
-                    .map_err(|_| Error("capture_scope_unavailable"));
-                drop(privacy);
-                result
-            })
-            .await
-            .map_err(|_| Error("authored_message_worker_failed"))?
-        })
-    }
-    fn process_batch<'a>(&'a mut self, input: FrameInput<'a>) -> BatchProcessorFuture<'a> {
-        Box::pin(async move {
-            self.permit
-                .check()
-                .map_err(|_| Error("capture_scope_unavailable"))?;
-            let output = self.inner.process_batch(input).await?;
-            self.permit
-                .check()
-                .map_err(|_| Error("capture_scope_unavailable"))?;
-            Ok(output)
-        })
+        }))))
     }
 }

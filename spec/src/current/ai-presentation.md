@@ -1,5 +1,24 @@
 # AI transcript delivery review
 
+The 2026-10-20 review pauses full native implementation and validation. The
+native source picker uses a compact ghost footer button and searchable Command
+View. Recorded status and capture-gap facts render once in centered system
+dividers with an icon, tinted label and shared RelativeTime underneath. That
+timestamp identifies the retained source link, not an invented event time.
+Composer agent tags and resource references stay inline with remove actions;
+file attachments retain their drawer. The optional automatically-tag-agents
+setting and @ picker action retain the draft audience for an acknowledged
+follow-up. Native live execution and restart qualification remain deferred. The
+footer @ action opens the searchable people/agent picker and exposes the
+automatic-tagging switch. People are explicit host-provided references, with
+catalog-owned examples; a person mention never becomes an agent recipient or
+grants delivery/execution authority. Live directory integration remains
+deferred. With automatic tagging enabled, the footer control adopts JJ Store's
+tinted addressed state and agent-avatar dismiss control. Person and agent chips
+omit the visible @ prefix, use a larger inline avatar/name presentation and
+reuse the public AuthorCard hover profile; their exact draft tokens remain
+unchanged.
+
 LD-AI-002/004 retain the existing AI controller, context, settings, requests,
 history and runtime boundaries while adopting public Design Core presentation.
 The 2026-10-18 delivery sequence prioritizes visible, functional slices:
@@ -35,7 +54,10 @@ NOTES-08B. Its vault-owned `transcriptView` defaults to Document; explicit
 Classic selection persists through the existing acknowledged plugin-settings
 writer. All panel embeddings use the shared Transcript; the superseded chat
 timeline and composer are retired. Catalog owns all synthetic data and runtime
-clients.
+clients. New chat UI review stories MUST embed the ordinary
+`AiChatSession`/`AiSessionFrame` Design Core AppShell composition. The
+standalone transcript harness is retained for exact component regressions, not
+as a new product layout. Agent setup review uses the embedded shell in E-AI-072.
 
 The document footer keeps a single compact row. Formatting expands rightward
 using the jj-store strip (selected trigger, close, separator and actions), with
@@ -301,3 +323,9 @@ Local command reports and tool results opt into the shared plain custom-block
 surface: no extra outer border or inset. Empty Search and inventory results use
 Design Core Empty with an icon and muted description. Captured source and tool
 identities remain unchanged, and local tools keep inline disclosure.
+
+E-AI-089 resumes main-component adoption for the
+[local chat v0](ai-managed-capture.md#local-desktop-v0-scope). Focused checks
+and a review-app launch remain distinct from full provider, restart and
+distribution qualification. Native and normal ACP remain separate available
+routes in the same workspace.

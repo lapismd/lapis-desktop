@@ -88,12 +88,35 @@ fn canonical_conversation_view_survives_loss_of_private_creation_and_actor_recor
         );
         assert_eq!(view["messages"].as_array().unwrap().len(), 1);
         assert_eq!(view["messages"][0]["body"], "Canonical human authorship");
+        let committed = native.thread().unwrap().snapshot().await.unwrap();
+        let state =
+            jj_collab::ThreadStateV1::read(committed.data.root.clone(), &committed.data.graph)
+                .unwrap();
+        let thread_id: jj_collab::ThreadId = serde_json::from_value(thread.clone()).unwrap();
+        let message_id: jj_collab::HumanMessageId =
+            serde_json::from_value(view["messages"][0]["message_id"].clone()).unwrap();
+        assert_eq!(
+            view["references"]["thread"],
+            serde_json::to_value(state.threads[&thread_id]).unwrap()
+        );
+        assert_eq!(
+            view["references"]["messages"][view["messages"][0]["message_id"].as_str().unwrap()],
+            serde_json::to_value(state.messages[&message_id]).unwrap()
+        );
+        assert!(view["references"]["metadata"].is_null());
         assert!(encoded.contains("A canonical stored answer"));
         let selected = metadata(&f).read().unwrap().unwrap().commit();
         std::fs::remove_dir_all(conversations::private(&f)).unwrap();
         assert_eq!(f.call(read(&handle, thread)).await.unwrap(), reply);
         let pinned = f.call(open_read(&handle, thread)).await.unwrap();
-        assert_eq!(pinned["data"]["snapshot"], encoded);
+        let mut pinned_view: Value =
+            serde_json::from_str(pinned["data"]["snapshot"].as_str().unwrap()).unwrap();
+        assert!(pinned_view["sessions"][0]["records_cursor"].is_string());
+        pinned_view["sessions"][0]
+            .as_object_mut()
+            .unwrap()
+            .remove("records_cursor");
+        assert_eq!(pinned_view, view);
         assert!(!conversations::private(&f).exists());
         assert_eq!(metadata(&f).read().unwrap().unwrap().commit(), selected);
         f.call(json!({"type":"closeConversationRead","handle":handle,

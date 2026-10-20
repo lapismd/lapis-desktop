@@ -93,7 +93,7 @@
 
 <AiSessionFrame
   {label}
-  contentLabel="Selected session"
+  contentLabel={`${label}: selected session`}
   bind:body
   bind:height
   bind:width

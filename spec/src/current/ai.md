@@ -4,13 +4,13 @@ E-REPO-016: [background](background.md); [repository](repository.md) gates stay.
 E-AI-037/038 retain private stores/journals, pinned reads and drained ownership.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and
-[authored writes](ai-authored.md) retain native admission. E-AI-064 adds
-controller-driven recovery dots; E-CATALOG-015 exposes core exclusions.
-E-AI-054–056 add [imports](ai-imports.md) through native read-only workers.
-E-AI-058/060/061 qualify inbox, links and attachments; watching stays pending.
-E-AI-062/063 lands local AI; JJ persistence and original gates remain deferred.
-E-AI-041/045/052/053 and [participants](ai-addressing.md) retain their gates.
-[Authorship](ai-authored.md) and [catalog](ai-catalog.md): M13.3 stays open.
+[authored writes](ai-authored.md): native admission. E-AI-064: recovery dots;
+E-CATALOG-015: core exclusions. E-AI-054–056 [imports](ai-imports.md) use native
+read-only workers. E-AI-058/060/061: inbox/links/attachments; watching pending.
+E-AI-062/063: local AI; original JJ gates deferred. E-AI-041/045/052/053 and
+[participants](ai-addressing.md) retain gates.
+[Edits](ai-conversation-edits.md)/[attribution](ai-native-attribution.md): M13.3
+gates remain; E-AI-079–084 attribution/storage/dispatch drafts are unqualified.
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 E-CATALOG-009–012 retain shell clearance, inert XML and constrained chat
@@ -393,8 +393,7 @@ credentials are excluded. Constructing the journal does not select a Notes
 conversation backend, admit a target or replace the required native callback
 drain.
 
-Ordinary preparation uses the current JJ owner handle and private native IDs.
-The repository topic governs its single ThreadStore publication and receipt
-recovery. Unknown outcomes cannot enable execution. Cold API acceptance
-qualifies preparation/restart separately from managed chat/capture. Ordinary
-targets stay gated; [tags and queues](ai-addressing.md) confer no authority.
+Current JJ handles and private native IDs own preparation; the repository topic
+governs its single ThreadStore publication/receipt recovery. Unknown outcomes
+cannot enable execution. Cold API preparation/restart and managed chat/capture
+retain separate gates; [tags and queues](ai-addressing.md) confer no authority.

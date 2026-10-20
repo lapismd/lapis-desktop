@@ -8,6 +8,30 @@ use std::{
 use tauri_plugin_lapis_ai::AcpHost;
 
 impl NativeBackends {
+    /// Keep new backend admissions fenced until the host's layout mutation ends.
+    /// Existing publishers must finish before their repository can be moved.
+    pub async fn prepare_storage_move(
+        self: &Arc<Self>,
+        workers: &AcpHost,
+        session: &str,
+    ) -> io::Result<tokio::sync::OwnedMutexGuard<()>> {
+        let transition = self.transitions.clone().lock_owned().await;
+        let owners: Vec<_> = self
+            .owners
+            .lock()
+            .map_err(|_| denied())?
+            .iter()
+            .filter(|(_, owner)| {
+                owner.session == session
+                    && owner.scope.selection().backend == lapis_desktop::ai::backend::Backend::Jj
+            })
+            .map(|(window, owner)| (window.clone(), owner.generation.clone()))
+            .collect();
+        for (window, generation) in owners {
+            revoke(workers, self, &window, Some(&generation)).await?;
+        }
+        Ok(transition)
+    }
     pub fn ensure_live(&self) -> io::Result<()> {
         if self.destroyed.load(Ordering::SeqCst) {
             return Err(denied());
