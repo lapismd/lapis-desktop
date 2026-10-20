@@ -1,4 +1,5 @@
 import AgentClientsField from "./AgentClientsField.svelte";
+import AgentClientsPage from "./AgentClientsPage.svelte";
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from Lapis register-ai-settings; see ../../../lib/ai/NOTICE.md.
 import type { Plugin } from "@lapis-notes/api";
@@ -52,23 +53,36 @@ export function registerAiSettings(plugin: SettingsOwner): void {
     },
     subscribe: (listener: () => void) => settings.subscribe(() => listener()),
   };
-  const register = () => {
-    const section = createAiSettingsSection(app, settings.get());
-    const management = plugin.clients;
-    if (management)
-      section.fields = [
-        {
-          id: "ai.clients",
-          type: "custom",
-          title: "Installed clients",
-          presentation: "full-width",
-          component: AgentClientsField,
-          management,
-        } as import("@lapis-notes/api").WorkspaceCustomSetting,
-        ...(section.fields ?? []),
-      ];
-    return controller.settings.registerDefinition({ section, source });
-  };
+  if (plugin.clients)
+    cleanups.push(
+      controller.settings.registerDefinition({
+        section: {
+          id: "ai-agents",
+          title: "Agents",
+          description: "Manage the agent clients installed on this device.",
+          icon: "bot",
+          order: 36,
+          navigationGroupId: "core-plugins",
+          sourcePluginId: "ai",
+          page: AgentClientsPage,
+          fields: [
+            {
+              id: "ai.clients",
+              type: "custom",
+              title: "Installed clients",
+              component: AgentClientsField,
+              management: plugin.clients,
+            } as import("@lapis-notes/api").WorkspaceCustomSetting,
+          ],
+        },
+        source,
+      }),
+    );
+  const register = () =>
+    controller.settings.registerDefinition({
+      section: createAiSettingsSection(app, settings.get()),
+      source,
+    });
   section = register();
   const refresh = () => {
     if (disposed) return;

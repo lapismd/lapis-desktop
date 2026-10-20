@@ -29,7 +29,7 @@ scoped cleanup. Native caller/origin checks and target policy remain host-owned;
 the renderer cannot choose a root, executable, environment or generation.
 
 Ordinary builds admit only explicitly configured local-file Codex targets.
-[Installed clients and bundled helpers](ai-clients.md) own delivery and repair.
+[Agents and bundled helpers](ai-clients.md) own settings, delivery and repair.
 The exact main ACP-session grant permits the scoped protocol without executable
 selection. The two admit/release commands accept only a vault token or reload
 flag, reject surplus authority fields and derive window/origin from Tauri.

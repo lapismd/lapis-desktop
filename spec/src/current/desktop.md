@@ -8,7 +8,7 @@ LD-DESK-005 and [local imports](ai-imports.md). Gravatar:
 App-owned watching starts after metadata/views and drains before leave; failure
 resumes the live App (LD-FILE-002/003). M6 Search/Graph follows `navigation.md`.
 
-E-AI-059–061 retain LD-DESK-001/LD-HOST-001 for nested AI/file views.
+E-AI-059–061/066 retain LD-DESK-001/LD-HOST-001 for AI views and Settings.
 
 Plugin assets and Terminal follow [plugins](plugins.md).
 

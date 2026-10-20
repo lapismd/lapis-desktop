@@ -20,10 +20,32 @@ async function ready(element: HTMLElement) {
   );
   return within(element);
 }
+async function selectCategory(element: HTMLElement, name: string) {
+  const canvas = within(element);
+  const sidebar = canvas.queryByRole("navigation", { name: "Settings" });
+  if (sidebar) {
+    await userEvent.click(within(sidebar).getByRole("button", { name }));
+    return;
+  }
+  await userEvent.click(
+    canvas.getByRole("button", { name: "Open settings navigation" }),
+  );
+  const navigation = await within(element.ownerDocument.body).findByRole(
+    "dialog",
+    {
+      name: "Settings navigation",
+    },
+  );
+  await userEvent.click(within(navigation).getByRole("button", { name }));
+  await waitFor(() => expect(navigation).not.toBeInTheDocument());
+}
 export const InstalledClients: Story = {
   args: { scenario: "clients-ready" },
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
+    await expect(
+      await canvas.findByRole("heading", { name: "Agents" }),
+    ).toBeVisible();
     await expect(
       await canvas.findByRole("region", { name: "Installed clients" }),
     ).toBeVisible();
@@ -90,5 +112,27 @@ export const DiscoveryFailure: Story = {
     expect(aiReviewValue(canvasElement, "AI notifications")).toContain(
       "Fixture client discovery failed",
     );
+  },
+};
+
+export const SettingsCategory: Story = {
+  args: { scenario: "clients-ready" },
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    await selectCategory(canvasElement, "AI");
+    await expect(
+      await canvas.findByRole("combobox", { name: "Default runtime" }),
+    ).toBeVisible();
+    expect(
+      canvas.queryByRole("region", { name: "Installed clients" }),
+    ).toBeNull();
+    await selectCategory(canvasElement, "Agents");
+    await expect(
+      await canvas.findByRole("region", { name: "Installed clients" }),
+    ).toBeVisible();
+    await aiReviewAction(canvasElement, "Disable AI settings");
+    expect(
+      canvas.queryByRole("region", { name: "Installed clients" }),
+    ).toBeNull();
   },
 };

@@ -3,7 +3,6 @@
   import ClientSettingsCard from "./ClientSettingsCard.svelte";
   import ClientSettingsFooter from "./ClientSettingsFooter.svelte";
   import { untrack } from "svelte";
-  import * as Field from "@lapismd/design-core/shadcn/field";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
   import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import { Button } from "@lapismd/design-core/shadcn/button";
@@ -64,7 +63,7 @@
   {:else}
     {#if value}
       <div class="store-settings__rows">
-        <Field.Group class="store-settings__editable-rows store-runtime__list">
+        <div class="store-runtime__list">
           {#each value.runtimes as runtime (runtime.id)}
             {@const status = management.error ? "unknown" : runtime.state}
             <ClientSettingsFooter>
@@ -126,7 +125,7 @@
               </DropdownMenu.Root>
             </ClientSettingsFooter>
           {/each}
-        </Field.Group>
+        </div>
       </div>
       {#if value.install_unavailable}<p class="store-settings__row-description">
           {value.install_unavailable}
@@ -170,10 +169,7 @@
         aria-label="Loading agent runtimes"
         aria-busy="true"
       >
-        <Field.Group
-          aria-hidden="true"
-          class="store-settings__editable-rows store-runtime__list"
-        >
+        <div aria-hidden="true" class="store-runtime__list">
           {#each [0, 1, 2] as row (row)}<ClientSettingsFooter>
               {#snippet description()}
                 <div class="store-runtime__summary">
@@ -188,10 +184,10 @@
                 ><Skeleton class="client-skeleton-button" /></span
               >
             </ClientSettingsFooter>{/each}
-        </Field.Group>
+        </div>
       </div>
     {/if}
-    <ClientSettingsFooter>
+    <ClientSettingsFooter footer>
       {#if management?.available()}<Button
           variant="outline"
           size="sm"

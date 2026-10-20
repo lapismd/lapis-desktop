@@ -347,3 +347,6 @@ unchanged.
 
 Restored Terminal tabs state that no shell is running and direct the user to
 Start.
+
+The AI plugin owns the Agents Settings category and its forge-style client
+table. Disabling AI removes both AI preferences and Agents registrations.

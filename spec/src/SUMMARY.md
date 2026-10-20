@@ -297,5 +297,6 @@
 - [Workspace file exclusion settings](history/E-CATALOG-015.md)
 
 - [Installed clients and startup repair](history/E-AI-065.md)
+- [Agents settings category and forge-style rows](history/E-AI-066.md)
 
 - [Unified indexed history in Search](history/E-REPO-045.md)

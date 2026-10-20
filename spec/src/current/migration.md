@@ -3,6 +3,9 @@
 E-REPO-044 adds remembered blame wrapping with measured virtual groups; M13.2
 keeps its original qualified gate and other task statuses remain unchanged.
 
+E-AI-066 adds Agents Settings; LD-MIG-002 milestones and original gates remain
+unchanged.
+
 ## Current checkpoint — 2026-10-19
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and

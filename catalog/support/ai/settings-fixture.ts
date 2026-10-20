@@ -146,7 +146,9 @@ export function createSettingsFixture(scenario: SettingsScenario) {
     await plugin.enable();
     await plugin.settings.settle();
     await controller.settings.load();
-    controller.settings.selectSection("ai");
+    controller.settings.selectSection(
+      scenario.startsWith("clients") ? "ai-agents" : "ai",
+    );
   })();
   let shutdown: Promise<void> | undefined;
   const close = () =>

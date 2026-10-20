@@ -868,8 +868,9 @@ after closing/reopening the pane. E-REPO-044; visual-pending.
 
 ## Installed AI clients
 
-`Desktop/AI installed clients` mounts the production Installed clients custom
-field within AI plugin settings. Installed, update confirmation/cancellation,
-update/refresh, loading and discovery-failure states adapt jj-store runtime
-rows. `Desktop/Repository history search/CurrentFiles` verifies current rows and
-the actual bounded workspace viewport. All remain visual-pending.
+`Desktop/AI installed clients` mounts the production Installed clients table in
+the AI-owned Agents settings category, matching Repository History forge rows.
+Installed, update confirmation/cancellation, update/refresh, loading and
+discovery-failure states adapt jj-store runtime rows.
+`Desktop/Repository history search/CurrentFiles` verifies current rows and the
+actual bounded workspace viewport. All remain visual-pending.

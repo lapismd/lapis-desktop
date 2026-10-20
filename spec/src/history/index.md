@@ -241,3 +241,5 @@ by the task ledger, not inferred from this list.
 
 - [Unified indexed history in Search](E-REPO-045.md)
 - [Installed clients and startup repair](E-AI-065.md)
+
+- [Agents settings category and forge-style rows](E-AI-066.md)

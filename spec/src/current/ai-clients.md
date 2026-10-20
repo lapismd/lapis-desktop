@@ -11,12 +11,15 @@ blocking worker before use. Development starts verify staged resources before
 opening the app. Installed builds resolve application resources rather than a
 source checkout. Explicit legacy device configuration remains supported.
 
-AI plugin settings own the Installed clients section. It lists the bundled
-helpers, detected Codex adapter/CLI versions, managed/device origin and Cursor
-availability with its current unsupported execution boundary. Skeletons
-represent loading. Refresh and installation report through the App status API.
-Errors identify missing paths, adapter prerequisites or failed verification and
-provide a repair action; they never echo credentials or configuration contents.
+The AI plugin registers its own Agents category in Settings, alongside AI
+preferences. Its Installed clients table adapts Repository History's forge
+entries: a tinted header, body-surface rows with separators and a distinct
+footer. It lists the bundled helpers, detected Codex adapter/CLI versions,
+managed/device origin and Cursor availability with its current unsupported
+execution boundary. Skeletons represent loading. Refresh and installation report
+through the App status API. Errors identify missing paths, adapter prerequisites
+or failed verification and provide a repair action; they never echo credentials
+or configuration contents.
 
 Explicit Codex installation and update use jj-store's fixed adapter 1.13.1 and
 CLI 0.156.1 catalog. Native code resolves Node.js 22+ and npm on the device,
