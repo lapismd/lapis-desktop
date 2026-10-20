@@ -15,10 +15,38 @@ export const NormalSessionsRemainDefault: Story = {
     const canvas = within(canvasElement);
     await expect(
       canvas.findByRole("heading", {
-        name: "Native conversation history",
+        name: "AI",
         level: 1,
       }),
     ).resolves.toBeVisible();
+    for (const name of [
+      "Conversation",
+      "Runtime and model",
+      "Memory",
+      "Handoff summaries",
+      "Application tools",
+    ])
+      await expect(
+        canvas.findByRole("heading", { name }),
+      ).resolves.toBeVisible();
+    await expect(
+      canvas.findByRole("heading", {
+        name: "Native conversation history",
+      }),
+    ).resolves.toBeVisible();
+    expect(
+      canvas.queryByRole("button", {
+        name: "Native conversation history",
+      }),
+    ).toBeNull();
+    expect(
+      canvas.queryByRole("region", { name: "Conversation storage" }),
+    ).toBeNull();
+    const table = await canvas.findByRole("table", {
+      name: "Native conversation history",
+    });
+    expect(table).toBeVisible();
+    expect(table.scrollWidth).toBeLessThanOrEqual(table.clientWidth + 1);
     await expect(
       canvas.findByRole("button", { name: "Conversation storage" }),
     ).resolves.toHaveTextContent("Normal ACP sessions");

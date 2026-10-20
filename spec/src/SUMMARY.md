@@ -368,3 +368,5 @@
 - [Local desktop chat v0 candidate](history/E-AI-089.md)
 
 - [Markdown agent badges and visible suggestions](history/E-AI-090.md)
+
+- [Native history subsection within AI settings](history/E-AI-091.md)

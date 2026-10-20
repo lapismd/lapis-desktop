@@ -196,6 +196,10 @@ keyboard, navigation, detail and approval assertion is retained.
 
 ## Retained AI Settings
 
+NativeConversationStorage and Settings review the grouped AI page: Conversation,
+Runtime and model, Memory, Handoff summaries, Application tools and a direct
+native-history table without an enclosing card (E-AI-091).
+
 Source: `lapis-plugins` revision `ee20d366`,
 `packages/ai/src/lib/settings/{register-ai-settings,ai-settings-tab,app-tool-setting-rows}.ts`.
 `plugins/ai/Settings.stories.ts` renders the existing public Workspace Settings

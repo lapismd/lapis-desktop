@@ -39,7 +39,7 @@ export function createAiSettingsSection(
   app: App,
   current: AiPluginSettings,
 ): WorkspaceSettingsSection {
-  const fields: NonNullable<WorkspaceSettingsSection["fields"]> = [
+  const conversation: NonNullable<WorkspaceSettingsSection["fields"]> = [
     {
       id: AI_FIELD_IDS.automaticallyMentionAgents,
       type: "boolean",
@@ -60,6 +60,8 @@ export function createAiSettingsSection(
         { value: "classic", label: "Classic" },
       ],
     },
+  ];
+  const runtime: typeof conversation = [
     {
       id: AI_FIELD_IDS.defaultRuntime,
       type: "enum",
@@ -110,7 +112,9 @@ export function createAiSettingsSection(
         { value: "high", label: "High" },
       ],
     },
-    ...memorySettingFields(current),
+  ];
+  const memory = memorySettingFields(current);
+  const tools: typeof conversation = [
     {
       id: AI_FIELD_IDS.appToolsEnabled,
       type: "boolean",
@@ -138,11 +142,43 @@ export function createAiSettingsSection(
   return {
     id: "ai",
     title: "AI",
-    description: "Agent runtime, model, and thinking defaults.",
+    description:
+      "Conversation preferences, agent defaults, memory and history.",
     icon: "sparkles",
     order: 35,
     navigationGroupId: "core-plugins",
     sourcePluginId: "ai",
-    fields,
+    fields: [
+      {
+        id: "ai.conversation",
+        type: "group",
+        title: "Conversation",
+        fields: conversation,
+      },
+      {
+        id: "ai.runtime",
+        type: "group",
+        title: "Runtime and model",
+        fields: runtime,
+      },
+      {
+        id: "ai.memory",
+        type: "group",
+        title: "Memory",
+        fields: memory.filter((field) => !field.id.startsWith("ai.handoff")),
+      },
+      {
+        id: "ai.handoff",
+        type: "group",
+        title: "Handoff summaries",
+        fields: memory.filter((field) => field.id.startsWith("ai.handoff")),
+      },
+      {
+        id: "ai.tools",
+        type: "group",
+        title: "Application tools",
+        fields: tools,
+      },
+    ],
   };
 }

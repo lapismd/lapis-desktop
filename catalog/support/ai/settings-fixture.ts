@@ -175,9 +175,7 @@ export function createSettingsFixture(scenario: SettingsScenario) {
     controller.settings.selectSection(
       scenario.startsWith("clients") || scenario.startsWith("profiles")
         ? "ai-agents"
-        : scenario.startsWith("native")
-          ? "ai-native-history"
-          : "ai",
+        : "ai",
     );
     if (scenario === "profiles-failure") plugin.failNextSave = true;
   })();

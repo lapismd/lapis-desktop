@@ -158,3 +158,6 @@ M10.2/M13.3 gates remain open; no complete qualification is inferred.
 
 E-AI-090: focused Markdown/bare-agent badge, clipped composer tooltip and
 separate native-history settings review; original AI/native gates remain open.
+
+E-AI-091 groups AI settings and places the native-history table directly beneath
+its subsection heading; storage, admission and milestone gates are unchanged.

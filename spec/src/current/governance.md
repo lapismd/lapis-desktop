@@ -1,6 +1,6 @@
 # Governance
 
-E-AI-090 retains LD-GOV-002/009. E-POPOUT-004 covers pop-outs/IPC denial;
+E-AI-090/091 retains LD-GOV-002/009. E-POPOUT-004 covers pop-outs/IPC denial;
 E-REPO-051–053 retain native proof, debug e2e-only faults and deferred release.
 
 E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain

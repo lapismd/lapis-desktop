@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0; composes retained jj-store settings presentation. -->
 <script lang="ts">
   import { onMount } from "svelte";
-  import * as Field from "@lapismd/design-core/shadcn/field";
+  import * as Table from "@lapismd/design-core/shadcn/table";
   import * as Select from "@lapismd/design-core/shadcn/select";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Input } from "@lapismd/design-core/shadcn/input";
@@ -10,8 +10,6 @@
   import HistoryIcon from "@lucide/svelte/icons/history";
   import PlusIcon from "@lucide/svelte/icons/plus";
   import RefreshIcon from "@lucide/svelte/icons/refresh-cw";
-  import ClientSettingsCard from "./ClientSettingsCard.svelte";
-  import ClientSettingsFooter from "./ClientSettingsFooter.svelte";
   import ClientSettingsEmpty from "./ClientSettingsEmpty.svelte";
   import type { NativeConversationSettingsManagement } from "../../../lib/ai/settings/native-conversation-settings.ts";
   import type { NativeConversationSetupState } from "../../../lib/ai/conversations/native-setup.ts";
@@ -81,162 +79,201 @@
   }
 </script>
 
-<ClientSettingsCard
-  id={`${id}-heading`}
-  title="Conversation storage"
-  description="Add JJ-backed conversations alongside your normal ACP sessions. Existing chats remain available."
-  Icon={GitBranchIcon}
+<Table.Root
+  aria-label="Native conversation history"
+  style="table-layout: fixed; width: 100%;"
 >
-  {#if !management?.setup.available}
-    <ClientSettingsEmpty
-      Icon={GitBranchIcon}
-      title="Native history unavailable"
-      description="Enable AI in a trusted desktop vault to use its existing JJ history."
-    />
-  {:else if !setupState.selection && !setupState.error}
-    <div
-      class="native-setup-fields"
-      role="status"
-      aria-label="Loading conversation storage"
-      aria-busy="true"
-    >
-      <Skeleton class="native-setup-label" /><Skeleton
-        class="native-setup-control"
-      />
-      <Skeleton class="native-setup-label" /><Skeleton
-        class="native-setup-control"
-      />
-    </div>
-  {:else if !setupState.selection}
-    <ClientSettingsEmpty
-      Icon={GitBranchIcon}
-      title="Conversation storage unavailable"
-      description="Check again after confirming that native AI and vault history are available."
-    />
-  {:else}
-    <div class="native-setup-fields">
-      <Field.FieldGroup>
-        <Field.Field>
-          <Field.FieldLabel for={`${id}-storage`}
-            >Conversation storage</Field.FieldLabel
-          >
-          <Select.Root
-            type="single"
-            value={desired}
-            disabled={blocked}
-            onValueChange={(value) => {
-              if (value === "jj" || value === "vault-files") desired = value;
-            }}
-          >
-            <Select.Trigger id={`${id}-storage`}>
-              {options.find((option) => option.value === desired)?.label}
-            </Select.Trigger>
-            <Select.Content
-              ><Select.Group
-                ><Select.Label>Conversation history</Select.Label>
-                {#each options as option (option.value)}<Select.Item
-                    value={option.value}
-                    label={option.label}>{option.label}</Select.Item
-                  >{/each}
-              </Select.Group></Select.Content
-            >
-          </Select.Root>
-          <Field.FieldDescription
-            >JJ uses this vault's existing history. Changing this choice does
-            not move or replace normal ACP sessions.</Field.FieldDescription
-          >
-        </Field.Field>
-      </Field.FieldGroup>
-      <div class="native-setup-actions">
-        <Button
-          size="sm"
-          variant="outline"
-          disabled={blocked || desired === setupState.selection.backend}
-          onclick={() => void management?.setup.choose(desired).catch(() => {})}
-          >Apply storage choice</Button
-        >
-        {#if setupState.selection.backend === "jj"}
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={setupState.busy || Boolean(setupState.pendingChoice)}
-            onclick={openHistory}
-          >
-            <HistoryIcon data-icon="inline-start" />Open native history
-          </Button>
-        {/if}
-      </div>
-      {#if setupState.pendingChoice}<p role="status">
-          Storage choice is unconfirmed. Check its original request before
-          continuing.
-        </p>{/if}
-      {#if setupState.selection.backend === "jj"}
-        <Field.FieldGroup>
-          <Field.Field>
-            <Field.FieldLabel for={`${id}-title`}
-              >New native conversation</Field.FieldLabel
-            >
-            <Input
-              id={`${id}-title`}
-              bind:value={title}
-              disabled={blocked}
-              placeholder="Conversation title"
-            />
-            <Field.FieldDescription
-              >Creates a local history entry. An agent runs only after you
-              explicitly send a message.</Field.FieldDescription
-            >
-          </Field.Field>
-        </Field.FieldGroup>
-        <div class="native-setup-actions">
-          <Button
-            size="sm"
-            variant="outline"
-            disabled={blocked || !title.trim()}
-            onclick={create}
-          >
-            <PlusIcon data-icon="inline-start" />Create native conversation
-          </Button>
-          {#if setupState.creation?.reference}<Button
-              size="sm"
-              variant="ghost"
-              disabled={setupState.busy}
-              onclick={() => open(setupState.creation?.reference)}
-              >Open created conversation</Button
-            >{/if}
-          {#if uncertainCreation}<Button
-              size="sm"
-              variant="outline"
-              disabled={setupState.busy}
-              onclick={recover}>Check original creation</Button
-            >{/if}
-        </div>
-        {#if uncertainCreation}<p role="status">
-            Creation is unconfirmed. Check the original request before creating
-            another conversation.
-          </p>{/if}
-      {/if}
-    </div>
-  {/if}
-  {#if management?.setup.available}<ClientSettingsFooter footer>
-      <Button
-        size="sm"
-        variant="outline"
-        disabled={setupState.busy}
-        onclick={() => void management?.setup.refresh().catch(() => {})}
+  <Table.Body>
+    {#if !management?.setup.available}
+      <Table.Row
+        ><Table.Cell colspan={2} style="white-space: normal;">
+          <ClientSettingsEmpty
+            Icon={GitBranchIcon}
+            title="Native history unavailable"
+            description="Enable AI in a trusted desktop vault to use its existing JJ history."
+          />
+        </Table.Cell></Table.Row
       >
-        <RefreshIcon data-icon="inline-start" />{setupState.pendingChoice
-          ? "Check original choice"
-          : "Check storage"}
-      </Button>
-    </ClientSettingsFooter>{/if}
-</ClientSettingsCard>
+    {:else if !setupState.selection && !setupState.error}
+      <Table.Row
+        ><Table.Cell colspan={2} style="white-space: normal;">
+          <div
+            class="native-setup-loading"
+            role="status"
+            aria-label="Loading conversation storage"
+            aria-busy="true"
+          >
+            <Skeleton class="native-setup-label" /><Skeleton
+              class="native-setup-control"
+            />
+            <Skeleton class="native-setup-label" /><Skeleton
+              class="native-setup-control"
+            />
+          </div>
+        </Table.Cell></Table.Row
+      >
+    {:else if !setupState.selection}
+      <Table.Row
+        ><Table.Cell colspan={2} style="white-space: normal;">
+          <ClientSettingsEmpty
+            Icon={GitBranchIcon}
+            title="Conversation storage unavailable"
+            description="Check again after confirming that native AI and vault history are available."
+          />
+        </Table.Cell></Table.Row
+      >
+    {:else}
+      <Table.Row>
+        <Table.Head
+          scope="row"
+          style="white-space: normal; vertical-align: top; width: 45%; padding: 0.85rem;"
+        >
+          <label for={`${id}-storage`}>Conversation storage</label>
+          <p>
+            Add JJ-backed conversations alongside normal ACP sessions. Changing
+            this choice does not move or replace existing chats.
+          </p>
+        </Table.Head>
+        <Table.Cell
+          style="white-space: normal; vertical-align: top; padding: 0.85rem;"
+        >
+          <div class="native-setup-controls">
+            <Select.Root
+              type="single"
+              value={desired}
+              disabled={blocked}
+              onValueChange={(value) => {
+                if (value === "jj" || value === "vault-files") desired = value;
+              }}
+            >
+              <Select.Trigger
+                id={`${id}-storage`}
+                style="width: 100%; min-width: 0;"
+              >
+                {options.find((option) => option.value === desired)?.label}
+              </Select.Trigger>
+              <Select.Content
+                ><Select.Group>
+                  <Select.Label>Conversation history</Select.Label>
+                  {#each options as option (option.value)}
+                    <Select.Item value={option.value} label={option.label}
+                      >{option.label}</Select.Item
+                    >
+                  {/each}
+                </Select.Group></Select.Content
+              >
+            </Select.Root>
+            <div class="native-setup-actions">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled={blocked || desired === setupState.selection.backend}
+                onclick={() =>
+                  void management?.setup.choose(desired).catch(() => {})}
+                >Apply storage choice</Button
+              >
+              {#if setupState.selection.backend === "jj"}
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={setupState.busy ||
+                    Boolean(setupState.pendingChoice)}
+                  onclick={openHistory}
+                >
+                  <HistoryIcon data-icon="inline-start" />Open native history
+                </Button>
+              {/if}
+            </div>
+            {#if setupState.pendingChoice}<p role="status">
+                Storage choice is unconfirmed. Check its original request before
+                continuing.
+              </p>{/if}
+          </div>
+        </Table.Cell>
+      </Table.Row>
+      {#if setupState.selection.backend === "jj"}
+        <Table.Row>
+          <Table.Head
+            scope="row"
+            style="white-space: normal; vertical-align: top; width: 45%; padding: 0.85rem;"
+          >
+            <label for={`${id}-title`}>New native conversation</label>
+            <p>
+              Creates a local history entry. An agent runs only after you
+              explicitly send a message.
+            </p>
+          </Table.Head>
+          <Table.Cell
+            style="white-space: normal; vertical-align: top; padding: 0.85rem;"
+          >
+            <div class="native-setup-controls">
+              <Input
+                id={`${id}-title`}
+                bind:value={title}
+                disabled={blocked}
+                placeholder="Conversation title"
+              />
+              <div class="native-setup-actions">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  disabled={blocked || !title.trim()}
+                  onclick={create}
+                >
+                  <PlusIcon data-icon="inline-start" />Create native
+                  conversation
+                </Button>
+                {#if setupState.creation?.reference}
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    disabled={setupState.busy}
+                    onclick={() => open(setupState.creation?.reference)}
+                    >Open created conversation</Button
+                  >
+                {/if}
+                {#if uncertainCreation}
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={setupState.busy}
+                    onclick={recover}>Check original creation</Button
+                  >
+                {/if}
+              </div>
+              {#if uncertainCreation}<p role="status">
+                  Creation is unconfirmed. Check the original request before
+                  creating another conversation.
+                </p>{/if}
+            </div>
+          </Table.Cell>
+        </Table.Row>
+      {/if}
+    {/if}
+    {#if management?.setup.available}
+      <Table.Row
+        ><Table.Cell colspan={2} style="white-space: normal;">
+          <Button
+            size="sm"
+            variant="outline"
+            disabled={setupState.busy}
+            onclick={() => void management?.setup.refresh().catch(() => {})}
+          >
+            <RefreshIcon data-icon="inline-start" />{setupState.pendingChoice
+              ? "Check original choice"
+              : "Check storage"}
+          </Button>
+        </Table.Cell></Table.Row
+      >
+    {/if}
+  </Table.Body>
+</Table.Root>
 
 <style>
-  .native-setup-fields {
+  .native-setup-controls,
+  .native-setup-loading {
     display: grid;
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.75rem;
     min-width: 0;
   }
   .native-setup-actions {
@@ -245,9 +282,11 @@
     gap: 0.5rem;
   }
   p {
-    margin: 0;
+    margin: 0.35rem 0 0;
     color: var(--muted-foreground);
     font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
   }
   :global(.native-setup-label) {
     height: 1rem;

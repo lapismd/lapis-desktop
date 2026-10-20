@@ -1,7 +1,8 @@
 # Desktop plugins and catalog
 
-E-AI-090 retains LD-PLUG-001/LD-CAT-001 ownership while adding production-backed
-mention/menu stories and a separate AI-owned native-history settings section.
+E-AI-090/091 retains LD-PLUG-001/LD-CAT-001 ownership while adding
+production-backed mention/menu stories and grouped AI settings with a direct
+native-history table beneath its subsection heading.
 
 E-CATALOG-016 completes the M8.5 native conflict gate with current production
 components and the shared API close policy. Catalog states and native IO remain

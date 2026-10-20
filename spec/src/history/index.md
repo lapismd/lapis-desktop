@@ -1,5 +1,7 @@
 # Evidence
 
+- [Native history subsection within AI settings](E-AI-091.md)
+
 - [Markdown agent badges and visible suggestions](E-AI-090.md)
 
 - [Local desktop chat v0 candidate](E-AI-089.md)
