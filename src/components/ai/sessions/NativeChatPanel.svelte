@@ -126,6 +126,7 @@
 <NativeConversationBrowser
   {app}
   reader={lease.reader}
+  agentOptions={draft.recipientOptions}
   composer={message}
   composerFooter={footer}
   liveItems={chatState.live}

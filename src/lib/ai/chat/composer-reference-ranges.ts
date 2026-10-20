@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { syntaxTree } from "@codemirror/language";
 import type { EditorState } from "@codemirror/state";
-import { agentMentionMatches } from "@lapismd/jj-conversations";
+import { agentMentionReferences } from "./agent-mentions.ts";
 import type { AgentRecipientOption } from "../conversations/recipients.ts";
 import { transcriptNoteReferences } from "./transcript-note-references.ts";
 
@@ -31,13 +31,13 @@ export function composerReferenceRanges(
       kind: "file",
     }),
   );
-  for (const match of agentMentionMatches(text)) {
+  for (const match of agentMentionReferences(text)) {
     const profile = profiles.find((profile) => profile.id === match.agentId);
     ranges.push({
-      from: match.start,
-      to: match.end,
+      from: match.from,
+      to: match.to,
       kind: "agent",
-      label: profile?.label ?? "Unavailable agent",
+      label: match.label ?? profile?.label ?? "Unavailable agent",
       title: profile?.label ?? match.agentId,
       image: profile?.avatar,
       background: profile?.avatarBackground,
@@ -60,6 +60,10 @@ export function composerReferenceRanges(
       )
         return false;
       if (node.name !== "Link") return;
+      if (
+        ranges.some((range) => range.from === node.from && range.to === node.to)
+      )
+        return false;
       const match = /^\[([^\]]+)\]\(([^\s)]+)(?:\s+"[^"]*")?\)$/u.exec(
         text.slice(node.from, node.to),
       );

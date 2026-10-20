@@ -34,6 +34,7 @@ export type TranscriptScenario =
   | "restored-comments"
   | "restored-discussions"
   | "addressed"
+  | "agent-links"
   | "addressed-approval"
   | "queue-failure"
   | "queue-restored"
@@ -51,7 +52,11 @@ export function createTranscriptFixture(
   const participantSettings = new ParticipantSettings(
     scenario === "participant-settings-failure",
   );
-  if (scenario === "addressed" || scenario === "addressed-approval")
+  if (
+    scenario === "addressed" ||
+    scenario === "addressed-approval" ||
+    scenario === "agent-links"
+  )
     participantSettings.value = {
       ...participantSettings.value,
       agentParticipants: agentReviewProfiles,
@@ -74,6 +79,14 @@ export function createTranscriptFixture(
     scenario === "question"
       ? []
       : transcriptReviewItems(scenario === "long-code");
+  if (scenario === "agent-links")
+    seed.splice(0, seed.length, {
+      id: "agent-markdown-links",
+      type: "message",
+      role: "user",
+      text: "Ask [Nyra](lapis://agent:7265766965776572) to review this note. Bare mention: agent:7265766965776572; Legacy mention: jj-store-agent:7265766965776572;.\n\n| Reviewer | Task |\n| --- | --- |\n| [Nyra](lapis://agent:7265766965776572) and agent:7265766965776572; | Review the note |\n\nCode stays literal: `[Nyra](lapis://agent:7265766965776572)`.",
+      createdAt: "2026-10-20T17:30:00.000Z",
+    });
   if (scenario === "failure")
     seed.push({
       id: "failed-turn",

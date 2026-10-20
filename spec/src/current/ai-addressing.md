@@ -13,6 +13,16 @@ native binding IDs are separate identities. Tags confer no executable,
 credential, file, tool or resume authority. Native admission still resolves the
 separately selected runtime target.
 
+New composer mentions serialize as named Markdown links to `lapis://agent:HEX`,
+using the canonical codec's UTF-8 setup-ID bytes without its closing delimiter.
+Explicit selection and automatic follow-ups use the same Markdown link. Saved
+recipient metadata retains the canonical SDK token. Document, Classic and
+Markdown previews adapt JJ Store's mention-link renderer into an inline
+avatar/name badge with the shared hover profile. Missing profiles retain the
+authored link label. Existing bare `agent:HEX;` and `jj-store-agent:HEX;` tokens
+also render as profile chips; captured message bytes, revisions, hashes and
+comment offsets are never migrated. Code examples remain literal.
+
 The @ picker distinguishes agent choices from file attachments. Selecting an
 agent creates a removable addressed-agent pill without sending, switching a
 provider session or rewriting the authored message. Document and Classic retain

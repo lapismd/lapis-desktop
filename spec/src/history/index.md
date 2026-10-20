@@ -1,5 +1,7 @@
 # Evidence
 
+- [Markdown agent badges and visible suggestions](E-AI-090.md)
+
 - [Local desktop chat v0 candidate](E-AI-089.md)
 
 - [Chat UI review: sources, system messages and inline tags](E-AI-088.md)

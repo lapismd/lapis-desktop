@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { MarkdownComposerHandle } from "@lapismd/design-core/chat";
 import type { ComposerTrigger } from "@lapismd/design-core/ai/chat";
-import { agentMentionMatches } from "@lapismd/jj-conversations";
+import {
+  agentMentionReferences,
+  formatAgentMention,
+} from "./agent-mentions.ts";
 import type { AiPluginSettings } from "../settings/ai-settings.ts";
 import type { AcpAgentId } from "../settings/acp-agents.ts";
 import type { AiThinkingLevel } from "../core/models.ts";
@@ -10,10 +13,7 @@ import {
   ComposerModelCatalog,
   type ComposerModelCatalogState,
 } from "./composer-model-catalog.ts";
-import {
-  recipientFromOption,
-  type AgentRecipientOption,
-} from "../conversations/recipients.ts";
+import { type AgentRecipientOption } from "../conversations/recipients.ts";
 import type { ManagedTurnRecipient } from "../conversations/managed-turn-types.ts";
 import type { AgentProfileEditorContext } from "../settings/agent-profile-editor.ts";
 import {
@@ -91,7 +91,7 @@ export class NativeChatDraft {
         const option = this.recipientOptions.find(
           (option) => option.id === item.id,
         );
-        return option ? `${recipientFromOption(option).token} ` : "";
+        return option ? `${formatAgentMention(option.id, option.label)} ` : "";
       },
     },
   ]);
@@ -119,13 +119,13 @@ export class NativeChatDraft {
       return removeInlineRecipient(this, id);
     this.recipients.select(id);
     const option = this.recipientOptions.find((option) => option.id === id)!;
-    this.insertReference(recipientFromOption(option).token);
+    this.insertReference(formatAgentMention(option.id, option.label));
   }
   sent(text: string) {
     if (this.draft !== text) return;
     this.draft = this.context().settings?.automaticallyMentionAgents
-      ? agentMentionMatches(text)
-          .map((match) => text.slice(match.start, match.end))
+      ? agentMentionReferences(text)
+          .map((match) => text.slice(match.from, match.to))
           .join(" ") + " "
       : "";
   }

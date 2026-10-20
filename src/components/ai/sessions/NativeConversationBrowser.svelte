@@ -24,6 +24,7 @@
     chatBusy = false,
     preferredView,
     onViewChange,
+    agentOptions = [],
   }: {
     app: App;
     reader: NativeConversationReader;
@@ -33,6 +34,7 @@
     chatBusy?: boolean;
     preferredView?: "document" | "classic";
     onViewChange?: (view: "document" | "classic") => void;
+    agentOptions?: readonly import("../../../lib/ai/conversations/recipients.ts").AgentRecipientOption[];
   } = $props();
   let readerState = $state(untrack(() => reader.state)),
     view = $state<"document" | "classic">(
@@ -169,6 +171,7 @@
   {#if loading}<AiTranscriptLoading composer={false} />
   {:else if selected && (readerState.items.length || liveItems.length || composer)}<AiRecordedTranscript
       {app}
+      {agentOptions}
       projectedItems={[...readerState.items, ...liveItems]}
       {composer}
       busy={chatBusy}

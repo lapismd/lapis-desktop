@@ -366,3 +366,5 @@
 - [Chat UI review: footer sources, system facts and inline tags](history/E-AI-088.md)
 
 - [Local desktop chat v0 candidate](history/E-AI-089.md)
+
+- [Markdown agent badges and visible suggestions](history/E-AI-090.md)

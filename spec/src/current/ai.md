@@ -2,6 +2,7 @@
 
 E-REPO-016: [background](background.md); [repository](repository.md) gates stay.
 E-AI-037/038 retain private stores/journals, pinned reads and drained ownership.
+E-AI-090: Markdown mentions and separate history settings; admission unchanged.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and
 [authored writes](ai-authored.md): native admission. E-AI-064: recovery dots;

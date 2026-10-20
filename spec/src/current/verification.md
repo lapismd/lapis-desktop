@@ -155,3 +155,6 @@ storage stories and the native catalog route are unexecuted. Existing ACP stays.
 LD-AI-001/002/004 and LD-REPO-003: [E-AI-089](../history/E-AI-089.md) records
 the local v0 candidate, focused tests and explicit deferred work. Original
 M10.2/M13.3 gates remain open; no complete qualification is inferred.
+
+E-AI-090: focused Markdown/bare-agent badge, clipped composer tooltip and
+separate native-history settings review; original AI/native gates remain open.

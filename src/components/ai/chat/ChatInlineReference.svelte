@@ -21,13 +21,14 @@
     background?: string;
     identityId?: string;
     description?: string;
-    onRemove(): void;
+    onRemove?: () => void;
   } = $props();
 </script>
 
 <span
   class="chat-inline-reference"
   data-member={kind === "agent" || kind === "person" || undefined}
+  data-agent-reference={kind === "agent" ? identityId : undefined}
   title={kind === "agent" || kind === "person" ? undefined : title}
   contenteditable="false"
 >
@@ -53,21 +54,21 @@
       {:else}<LinkIcon aria-hidden="true" />{/if}
       <span>{label}</span>
     </span>{/if}
-  <button
-    type="button"
-    aria-label={`Remove ${kind === "agent" || kind === "person" ? "@" : ""}${label}`}
-    onmousedown={(event) => {
-      event.preventDefault();
-      event.stopPropagation();
-    }}
-    onclick={(event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      onRemove();
-    }}
-  >
-    <XIcon aria-hidden="true" />
-  </button>
+  {#if onRemove}<button
+      type="button"
+      aria-label={`Remove ${kind === "agent" || kind === "person" ? "@" : ""}${label}`}
+      onmousedown={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+      }}
+      onclick={(event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        onRemove();
+      }}
+    >
+      <XIcon aria-hidden="true" />
+    </button>{/if}
 </span>
 
 <style>

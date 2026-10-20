@@ -16,8 +16,14 @@ grants delivery/execution authority. Live directory integration remains
 deferred. With automatic tagging enabled, the footer control adopts JJ Store's
 tinted addressed state and agent-avatar dismiss control. Person and agent chips
 omit the visible @ prefix, use a larger inline avatar/name presentation and
-reuse the public AuthorCard hover profile; their exact draft tokens remain
-unchanged.
+reuse the public AuthorCard hover profile; Markdown-friendly serialization and
+legacy token rendering follow `ai-addressing.md`.
+
+Native conversation history has its own AI-owned Settings navigation section,
+alongside AI and Agents. It reuses the existing storage/setup controls and
+receipt recovery, with no automatic backend selection, migration or provider
+start. Ordinary AI defaults and normal ACP sessions remain independently
+available; plugin teardown unregisters the section with its other settings.
 
 LD-AI-002/004 retain the existing AI controller, context, settings, requests,
 history and runtime boundaries while adopting public Design Core presentation.

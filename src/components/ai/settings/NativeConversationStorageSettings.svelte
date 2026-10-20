@@ -83,7 +83,7 @@
 
 <ClientSettingsCard
   id={`${id}-heading`}
-  title="Native conversation history"
+  title="Conversation storage"
   description="Add JJ-backed conversations alongside your normal ACP sessions. Existing chats remain available."
   Icon={GitBranchIcon}
 >

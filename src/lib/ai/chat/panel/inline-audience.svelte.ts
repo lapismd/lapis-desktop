@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
-import { agentMentionMatches } from "@lapismd/jj-conversations";
-import { recipientFromOption } from "../../conversations/recipients.ts";
+import {
+  agentMentionReferences,
+  formatAgentMention,
+} from "../agent-mentions.ts";
 import type { AgentRecipientOption } from "../../conversations/recipients.ts";
 import type { ComposerRecipients } from "./recipients.svelte.ts";
 type InlineAudience = {
@@ -14,19 +16,19 @@ export function appendInlineRecipient(composer: InlineAudience, id: string) {
   const option = composer.recipientOptions.find((option) => option.id === id);
   if (
     !option ||
-    agentMentionMatches(composer.draft).some((match) => match.agentId === id)
+    agentMentionReferences(composer.draft).some((match) => match.agentId === id)
   )
     return;
-  composer.insertReference(recipientFromOption(option).token);
+  composer.insertReference(formatAgentMention(option.id, option.label));
 }
 export function removeInlineRecipient(composer: InlineAudience, id?: string) {
   let text = composer.draft;
-  for (const match of agentMentionMatches(text)
+  for (const match of agentMentionReferences(text)
     .filter((match) => id === undefined || match.agentId === id)
     .reverse())
     text =
-      text.slice(0, match.start) +
-      text.slice(text[match.end] === " " ? match.end + 1 : match.end);
+      text.slice(0, match.from) +
+      text.slice(text[match.to] === " " ? match.to + 1 : match.to);
   composer.draft = text;
   composer.recipients.remove(id);
 }
@@ -35,7 +37,7 @@ export function observeInlineAudience(composer: InlineAudience) {
   $effect(() => {
     const ids = [
       ...new Set(
-        agentMentionMatches(composer.draft).map((match) => match.agentId),
+        agentMentionReferences(composer.draft).map((match) => match.agentId),
       ),
     ];
     if (!composer.recipients.matches(ids))

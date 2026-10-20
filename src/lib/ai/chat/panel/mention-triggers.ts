@@ -1,6 +1,6 @@
 import type { ComposerTrigger } from "@lapismd/design-core/ai/chat";
 import { formatFileMention } from "../chat-mentions.ts";
-import { recipientFromOption } from "../../conversations/recipients.ts";
+import { formatAgentMention } from "../agent-mentions.ts";
 import PinIcon from "@lucide/svelte/icons/pin";
 import { composerAgentLabel } from "../../commands/agent.ts";
 import {
@@ -111,7 +111,7 @@ export function mentionTriggers(
         const option = composer.recipientOptions.find(
           (option) => option.id === id,
         );
-        return option ? `${recipientFromOption(option).token} ` : "";
+        return option ? `${formatAgentMention(option.id, option.label)} ` : "";
       }
       const path = item.id.slice(5);
       return {

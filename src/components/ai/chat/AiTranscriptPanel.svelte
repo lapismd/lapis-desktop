@@ -26,7 +26,8 @@
   import ChatConversationPicker from "./ChatConversationPicker.svelte";
   import AiTranscriptToolInspector from "./AiTranscriptToolInspector.svelte";
   import { transcriptToolInspection } from "../../../lib/ai/chat/transcript-inspection.svelte.ts";
-  import { transcriptLinks } from "../../../lib/ai/chat/transcript-links.ts";
+  import { transcriptLinks } from "./transcript-agent-links.ts";
+  import { formatAgentMention } from "../../../lib/ai/chat/agent-mentions.ts";
   import "../../../styles/ai/transcript-links.css";
 
   let panel: TranscriptPanelProps = $props();
@@ -70,7 +71,7 @@
     Boolean(panelProps.initializing || composerState.catalogState?.loading),
   );
   const commentState: TranscriptController = new TranscriptController(() => ({
-    ...transcriptLinks(panelProps.app),
+    ...transcriptLinks(panelProps.app, "", composerState.recipientOptions),
     items,
     canComment: !blocked,
     onInspectTool: Frame ? inspection.open : undefined,
@@ -135,7 +136,7 @@
     const value = composerState.draft;
     const followup = composerState.automaticallyMentionAgents
       ? composerState.recipients.display
-          .map((recipient) => recipient.token)
+          .map((recipient) => formatAgentMention(recipient.id, recipient.label))
           .join(" ")
       : "";
     if (blocked || (!value.trim() && !commentState.pending.length)) return;

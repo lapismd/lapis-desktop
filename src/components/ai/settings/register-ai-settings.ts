@@ -2,6 +2,7 @@ import AgentClientsField from "./AgentClientsField.svelte";
 import AgentClientsPage from "./AgentClientsPage.svelte";
 import AgentProfilesField from "./AgentProfilesField.svelte";
 import NativeConversationStorageField from "./NativeConversationStorageField.svelte";
+import NativeConversationSettingsPage from "./NativeConversationSettingsPage.svelte";
 import type { NativeConversationSettingsManagement } from "../../../lib/ai/settings/native-conversation-settings.ts";
 import type { AgentProfileManagement } from "../../../lib/ai/settings/agent-profile-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
@@ -114,25 +115,38 @@ export function registerAiSettings(plugin: SettingsOwner): void {
       source,
     }),
   );
-  const register = () => {
-    const definition = createAiSettingsSection(app, settings.get());
-    const management = plugin.nativeConversationSettings;
-    if (management)
-      definition.fields = [
-        ...(definition.fields ?? []),
-        {
-          id: "ai.nativeConversationStorage",
-          type: "custom",
+  const management = plugin.nativeConversationSettings;
+  if (management)
+    cleanups.push(
+      controller.settings.registerDefinition({
+        section: {
+          id: "ai-native-history",
           title: "Native conversation history",
-          component: NativeConversationStorageField,
-          management,
-        } as import("@lapis-notes/api").WorkspaceCustomSetting,
-      ];
-    return controller.settings.registerDefinition({
-      section: definition,
+          description:
+            "Manage JJ-backed conversations alongside your normal ACP sessions.",
+          icon: "git-branch",
+          order: 37,
+          navigationGroupId: "core-plugins",
+          sourcePluginId: "ai",
+          page: NativeConversationSettingsPage,
+          fields: [
+            {
+              id: "ai.nativeConversationStorage",
+              type: "custom",
+              title: "Conversation storage",
+              component: NativeConversationStorageField,
+              management,
+            } as import("@lapis-notes/api").WorkspaceCustomSetting,
+          ],
+        },
+        source,
+      }),
+    );
+  const register = () =>
+    controller.settings.registerDefinition({
+      section: createAiSettingsSection(app, settings.get()),
       source,
     });
-  };
   section = register();
   const refresh = () => {
     if (disposed) return;

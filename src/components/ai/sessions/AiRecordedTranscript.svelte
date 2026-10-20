@@ -1,12 +1,11 @@
 <script lang="ts">
   import type { Snippet } from "svelte";
   import type { App } from "@lapis-notes/api";
-  import { transcriptLinks } from "../../../lib/ai/chat/transcript-links.ts";
+  import { transcriptLinks } from "../chat/transcript-agent-links.ts";
   import "../../../styles/ai/transcript-links.css";
   import {
     Transcript,
     TranscriptController,
-    promptElementsExtension,
     type TranscriptBlock,
     type TranscriptTool,
     type TranscriptItem,
@@ -37,6 +36,7 @@
     label = "Imported transcript preview",
     composer,
     busy = false,
+    agentOptions = [],
   }: {
     app?: App | undefined;
     sourcePath?: string;
@@ -51,6 +51,7 @@
     label?: string;
     composer?: Snippet<["document" | "classic"]>;
     busy?: boolean;
+    agentOptions?: readonly import("../../../lib/ai/conversations/recipients.ts").AgentRecipientOption[];
   } = $props();
   function block(b: TranscriptBlock): TranscriptBlock {
     const item = transcriptSourceItem(b, source);
@@ -108,7 +109,7 @@
     selected = { id: tool.id, opener };
   }
   const commentState = new TranscriptController(() => ({
-    ...transcriptLinks(app, sourcePath),
+    ...transcriptLinks(app, sourcePath, agentOptions, true),
     items,
     canComment: false,
     onInspectTool: inspectTools ? inspect : undefined,
@@ -135,7 +136,6 @@
   <Transcript
     {items}
     scrollButton
-    markdown={{ extensions: [promptElementsExtension] }}
     {commentState}
     onInspectTool={inspectTools ? inspect : undefined}
     {view}

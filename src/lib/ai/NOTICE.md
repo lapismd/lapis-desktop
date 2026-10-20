@@ -99,3 +99,10 @@ imports and file previews. AiSessionFrame/AiSessionThread extract the already
 attributed jj-store inbox composition; docs/provenance.json retains those source
 mappings. The unused capture-source table is retired; its original provenance
 remains in historical E-AI-054. No shared-package source is copied.
+
+Markdown-friendly agent links adapt JJ Store's
+`community-markdown-content/ syntax-hast-links.ts`,
+`CommunityMemberReference.svelte` and exact ID decoder at
+`df31b5caeaabd562b0b76806f89bc50dec073ec5` (Apache-2.0). Notes owns its
+`lapis://agent` scheme and immutable-reader adapter; badge profiles use public
+Design Core AuthorCard. Source mappings are recorded in docs/provenance.json.

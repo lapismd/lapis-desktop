@@ -76,7 +76,11 @@
 {#if nativeLease && chatEnabled && host.services.managedAgents}
   <NativeChatPanel {app} {host} lease={nativeLease} />
 {:else if reader}
-  <NativeConversationBrowser {app} {reader} />
+  <NativeConversationBrowser
+    {app}
+    {reader}
+    agentOptions={host.getSettings().agentParticipants ?? []}
+  />
 {:else}
   <AiSessionShell
     items={[]}

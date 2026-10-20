@@ -949,3 +949,10 @@ the main native chat component and reviewed composer in the embedded shell with
 an explicitly unconfigured synthetic launcher. It cannot launch a provider;
 send/Stop/capture boundaries have separate orchestration and native tests. This
 supplements the existing read-only stories without replacing them.
+
+`Desktop/AI/Agent mention links/MarkdownBadges` reviews new Markdown links,
+legacy SDK tokens, table previews, hover profiles and literal code examples in
+the embedded production shell across Document/Classic. `ComposerSuggestions`
+checks actual option hit targets and removable inline insertion after the shared
+tooltip portal refresh. No provider is connected. E-AI-090 records focused
+Chromium/WebKit and native observations; visual review remains pending.
