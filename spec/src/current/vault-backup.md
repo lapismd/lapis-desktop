@@ -121,15 +121,19 @@ and status controls. Captures coalesce a remote check; bounded periodic checks
 and exponential failure backoff cover missed events and offline recovery. Local
 capture and close never await remote networking. Main-window-only
 `desktop_backup_sync` actions carry admitted sessions, connection revisions and
-exact native candidates. Clean merges use the App all-writer guard across
-preview/apply; an original request is persisted before mutation. Unknown apply
-outcomes reconcile that request or explicitly keep current files after a native
-capture barrier. Config changes cannot reinterpret an in-flight publication.
-Conflicted candidates preserve current files and open the copied conflict
-surface for explicit text/native-term/deletion choices. Per-path resolution
-creates retained native commits; only a current clean candidate materializes.
-Native transfer runs on bounded workers outside vault/capture locks. E-REPO-032
-records this stage while cold app/live provider and later stages stay open.
+exact native candidates. Clean merges prepare a preview under the App all-writer
+guard, persist the original request after release, then reacquire protection for
+its exact apply. Native expected-tree and connection-revision checks reject
+changes between those guards; retries retain that request without a new preview.
+Recovery writes and clearing never reenter protected App state writers. Unknown
+apply outcomes reconcile that request or explicitly keep current files after a
+native capture barrier. Config changes cannot reinterpret an in-flight
+publication. Conflicted candidates preserve current files and open the copied
+conflict surface for explicit text/native-term/deletion choices. Per-path
+resolution creates retained native commits; only a current clean candidate
+materializes. Native transfer runs on bounded workers outside vault/capture
+locks. E-REPO-032 records this stage while cold app/live provider and later
+stages stay open.
 
 Automatic failure feedback uses a stable episode: an unchanged failed retry does
 not replay a dismissed notice. A completed synchronization clears it. New

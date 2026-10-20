@@ -15,7 +15,7 @@ export async function applyCandidate(options: {
   applying(): void;
 }) {
   const { service, revision, candidate } = options;
-  await options.guard(async () => {
+  const pending = await options.guard(async () => {
     if (options.cancelled()) return;
     const current = await options.remote.status();
     if (options.cancelled()) return;
@@ -32,13 +32,21 @@ export async function applyCandidate(options: {
         expected: preview.expected,
       },
     };
-    options.pending(pending);
-    await options.recovery.save(pending);
-    if (options.closed()) return;
+    return pending;
+  });
+  if (!pending || options.cancelled()) return;
+  options.pending(pending);
+  // App recovery files have their own writers. Persist before reacquiring
+  // protection; native apply rejects any changed expected tree or connection.
+  await options.recovery.save(pending);
+  if (options.closed()) return;
+  const applied = await options.guard(async () => {
+    if (options.closed()) return false;
     options.applying();
     await service.apply(pending.request, revision);
-    if (options.closed()) return;
-    await options.recovery.save(undefined);
-    options.pending(undefined);
+    return true;
   });
+  if (!applied || options.closed()) return;
+  await options.recovery.save(undefined);
+  options.pending(undefined);
 }

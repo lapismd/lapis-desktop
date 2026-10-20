@@ -258,3 +258,5 @@ by the task ledger, not inferred from this list.
 - [Native saved-version Search and exact restore](E-REPO-052.md)
 
 - [Native storage and original-history adoption](E-REPO-053.md)
+
+- [Sync recovery outside writer protection](E-REPO-054.md)

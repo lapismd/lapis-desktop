@@ -15,6 +15,8 @@ remain open; release stays deferred. Historical failed attempts are retained.
 
 E-CATALOG-016 qualifies the original M8.5 native gate, including retired-writer
 recovery. Shared close policy belongs in the API; release remains deferred.
+E-REPO-054 fixes sync recovery persistence outside App writer protection;
+LD-MIG-002 and original cold native/provider gates remain unchanged.
 
 ## Current checkpoint — 2026-10-20
 

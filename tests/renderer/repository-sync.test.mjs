@@ -71,6 +71,11 @@ function fixture() {
   const recovery = {
     load: async () => retained,
     save: async (value) => {
+      assert.equal(
+        guarded,
+        false,
+        "App recovery writers cannot reenter the all-file guard",
+      );
       retained = value;
       calls.push(value ? "persist" : "clear");
     },
@@ -385,6 +390,29 @@ test("explicit pull applies with the existing guard but never publishes", async 
   await f.controller.run("pull");
   assert.deepEqual(f.calls, ["prepare", "persist", "apply", "clear"]);
   assert.equal(f.state.phase, "paused");
+  f.controller.close();
+});
+test("a file change after durable sync preparation retains the exact expected tree and cannot publish", async () => {
+  const f = fixture();
+  const save = f.recovery.save;
+  let original;
+  f.recovery.save = async (pending) => {
+    await save(pending);
+    if (!pending) return;
+    original = pending;
+    f.service.apply = async (request, revision) => {
+      assert.equal(revision, original.revision);
+      assert.deepEqual(request, original.request);
+      assert.equal(request.expected, "saved");
+      throw new Error("Files changed after preview");
+    };
+  };
+  await f.controller.run();
+  assert.deepEqual(f.retained, original);
+  assert.equal(f.state.phase, "attention");
+  assert.equal(f.state.recovery, true);
+  assert.deepEqual(f.calls, ["prepare", "persist"]);
+  assert.match(f.errors[0].message, /Files changed after preview/);
   f.controller.close();
 });
 test("explicit push captures saved files, publishes and refreshes upstream counts", async () => {

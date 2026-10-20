@@ -33,7 +33,7 @@ export const CleanMergeAndPush: StoryObj = {
         ).toHaveAttribute("data-sync-pushes", "1"),
       { timeout: 15000 },
     );
-    await expect(canvas.getByText(/Last synchronized/)).toBeVisible();
+    await expect(await canvas.findByText(/Last synchronized/)).toBeVisible();
     await userEvent.click(
       canvas.getByRole("switch", {
         name: "Synchronize the connected backup automatically",
