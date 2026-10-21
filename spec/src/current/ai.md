@@ -12,15 +12,16 @@ E-AI-099 adds JJ Store's compute picker and read-only native memory-fit
 guidance.
 
 E-AI-100 repairs stable ACP model discovery and user-local Cursor detection.
-Both chat layouts expose advertised modes and Pin/Unpin in the footer actions
-menu, retaining conversation-local overrides and provider confirmation. An
-explicit Provider default reasoning option omits effort configuration; switching
-harnesses selects it rather than carrying another client's effort. E-AI-101 adds
-decorative mode/default icons and the compact Add Agent action; advertised
-choices, overrides, approval policy and dispatch remain unchanged. E-AI-102
-consumes the shared single-action footer repair: pending submission and empty
-drafts show Stop; only a ready nonempty follow-up shows Queue. E-AI-103 adds an
-independent, saved host approval policy in the footer and agent editor;
+Both chat layouts expose modes, Pin/Unpin and Archive/Restore in the header
+kebab menu. E-AI-112 removes duplicate header buttons and the legacy Settings
+editor; conversation-local state, provider configuration and admission remain.
+An explicit Provider default reasoning option omits effort configuration;
+switching harnesses selects it rather than carrying another client's effort.
+E-AI-101 adds decorative mode/default icons and the compact Add Agent action;
+advertised choices, overrides, approval policy and dispatch remain unchanged.
+E-AI-102 consumes the shared single-action footer repair: pending submission and
+empty drafts show Stop; only a ready nonempty follow-up shows Queue. E-AI-103
+adds an independent, saved host approval policy in the footer and agent editor;
 [approval policy](ai-addressing.md#approval-policy) retains native scope/modes.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
@@ -135,8 +136,8 @@ drains view and maintenance work, then persistence, before releasing runtime
 authority. A failed drain retains the backend and makes close retryable. This
 seam does not itself qualify a JJ backend or native capture ownership.
 
-App-owned handoff restores the pre-controller full/delta/summary-tail projection
-with verified transcript hashes, explicit target bindings and bounded evidence.
+App-owned handoff retains hash-verified full/delta/summary-tail evidence and
+explicit target bindings. E-AI-113 adds captured sent-context inspection.
 Private reasoning is excluded and tool output is labeled untrusted. Handoff
 never resumes a provider or changes the stored authored messages.
 
@@ -391,8 +392,7 @@ and deferred managed-store receipt requirements.
 
 E-AI-105 refines the approval selection marker; LD-AI-002/004 remain unchanged.
 
-E-AI-106 adds collapsed initial chat navigation and header pin/archive/menu
-controls; LD-AI-002/004 execution and persistence boundaries remain unchanged.
+E-AI-106/112: collapsed chat navigation and header menu; execution is unchanged.
 
 E-AI-110 adds shared unit-aware Max VRAM input and host-owned GGUF browsing;
 selection remains separate from explicit import and preserves the existing

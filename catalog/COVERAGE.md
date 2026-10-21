@@ -1051,10 +1051,11 @@ the distinct Mode and Action approvals fields and saved override. Visual
 approval remains pending.
 
 E-AI-106: Local ACP conversations/Supported modes and pin covers the initially
-closed list, its toggle and header pin/archive actions across both transcript
-views. Conversation actions moves to the far-right vertical header menu. Chat
-layout review/Long messages with sidebars explicitly opens the inner list for
-its wide-layout wrapping checks. The approval picker uses a filled 16px marker.
+closed list and its toggle across both transcript views. E-AI-112 keeps
+pin/archive solely in the kebab menu, including their inverse actions.
+Conversation actions moves to the far-right vertical header menu. Chat layout
+review/Long messages with sidebars explicitly opens the inner list for its
+wide-layout wrapping checks. The approval picker uses a filled 16px marker.
 
 E-AI-107: AI/Models/Lapis agent picker uses synthetic native ports. E-AI-108
 moves the required-model assertion into AI/Agent providers/Independent
@@ -1072,3 +1073,15 @@ E-AI-110: Desktop/AI setup/Memory quantity and file browse uses production
 Compute and the public Design Core inputs, checking optional GB, invalid drafts
 across tabs, chooser selection without commands and explicit import. Native
 dialog and live inference qualification remain separate.
+
+E-AI-112: Agent providers/Existing configuration omits the legacy editor while
+named profiles stay editable. Provider save failure now exercises a named Lapis
+profile and retains its draft, exact recovery control and App notification.
+
+E-AI-113: `AI/Sent context` uses the production ACP runtime through a disposable
+public-contract transport in the ordinary embedded chat AppShell. NewChat
+reviews startup context, rendered/raw inspection and Classic retention;
+AgentSwitch reviews the new binding's instructions and conversation handoff;
+UnknownOutcome keeps uncertain delivery distinct from Sent. No provider is
+contacted and no live settings or history are changed. The shared SentContext
+component already carries its JJ Store source attribution.

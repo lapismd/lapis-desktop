@@ -64,20 +64,25 @@ export const IndependentProviders: Story = {
 };
 export const ExistingConfiguration: Story = {
   play: async ({ canvasElement }) => {
-    const { dialog } = await edit(canvasElement, "Edit existing Lapis agent");
+    const canvas = within(canvasElement);
+    await canvas.findByRole("button", { name: "Edit Qwen research" });
+    expect(
+      canvas.queryByRole("button", { name: "Edit existing Lapis agent" }),
+    ).toBeNull();
+    const { dialog } = await edit(canvasElement, "Edit Qwen research");
     expect(
       dialog.getByRole("button", { name: /^LLM provider:/ }),
-    ).toHaveTextContent("OpenAI");
+    ).toHaveTextContent("OpenAI compatible");
     expect(dialog.getByLabelText("API key")).toHaveValue("");
     expect(dialog.getByRole("combobox", { name: "Model" })).toHaveTextContent(
-      /example|Example/,
+      /qwen|Qwen/,
     );
   },
 };
 export const ProviderSaveFailure: Story = {
   args: { scenario: "setup-save-error" },
   play: async ({ canvasElement }) => {
-    const { dialog } = await edit(canvasElement, "Edit existing Lapis agent");
+    const { dialog } = await edit(canvasElement, "Edit Qwen research");
     const key = dialog.getByLabelText("API key");
     await userEvent.type(key, "synthetic-unsaved-key");
     await userEvent.click(dialog.getByRole("button", { name: "Save agent" }));

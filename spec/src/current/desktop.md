@@ -1,6 +1,6 @@
 # Desktop shell
 
-AI/pickers: E-AI-097–111.
+AI: E-AI-097–113.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

@@ -349,3 +349,7 @@ by the task ledger, not inferred from this list.
 - [Compute quantity and file selection](E-AI-110.md)
 
 - [Filled command selection indicators](E-AI-111.md)
+
+- [Chat actions and named-agent settings cleanup](E-AI-112.md)
+
+- [Live sent-context inspection](E-AI-113.md)

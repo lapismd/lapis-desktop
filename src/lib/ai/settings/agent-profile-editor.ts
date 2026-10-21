@@ -29,7 +29,6 @@ export type AgentProfileEditorContext = {
 
 export type AgentProfileManagement = {
   agentProviders?: AgentProfileEditorContext["agentProviders"];
-  legacyProvider?: import("./providers.svelte.ts").AiProviders;
   app: App;
   settings: Pick<AiSettingsStore, "get" | "subscribe">;
   update: (patch: Partial<AiPluginSettings>) => Promise<void>;

@@ -101,8 +101,12 @@ export const SupportedModesAndPin: Story = {
     );
     const menu = canvas.getByRole("button", { name: "Conversation actions" });
     const header = within(menu.closest("header")!);
-    expect(header.getByRole("button", { name: "Pin Chat" })).toBeVisible();
-    expect(header.getByRole("button", { name: "Archive Chat" })).toBeVisible();
+    expect(
+      header.queryByRole("button", { name: /^(?:Unpin|Pin) Chat$/ }),
+    ).toBeNull();
+    expect(
+      header.queryByRole("button", { name: /^(?:Archive|Restore) Chat$/ }),
+    ).toBeNull();
     expect(menu.closest(".ai-session-footer")).toBeNull();
     await open();
     await waitFor(() =>
@@ -134,18 +138,11 @@ export const SupportedModesAndPin: Story = {
       ).toBeVisible(),
     );
     await userEvent.click(body.getByRole("menuitem", { name: "Pin Chat" }));
-    await expect(
-      header.findByRole("button", { name: "Unpin Chat" }),
-    ).resolves.toHaveAttribute("aria-pressed", "true");
     await open();
     await userEvent.click(
       await body.findByRole("menuitem", { name: "Unpin Chat" }),
     );
     await menuSettled(canvasElement);
-    await userEvent.click(header.getByRole("button", { name: "Pin Chat" }));
-    await userEvent.click(
-      await header.findByRole("button", { name: "Unpin Chat" }),
-    );
     await userEvent.click(
       canvas.getByRole("button", {
         name: /^(?:Classic|Switch to Classic view)$/,
@@ -160,12 +157,20 @@ export const SupportedModesAndPin: Story = {
     ).resolves.toHaveAttribute("aria-checked", "true");
     await userEvent.keyboard("{Escape}{Escape}");
     await menuSettled(canvasElement);
-    await userEvent.click(header.getByRole("button", { name: "Archive Chat" }));
+    await open();
     await userEvent.click(
-      await header.findByRole("button", { name: "Restore Chat" }),
+      await body.findByRole("menuitem", { name: "Archive Chat" }),
     );
-    await expect(
-      header.findByRole("button", { name: "Archive Chat" }),
-    ).resolves.toBeVisible();
+    await open();
+    await userEvent.click(
+      await body.findByRole("menuitem", { name: "Restore Chat" }),
+    );
+    await open();
+    await waitFor(() =>
+      expect(
+        body.getByRole("menuitem", { name: "Archive Chat" }),
+      ).toBeVisible(),
+    );
+    await userEvent.keyboard("{Escape}");
   },
 };

@@ -31,7 +31,6 @@ type SettingsOwner = Pick<Plugin, "app" | "register"> & {
   agentProviders?: AgentProfileEditorContext["agentProviders"];
   clients?: import("../../../lib/ai/settings/clients.svelte.ts").AgentClients;
   compute?: import("../../../lib/ai/settings/compute.svelte.ts").AiCompute;
-  providers?: import("../../../lib/ai/settings/providers.svelte.ts").AiProviders;
   settings: AiSettingsStore;
   models: AiModelCatalog;
   report(error: unknown): void;
@@ -66,7 +65,6 @@ export function registerAiSettings(plugin: SettingsOwner): void {
   };
   const profiles: AgentProfileManagement = {
     agentProviders: plugin.agentProviders,
-    legacyProvider: plugin.providers,
     app,
     settings,
     update: (patch) =>

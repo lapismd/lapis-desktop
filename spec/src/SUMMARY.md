@@ -324,3 +324,6 @@
 - [Compute quantity and file selection](history/E-AI-110.md)
 
 - [Filled command selection indicators](history/E-AI-111.md)
+
+- [Chat actions and named-agent settings cleanup](history/E-AI-112.md)
+- [Live sent-context inspection](history/E-AI-113.md)

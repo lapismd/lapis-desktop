@@ -200,21 +200,21 @@ session retains its original instructions when its profile changes. A new
 session captures the latest profile. Description remains visible in profile
 presentation.
 
-The chat header in both layouts has icon-only Pin/Unpin and Archive/Restore
-controls immediately before the view toggle. A vertical Conversation actions
-menu sits at the far right; the footer retains the independent approval picker.
-Mode shows the effective selection and offers only negotiated choices, plus Use
-agent default. The menu remains available before a conversation has been saved;
-pinning and archiving require a saved conversation. Mode selects a
-conversation-local mode for the selected participant, inheriting its saved agent
-default and then the existing reviewed provider default. Overrides persist with
-local conversation metadata and remain scoped to the participant; clearing
-restores inheritance. Multiple-recipient sends resolve each participant
-independently. Mode choices come from negotiated ACP mode configuration, never
-guessed universal modes. Unavailable saved choices stay visible but cannot
-silently fall back. Native configuration acknowledgement and mode readiness
-precede any prompt. Provider modes do not alter AppToolHost approvals, workspace
-trust or native admission.
+The chat header in both layouts retains the view toggle without duplicate
+Pin/Unpin or Archive/Restore buttons; those actions remain in the kebab menu. A
+vertical Conversation actions menu sits at the far right; the footer retains the
+independent approval picker. Mode shows the effective selection and offers only
+negotiated choices, plus Use agent default. The menu remains available before a
+conversation has been saved; pinning and archiving require a saved conversation.
+Mode selects a conversation-local mode for the selected participant, inheriting
+its saved agent default and then the existing reviewed provider default.
+Overrides persist with local conversation metadata and remain scoped to the
+participant; clearing restores inheritance. Multiple-recipient sends resolve
+each participant independently. Mode choices come from negotiated ACP mode
+configuration, never guessed universal modes. Unavailable saved choices stay
+visible but cannot silently fall back. Native configuration acknowledgement and
+mode readiness precede any prompt. Provider modes do not alter AppToolHost
+approvals, workspace trust or native admission.
 
 Queued messages capture instructions and mode along with model/effort; later
 profile changes cannot rewrite them. Context and modes are bounded on load as

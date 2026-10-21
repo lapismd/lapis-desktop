@@ -1,7 +1,9 @@
 # Desktop plugins and catalog
 
-E-AI-108/109 cover per-agent editors, header avatars and responsive AI/Compute
-settings with icon actions under LD-CAT-003.
+E-AI-113 covers live startup/handoff context inspection in both chat views.
+
+E-AI-108/109/112 cover named-agent editors, header avatars, menu actions and
+responsive AI/Compute settings under LD-CAT-003.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

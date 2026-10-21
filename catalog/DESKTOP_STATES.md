@@ -239,8 +239,9 @@ permissions. Default Ask, explicit overrides and global persistence retain
 native scope; fixture turns never contact a provider.
 
 E-AI-106: Local ACP conversations/Supported modes and pin reviews the collapsed
-initial conversation list, header pin/archive controls and vertical action menu
-in Document and Classic. Action approvals/Picker shows the larger filled marker.
+initial conversation list and vertical action menu (E-AI-112 removes duplicate
+buttons) in Document and Classic. Action approvals/Picker shows the larger
+filled marker.
 
 E-AI-108: AI/Agent providers/Independent providers rejects an empty cloud model
 and keeps compute selection independent. AI/Models/Lapis agent picker selects
@@ -265,3 +266,12 @@ E-AI-110: AI setup/Memory quantity and file browse adds optional unit-aware VRAM
 and explicit local model browsing, retaining drafts and requiring a separate
 Import action. Shared source covers cancellation and stale-selection behavior;
 visual review remains pending.
+
+E-AI-112 maps compact chat header/menu actions to Local ACP
+conversations/Supported modes and pin, and gallery-only editing to AI/Agent
+providers/Existing configuration. Provider save failure retains the
+named-profile failure/recovery case.
+
+E-AI-113: `AI/Sent context/NewChat`, `AgentSwitch` and `UnknownOutcome` cover
+startup/profile context, forwarded conversation evidence, rendered/raw
+inspection, both views and honest unknown delivery through production chat.

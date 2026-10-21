@@ -214,3 +214,9 @@ product gates remain open.
 
 [E-AI-111](../history/E-AI-111.md) aligns filled selection icons under
 LD-AI-002, LD-COMP-001 and LD-REPO-004; original milestone gates remain.
+
+[E-AI-112](../history/E-AI-112.md) removes duplicate chat actions and the legacy
+agent editor under LD-AI-002/004 and LD-CAT-003; native gates are unchanged.
+
+[E-AI-113](../history/E-AI-113.md): exact live sent-context inspection; startup,
+agent handoff and delivery states retain native and persistence boundaries.

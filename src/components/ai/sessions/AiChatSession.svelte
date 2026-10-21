@@ -14,7 +14,6 @@
   import AiSessionShell from "./AiSessionShell.svelte";
   import TranscriptViewToggle from "./TranscriptViewToggle.svelte";
   import ChatConversationMenu from "../chat/ChatConversationMenu.svelte";
-  import ChatConversationQuickActions from "../chat/ChatConversationQuickActions.svelte";
   import { profileLabel } from "../../../lib/ai/session-browser/model.ts";
   import { BackgroundWork } from "../../../lib/desktop/background-work.ts";
 
@@ -156,11 +155,7 @@
       disabled={!!panelProps.initializing || controller.busy}
       onclick={create}><PlusIcon aria-hidden="true" /></Button
     >{/snippet}
-  {#snippet actions()}<ChatConversationQuickActions
-      {panelProps}
-      {controller}
-      actions={panel.actions}
-    /><TranscriptViewToggle
+  {#snippet actions()}<TranscriptViewToggle
       {view}
       onChange={onViewChange}
     /><ChatConversationMenu

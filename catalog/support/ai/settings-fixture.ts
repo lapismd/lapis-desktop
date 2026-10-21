@@ -179,7 +179,7 @@ export function createSettingsFixture(scenario: SettingsScenario) {
         ...(scenario === "profiles" || scenario === "profiles-failure"
           ? { agentParticipants: agentReviewProfiles }
           : {}),
-        ...(scenario === "setup-agents"
+        ...(scenario === "setup-agents" || scenario === "setup-save-error"
           ? {
               agentParticipants: [
                 {

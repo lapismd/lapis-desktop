@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-097–111: ACP setup, providers, compute and picker styling. M10.2–M10.4
+E-AI-097–113: ACP setup, providers, compute and picker styling. M10.2–M10.4
 retain unchanged LD-MIG-002 gates; native/model and two-device evidence stays
 distinct from deterministic checks. M13/M13.3 remain Deferred.
 
