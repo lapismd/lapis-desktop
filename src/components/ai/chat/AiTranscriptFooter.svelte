@@ -52,7 +52,6 @@
 >
   {#snippet actions()}
     <ChatComposerActions
-      compact
       {panelProps}
       {controller}
       {attachmentsState}

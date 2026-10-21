@@ -1,27 +1,18 @@
 <script lang="ts">
-  import ChatParticipantDialog from "./ChatParticipantDialog.svelte";
-  import ChatPermissions from "./ChatPermissions.svelte";
+  import ChatConversationMenu from "./ChatConversationMenu.svelte";
   import ChatApprovalPolicy from "./ChatApprovalPolicy.svelte";
   import type { ComposerState } from "../../../lib/ai/chat/panel/composer.svelte.ts";
-  import PinIcon from "@lucide/svelte/icons/pin";
-  import PinOffIcon from "@lucide/svelte/icons/pin-off";
   import type { ChatPanelActions } from "../../../lib/ai/chat/panel/actions.ts";
   // SPDX-License-Identifier: Apache-2.0
   // Retained Lapis chat presentation; see src/lib/ai/NOTICE.md.
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
-  import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import FileIcon from "@lucide/svelte/icons/file";
   import VaultPathLabel from "./VaultPathLabel.svelte";
-  import ArchiveIcon from "@lucide/svelte/icons/archive";
-  import ArchiveRestoreIcon from "@lucide/svelte/icons/archive-restore";
   import HistoryIcon from "@lucide/svelte/icons/history";
-  import MoreHorizontalIcon from "@lucide/svelte/icons/ellipsis";
   import PaperclipIcon from "@lucide/svelte/icons/paperclip";
-  import PlusIcon from "@lucide/svelte/icons/plus";
-  import TrashIcon from "@lucide/svelte/icons/trash-2";
   import type { AttachmentsState } from "../../../lib/ai/chat/panel/attachments.svelte.ts";
   import type { AiChatController } from "../../../lib/ai/chat/chat-controller.svelte.ts";
   import type { AiChatPanelProps } from "../../../lib/ai/chat/panel/props.ts";
@@ -32,9 +23,7 @@
     actions,
     attachmentsState,
     composerState,
-    compact = false,
   }: {
-    compact?: boolean;
     panelProps: AiChatPanelProps;
     controller: AiChatController;
     actions: ChatPanelActions;
@@ -45,8 +34,6 @@
   const repository = $derived(panelProps.repository);
   const fileSearch = $derived(panelProps.fileSearch);
   const onRevealHistory = $derived(panelProps.onRevealHistory);
-  const createConversation = $derived(panelProps.createConversation);
-  let participantOpen = $state(false);
 </script>
 
 {#if repository}
@@ -123,92 +110,6 @@
   </Popover.Root>
 {/if}
 <ChatApprovalPolicy {panelProps} {composerState} />
-<DropdownMenu.Root>
-  <DropdownMenu.Trigger>
-    {#snippet child({ props }: { props: Record<string, unknown> })}
-      <Button
-        {...props}
-        size={compact ? "icon-sm" : "icon"}
-        variant="ghost"
-        aria-label="Conversation actions"
-        data-testid="ai-chat-conversation-menu"
-      >
-        <MoreHorizontalIcon aria-hidden="true" />
-      </Button>
-    {/snippet}
-  </DropdownMenu.Trigger>
-  <DropdownMenu.Content data-ai-part="conversation-menu" align="end">
-    <DropdownMenu.Group>
-      <ChatPermissions {panelProps} {controller} {composerState} />
-      <DropdownMenu.Item
-        disabled={initializing || !controller.location}
-        onclick={() =>
-          void actions.perform(() =>
-            controller.setPinned(!controller.conversationPinned),
-          )}
-      >
-        {#if controller.conversationPinned}
-          <PinOffIcon data-icon="inline-start" aria-hidden="true" />Unpin Chat
-        {:else}
-          <PinIcon data-icon="inline-start" aria-hidden="true" />Pin Chat
-        {/if}
-      </DropdownMenu.Item>
-    </DropdownMenu.Group>
-    {#if repository}
-      <DropdownMenu.Separator />
-      <DropdownMenu.Group>
-        <DropdownMenu.Item
-          disabled={initializing ||
-            controller.busy ||
-            !panelProps.onSettingsChange}
-          onclick={() => (participantOpen = true)}
-        >
-          <PlusIcon data-icon="inline-start" aria-hidden="true" />Add Agent
-        </DropdownMenu.Item>
-        <DropdownMenu.Item
-          disabled={!controller.location}
-          onclick={() =>
-            void actions.perform(() =>
-              controller.archiveCurrent(
-                controller.conversationStatus !== "archived",
-              ),
-            )}
-        >
-          {#if controller.conversationStatus === "archived"}
-            <ArchiveRestoreIcon data-icon="inline-start" aria-hidden="true" />
-            Restore Chat
-          {:else}
-            <ArchiveIcon data-icon="inline-start" aria-hidden="true" />
-            Archive Chat
-          {/if}
-        </DropdownMenu.Item>
-        <DropdownMenu.Item
-          variant="destructive"
-          disabled={!controller.location}
-          onclick={() => void actions.perform(() => controller.deleteCurrent())}
-        >
-          <TrashIcon data-icon="inline-start" aria-hidden="true" />
-          Delete Chat
-        </DropdownMenu.Item>
-        <DropdownMenu.Item
-          onclick={() =>
-            void actions.perform(() =>
-              controller.newConversation(
-                createConversation?.(controller.directoryContext) ?? {
-                  scopeDir:
-                    controller.directoryContext ||
-                    controller.location?.scopeDir ||
-                    "",
-                },
-              ),
-            )}
-        >
-          <PlusIcon data-icon="inline-start" aria-hidden="true" />
-          New Chat
-        </DropdownMenu.Item>
-      </DropdownMenu.Group>
-    {/if}
-  </DropdownMenu.Content>
-</DropdownMenu.Root>
-
-<ChatParticipantDialog bind:open={participantOpen} {panelProps} {controller} />
+{#if !panelProps.transcriptFrame}
+  <ChatConversationMenu {panelProps} {controller} {actions} {composerState} />
+{/if}

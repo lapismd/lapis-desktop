@@ -390,3 +390,6 @@ review stories with provider-discovery counters and bottom-panel/draft
 assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
 catalog fixture enters production. Cached metadata and status work retain
 App/vault ownership.
+
+E-AI-106 reviews the collapsed AI list, header actions and roomier footer
+through the existing production chat stories; original native gates remain.

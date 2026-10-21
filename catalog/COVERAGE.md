@@ -1048,3 +1048,9 @@ Document/Classic, automatic one-time permission response and failed-save
 notification/draft retention. `AI/Agent profiles/Context and permissions` covers
 the distinct Mode and Action approvals fields and saved override. Visual
 approval remains pending.
+
+E-AI-106: Local ACP conversations/Supported modes and pin covers the initially
+closed list, its toggle and header pin/archive actions across both transcript
+views. Conversation actions moves to the far-right vertical header menu. Chat
+layout review/Long messages with sidebars explicitly opens the inner list for
+its wide-layout wrapping checks. The approval picker uses a filled 16px marker.

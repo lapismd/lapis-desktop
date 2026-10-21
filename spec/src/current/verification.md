@@ -193,3 +193,6 @@ provider and release gates remain open.
 
 [E-AI-105](../history/E-AI-105.md): borderless filled approval marker;
 LD-AI-002/004 behavior and original native gates remain unchanged.
+
+[E-AI-106](../history/E-AI-106.md): collapsed initial conversation list, header
+pin/archive/menu actions and a 16px approval marker; native gates remain.

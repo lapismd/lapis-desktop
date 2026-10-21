@@ -224,6 +224,15 @@ export const LongMessagesWithSidebars: Story = {
     const thread =
       canvasElement.querySelector<HTMLElement>(".ai-session-thread")!;
     const assertFits = async () => {
+      const toggle = canvas.getByRole("button", {
+        name: "Toggle conversations",
+      });
+      if (
+        thread.closest(".ai-session-shell")!.getBoundingClientRect().width >=
+          640 &&
+        toggle.getAttribute("aria-pressed") === "false"
+      )
+        await userEvent.click(toggle);
       await waitFor(() =>
         expect(
           thread.querySelectorAll('[data-chat-reader$="/body"]'),
@@ -316,15 +325,15 @@ export const LongMessagesWithSidebars: Story = {
     const shellWidth = canvasElement
       .querySelector<HTMLElement>(".ai-session-shell")!
       .getBoundingClientRect().width;
+    await assertFits();
     if (shellWidth >= 640)
       await expect(
         canvasElement.querySelector(".ai-session-list"),
       ).toBeVisible();
     else
       await expect(
-        canvas.getByRole("checkbox", { name: "Toggle conversations" }),
+        canvas.getByRole("button", { name: "Toggle conversations" }),
       ).toBeVisible();
-    await assertFits();
     await userEvent.click(
       canvas.getByRole("button", { name: "Switch to Classic view" }),
     );

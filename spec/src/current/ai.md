@@ -382,3 +382,6 @@ gate; actual managed capture and AgentStore/ThreadStore adoption remain M13.3.
 and deferred managed-store receipt requirements.
 
 E-AI-105 refines the approval selection marker; LD-AI-002/004 remain unchanged.
+
+E-AI-106 adds collapsed initial chat navigation and header pin/archive/menu
+controls; LD-AI-002/004 execution and persistence boundaries remain unchanged.

@@ -76,8 +76,11 @@ uses inline layout without the legacy standalone top margin. Shared footer and
 formatting fixes belong in Design Core and apply to the reference story too. The
 workspace reserves a separate status-footer track; chat retains ordinary
 composer spacing without overlay clearance in any placement. Conversation
-discovery uses the nested shell list; its compact presentation keeps the
-selected conversation and new-chat composer reachable in a short panel.
+discovery uses the nested shell list. The live AI view starts with that list
+closed and exposes its header toggle in both layouts; opening the list retains
+the current conversation and draft. Recorded/imported browsers keep their
+existing defaults. Its compact presentation keeps the selected conversation and
+new-chat composer reachable in a short panel. E-AI-106 records this UI slice.
 
 Nested session shells and History/Catalog trees retain ordinary uniform
 container padding; they MUST NOT reserve space for the workspace footer.

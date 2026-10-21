@@ -338,3 +338,5 @@ by the task ledger, not inferred from this list.
 - [Independent host approval policy](E-AI-103.md)
 
 - [Filled approval selection marker](E-AI-105.md)
+
+- [AI chat header and collapsed sidebar](E-AI-106.md)

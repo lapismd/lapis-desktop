@@ -121,7 +121,8 @@
                   aria-label="Selected"
                 >
                   <CircleCheckIcon
-                    size={14}
+                    size={16}
+                    style="width: 16px; height: 16px"
                     fill="currentColor"
                     stroke="var(--background)"
                     aria-hidden="true"

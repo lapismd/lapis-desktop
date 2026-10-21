@@ -237,3 +237,7 @@ Separate from mode, Automatic approval, Save failure. The shared agent editor's
 Mode and Action approvals controls are reviewed in Agent profiles/Context and
 permissions. Default Ask, explicit overrides and global persistence retain
 native scope; fixture turns never contact a provider.
+
+E-AI-106: Local ACP conversations/Supported modes and pin reviews the collapsed
+initial conversation list, header pin/archive controls and vertical action menu
+in Document and Classic. Action approvals/Picker shows the larger filled marker.

@@ -89,9 +89,21 @@ export const SupportedModesAndPin: Story = {
         await canvas.findByRole("button", { name: "Conversation actions" }),
       );
     };
-    expect(
-      canvas.queryByRole("button", { name: /Pin conversation/ }),
-    ).toBeNull();
+    const toggle = await canvas.findByRole("button", {
+      name: "Toggle conversations",
+    });
+    expect(toggle).toHaveAttribute("aria-pressed", "false");
+    await menuSettled(canvasElement);
+    await userEvent.click(toggle);
+    expect(toggle).toHaveAttribute("aria-pressed", "true");
+    await userEvent.click(
+      canvas.queryByRole("button", { name: "Show selected session" }) ?? toggle,
+    );
+    const menu = canvas.getByRole("button", { name: "Conversation actions" });
+    const header = within(menu.closest("header")!);
+    expect(header.getByRole("button", { name: "Pin Chat" })).toBeVisible();
+    expect(header.getByRole("button", { name: "Archive Chat" })).toBeVisible();
+    expect(menu.closest(".ai-session-footer")).toBeNull();
     await open();
     await waitFor(() =>
       expect(body.getByRole("menuitem", { name: "Add Agent" })).toBeVisible(),
@@ -122,11 +134,18 @@ export const SupportedModesAndPin: Story = {
       ).toBeVisible(),
     );
     await userEvent.click(body.getByRole("menuitem", { name: "Pin Chat" }));
+    await expect(
+      header.findByRole("button", { name: "Unpin Chat" }),
+    ).resolves.toHaveAttribute("aria-pressed", "true");
     await open();
     await userEvent.click(
       await body.findByRole("menuitem", { name: "Unpin Chat" }),
     );
     await menuSettled(canvasElement);
+    await userEvent.click(header.getByRole("button", { name: "Pin Chat" }));
+    await userEvent.click(
+      await header.findByRole("button", { name: "Unpin Chat" }),
+    );
     await userEvent.click(
       canvas.getByRole("button", {
         name: /^(?:Classic|Switch to Classic view)$/,
@@ -139,5 +158,14 @@ export const SupportedModesAndPin: Story = {
     await expect(
       body.findByRole("menuitemradio", { name: "Build" }),
     ).resolves.toHaveAttribute("aria-checked", "true");
+    await userEvent.keyboard("{Escape}{Escape}");
+    await menuSettled(canvasElement);
+    await userEvent.click(header.getByRole("button", { name: "Archive Chat" }));
+    await userEvent.click(
+      await header.findByRole("button", { name: "Restore Chat" }),
+    );
+    await expect(
+      header.findByRole("button", { name: "Archive Chat" }),
+    ).resolves.toBeVisible();
   },
 };

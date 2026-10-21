@@ -10,6 +10,8 @@
   import type { ConversationLocation } from "../../../lib/ai/conversations/types.ts";
   import AiSessionShell from "./AiSessionShell.svelte";
   import TranscriptViewToggle from "./TranscriptViewToggle.svelte";
+  import ChatConversationMenu from "../chat/ChatConversationMenu.svelte";
+  import ChatConversationQuickActions from "../chat/ChatConversationQuickActions.svelte";
   import { profileLabel } from "../../../lib/ai/session-browser/model.ts";
   import { BackgroundWork } from "../../../lib/desktop/background-work.ts";
 
@@ -121,6 +123,7 @@
   onSelect={select}
   harness={composerState.selectedAgent}
   showMainOnCompact
+  initialListOpen={false}
   {toolInspector}
 >
   {#snippet listActions()}<Button
@@ -130,9 +133,18 @@
       disabled={!!panelProps.initializing || controller.busy}
       onclick={create}><PlusIcon aria-hidden="true" /></Button
     >{/snippet}
-  {#snippet actions()}<TranscriptViewToggle
+  {#snippet actions()}<ChatConversationQuickActions
+      {panelProps}
+      {controller}
+      actions={panel.actions}
+    /><TranscriptViewToggle
       {view}
       onChange={onViewChange}
+    /><ChatConversationMenu
+      {panelProps}
+      {controller}
+      actions={panel.actions}
+      {composerState}
     />{/snippet}
   {#snippet listFooter()}<footer class="ai-session-list-footer">
       <div class="ai-session-status-items">

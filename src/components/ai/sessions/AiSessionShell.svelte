@@ -34,6 +34,7 @@
     toolInspector,
     harness = "codex",
     showMainOnCompact = false,
+    initialListOpen = true,
   }: {
     items: SessionItem[];
     activeId?: string;
@@ -55,13 +56,14 @@
     harness?: string;
     /** Live chat keeps its composer reachable even before a conversation has an id. */
     showMainOnCompact?: boolean;
+    initialListOpen?: boolean;
   } = $props();
   const panelId = $props.id();
   let body = $state<HTMLElement | null>(null),
     list = $state<HTMLElement | null>(null);
   let height = $state(0),
     width = $state(0),
-    listOpen = $state(true);
+    listOpen = $state(untrack(() => initialListOpen));
   let query = $state(""),
     searchOpen = $state(false),
     selectedProfiles = $state<readonly string[]>([]);
@@ -87,7 +89,7 @@
       });
   });
   $effect(() => {
-    if (!compact) listOpen = true;
+    if (!compact) listOpen = initialListOpen;
   });
 </script>
 
