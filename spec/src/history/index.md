@@ -1,5 +1,7 @@
 # Evidence
 
+- [Saved AI tool expansion backlog](E-PLAN-004.md)
+
 - [Progressive import browser design review](E-AI-120.md)
 - [Indexed progressive local imports](E-AI-121.md)
 - [Searchable model settings and processor restrictions](E-AI-122.md)

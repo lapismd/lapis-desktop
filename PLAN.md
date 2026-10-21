@@ -8,6 +8,11 @@ scaffolding was the completed M0.0 task. This roadmap retains the original
 completion gates; the [task ledger](spec/src/current/progress/milestones.md) and
 [backup ledger](spec/src/current/progress/vault-backup.md) own status.
 
+The [AI tool expansion backlog](spec/src/backlog/ai-tool-expansion.md) is saved
+for later implementation: six stages covering discovery, structured edits,
+memory, workspace context, historical recall and link-aware moves. It is
+Deferred; current AI milestone gates and statuses remain unchanged (E-PLAN-004).
+
 | Workstream                        | Implemented and verified                                                                                                                                     | Remaining completion gates                                                                                                       |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                        | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                |
