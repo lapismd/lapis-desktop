@@ -96,3 +96,30 @@ it("stops only the exact native runtime owner last observed by this view", async
   expect(compute.value?.runtime.state).toBe("off");
   await compute.close();
 });
+
+it("file selection never issues compute commands and reports chooser failures", async () => {
+  const request = vi.fn(async () => initial());
+  const report = vi.fn();
+  const choose = vi
+    .fn<() => Promise<string | null>>()
+    .mockResolvedValueOnce("/tmp/model.gguf")
+    .mockResolvedValueOnce(null)
+    .mockRejectedValueOnce(new Error("Chooser unavailable"));
+  const compute = new AiCompute(
+    request,
+    async (_title, run) => run(),
+    vi.fn(),
+    report,
+    choose,
+  );
+  expect(compute.canPickFile).toBe(true);
+  expect(choose).not.toHaveBeenCalled();
+  expect(await compute.pickFile()).toBe("/tmp/model.gguf");
+  expect(await compute.pickFile()).toBeNull();
+  expect(await compute.pickFile()).toBeNull();
+  expect(report).toHaveBeenCalledOnce();
+  expect(request).not.toHaveBeenCalled();
+  await compute.close();
+  expect(await compute.pickFile()).toBeNull();
+  expect(choose).toHaveBeenCalledTimes(3);
+});

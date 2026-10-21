@@ -257,5 +257,11 @@ narrow overflow navigation. AI setup uses the same public component and icon
 buttons; compute drafts survive tab changes. Existing settings, clients category
 and local-conversation stories exercise their reachable panels. Visual pending.
 
-AI/Compute tabs remain pinned above scrolling panels with opaque theme backgrounds;
-panel descriptions replace duplicate headings. Compute panels own the final row edge.
+AI/Compute tabs remain pinned above scrolling panels with opaque theme
+backgrounds; panel descriptions replace duplicate headings. Compute panels own
+the final row edge.
+
+E-AI-110: AI setup/Memory quantity and file browse adds optional unit-aware VRAM
+and explicit local model browsing, retaining drafts and requiring a separate
+Import action. Shared source covers cancellation and stale-selection behavior;
+visual review remains pending.

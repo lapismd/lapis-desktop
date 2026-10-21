@@ -21,6 +21,7 @@ export type SettingsScenario =
   | "setup-loading"
   | "setup-error"
   | "setup-save-error"
+  | "setup-file-error"
   | "setup-running"
   | "setup-unknown-hardware"
   | "normal"

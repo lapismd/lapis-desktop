@@ -345,7 +345,8 @@ Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
 [Native qualification](native-acceptance.md) retains AI/repository gates.
-E-AI-109: responsive AI/Compute settings; runtime admission unchanged.
+E-AI-109/110: tabbed Compute and native GGUF selection; see
+[setup](ai-setup.md).
 
 Verified Lapis AI helpers ship as application resources; device adapters remain
 installation-owned. See [client delivery](ai-clients.md).

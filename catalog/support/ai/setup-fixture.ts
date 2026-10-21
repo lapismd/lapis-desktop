@@ -175,6 +175,11 @@ export function setupFixture(app: App, scenario: string) {
     (title, run) => background.run(title, run),
     () => {},
     report,
+    async () => {
+      if (scenario === "setup-file-error")
+        throw new Error("Synthetic file chooser unavailable");
+      return "/models/Qwen3-0.6B-Q4_K_M.gguf";
+    },
   );
   return {
     commands,

@@ -321,3 +321,4 @@
 - [Per-agent providers, chat avatars and Compute settings](history/E-AI-108.md)
 
 - [Responsive AI and Compute settings](history/E-AI-109.md)
+- [Compute quantity and file selection](history/E-AI-110.md)

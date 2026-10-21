@@ -34,5 +34,10 @@ export function nativeCompute(
         severity: "error",
         message: error instanceof Error ? error.message : String(error),
       }),
+    async () => {
+      if (!allowed()) throw new Error("Compute requires a trusted workspace");
+      await prepare();
+      return call<string | null>("desktop_ai_compute_pick_file", { sessionId });
+    },
   );
 }

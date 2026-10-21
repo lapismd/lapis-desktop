@@ -207,3 +207,7 @@ shared header avatars and dedicated Compute settings. Original gates remain.
 
 [E-AI-109](../history/E-AI-109.md): responsive AI/Compute settings tabs, search
 reveal and icon actions. Native/provider gates remain unchanged.
+
+[E-AI-110](../history/E-AI-110.md) records shared numeric/file inputs,
+compile-checked native selection and focused Compute UI acceptance; M10.4
+product gates remain open.

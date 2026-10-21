@@ -46,6 +46,7 @@ export class AiCompute {
   busy = $state(false);
   failed = $state(false);
   pending = $state(false);
+  memoryDraft = $state<{ canonical: string; text: string; unit: string }>();
   #dirty = false;
   edit(patch: Partial<ComputeSettings>) {
     if (this.busy || this.pending) return;
@@ -65,7 +66,22 @@ export class AiCompute {
     ) => Promise<T>,
     private readonly changed: () => void,
     private readonly report: (error: unknown) => void,
+    private readonly chooseFile?: () => Promise<string | null>,
   ) {}
+  get canPickFile() {
+    return Boolean(this.chooseFile);
+  }
+  async pickFile(): Promise<string | null> {
+    if (this.#closed || this.busy || this.pending || !this.chooseFile)
+      return null;
+    try {
+      const path = await this.chooseFile();
+      return this.#closed || this.busy || this.pending ? null : path;
+    } catch (error) {
+      if (!this.#closed) this.report(error);
+      return null;
+    }
+  }
   async refresh(): Promise<boolean> {
     try {
       const value = await this.work("Loading compute settings", () =>

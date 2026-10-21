@@ -1,7 +1,7 @@
 # Desktop plugins and catalog
 
-E-AI-108/109 cover per-agent editors, header avatars and responsive
-AI/Compute settings with icon actions under LD-CAT-003.
+E-AI-108/109 cover per-agent editors, header avatars and responsive AI/Compute
+settings with icon actions under LD-CAT-003.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.
@@ -394,5 +394,5 @@ assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
 catalog fixture enters production. Cached metadata and status work retain
 App/vault ownership.
 
-E-AI-106/107 review chat header actions, the Lapis harness picker and required
-provider models through production stories; original native gates remain.
+E-AI-106/107/110 review header actions, required provider models and shared
+Compute quantity/file inputs through production stories; native gates remain.

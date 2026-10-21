@@ -4,6 +4,7 @@
   import AiComputeModelPicker from "./AiComputeModelPicker.svelte";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import { Input } from "@lapismd/design-core/shadcn/input";
+  import { FilePathInput } from "@lapismd/design-core/forms/file-path-input";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import DownloadIcon from "@lucide/svelte/icons/download";
   import PackageCheckIcon from "@lucide/svelte/icons/package-check";
@@ -94,11 +95,15 @@
     label="Import GGUF"
     description="Import a local file into this device’s managed model storage."
   >
-    <Input
+    <FilePathInput
       id={`${id}-import`}
+      label="Import GGUF"
       bind:value={importPath}
       disabled={blocked}
       placeholder="/absolute/path/model.gguf"
+      onBrowse={management.canPickFile
+        ? () => management.pickFile()
+        : undefined}
     />
     <Button
       variant="outline"

@@ -393,3 +393,7 @@ E-AI-105 refines the approval selection marker; LD-AI-002/004 remain unchanged.
 
 E-AI-106 adds collapsed initial chat navigation and header pin/archive/menu
 controls; LD-AI-002/004 execution and persistence boundaries remain unchanged.
+
+E-AI-110 adds shared unit-aware Max VRAM input and host-owned GGUF browsing;
+selection remains separate from explicit import and preserves the existing
+compute lifecycle.

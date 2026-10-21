@@ -346,3 +346,4 @@ by the task ledger, not inferred from this list.
 - [Per-agent providers, chat avatars and Compute settings](E-AI-108.md)
 
 - [Responsive AI and Compute settings](E-AI-109.md)
+- [Compute quantity and file selection](E-AI-110.md)

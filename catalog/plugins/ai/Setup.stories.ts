@@ -37,10 +37,15 @@ export const ComputeSettings: Story = {
     expect(getComputedStyle(rows[0]!).borderBottomWidth).toBe("1px");
     await expectPinnedSettingsTabs(canvasElement);
     await selectSettingsTab(canvasElement, "Compute settings", "Resources");
-    await userEvent.type(compute.getByLabelText("Max VRAM (GB)"), "8");
+    await userEvent.type(
+      compute.getByRole("spinbutton", { name: "Max VRAM (GB)" }),
+      "8",
+    );
     await selectSettingsTab(canvasElement, "Compute settings", "Models");
     await selectSettingsTab(canvasElement, "Compute settings", "Resources");
-    expect(compute.getByLabelText("Max VRAM (GB)")).toHaveValue(8);
+    expect(
+      compute.getByRole("spinbutton", { name: "Max VRAM (GB)" }),
+    ).toHaveValue(8);
     await userEvent.click(
       compute.getByRole("button", { name: "Save compute settings" }),
     );
@@ -168,7 +173,10 @@ export const ModelMemoryLimits: Story = {
     );
     const portal = within(canvasElement.ownerDocument.body);
     await selectSettingsTab(canvasElement, "Compute settings", "Resources");
-    await userEvent.type(compute.getByLabelText("Max VRAM (GB)"), "4");
+    await userEvent.type(
+      compute.getByRole("spinbutton", { name: "Max VRAM (GB)" }),
+      "4",
+    );
     await selectSettingsTab(canvasElement, "Compute settings", "Models");
     await userEvent.click(compute.getByRole("combobox", { name: "Model" }));
     await expect(
@@ -197,5 +205,61 @@ export const UnknownModelFit: Story = {
       expect(portal.getByText(/Machine memory unavailable/)).toBeVisible(),
     );
     await userEvent.keyboard("{Escape}");
+  },
+};
+
+export const MemoryQuantityAndFileBrowse: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await selectSettingsTab(canvasElement, "Compute settings", "Resources");
+    const input = canvas.getByRole("spinbutton", { name: "Max VRAM (GB)" });
+    await expect(input).toHaveValue(null);
+    await expect(
+      canvas.getByRole("slider", { name: "Max VRAM (GB) slider" }),
+    ).toBeVisible();
+    await expect(aiReviewValue(canvasElement, "Compute commands")).toBe("[]");
+    await userEvent.type(input, "0.5");
+    await expect(input).toHaveAttribute("aria-invalid", "true");
+    await expect(
+      canvas.getByRole("button", { name: "Save compute settings" }),
+    ).toBeDisabled();
+    await selectSettingsTab(canvasElement, "Compute settings", "Models");
+    await selectSettingsTab(canvasElement, "Compute settings", "Resources");
+    await expect(input).toHaveValue(0.5);
+    await userEvent.clear(input);
+    await userEvent.type(input, "8");
+    await expect(input).not.toHaveAttribute("aria-invalid", "true");
+    await selectSettingsTab(canvasElement, "Compute settings", "Models");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Browse Import GGUF" }),
+    );
+    await expect(
+      canvas.getByRole("textbox", { name: "Import GGUF" }),
+    ).toHaveValue("/models/Qwen3-0.6B-Q4_K_M.gguf");
+    await expect(aiReviewValue(canvasElement, "Compute commands")).toBe("[]");
+    await userEvent.click(canvas.getByRole("button", { name: "Import model" }));
+    await waitFor(() =>
+      expect(aiReviewValue(canvasElement, "Compute commands")).toBe(
+        '["configure","import"]',
+      ),
+    );
+  },
+};
+
+export const FileBrowseFailure: Story = {
+  args: { scenario: "setup-file-error" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const path = await canvas.findByRole("textbox", { name: "Import GGUF" });
+    await userEvent.type(path, "/models/retained.gguf");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Browse Import GGUF" }),
+    );
+    await expect(path).toHaveValue("/models/retained.gguf");
+    await aiReviewAction(canvasElement, "Inspect saved settings");
+    await expect(aiReviewValue(canvasElement, "AI notifications")).toContain(
+      "Synthetic file chooser unavailable",
+    );
+    await expect(aiReviewValue(canvasElement, "Compute commands")).toBe("[]");
   },
 };

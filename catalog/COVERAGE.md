@@ -1067,3 +1067,8 @@ Conversation, Models, Memory/handoff and Tools, including field reveal and
 narrow overflow navigation. AI setup uses the same public component and icon
 buttons; compute drafts survive tab changes. Existing settings, clients category
 and local-conversation stories exercise their reachable panels. Visual pending.
+
+E-AI-110: Desktop/AI setup/Memory quantity and file browse uses production
+Compute and the public Design Core inputs, checking optional GB, invalid drafts
+across tabs, chooser selection without commands and explicit import. Native
+dialog and live inference qualification remain separate.

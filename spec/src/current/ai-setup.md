@@ -30,9 +30,9 @@ and Tools in Design Core responsive pill tabs. Compute uses the same control for
 Models, Resources and Sharing. Overflowed choices remain reachable from More,
 and settings search reveals the owning tab. Compute actions have icons and text
 labels. Tabs stay pinned above scrolling content on an opaque theme background;
-page and repeated tab headings are omitted, with slightly inset descriptions inside each panel.
-These presentation changes preserve saved values, draft state and
-explicit action semantics. Agents owns named profiles and installed clients.
+page and repeated tab headings are omitted, with slightly inset descriptions
+inside each panel. These presentation changes preserve saved values, draft state
+and explicit action semantics. Agents owns named profiles and installed clients.
 Choosing the Lapis harness in the agent editor exposes that agent's provider,
 endpoint, write-only API key and exact model. New Lapis profiles use independent
 device-owned configurations keyed by stable vault and profile identities. Two
@@ -88,8 +88,15 @@ Status reads, Settings mount and startup allocate no compute process, model
 download, inference request or sharing session. Save changes only configuration
 while off. Prepare, Download, Import and Start are explicit independent actions.
 Start uses installed weights and a prepared native runtime. Import validates and
-copies a selected absolute GGUF path into managed storage. Model/resource/peer
-controls adapt JJ Store’s Settings components through public Design Core fields.
+copies a selected absolute GGUF path into managed storage. Import GGUF composes
+Design Core FilePathInput with an explicit native GGUF chooser. Selection only
+changes the local path draft; cancellation, errors, newer input and revoked
+admission preserve it. Native admission is checked before and after selection.
+Max VRAM composes QuantityInput with canonical whole GB, an optional bounded
+slider and retained invalid drafts. Empty remains null/no explicit limit; mount,
+display controls and tab changes never save or start compute.
+Model/resource/peer controls adapt JJ Store’s Settings components through public
+Design Core fields.
 
 The searchable model picker copies JJ Store's catalog and command-view
 presentation. Choices and the selected trigger show weight estimates and
@@ -135,10 +142,9 @@ helpers and in-memory Settings do not qualify a real provider or loaded model.
 Real external-client/Lapis tool turns, cold mounted restart/trust cleanup,
 native inference with prepared weights and two-device mutual pairing retain the
 original M10.2–M10.4 acceptance gates. Signing/publication and other platforms
-remain M11. Expanded model catalogs, model removal, native GGUF browsing and
-editable relay settings are secondary work, separate from v0’s explicit
-model/resource/peer lifecycle. No deferred JJ-store chat implementation is
-resumed by this profile.
+remain M11. Expanded model catalogs, model removal, editable relay settings are
+secondary work, separate from v0’s explicit model/resource/peer lifecycle. No
+deferred JJ-store chat implementation is resumed by this profile.
 
 E-AI-104 records native Codex, Cursor and OpenCode tool reads, approved edits,
 cancellation, normal Quit and unchanged cold history. Real local compute

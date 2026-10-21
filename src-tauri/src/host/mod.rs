@@ -101,6 +101,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::ai::clients::desktop_ai_clients,
             crate::host::ai::providers::desktop_ai_providers,
             crate::host::ai::compute::desktop_ai_compute,
+            crate::host::ai::compute::desktop_ai_compute_pick_file,
             crate::host::ai::imports::commands::desktop_ai_imports,
             crate::host::ai::admission::desktop_ai_release,
             crate::host::repository::backup::desktop_backup_start,

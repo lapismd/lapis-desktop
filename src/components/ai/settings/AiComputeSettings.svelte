@@ -10,7 +10,10 @@
   import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
   import * as Tabs from "@lapismd/design-core/shadcn/tabs";
   import * as Field from "@lapismd/design-core/shadcn/field";
-  import { Input } from "@lapismd/design-core/shadcn/input";
+  import {
+    QuantityInput,
+    countUnits,
+  } from "@lapismd/design-core/forms/quantity-input";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
   import CpuIcon from "@lucide/svelte/icons/cpu";
@@ -111,19 +114,24 @@
               id={`${id}-memory`}
               label="Max VRAM (GB)"
               description="Limit AI memory to 1–1024 GB. Leave empty for no explicit limit. On Apple silicon this uses unified memory. Applies on the next model start."
-              ><Input
+              ><QuantityInput
                 id={`${id}-memory`}
-                type="number"
+                label="Max VRAM (GB)"
+                layout="control"
+                units={countUnits("GB")}
                 min={1}
                 max={1024}
-                value={management.draft.memoryGb ?? ""}
+                optional
+                slider
+                sliderMax={64}
+                bind:draft={management.memoryDraft}
+                value={management.draft.memoryGb === null
+                  ? ""
+                  : String(management.draft.memoryGb)}
                 disabled={blocked}
-                aria-invalid={memoryInvalid}
-                oninput={(event) =>
+                onValueChange={(value) =>
                   management.edit({
-                    memoryGb: event.currentTarget.value.trim()
-                      ? Number(event.currentTarget.value)
-                      : null,
+                    memoryGb: value.trim() ? Number(value) : null,
                   })}
               /></ComputeSettingRow
             ></Field.Group
