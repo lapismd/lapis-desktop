@@ -191,6 +191,11 @@ Document/Classic and saved agent overrides (LD-AI-002/003/004, LD-CAT-003).
 Exact one-time IDs, durable decisions and native tool scope are retained; native
 provider and release gates remain open.
 
+E-AI-104 records actual M10.2–M10.4 provider/compute qualification attempts
+without changing LD-AI-001–004, LD-COMP-001 or LD-DESK-005 completion status.
+Real service/Keychain and small-model setup passes remain distinct from full
+provider turns, cold mounted recovery and two-device acceptance.
+
 [E-AI-105](../history/E-AI-105.md): borderless filled approval marker;
 LD-AI-002/004 behavior and original native gates remain unchanged.
 

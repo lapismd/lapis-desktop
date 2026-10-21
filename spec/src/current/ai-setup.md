@@ -108,3 +108,12 @@ remain M11. Expanded model catalogs, model removal, native GGUF browsing and
 editable relay settings are secondary work, separate from v0’s explicit
 model/resource/peer lifecycle. No deferred JJ-store chat implementation is
 resumed by this profile.
+
+E-AI-104 records native Codex, Cursor and OpenCode tool reads, approved edits,
+cancellation, normal Quit and unchanged cold history. Real local compute
+Prepare/Download/Import/Start is observed; its hidden native API lane also
+passes explicit Stop and cold off with unchanged settings and sharing disabled.
+Bundled Lapis tool requests fail native compute HTTP502 on both Qwen3-0.6B
+and1.7B. Desktop avatar accessibility, mounted trust/isolation and two-device
+pairing remain open. Source checks do not replace consumer acceptance;
+M10.2–M10.4 retain their original In progress gates.

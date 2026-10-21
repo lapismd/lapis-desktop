@@ -1,5 +1,9 @@
 # Desktop AI and optional compute
 
+E-AI-104 records real-provider, native lifecycle and catalog qualification.
+LD-AI-001–004 and LD-COMP-001 remain unchanged; failed runs and outstanding
+provider, trust and two-device gates remain explicit in the milestone ledger.
+
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.
 Existing local conversations and private drafts remain supported. E-AI-098

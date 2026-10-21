@@ -34,6 +34,7 @@ describe("AI plugin data", () => {
         handoffSummaryAgent: "codex",
         handoffSummaryModel: "gpt-5.6-sol",
         appToolsEnabled: true,
+        approvalPolicy: "ask",
         disabledAppToolNames: [],
         enabledAppToolNames: [],
         enabledCommunityToolPluginIds: [],

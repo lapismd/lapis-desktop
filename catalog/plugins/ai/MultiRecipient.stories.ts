@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
+import { formatAgentMention } from "../../../src/lib/ai/chat/agent-mentions.ts";
 import { aiReviewValue } from "../../support/ai/review.ts";
 const meta = {
   title: "Desktop/AI/Multiple recipients",
@@ -15,19 +16,21 @@ export const OneAuthoredMessage: Story = {
   play: async ({ canvasElement }) => {
     const c = within(canvasElement),
       editor = await c.findByRole("textbox", { name: "Message" });
+    await userEvent.click(editor);
     for (const name of ["Reviewer", "Writer"]) {
-      await userEvent.click(editor);
       await userEvent.keyboard(`@${name.toLowerCase()}`);
       await userEvent.click(
-        await c.findByRole("option", { name: new RegExp(name) }),
+        await within(canvasElement.ownerDocument.body).findByRole("option", {
+          name: new RegExp(name),
+        }),
       );
     }
     expect(
-      c.getByRole("group", { name: "Message recipients" }),
-    ).toHaveTextContent("@Reviewer");
+      within(editor).getByRole("button", { name: /About .*Reviewer/ }),
+    ).toBeVisible();
     expect(
-      c.getByRole("group", { name: "Message recipients" }),
-    ).toHaveTextContent("@Writer");
+      within(editor).getByRole("button", { name: /About .*Writer/ }),
+    ).toBeVisible();
     await userEvent.keyboard("Review the note together");
     await userEvent.click(c.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
@@ -37,7 +40,8 @@ export const OneAuthoredMessage: Story = {
           (e: any) =>
             e.type === "message" &&
             e.role === "user" &&
-            e.text === "Review the note together",
+            e.text ===
+              `${formatAgentMention("reviewer", "Reviewer")} ${formatAgentMention("writer", "Writer")} Review the note together`,
         ),
       ).toHaveLength(1);
       expect(
@@ -102,10 +106,12 @@ export const CreateNamedParticipant: Story = {
     await userEvent.click(editor);
     await userEvent.keyboard("@notes");
     await userEvent.click(
-      await c.findByRole("option", { name: /Notes reviewer/ }),
+      await within(canvasElement.ownerDocument.body).findByRole("option", {
+        name: /Notes reviewer/,
+      }),
     );
     expect(
-      c.getByRole("button", { name: "Remove recipient @Notes reviewer" }),
+      within(editor).getByRole("button", { name: /About .*Notes reviewer/ }),
     ).toBeVisible();
     expect(aiReviewValue(canvasElement, "sessions")).toBe("[]");
   },
@@ -136,11 +142,13 @@ export const VisibleWorkAndCancellation: Story = {
     await waitFor(() =>
       expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"),
     );
+    await userEvent.click(editor);
     for (const name of ["Reviewer", "Writer"]) {
-      await userEvent.click(editor);
       await userEvent.keyboard(`@${name.toLowerCase()}`);
       await userEvent.click(
-        await c.findByRole("option", { name: new RegExp(name) }),
+        await within(canvasElement.ownerDocument.body).findByRole("option", {
+          name: new RegExp(name),
+        }),
       );
     }
     await userEvent.keyboard("Wait for my approval before continuing");
@@ -151,7 +159,14 @@ export const VisibleWorkAndCancellation: Story = {
     await expect(
       c.findByText("Pending", { exact: true }),
     ).resolves.toBeVisible();
-    await userEvent.click(c.getByRole("button", { name: "Stop agent" }));
+    await waitFor(() =>
+      expect(editor).not.toHaveTextContent(
+        "Wait for my approval before continuing",
+      ),
+    );
+    await userEvent.click(editor);
+    await userEvent.keyboard("{Control>}{a}{/Control}{Backspace}");
+    await userEvent.click(await c.findByRole("button", { name: "Stop agent" }));
     await waitFor(() => {
       const group = c.getAllByRole("group", { name: "Sent to" }).at(-1)!;
       expect(within(group).getByText("Unknown", { exact: true })).toBeVisible();
@@ -173,11 +188,13 @@ export const SeparateApprovals: Story = {
     await waitFor(() =>
       expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"),
     );
+    await userEvent.click(editor);
     for (const name of ["Reviewer", "Writer"]) {
-      await userEvent.click(editor);
       await userEvent.keyboard(`@${name.toLowerCase()}`);
       await userEvent.click(
-        await c.findByRole("option", { name: new RegExp(name) }),
+        await within(canvasElement.ownerDocument.body).findByRole("option", {
+          name: new RegExp(name),
+        }),
       );
     }
     await userEvent.keyboard("Each participant must ask for approval");
