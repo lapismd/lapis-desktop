@@ -1,6 +1,11 @@
 // SPDX-License-Identifier: Apache-2.0
 // Copied/adapted from jj-store compute-model-catalog.ts; see docs/provenance.json.
-export type ComputeModel = { id: string; name: string; installed: boolean };
+export type ComputeModel = {
+  id: string;
+  name: string;
+  installed: boolean;
+  bytes?: number | null;
+};
 
 // Weight estimates from mesh-llm 9f192c9's catalog; recommendation tiers
 // follow Buzz's catalog.rs. Owned presentation data, never a runtime dependency.
@@ -130,15 +135,27 @@ export function computeModelChoices(
   );
   for (const model of models) {
     const known = rows.get(model.id);
+    const sizeGb = positive(model.bytes)
+      ? Number(model.bytes) / 1e9
+      : known?.sizeGb;
     rows.set(
       model.id,
       known
-        ? { ...known, installed: model.installed }
+        ? {
+            ...known,
+            name: model.name,
+            installed: model.installed,
+            sizeGb,
+            fit: modelFit(sizeGb, budget),
+          }
         : {
             ...model,
-            description: "Size estimate unavailable",
+            sizeGb,
+            description: model.installed
+              ? "Installed weights on this device"
+              : "Model files are missing",
             curated: false,
-            fit: "Fit unknown",
+            fit: modelFit(sizeGb, budget),
             recommended: false,
           },
     );

@@ -2,6 +2,14 @@ use super::*;
 use serde_json::{Value, json};
 use std::time::Duration;
 use tauri_plugin_lapis_ai::runtime::ProcessLimits;
+#[derive(Debug)]
+pub(super) struct Rejected(pub tauri_plugin_lapis_ai::runtime::ComputeFailure);
+impl std::fmt::Display for Rejected {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0.message)
+    }
+}
+impl std::error::Error for Rejected {}
 
 pub(super) async fn run(
     owner: &Compute,
@@ -12,7 +20,14 @@ pub(super) async fn run(
     let store = owner.store.clone();
     let saved = tokio::task::spawn_blocking(move || store.read())
         .await
-        .map_err(|_| unavailable())??;
+        .map_err(|_| unavailable())?
+        .map_err(|_| {
+            io::Error::other(Rejected(
+                tauri_plugin_lapis_ai::runtime::ComputeFailure::from_code(
+                    "compute_storage_unavailable",
+                ),
+            ))
+        })?;
     let settings = match &command.action {
         Action::Configure { settings } => settings.clone(),
         _ => saved.settings,
@@ -43,7 +58,12 @@ pub(super) async fn run(
             }
         })
         .await
-        .map_err(|_| unavailable())??;
+        .map_err(|_| unavailable())?
+        .map_err(|_| {
+            io::Error::other(Rejected(
+                tauri_plugin_lapis_ai::runtime::ComputeFailure::from_code("identity_unavailable"),
+            ))
+        })?;
         plan.environment.0.extend([
             ("JJ_STORE_COMPUTE_IDENTITY".into(), identity),
             (
@@ -62,7 +82,11 @@ pub(super) async fn run(
         owner.runtime.view.lock().map_err(|_| unavailable())?.state = "starting".into();
         let active = ComputeClient::start_prepared(plan, ProcessLimits::default())
             .await
-            .map_err(|_| unavailable())?;
+            .map_err(|_| {
+                io::Error::other(Rejected(
+                    tauri_plugin_lapis_ai::runtime::ComputeFailure::from_code("helper_unavailable"),
+                ))
+            })?;
         *owner.runtime.commands.lock().map_err(|_| unavailable())? = Some(active.commands());
         *owner.runtime.connection.lock().map_err(|_| unavailable())? =
             Some(active.connection().clone());
@@ -82,6 +106,14 @@ pub(super) async fn run(
         Action::Download => json!({"action":"download","requestId":id}),
         Action::Start => json!({"action":"start","requestId":id}),
         Action::Import { path } => json!({"action":"import","requestId":id,"path":path}),
+        Action::Remove { model } => {
+            if owner.runtime.view.lock().map_err(|_| unavailable())?.state == "serving" {
+                return Err(io::Error::other(Rejected(
+                    tauri_plugin_lapis_ai::runtime::ComputeFailure::from_code("compute_busy"),
+                )));
+            }
+            json!({"action":"remove","requestId":id,"model":model})
+        }
         Action::Stop { .. } => return Err(unavailable()),
     };
     owner
@@ -89,8 +121,20 @@ pub(super) async fn run(
         .view
         .lock()
         .map_err(|_| unavailable())?
-        .progress = Some(json!({"action":frame["action"]}));
+        .progress = Some(types::Progress {
+        action: frame["action"].as_str().unwrap_or("download").into(),
+        ..Default::default()
+    });
     exchange(owner, active, &frame).await?;
+    {
+        let mut view = owner.runtime.view.lock().map_err(|_| unavailable())?;
+        if !matches!(command.action, Action::Start) && view.state != "serving" {
+            view.state = "ready".into();
+        }
+        if matches!(command.action, Action::Start) {
+            view.active_model = settings.model;
+        }
+    }
     owner
         .runtime
         .view
@@ -123,7 +167,11 @@ async fn exchange(owner: &Compute, client: &mut ComputeClient, frame: &Value) ->
                 Some("imported") => {
                     view.imported_model = event["model"].as_str().map(str::to_owned)
                 }
-                Some("download_progress" | "progress") => view.progress = Some(event.clone()),
+                Some("download_progress" | "progress")
+                    if event["requestId"].is_null() || event["requestId"] == frame["requestId"] =>
+                {
+                    view.progress = Some(types::Progress::from_event(&event))
+                }
                 _ => {}
             }
         }
@@ -134,7 +182,11 @@ async fn exchange(owner: &Compute, client: &mut ComputeClient, frame: &Value) ->
             )
         {
             return if event["type"] == "error" {
-                Err(unavailable())
+                Err(io::Error::other(Rejected(
+                    tauri_plugin_lapis_ai::runtime::ComputeFailure::from_code(
+                        event["code"].as_str().unwrap_or("compute_operation_failed"),
+                    ),
+                )))
             } else {
                 Ok(())
             };

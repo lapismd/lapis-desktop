@@ -1,4 +1,14 @@
 /** Optional compute owns no renderer credentials and never starts on mount. */
+import type { ComputeModel } from "./compute-model-catalog.ts";
+export type ComputeProgress = {
+  requestId?: string;
+  stage?: string | null;
+  action?: string;
+  label?: string | null;
+  file?: string | null;
+  downloaded_bytes?: number | null;
+  total_bytes?: number | null;
+};
 export type ComputeSettings = {
   revision: number;
   model: string | null;
@@ -8,6 +18,9 @@ export type ComputeSettings = {
   targetPeer: string | null;
 };
 export type ComputeStatus = {
+  models: (ComputeModel & { bytes: number | null })[];
+  runtimePrepared: boolean;
+  failure?: { code: string; message: string } | null;
   hardware?: unknown;
   settings: ComputeSettings;
   requestId: string | null;
@@ -15,16 +28,18 @@ export type ComputeStatus = {
   runtime: {
     state: string;
     invitation: unknown | null;
-    progress: unknown | null;
+    progress: ComputeProgress | null;
     importedModel?: string | null;
     ownerId?: string | null;
+    activeModel?: string | null;
   };
 };
 export type ComputeAction =
   | { type: "configure"; settings: ComputeSettings }
   | { type: "prepare" | "download" | "start" }
   | { type: "stop"; ownerId: string | null }
-  | { type: "import"; path: string };
+  | { type: "import"; path: string }
+  | { type: "remove"; model: string };
 type Command = {
   requestId: string;
   expectedRevision: number;
@@ -56,6 +71,7 @@ export class AiCompute {
   #command?: Command;
   #running?: Promise<boolean>;
   #closed = false;
+  #reportedFailure?: string;
   constructor(
     private readonly request: (
       request: ComputeRequest,
@@ -65,11 +81,18 @@ export class AiCompute {
       action: () => Promise<T>,
     ) => Promise<T>,
     private readonly changed: () => void,
-    private readonly report: (error: unknown) => void,
+    private readonly report: (error: unknown, identity?: string) => void,
     private readonly chooseFile?: () => Promise<string | null>,
   ) {}
   get canPickFile() {
     return Boolean(this.chooseFile);
+  }
+  showFailure() {
+    if (this.value?.failure)
+      this.report(
+        new Error(this.value.failure.message),
+        this.value.requestId ?? undefined,
+      );
   }
   async pickFile(): Promise<string | null> {
     if (this.#closed || this.busy || this.pending || !this.chooseFile)
@@ -125,6 +148,11 @@ export class AiCompute {
         value = await this.request({ type: "status" });
       }
       this.#accept(value);
+      if (value.requestId === command.requestId && value.outcome === "failed")
+        throw new Error(
+          value.failure?.message ??
+            "The compute operation failed. Check the model configuration, then retry.",
+        );
       if (
         value.requestId !== command.requestId ||
         value.outcome !== "completed"
@@ -133,12 +161,29 @@ export class AiCompute {
           "Compute needs attention. Stop compute and check its configuration before starting a new request.",
         );
       this.changed();
+      if (command.action.type === "import" && value.runtime.importedModel) {
+        this.draft = { ...this.draft, model: value.runtime.importedModel };
+        this.#dirty = true;
+      }
       return true;
     })
       .catch((error) => {
         if (!this.#closed) {
+          if (
+            error instanceof Error &&
+            "code" in error &&
+            ["EINVAL", "EACCES", "EBUSY", "ENOTSUP"].includes(
+              String(error.code),
+            )
+          ) {
+            this.#command = undefined;
+            this.pending = false;
+          }
           this.failed = true;
-          this.report(error);
+          if (this.#reportedFailure !== command.requestId) {
+            this.#reportedFailure = command.requestId;
+            this.report(error, command.requestId);
+          }
         }
         return false;
       })
@@ -154,7 +199,9 @@ export class AiCompute {
     if (
       !this.#command ||
       (value.requestId === this.#command.requestId &&
-        value.outcome === "completed")
+        (value.outcome === "completed" ||
+          value.outcome === "failed" ||
+          value.outcome === "rejected"))
     ) {
       if (!this.#dirty || this.#command?.action.type === "configure") {
         this.draft = structuredClone(value.settings);

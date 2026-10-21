@@ -25,11 +25,11 @@ test(
     await ready(cold);
     await openAiSettings(cold.browser);
     const region = cold.browser.$(
-      '//*[@role="region"][.//*[text()="Optional compute"]]',
+      '//*[@role="region" and @aria-label="Local compute"]',
     );
     await cold.browser.waitUntil(
       async () =>
-        (await region.$('[role="status"]').getText()).trim() === "off",
+        (await region.$('[role="status"]').getText()).trim().startsWith("off"),
       {
         timeout: 30_000,
       },
@@ -38,6 +38,10 @@ test(
       hash(settings),
       savedHash,
       "Cold status must not issue another model command",
+    );
+    assert.ok(
+      await region.$("span=Downloaded models").isExisting(),
+      "Cold settings retains the downloaded model library",
     );
     await cold.browser.$('button[aria-label="Close settings"]').click();
     await cold.close(true);

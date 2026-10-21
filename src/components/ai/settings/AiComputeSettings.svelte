@@ -7,6 +7,7 @@
   import ComputeSettingRow from "./ComputeSettingRow.svelte";
   import AiComputeSharing from "./AiComputeSharing.svelte";
   import AiComputeModels from "./AiComputeModels.svelte";
+  import AiComputeProgress from "./AiComputeProgress.svelte";
   import { ResponsiveTabs } from "@lapismd/design-core/shadcn/responsive-tabs";
   import * as Tabs from "@lapismd/design-core/shadcn/tabs";
   import * as Field from "@lapismd/design-core/shadcn/field";
@@ -17,7 +18,6 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
   import CpuIcon from "@lucide/svelte/icons/cpu";
-  import CheckIcon from "@lucide/svelte/icons/check";
   import RefreshCwIcon from "@lucide/svelte/icons/refresh-cw";
   import SquareIcon from "@lucide/svelte/icons/square";
   import SaveIcon from "@lucide/svelte/icons/save";
@@ -36,31 +36,6 @@
     { value: "sharing", label: "Sharing", Icon: NetworkIcon },
   ];
   let importPath = $state("");
-  const progress = $derived(
-    management.value?.runtime.progress as {
-      stage?: string;
-      action?: string;
-      downloaded_bytes?: number;
-      total_bytes?: number;
-    } | null,
-  );
-  const progressLabel = $derived(
-    progress?.stage ??
-      {
-        prepare: "Preparing runtime",
-        download: "Downloading weights",
-        start: "Starting model",
-        import: "Importing weights",
-      }[progress?.action ?? ""] ??
-      "Working",
-  );
-  const progressPercent = $derived(
-    progress?.total_bytes
-      ? Math.round(
-          (100 * (progress.downloaded_bytes ?? 0)) / progress.total_bytes,
-        )
-      : null,
-  );
   const blocked = $derived(management.busy || management.pending);
   const memoryInvalid = $derived(
     management.draft.memoryGb !== null &&
@@ -93,15 +68,16 @@
         label="Compute settings"
       />
     </div>
+    {#if management.value?.runtime.progress}<AiComputeProgress
+        progress={management.value.runtime.progress}
+      />{/if}
     {#if management.value}
       <Tabs.Content value="models" aria-label="Models">
         <p class="settings-tab-description">
           Local inference stays off until you start it. Models never download
           automatically or fall back to a cloud provider.
         </p>
-        <div class="compute-settings-panel">
-          <AiComputeModels {management} {id} {run} bind:importPath />
-        </div>
+        <AiComputeModels {management} {id} {run} bind:importPath />
       </Tabs.Content>
       <Tabs.Content value="resources" aria-label="Resources">
         <p class="settings-tab-description">
@@ -147,26 +123,21 @@
           <AiComputeSharing {management} />
         </div>
       </Tabs.Content>
-      {#if management.value.runtime.importedModel}<div class="compute-state">
-          Imported {management.value.runtime.importedModel}<Button
-            variant="ghost"
-            size="sm"
-            disabled={blocked}
-            onclick={() =>
-              management.edit({
-                model: management.value!.runtime.importedModel!,
-              })}
-            ><CheckIcon data-icon="inline-start" aria-hidden="true" />Use
-            imported model</Button
-          >
-        </div>{/if}
       <div class="compute-state" role="status">
-        {management.value.runtime.state ||
-          "off"}{#if management.value.runtime.progress}<span>
-            · {progressLabel}{progressPercent !== null
-              ? ` ${progressPercent}%`
-              : ""}</span
-          >{/if}{#if management.value.outcome === "unknown"}<p>
+        {management.value.runtime.state || "off"} · {management.value
+          .runtimePrepared
+          ? "Runtime prepared"
+          : "Runtime preparation required"}
+        {#if management.value.outcome === "failed"}<p>
+            Last operation failed. Check the notification for recovery details.
+            {#if management.value.failure}<Button
+                variant="ghost"
+                size="sm"
+                onclick={() => management.showFailure()}
+                >Show error details</Button
+              >{/if}
+          </p>{/if}
+        {#if management.value.outcome === "unknown"}<p>
             The previous operation has an unknown outcome. Stop and inspect
             before starting another operation.
           </p>{/if}

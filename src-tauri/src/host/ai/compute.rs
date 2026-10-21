@@ -3,7 +3,7 @@ use super::{
     owner::NativeAiOwner,
     policy::{DesktopAiPolicy, caller},
 };
-use crate::host::state::{NativeError, NativeHost};
+use crate::host::state::{NativeError, NativeHost, access};
 use lapis_desktop::ai::{
     compute::{Action as ComputeAction, Command},
     tools::Owner,
@@ -33,10 +33,11 @@ pub async fn desktop_ai_compute_pick_file(
     session_id: String,
 ) -> Result<Option<String>, NativeError> {
     let context = caller(&window).map_err(|_| io::Error::other("Compute unavailable"))?;
+    let _transition = owner.transitions.clone().lock_owned().await;
+    let lease = super::compute_scope::admit(&window, &host, &owner, &session_id).await?;
     let checking = owner.inner().clone();
     let services = host.inner().clone();
     tauri::async_runtime::spawn_blocking(move || {
-        let lease = checking.current(&services, &context.window)?;
         if lease.session() != session_id {
             return Err(io::Error::other("Compute scope unavailable"));
         }
@@ -75,6 +76,22 @@ pub async fn desktop_ai_compute(
 ) -> Result<serde_json::Value, NativeError> {
     let _transition = owner.transitions.clone().lock_owned().await;
     let context = caller(&window).map_err(|_| io::Error::other("Compute unavailable"))?;
+    if matches!(request.action, Action::Status) {
+        access(host.inner().clone(), move |services| {
+            services
+                .vaults
+                .get(&request.session_id)?
+                .verify_physical_root()
+        })
+        .await?;
+        let compute = policy.compute()?;
+        return tauri::async_runtime::spawn_blocking(move || {
+            serde_json::to_value(compute.status()?).map_err(io::Error::other)
+        })
+        .await
+        .map_err(io::Error::other)?
+        .map_err(Into::into);
+    }
     // Device-owned cleanup stays available after trust/root admission is revoked.
     if let Action::Command { command } = &request.action
         && let ComputeAction::Stop { owner_id } = &command.action
@@ -88,6 +105,7 @@ pub async fn desktop_ai_compute(
         .map_err(io::Error::other)?
         .map_err(Into::into);
     }
+    super::compute_scope::admit(&window, &host, &owner, &request.session_id).await?;
     let checking = owner.inner().clone();
     let services = host.inner().clone();
     let preparing = policy.inner().clone();

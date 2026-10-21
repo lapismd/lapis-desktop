@@ -180,6 +180,16 @@ export async function fixture(client, context) {
   const runtime = JSON.parse(readFileSync(configuration, "utf8"));
   runtime.bundle = resolve("src-tauri/resources/lapis-ai");
   writeFileSync(join(root, "profile/ai-runtime.json"), JSON.stringify(runtime));
+  if (client === "local") {
+    mkdirSync(join(root, "profile/ai-providers"));
+    writeFileSync(
+      join(root, "profile/ai-providers/settings.json"),
+      JSON.stringify({
+        revision: 1,
+        configuration: { provider: "local", endpoint: null, model: null },
+      }),
+    );
+  }
   writeFileSync(
     join(vault, ".lapis/plugins/ai/data.json"),
     JSON.stringify({

@@ -57,6 +57,22 @@ export function setupFixture(app: App, scenario: string) {
     ],
   };
   let computeValue: ComputeStatus = {
+    models: [
+      "setup-running",
+      "setup-downloaded",
+      "setup-missing",
+      "setup-model-table",
+    ].includes(scenario)
+      ? [
+          {
+            id: "unsloth/Qwen3-0.6B-GGUF:Q4_K_M",
+            name: "Qwen3 0.6B · Q4_K_M",
+            installed: scenario !== "setup-missing",
+            bytes: scenario === "setup-missing" ? null : 396705472,
+          },
+        ]
+      : [],
+    runtimePrepared: scenario !== "setup-preparing",
     hardware: {
       memory_bytes: scenario === "setup-unknown-hardware" ? null : 16e9,
     },
@@ -72,12 +88,30 @@ export function setupFixture(app: App, scenario: string) {
       targetPeer: null,
     },
     requestId: null,
-    outcome: null,
+    outcome:
+      scenario === "setup-compute-unknown"
+        ? "unknown"
+        : scenario === "setup-compute-failed"
+          ? "failed"
+          : null,
     runtime: {
       state: scenario === "setup-running" ? "serving" : "off",
       ownerId: scenario === "setup-running" ? crypto.randomUUID() : null,
+      activeModel:
+        scenario === "setup-running" ? "unsloth/Qwen3-0.6B-GGUF:Q4_K_M" : null,
       invitation: null,
-      progress: null,
+      progress:
+        scenario === "setup-downloading"
+          ? {
+              action: "download",
+              label: "Qwen3 0.6B",
+              file: "Qwen3-0.6B-Q4_K_M.gguf",
+              downloaded_bytes: 198352736,
+              total_bytes: 396705472,
+            }
+          : scenario === "setup-preparing"
+            ? { action: "prepare" }
+            : null,
     },
   };
   const background = new BackgroundWork(app.notifications, "ai");
@@ -153,6 +187,13 @@ export function setupFixture(app: App, scenario: string) {
     return manager;
   }
   const providers = agentProviders();
+  if (scenario === "setup-model-table")
+    computeValue.models.push({
+      id: "imported-fixture-local-assistant",
+      name: "Local assistant.gguf",
+      installed: true,
+      bytes: 1200000000,
+    });
   const compute = new AiCompute(
     async (action) => {
       await ready();
@@ -164,11 +205,50 @@ export function setupFixture(app: App, scenario: string) {
             ...command.action.settings,
             revision: computeValue.settings.revision + 1,
           };
-        if (command.action.type === "start")
+        if (command.action.type === "start") {
           computeValue.runtime.state = "serving";
+          computeValue.runtime.activeModel = computeValue.settings.model;
+        }
+        if (command.action.type === "prepare")
+          computeValue.runtimePrepared = true;
+        if (
+          command.action.type === "download" ||
+          command.action.type === "import"
+        ) {
+          const imported = command.action.type === "import";
+          const id = imported
+            ? "imported-fixture"
+            : computeValue.settings.model!;
+          if (imported) computeValue.runtime.importedModel = id;
+          if (!computeValue.models.some((m) => m.id === id))
+            computeValue.models.push({
+              id,
+              name: imported ? "Qwen3 imported.gguf" : id,
+              installed: true,
+              bytes: 396705472,
+            });
+        }
+        if (command.action.type === "remove") {
+          const removed = command.action.model;
+          computeValue.models = computeValue.models.filter(
+            (model) => model.id !== removed,
+          );
+        }
         if (command.action.type === "stop") computeValue.runtime.state = "off";
         computeValue.requestId = command.requestId;
         computeValue.outcome = "completed";
+        if (
+          scenario === "setup-compute-failed" &&
+          command.action.type === "download"
+        ) {
+          computeValue.outcome = "failed";
+          computeValue.failure = {
+            code: "download_failed",
+            message:
+              "The download failed. Check the model reference and network connection, then retry.",
+          };
+          computeValue.runtime.state = "attention";
+        }
       }
       return structuredClone(computeValue);
     },

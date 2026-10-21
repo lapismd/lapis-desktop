@@ -49,11 +49,15 @@ impl Store {
                 return Ok(false);
             }
             if saved.outcome.as_deref() == Some("pending") {
-                return Err(unavailable());
+                return Err(io::Error::new(
+                    io::ErrorKind::WouldBlock,
+                    "Compute already has a pending operation. Check progress or stop compute before retrying.",
+                ));
             }
         }
         if command.expected_revision != saved.settings.revision {
-            return Err(io::Error::other(
+            return Err(io::Error::new(
+                io::ErrorKind::InvalidInput,
                 "Compute settings changed; refresh before retrying",
             ));
         }
@@ -62,10 +66,19 @@ impl Store {
         }
         saved.request = Some(command.clone());
         saved.outcome = Some("pending".into());
+        saved.failure = None;
         self.persist(&saved)?;
         Ok(true)
     }
     pub fn finish(&self, command: &Command, outcome: &str) -> io::Result<()> {
+        self.finish_with_failure(command, outcome, None)
+    }
+    pub fn finish_with_failure(
+        &self,
+        command: &Command,
+        outcome: &str,
+        failure: Option<tauri_plugin_lapis_ai::runtime::ComputeFailure>,
+    ) -> io::Result<()> {
         let _guard = self.gate.lock().map_err(|_| unavailable())?;
         let mut saved = self.read()?;
         if saved.request.as_ref().map(|r| r.request_id) != Some(command.request_id) {
@@ -84,6 +97,7 @@ impl Store {
             };
         }
         saved.outcome = Some(outcome.into());
+        saved.failure = failure;
         self.persist(&saved)
     }
     pub fn recover(&self) -> io::Result<()> {

@@ -10,7 +10,7 @@ export async function openAiSettings(browser) {
   const navigation = browser.$('[aria-label="Settings navigation"]');
   await navigation.waitForDisplayed();
   // The workspace also has an AI tab. Select the Settings navigation entry.
-  await navigation.$("button=AI").click();
+  await navigation.$("button=Compute").click();
   await browser
     .$("button=Prepare runtime")
     .waitForDisplayed({ timeout: 45_000 });
@@ -35,50 +35,8 @@ export async function prepareLocal(f) {
     await openAiSettings(browser);
   }
   await openSettings();
-  const provider = browser.$('button[aria-label^="Provider:"]');
-  await provider.waitForEnabled();
-  // The hidden native driver does not focus a Bits Select on pointer click.
-  await browser.execute(() =>
-    document.querySelector('button[aria-label^="Provider:"]').focus(),
-  );
-  await browser.keys("ArrowDown");
-  await browser.$('[role="option"][data-value="local"]').waitForExist();
-  await finishMotion();
-  await browser
-    .$('[role="option"][data-value="local"]')
-    .waitForDisplayed({ timeout: 10_000 });
-  const options = await browser.$$('[role="option"]');
-  writeFileSync(
-    join(f.root, "provider-catalog.json"),
-    JSON.stringify(await options.map((option) => option.getText()), null, 2),
-  );
-  const local = browser.$(
-    '//*[@role="option" and normalize-space(.)="This machine"]',
-  );
-  await local.waitForDisplayed();
-  await browser.keys("Home");
-  await browser.keys("Enter");
-  await finishMotion();
-  assert.equal(
-    await provider.getAttribute("aria-label"),
-    "Provider: This machine",
-  );
-  await browser.$("button=Save provider").click();
-  await browser.waitUntil(
-    () => {
-      const path = join(f.root, "profile/ai-providers/settings.json");
-      return (
-        existsSync(path) &&
-        JSON.parse(readFileSync(path, "utf8")).configuration.provider ===
-          "local"
-      );
-    },
-    { timeout: 30_000 },
-  );
   assert.equal(existsSync(join(f.root, "profile/ai-compute/compute")), false);
-  const region = browser.$(
-    '//*[@role="region"][.//*[text()="Optional compute"]]',
-  );
+  const region = browser.$('[role="region"][aria-label="Local compute"]');
   assert.match(await region.getText(), /off/u);
   const model =
     process.env.LAPIS_AI_TEST_MODEL ?? "unsloth/Qwen3-0.6B-GGUF:Q4_K_M";
@@ -86,6 +44,7 @@ export async function prepareLocal(f) {
     .$('input[placeholder="unsloth/Qwen3-0.6B-GGUF:Q4_K_M"]')
     .setValue(model);
   const commands = [];
+  let downloadBarObserved = false;
   async function command(label, action) {
     const previous = existsSync(savedPath) ? saved().request?.requestId : null;
     const button = region.$(`button=${label}`);
@@ -93,7 +52,12 @@ export async function prepareLocal(f) {
     await button.click();
     let receipt;
     await browser.waitUntil(
-      () => {
+      async () => {
+        if (
+          action === "download" &&
+          (await region.$('[role="progressbar"]').isExisting())
+        )
+          downloadBarObserved = true;
         if (!existsSync(savedPath)) return false;
         receipt = saved();
         return (
@@ -117,24 +81,43 @@ export async function prepareLocal(f) {
     console.log(`Native local compute ${action}: completed`);
   }
   await command("Prepare runtime", "prepare");
+  if (
+    !process.env.LAPIS_AI_TEST_GGUF ||
+    process.env.LAPIS_AI_TEST_DOWNLOAD === "1"
+  )
+    await command("Download model", "download");
   if (process.env.LAPIS_AI_TEST_GGUF) {
     await region
       .$('input[placeholder="/absolute/path/model.gguf"]')
       .setValue(process.env.LAPIS_AI_TEST_GGUF);
     await command("Import model", "import");
-    const imported = region.$("button=Use imported model");
-    await imported.waitForEnabled();
-    await imported.click();
-  } else await command("Download model", "download");
+  }
+  if (process.env.LAPIS_AI_TEST_DOWNLOAD === "1")
+    assert.equal(
+      downloadBarObserved,
+      true,
+      "A real download must expose a visible progress bar",
+    );
   await command("Start model", "start");
   await browser.waitUntil(
-    async () => /\bserving\b/u.test(await region.getText()),
+    () =>
+      browser.execute(() =>
+        /\bserving\b/u.test(
+          document.querySelector(
+            '[role="region"][aria-label="Local compute"] [role="status"]',
+          )?.textContent ?? "",
+        ),
+      ),
     { timeout: 30_000 },
   );
   assert.equal(saved().settings.sharing, false);
   writeFileSync(
     join(f.root, "compute-accepted.json"),
-    JSON.stringify({ model, commands, sharing: false }, null, 2),
+    JSON.stringify(
+      { model, commands, sharing: false, downloadBarObserved },
+      null,
+      2,
+    ),
   );
   await browser.$('button[aria-label="Close settings"]').click();
   await finishMotion();
@@ -145,12 +128,14 @@ export async function prepareLocal(f) {
       // Settings remounts its sections each time it opens. Do not retain the
       // initial section handle across Close settings and the next opening.
       const currentRegion = browser.$(
-        '//*[@role="region"][.//*[text()="Optional compute"]]',
+        '[role="region"][aria-label="Local compute"]',
       );
       await browser.$("button=Stop compute").click();
       await browser.waitUntil(
         async () =>
-          (await currentRegion.$('[role="status"]').getText()).trim() === "off",
+          (await currentRegion.$('[role="status"]').getText())
+            .trim()
+            .startsWith("off"),
         { timeout: 30_000 },
       );
       await browser.$('button[aria-label="Close settings"]').click();

@@ -70,7 +70,6 @@ export function createNativeAi(
     vault.sessionId,
     native,
     background,
-    () => scope.targets(),
     () => {
       models.invalidate();
       scope.invalidateAdmission();

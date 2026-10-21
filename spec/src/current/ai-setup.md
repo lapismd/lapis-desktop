@@ -98,7 +98,9 @@ Max VRAM composes QuantityInput with canonical whole GB, an optional bounded
 slider and retained invalid drafts. Empty remains null/no explicit limit; mount,
 display controls and tab changes never save or start compute.
 Model/resource/peer controls adapt JJ Store’s Settings components through public
-Design Core fields.
+Design Core fields. Downloaded models have a separate section matching Installed
+clients: tinted header, avatar summaries and divided rows with size, download,
+selection and running state beside explicit model actions.
 
 All model choices in AI Settings, agent/provider editors and Compute use
 searchable Command View pickers. AI defaults, memory and handoff reuse the
@@ -144,6 +146,25 @@ an interrupted model operation. Native work runs off the UI thread and owned
 commands use the App status API; Settings show representative skeletons and
 bounded download progress.
 
+The Models tab presents the device's downloaded library before Add model and
+Import GGUF controls. Native inventory survives settings remount and cold
+restart, reports actual sizes without counting hard-linked aliases twice, and
+distinguishes missing files from installed weights. Selected and running models
+are separate facts. Start requires installed weights and prepared runtime;
+successful import/download selects the new model without starting it. Explicit
+removal confirms the model identity and cannot remove a running model. Existing
+downloads are discovered without re-download or provider credential resolution.
+
+Active operations show stage, current file and byte counts, with a progress bar
+when a file's total is known and an indeterminate indicator otherwise. They
+never fabricate a whole-model percentage from per-file totals. Native operation
+state survives tab/view navigation. Stop remains available during active work.
+Allowlisted failure messages identify recovery actions through one application
+notification per operation; neutral failure/unknown state remains beside the
+controls. Acknowledged failures unlock retry, while transport loss retains the
+exact unresolved request without replay. Missing weights, runtime preparation,
+invalid GGUF, storage, memory, download and inference failures remain distinct.
+
 ## Remaining qualification and secondary work
 
 | Surface                                   | Implementation                                              | Qualification remaining                      |
@@ -157,9 +178,9 @@ helpers and in-memory Settings do not qualify a real provider or loaded model.
 Real external-client/Lapis tool turns, cold mounted restart/trust cleanup,
 native inference with prepared weights and two-device mutual pairing retain the
 original M10.2–M10.4 acceptance gates. Signing/publication and other platforms
-remain M11. Expanded model catalogs, model removal, editable relay settings are
-secondary work, separate from v0’s explicit model/resource/peer lifecycle. No
-deferred JJ-store chat implementation is resumed by this profile.
+remain M11. Expanded model catalogs and editable relay settings are secondary
+work, separate from v0’s explicit model/resource/peer lifecycle. No deferred
+JJ-store chat implementation is resumed by this profile.
 
 E-AI-104 records native Codex, Cursor and OpenCode tool reads, approved edits,
 cancellation, normal Quit and unchanged cold history. Real local compute

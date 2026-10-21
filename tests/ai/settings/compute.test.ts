@@ -6,6 +6,8 @@ import {
 } from "../../../src/lib/ai/settings/compute.svelte.ts";
 function initial(): ComputeStatus {
   return {
+    models: [],
+    runtimePrepared: false,
     settings: {
       revision: 0,
       model: null,
@@ -65,7 +67,7 @@ it("an unknown command retains its identity and cannot silently launch a new act
   expect(compute.pending).toBe(true);
   expect(await compute.command({ type: "download" })).toBe(false);
   expect(commands[0]).toEqual(commands[1]);
-  expect(report).toHaveBeenCalledTimes(2);
+  expect(report).toHaveBeenCalledTimes(1);
   await compute.stop();
   expect(compute.pending).toBe(false);
   await compute.close();

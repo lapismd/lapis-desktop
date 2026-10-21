@@ -1,5 +1,7 @@
 # Evidence
 
+- [Local compute library, progress and recovery](E-AI-123.md)
+
 - [Shared native history service intake](E-REPO-056.md)
 
 - [Saved AI tool expansion backlog](E-PLAN-004.md)

@@ -12,3 +12,4 @@ pub(crate) mod clients;
 pub(crate) mod providers;
 
 pub(crate) mod compute;
+mod compute_scope;

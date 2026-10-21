@@ -10,7 +10,6 @@ export function nativeCompute(
   sessionId: string,
   call: NativeCall,
   background: BackgroundWork,
-  prepare: () => Promise<unknown>,
   changed: () => void,
   allowed: () => boolean,
 ) {
@@ -18,7 +17,6 @@ export function nativeCompute(
     async (action) => {
       if (action.type === "status" || action.command.action.type !== "stop") {
         if (!allowed()) throw new Error("Compute requires a trusted workspace");
-        await prepare();
       }
       return call<ComputeStatus>("desktop_ai_compute", {
         request: { sessionId, action },
@@ -26,9 +24,9 @@ export function nativeCompute(
     },
     (title, action) => background.run(title, action),
     changed,
-    (error) =>
+    (error, identity) =>
       app.notifications.notify({
-        id: "ai-compute",
+        id: identity ? `ai-compute:${identity}` : "ai-compute",
         title: "Optional compute",
         source: "ai",
         severity: "error",
@@ -36,7 +34,6 @@ export function nativeCompute(
       }),
     async () => {
       if (!allowed()) throw new Error("Compute requires a trusted workspace");
-      await prepare();
       return call<string | null>("desktop_ai_compute_pick_file", { sessionId });
     },
   );

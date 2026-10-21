@@ -70,12 +70,23 @@ impl Compute {
     pub fn status(&self) -> io::Result<Status> {
         self.initialize()?;
         let saved = self.store.read()?;
+        let inventory = tauri_plugin_lapis_ai::runtime::ComputeInventory::read(
+            &self.store.root.join("compute"),
+        )
+        .map_err(|error| {
+            io::Error::other(
+                tauri_plugin_lapis_ai::runtime::ComputeFailure::from_code(error.0).message,
+            )
+        })?;
         Ok(Status {
             hardware: hardware::facts(),
             settings: saved.settings,
             request_id: saved.request.map(|r| r.request_id),
             outcome: saved.outcome,
             runtime: self.runtime.view.lock().map_err(|_| unavailable())?.clone(),
+            models: inventory.models,
+            runtime_prepared: inventory.runtime_prepared,
+            failure: saved.failure,
         })
     }
     pub async fn command(
@@ -161,15 +172,31 @@ impl Compute {
             let store = this.store.clone();
             let outcome = if result.is_ok() {
                 "completed"
+            } else if result.as_ref().err().is_some_and(|e| {
+                e.get_ref()
+                    .is_some_and(|inner| inner.is::<worker::Rejected>())
+            }) {
+                "failed"
             } else {
                 "unknown"
             };
             if result.is_err() {
-                this.runtime.view.lock().map_err(|_| unavailable())?.state = "attention".into();
+                let mut view = this.runtime.view.lock().map_err(|_| unavailable())?;
+                if view.state != "serving" {
+                    view.state = "attention".into();
+                }
+                view.progress = None;
             }
-            tokio::task::spawn_blocking(move || store.finish(&command, outcome))
-                .await
-                .map_err(|_| unavailable())??;
+            let failure = result
+                .as_ref()
+                .err()
+                .and_then(|e| e.get_ref()?.downcast_ref::<worker::Rejected>())
+                .map(|e| e.0.clone());
+            tokio::task::spawn_blocking(move || {
+                store.finish_with_failure(&command, outcome, failure)
+            })
+            .await
+            .map_err(|_| unavailable())??;
             result
         });
         *self.runtime.job.lock().await = Some(task);
