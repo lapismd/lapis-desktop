@@ -250,3 +250,12 @@ clients.
 E-AI-108: AI/Agent providers covers per-agent provider settings, legacy editing
 and failed-save retention. Compute has its own sidebar page with Max VRAM.
 AI/Agent header/Participant avatars uses the production embedded session shell.
+
+E-AI-109: AI/Settings/Grouped settings uses production responsive pill tabs for
+Conversation, Models, Memory/handoff and Tools, including field reveal and
+narrow overflow navigation. AI setup uses the same public component and icon
+buttons; compute drafts survive tab changes. Existing settings, clients category
+and local-conversation stories exercise their reachable panels. Visual pending.
+
+AI/Compute tabs remain pinned above scrolling panels with opaque theme backgrounds;
+panel descriptions replace duplicate headings. Compute panels own the final row edge.

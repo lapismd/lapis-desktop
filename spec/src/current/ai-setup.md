@@ -25,21 +25,27 @@ discovery; it never delegates to an external client.
 
 ## Providers and application tools
 
-AI Settings owns conversation preferences. Agents owns named profiles and
-installed clients. Choosing the Lapis harness in the agent editor exposes that
-agent's provider, endpoint, write-only API key and exact model. New Lapis
-profiles use independent device-owned configurations keyed by stable vault and
-profile identities. Two profiles may use different endpoints, credentials and
-models; selecting one never changes another. Existing device-wide configuration
-remains available as the legacy Lapis agent, preserving existing sessions and
-settings. No provider key or endpoint enters a vault's portable profile record;
-it contains only the opaque configuration selector and ordinary
-model/presentation fields. Unknown configuration selectors refuse; they never
-select the legacy provider. Provider updates affect new bindings; running
-workers retain their configuration. Chat headers use the chosen agent’s custom
-avatar or harness icon. Multiple participants use the public Design Core avatar
-group with profile hover cards. Removing a portable agent does not silently
-delete its device credentials.
+AI Settings groups Conversation, Models, Memory (including handoff summaries)
+and Tools in Design Core responsive pill tabs. Compute uses the same control for
+Models, Resources and Sharing. Overflowed choices remain reachable from More,
+and settings search reveals the owning tab. Compute actions have icons and text
+labels. Tabs stay pinned above scrolling content on an opaque theme background;
+page and repeated tab headings are omitted, with slightly inset descriptions inside each panel.
+These presentation changes preserve saved values, draft state and
+explicit action semantics. Agents owns named profiles and installed clients.
+Choosing the Lapis harness in the agent editor exposes that agent's provider,
+endpoint, write-only API key and exact model. New Lapis profiles use independent
+device-owned configurations keyed by stable vault and profile identities. Two
+profiles may use different endpoints, credentials and models; selecting one
+never changes another. Existing device-wide configuration remains available as
+the legacy Lapis agent, preserving existing sessions and settings. No provider
+key or endpoint enters a vault's portable profile record; it contains only the
+opaque configuration selector and ordinary model/presentation fields. Unknown
+configuration selectors refuse; they never select the legacy provider. Provider
+updates affect new bindings; running workers retain their configuration. Chat
+headers use the chosen agent’s custom avatar or harness icon. Multiple
+participants use the public Design Core avatar group with profile hover cards.
+Removing a portable agent does not silently delete its device credentials.
 
 Compute is a dedicated settings-sidebar section with the `cpu` icon. It owns
 model preparation, download/import, serving, sharing and Max VRAM (GB), using

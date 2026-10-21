@@ -319,3 +319,5 @@
 
 - [Lapis picker and explicit cloud model setup](history/E-AI-107.md)
 - [Per-agent providers, chat avatars and Compute settings](history/E-AI-108.md)
+
+- [Responsive AI and Compute settings](history/E-AI-109.md)

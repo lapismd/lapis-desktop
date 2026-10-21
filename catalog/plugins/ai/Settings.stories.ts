@@ -1,3 +1,7 @@
+import {
+  expectPinnedSettingsTabs,
+  selectSettingsTab,
+} from "../../support/ai/settings-tabs.ts";
 // SPDX-License-Identifier: Apache-2.0
 import { aiReviewAction, aiReviewValue } from "../../support/ai/review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -48,6 +52,7 @@ async function choose(element: HTMLElement, label: string, option: string) {
 export const ControlledPreferences: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Models");
     await choose(canvasElement, "ACP agent", "Cursor");
     await choose(canvasElement, "Default model", "cursor next");
     await choose(canvasElement, "Thinking", "High");
@@ -81,9 +86,19 @@ export const HistoricalRuntimePreferences: Story = {
   args: { scenario: "legacy" },
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Models");
     expect(
-      canvas.getAllByText(/Saved preference: Codex native \(unavailable\)/),
-    ).toHaveLength(3);
+      within(canvas.getByRole("tabpanel", { name: "Models" })).getAllByText(
+        /Saved preference: Codex native \(unavailable\)/,
+      ),
+    ).toHaveLength(1);
+    await selectSettingsTab(canvasElement, "AI settings", "Memory");
+    expect(
+      within(canvas.getByRole("tabpanel", { name: "Memory" })).getAllByText(
+        /Saved preference: Codex native \(unavailable\)/,
+      ),
+    ).toHaveLength(2);
+    await selectSettingsTab(canvasElement, "AI settings", "Models");
     await userEvent.click(
       canvas.getByRole("combobox", { name: "Default runtime" }),
     );
@@ -112,6 +127,7 @@ export const HistoricalRuntimePreferences: Story = {
 export const ToolRegistryAndCleanup: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Tools");
     expect(canvas.getByRole("switch", { name: "read" })).toBeChecked();
     const community = canvas.getByRole("switch", {
       name: "community_count",
@@ -148,6 +164,7 @@ export const ToolRegistryAndCleanup: Story = {
 export const SaveFailureAndRetry: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Memory");
     await aiReviewAction(canvasElement, "Fail next settings write");
     await userEvent.click(
       canvas.getByRole("switch", {
@@ -177,6 +194,7 @@ export const UnavailableModelCatalog: Story = {
   args: { scenario: "catalog-error" },
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Models");
     await userEvent.click(
       canvas.getByRole("combobox", { name: "Default model" }),
     );
@@ -192,5 +210,48 @@ export const UnavailableModelCatalog: Story = {
     expect(aiReviewValue(canvasElement, "AI notifications")).toContain(
       "Fixture provider unavailable",
     );
+  },
+};
+
+export const GroupedSettings: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    expect(
+      canvas.getByRole("tabpanel", { name: "Conversation" }),
+    ).toBeVisible();
+    expect(
+      canvas.getByRole("switch", { name: "Automatically tag agents" }),
+    ).toBeVisible();
+    expect(canvas.queryByRole("heading", { name: "AI", level: 1 })).toBeNull();
+    expect(canvas.queryByRole("heading", { name: "Conversation" })).toBeNull();
+    expect(
+      canvas.getByRole("tabpanel", { name: "Conversation" }),
+    ).toHaveTextContent("Choose how conversations look");
+    const before = await saved(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Models");
+    expect(
+      canvas.getByRole("combobox", { name: "Default model" }),
+    ).toBeVisible();
+    await aiReviewAction(canvasElement, "Reveal memory setting");
+    await waitFor(() =>
+      expect(canvas.getByRole("tabpanel", { name: "Memory" })).toBeVisible(),
+    );
+    expect(
+      canvas.getByRole("heading", { name: "Handoff summaries" }),
+    ).toBeVisible();
+    await expectPinnedSettingsTabs(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Tools");
+    expect(canvas.getByRole("switch", { name: "read" })).toBeVisible();
+    expect(await saved(canvasElement)).toEqual(before);
+    const tabs = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="responsive-tabs"]',
+    )!;
+    expect(tabs).toHaveAttribute("data-presentation", "pill");
+    expect(tabs.scrollWidth).toBeLessThanOrEqual(tabs.clientWidth + 1);
+    if (canvasElement.ownerDocument.documentElement.clientWidth < 600)
+      expect(
+        canvas.getByRole("button", { name: "More ai settings" }),
+      ).toBeVisible();
+    await selectSettingsTab(canvasElement, "AI settings", "Conversation");
   },
 };

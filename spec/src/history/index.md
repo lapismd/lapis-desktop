@@ -344,3 +344,5 @@ by the task ledger, not inferred from this list.
 
 - [Lapis picker and explicit cloud model setup](E-AI-107.md)
 - [Per-agent providers, chat avatars and Compute settings](E-AI-108.md)
+
+- [Responsive AI and Compute settings](E-AI-109.md)

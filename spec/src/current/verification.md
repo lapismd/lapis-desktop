@@ -204,3 +204,6 @@ pin/archive/menu actions and a 16px approval marker; native gates remain.
 
 [E-AI-108](../history/E-AI-108.md): per-agent providers, exact native selectors,
 shared header avatars and dedicated Compute settings. Original gates remain.
+
+[E-AI-109](../history/E-AI-109.md): responsive AI/Compute settings tabs, search
+reveal and icon actions. Native/provider gates remain unchanged.

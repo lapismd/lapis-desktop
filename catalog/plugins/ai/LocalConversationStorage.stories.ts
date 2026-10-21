@@ -1,3 +1,4 @@
+import { selectSettingsTab } from "../../support/ai/settings-tabs.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, within } from "storybook/test";
 import SettingsDemo from "../../support/ai/SettingsDemo.svelte";
@@ -14,7 +15,7 @@ export const LocalAcpOnly: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      canvas.findByRole("heading", { name: "AI", level: 1 }),
+      canvas.findByRole("tablist", { name: "AI settings" }),
     ).resolves.toBeVisible();
     expect(
       canvas.queryByRole("heading", { name: "Native conversation history" }),
@@ -22,14 +23,16 @@ export const LocalAcpOnly: Story = {
     expect(
       canvas.queryByRole("button", { name: "Conversation storage" }),
     ).toBeNull();
-    for (const name of [
-      "Conversation",
-      "Runtime and model",
-      "Memory",
-      "Handoff summaries",
-      "Application tools",
-    ])
-      expect(canvas.getByRole("heading", { name })).toBeVisible();
+    for (const [tab, sections] of [
+      ["Conversation", ["Conversation"]],
+      ["Models", ["Runtime and model"]],
+      ["Memory", ["Memory", "Handoff summaries"]],
+      ["Tools", ["Application tools"]],
+    ] as const) {
+      await selectSettingsTab(canvasElement, "AI settings", tab);
+      for (const name of sections)
+        expect(canvas.getByRole("region", { name })).toBeVisible();
+    }
   },
 };
 
@@ -44,7 +47,7 @@ export const GuardedReplacement: Story = {
 
 export const RetiredNativeTabs: Story = {
   play: async ({ canvasElement }) => {
-    await within(canvasElement).findByRole("heading", { name: "AI", level: 1 });
+    await within(canvasElement).findByRole("tablist", { name: "AI settings" });
     const { aiReviewAction } = await import("../../support/ai/review.ts");
     await aiReviewAction(canvasElement, "Verify retired conversation tabs");
   },

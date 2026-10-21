@@ -1,3 +1,7 @@
+import {
+  expectPinnedSettingsTabs,
+  selectSettingsTab,
+} from "../../support/ai/settings-tabs.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import SettingsDemo from "../../support/ai/SettingsDemo.svelte";
@@ -15,15 +19,28 @@ type Story = StoryObj<typeof meta>;
 export const ComputeSettings: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole("heading", { name: "Compute" });
+    await canvas.findByRole("tablist", { name: "Compute settings" });
+    expect(canvas.queryByRole("heading", { name: "Compute" })).toBeNull();
     expect(canvas.queryByText("Lapis provider")).toBeNull();
     const compute = within(
       await canvas.findByRole("region", { name: "Local compute" }),
     );
-    await userEvent.click(
-      await compute.findByRole("tab", { name: "Resources" }),
+    await selectSettingsTab(canvasElement, "Compute settings", "Models");
+    expect(compute.getByRole("tabpanel", { name: "Models" })).toHaveTextContent(
+      "Local inference stays off until you start it.",
     );
+    const modelPanel = compute.getByRole("tabpanel", { name: "Models" });
+    const rows = modelPanel.querySelectorAll(".compute-setting-row");
+    expect(getComputedStyle(rows[rows.length - 1]!).borderBottomWidth).toBe(
+      "0px",
+    );
+    expect(getComputedStyle(rows[0]!).borderBottomWidth).toBe("1px");
+    await expectPinnedSettingsTabs(canvasElement);
+    await selectSettingsTab(canvasElement, "Compute settings", "Resources");
     await userEvent.type(compute.getByLabelText("Max VRAM (GB)"), "8");
+    await selectSettingsTab(canvasElement, "Compute settings", "Models");
+    await selectSettingsTab(canvasElement, "Compute settings", "Resources");
+    expect(compute.getByLabelText("Max VRAM (GB)")).toHaveValue(8);
     await userEvent.click(
       compute.getByRole("button", { name: "Save compute settings" }),
     );
@@ -89,7 +106,7 @@ export const Sharing: Story = {
         name: "Local compute",
       }),
     );
-    await userEvent.click(await compute.findByRole("tab", { name: "Sharing" }));
+    await selectSettingsTab(canvasElement, "Compute settings", "Sharing");
     await expect(
       compute.getByRole("switch", { name: "Share this machine" }),
     ).not.toBeChecked();
@@ -150,11 +167,9 @@ export const ModelMemoryLimits: Story = {
       }),
     );
     const portal = within(canvasElement.ownerDocument.body);
-    await userEvent.click(
-      await compute.findByRole("tab", { name: "Resources" }),
-    );
+    await selectSettingsTab(canvasElement, "Compute settings", "Resources");
     await userEvent.type(compute.getByLabelText("Max VRAM (GB)"), "4");
-    await userEvent.click(compute.getByRole("tab", { name: "Models" }));
+    await selectSettingsTab(canvasElement, "Compute settings", "Models");
     await userEvent.click(compute.getByRole("combobox", { name: "Model" }));
     await expect(
       portal.getByRole("option", { name: /gemma-4-E4B/ }),

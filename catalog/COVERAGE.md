@@ -1061,3 +1061,9 @@ moves the required-model assertion into AI/Agent providers/Independent
 providers, using the real agent editor and scoped synthetic settings. Native
 credentials never enter the catalog. AI/Agent setup review covers shared header
 avatars.
+
+E-AI-109: AI/Settings/Grouped settings uses production responsive pill tabs for
+Conversation, Models, Memory/handoff and Tools, including field reveal and
+narrow overflow navigation. AI setup uses the same public component and icon
+buttons; compute drafts survive tab changes. Existing settings, clients category
+and local-conversation stories exercise their reachable panels. Visual pending.

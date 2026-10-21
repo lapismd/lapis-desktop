@@ -6,6 +6,8 @@
   import { Switch } from "@lapismd/design-core/shadcn/switch";
   import { Textarea } from "@lapismd/design-core/shadcn/textarea";
   import { Button } from "@lapismd/design-core/shadcn/button";
+  import NetworkIcon from "@lucide/svelte/icons/network";
+  import UnplugIcon from "@lucide/svelte/icons/unplug";
   import type { AiCompute } from "../../../lib/ai/settings/compute.svelte.ts";
   let { management }: { management: AiCompute } = $props();
   const id = $props.id();
@@ -76,7 +78,9 @@
       variant="outline"
       size="sm"
       disabled={blocked || !invitation.trim()}
-      onclick={pair}>Add paired machine</Button
+      onclick={pair}
+      ><NetworkIcon data-icon="inline-start" aria-hidden="true" />Add paired
+      machine</Button
     >
   </ComputeSettingRow>
   <ComputeSettingRow id={`${id}-host`} label="Inference host">
@@ -114,7 +118,11 @@
                 ? null
                 : management.draft.targetPeer,
           });
-        }}>Remove {peer.slice(0, 12)}…</Button
+        }}
+        ><UnplugIcon data-icon="inline-start" aria-hidden="true" />Remove {peer.slice(
+          0,
+          12,
+        )}…</Button
       >{/each}
   </ComputeSettingRow>
 </Field.Group>

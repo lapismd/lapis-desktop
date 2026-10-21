@@ -1,7 +1,7 @@
 # Desktop plugins and catalog
 
-E-AI-104/108 cover participant tags, per-agent provider editors, header avatar
-groups and separate Compute settings under LD-CAT-003.
+E-AI-108/109 cover per-agent editors, header avatars and responsive
+AI/Compute settings with icon actions under LD-CAT-003.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

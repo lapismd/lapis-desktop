@@ -56,6 +56,12 @@
       },
       actions: {
         "Inspect saved settings": inspect,
+        "Reveal memory setting": () => {
+          controller.settings.open({
+            sectionId: "ai",
+            fieldId: "ai.memoryAutomaticRecall",
+          });
+        },
         "Verify retired conversation tabs": async () => {
           const { checkRetiredTabs } = await import("./retired-tabs-checks.ts");
           await checkRetiredTabs(fixture);

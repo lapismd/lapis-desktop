@@ -29,6 +29,9 @@
     padding: 0.8rem 1rem;
     border-block-end: 1px solid var(--border);
   }
+  :global(.compute-setting-row:last-child) {
+    border-block-end: 0;
+  }
   .control {
     min-width: 0;
     display: grid;

@@ -1,0 +1,23 @@
+.settings-tab-strip {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  min-width: 0;
+  margin-block-start: -0.75rem;
+  padding-block: 0.75rem;
+  background: var(--ui-workspace-background, var(--background));
+}
+
+.settings-tab-description {
+  margin: 0 0 0.85rem;
+  padding-inline-start: 0.75rem;
+  color: var(--muted-foreground);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@container workspace-settings (max-width: 44rem) {
+  .settings-tab-strip {
+    top: 3rem;
+  }
+}

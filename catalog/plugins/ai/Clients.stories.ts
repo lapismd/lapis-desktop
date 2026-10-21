@@ -1,3 +1,4 @@
+import { selectSettingsTab } from "../../support/ai/settings-tabs.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import SettingsDemo from "../../support/ai/SettingsDemo.svelte";
@@ -120,6 +121,7 @@ export const SettingsCategory: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
     await selectCategory(canvasElement, "AI");
+    await selectSettingsTab(canvasElement, "AI settings", "Models");
     await expect(
       await canvas.findByRole("combobox", { name: "Default runtime" }),
     ).toBeVisible();
