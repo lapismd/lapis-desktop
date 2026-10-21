@@ -13,6 +13,7 @@ export type TranscriptFrameProps = {
   onViewChange: (view: "document" | "classic") => void;
   children: Snippet;
   footer: Snippet;
+  headerActions?: Snippet;
   /** Optional body-covering tool inspector, rendered within the host shell. */
   toolInspector?: Snippet;
   bodySidebar?: Snippet<[number, boolean]>;

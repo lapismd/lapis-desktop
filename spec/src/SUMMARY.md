@@ -333,3 +333,5 @@
 - [Sent context root text alignment](history/E-AI-115.md)
 
 - [AI change inspection layout alignment](history/E-AI-116.md)
+
+- [AI body-header actions and view navigation](history/E-AI-117.md)

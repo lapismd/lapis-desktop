@@ -14,7 +14,12 @@ Incomplete terminal capture and restart recovery never fabricate completion.
 
 Both transcript layouts expose per-turn summaries and an embedded Changes rail
 using a right body file sidebar, responsive pill scope tabs and main-body
-Diff/Before/After inspection. Closing a file restores the mounted transcript and
+Diff/Before/After inspection. The conversation Changes control is an icon-only
+ghost button beside the transcript-view toggle in the body header, with an
+accessible label and tooltip. The body kebab View submenu uses icons and the
+registered commands to open AI conversations, Catalog and Import AI sessions,
+reusing existing views. Unavailable commands are disabled. This replaces the
+footer conversations button. Closing a file restores the mounted transcript and
 its draft. Saved-change blocks use the plain transcript surface and the shared
 Git/JJ copy controls. Conversation-wide browsing retains exact turns. Local
 conversation records retain portable checkpoint links; native receipts recover

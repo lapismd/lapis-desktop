@@ -24,6 +24,7 @@
     children,
     footer: composerFooter,
     toolInspector,
+    headerActions,
     bodySidebar,
     bodySidebarOpen,
     mainInspector,
@@ -164,7 +165,7 @@
   {#snippet actions()}<TranscriptViewToggle
       {view}
       onChange={onViewChange}
-    /><ChatConversationMenu
+    />{@render headerActions?.()}<ChatConversationMenu
       {panelProps}
       {controller}
       actions={panel.actions}

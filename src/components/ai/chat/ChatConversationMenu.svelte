@@ -3,6 +3,7 @@
   import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
   import ChatParticipantDialog from "./ChatParticipantDialog.svelte";
   import ChatPermissions from "./ChatPermissions.svelte";
+  import ChatViewMenu from "./ChatViewMenu.svelte";
   import PinIcon from "@lucide/svelte/icons/pin";
   import PinOffIcon from "@lucide/svelte/icons/pin-off";
   import ArchiveIcon from "@lucide/svelte/icons/archive";
@@ -43,6 +44,7 @@
   </DropdownMenu.Trigger>
   <DropdownMenu.Content data-ai-part="conversation-menu" align="end">
     <DropdownMenu.Group>
+      <ChatViewMenu {panelProps} {actions} />
       <ChatPermissions {panelProps} {controller} {composerState} />
       <DropdownMenu.Item
         disabled={initializing || !controller.location}

@@ -61,7 +61,8 @@ export async function assertStackedComposer(panel: HTMLElement): Promise<void> {
             content.getBoundingClientRect().bottom,
         ),
       ).toBeLessThan(2);
-      expect(clearance).toBeGreaterThan(0);
+      // The embedded AppShell owns the footer; there is no reserved outer gap.
+      expect(clearance).toBe(0);
       expect(bar.getBoundingClientRect().height).toBe(32);
       expect(footer!.getBoundingClientRect().height).toBeLessThanOrEqual(32);
     } else {

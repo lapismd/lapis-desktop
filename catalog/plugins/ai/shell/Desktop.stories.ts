@@ -163,6 +163,9 @@ export const Desktop: Story = {
     await userEvent.click(
       await within(dialog).findByRole("button", { name: "AI" }),
     );
+    await userEvent.click(
+      await within(dialog).findByRole("tab", { name: "Models" }),
+    );
     const runtimeLabel = within(dialog).getByText("Default runtime");
     await expect(runtimeLabel).toBeVisible();
     await expect(within(dialog).getByText("ACP agent")).toBeVisible();

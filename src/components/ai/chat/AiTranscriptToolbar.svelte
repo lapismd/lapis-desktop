@@ -1,10 +1,16 @@
 <script lang="ts">
+  import type { Snippet } from "svelte";
   import { SegmentedControl } from "@lapismd/design-core/forms";
   import type { AiChatPanelProps } from "../../../lib/ai/chat/panel/props.ts";
   let {
     panelProps,
+    actions,
     view = $bindable("document"),
-  }: { panelProps: AiChatPanelProps; view: "document" | "classic" } = $props();
+  }: {
+    panelProps: AiChatPanelProps;
+    view: "document" | "classic";
+    actions?: Snippet;
+  } = $props();
   async function chooseView(next: "document" | "classic") {
     view = next;
     try {
@@ -23,17 +29,20 @@
 
 <div class="transcript-toolbar">
   <span class="transcript-title">Conversation</span>
-  <SegmentedControl
-    value={view}
-    options={["document", "classic"]}
-    labels={{ document: "Document", classic: "Classic" }}
-    ariaLabel="Conversation view"
-    onChange={(next) => {
-      if (next !== "document" && next !== "classic") return;
-      const pending = chooseView(next);
-      panelProps.onOperation?.(pending);
-    }}
-  />
+  <div class="transcript-toolbar-actions">
+    <SegmentedControl
+      value={view}
+      options={["document", "classic"]}
+      labels={{ document: "Document", classic: "Classic" }}
+      ariaLabel="Conversation view"
+      onChange={(next) => {
+        if (next !== "document" && next !== "classic") return;
+        const pending = chooseView(next);
+        panelProps.onOperation?.(pending);
+      }}
+    />
+    {@render actions?.()}
+  </div>
 </div>
 
 <style>
@@ -45,6 +54,11 @@
     flex-wrap: wrap;
     padding: 0.5rem 0.75rem;
     border-bottom: 1px solid var(--border);
+  }
+  .transcript-toolbar-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
   }
   .transcript-title {
     font-size: 0.8125rem;

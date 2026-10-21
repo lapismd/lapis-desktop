@@ -11,7 +11,6 @@
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import FileIcon from "@lucide/svelte/icons/file";
   import VaultPathLabel from "./VaultPathLabel.svelte";
-  import HistoryIcon from "@lucide/svelte/icons/history";
   import PaperclipIcon from "@lucide/svelte/icons/paperclip";
   import type { AttachmentsState } from "../../../lib/ai/chat/panel/attachments.svelte.ts";
   import type { AiChatController } from "../../../lib/ai/chat/chat-controller.svelte.ts";
@@ -31,22 +30,9 @@
     composerState: ComposerState;
   } = $props();
   const initializing = $derived(panelProps.initializing ?? false);
-  const repository = $derived(panelProps.repository);
   const fileSearch = $derived(panelProps.fileSearch);
-  const onRevealHistory = $derived(panelProps.onRevealHistory);
 </script>
 
-{#if repository}
-  <Button
-    size="icon-sm"
-    variant="ghost"
-    aria-label="Show conversation history"
-    data-testid="ai-chat-history"
-    onclick={() => void actions.perform(() => onRevealHistory?.())}
-  >
-    <HistoryIcon aria-hidden="true" />
-  </Button>
-{/if}
 {#if fileSearch}
   <Popover.Root
     bind:open={attachmentsState.attachOpen}

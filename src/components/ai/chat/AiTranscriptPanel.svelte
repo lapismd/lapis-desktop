@@ -162,7 +162,6 @@
       {customBlock}
     >
       {#snippet beforeItems()}
-        <AiChangesButton inspection={changes} />
         {#if !Frame}<div class="transcript-conversations">
             <ChatConversationPicker
               {panelProps}
@@ -210,6 +209,10 @@
 
 {#snippet customBlock(block: TranscriptBlock)}
   <AiHistoryBlock {block} {panel} inspection={changes} />
+{/snippet}
+
+{#snippet headerActions()}
+  <AiChangesButton inspection={changes} />
 {/snippet}
 
 {#snippet bodySidebar(height: number, compact: boolean)}
@@ -262,6 +265,7 @@
       {view}
       onViewChange={chooseView}
       footer={composerFooter}
+      {headerActions}
       {toolInspector}
       {bodySidebar}
       bodySidebarOpen={changes.open}
@@ -272,6 +276,7 @@
   {:else}<AiTranscriptToolbar
       {panelProps}
       bind:view
+      actions={headerActions}
     />{@render conversation()}{/if}
 </div>
 <AiHistoryDialogs history={controller.fileHistory} inspection={changes} />

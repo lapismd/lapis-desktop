@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-E-AI-113–116 cover sent context, turn changes and root indentation (LD-CAT-003).
+E-AI-113–117 cover sent context, turn changes and root indentation (LD-CAT-003).
 
 E-AI-108/109/112 cover named-agent editors, header avatars, menu actions and
 responsive AI/Compute settings under LD-CAT-003.

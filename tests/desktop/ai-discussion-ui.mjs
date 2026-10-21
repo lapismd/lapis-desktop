@@ -1,3 +1,4 @@
+import { revealConversationHistory } from "./ai-view-navigation.mjs";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
@@ -54,9 +55,7 @@ export async function ready(session) {
 
 export async function openMainChat(session) {
   await ready(session);
-  await session.browser
-    .$('button[aria-label="Show conversation history"]')
-    .click();
+  await revealConversationHistory(session);
   await session.browser.$('button[aria-label="New chat in Vault"]').click();
   await session.browser.waitUntil(
     async () => {
@@ -195,7 +194,7 @@ export async function replyToThread(session, threadId, text) {
 export async function openHistory(session, metadata) {
   await ready(session);
   const main = await panel(session);
-  await main.$('button[aria-label="Show conversation history"]').click();
+  await revealConversationHistory(session, main);
   await session.browser.$(`button*=${title(metadata)}`).click();
 }
 

@@ -11,6 +11,7 @@ import {
   assertStackedComposer,
 } from "../../../support/ai/shell/assertions.ts";
 import { LOCAL_CONVERSATION_ID } from "../../../support/ai/shell/types.ts";
+import { conversationRouteFromState } from "../../../../src/lib/ai/conversations/conversation-route.ts";
 import { shellParameters } from "../../../support/ai/shell/examples.ts";
 import {
   AI_VIEW as AiViewType,
@@ -123,8 +124,12 @@ export const LocalConversations: Story = {
     });
     await userEvent.click(
       within(panel).getByRole("button", {
-        name: "Show conversation history",
+        name: "Conversation actions",
       }),
+    );
+    await userEvent.hover(await body.findByRole("menuitem", { name: "View" }));
+    await userEvent.click(
+      await body.findByRole("menuitem", { name: "AI conversations" }),
     );
     await waitFor(() =>
       expect(app.workspace.getLeavesOfType(AiHistoryViewType)).toHaveLength(1),
@@ -233,8 +238,12 @@ export const LocalConversations: Story = {
 
     await userEvent.click(
       within(emptyChat!).getByRole("button", {
-        name: "Show conversation history",
+        name: "Conversation actions",
       }),
+    );
+    await userEvent.hover(await body.findByRole("menuitem", { name: "View" }));
+    await userEvent.click(
+      await body.findByRole("menuitem", { name: "AI conversations" }),
     );
     const rootHistory = await canvas.findByTestId("ai-conversation-history");
     expect(app.workspace.getLeavesOfType(AiHistoryViewType)).toEqual([
@@ -258,7 +267,10 @@ export const LocalConversations: Story = {
     await waitFor(() => {
       restoredLeaf = mainAiLeaves(app).find((leaf) => {
         const state = leaf.getViewState().state;
-        return state?.conversationId === LOCAL_CONVERSATION_ID;
+        return (
+          conversationRouteFromState(state ?? {})?.location.conversationId ===
+          LOCAL_CONVERSATION_ID
+        );
       });
       expect(restoredLeaf).toBeDefined();
       expect(mainAiLeaves(app)).toHaveLength(2);
@@ -288,7 +300,8 @@ export const LocalConversations: Story = {
       expect(
         mainAiLeaves(app).find(
           (leaf) =>
-            leaf.getViewState().state?.conversationId === LOCAL_CONVERSATION_ID,
+            conversationRouteFromState(leaf.getViewState().state ?? {})
+              ?.location.conversationId === LOCAL_CONVERSATION_ID,
         ),
       ).toBe(restoredLeaf);
     });

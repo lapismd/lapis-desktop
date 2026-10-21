@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-097–116 cover ACP setup and turn history. M14.8 is Partial pending visible
+E-AI-097–117 cover ACP setup and turn history. M14.8 is Partial pending visible
 provider/native acceptance. M10.2–M10.4 retain LD-MIG-002 gates; native/model
 and two-device evidence stays separate. M13/M13.3 remain Deferred.
 

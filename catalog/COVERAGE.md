@@ -1093,7 +1093,11 @@ AI change history: `catalog/plugins/ai/ChangeHistory.stories.ts` mounts the
 production embedded `AiChatSession`/`AiTranscriptPanel` with Desktop-owned
 services. CapturedChanges covers document/classic summaries, right body file
 sidebar, main-body diff/preview, retained draft, plain surface and Git/JJ
-controls (E-AI-116); UndoTurn covers guarded preview/confirmation;
+controls (E-AI-116), and the icon-only header action/tooltip in both layouts
+(E-AI-117). ViewNavigation opens/reuses the production AI conversations, Catalog
+and Import views while preserving the draft; UnavailableViews disables missing
+commands. The footer history shortcut is absent. LocalConversations follows the
+same header navigation. UndoTurn covers guarded preview/confirmation;
 CheckpointFailure covers retained prompt, notification and explicit bypass;
 IncompleteTurn refuses unsafe undo. Adapted from jj-store
 `web/src/lib/ui/store-agent-chat/StoreAgentChangesPanel.svelte` and

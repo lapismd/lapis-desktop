@@ -1,3 +1,4 @@
+import { revealConversationHistory } from "./ai-view-navigation.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
@@ -169,11 +170,7 @@ test(
         '[data-testid="ai-chat-panel"][data-initializing="false"][data-model-catalog-loading="false"]',
       )
       .waitForDisplayed({ timeout: 45_000 });
-    const history = cold.browser.$(
-      'button[aria-label="Show conversation history"]',
-    );
-    await history.waitForDisplayed();
-    await history.click();
+    await revealConversationHistory(cold);
     const conversation = cold.browser.$(`button*=${metadata.title}`);
     await conversation.waitForDisplayed();
     await conversation.click();

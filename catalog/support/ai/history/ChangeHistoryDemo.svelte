@@ -5,24 +5,45 @@
   import { memoryHistory } from "./memory-history.ts";
   import { bindAiHistory } from "../../../../src/lib/repository/ai-history.ts";
   import { registerAiReview } from "../review.ts";
+  import { installHistoryNavigation } from "./navigation.ts";
   let {
     failure = false,
     unknown = false,
-  }: { failure?: boolean; unknown?: boolean } = $props();
+    navigation = true,
+  }: { failure?: boolean; unknown?: boolean; navigation?: boolean } = $props();
   const fixture = untrack(() => createSentContextFixture(unknown));
   const history = untrack(() => memoryHistory(failure));
   const release = bindAiHistory(fixture.app, history.binding);
+  const initialized = fixture.ready.then(() =>
+    navigation ? installHistoryNavigation(fixture.app) : undefined,
+  );
   let ready = $state(false),
     root = $state<HTMLDivElement>();
   $effect(() =>
     root
       ? registerAiReview(root, {
-          read: (name) =>
-            name === "undone" ? history.inspect() : fixture.inspect(name),
+          read: (name) => {
+            if (name === "undone") return history.inspect();
+            if (name === "active-view")
+              return fixture.app.workspace.activeLeaf?.view.getViewType() ?? "";
+            if (name.startsWith("leaves:"))
+              return String(
+                fixture.app.workspace.getLeavesOfType(name.slice(7)).length,
+              );
+            return fixture.inspect(name);
+          },
           actions: {
             ready: async () => {
-              await fixture.ready;
+              await initialized;
               await tick();
+            },
+            "return-chat": async () => {
+              const leaf =
+                fixture.app.workspace.getLeavesOfType("ai-sent-context")[0]!;
+              fixture.app.workspace.activateLeaf(leaf, {
+                focusRootHost: false,
+              });
+              await fixture.app.workspace.revealLeaf(leaf);
             },
           },
         })
@@ -30,13 +51,16 @@
   );
   onMount(() => {
     let closed = false;
-    void fixture.ready.then(() => {
+    void initialized.then(() => {
       if (!closed) ready = true;
     });
     return () => {
       closed = true;
       release();
-      void fixture.close();
+      void initialized.then(
+        () => fixture.close(),
+        () => fixture.close(),
+      );
     };
   });
 </script>

@@ -31,6 +31,37 @@ export const CapturedChanges: Story = {
       name: "Saved turn changes",
     });
     await waitFor(() => expect(card).toHaveTextContent("3 files changed"));
+    const changes = await canvas.findByRole("button", {
+      name: "Show conversation changes",
+    });
+    const header = changes.closest("header")!;
+    await expect(
+      within(header).getByRole("button", { name: "Switch to Classic view" }),
+    ).toBeVisible();
+    await expect(changes).toHaveTextContent("");
+    await userEvent.hover(changes);
+    await waitFor(() => {
+      const tooltip = canvasElement.ownerDocument.body.querySelector(
+        '[data-slot="tooltip-content"]',
+      );
+      expect(tooltip).toBeVisible();
+      expect(tooltip).toHaveTextContent("Changes");
+    });
+    await userEvent.unhover(changes);
+    await userEvent.click(changes);
+    const headerRail = await canvas.findByRole("complementary", {
+      name: "Session changes",
+    });
+    await expect(
+      await within(headerRail).findByRole("tab", { name: "Conversation" }),
+    ).toHaveAttribute("data-state", "active");
+    await userEvent.click(
+      within(headerRail).getByRole("tab", { name: "This turn" }),
+    );
+    await userEvent.click(
+      within(headerRail).getByRole("button", { name: "Close session changes" }),
+    );
+
     const draft = canvas.getByRole("textbox", { name: "Message" });
     await userEvent.click(draft);
     await userEvent.keyboard("Keep this unsent draft");
@@ -91,6 +122,88 @@ export const CapturedChanges: Story = {
     await expect(
       canvas.findByRole("region", { name: "Saved turn changes" }),
     ).resolves.toBeVisible();
+    const classicChanges = canvas.getByRole("button", {
+      name: "Show conversation changes",
+    });
+    await expect(
+      within(classicChanges.closest("header")!).getByRole("button", {
+        name: "Switch to Document view",
+      }),
+    ).toBeVisible();
+  },
+};
+export const ViewNavigation: Story = {
+  play: async ({ canvasElement }) => {
+    await send(canvasElement);
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    const draft = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(draft);
+    await userEvent.keyboard("Keep this navigation draft");
+    expect(
+      canvas.queryByRole("button", { name: "Show conversation history" }),
+    ).toBeNull();
+    const destinations = [
+      ["AI conversations", "ai-conversation-history"],
+      ["Catalog", "ai-catalog"],
+      ["Import AI sessions", "ai-import"],
+    ];
+    for (const [label, type] of destinations) {
+      for (let attempt = 0; attempt < 2; attempt++) {
+        await waitFor(() =>
+          expect(
+            getComputedStyle(
+              canvas.getByRole("button", { name: "Conversation actions" }),
+            ).pointerEvents,
+          ).not.toBe("none"),
+        );
+        await userEvent.click(
+          canvas.getByRole("button", { name: "Conversation actions" }),
+        );
+        const view = await page.findByRole("menuitem", { name: "View" });
+        expect(view.querySelector("svg")).not.toBeNull();
+        await userEvent.hover(view);
+        const item = await page.findByRole("menuitem", { name: label });
+        expect(item.querySelector("svg")).not.toBeNull();
+        expect(item).not.toHaveAttribute("data-disabled");
+        expect(page.queryByRole("menuitem", { name: "AI JSONL" })).toBeNull();
+        await userEvent.click(item);
+        await waitFor(() =>
+          expect(aiReviewValue(canvasElement, "active-view")).toBe(type),
+        );
+        await expect(
+          canvas.findByTestId(type === "ai-import" ? "ai-import-panel" : type),
+        ).resolves.toBeVisible();
+        expect(aiReviewValue(canvasElement, `leaves:${type}`)).toBe("1");
+        await aiReviewAction(canvasElement, "return-chat");
+        await expect(draft).toBeVisible();
+        await expect(draft).toHaveTextContent("Keep this navigation draft");
+      }
+    }
+  },
+};
+export const UnavailableViews: Story = {
+  args: { navigation: false },
+  play: async ({ canvasElement }) => {
+    await aiReviewAction(canvasElement, "ready");
+    const canvas = within(canvasElement),
+      page = within(canvasElement.ownerDocument.body);
+    await waitFor(() =>
+      expect(
+        getComputedStyle(
+          canvas.getByRole("button", { name: "Conversation actions" }),
+        ).pointerEvents,
+      ).not.toBe("none"),
+    );
+    await userEvent.click(
+      await canvas.findByRole("button", { name: "Conversation actions" }),
+    );
+    await userEvent.hover(await page.findByRole("menuitem", { name: "View" }));
+    for (const name of ["AI conversations", "Catalog", "Import AI sessions"])
+      await expect(await page.findByRole("menuitem", { name })).toHaveAttribute(
+        "data-disabled",
+      );
+    await userEvent.keyboard("{Escape}{Escape}");
   },
 };
 export const UndoTurn: Story = {

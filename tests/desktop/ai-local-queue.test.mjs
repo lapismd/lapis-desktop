@@ -1,3 +1,4 @@
+import { revealConversationHistory } from "./ai-view-navigation.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -308,9 +309,7 @@ test(
       await cold.cleanup();
     });
     await ready(cold);
-    await cold.browser
-      .$('button[aria-label="Show conversation history"]')
-      .click();
+    await revealConversationHistory(cold);
     await cold.browser.$("button*=Use the app-provided MCP server").click();
     await cold.browser
       .$("button*=Resume queue")

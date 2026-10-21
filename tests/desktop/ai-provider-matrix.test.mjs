@@ -1,3 +1,4 @@
+import { revealConversationHistory } from "./ai-view-navigation.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync, existsSync } from "node:fs";
@@ -149,9 +150,7 @@ for (const client of clients)
       await session.close(true);
       const cold = await f.launch("-cold");
       await ready(cold);
-      await cold.browser
-        .$('button[aria-label="Show conversation history"]')
-        .click();
+      await revealConversationHistory(cold);
       await cold.browser.$("button*=Use only the app-provided").click();
       await cold.browser
         .$('[data-testid="ai-transcript-panel"]')
