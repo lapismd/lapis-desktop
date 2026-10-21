@@ -190,3 +190,6 @@ remain.
 Document/Classic and saved agent overrides (LD-AI-002/003/004, LD-CAT-003).
 Exact one-time IDs, durable decisions and native tool scope are retained; native
 provider and release gates remain open.
+
+[E-AI-105](../history/E-AI-105.md): borderless filled approval marker;
+LD-AI-002/004 behavior and original native gates remain unchanged.

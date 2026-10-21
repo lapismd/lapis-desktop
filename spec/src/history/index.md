@@ -336,3 +336,5 @@ by the task ledger, not inferred from this list.
 - [Single composer action during submission](E-AI-102.md)
 
 - [Independent host approval policy](E-AI-103.md)
+
+- [Filled approval selection marker](E-AI-105.md)

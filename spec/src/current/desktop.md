@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-AI-097–103: AI setup/modes/approvals.
+E-AI-097–105: AI setup/modes/approvals.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

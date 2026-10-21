@@ -245,6 +245,10 @@ provider sandbox override. Native admission, enabled tools, guarded edits, vault
 scope and provider execution modes remain authoritative. No native full-access
 launch flags or environment changes are introduced.
 
+E-AI-105 refines only the selected-policy marker: a smaller, filled
+`circle-check`, without a shortcut border and centered across both item rows.
+LD-AI-002/004 policy, persistence and native authority remain unchanged.
+
 ## Composer presentation
 
 E-AI-094 removes the redundant gallery heading under Agents. The footer people

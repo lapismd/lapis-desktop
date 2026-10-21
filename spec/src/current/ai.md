@@ -380,3 +380,5 @@ gate; actual managed capture and AgentStore/ThreadStore adoption remain M13.3.
 
 [Native adapter records](ai-adapter.md) retain frame provenance, capture privacy
 and deferred managed-store receipt requirements.
+
+E-AI-105 refines the approval selection marker; LD-AI-002/004 remain unchanged.

@@ -5,7 +5,7 @@
   import * as Tooltip from "@lapismd/design-core/shadcn/tooltip";
   import HandIcon from "@lucide/svelte/icons/hand";
   import ShieldCheckIcon from "@lucide/svelte/icons/shield-check";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import {
     APPROVAL_POLICIES,
     normalizeApprovalPolicy,
@@ -114,9 +114,20 @@
               <CommandView.ItemDescription
                 >{option.description}</CommandView.ItemDescription
               >
-              {#if policy === option.value}<CommandView.Shortcut
-                  ><CheckIcon aria-label="Selected" /></CommandView.Shortcut
-                >{/if}
+              {#if policy === option.value}
+                <span
+                  class="approval-policy-selection"
+                  role="img"
+                  aria-label="Selected"
+                >
+                  <CircleCheckIcon
+                    size={14}
+                    fill="currentColor"
+                    stroke="var(--background)"
+                    aria-hidden="true"
+                  />
+                </span>
+              {/if}
             </CommandView.Item>
           {/each}
         </CommandView.Group>
@@ -141,6 +152,15 @@
   :global(.approval-policy-popover) {
     width: min(23rem, calc(100vw - 1rem));
     padding: 0.25rem;
+  }
+  .approval-policy-selection {
+    grid-area: shortcut;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    justify-self: end;
+    color: var(--foreground);
   }
   .approval-overrides {
     margin: 0;

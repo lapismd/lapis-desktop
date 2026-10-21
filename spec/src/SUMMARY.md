@@ -389,7 +389,6 @@
 
 - [Shared AI model discovery and status](history/E-AI-095.md)
 - [Inset repository sidebar sizing](history/E-REPO-055.md)
-
 - [Conversation-scoped private drafts](history/E-AI-096.md)
 - [Local AI setup v0](history/E-AI-097.md)
 - [AI provider and compute settings sections](history/E-AI-098.md)
@@ -398,3 +397,4 @@
 - [Chat mode icons and compact agent action](history/E-AI-101.md)
 - [Single composer action during submission](history/E-AI-102.md)
 - [Independent host approval policy](history/E-AI-103.md)
+- [Filled approval selection marker](history/E-AI-105.md)
