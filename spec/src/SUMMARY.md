@@ -327,3 +327,5 @@
 
 - [Chat actions and named-agent settings cleanup](history/E-AI-112.md)
 - [Live sent-context inspection](history/E-AI-113.md)
+
+- [AI turn change history and guarded undo](history/E-AI-114.md)

@@ -20,6 +20,7 @@ fn main() {
         "desktop_ai_release",
         "desktop_backup_start",
         "desktop_backup_capture",
+        "desktop_ai_history",
         "desktop_backup_stop",
         "desktop_backup_restore",
         "desktop_forge_accounts",

@@ -118,6 +118,7 @@ export async function respondToQuestion(
 }
 
 export async function cancel(this: AiChatController): Promise<void> {
+  this.fileHistory.cancelPending();
   this.queuedMessages.pause(true);
   if (this.session) this._flushSessionTrace.get(this.session)?.();
   this._turnId += 1;
@@ -184,6 +185,7 @@ export async function cancelAndSwitch(
 }
 
 export async function close(this: AiChatController): Promise<void> {
+  this.fileHistory.cancelPending();
   this.queuedMessages.pause(true);
   for (const flush of this._flushSessionTrace.values()) flush();
   this._disposed = true;

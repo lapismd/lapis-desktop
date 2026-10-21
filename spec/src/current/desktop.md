@@ -1,6 +1,6 @@
 # Desktop shell
 
-AI: E-AI-097–113 (sent context).
+AI: E-AI-097–114; native history.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

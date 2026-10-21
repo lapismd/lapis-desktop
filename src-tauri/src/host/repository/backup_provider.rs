@@ -16,6 +16,15 @@ pub(super) struct Provider {
     pub active: Arc<AtomicBool>,
 }
 impl Repository for Provider {
+    fn recover_ai_history(&mut self) -> Result<(), String> {
+        self.with_native(|native| native.recover_ai_history())
+    }
+    fn ai_history(
+        &mut self,
+        request: jj_vault::AiHistoryRequest,
+    ) -> Result<jj_vault::AiHistoryResponse, String> {
+        self.with_native(|native| native.ai_history(request))
+    }
     fn adopt_history(&mut self, request: &AdoptionRequest) -> Result<Checkpoint, String> {
         self.with_native(|native| native.adopt_history(request))
     }

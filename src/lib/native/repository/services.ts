@@ -15,6 +15,7 @@ import { nativeSync } from "./sync.ts";
 import { nativeRemote } from "./remote.ts";
 import { nativeAdoption } from "./adoption.ts";
 import { nativeStorage } from "./storage.ts";
+import { nativeAiHistory } from "./ai-history.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
@@ -133,6 +134,12 @@ export function createNativeRepository(
   const search = nativeSearch(vault.sessionId, call);
   const indexed = nativeIndexedSearch(vault.sessionId, call);
   return {
+    aiHistory: nativeAiHistory(vault.sessionId, (command, args) =>
+      track(async () => {
+        if (initialBackup) await initialBackup;
+        return call(command, args);
+      }),
+    ),
     adoption: nativeAdoption(vault.sessionId, call),
     storage: nativeStorage(vault.sessionId, call),
     search: {

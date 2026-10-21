@@ -122,6 +122,13 @@ export type HandoffSummaryCreatedRecord = {
 };
 
 export type AgentBindingRecord =
+  | {
+      schemaVersion: ConversationSchemaVersion;
+      type: "history.turn.recorded";
+      id: string;
+      createdAt: string;
+      history: import("../../repository/ai-history.ts").AiTurnRecord;
+    }
   | AgentBindingCreatedRecord
   | AgentUsageRecord
   | AgentBindingContextUpdatedRecord

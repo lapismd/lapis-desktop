@@ -1,8 +1,9 @@
 # Desktop AI and optional compute
 
-E-AI-104/107 record provider qualification and Lapis picker/model setup.
-LD-AI-001–004 and LD-COMP-001 remain unchanged; failed runs and outstanding
-provider, trust and two-device gates remain explicit in the milestone ledger.
+E-AI-104/107 qualify providers. E-AI-114 adds [turn history](vault-backup.md)
+under LD-AI-002 while retaining ordinary ACP and local transcripts. Changes are
+observed during turns; shared-vault edits have no exclusive author. Provider,
+trust and two-device gates remain open.
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

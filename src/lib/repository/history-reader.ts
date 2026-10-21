@@ -8,6 +8,7 @@ export type HistoryReader = Pick<
   Partial<Pick<HistoryClient, "blame">>;
 export type RepositoryLeaveMode = "close" | "reload";
 export interface RepositoryServices {
+  aiHistory?: import("./ai-history.ts").AiHistoryService;
   adoption?: import("./adoption.ts").AdoptionService;
   sources?: () => Promise<{ original: boolean }>;
   original?: HistoryReader;

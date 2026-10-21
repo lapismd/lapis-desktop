@@ -1,8 +1,8 @@
 # Repository history and conversations
 
-[Local ACP transcripts](ai-local-history.md) join LD-REPO-005 backup by default.
-The LD-REPO-003 native conversation experiment is Deferred; history, search,
-restore, synchronization and storage/adoption remain active.
+[Local ACP](ai-local-history.md) joins LD-REPO-005 backup. E-AI-114 adds native
+[turn observations and guarded undo](vault-backup.md) without AgentStore. The
+LD-REPO-003 experiment stays Deferred; existing history/sync remain active.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.

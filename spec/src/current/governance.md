@@ -1,8 +1,8 @@
 # Governance
 
-E-AI-097/099 retain native grants and hardware authority. E-AI-108 retains
-LD-GOV-006 provenance: Buzz references and harness artwork are attributed; no
-dependency patch, source alias, publication or baseline update.
+E-AI-097/099 retain grants; E-AI-108/114 retain LD-GOV-006 source attribution.
+Turn-history IPC has one named main-window permission; source-size and App
+ownership audits remain enforced. Publication and baselines stay separate.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

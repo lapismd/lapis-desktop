@@ -220,3 +220,8 @@ agent editor under LD-AI-002/004 and LD-CAT-003; native gates are unchanged.
 
 [E-AI-113](../history/E-AI-113.md): exact live sent-context inspection; startup,
 agent handoff and delivery states retain native and persistence boundaries.
+
+[E-AI-114](../history/E-AI-114.md) adds AI turn observations and guarded
+saved-file undo under LD-REPO-005/LD-AI-002, preserving ordinary ACP and
+deferred M13. Native service, catalog and visible provider qualification remain
+separate.

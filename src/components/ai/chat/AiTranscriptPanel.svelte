@@ -2,6 +2,13 @@
   import AiTranscriptMessageMeta from "./AiTranscriptMessageMeta.svelte";
   import AiQueuedMessages from "./AiQueuedMessages.svelte";
   import { untrack, type Snippet } from "svelte";
+  import AiChangesButton from "../history/AiChangesButton.svelte";
+  import AiHistoryBlock from "../history/AiHistoryBlock.svelte";
+  import AiHistoryRail from "../history/AiHistoryRail.svelte";
+  import AiHistoryDialogs from "../history/AiHistoryDialogs.svelte";
+  import { saveTranscriptView } from "../../../lib/ai/chat/panel/view-preference.ts";
+  import { chatHistoryInspection } from "../../../lib/ai/chat/panel/history.svelte.ts";
+  import { historyTranscript } from "../../../lib/ai/chat/history-transcript.ts";
   import {
     Transcript,
     TranscriptController,
@@ -12,14 +19,12 @@
   import AiTranscriptSendHint from "./AiTranscriptSendHint.svelte";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import AiTranscriptEmpty from "./AiTranscriptEmpty.svelte";
-  import { transcriptSourceItem } from "../../../lib/ai/chat/transcript-projection.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import { transcriptCommentContext } from "../../../lib/ai/chat/transcript-context.ts";
   import {
     restoreTranscriptComments,
     reclaimQueuedCommentDrafts,
   } from "../../../lib/ai/chat/restored-comments.ts";
-  import AiTranscriptBlock from "./AiTranscriptBlock.svelte";
   import AiTranscriptComposer from "./AiTranscriptComposer.svelte";
   import AiTranscriptLoading from "./AiTranscriptLoading.svelte";
   import { navigateDiscussionReply } from "../../../lib/ai/chat/transcript-discussions.ts";
@@ -49,25 +54,21 @@
   const Frame = $derived(panelProps.transcriptFrame);
   function chooseView(next: "document" | "classic") {
     view = next;
-    const saving = Promise.resolve()
-      .then(() => panelProps.onSettingsChange?.({ transcriptView: next }))
-      .catch((error) => {
-        panelProps.app?.notifications.notify({
-          id: "ai-presentation-error",
-          source: "ai",
-          severity: "error",
-          title: "Conversation view",
-          message: error instanceof Error ? error.message : String(error),
-        });
-      });
-    panelProps.onOperation?.(saving);
+    saveTranscriptView(panelProps, next);
   }
   let documentActions = $state<Snippet>();
   const inspection = transcriptToolInspection(
     () => panel,
     () => !!Frame,
   );
-  const items = $derived(inspection.items);
+  const changes = chatHistoryInspection(() => panel);
+  const items = $derived(
+    historyTranscript(
+      inspection.items,
+      controller.fileHistory.records,
+      controller.items,
+    ),
+  );
   const blocked = $derived(
     Boolean(
       panelProps.initializing ||
@@ -177,6 +178,7 @@
       {customBlock}
     >
       {#snippet beforeItems()}
+        <AiChangesButton inspection={changes} />
         {#if !Frame}<div class="transcript-conversations">
             <ChatConversationPicker
               {panelProps}
@@ -223,11 +225,11 @@
 {/snippet}
 
 {#snippet customBlock(block: TranscriptBlock)}
-  {@const item = transcriptSourceItem(block, controller.items)}
-  {#if item}<AiTranscriptBlock {item} {panel} />{/if}
+  <AiHistoryBlock {block} {panel} inspection={changes} />
 {/snippet}
 
 {#snippet toolInspector()}
+  <AiHistoryRail inspection={changes} busy={controller.busy} />
   {#if inspection.tool && inspection.opener}
     <AiTranscriptToolInspector
       tool={inspection.tool}
@@ -273,6 +275,7 @@
       bind:view
     />{@render conversation()}{/if}
 </div>
+<AiHistoryDialogs history={controller.fileHistory} inspection={changes} />
 
 <style>
   .transcript-panel {

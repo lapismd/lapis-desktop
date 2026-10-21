@@ -1,5 +1,30 @@
 # Automatic vault backup
 
+## AI turn observations
+
+When automatic Repository History is enabled, AI dispatch MUST establish a
+confirmed saved-file baseline before provider writes and capture a terminal
+boundary after known tool writes drain. The shared worker records bounded
+agent/harness/requested-model context and exact retained checkpoints, with
+Git-portable description trailers. These are observed changes; concurrent
+human/external/agent work MUST NOT be represented as exclusively AI-authored.
+Unchanged trees reuse a checkpoint. Failed baseline capture retains the prompt
+and offers Retry, Cancel or an explicit continuation without history protection.
+Incomplete terminal capture and restart recovery never fabricate completion.
+
+Both transcript layouts expose per-turn summaries and an embedded Changes rail
+with exact before/after inspection and conversation-wide turn browsing. Local
+conversation records retain portable checkpoint links; native receipts recover
+missed updates. Conversation/runtime metadata stays backed up but outside the
+default session changes and undo selection. Disabled History does not initialize
+storage for AI; old/imported sessions without anchors remain unavailable.
+
+Explicit file/selected-file/turn undo previews exactly the recorded paths,
+guards dirty editors and active agents, requires current bytes/modes to match
+the ending checkpoint, preserves a safety checkpoint and journals progress.
+Later edits stop recovery. Undo creates new history and never operation-undoes
+the repository. Hunk/merge-aware and whole-conversation undo remain deferred.
+
 E-AI-093 includes the three portable local-ACP transcript files at each valid
 scope in LD-REPO-005 capture, search, guarded restore and configured sync. Other
 private application data remains excluded; explicit backup exclusions win. See

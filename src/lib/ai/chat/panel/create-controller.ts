@@ -39,7 +39,7 @@ export function createChatPanelController(
     onConversationLocationChange,
     settings,
   } = props;
-  return untrack(
+  const controller = untrack(
     () =>
       new AiChatController(runtime, unavailableReason, mcpServers, {
         approvalPolicy: (request) =>
@@ -100,4 +100,6 @@ export function createChatPanelController(
         onComposerDefaults,
       }),
   );
+  controller.fileHistory.configure(app, repository, props.fileHistory);
+  return controller;
 }

@@ -169,6 +169,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-desktop-repository-admit",
     "allow-desktop-backup-start",
     "allow-desktop-backup-capture",
+    "allow-desktop-ai-history",
     "allow-desktop-backup-stop",
     "allow-desktop-backup-restore",
     "allow-desktop-forge-accounts",

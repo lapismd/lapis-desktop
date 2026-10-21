@@ -106,6 +106,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::ai::admission::desktop_ai_release,
             crate::host::repository::backup::desktop_backup_start,
             crate::host::repository::backup::desktop_backup_capture,
+            crate::host::repository::ai_history::desktop_ai_history,
             crate::host::repository::backup::desktop_backup_stop,
             crate::host::repository::backup_restore::desktop_backup_restore,
             crate::host::repository::forges::desktop_forge_accounts,

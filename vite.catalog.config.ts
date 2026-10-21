@@ -40,6 +40,7 @@ export default defineConfig({
       "@lucide/svelte/icons/hand",
       "@lucide/svelte/icons/file-json",
       "@lucide/svelte/icons/file-clock",
+      "@lucide/svelte/icons/file-diff",
       "@lucide/svelte/icons/folder-git-2",
       "@lucide/svelte/icons/git-merge",
       "@lucide/svelte/icons/git-merge-conflict",

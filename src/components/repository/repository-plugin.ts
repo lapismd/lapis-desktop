@@ -28,6 +28,8 @@ import { registerBlameEditorActions } from "./blame/editor-actions.ts";
 import { RepositoryStatus } from "./repository-status.ts";
 import { RepositoryBackup } from "./repository-backup.ts";
 import { registerRepositoryTools } from "./repository-tools.ts";
+import { bindAiHistory } from "../../lib/repository/ai-history.ts";
+import { guardTranscriptReplacement } from "../../lib/repository/transcript-writers.ts";
 type RepositoryController =
   | HistoryController
   | OperationController
@@ -42,6 +44,7 @@ export class RepositoryPlugin extends Plugin {
   #services?: RepositoryServices;
   #status?: RepositoryStatus;
   #closeTools?: () => Promise<void>;
+  #closeAiHistory?: () => void;
   #controllers = new Set<RepositoryController>();
   #activities = new Map<RepositoryController, () => void>();
   #closing?: Promise<void>;
@@ -135,6 +138,19 @@ export class RepositoryPlugin extends Plugin {
       await this.backup.start();
     }
     this.#closeTools = registerRepositoryTools(this, this.#services);
+    if (this.#services.aiHistory)
+      this.#closeAiHistory = bindAiHistory(this.app, {
+        service: this.#services.aiHistory,
+        reader: this.#services.reader,
+        enabled: () => !!this.backup?.enabled && !this.#closing,
+        guard: (action) =>
+          guardTranscriptReplacement(this.app, undefined, action),
+        reveal: (record) =>
+          this.open(
+            record.after?.operation ?? record.before.operation,
+            record.after?.commit ?? record.before.commit,
+          ),
+      });
     registerFileHistoryView(this);
     registerBlameEditorActions(this);
     this.registerView(
@@ -245,6 +261,8 @@ export class RepositoryPlugin extends Plugin {
   }
   async onunload(): Promise<void> {
     return (this.#closing ??= (async () => {
+      this.#closeAiHistory?.();
+      this.#closeAiHistory = undefined;
       await this.#closeTools?.();
       this.#closeTools = undefined;
       await this.#status?.close();

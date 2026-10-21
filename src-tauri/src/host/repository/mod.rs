@@ -1,4 +1,5 @@
 pub(crate) mod adoption;
+pub(crate) mod ai_history;
 pub(crate) mod backup;
 mod backup_close;
 mod backup_provider;

@@ -86,6 +86,16 @@ export async function finishTurn(
   const context = controller._sessionContexts.get(session);
   if (!controller.repository || !context?.location || !context.turn) return;
   const { intent, known } = context.turn;
+  await controller.fileHistory.finish(
+    session,
+    controller._cancelledSessions.has(session) && known
+      ? "cancelled"
+      : context.turn.outcome === "completed"
+        ? "completed"
+        : known
+          ? "failed"
+          : "unknown",
+  );
   if (context.delivery) {
     const delivery = context.delivery;
     const outcome = context.turn.outcome ?? (known ? "completed" : "unknown");

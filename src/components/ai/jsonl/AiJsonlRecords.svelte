@@ -14,6 +14,8 @@
     $props();
   function title(record: AgentBindingRecord): string {
     switch (record.type) {
+      case "history.turn.recorded":
+        return `Saved file changes · ${record.history.phase}`;
       case "binding.created":
         return `Agent binding created · ${record.agent ?? record.runtime}`;
       case "usage.updated":

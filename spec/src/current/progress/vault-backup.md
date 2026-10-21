@@ -22,8 +22,16 @@ Partial; M13/AI and visual gates are unchanged.
 | M14.5 | Partial | M14.4       | LD-REPO-005              | Two-device automatic pull/merge/push preserves offline work and conflicts                                                  | Qualify cold app/provider gates later          | E-REPO-032,E-REPO-033,E-REPO-042,E-REPO-043,E-REPO-054                                                        |
 | M14.6 | Done    | M14.3       | LD-REPO-005              | Historical text and metadata search opens exact restorable checkpoint versions                                             | Complete; continue storage/providers           | E-REPO-034,E-REPO-042,E-REPO-045,E-REPO-052                                                                   |
 | M14.7 | Partial | M14.5,M14.6 | LD-REPO-005              | Root storage/adoption and Forgejo work, then changes integrate into main                                                   | Real Forgejo and sync acceptance               | E-REPO-035,E-REPO-036,E-REPO-037,E-REPO-038,E-REPO-039,E-REPO-041,E-REPO-042,E-REPO-043,E-REPO-053            |
+| M14.8 | Partial | M14.3,M10.2 | LD-REPO-005,LD-AI-002    | AI-attributed checkpoints, saved turn/conversation diffs and guarded selected-path undo in the ordinary app                | Qualify visible provider/native integration    | E-AI-114                                                                                                      |
 
 ## Implementation and acceptance
+
+M14.8 adds AI turn observations, portable checkpoint links,
+per-turn/conversation inspection and selected-path guarded undo. E-AI-114
+records source, renderer and catalog evidence separately; ordinary ACP storage
+stays active and M13 remains Deferred. Merge-aware/hunk/whole-conversation undo
+and isolated agent workspaces remain deferred. Native service cold-process
+evidence does not qualify visible provider editing in the packaged app.
 
 | Stage                | Implementation in main       | Focused evidence                                                         | Outstanding original acceptance                          |
 | -------------------- | ---------------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------- |

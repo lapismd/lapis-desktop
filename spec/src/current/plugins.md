@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-E-AI-113 covers captured startup/handoff context in Document and Classic.
+E-AI-113/114 cover sent context and turn changes in both layouts (LD-CAT-003).
 
 E-AI-108/109/112 cover named-agent editors, header avatars, menu actions and
 responsive AI/Compute settings under LD-CAT-003.

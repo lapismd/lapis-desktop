@@ -10,8 +10,8 @@ import { reduceAgentBindings } from "../../conversations/binding-state.ts";
 import { extractMentionPaths, mergeAttachmentPaths } from "../chat-mentions.ts";
 import { type AiChatItem } from "../chat-items.ts";
 import { attachmentContext } from "../attachment-context.ts";
-import { prepareTurn, finishTurn, knownTurnError } from "./turn-checkpoint.ts";
-import { applyAgentEventToChatItems } from "../chat-trace.ts";
+import { prepareTurn, knownTurnError } from "./turn-checkpoint.ts";
+import { handleTurnFailure } from "./turn-delivery-failure.ts";
 import { publishCommentContext } from "./comment-publication.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { validateRecipients } from "../../conversations/recipients.ts";
@@ -47,8 +47,17 @@ export async function deliverTurn(
   let settleContext: (
     delivery: SentContextCapture["delivery"],
   ) => void = () => {};
+  let history:
+    | import("../file-history.svelte.ts").HistoryObservation
+    | undefined;
   try {
     if (this.repository) await this._ensureConversation();
+    if (this._isAbandoned(turnId)) return;
+    history = await this.fileHistory.begin(
+      this.location,
+      userItem.id,
+      effectiveRequest,
+    );
     if (this._isAbandoned(turnId)) return;
     await this._prepareSession(effectiveRequest, turnId, dispatch?.user.id);
     if (this._isAbandoned(turnId)) return;
@@ -80,6 +89,8 @@ export async function deliverTurn(
       throw new Error("Agent session did not start.");
     }
     const session = this.session;
+    if (history)
+      await this.fileHistory.attach(session, history, this._activeBindingId);
     const sharedPreparation =
       this.runtime.capabilities().preparesContext === true;
     const location = this.location ? { ...this.location } : null;
@@ -208,78 +219,21 @@ export async function deliverTurn(
   } catch (error) {
     settleContext(knownTurnError(error) ? "failed" : "unknown");
     if (this._isAbandoned(turnId)) return;
-    const failedSession = this.session;
-    const failedBindingId = this._activeBindingId;
-    const failedContext = failedSession
-      ? this._sessionContexts.get(failedSession)
-      : undefined;
-    if (failedContext?.turn) {
-      failedContext.turn.known = knownTurnError(error);
-      failedContext.turn.outcome = failedContext.turn.known
-        ? "rejected"
-        : "unknown";
-    }
-    if (
-      failedContext?.pendingBinding ||
-      failedContext?.pendingSwitch ||
-      failedContext?.pendingConfiguration
-    ) {
-      this.runtime = previousRuntime;
-      this._activeBinding = previousBinding;
-      this._activeBindingId = previousBindingId;
-      this._sessionRequest = previousSessionRequest;
-      this.bindings = this.bindings.filter(
-        (binding) => binding.id !== failedContext.pendingBinding?.id,
-      );
-      if (failedContext.pendingConfiguration) {
-        this.bindings = this.bindings.map((binding) =>
-          binding.id === failedContext.pendingConfiguration?.previous.id
-            ? failedContext.pendingConfiguration.previous
-            : binding,
-        );
-      }
-    }
-    this.error = error instanceof Error ? error.message : String(error);
-    this.items = applyAgentEventToChatItems(this.items, {
-      type: "error",
-      error: error instanceof Error ? error : new Error(String(error)),
+    await handleTurnFailure(this, error, {
+      previousRuntime,
+      previousBinding,
+      previousBindingId,
+      previousSessionRequest,
+      userItem,
+      dispatch,
     });
+  } finally {
     if (
-      (failedContext?.turn && !knownTurnError(error)) ||
-      (error instanceof Error &&
-        "outcome" in error &&
-        error.outcome === "unknown")
+      history &&
+      !history.settled &&
+      (this._isAbandoned(turnId) || this.error || !this.session)
     )
-      this.items = this.items.map((item, index) =>
-        index === this.items.length - 1 && item.type === "error"
-          ? { ...item, retryable: false }
-          : item,
-      );
-    this.session = null;
-    this.busy = false;
-    await this._closeAppToolBinding(failedBindingId);
-    await failedSession?.close().catch(() => undefined);
-    try {
-      if (this.repository) await this._ensureConversation();
-      if (this.repository && this.location) {
-        await this._appendDurableItems(
-          this.location,
-          [...(dispatch ? [] : [userItem]), this.items.at(-1)!],
-          this._activeBindingId,
-        );
-      } else {
-        await this._persist();
-      }
-      if (failedSession && failedContext?.turn) {
-        await finishTurn(this, failedSession);
-      }
-    } catch (persistError) {
-      const persistMessage =
-        persistError instanceof Error
-          ? persistError.message
-          : String(persistError);
-      this.error = `${this.error} Could not save this turn: ${persistMessage}`;
-    }
+      await this.fileHistory.finishObservation(history, "unknown");
   }
 }
 

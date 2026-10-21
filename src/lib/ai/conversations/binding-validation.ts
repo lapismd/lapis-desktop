@@ -2,6 +2,7 @@
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import { assertExecutionMode } from "../core/agent-profile.ts";
 import { validateRecipients } from "./recipients.ts";
+import { parseAiTurn } from "../../repository/ai-history.ts";
 import type { AgentBindingRecord } from "./types.ts";
 import {
   record,
@@ -20,7 +21,10 @@ export function validateAgentBindingRecord(value: unknown): AgentBindingRecord {
   assertSchemaVersion(data, "Agent record");
   requiredString(data, "id", "Agent record");
   assertTimestamp(data, "createdAt", "Agent record");
-  if (data.type === "binding.created") {
+  if (data.type === "history.turn.recorded") {
+    assertCurrentSchemaVersion(data, "History turn record");
+    parseAiTurn(data.history);
+  } else if (data.type === "binding.created") {
     assertExecutionMode(data.executionMode);
     if (data.participant !== undefined) validateRecipients([data.participant]);
     requiredString(data, "runtime", "Agent record");

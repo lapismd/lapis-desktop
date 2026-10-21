@@ -14,6 +14,9 @@ export class RepositoryBackup {
   #progress?: () => void;
   readonly sync?: RepositorySync;
   #enabled = false;
+  get enabled() {
+    return this.#enabled;
+  }
   constructor(
     readonly plugin: RepositoryPlugin,
     services: RepositoryServices,

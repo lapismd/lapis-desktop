@@ -171,3 +171,9 @@ E-AI-113: `chat/controller/sent-context.test.ts` compares live inspection to the
 actual ACP prompt context, including startup/profile instructions, binding
 switches, per-recipient captures, uncertain delivery and raw-persistence
 refusal.
+
+`chat/controller/file-history.test.ts`: Lapis/Codex/Cursor/OpenCode preparation
+boundaries, portable local transcript links, ordinary ACP retention, explicit
+bypass, cancellation during checkpoint choice and unavailable terminal capture.
+Native checkpoint/undo receipts and cold native processes are verified in
+jj-store `crates/jj-vault/tests/ai_history.rs`.

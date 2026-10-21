@@ -1,8 +1,8 @@
 # Migration inventory and progress
 
-E-AI-097–113: ACP setup, providers, compute and picker styling. M10.2–M10.4
-retain unchanged LD-MIG-002 gates; native/model and two-device evidence stays
-distinct from deterministic checks. M13/M13.3 remain Deferred.
+E-AI-097–114 cover ACP setup and turn history. M14.8 is Partial pending visible
+provider/native acceptance. M10.2–M10.4 retain LD-MIG-002 gates; native/model
+and two-device evidence stays separate. M13/M13.3 remain Deferred.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;

@@ -47,6 +47,7 @@
     "lapis-ai:acp-session",
     "allow-desktop-backup-start",
     "allow-desktop-backup-capture",
+    "allow-desktop-ai-history",
     "allow-desktop-backup-stop",
     "allow-desktop-backup-restore",
     "allow-desktop-forge-accounts",

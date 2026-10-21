@@ -1088,3 +1088,13 @@ component already carries its JJ Store source attribution.
 
 Sent-context captures remain live-controller-owned and are not reconstructed
 from current files/settings on a cold reopen. E-AI-113 retains that boundary.
+
+AI change history: `catalog/plugins/ai/ChangeHistory.stories.ts` mounts the
+production embedded `AiChatSession`/`AiTranscriptPanel` with Desktop-owned
+services. CapturedChanges covers document/classic summaries and the Changes
+rail; UndoTurn covers guarded preview/confirmation; CheckpointFailure covers
+retained prompt, notification and explicit bypass; IncompleteTurn refuses unsafe
+undo. Adapted from jj-store
+`web/src/lib/ui/store-agent-chat/StoreAgentChangesPanel.svelte` and
+`web/src/lib/ui/store-agent-workspace/{StoreWorkspaceFiles,StoreWorkspaceInspector}.svelte`,
+source parent `3998e2b0`, Apache-2.0. Visual approval remains pending.

@@ -142,61 +142,64 @@ export async function _executeSlash(
     return true;
   }
   if (result.kind === "tool") {
-    return this._withCommandProgress(async (turnId) => {
-      await this._prepareSession(request, turnId);
-      if (this._isAbandoned(turnId)) return;
-      this._ensureLocalAppToolSession();
-      if (!this._appToolHost || !this._activeBindingId) {
-        this.error = "Application tools are unavailable for this command.";
-        this.items = [
-          ...this.items,
-          {
-            id: `command-error-${crypto.randomUUID()}`,
-            type: "error",
-            text: this.error,
-            createdAt: new Date().toISOString(),
-          },
-        ];
-        return;
-      }
-      const callId = `slash-tool-${crypto.randomUUID()}`;
-      const toolEvent = {
-        id: callId,
-        name: result.tool,
-        server: APP_TOOL_MCP_SERVER_NAME,
-        input: result.input,
-      };
-      await this._applySlashToolEvent({
-        type: "tool.start",
-        ...toolEvent,
-      });
-      try {
-        const toolResult = await this._appToolHost.invoke(
-          this._activeBindingId,
-          {
-            runId: callId,
-            toolCallId: callId,
-            name: result.tool,
-            input: result.input,
-          },
-        );
+    const callId = `slash-tool-${crypto.randomUUID()}`;
+    return this._withCommandProgress(
+      async (turnId) => {
+        await this._prepareSession(request, turnId);
         if (this._isAbandoned(turnId)) return;
+        this._ensureLocalAppToolSession();
+        if (!this._appToolHost || !this._activeBindingId) {
+          this.error = "Application tools are unavailable for this command.";
+          this.items = [
+            ...this.items,
+            {
+              id: `command-error-${crypto.randomUUID()}`,
+              type: "error",
+              text: this.error,
+              createdAt: new Date().toISOString(),
+            },
+          ];
+          return;
+        }
+        const toolEvent = {
+          id: callId,
+          name: result.tool,
+          server: APP_TOOL_MCP_SERVER_NAME,
+          input: result.input,
+        };
         await this._applySlashToolEvent({
-          type: "tool.end",
+          type: "tool.start",
           ...toolEvent,
-          ...(toolResult.isError
-            ? { error: toolResult }
-            : { output: toolResult }),
         });
-      } catch (error) {
-        if (this._isAbandoned(turnId)) return;
-        await this._applySlashToolEvent({
-          type: "tool.end",
-          ...toolEvent,
-          error: error instanceof Error ? error.message : String(error),
-        });
-      }
-    });
+        try {
+          const toolResult = await this._appToolHost.invoke(
+            this._activeBindingId,
+            {
+              runId: callId,
+              toolCallId: callId,
+              name: result.tool,
+              input: result.input,
+            },
+          );
+          if (this._isAbandoned(turnId)) return;
+          await this._applySlashToolEvent({
+            type: "tool.end",
+            ...toolEvent,
+            ...(toolResult.isError
+              ? { error: toolResult }
+              : { output: toolResult }),
+          });
+        } catch (error) {
+          if (this._isAbandoned(turnId)) return;
+          await this._applySlashToolEvent({
+            type: "tool.end",
+            ...toolEvent,
+            error: error instanceof Error ? error.message : String(error),
+          });
+        }
+      },
+      { request, message: callId },
+    );
   }
   if (result.kind === "skill") {
     return this._submitWithActivation(result.activation, request);
@@ -213,12 +216,16 @@ export async function _executeSlash(
       "native-agent",
       result.arguments,
     );
-    return this._withCommandProgress(async (turnId) => {
-      await this._prepareSession(request, turnId);
-      if (this._isAbandoned(turnId)) return;
-      if (!this.session) throw new Error("Agent session did not start.");
-      await this.session.send(text);
-    });
+    const message = this.items.at(-1)!.id;
+    return this._withCommandProgress(
+      async (turnId) => {
+        await this._prepareSession(request, turnId);
+        if (this._isAbandoned(turnId)) return;
+        if (!this.session) throw new Error("Agent session did not start.");
+        await this.session.send(text);
+      },
+      { request, message },
+    );
   }
 }
 
