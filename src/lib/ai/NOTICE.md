@@ -111,3 +111,9 @@ Host automatic approval adapts ai-controller's `src/domain/approval-policy.ts`:
 exact advertised semantic choices, explicit opt-in and restricted-worker
 refusal. Desktop narrows it to unique one-time choices, retains durable trace
 and owns its settings. Provider full-access launch overrides are not copied.
+
+E-AI-108 adapts Buzz Desktop's agent provider fields and Compute Max VRAM layout
+(Apache-2.0, revision ef2aa1ae38fadcc0bc22b8bf6ed96b35933146be), using
+Desktop-owned state and public Design Core controls. Cursor and OpenCode product
+icons are the public favicons bundled by JJ Store; original URLs and checksums
+are retained in docs/provenance.json. They identify integrations only.

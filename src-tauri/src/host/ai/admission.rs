@@ -30,16 +30,19 @@ pub async fn desktop_ai_admit(
     let transition = backends.transitions.clone().lock_owned().await;
     let session = request.session_id;
     let validating = session.clone();
-    access(host.inner().clone(), move |services| {
+    let vault = access(host.inner().clone(), move |services| {
         services.vaults.get(&validating)?;
-        Ok(())
+        Ok(services.vaults.descriptor(&validating)?.profile_id.clone())
     })
     .await?;
     let file_policy = policy.inner().clone();
+    let preparing_vault = vault.clone();
     // Hashes and configuration IO run outside both the UI and NativeHost lock.
-    tauri::async_runtime::spawn_blocking(move || file_policy.prepare_file_profile())
-        .await
-        .map_err(|_| io::Error::other("Local AI preparation was interrupted"))??;
+    tauri::async_runtime::spawn_blocking(move || {
+        file_policy.prepare_for_vault(Some(&preparing_vault))
+    })
+    .await
+    .map_err(|_| io::Error::other("Local AI preparation was interrupted"))??;
     let owner = context.window.clone();
     let checking = backends.inner().clone();
     let (plan, transition) = access(host.inner().clone(), move |services| {
@@ -54,7 +57,7 @@ pub async fn desktop_ai_admit(
         // Revocation may have stopped device compute. Never admit a new root
         // using the old helper's endpoint/token captured during preflight.
         let refreshed = policy.inner().clone();
-        tauri::async_runtime::spawn_blocking(move || refreshed.prepare_file_profile())
+        tauri::async_runtime::spawn_blocking(move || refreshed.prepare_for_vault(Some(&vault)))
             .await
             .map_err(|_| io::Error::other("Local AI refresh was interrupted"))??;
     }

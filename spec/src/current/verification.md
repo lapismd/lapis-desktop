@@ -201,3 +201,6 @@ LD-AI-002/004 behavior and original native gates remain unchanged.
 
 [E-AI-106](../history/E-AI-106.md): collapsed initial conversation list, header
 pin/archive/menu actions and a 16px approval marker; native gates remain.
+
+[E-AI-108](../history/E-AI-108.md): per-agent providers, exact native selectors,
+shared header avatars and dedicated Compute settings. Original gates remain.

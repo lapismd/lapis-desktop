@@ -6,6 +6,9 @@ import type { ModelRef } from "../core/models.ts";
 
 /** Presentation ports shared by chat and Settings; none can start a provider. */
 export type AgentProfileEditorContext = {
+  agentProviders?: (
+    profileId?: string,
+  ) => import("./providers.svelte.ts").AiProviders;
   mentionPeople?: readonly import("../conversations/recipients.ts").ComposerPersonOption[];
   app?: App;
   settings?: Partial<AiPluginSettings>;
@@ -14,15 +17,19 @@ export type AgentProfileEditorContext = {
   loadExecutionModes?: (
     agent: AcpAgentId,
     runtime: AiPluginSettings["defaultRuntime"],
+    profileId?: string,
   ) => Promise<import("../core/agent-profile.ts").ExecutionMode[]>;
   loadModels?: (
     agent: AcpAgentId,
     runtime: AiPluginSettings["defaultRuntime"],
+    profileId?: string,
   ) => Promise<ModelRef[]>;
   onSettingsChange?: (patch: Partial<AiPluginSettings>) => void | Promise<void>;
 };
 
 export type AgentProfileManagement = {
+  agentProviders?: AgentProfileEditorContext["agentProviders"];
+  legacyProvider?: import("./providers.svelte.ts").AiProviders;
   app: App;
   settings: Pick<AiSettingsStore, "get" | "subscribe">;
   update: (patch: Partial<AiPluginSettings>) => Promise<void>;

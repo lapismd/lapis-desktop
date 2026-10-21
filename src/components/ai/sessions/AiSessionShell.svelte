@@ -33,6 +33,7 @@
     children,
     toolInspector,
     harness = "codex",
+    identity,
     showMainOnCompact = false,
     initialListOpen = true,
   }: {
@@ -54,6 +55,7 @@
     children: Snippet;
     toolInspector?: Snippet;
     harness?: string;
+    identity?: Snippet;
     /** Live chat keeps its composer reachable even before a conversation has an id. */
     showMainOnCompact?: boolean;
     initialListOpen?: boolean;
@@ -187,6 +189,7 @@
   <AiSessionThread
     {height}
     {harness}
+    {identity}
     {title}
     {status}
     selected={!!activeId}

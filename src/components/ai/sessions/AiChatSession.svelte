@@ -1,6 +1,9 @@
 <!-- SPDX-License-Identifier: Apache-2.0; application-owned inbox composition for live local chat. -->
 <script lang="ts">
   import { onMount } from "svelte";
+  import { AvatarGroup } from "@lapismd/design-core/shadcn/avatar";
+  import { AuthorCard } from "@lapismd/design-core/shadcn/author-card";
+  import { sessionAvatars } from "../../../lib/ai/presentation/session-avatars.ts";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import MessagesIcon from "@lucide/svelte/icons/messages-square";
   import DriveIcon from "@lucide/svelte/icons/hard-drive";
@@ -41,6 +44,14 @@
         local: "Lapis AI",
       } as Record<string, string>
     )[composerState.selectedAgent] ?? composerState.selectedAgent,
+  );
+  const avatars = $derived(
+    sessionAvatars(
+      composerState.selectedAgent,
+      composerState.recipients.selectedIds,
+      composerState.recipientOptions,
+      controller.bindings,
+    ),
   );
   const items = $derived(
     rows.map((row) => ({
@@ -126,6 +137,18 @@
   initialListOpen={false}
   {toolInspector}
 >
+  {#snippet identity()}
+    <AvatarGroup items={avatars} label="Chat agents" size="sm" max={4}>
+      {#snippet avatar(person, size)}<AuthorCard
+          author={person}
+          trigger="avatar"
+          interaction="hover"
+          {size}
+          role="Agent"
+          label={`About ${person.name}`}
+        />{/snippet}
+    </AvatarGroup>
+  {/snippet}
   {#snippet listActions()}<Button
       variant="ghost"
       size="icon-sm"

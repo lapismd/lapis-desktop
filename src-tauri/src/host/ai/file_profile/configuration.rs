@@ -3,7 +3,8 @@ pub(super) fn load(
     source: &Source,
     bundled: Option<&PathBuf>,
     verified: &Mutex<Option<(PathBuf, Config)>>,
-    compute: Option<BTreeMap<String, String>>,
+    vault: Option<&str>,
+    compute: BTreeMap<String, Option<BTreeMap<String, String>>>,
 ) -> io::Result<Option<Ready>> {
     let bytes = match std::fs::symlink_metadata(&source.settings) {
         Err(error) if error.kind() == io::ErrorKind::NotFound => {
@@ -104,14 +105,36 @@ pub(super) fn load(
         ("JJ_ACP_CANCEL_GRACE".into(), "2".into()),
         ("JJ_ACP_REAP_TIMEOUT".into(), "2".into()),
     ]);
-    let local_environment = local_profile::prepare(source, &config, compute)?;
-    if local_environment.is_some() {
-        targets.insert("local".into(), "Lapis AI".into());
+    let mut local_environments = BTreeMap::new();
+    let mut stores = vec![("local".to_owned(), source.providers.clone())];
+    if let Some(vault) = vault {
+        for id in source.providers.agent_ids(vault).unwrap_or_default() {
+            if let Ok(store) = source.providers.for_agent(vault, &id) {
+                stores.push((format!("local:profile:{id}"), store));
+            }
+        }
+    }
+    for (target, store) in stores {
+        // One unavailable provider must not disable independently admitted clients.
+        // Its settings command still reports the underlying failure.
+        let Ok(status) = store.status() else {
+            continue;
+        };
+        let provider = status.configuration.provider;
+        if let Ok(Some(environment)) = local_profile::prepare(
+            source,
+            &config,
+            &store,
+            compute.get(&provider).cloned().flatten(),
+        ) {
+            targets.insert(target.clone(), "Lapis AI".into());
+            local_environments.insert(target, environment);
+        }
     }
     Ok(Some(Ready {
         executable: config.runtime.acp.ok_or_else(invalid)?,
         environment,
         targets,
-        local_environment,
+        local_environments,
     }))
 }

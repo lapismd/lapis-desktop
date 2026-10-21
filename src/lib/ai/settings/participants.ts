@@ -1,3 +1,4 @@
+import { isProviderProfileId } from "./provider-profile.ts";
 import {
   validateAgentProfile,
   assertExecutionMode,
@@ -29,6 +30,7 @@ export function validateAgentParticipants(
         (key) =>
           ![
             "id",
+            "providerProfileId",
             "label",
             "agent",
             "description",
@@ -45,10 +47,20 @@ export function validateAgentParticipants(
       throw new Error("Invalid agent participant");
     const { id, label, agent, model, thinking, avatar, avatarBackground } =
       entry as AgentRecipientOption;
-    const { description, instructions, executionMode, approvalPolicy } =
-      entry as AgentRecipientOption;
+    const {
+      description,
+      instructions,
+      executionMode,
+      approvalPolicy,
+      providerProfileId,
+    } = entry as AgentRecipientOption;
     if (approvalPolicy !== undefined && !isApprovalPolicy(approvalPolicy))
       throw new Error("Invalid agent approval policy");
+    if (
+      providerProfileId !== undefined &&
+      (agent !== "local" || !isProviderProfileId(providerProfileId))
+    )
+      throw new Error("Invalid Lapis provider profile");
     validateAgentProfile({ description, instructions });
     assertExecutionMode(executionMode);
     const image = validateAgentAvatar(avatar),
@@ -74,6 +86,7 @@ export function validateAgentParticipants(
       id,
       label,
       agent,
+      ...(providerProfileId ? { providerProfileId } : {}),
       ...(model ? { model: model.trim() } : {}),
       ...(description ? { description } : {}),
       ...(instructions ? { instructions } : {}),

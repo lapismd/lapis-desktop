@@ -14,7 +14,7 @@ export function setupFixture(app: App, scenario: string) {
   const loading = new Promise<void>((resolve) => {
     release = resolve;
   });
-  let provider: ProviderStatus = {
+  const provider: ProviderStatus = {
     revision: 1,
     configuration: {
       provider: "openai-api",
@@ -31,6 +31,13 @@ export function setupFixture(app: App, scenario: string) {
         label: "OpenAI",
         default_endpoint: "https://api.openai.com/v1",
         endpoint_required: false,
+        credential_env: "OPENAI_COMPAT_API_KEY",
+      },
+      {
+        id: "openai-compat",
+        label: "OpenAI compatible",
+        default_endpoint: null,
+        endpoint_required: true,
         credential_env: "OPENAI_COMPAT_API_KEY",
       },
       {
@@ -88,27 +95,64 @@ export function setupFixture(app: App, scenario: string) {
     if (scenario === "setup-loading") await loading;
     if (scenario === "setup-error") throw Error("Synthetic setup unavailable");
   }
-  const providers = new AiProviders(
-    async (action) => {
-      await ready();
-      if (action.type === "save") {
-        if (scenario === "setup-save-error")
-          throw Error("Synthetic provider save failed");
-        provider = {
-          ...provider,
-          revision: provider.revision + 1,
-          configuration: action.command.configuration,
-          lastRequest: action.command.requestId,
-          credentialAvailable:
-            !action.command.clearSecret &&
-            action.command.configuration.provider === "openai-api",
-        };
-      }
-      return structuredClone(provider);
-    },
-    () => {},
-    report,
-  );
+  const profiles = new Map<string, AiProviders>();
+  const states = new Map<string, ProviderStatus>();
+  function agentProviders(profileId?: string) {
+    const id = profileId ?? "legacy";
+    const existing = profiles.get(id);
+    if (existing) return existing;
+    let value = structuredClone(provider);
+    if (id !== "legacy")
+      value = {
+        ...value,
+        revision: 0,
+        credentialAvailable: false,
+        configuration: { provider: "", endpoint: null, model: null },
+      };
+    if (id === "qwen")
+      value = {
+        ...value,
+        revision: 1,
+        credentialAvailable: true,
+        configuration: {
+          provider: "openai-compat",
+          endpoint: "https://models.example/v1",
+          model: "qwen3.8-max",
+        },
+      };
+    if (id === "local-model")
+      value = {
+        ...value,
+        revision: 1,
+        configuration: { provider: "local", endpoint: null, model: null },
+      };
+    states.set(id, value);
+    const manager = new AiProviders(
+      async (action) => {
+        await ready();
+        if (action.type === "save") {
+          if (scenario === "setup-save-error")
+            throw Error("Synthetic provider save failed");
+          value = {
+            ...value,
+            revision: value.revision + 1,
+            configuration: action.command.configuration,
+            lastRequest: action.command.requestId,
+            credentialAvailable:
+              !action.command.clearSecret &&
+              Boolean(action.command.secret || value.credentialAvailable),
+          };
+          states.set(id, value);
+        }
+        return structuredClone(value);
+      },
+      () => {},
+      report,
+    );
+    profiles.set(id, manager);
+    return manager;
+  }
+  const providers = agentProviders();
   const compute = new AiCompute(
     async (action) => {
       await ready();
@@ -135,10 +179,15 @@ export function setupFixture(app: App, scenario: string) {
   return {
     commands,
     providers,
+    agentProviders,
+    states,
     compute,
     async close() {
       release();
-      await Promise.all([providers.close(), compute.close()]);
+      await Promise.all(
+        [...profiles.values()].map((profile) => profile.close()),
+      );
+      await compute.close();
     },
   };
 }

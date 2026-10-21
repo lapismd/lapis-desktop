@@ -81,6 +81,9 @@ cleanup.
 [Local recovery](ai-recovery.md) governs durable dispatch, streaming and unknown
 outcomes.
 
+E-AI-108: [per-agent providers and shared header avatars](ai-setup.md); Compute
+is a separate sidebar page. Original native gates remain.
+
 ## Requirements
 
 | ID          | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                 |

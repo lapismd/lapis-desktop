@@ -343,3 +343,4 @@ by the task ledger, not inferred from this list.
 - [AI chat header and collapsed sidebar](E-AI-106.md)
 
 - [Lapis picker and explicit cloud model setup](E-AI-107.md)
+- [Per-agent providers, chat avatars and Compute settings](E-AI-108.md)

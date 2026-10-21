@@ -1,8 +1,8 @@
 # Governance
 
-E-AI-097/099 retain exact main-window grants and native-only hardware facts.
-Unknown fields and launch authority remain refused; the source audit retains its
-closed permission inventory.
+E-AI-097/099 retain native grants and hardware authority. E-AI-108 retains
+LD-GOV-006 provenance: Buzz references and harness artwork are attributed; no
+dependency patch, source alias, publication or baseline update.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

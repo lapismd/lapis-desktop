@@ -3,14 +3,12 @@
   import { untrack } from "svelte";
   import { DialogFrame } from "@lapismd/design-core/forms/dialog";
   import * as Dialog from "@lapismd/design-core/shadcn/dialog";
-  import { AvatarPicker } from "@lapismd/design-core/forms/avatar-picker";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { MarkdownComposer } from "@lapismd/design-core/chat";
   import { Input } from "@lapismd/design-core/shadcn/input";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import ChatAgentConfiguration from "./agents/ChatAgentConfiguration.svelte";
-  import ChatAgentIcon from "./agents/ChatAgentIcon.svelte";
-  import { readAgentAvatarImage } from "./agents/avatar-image.ts";
+  import AgentIdentityFields from "./agents/AgentIdentityFields.svelte";
   import type { AgentProfileEditorContext } from "../../../lib/ai/settings/agent-profile-editor.ts";
   import type { AiChatController } from "../../../lib/ai/chat/chat-controller.svelte.ts";
   import type { AgentRecipientOption } from "../../../lib/ai/conversations/recipients.ts";
@@ -37,8 +35,17 @@
   let label = $state(""),
     saving = $state(false),
     draftId = $state("");
+  let providerProfileId = $state<string | undefined>();
   let agent = $state<AcpAgentId>("codex"),
     model = $state<string | null>(null);
+  const providerSettings = $derived(
+    agent === "local"
+      ? panelProps.agentProviders?.(providerProfileId)
+      : undefined,
+  );
+  const providerReady = $derived(
+    !providerSettings || providerSettings.readyToSave,
+  );
   let description = $state(""),
     instructions = $state(""),
     executionMode = $state("");
@@ -76,7 +83,13 @@
       avatar = initial?.avatar ?? "";
       avatarBackground = initial?.avatarBackground ?? "#6e56cf";
       draftId = initial?.id ?? `participant-${crypto.randomUUID()}`;
+      providerProfileId =
+        initial?.agent === "local" ? initial.providerProfileId : draftId;
     });
+  });
+  $effect(() => {
+    const manager = open ? providerSettings : undefined;
+    return () => manager?.discardDraft();
   });
   async function save(event: SubmitEvent) {
     event.preventDefault();
@@ -84,6 +97,7 @@
       disabled ||
       avatarUploads ||
       !label.trim() ||
+      !providerReady ||
       !panelProps.onSettingsChange
     )
       return;
@@ -93,10 +107,25 @@
       const current = panelProps.settings?.agentParticipants ?? [
         { id: defaultAgent, label: labels[defaultAgent], agent: defaultAgent },
       ];
-      if (participant && !current.some((p) => p.id === participant.id))
+      if (
+        participant &&
+        participant.id !== "local" &&
+        !current.some((p) => p.id === participant.id)
+      )
         throw new Error(
           "This agent is no longer available. Your draft is retained.",
         );
+      if (
+        providerSettings &&
+        (providerSettings.dirty ||
+          providerSettings.secret ||
+          providerSettings.pending) &&
+        !(await providerSettings.save())
+      )
+        return;
+      const selectedModel = providerSettings
+        ? providerSettings.draft.model
+        : model;
       const value = {
         id: draftId,
         label: label.trim(),
@@ -105,7 +134,10 @@
         ...(executionMode ? { executionMode } : {}),
         ...(approvalPolicy ? { approvalPolicy } : {}),
         agent,
-        ...(model?.trim() ? { model: model.trim() } : {}),
+        ...(agent === "local" && providerProfileId
+          ? { providerProfileId }
+          : {}),
+        ...(selectedModel?.trim() ? { model: selectedModel.trim() } : {}),
         ...(thinking !== "inherit" ? { thinking } : {}),
         ...(avatar ? { avatar } : {}),
         avatarBackground,
@@ -149,30 +181,14 @@
     }}
   >
     {#snippet sidebar()}
-      <div class="agent-editor-sidebar">
-        <AvatarPicker
-          bind:value={avatar}
-          bind:background={avatarBackground}
-          name={label || "Agent"}
-          label="Edit agent avatar"
-          size="2xl"
-          shape="rounded"
-          {disabled}
-          onUploadImage={async (file, signal) => {
-            avatarUploads++;
-            try {
-              return await readAgentAvatarImage(file, signal);
-            } finally {
-              avatarUploads--;
-            }
-          }}
-        />
-        <strong>{label.trim() || "New agent"}</strong>
-        <span class="agent-editor-client"
-          ><ChatAgentIcon runtimeAgent={agent} />{labels[agent]}</span
-        >
-        <p>Available to chats in this vault.</p>
-      </div>
+      <AgentIdentityFields
+        bind:avatar
+        bind:avatarBackground
+        bind:avatarUploads
+        {label}
+        {agent}
+        {disabled}
+      />
     {/snippet}
     <form
       id={`${editorId}-form`}
@@ -233,6 +249,8 @@
           bind:executionMode
           bind:approvalPolicy
           {panelProps}
+          {providerSettings}
+          {providerProfileId}
           active={open}
           {disabled}
         />
@@ -255,6 +273,7 @@
         disabled={disabled ||
           !!avatarUploads ||
           !label.trim() ||
+          !providerReady ||
           !panelProps.onSettingsChange}
       >
         {saving ? "Saving…" : participant ? "Save agent" : "Add participant"}
@@ -262,32 +281,3 @@
     {/snippet}
   </DialogFrame>
 </Dialog.Root>
-
-<style>
-  .agent-editor-sidebar {
-    display: grid;
-    align-content: start;
-    justify-items: center;
-    gap: 0.875rem;
-    text-align: center;
-    overflow-wrap: anywhere;
-  }
-  .agent-editor-sidebar strong {
-    max-width: 100%;
-  }
-  .agent-editor-client {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--muted-foreground);
-  }
-  .agent-editor-client :global(svg) {
-    width: 1rem;
-    height: 1rem;
-  }
-  .agent-editor-sidebar p {
-    margin: 0;
-    color: var(--muted-foreground);
-    font-size: 0.8125rem;
-  }
-</style>

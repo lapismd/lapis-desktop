@@ -1,5 +1,6 @@
 <!-- SPDX-License-Identifier: Apache-2.0; copied/adapted from jj-store CommunityAgents. -->
 <script lang="ts">
+  import { agentAvatar } from "../../../lib/ai/presentation/agent-avatar.ts";
   import { Avatar } from "@lapismd/design-core/shadcn/avatar";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as DropdownMenu from "@lapismd/design-core/shadcn/dropdown-menu";
@@ -58,7 +59,7 @@
         ></button>
         <div class="agent-profiles__avatar">
           <Avatar
-            src={profile.avatar}
+            src={profile.avatar ?? agentAvatar(profile.agent)}
             background={profile.avatarBackground}
             name={profile.label}
             size="2xl"

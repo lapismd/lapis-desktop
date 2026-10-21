@@ -1,3 +1,4 @@
+import { providerTarget } from "../../settings/provider-profile.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retains the pre-controller runtime seam with a public native-client backend.
 import type { createAcpClient } from "@lapismd/ai";
@@ -42,7 +43,10 @@ export class AcpAgentRuntime implements AgentRuntime {
     if (!supported(request)) return false;
     const targets = await this.#backend.client.targets();
     return targets.some((target) =>
-      request.agent ? target.id === request.agent : true,
+      request.agent
+        ? target.id ===
+          providerTarget(request.agent, request.agentProfile?.providerProfileId)
+        : true,
     );
   }
   async start(request: AgentRequest): Promise<AcpAgentSession> {
@@ -51,7 +55,10 @@ export class AcpAgentRuntime implements AgentRuntime {
     const initialContext = initialAcpContext(request);
     const targets = await this.#backend.client.targets();
     const target = targets.find((target) =>
-      request.agent ? target.id === request.agent : true,
+      request.agent
+        ? target.id ===
+          providerTarget(request.agent, request.agentProfile?.providerProfileId)
+        : true,
     );
     if (!target) throw new Error("ACP target unavailable");
     const descriptor = request.appToolSession;
@@ -71,7 +78,7 @@ export class AcpAgentRuntime implements AgentRuntime {
     const session = new AcpAgentSession(
       120_000,
       turnTools,
-      target.id,
+      request.agent ?? target.id,
       request.agentProfile,
       initialContext,
     );
@@ -140,6 +147,7 @@ function supported(request: AgentRequest): boolean {
     !request.requirePolicyAmendments &&
     (!request.restricted ||
       (request.agent === "local" &&
+        !request.agentProfile?.providerProfileId &&
         !request.appToolSession &&
         !request.skillSnapshot &&
         !request.skillActivations?.length)) &&

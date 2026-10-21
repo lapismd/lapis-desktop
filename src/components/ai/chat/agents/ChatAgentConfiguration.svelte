@@ -1,5 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0; adapted from jj-store StoreAgentConfiguration. -->
 <script lang="ts">
+  import AgentProviderFields from "./AgentProviderFields.svelte";
+  import type { AiProviders } from "../../../../lib/ai/settings/providers.svelte.ts";
   import AgentExecutionModeSelect from "./AgentExecutionModeSelect.svelte";
   import AgentApprovalPolicySelect from "./AgentApprovalPolicySelect.svelte";
   import type { ApprovalPolicy } from "../../../../lib/ai/core/approval-policy.ts";
@@ -29,6 +31,8 @@
     executionMode = $bindable(""),
     approvalPolicy = $bindable(""),
     panelProps,
+    providerSettings,
+    providerProfileId,
     active,
     disabled = false,
   }: {
@@ -39,6 +43,8 @@
     executionMode?: string;
     approvalPolicy?: ApprovalPolicy | "";
     panelProps: AgentProfileEditorContext;
+    providerSettings?: AiProviders;
+    providerProfileId?: string;
     active: boolean;
     disabled?: boolean;
   } = $props();
@@ -50,10 +56,17 @@
     if (!active) return;
     modes = [];
     modesLoading = false;
-    if (!load) return;
+    if (
+      !load ||
+      (client === "local" &&
+        (!providerSettings?.value?.revision ||
+          providerSettings.dirty ||
+          providerSettings.pending))
+    )
+      return;
     let disposed = false;
     modesLoading = true;
-    void load(client, "acp")
+    void load(client, "acp", client === "local" ? providerProfileId : undefined)
       .then((values) => {
         if (!disposed) modes = values;
       })
@@ -105,7 +118,7 @@
     if (!active) return;
     models = catalogModelsForAgent(client, panelProps.models ?? []);
     loading = false;
-    if (!load) return;
+    if (!load || client === "local") return;
     let disposed = false;
     loading = true;
     void Promise.resolve()
@@ -134,7 +147,7 @@
 
 <Field.Field>
   <Field.Label id={`${id}-client-label`} for={`${id}-client`}
-    >Agent client</Field.Label
+    >Agent harness</Field.Label
   >
   <ChatAgentHarnessSelect
     id={`${id}-client`}
@@ -157,27 +170,36 @@
     >Uses the installed and admitted client on this device.</Field.Description
   >
 </Field.Field>
-<Field.Field>
-  <Field.Label for={`${id}-model`}>Model</Field.Label>
-  {#if loading}<div
-      class="model-loading"
-      role="status"
-      aria-label="Loading models"
+{#if agent === "local" && providerSettings}
+  <AgentProviderFields
+    management={providerSettings}
+    {panelProps}
+    profileId={providerProfileId}
+    {disabled}
+  />
+{:else}
+  <Field.Field>
+    <Field.Label for={`${id}-model`}>Model</Field.Label>
+    {#if loading}<div
+        class="model-loading"
+        role="status"
+        aria-label="Loading models"
+      >
+        <Skeleton class="model-skeleton" />
+      </div>
+    {:else}<ChatAgentModelSelect
+        id={`${id}-model`}
+        bind:value={model}
+        {options}
+        {disabled}
+        allowCustom
+        defaultLabel="Use the chat default"
+      />{/if}
+    <Field.Description
+      >Leave the model and effort at their defaults to follow the chat.</Field.Description
     >
-      <Skeleton class="model-skeleton" />
-    </div>
-  {:else}<ChatAgentModelSelect
-      id={`${id}-model`}
-      bind:value={model}
-      {options}
-      {disabled}
-      allowCustom
-      defaultLabel="Use the chat default"
-    />{/if}
-  <Field.Description
-    >Leave the model and effort at their defaults to follow the chat.</Field.Description
-  >
-</Field.Field>
+  </Field.Field>
+{/if}
 <Field.Field>
   <Field.Label for={`${id}-effort`}>Effort</Field.Label>
   <Select.Root type="single" bind:value={thinking} {disabled}>

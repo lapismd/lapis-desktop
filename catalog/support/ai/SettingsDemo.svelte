@@ -45,6 +45,9 @@
           "Model catalog requests": calls,
           "AI notifications": notifications,
           "AI model source registered": String(registered),
+          "Provider profiles": JSON.stringify(
+            Object.fromEntries(fixture.plugin.setup?.states ?? []),
+          ),
           "Compute commands": JSON.stringify(
             fixture.plugin.setup?.commands ?? [],
           ),

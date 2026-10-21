@@ -28,7 +28,7 @@ struct Ready {
     executable: PathBuf,
     environment: BTreeMap<String, String>,
     targets: BTreeMap<String, String>,
-    local_environment: Option<BTreeMap<String, String>>,
+    local_environments: BTreeMap<String, BTreeMap<String, String>>,
 }
 #[derive(Default)]
 pub(super) struct FileProfile {
@@ -81,15 +81,31 @@ impl FileProfile {
     pub fn prepare(&self) -> io::Result<()> {
         self.prepare_with_compute(None)
     }
+    #[cfg(test)]
     pub fn prepare_with_compute(
         &self,
         compute: Option<BTreeMap<String, String>>,
+    ) -> io::Result<()> {
+        self.prepare_profiles(
+            None,
+            BTreeMap::from([
+                ("local".into(), compute.clone()),
+                ("paired".into(), compute),
+            ]),
+        )
+    }
+    pub fn prepare_profiles(
+        &self,
+        vault: Option<&str>,
+        compute: BTreeMap<String, Option<BTreeMap<String, String>>>,
     ) -> io::Result<()> {
         let _guard = self.preparing.lock().map_err(|_| invalid())?;
         let prepared = self
             .source
             .get()
-            .map(|source| configuration::load(source, self.bundle.get(), &self.verified, compute))
+            .map(|source| {
+                configuration::load(source, self.bundle.get(), &self.verified, vault, compute)
+            })
             .transpose()?
             .flatten();
         *self.ready.lock().map_err(|_| invalid())? = prepared;
@@ -114,7 +130,7 @@ impl FileProfile {
         matches!(
             target,
             "codex" | "cursor" | "opencode" | "local" | "local:restricted"
-        )
+        ) || local_profile_id(target).is_some()
     }
     pub fn targets(&self) -> Vec<Target> {
         self.ready
@@ -146,9 +162,20 @@ impl FileProfile {
             target
         };
         let mut environment = ready.environment.clone();
-        environment.insert("JJ_ACP_RUNNER".into(), target.into());
-        if target == "local" {
-            environment.extend(ready.local_environment.clone().ok_or_else(invalid)?);
+        let runner = if target == "local" || local_profile_id(target).is_some() {
+            "local"
+        } else {
+            target
+        };
+        environment.insert("JJ_ACP_RUNNER".into(), runner.into());
+        if runner == "local" {
+            environment.extend(
+                ready
+                    .local_environments
+                    .get(target)
+                    .cloned()
+                    .ok_or_else(invalid)?,
+            );
         }
         Ok(Some(Launch {
             prepared: PreparedLaunch {
@@ -192,3 +219,12 @@ mod external_tests;
 mod local_profile;
 #[cfg(test)]
 pub(super) mod tests;
+
+pub(super) fn local_profile_id(target: &str) -> Option<&str> {
+    target
+        .strip_prefix("local:profile:")
+        .filter(|id| lapis_desktop::ai::configuration::valid_profile_id(id))
+}
+
+#[cfg(test)]
+mod agent_tests;

@@ -206,7 +206,7 @@ both wrap modes (E-REPO-055).
 recovery, both transcript views, first publication, obsolete reads and a failed
 save with retained input (E-AI-096).
 
-`Desktop/AI setup` uses production AI Settings with in-memory native ports.
+`Desktop/AI setup` uses the production Compute page with in-memory native ports.
 Providers and compute covers explicit model/resource/peer configuration; Loading
 uses representative skeletons; Setup failure and Provider save failure assert
 App notifications and retained drafts; Running compute covers Stop. Source
@@ -242,6 +242,11 @@ E-AI-106: Local ACP conversations/Supported modes and pin reviews the collapsed
 initial conversation list, header pin/archive controls and vertical action menu
 in Document and Classic. Action approvals/Picker shows the larger filled marker.
 
-E-AI-107: AI setup/Required provider model rejects an empty cloud default and
-keeps compute selection independent. AI/Models/Lapis agent picker selects the
-bundled harness and discovers its model alongside the three external clients.
+E-AI-108: AI/Agent providers/Independent providers rejects an empty cloud model
+and keeps compute selection independent. AI/Models/Lapis agent picker selects
+the bundled harness and discovers its model alongside the three external
+clients.
+
+E-AI-108: AI/Agent providers covers per-agent provider settings, legacy editing
+and failed-save retention. Compute has its own sidebar page with Max VRAM.
+AI/Agent header/Participant avatars uses the production embedded session shell.

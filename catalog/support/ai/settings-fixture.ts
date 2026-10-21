@@ -17,6 +17,7 @@ import { registerCatalogCleanup } from "../lifecycle.ts";
 
 export type SettingsScenario =
   | "setup"
+  | "setup-agents"
   | "setup-loading"
   | "setup-error"
   | "setup-save-error"
@@ -39,6 +40,9 @@ class SettingsFixturePlugin extends Plugin {
   get providers() {
     return this.setup?.providers;
   }
+  get agentProviders() {
+    return this.setup?.agentProviders;
+  }
   get compute() {
     return this.setup?.compute;
   }
@@ -56,8 +60,23 @@ class SettingsFixturePlugin extends Plugin {
   );
   models = {
     listExecutionModes: async () => reviewExecutionModes,
-    listModels: async (provider: string, runtime?: string) => {
-      this.calls.push(`${provider}:${runtime}`);
+    listModels: async (
+      provider: string,
+      runtime?: string,
+      profileId?: string,
+    ) => {
+      this.calls.push(
+        `${provider}:${runtime}${profileId ? `:${profileId}` : ""}`,
+      );
+      if (provider === "local")
+        return [
+          {
+            provider,
+            model: profileId === "qwen" ? "qwen3.8-max" : "example-model",
+            displayName:
+              profileId === "qwen" ? "Qwen 3.8 Max" : "Example model",
+          },
+        ];
       if (this.scenario === "catalog-error")
         throw new Error("Fixture provider unavailable");
       return [
@@ -159,6 +178,25 @@ export function createSettingsFixture(scenario: SettingsScenario) {
         ...(scenario === "profiles" || scenario === "profiles-failure"
           ? { agentParticipants: agentReviewProfiles }
           : {}),
+        ...(scenario === "setup-agents"
+          ? {
+              agentParticipants: [
+                {
+                  id: "qwen",
+                  label: "Qwen research",
+                  agent: "local",
+                  providerProfileId: "qwen",
+                  model: "qwen3.8-max",
+                },
+                {
+                  id: "local-model",
+                  label: "Offline assistant",
+                  agent: "local",
+                  providerProfileId: "local-model",
+                },
+              ],
+            }
+          : {}),
         defaultRuntime: scenario === "legacy" ? "codex-native" : "acp",
         memoryConsolidationRuntime:
           scenario === "legacy" ? "codex-native" : "acp",
@@ -176,9 +214,14 @@ export function createSettingsFixture(scenario: SettingsScenario) {
     await plugin.settings.settle();
     await controller.settings.load();
     controller.settings.selectSection(
-      scenario.startsWith("clients") || scenario.startsWith("profiles")
+      scenario.startsWith("clients") ||
+        scenario.startsWith("profiles") ||
+        scenario === "setup-agents" ||
+        scenario === "setup-save-error"
         ? "ai-agents"
-        : "ai",
+        : scenario.startsWith("setup")
+          ? "ai-compute"
+          : "ai",
     );
     if (scenario === "profiles-failure") plugin.failNextSave = true;
   })();

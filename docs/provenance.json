@@ -20,6 +20,20 @@
       "revision": "8d748436fe7e73353bd52b07a385a198429187b7",
       "license": "Apache-2.0",
       "sha256": "3fe51ed173fabfcd632511bc6f5236741319b61d00eba71a081425ec768c92f7"
+    },
+    {
+      "path": "src/lib/ai/presentation/assets/cursor.svg",
+      "source": "jj-store/web/public/agent-icons/cursor.svg; https://cursor.com/favicon.svg",
+      "revision": "61c3f60dbb6b98f3182d82287104e10b9c54b829",
+      "license": "Product identifier; original public favicon, see jj-store/web/public/agent-icons/SOURCES.md",
+      "sha256": "0375fe0bba07813d31cdac4a3bdd45f60669273ecf9bdb1ae34dd5935d1f4612"
+    },
+    {
+      "path": "src/lib/ai/presentation/assets/opencode.svg",
+      "source": "jj-store/web/public/agent-icons/opencode.svg; https://opencode.ai/favicon.svg",
+      "revision": "61c3f60dbb6b98f3182d82287104e10b9c54b829",
+      "license": "Product identifier; original public favicon, see jj-store/web/public/agent-icons/SOURCES.md",
+      "sha256": "e29bbe33380ad1c1ada9134b52f229d30e9776d60481512c9d81f2bb6f37def9"
     }
   ],
   "references": [
@@ -189,6 +203,18 @@
         "src/components/ai/settings/AiProvidersSettings.svelte"
       ],
       "use": "Copied/adapted Settings card, divided label/control rows, joined action footers, explicit model/resource/peer controls and write-only secret field. Reuses existing desktop ClientSettingsCard/Footer and public Design Core components. Native admission, credential custody, durable commands and local ACP authority remain desktop-owned; advanced hardware/catalog/relay controls remain deferred."
+    },
+    {
+      "repository": "buzz",
+      "revision": "ef2aa1ae38fadcc0bc22b8bf6ed96b35933146be",
+      "paths": [
+        "desktop/src/features/agents/ui/AgentHarnessField.tsx",
+        "desktop/src/features/agents/ui/EditAgentProviderModelFields.tsx",
+        "desktop/src/features/agents/ui/ProviderConfigFields.tsx",
+        "desktop/src/features/mesh-compute/ui/MeshComputeSettingsCard.tsx"
+      ],
+      "use": "E-AI-108: Adapted harness-dependent provider configuration and separate Compute Max VRAM presentation using existing public Design Core controls. Native storage, credentials and launch authority stay Desktop-owned.",
+      "license": "Apache-2.0"
     }
   ],
   "copies": [

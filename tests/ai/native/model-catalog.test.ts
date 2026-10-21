@@ -283,3 +283,35 @@ it("discovers provider execution modes through the same non-prompting probe and 
   expect(f.raw.close).toHaveBeenCalledWith("probe");
   await f.catalog.close();
 });
+
+it("keeps discovered models keyed by the exact Lapis profile and never probes legacy as fallback", async () => {
+  const f = fixture();
+  f.raw.targets.mockResolvedValue([
+    { id: "local", label: "Legacy" },
+    { id: "local:profile:a", label: "A" },
+    { id: "local:profile:b", label: "B" },
+  ]);
+  f.raw.open.mockImplementation(async (options) => ({
+    sessionId: options.targetId,
+    requestId: options.requestId,
+    targetId: options.targetId,
+    facts: {
+      session: { models: { availableModels: [{ modelId: options.targetId }] } },
+    },
+  }));
+  expect((await f.catalog.listModels("local", "acp", "a"))[0]).toMatchObject({
+    provider: "local",
+    model: "local:profile:a",
+  });
+  expect((await f.catalog.listModels("local", "acp", "b"))[0]).toMatchObject({
+    provider: "local",
+    model: "local:profile:b",
+  });
+  await f.catalog.listModels("local", "acp", "a");
+  expect(await f.catalog.listModels("local", "acp", "missing")).toEqual([]);
+  expect(f.raw.open).toHaveBeenCalledTimes(2);
+  await expect(
+    f.catalog.listModels("local", "acp", "../foreign"),
+  ).rejects.toThrow("Invalid Lapis provider profile");
+  await f.catalog.close();
+});

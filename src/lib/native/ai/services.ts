@@ -78,33 +78,47 @@ export function createNativeAi(
     allowed,
   );
   const importSources = new NativeImportSources(vault.sessionId, call, allowed);
-  const providers = new AiProviders(
-    (action) =>
-      background.run(
-        action.type === "save"
-          ? "Saving AI provider settings"
-          : "Loading AI provider settings",
-        async () => {
-          if (!allowed())
-            throw new Error("AI provider settings require a trusted workspace");
-          return native<ProviderStatus>("desktop_ai_providers", {
-            request: { sessionId: vault.sessionId, action },
-          });
-        },
-      ),
-    () => {
-      models.invalidate();
-      scope.invalidateAdmission();
-    },
-    (error) =>
-      app.notifications.notify({
-        id: "ai-provider-settings",
-        title: "AI provider settings",
-        source: "ai",
-        severity: "error",
-        message: error instanceof Error ? error.message : String(error),
-      }),
-  );
+  const providerProfiles = new Map<string, AiProviders>();
+  const makeProviders = (profileId?: string) =>
+    new AiProviders(
+      (action) =>
+        background.run(
+          action.type === "save"
+            ? "Saving AI provider settings"
+            : "Loading AI provider settings",
+          async () => {
+            if (!allowed())
+              throw new Error(
+                "AI provider settings require a trusted workspace",
+              );
+            return native<ProviderStatus>("desktop_ai_providers", {
+              request: { sessionId: vault.sessionId, profileId, action },
+            });
+          },
+        ),
+      () => {
+        models.invalidate();
+        scope.invalidateAdmission();
+      },
+      (error) =>
+        app.notifications.notify({
+          id: "ai-provider-settings",
+          title: "AI provider settings",
+          source: "ai",
+          severity: "error",
+          message: error instanceof Error ? error.message : String(error),
+        }),
+    );
+  const providers = makeProviders();
+  const agentProviders = (profileId?: string) => {
+    if (!profileId) return providers;
+    let value = providerProfiles.get(profileId);
+    if (!value) {
+      value = makeProviders(profileId);
+      providerProfiles.set(profileId, value);
+    }
+    return value;
+  };
   const captureSources = new NativeCaptureSources(
     vault.sessionId,
     call,
@@ -213,6 +227,7 @@ export function createNativeAi(
       await Promise.all([
         models.close(),
         providers.close(),
+        ...[...providerProfiles.values()].map((profile) => profile.close()),
         compute.close(),
         userAgents.close(),
         bridge?.close(),
@@ -229,6 +244,7 @@ export function createNativeAi(
   return {
     clients,
     providers,
+    agentProviders,
     compute,
     runtime,
     appToolBridge: bridge,

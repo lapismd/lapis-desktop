@@ -25,14 +25,29 @@ discovery; it never delegates to an external client.
 
 ## Providers and application tools
 
-The existing AI Settings page owns provider and compute sections; named agent
-profiles remain in Agents. Lapis provider and Optional compute render as
-separate full-width cards using the Agents table header, body and footer
-styling, with one title each. They are not nested inside ordinary label/control
-rows. Provider choices use the public native catalog, excluding subscription
-OAuth. This machine and Paired machine are explicit inference selections. A
-missing cloud credential cannot select compute, and unavailable compute cannot
-select cloud inference.
+AI Settings owns conversation preferences. Agents owns named profiles and
+installed clients. Choosing the Lapis harness in the agent editor exposes that
+agent's provider, endpoint, write-only API key and exact model. New Lapis
+profiles use independent device-owned configurations keyed by stable vault and
+profile identities. Two profiles may use different endpoints, credentials and
+models; selecting one never changes another. Existing device-wide configuration
+remains available as the legacy Lapis agent, preserving existing sessions and
+settings. No provider key or endpoint enters a vault's portable profile record;
+it contains only the opaque configuration selector and ordinary
+model/presentation fields. Unknown configuration selectors refuse; they never
+select the legacy provider. Provider updates affect new bindings; running
+workers retain their configuration. Chat headers use the chosen agent’s custom
+avatar or harness icon. Multiple participants use the public Design Core avatar
+group with profile hover cards. Removing a portable agent does not silently
+delete its device credentials.
+
+Compute is a dedicated settings-sidebar section with the `cpu` icon. It owns
+model preparation, download/import, serving, sharing and Max VRAM (GB), using
+the existing bounded native memory setting and runtime limit. Moving controls
+neither starts compute nor resets saved limits. Provider choices use the public
+native catalog, excluding subscription OAuth. This machine and Paired machine
+remain explicit inference choices; unavailable compute never selects cloud
+inference.
 
 Device configuration contains opaque Keychain references. API-key input is
 transient and write-only; status, JSON diagnostics, transcripts, vault settings
@@ -42,11 +57,12 @@ the same identity. Adopting a superseding revision is explicit. Provider changes
 invalidate discovery and new admission without interrupting running workers.
 Cloud providers require an explicit nonblank default model at setup and native
 launch; a missing model never becomes an implicit `auto`. Settings identify the
-required field and explain that supported endpoints discover alternatives in the
-chat model picker. This machine and Paired machine use their separate compute
-model configuration. Legacy incomplete settings remain readable, exact committed
-save receipts remain replayable, and credential removal stays available without
-supplying a model. Validation occurs before new credential writes.
+required field and discover alternatives from the saved profile when supported,
+with a custom model ID fallback. This machine and Paired machine use their
+separate compute model configuration. Legacy incomplete settings remain
+readable, exact committed save receipts remain replayable, and credential
+removal stays available without supplying a model. Validation occurs before new
+credential writes.
 
 Codex, OpenCode and Lapis use the existing private stdio MCP bridge. Cursor uses
 an authenticated stateless HTTP MCP endpoint on literal loopback with an

@@ -55,13 +55,36 @@ export class AiProviders {
         this.value.lastRequest !== this.#command.requestId,
     );
   }
+  get readyToSave(): boolean {
+    if (this.pending) return true;
+    const provider = this.value?.providers.find(
+      (p) => p.id === this.draft.provider,
+    );
+    return Boolean(
+      provider &&
+        (!provider.endpoint_required || this.draft.endpoint?.trim()) &&
+        (["local", "paired"].includes(provider.id) ||
+          this.draft.model?.trim()) &&
+        (!provider.credential_env ||
+          this.secret.trim() ||
+          (this.value?.credentialAvailable &&
+            this.value.configuration.provider === provider.id)),
+    );
+  }
+  discardDraft(): void {
+    if (this.pending || this.busy) return;
+    this.secret = "";
+    this.dirty = false;
+    if (this.value)
+      this.draft = structuredClone($state.snapshot(this.value.configuration));
+  }
   useSaved(): void {
     if (this.busy || !this.superseded || !this.value) return;
     this.#command = undefined;
     this.pending = false;
     this.secret = "";
     this.dirty = false;
-    this.draft = structuredClone(this.value.configuration);
+    this.draft = structuredClone($state.snapshot(this.value.configuration));
   }
   constructor(
     private readonly request: (

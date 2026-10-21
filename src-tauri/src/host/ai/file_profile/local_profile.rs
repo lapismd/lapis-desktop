@@ -4,15 +4,16 @@ use sha2::{Digest, Sha256};
 pub(super) fn prepare(
     source: &Source,
     config: &Config,
+    providers: &lapis_desktop::ai::configuration::ProviderStore,
     compute: Option<BTreeMap<String, String>>,
 ) -> io::Result<Option<BTreeMap<String, String>>> {
-    let mut environment = if source.providers.compute_selected().unwrap_or(false) {
+    let mut environment = if providers.compute_selected().unwrap_or(false) {
         match compute {
             Some(environment) => environment,
             None => return Ok(None),
         }
     } else {
-        match source.providers.environment() {
+        match providers.environment() {
             Ok(environment) => environment,
             Err(_) => return Ok(None),
         }

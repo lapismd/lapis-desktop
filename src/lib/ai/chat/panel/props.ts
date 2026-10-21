@@ -29,6 +29,7 @@ import type { AppToolHost } from "../../tools/app-tool-host.ts";
 import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
+  agentProviders?: import("../../settings/agent-profile-editor.ts").AgentProfileEditorContext["agentProviders"];
   mentionPeople?: readonly import("../../conversations/recipients.ts").ComposerPersonOption[];
   agentOptions?: readonly import("../../conversations/recipients.ts").AgentRecipientOption[];
   /** Optional frame for standalone embeddings; the ordinary plugin supplies the session shell. */
@@ -74,10 +75,12 @@ export type AiChatPanelProps = {
   loadExecutionModes?: (
     agent: AcpAgentId,
     runtime: AiPluginSettings["defaultRuntime"],
+    profileId?: string,
   ) => Promise<import("../../core/agent-profile.ts").ExecutionMode[]>;
   loadModels?: (
     agent: AcpAgentId,
     runtime: AiPluginSettings["defaultRuntime"],
+    profileId?: string,
   ) => Promise<ModelRef[]>;
   settings?: Partial<AiPluginSettings>;
   onSettingsChange?: (patch: Partial<AiPluginSettings>) => void | Promise<void>;

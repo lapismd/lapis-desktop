@@ -11,7 +11,7 @@
   import { Input } from "@lapismd/design-core/shadcn/input";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
-  import GaugeIcon from "@lucide/svelte/icons/gauge";
+  import CpuIcon from "@lucide/svelte/icons/cpu";
   import type {
     AiCompute,
     ComputeAction,
@@ -68,9 +68,9 @@
 
 <ClientSettingsCard
   id={`${id}-card`}
-  title="Optional compute"
+  title="Local compute"
   description="Local inference stays off until you start it. Models never download automatically or fall back to a cloud provider."
-  Icon={GaugeIcon}
+  Icon={CpuIcon}
 >
   {#if management.value}
     <Tabs.Root bind:value={tab}>
@@ -164,8 +164,8 @@
         ><Field.Group style="gap:0"
           ><ComputeSettingRow
             id={`${id}-memory`}
-            label="Maximum memory / VRAM"
-            description="GB, from 1 to 1024. Leave empty for automatic allocation. Applies on the next model start."
+            label="Max VRAM (GB)"
+            description="Limit AI memory to 1–1024 GB. Leave empty for no explicit limit. On Apple silicon this uses unified memory. Applies on the next model start."
             ><Input
               id={`${id}-memory`}
               type="number"
@@ -211,7 +211,7 @@
         </p>{/if}
     </div>
   {:else if management.failed}<ClientSettingsEmpty
-      Icon={GaugeIcon}
+      Icon={CpuIcon}
       title="Compute settings unavailable"
       description="Refresh to check this device’s optional compute setup."
     />

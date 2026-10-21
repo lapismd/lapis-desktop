@@ -90,3 +90,38 @@ it("retains exact uncertain requests, fences edits and explicitly adopts superse
   expect(management.secret).toBe("");
   await management.close();
 });
+
+it("clears cancelled transient credentials but preserves uncertain commands", async () => {
+  const value = status();
+  value.providers = [
+    {
+      id: "openai-api",
+      label: "OpenAI",
+      default_endpoint: null,
+      endpoint_required: false,
+      credential_env: "KEY",
+    },
+  ];
+  const manager = new AiProviders(
+    async (action) => {
+      if (action.type === "save") throw Error("Unknown outcome");
+      return structuredClone(value);
+    },
+    vi.fn(),
+    vi.fn(),
+  );
+  await manager.refresh();
+  expect(manager.readyToSave).toBe(false);
+  manager.secret = "synthetic-key";
+  expect(manager.readyToSave).toBe(true);
+  manager.configure({ model: "draft" });
+  manager.discardDraft();
+  expect(manager.secret).toBe("");
+  expect(manager.draft.model).toBe("test");
+  manager.secret = "synthetic-key";
+  await manager.save();
+  manager.discardDraft();
+  expect(manager.pending).toBe(true);
+  expect(manager.secret).toBe("synthetic-key");
+  await manager.close();
+});

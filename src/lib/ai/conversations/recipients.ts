@@ -16,6 +16,7 @@ export type ComposerPersonOption = {
 };
 /** Application-owned setup catalog; routing stays separate from the saved tag. */
 export type AgentRecipientOption = {
+  providerProfileId?: string;
   approvalPolicy?: import("../core/approval-policy.ts").ApprovalPolicy;
   id: string;
   label: string;

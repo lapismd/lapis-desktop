@@ -12,71 +12,35 @@ const meta = {
 } satisfies Meta<typeof SettingsDemo>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const ProvidersAndCompute: Story = {
+export const ComputeSettings: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const provider = await canvas.findByRole("region", {
-      name: "Lapis provider",
-    });
-    await expect(canvas.getAllByText("Lapis provider")).toHaveLength(1);
-    await expect(canvas.getAllByText("Optional compute")).toHaveLength(1);
-    const page = canvasElement.querySelector(".ai-settings-page")!;
-    await expect(provider.getBoundingClientRect().width).toBeCloseTo(
-      page.getBoundingClientRect().width,
-      0,
+    await canvas.findByRole("heading", { name: "Compute" });
+    expect(canvas.queryByText("Lapis provider")).toBeNull();
+    const compute = within(
+      await canvas.findByRole("region", { name: "Local compute" }),
     );
-    await expect(await within(provider).findByLabelText("API key")).toHaveValue(
-      "",
+    await userEvent.click(
+      await compute.findByRole("tab", { name: "Resources" }),
     );
-    const compute = await canvas.findByRole("region", {
-      name: "Optional compute",
-    });
-    await expect(compute.getBoundingClientRect().width).toBeCloseTo(
-      page.getBoundingClientRect().width,
-      0,
-    );
-    await expect(canvas.getAllByRole("heading", { name: "AI" })).toHaveLength(
-      1,
+    await userEvent.type(compute.getByLabelText("Max VRAM (GB)"), "8");
+    await userEvent.click(
+      compute.getByRole("button", { name: "Save compute settings" }),
     );
     await waitFor(() =>
       expect(
-        within(compute).getByRole("button", { name: "Start model" }),
+        compute.getByRole("button", { name: "Save compute settings" }),
       ).toBeEnabled(),
     );
-    await userEvent.click(
-      within(compute).getByRole("tab", { name: "Resources" }),
+    expect(aiReviewValue(canvasElement, "Compute commands")).toBe(
+      '["configure"]',
     );
-    await userEvent.type(
-      within(compute).getByLabelText("Maximum memory / VRAM"),
-      "8",
-    );
-    await userEvent.click(
-      within(compute).getByRole("button", { name: "Save compute settings" }),
-    );
-    await waitFor(() =>
-      expect(
-        within(compute).getByRole("button", { name: "Save compute settings" }),
-      ).toBeEnabled(),
-    );
-    await userEvent.click(
-      within(compute).getByRole("tab", { name: "Sharing" }),
-    );
-    await expect(
-      within(compute).getByRole("switch", { name: "Share this machine" }),
-    ).not.toBeChecked();
-    await userEvent.click(within(compute).getByRole("tab", { name: "Models" }));
-    await expect(
-      within(compute).getByRole("button", { name: "Download model" }),
-    ).toBeVisible();
   },
 };
 export const Loading: Story = {
   args: { scenario: "setup-loading" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(
-      await canvas.findByLabelText("Loading provider settings"),
-    ).toBeVisible();
     await expect(
       await canvas.findByLabelText("Loading compute settings"),
     ).toBeVisible();
@@ -86,9 +50,6 @@ export const SetupFailure: Story = {
   args: { scenario: "setup-error" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await expect(
-      await canvas.findByText("Provider settings unavailable"),
-    ).toBeVisible();
     await expect(
       await canvas.findByText("Compute settings unavailable"),
     ).toBeVisible();
@@ -103,7 +64,7 @@ export const RunningCompute: Story = {
   play: async ({ canvasElement }) => {
     const compute = within(
       await within(canvasElement).findByRole("region", {
-        name: "Optional compute",
+        name: "Local compute",
       }),
     );
     await expect(
@@ -121,34 +82,11 @@ export const RunningCompute: Story = {
   },
 };
 
-export const ProviderSaveFailure: Story = {
-  args: { scenario: "setup-save-error" },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const provider = within(
-      await canvas.findByRole("region", { name: "Lapis provider" }),
-    );
-    const key = await provider.findByLabelText("API key");
-    await userEvent.type(key, "synthetic-unsaved-key");
-    await userEvent.click(
-      provider.getByRole("button", { name: "Save provider" }),
-    );
-    await expect(
-      await provider.findByRole("button", { name: "Retry save" }),
-    ).toBeEnabled();
-    await expect(key).toHaveValue("synthetic-unsaved-key");
-    await aiReviewAction(canvasElement, "Inspect saved settings");
-    await expect(aiReviewValue(canvasElement, "AI notifications")).toContain(
-      "Synthetic provider save failed",
-    );
-  },
-};
-
 export const Sharing: Story = {
   play: async ({ canvasElement }) => {
     const compute = within(
       await within(canvasElement).findByRole("region", {
-        name: "Optional compute",
+        name: "Local compute",
       }),
     );
     await userEvent.click(await compute.findByRole("tab", { name: "Sharing" }));
@@ -208,14 +146,14 @@ export const ModelMemoryLimits: Story = {
     const canvas = within(canvasElement);
     const compute = within(
       await canvas.findByRole("region", {
-        name: "Optional compute",
+        name: "Local compute",
       }),
     );
     const portal = within(canvasElement.ownerDocument.body);
     await userEvent.click(
       await compute.findByRole("tab", { name: "Resources" }),
     );
-    await userEvent.type(compute.getByLabelText("Maximum memory / VRAM"), "4");
+    await userEvent.type(compute.getByLabelText("Max VRAM (GB)"), "4");
     await userEvent.click(compute.getByRole("tab", { name: "Models" }));
     await userEvent.click(compute.getByRole("combobox", { name: "Model" }));
     await expect(
@@ -244,46 +182,5 @@ export const UnknownModelFit: Story = {
       expect(portal.getByText(/Machine memory unavailable/)).toBeVisible(),
     );
     await userEvent.keyboard("{Escape}");
-  },
-};
-
-export const RequiredProviderModel: Story = {
-  play: async ({ canvasElement }) => {
-    const provider = within(
-      await within(canvasElement).findByRole("region", {
-        name: "Lapis provider",
-      }),
-    );
-    const model = await provider.findByLabelText("Default model");
-    await userEvent.clear(model);
-    await expect(
-      provider.getByRole("button", { name: "Save provider" }),
-    ).toBeDisabled();
-    await expect(model).toBeRequired();
-    await userEvent.type(model, "qwen3.8-max");
-    await userEvent.click(
-      provider.getByRole("button", { name: "Save provider" }),
-    );
-    await waitFor(() =>
-      expect(
-        provider.getByRole("button", { name: "Save provider" }),
-      ).toBeEnabled(),
-    );
-    await userEvent.click(
-      provider.getByRole("button", { name: "Check again" }),
-    );
-    await expect(model).toHaveValue("qwen3.8-max");
-    await userEvent.click(
-      provider.getByRole("button", { name: "Provider: OpenAI" }),
-    );
-    await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("option", {
-        name: "This machine",
-      }),
-    );
-    await expect(provider.queryByLabelText("Default model")).toBeNull();
-    await expect(
-      provider.getByRole("button", { name: "Save provider" }),
-    ).toBeEnabled();
   },
 };

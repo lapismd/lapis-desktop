@@ -1025,11 +1025,12 @@ identity adoption, acknowledged clearing, late-read fencing and save-failure
 notifications. No prompt executes merely from reopening. All remain
 visual-pending.
 
-`Desktop/AI setup` uses production AI Settings with in-memory native ports.
-Providers and compute covers explicit model/resource/peer configuration; Loading
-uses representative skeletons; Setup failure and Provider save failure assert
-App notifications and retained drafts; Running compute covers Stop. Source
-presentation is copied/adapted from JJ Store’s StoreComputeSettings,
+`Desktop/AI setup` uses the production Compute settings page with in-memory
+native ports. Compute settings covers explicit model/resource/peer configuration
+and Max VRAM; Loading uses skeletons; Setup failure asserts App notifications;
+Running compute covers Stop. E-AI-108 moves providers to AI/Agent providers,
+covering independent configurations, legacy settings and retained failed saves.
+Source presentation is copied/adapted from JJ Store’s StoreComputeSettings,
 StoreComputeModels, StoreComputePeers, StoreWorkField and environment key field.
 Native/real-provider qualification is separate; all stories remain
 visual-pending. E-AI-098 checks separate full-width provider/compute cards,
@@ -1055,6 +1056,8 @@ views. Conversation actions moves to the far-right vertical header menu. Chat
 layout review/Long messages with sidebars explicitly opens the inner list for
 its wide-layout wrapping checks. The approval picker uses a filled 16px marker.
 
-E-AI-107: AI/Models/Lapis agent picker and AI setup/Required provider model
-exercise production menu/settings components with synthetic ports; no live
-provider credentials enter the catalog.
+E-AI-107: AI/Models/Lapis agent picker uses synthetic native ports. E-AI-108
+moves the required-model assertion into AI/Agent providers/Independent
+providers, using the real agent editor and scoped synthetic settings. Native
+credentials never enter the catalog. AI/Agent setup review covers shared header
+avatars.

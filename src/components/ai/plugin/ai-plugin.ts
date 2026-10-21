@@ -38,6 +38,9 @@ export class AiPlugin extends Plugin {
   get compute() {
     return this.application.services.compute;
   }
+  get agentProviders() {
+    return this.application.services.agentProviders;
+  }
   get providers() {
     return this.application.services.providers;
   }

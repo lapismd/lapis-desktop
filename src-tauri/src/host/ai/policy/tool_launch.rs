@@ -9,7 +9,9 @@ use uuid::Uuid;
 
 fn target_parts(target: &str) -> Option<(&str, &str)> {
     let (provider, id) = target.split_once(":tools:")?;
-    matches!(provider, "codex" | "local" | "opencode" | "cursor").then_some((provider, id))
+    (matches!(provider, "codex" | "local" | "opencode" | "cursor")
+        || super::super::file_profile::local_profile_id(provider).is_some())
+    .then_some((provider, id))
 }
 impl DesktopAiPolicy {
     pub(super) fn tool_binding(

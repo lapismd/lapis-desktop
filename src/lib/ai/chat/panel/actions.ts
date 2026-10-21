@@ -48,7 +48,9 @@ export function createChatPanelActions(
     const draftKey = composer.draftKey;
     const agent = addressed?.agent ?? composer.selectedAgent;
     const primary = addressed?.options[0];
-    const modelId = primary?.model ?? composer.selectedModel;
+    const modelId = primary?.providerProfileId
+      ? primary.model
+      : (primary?.model ?? composer.selectedModel);
     const selected = catalogModelsForAgent(agent, composer.catalogModels).find(
       (model) => model.model === modelId,
     );
@@ -60,7 +62,9 @@ export function createChatPanelActions(
             ...(addressed.recipients.length > 1
               ? {
                   deliveryTargets: addressed.options.map((option, i) => {
-                    const modelId = option.model ?? composer.selectedModel;
+                    const modelId = option.providerProfileId
+                      ? option.model
+                      : (option.model ?? composer.selectedModel);
                     const model = catalogModelsForAgent(
                       option.agent,
                       composer.catalogModels,
@@ -72,6 +76,7 @@ export function createChatPanelActions(
                         executionMode: composer.permissions.modeFor(option),
                         agentProfile: {
                           name: option.label,
+                          providerProfileId: option.providerProfileId,
                           description: option.description,
                           instructions: option.instructions,
                         },
@@ -104,6 +109,7 @@ export function createChatPanelActions(
         ? {
             agentProfile: {
               name: primary.label,
+              providerProfileId: primary.providerProfileId,
               description: primary.description,
               instructions: primary.instructions,
             },

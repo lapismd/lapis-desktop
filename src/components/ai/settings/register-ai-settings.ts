@@ -3,8 +3,11 @@ import AgentClientsField from "./AgentClientsField.svelte";
 import AgentClientsPage from "./AgentClientsPage.svelte";
 import AgentProfilesField from "./AgentProfilesField.svelte";
 import AiSettingsPage from "./AiSettingsPage.svelte";
-import AiProvidersField from "./AiProvidersField.svelte";
-import type { AgentProfileManagement } from "../../../lib/ai/settings/agent-profile-editor.ts";
+import AiComputePage from "./AiComputePage.svelte";
+import type {
+  AgentProfileManagement,
+  AgentProfileEditorContext,
+} from "../../../lib/ai/settings/agent-profile-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Adapted from Lapis register-ai-settings; see ../../../lib/ai/NOTICE.md.
 import type { Plugin } from "@lapis-notes/api";
@@ -25,6 +28,7 @@ import {
 import type { AiSettingsStore } from "../../../lib/ai/settings/settings-store.ts";
 
 type SettingsOwner = Pick<Plugin, "app" | "register"> & {
+  agentProviders?: AgentProfileEditorContext["agentProviders"];
   clients?: import("../../../lib/ai/settings/clients.svelte.ts").AgentClients;
   compute?: import("../../../lib/ai/settings/compute.svelte.ts").AiCompute;
   providers?: import("../../../lib/ai/settings/providers.svelte.ts").AiProviders;
@@ -61,6 +65,8 @@ export function registerAiSettings(plugin: SettingsOwner): void {
     subscribe: (listener: () => void) => settings.subscribe(() => listener()),
   };
   const profiles: AgentProfileManagement = {
+    agentProviders: plugin.agentProviders,
+    legacyProvider: plugin.providers,
     app,
     settings,
     update: (patch) =>
@@ -77,16 +83,17 @@ export function registerAiSettings(plugin: SettingsOwner): void {
           ),
         };
       }),
-    loadExecutionModes: async (agent, runtime) => {
+    loadExecutionModes: async (agent, runtime, profileId) => {
       if (disposed) throw new Error("AI settings are unavailable");
       const modes =
-        (await plugin.models.listExecutionModes?.(agent, runtime)) ?? [];
+        (await plugin.models.listExecutionModes?.(agent, runtime, profileId)) ??
+        [];
       if (disposed) throw new Error("AI settings are unavailable");
       return modes;
     },
-    loadModels: async (agent, runtime) => {
+    loadModels: async (agent, runtime, profileId) => {
       if (disposed) throw new Error("AI settings are unavailable");
-      const result = await plugin.models.listModels(agent, runtime);
+      const result = await plugin.models.listModels(agent, runtime, profileId);
       if (disposed) throw new Error("AI settings are unavailable");
       return result;
     },
@@ -123,25 +130,35 @@ export function registerAiSettings(plugin: SettingsOwner): void {
       source,
     }),
   );
+  if (plugin.compute)
+    cleanups.push(
+      controller.settings.registerDefinition({
+        section: {
+          id: "ai-compute",
+          title: "Compute",
+          icon: "cpu",
+          order: 37,
+          description:
+            "Manage local models, resource limits and optional compute sharing.",
+          navigationGroupId: "core-plugins",
+          sourcePluginId: "ai",
+          page: AiComputePage,
+          fields: [
+            {
+              id: "ai.compute",
+              type: "custom",
+              title: "Local compute",
+              component: AiComputeField,
+              management: plugin.compute,
+            } as import("@lapis-notes/api").WorkspaceCustomSetting,
+          ],
+        },
+        source,
+      }),
+    );
   const register = () => {
     const definition = createAiSettingsSection(app, settings.get());
     definition.page = AiSettingsPage;
-    if (plugin.providers)
-      definition.fields?.push({
-        id: "ai.providers",
-        type: "custom",
-        title: "Lapis provider",
-        component: AiProvidersField,
-        management: plugin.providers,
-      } as import("@lapis-notes/api").WorkspaceCustomSetting);
-    if (plugin.compute)
-      definition.fields?.push({
-        id: "ai.compute",
-        type: "custom",
-        title: "Optional compute",
-        component: AiComputeField,
-        management: plugin.compute,
-      } as import("@lapis-notes/api").WorkspaceCustomSetting);
     return controller.settings.registerDefinition({
       section: definition,
       source,

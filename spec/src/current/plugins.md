@@ -1,7 +1,7 @@
 # Desktop plugins and catalog
 
-E-AI-104 updates MultiRecipient assertions for portaled options, inline profile
-chips and automatic follow-up drafts under unchanged LD-CAT-003 behavior.
+E-AI-104/108 cover participant tags, per-agent provider editors, header avatar
+groups and separate Compute settings under LD-CAT-003.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

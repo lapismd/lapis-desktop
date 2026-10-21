@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-AI-097–107: AI qualification.
+E-AI-097–108: AI qualification.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

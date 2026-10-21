@@ -9,6 +9,7 @@ use tauri::WebviewWindow;
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub struct Request {
     session_id: String,
+    profile_id: Option<String>,
     action: Action,
 }
 #[derive(Deserialize)]
@@ -31,14 +32,23 @@ pub async fn desktop_ai_providers(
             "AI provider settings are unavailable",
         )
     })?;
-    access(host.inner().clone(), move |services| {
+    let vault = access(host.inner().clone(), move |services| {
         services
             .vaults
             .get(&request.session_id)?
-            .verify_physical_root()
+            .verify_physical_root()?;
+        Ok(services
+            .vaults
+            .descriptor(&request.session_id)?
+            .profile_id
+            .clone())
     })
     .await?;
     let store = policy.providers()?;
+    let store = match request.profile_id {
+        Some(id) => store.for_agent(&vault, &id)?,
+        None => store,
+    };
     tauri::async_runtime::spawn_blocking(move || {
         let status = match request.action {
             Action::Status => store.status()?,

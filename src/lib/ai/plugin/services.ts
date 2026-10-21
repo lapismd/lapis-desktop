@@ -12,6 +12,9 @@ export type AiLeaveMode = "close" | "reload";
 export interface AiServices {
   compute?: import("../settings/compute.svelte.ts").AiCompute;
   clients?: import("../settings/clients.svelte.ts").AgentClients;
+  agentProviders?: (
+    profileId?: string,
+  ) => import("../settings/providers.svelte.ts").AiProviders;
   providers?: import("../settings/providers.svelte.ts").AiProviders;
   captureSources?: import("../capture/source-port.ts").AiCaptureSources;
   importSources?: import("../imports/source-port.ts").AiImportSources;

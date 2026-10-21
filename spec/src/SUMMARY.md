@@ -318,3 +318,4 @@
 - [AI chat header and collapsed sidebar](history/E-AI-106.md)
 
 - [Lapis picker and explicit cloud model setup](history/E-AI-107.md)
+- [Per-agent providers, chat avatars and Compute settings](history/E-AI-108.md)

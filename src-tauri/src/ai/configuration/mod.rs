@@ -1,5 +1,7 @@
 //! Native provider configuration. No execution, vault state or readable secrets.
+mod profiles;
 mod secrets;
+pub use profiles::valid_profile_id;
 mod types;
 pub use secrets::{Secrets, device as device_secrets};
 use sha2::{Digest, Sha256};
@@ -107,7 +109,7 @@ impl ProviderStore {
         {
             required_model(&command.configuration)?;
         }
-        let id = command.request_id.to_string();
+        let id = self.credential_id(command.request_id);
         if state.retired.len() >= 64 {
             return Err(unavailable());
         }
@@ -202,7 +204,7 @@ fn required_model(configuration: &ProviderConfiguration) -> io::Result<&str> {
         .ok_or_else(|| {
             io::Error::new(
                 io::ErrorKind::InvalidInput,
-                "Enter a default model in Lapis provider settings",
+                "Enter a default model in the Lapis agent settings",
             )
         })
 }
@@ -250,3 +252,6 @@ fn validate(configuration: &ProviderConfiguration) -> io::Result<()> {
 
 #[cfg(test)]
 mod tests;
+
+#[cfg(test)]
+mod profile_tests;

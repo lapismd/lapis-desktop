@@ -1,3 +1,4 @@
+import { isLocalProviderTarget } from "../../../ai/settings/provider-profile.ts";
 // Adapted from lapis-plugins' desktop-app-tool-bridge; no controller dependency.
 import type {
   AppToolBridgeCoordinator,
@@ -143,7 +144,8 @@ export class NativeAppTools implements AppToolBridgeCoordinator {
       record.closing ||
       record.failed ||
       record.bridgeId !== descriptor.bridgeId ||
-      !["codex", "local", "opencode", "cursor"].includes(base)
+      (!["codex", "opencode", "cursor"].includes(base) &&
+        !isLocalProviderTarget(base))
     )
       throw new Error("Application tool binding is unavailable");
     return `${base}:tools:${record.bridgeId}`;

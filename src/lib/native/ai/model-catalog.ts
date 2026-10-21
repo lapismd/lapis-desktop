@@ -1,3 +1,4 @@
+import { providerTarget } from "../../ai/settings/provider-profile.ts";
 import {
   executionModesFromSession,
   type ExecutionMode,
@@ -34,16 +35,27 @@ export class NativeAiModels implements AiModelCatalog {
     this.#generation++;
     this.#cache.clear();
   }
-  async listModels(provider: string, runtime = "acp"): Promise<ModelRef[]> {
+  async listModels(
+    provider: string,
+    runtime = "acp",
+    profileId?: string,
+  ): Promise<ModelRef[]> {
     return structuredClone(
-      (await this.#facts(provider, runtime))?.models ?? [],
+      (
+        (await this.#facts(providerTarget(provider, profileId), runtime))
+          ?.models ?? []
+      ).map((model) => ({ ...model, provider })),
     );
   }
   async listExecutionModes(
     provider: string,
     runtime = "acp",
+    profileId?: string,
   ): Promise<ExecutionMode[]> {
-    return structuredClone((await this.#facts(provider, runtime))?.modes ?? []);
+    return structuredClone(
+      (await this.#facts(providerTarget(provider, profileId), runtime))
+        ?.modes ?? [],
+    );
   }
   #facts(provider: string, runtime: string): Promise<ProviderCatalog | null> {
     if (this.#closed)

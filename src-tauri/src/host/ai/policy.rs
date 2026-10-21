@@ -64,16 +64,25 @@ impl DesktopAiPolicy {
     pub fn bundle_ready(&self) -> bool {
         self.0.files.bundle_ready()
     }
+    #[cfg(test)]
     pub fn prepare_file_profile(&self) -> io::Result<()> {
-        let paired = self
-            .providers()
-            .ok()
-            .and_then(|providers| providers.status().ok())
-            .is_some_and(|status| status.configuration.provider == "paired");
-        self.0.files.prepare_with_compute(
-            self.compute()
-                .ok()
-                .and_then(|compute| compute.environment(paired).ok()),
+        self.prepare_for_vault(None)
+    }
+    pub fn prepare_for_vault(&self, vault: Option<&str>) -> io::Result<()> {
+        let compute = self.compute().ok();
+        self.0.files.prepare_profiles(
+            vault,
+            ["local", "paired"]
+                .into_iter()
+                .map(|id| {
+                    (
+                        id.to_owned(),
+                        compute
+                            .as_ref()
+                            .and_then(|c| c.environment(id == "paired").ok()),
+                    )
+                })
+                .collect(),
         )
     }
     pub fn providers(&self) -> io::Result<lapis_desktop::ai::configuration::ProviderStore> {

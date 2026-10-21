@@ -1,5 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+import { isProviderProfileId } from "../settings/provider-profile.ts";
 export type AgentProfileContext = {
+  providerProfileId?: string;
   name?: string;
   description?: string;
   instructions?: string;
@@ -26,10 +28,18 @@ export function validateAgentProfile(
   const profile = value as AgentProfileContext;
   if (
     Object.keys(profile).some(
-      (k) => !["name", "description", "instructions"].includes(k),
+      (k) =>
+        !["name", "description", "instructions", "providerProfileId"].includes(
+          k,
+        ),
     )
   )
     throw new Error("Invalid agent context field");
+  if (
+    profile.providerProfileId !== undefined &&
+    !isProviderProfileId(profile.providerProfileId)
+  )
+    throw new Error("Invalid provider configuration identity");
   for (const [key, limit] of [
     ["name", 80],
     ["description", 280],

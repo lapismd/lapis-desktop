@@ -8,8 +8,13 @@ export type AiModelCatalog = {
   listExecutionModes?(
     provider: string,
     runtime?: string,
+    profileId?: string,
   ): Promise<import("../core/agent-profile.ts").ExecutionMode[]>;
-  listModels(provider: string, runtime?: string): Promise<ModelRef[]>;
+  listModels(
+    provider: string,
+    runtime?: string,
+    profileId?: string,
+  ): Promise<ModelRef[]>;
 };
 
 /** Inventory results belong to their provider, request and registering plugin. */

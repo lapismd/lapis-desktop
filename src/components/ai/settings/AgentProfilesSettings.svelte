@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
+  import { Button } from "@lapismd/design-core/shadcn/button";
   import { ConfirmDialog } from "@lapismd/design-core/forms/dialog";
   import AgentProfilesGallery from "./AgentProfilesGallery.svelte";
   import ChatParticipantDialog from "../chat/ChatParticipantDialog.svelte";
@@ -20,11 +21,13 @@
     settings,
     onSettingsChange: management.update,
     loadModels: management.loadModels,
+    agentProviders: management.agentProviders,
     loadExecutionModes: management.loadExecutionModes,
   });
   onMount(() => {
     const owner = management;
     settings = owner.settings.get();
+    if (owner.legacyProvider) void owner.legacyProvider.refresh();
     return owner.settings.subscribe(() => {
       settings = owner.settings.get();
     });
@@ -68,6 +71,22 @@
     removeOpen = true;
   }}
 />
+{#if management.legacyProvider?.value?.configuration.provider && !settings.agentParticipants?.some((p) => p.id === "local")}
+  <Button
+    variant="outline"
+    size="sm"
+    onclick={() => {
+      editing = {
+        id: "local",
+        agent: "local",
+        label: "Lapis AI",
+        model:
+          management.legacyProvider?.value?.configuration.model ?? undefined,
+      };
+      editorOpen = true;
+    }}>Edit existing Lapis agent</Button
+  >
+{/if}
 <ChatParticipantDialog
   bind:open={editorOpen}
   participant={editing}

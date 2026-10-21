@@ -114,9 +114,12 @@
   {workspaceLeaf}
   fileSearch={host.searchVaultFiles}
   models={bootstrap.models}
-  loadExecutionModes={(agent, runtime) =>
-    host.models.listExecutionModes?.(agent, runtime) ?? Promise.resolve([])}
-  loadModels={(agent, runtime) => host.models.listModels(agent, runtime)}
+  agentProviders={host.services.agentProviders}
+  loadExecutionModes={(agent, runtime, profileId) =>
+    host.models.listExecutionModes?.(agent, runtime, profileId) ??
+    Promise.resolve([])}
+  loadModels={(agent, runtime, profileId) =>
+    host.models.listModels(agent, runtime, profileId)}
   modelCatalogError={bootstrap.modelCatalogError}
   settings={bootstrap.settings}
   onSettingsChange={(patch) => host.updateSettings(patch)}
