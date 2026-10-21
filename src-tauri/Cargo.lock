@@ -4770,6 +4770,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "jj-history-service"
+version = "0.1.0"
+dependencies = [
+ "async-trait",
+ "jj-store-jj",
+ "jj-store-model",
+ "schemars 1.2.3",
+ "serde",
+ "serde_json",
+ "tokio",
+ "uuid",
+]
+
+[[package]]
 name = "jj-lib"
 version = "0.45.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9218,16 +9232,12 @@ dependencies = [
 name = "tauri-plugin-jj-store"
 version = "0.1.0"
 dependencies = [
- "async-trait",
- "jj-store-jj",
- "jj-store-model",
+ "jj-history-service",
  "schemars 1.2.3",
  "serde",
  "serde_json",
  "tauri",
  "tauri-plugin",
- "tokio",
- "uuid",
 ]
 
 [[package]]

@@ -1,5 +1,10 @@
 # Local dependency intake
 
+E-REPO-056 takes committed JJ Store `f58b9363` through the existing Tauri
+adapter and updates the private native lockfile. Neutral history and Tauri
+transport share one service implementation. Existing native product, provider,
+distribution and visual gates remain unchanged.
+
 Archive admission MUST check actual runtime/peer ranges and local workspace
 development ranges. A published dependency's development-only pins do not belong
 to the consuming Desktop graph and MUST remain unchanged.

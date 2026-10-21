@@ -1,5 +1,7 @@
 # Evidence
 
+- [Shared native history service intake](E-REPO-056.md)
+
 - [Saved AI tool expansion backlog](E-PLAN-004.md)
 
 - [Progressive import browser design review](E-AI-120.md)

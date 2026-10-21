@@ -4,9 +4,9 @@ AI: E-AI-097–118/122.
 
 E-AI-093: [local ACP](ai-local-history.md).
 
-Footer E-CATALOG-012/013; scroll E-AI-064; upstream/blame E-REPO-043/044/055;
-backup E-REPO-035–041/046–054; imports E-AI-121 ([contract](ai-imports.md)).
-Gravatar: `https://www.gravatar.com`; status: `repository-navigation.md`.
+Footer E-CATALOG-012/013; scroll E-AI-064; repo E-REPO-043/044/055/056; backup
+E-REPO-035–041/046–054; imports E-AI-121 ([contract](ai-imports.md)). Gravatar:
+`https://www.gravatar.com`; status: `repository-navigation.md`.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

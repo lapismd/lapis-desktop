@@ -1,8 +1,8 @@
 # Migration inventory and progress
 
-E-AI-097–122: AI, memory, imports and model settings; M14.8 remains Partial.
-M10.2–M10.4 retain LD-MIG-002 gates; M13/M13.3 remain Deferred. E-PLAN-004 saves
-the deferred [AI tool backlog](../backlog/ai-tool-expansion.md).
+E-REPO-056 retains shared history. E-AI-097–122 cover AI/memory/imports/models.
+M14.8 remains Partial. M10.2–M10.4 retain LD-MIG-002 gates; M13/M13.3 Deferred.
+E-PLAN-004: [deferred AI tools](../backlog/ai-tool-expansion.md).
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;

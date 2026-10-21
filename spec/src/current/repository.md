@@ -36,7 +36,7 @@ fences retired grants. A same-root reload can retain its generation only after
 revalidating all source witnesses. Failed or stale completion cannot activate a
 replacement. Source proof failure and explicit retirement deny existing access.
 
-Native capture and JJ adapters require product proof beyond service tests.
+Native product proof exceeds service tests; E-REPO-056 retains LD-REPO-001/002.
 
 ## Qualification
 

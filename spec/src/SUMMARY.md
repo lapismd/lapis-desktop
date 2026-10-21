@@ -346,3 +346,5 @@
 - [Progressive import browser design review](history/E-AI-120.md)
 - [Indexed progressive local imports](history/E-AI-121.md)
 - [Searchable model settings and processor restrictions](history/E-AI-122.md)
+
+- [Shared native history service intake](history/E-REPO-056.md)
