@@ -1130,3 +1130,14 @@ formatter inside a noninteractive time element because the complete file row is
 a button. Native qualification is recorded separately in E-AI-121; browser
 fixtures do not qualify source compatibility or performance. Visual baselines
 remain unapproved.
+
+## Searchable model settings and processor restrictions
+
+`Desktop/AI/Model settings search/SearchAllModelSettings` mounts production AI
+Settings and the existing agent Command View control. It searches model IDs,
+checks cancellation without saving, selects default/memory/handoff models and
+checks independent saved values. Both processor agent rows explain the built-in
+Lapis AI restriction for unattended work. Existing Settings scenarios retain
+unavailable catalogs, saved preferences, failures and disposal; Agent profiles,
+Agent providers and Setup cover the reused editor and compute pickers. Visual
+baselines and native/provider qualification remain separate.

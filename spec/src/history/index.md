@@ -2,6 +2,7 @@
 
 - [Progressive import browser design review](E-AI-120.md)
 - [Indexed progressive local imports](E-AI-121.md)
+- [Searchable model settings and processor restrictions](E-AI-122.md)
 
 - [Markdown-first vault memory](E-AI-118.md)
 - [Processor model dropdowns and settings tabs](E-AI-119.md)

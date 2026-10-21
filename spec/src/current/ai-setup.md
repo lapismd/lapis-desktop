@@ -100,7 +100,17 @@ display controls and tab changes never save or start compute.
 Model/resource/peer controls adapt JJ Store’s Settings components through public
 Design Core fields.
 
-The searchable model picker copies JJ Store's catalog and command-view
+All model choices in AI Settings, agent/provider editors and Compute use
+searchable Command View pickers. AI defaults, memory and handoff reuse the
+app-owned agent model control through the public controlled custom-field API;
+the controller retains the original string schema, source, validation and save
+ownership. Search filters labels, IDs and descriptions. Saved missing values
+remain visible; closing or searching never writes a value. Processor catalogs
+remain independent and stale/unmounted results cannot replace active choices. AI
+model setting fields center their closed labels and match the surrounding
+control sizes. Command results remain left aligned.
+
+The searchable compute model picker copies JJ Store's catalog and command-view
 presentation. Selected command choices use a neutral filled `circle-check` with
 a contrasting check, without keyboard-shortcut borders. Agent/model,
 session-filter and capture-version command pickers share this treatment. Choices

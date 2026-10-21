@@ -13,15 +13,17 @@
     options,
     disabled = false,
     allowCustom = false,
+    allowDefault = true,
     defaultLabel = "Harness default",
     ariaLabel = "Model",
     onChange,
   }: {
     id: string;
     value: string | null | undefined;
-    options: readonly { id: string; name: string }[];
+    options: readonly { id: string; name: string; description?: string }[];
     disabled?: boolean;
     allowCustom?: boolean;
+    allowDefault?: boolean;
     defaultLabel?: string;
     ariaLabel?: string;
     onChange?: () => void;
@@ -71,20 +73,29 @@
       <CommandView.List>
         <CommandView.Empty>No matching models.</CommandView.Empty>
         <CommandView.Group heading="Models">
-          <CommandView.Item value={defaultLabel} onSelect={() => select(null)}
-            ><CommandView.ItemLabel>{defaultLabel}</CommandView.ItemLabel
-            >{#if !value}<CircleCheckIcon
-                fill="var(--foreground)"
-                stroke="var(--background)"
-                aria-label="Selected"
-              />{/if}</CommandView.Item
-          >
+          {#if allowDefault}<CommandView.Item
+              value={defaultLabel}
+              onSelect={() => select(null)}
+              ><CommandView.ItemLabel>{defaultLabel}</CommandView.ItemLabel
+              >{#if !value}<CircleCheckIcon
+                  fill="var(--foreground)"
+                  stroke="var(--background)"
+                  aria-label="Selected"
+                />{/if}</CommandView.Item
+            >
+          {/if}
           {#each options as option (option.id)}
             <CommandView.Item
-              value={`${option.name} ${option.id}`}
+              value={`${option.name} ${option.id} ${option.description ?? ""}`}
+              aria-label={option.name}
               onSelect={() => select(option.id)}
-              ><CommandView.ItemLabel>{option.name}</CommandView.ItemLabel
-              >{#if value === option.id}<CircleCheckIcon
+              ><span class="model-option"
+                ><CommandView.ItemLabel>{option.name}</CommandView.ItemLabel>
+                {#if option.description}<CommandView.ItemDescription
+                    >{option.description}</CommandView.ItemDescription
+                  >{/if}</span
+              >
+              {#if value === option.id}<CircleCheckIcon
                   fill="var(--foreground)"
                   stroke="var(--background)"
                   aria-label="Selected"
@@ -132,6 +143,13 @@
 {/if}
 
 <style>
+  .model-option {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
   :global(.chat-agent-model-trigger) {
     width: 100%;
     min-width: 0;
@@ -139,9 +157,10 @@
     white-space: normal;
   }
   :global(.chat-agent-model-trigger span) {
+    flex: 1 1 auto;
     min-width: 0;
     overflow-wrap: anywhere;
-    text-align: left;
+    text-align: center;
   }
   :global(.chat-agent-model-menu) {
     width: min(30rem, calc(100vw - 2rem));

@@ -9,8 +9,8 @@ exclusive author. Provider, trust and two-device gates remain open.
 bootstrap/skills, native credentials/tools and explicit optional compute.
 Existing local conversations and private drafts remain supported. E-AI-098
 aligns provider/compute settings with the Agents page's full-width cards.
-E-AI-099 adds JJ Store's compute picker and read-only native memory-fit
-guidance. E-AI-121 adopts indexed [progressive imports](ai-imports.md).
+E-AI-099 adds compute fit; E-AI-121 adds [indexed imports](ai-imports.md).
+E-AI-122 adds model search and explains restricted processors.
 
 E-AI-100 repairs stable ACP model discovery and user-local Cursor detection.
 Both chat layouts expose modes, Pin/Unpin and Archive/Restore in the header

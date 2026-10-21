@@ -10,6 +10,7 @@
     WorkspaceSettingField,
     type WorkspaceSettingsPageProps,
   } from "@lapismd/design-core/workspace/settings";
+  import AiModelSettingField from "./AiModelSettingField.svelte";
   import "./settings-tabs.css";
   let { controller, section }: WorkspaceSettingsPageProps = $props();
   let tab = $state("conversation");
@@ -60,13 +61,14 @@
   >[number];
   function refreshedField(field: SettingField): SettingField {
     return field.type === "string" && field.optionsSource
-      ? {
+      ? ({
           ...field,
-          optionsSourceParams: {
-            ...field.optionsSourceParams,
-            revision: modelCatalogRevision,
-          },
-        }
+          type: "custom",
+          component: AiModelSettingField,
+          modelDefinition: field,
+          modelCatalogRevision,
+          settingsController: controller,
+        } as SettingField)
       : field;
   }
   function contains(field: SettingField, id: string): boolean {

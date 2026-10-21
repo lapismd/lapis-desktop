@@ -75,7 +75,7 @@ export function memorySettingFields(
       type: "enum",
       title: "Memory processor agent",
       description:
-        "Restricted background work uses the configured bundled Lapis agent. Saved external-client choices remain inert until replaced.",
+        "Only the built-in Lapis AI profile supports unattended processing with tools and filesystem discovery disabled. Codex, Cursor, OpenCode and named Lapis agents are available for chat. Saved external-client preferences remain inactive.",
       allowUnknownOptions: true,
       default: DEFAULT_AI_SETTINGS.memoryConsolidationAgent,
       options: [{ value: "local", label: "Lapis AI" }],
@@ -115,7 +115,7 @@ export function memorySettingFields(
       type: "enum",
       title: "Handoff summary agent",
       description:
-        "Restricted background work uses the configured bundled Lapis agent. Saved external-client choices remain inert until replaced.",
+        "Only the built-in Lapis AI profile supports unattended processing with tools and filesystem discovery disabled. Codex, Cursor, OpenCode and named Lapis agents are available for chat. Saved external-client preferences remain inactive.",
       allowUnknownOptions: true,
       default: DEFAULT_AI_SETTINGS.handoffSummaryAgent,
       options: [{ value: "local", label: "Lapis AI" }],

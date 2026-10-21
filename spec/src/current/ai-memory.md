@@ -53,13 +53,19 @@ current curated note. Normal Explorer, editors, metadata, search and history
 provide review; no separate memory browser is required. Workspace exclusions
 remain authoritative and an excluded selected folder is explained in settings.
 The folder control occupies a full-width row below its label. Memory and handoff
-model dropdowns discover models from their independently selected processor
-agent and runtime, never from the interactive chat selection. Discovery reuses
-the native five-minute agent/profile cache and in-flight deduplication. Open AI
-settings refresh periodically; closed settings must not initiate polling. Saved
-models remain visible if absent or discovery fails. Merely listing models cannot
-change processor selections or enable unsupported background execution. Late
-results from a previous agent/runtime or a disposed plugin are ignored.
+model command pickers search model names, IDs and descriptions and discover
+models from their independently selected processor agent and runtime, never from
+the interactive chat selection. These processors currently admit only the
+bundled Lapis AI restricted profile. Settings explain that external harnesses
+and named Lapis provider profiles cannot enforce the same unattended, tool-free
+and filesystem-discovery-free execution contract. Existing external preferences
+remain visible and inactive until explicitly replaced; listing agents or models
+cannot grant background execution. Discovery reuses the native five-minute
+agent/profile cache and in-flight deduplication. Open AI settings refresh
+periodically; closed settings must not initiate polling. Saved models remain
+visible if absent or discovery fails. Merely listing models cannot change
+processor selections or enable unsupported background execution. Late results
+from a previous agent/runtime or a disposed plugin are ignored.
 
 Generated writes use file editing guards and conditional text writes, preserve
 dirty editor drafts and coordinate document mutations across windows. Changed
