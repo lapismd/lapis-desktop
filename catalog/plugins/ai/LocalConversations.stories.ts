@@ -93,12 +93,26 @@ export const SupportedModesAndPin: Story = {
       canvas.queryByRole("button", { name: /Pin conversation/ }),
     ).toBeNull();
     await open();
+    await waitFor(() =>
+      expect(body.getByRole("menuitem", { name: "Add Agent" })).toBeVisible(),
+    );
     await userEvent.click(
       await body.findByRole("menuitem", { name: /Mode: plan/ }),
     );
     await expect(
       body.findByRole("menuitemradio", { name: "Plan" }),
     ).resolves.toHaveAttribute("aria-checked", "true");
+    for (const item of [
+      body.getByRole("menuitem", { name: "Use agent default" }),
+      body.getByRole("menuitemradio", { name: "Plan" }),
+      body.getByRole("menuitemradio", { name: "Build" }),
+    ]) {
+      await waitFor(() =>
+        expect(
+          item.querySelector('svg[data-icon="inline-start"]'),
+        ).toBeVisible(),
+      );
+    }
     expect(body.queryByRole("menuitemradio", { name: "Ask" })).toBeNull();
     await userEvent.click(body.getByRole("menuitemradio", { name: "Build" }));
     await open();

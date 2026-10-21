@@ -178,3 +178,6 @@ advisory memory fit and cached native status under LD-COMP-001/LD-CAT-003.
 
 [E-AI-100](../history/E-AI-100.md) records LD-AI-001/002 client discovery,
 advertised startup modes and footer mode/pin controls; full native gates remain.
+
+[E-AI-101](../history/E-AI-101.md) records decorative mode/default icons and the
+Add Agent label under LD-AI-002/LD-CAT-003; original native gates are unchanged.

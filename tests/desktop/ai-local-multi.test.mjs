@@ -80,7 +80,7 @@ async function participant(session, label, root) {
   await item.waitForExist();
   assert.equal(
     (await item.getText()).replace(/\s+/gu, " ").trim(),
-    "Add agent participant",
+    "Add Agent",
   );
   try {
     await item.waitForDisplayed();

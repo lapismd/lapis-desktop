@@ -28,6 +28,8 @@ export default defineConfig({
       "@lucide/svelte/icons/key-round",
       "@lucide/svelte/icons/shield-alert",
       "@lucide/svelte/icons/shield-check",
+      "@lucide/svelte/icons/list-todo",
+      "@lucide/svelte/icons/message-circle",
       "@lucide/svelte/icons/hand",
       "@lucide/svelte/icons/file-json",
       "@lucide/svelte/icons/file-clock",

@@ -161,8 +161,7 @@
             !panelProps.onSettingsChange}
           onclick={() => (participantOpen = true)}
         >
-          <PlusIcon data-icon="inline-start" aria-hidden="true" />Add agent
-          participant
+          <PlusIcon data-icon="inline-start" aria-hidden="true" />Add Agent
         </DropdownMenu.Item>
         <DropdownMenu.Item
           disabled={!controller.location}

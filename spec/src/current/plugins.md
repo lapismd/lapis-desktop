@@ -1,9 +1,10 @@
 # Desktop plugins and catalog
 
-E-AI-097–100: model fit, client fixes, footer mode/pin and provider/compute
-Settings loading, failure/toast, disabled and explicit lifecycle controls
-through production components in Desktop/AI setup. Catalog icon preoptimization
-prevents cold dependency reloads; visual baselines remain pending.
+E-AI-097–101: model fit, client fixes, footer mode/pin/icons and
+provider/compute Settings loading, failure/toast, disabled and explicit
+lifecycle controls through production components in Desktop/AI setup. Catalog
+icon preoptimization prevents cold dependency reloads; visual baselines remain
+pending.
 
 E-AI-094 adds agent context/permissions review stories using production editors,
 MarkdownComposer and the embedded chat shell. Shared mode icons are preoptimized

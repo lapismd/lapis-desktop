@@ -4,7 +4,7 @@ E-AI-097/099 retain exact main-window grants and native-only hardware facts.
 Unknown fields and launch authority remain refused; the source audit retains its
 closed permission inventory.
 
-E-AI-094 retains LD-GOV-005 source limits by separating ACP configuration and
+E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog
 imports; no ownership, admission, baseline or dependency policy is relaxed.
 

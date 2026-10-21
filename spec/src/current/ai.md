@@ -11,7 +11,9 @@ E-AI-100 repairs stable ACP model discovery and user-local Cursor detection.
 Both chat layouts expose advertised modes and Pin/Unpin in the footer actions
 menu, retaining conversation-local overrides and provider confirmation. An
 explicit Provider default reasoning option omits effort configuration; switching
-harnesses selects it rather than carrying another client's effort.
+harnesses selects it rather than carrying another client's effort. E-AI-101 adds
+decorative mode/default icons and the compact Add Agent action; advertised
+choices, overrides, approval policy and dispatch remain unchanged.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 Native-store clauses below preserve the Deferred checkpoint experiment.

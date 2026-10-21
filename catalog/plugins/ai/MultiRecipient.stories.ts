@@ -70,7 +70,7 @@ async function addParticipant(canvasElement: HTMLElement, name: string) {
   );
   const page = within(document.body);
   await userEvent.click(
-    await page.findByRole("menuitem", { name: "Add agent participant" }),
+    await page.findByRole("menuitem", { name: "Add Agent" }),
   );
   const dialog = within(
     await page.findByRole("dialog", { name: "Add agent participant" }),
