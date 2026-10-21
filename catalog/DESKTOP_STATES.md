@@ -231,3 +231,9 @@ E-AI-102 maps `Desktop/AI/Queued messages/Single composer action` to the
 embedded AppShell. Submission never exposes Stop beside a disabled Queue; typing
 a ready follow-up selects Queue and clearing it restores Stop in Document and
 Classic.
+
+E-AI-103 maps `Desktop/AI/Action approvals` to the production embedded chat:
+Separate from mode, Automatic approval, Save failure. The shared agent editor's
+Mode and Action approvals controls are reviewed in Agent profiles/Context and
+permissions. Default Ask, explicit overrides and global persistence retain
+native scope; fixture turns never contact a provider.

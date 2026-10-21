@@ -20,7 +20,7 @@
 </script>
 
 <Field.Field>
-  <Field.Label for={id}>Permissions</Field.Label>
+  <Field.Label for={id}>Mode</Field.Label>
   <Select.Root
     type="single"
     bind:value
@@ -49,7 +49,7 @@
   </Select.Root>
   <Field.Description
     >{loading
-      ? "Loading supported permissions…"
+      ? "Loading supported modes…"
       : (selected?.description ??
         (options.length
           ? "Default execution mode for this agent. Lapis tool approvals still apply."

@@ -1,7 +1,7 @@
 # Desktop plugins and catalog
 
-E-AI-102 covers a single composer action through submission in both chat
-layouts.
+E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
+covers a single composer action through submission in both chat layouts.
 
 E-AI-097–101: model fit, client fixes, footer mode/pin/icons and
 provider/compute Settings loading, failure/toast, disabled and explicit

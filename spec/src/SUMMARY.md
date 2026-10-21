@@ -388,7 +388,6 @@
 - [Native workspace HTML tab dragging](history/E-SHELL-003.md)
 
 - [Shared AI model discovery and status](history/E-AI-095.md)
-
 - [Inset repository sidebar sizing](history/E-REPO-055.md)
 
 - [Conversation-scoped private drafts](history/E-AI-096.md)
@@ -398,3 +397,4 @@
 - [External-client discovery and footer modes](history/E-AI-100.md)
 - [Chat mode icons and compact agent action](history/E-AI-101.md)
 - [Single composer action during submission](history/E-AI-102.md)
+- [Independent host approval policy](history/E-AI-103.md)

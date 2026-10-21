@@ -1,6 +1,8 @@
 <!-- SPDX-License-Identifier: Apache-2.0; adapted from jj-store StoreAgentConfiguration. -->
 <script lang="ts">
   import AgentExecutionModeSelect from "./AgentExecutionModeSelect.svelte";
+  import AgentApprovalPolicySelect from "./AgentApprovalPolicySelect.svelte";
+  import type { ApprovalPolicy } from "../../../../lib/ai/core/approval-policy.ts";
   import type { ExecutionMode } from "../../../../lib/ai/core/agent-profile.ts";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import * as Select from "@lapismd/design-core/shadcn/select";
@@ -25,6 +27,7 @@
     model = $bindable(null),
     thinking = $bindable("inherit"),
     executionMode = $bindable(""),
+    approvalPolicy = $bindable(""),
     panelProps,
     active,
     disabled = false,
@@ -34,6 +37,7 @@
     model: string | null;
     thinking: AiThinkingLevel | "inherit";
     executionMode?: string;
+    approvalPolicy?: ApprovalPolicy | "";
     panelProps: AgentProfileEditorContext;
     active: boolean;
     disabled?: boolean;
@@ -59,7 +63,7 @@
             id: "ai-agent-editor-permissions",
             source: "ai",
             severity: "error",
-            title: "Agent permissions",
+            title: "Agent modes",
             message: error instanceof Error ? error.message : String(error),
           });
       })
@@ -193,6 +197,11 @@
   bind:value={executionMode}
   options={modes}
   loading={modesLoading}
+  {disabled}
+/>
+<AgentApprovalPolicySelect
+  id={`${id}-approvals`}
+  bind:value={approvalPolicy}
   {disabled}
 />
 

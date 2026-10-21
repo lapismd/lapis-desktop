@@ -2,6 +2,7 @@
 // Retained Lapis AI declarative fields; see ../NOTICE.md.
 import type { App, WorkspaceSettingsSection } from "@lapis-notes/api";
 import { ACP_AGENT_IDS } from "./acp-agents.ts";
+import { APPROVAL_POLICIES } from "../core/approval-policy.ts";
 import { DEFAULT_AI_SETTINGS, type AiPluginSettings } from "./ai-settings.ts";
 import { listAppToolSettingRows } from "./app-tool-setting-rows.ts";
 import {
@@ -10,6 +11,7 @@ import {
 } from "./memory-setting-fields.ts";
 
 export const AI_FIELD_IDS = {
+  approvalPolicy: "ai.approvalPolicy",
   automaticallyMentionAgents: "ai.automaticallyMentionAgents",
   transcriptView: "ai.transcriptView",
   defaultRuntime: "ai.defaultRuntime",
@@ -41,6 +43,18 @@ export function createAiSettingsSection(
   current: AiPluginSettings,
 ): WorkspaceSettingsSection {
   const conversation: NonNullable<WorkspaceSettingsSection["fields"]> = [
+    {
+      id: AI_FIELD_IDS.approvalPolicy,
+      type: "enum",
+      title: "Action approvals",
+      description:
+        "Default for all chats in this vault. Agents can override it. Auto approval applies to offered one-time permissions; app and client restrictions still apply.",
+      default: "ask",
+      options: APPROVAL_POLICIES.map((p) => ({
+        value: p.value,
+        label: p.label,
+      })),
+    },
     {
       id: AI_FIELD_IDS.automaticallyMentionAgents,
       type: "boolean",

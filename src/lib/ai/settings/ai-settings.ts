@@ -1,4 +1,8 @@
 import { validateAgentParticipants } from "./participants.ts";
+import {
+  normalizeApprovalPolicy,
+  type ApprovalPolicy,
+} from "../core/approval-policy.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from the Lapis AI plugin; see src/lib/ai/NOTICE.md.
 import type { AiThinkingLevel } from "../core/models.ts";
@@ -21,6 +25,7 @@ export type AppToolEnablementRef = {
 };
 
 export type AiPluginSettings = {
+  approvalPolicy: ApprovalPolicy;
   automaticallyMentionAgents?: boolean;
   agentParticipants?: import("../conversations/recipients.ts").AgentRecipientOption[];
   transcriptView: "document" | "classic";
@@ -51,6 +56,7 @@ export type StoredAiSettings = Partial<AiPluginSettings> & {
 };
 
 export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
+  approvalPolicy: "ask",
   automaticallyMentionAgents: false,
   transcriptView: "document",
   defaultRuntime: "auto",
@@ -215,6 +221,7 @@ export function mergeAiSettings(
   const thinking = value?.thinking;
   const participants = validateAgentParticipants(value?.agentParticipants);
   const merged: AiPluginSettings = {
+    approvalPolicy: normalizeApprovalPolicy(value?.approvalPolicy),
     automaticallyMentionAgents: value?.automaticallyMentionAgents === true,
     ...(participants ? { agentParticipants: participants } : {}),
     transcriptView:

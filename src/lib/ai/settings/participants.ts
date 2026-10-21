@@ -2,6 +2,7 @@ import {
   validateAgentProfile,
   assertExecutionMode,
 } from "../core/agent-profile.ts";
+import { isApprovalPolicy } from "../core/approval-policy.ts";
 import { ACP_AGENT_IDS } from "./acp-agents.ts";
 import {
   validateAgentAvatar,
@@ -33,6 +34,7 @@ export function validateAgentParticipants(
             "description",
             "instructions",
             "executionMode",
+            "approvalPolicy",
             "model",
             "thinking",
             "avatar",
@@ -43,8 +45,10 @@ export function validateAgentParticipants(
       throw new Error("Invalid agent participant");
     const { id, label, agent, model, thinking, avatar, avatarBackground } =
       entry as AgentRecipientOption;
-    const { description, instructions, executionMode } =
+    const { description, instructions, executionMode, approvalPolicy } =
       entry as AgentRecipientOption;
+    if (approvalPolicy !== undefined && !isApprovalPolicy(approvalPolicy))
+      throw new Error("Invalid agent approval policy");
     validateAgentProfile({ description, instructions });
     assertExecutionMode(executionMode);
     const image = validateAgentAvatar(avatar),
@@ -74,6 +78,7 @@ export function validateAgentParticipants(
       ...(description ? { description } : {}),
       ...(instructions ? { instructions } : {}),
       ...(executionMode ? { executionMode } : {}),
+      ...(approvalPolicy ? { approvalPolicy } : {}),
       ...(thinking ? { thinking } : {}),
       ...(image ? { avatar: image } : {}),
       ...(background ? { avatarBackground: background } : {}),

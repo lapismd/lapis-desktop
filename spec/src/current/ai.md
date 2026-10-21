@@ -15,7 +15,9 @@ harnesses selects it rather than carrying another client's effort. E-AI-101 adds
 decorative mode/default icons and the compact Add Agent action; advertised
 choices, overrides, approval policy and dispatch remain unchanged. E-AI-102
 consumes the shared single-action footer repair: pending submission and empty
-drafts show Stop; only a ready nonempty follow-up shows Queue.
+drafts show Stop; only a ready nonempty follow-up shows Queue. E-AI-103 adds an
+independent, saved host approval policy in the footer and agent editor;
+[approval policy](ai-addressing.md#approval-policy) retains native scope/modes.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 Native-store clauses below preserve the Deferred checkpoint experiment.
@@ -138,7 +140,8 @@ their transcript hash is checked. Invalid summaries fall back to full evidence.
 The desktop ACP seam consumes raw control-v3 through public typed clients. It
 retains provider observations and event provenance, maps known activity once,
 and preserves unknown extensions. Permission options retain exact IDs and
-unknown semantic kinds; no default options or automatic approval are invented.
+unknown semantic kinds; no default options are invented. Explicit host policy
+may answer known one-time permissions under the approval-policy contract.
 Interrupted or uncertain terminal outcomes remain explicit failures.
 
 The adapted ACP runtime attaches before configuration and never prompts during

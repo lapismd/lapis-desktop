@@ -106,3 +106,8 @@ Markdown-friendly agent links adapt JJ Store's
 `df31b5caeaabd562b0b76806f89bc50dec073ec5` (Apache-2.0). Notes owns its
 `lapis://agent` scheme and immutable-reader adapter; badge profiles use public
 Design Core AuthorCard. Source mappings are recorded in docs/provenance.json.
+
+Host automatic approval adapts ai-controller's `src/domain/approval-policy.ts`:
+exact advertised semantic choices, explicit opt-in and restricted-worker
+refusal. Desktop narrows it to unique one-time choices, retains durable trace
+and owns its settings. Provider full-access launch overrides are not copied.

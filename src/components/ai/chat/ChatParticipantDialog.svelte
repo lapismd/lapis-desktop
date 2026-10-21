@@ -15,6 +15,7 @@
   import type { AiChatController } from "../../../lib/ai/chat/chat-controller.svelte.ts";
   import type { AgentRecipientOption } from "../../../lib/ai/conversations/recipients.ts";
   import type { AiThinkingLevel } from "../../../lib/ai/core/models.ts";
+  import type { ApprovalPolicy } from "../../../lib/ai/core/approval-policy.ts";
   import { validateAgentParticipants } from "../../../lib/ai/settings/participants.ts";
   import {
     normalizeAcpAgent,
@@ -42,6 +43,7 @@
     instructions = $state(""),
     executionMode = $state("");
   let thinking = $state<AiThinkingLevel | "inherit">("inherit");
+  let approvalPolicy = $state<ApprovalPolicy | "">("");
   let avatar = $state(""),
     avatarBackground = $state("#6e56cf"),
     avatarUploads = $state(0);
@@ -66,6 +68,7 @@
       description = initial?.description ?? "";
       instructions = initial?.instructions ?? "";
       executionMode = initial?.executionMode ?? "";
+      approvalPolicy = initial?.approvalPolicy ?? "";
       agent =
         initial?.agent ?? normalizeAcpAgent(panelProps.settings?.acpAgent);
       model = initial?.model ?? null;
@@ -100,6 +103,7 @@
         ...(description.trim() ? { description: description.trim() } : {}),
         ...(instructions.trim() ? { instructions: instructions.trim() } : {}),
         ...(executionMode ? { executionMode } : {}),
+        ...(approvalPolicy ? { approvalPolicy } : {}),
         agent,
         ...(model?.trim() ? { model: model.trim() } : {}),
         ...(thinking !== "inherit" ? { thinking } : {}),
@@ -227,6 +231,7 @@
           bind:model
           bind:thinking
           bind:executionMode
+          bind:approvalPolicy
           {panelProps}
           active={open}
           {disabled}

@@ -80,9 +80,10 @@ and retryable. Actual execution and provider lifetime are separate from the MCP
 transport; engine closure alone is not a durable effect receipt.
 
 Local Codex uses the existing advertised read-only provider mode. Application
-writes still require their existing explicit AppToolHost approval and guarded
-native Vault API; read-only provider mode cannot bypass that policy. File,
-comment and conversation context retain their exact existing persistence rules.
+writes still require AppToolHost approval under the selected host policy and
+guarded native Vault API; read-only provider mode cannot bypass that policy.
+File, comment and conversation context retain their exact existing persistence
+rules.
 
 Acceptance proceeds through native IPC/auth/expiry/cancellation fixtures,
 ordinary controller/approval and schema tests, then real installed Codex read,

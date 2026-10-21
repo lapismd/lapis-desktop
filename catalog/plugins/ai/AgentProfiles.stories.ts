@@ -53,11 +53,17 @@ export const ContextAndPermissions: Story = {
     );
     await userEvent.type(description, "Reviews the whole notebook");
     await waitFor(() =>
-      expect(dialog.getByRole("button", { name: "Permissions" })).toBeEnabled(),
+      expect(dialog.getByRole("button", { name: "Mode" })).toBeEnabled(),
     );
-    await userEvent.click(dialog.getByRole("button", { name: "Permissions" }));
+    await userEvent.click(dialog.getByRole("button", { name: "Mode" }));
     await userEvent.click(
       await body.findByRole("option", { name: "Workspace edits" }),
+    );
+    await userEvent.click(
+      dialog.getByRole("button", { name: "Action approvals" }),
+    );
+    await userEvent.click(
+      await body.findByRole("option", { name: "Approve for me" }),
     );
     await userEvent.click(dialog.getByRole("button", { name: "Save agent" }));
     await waitFor(() => expect(body.queryByRole("dialog")).toBeNull());
@@ -66,6 +72,7 @@ export const ContextAndPermissions: Story = {
     expect(saved.settings.agentParticipants[0]).toMatchObject({
       description: "Reviews the whole notebook",
       executionMode: "fixture-edit",
+      approvalPolicy: "allow-all",
       instructions:
         "Keep the author’s examples. Explain proposed changes before editing.",
     });

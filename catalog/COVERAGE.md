@@ -1040,3 +1040,11 @@ Unknown model fit. It copies JJ Store's production picker/catalog, tests
 keyboard search/selection, exact custom IDs, draft memory caps, honest unknown
 estimates, serving locks and no dispatch on selection. All stories remain
 visual-pending.
+
+E-AI-103 adapts ai-controller's offered-option approval policy into
+Desktop-owned policy (no controller dependency). `AI/Action approvals` reviews a
+separate footer picker in the embedded AppShell: Mode independence,
+Document/Classic, automatic one-time permission response and failed-save
+notification/draft retention. `AI/Agent profiles/Context and permissions` covers
+the distinct Mode and Action approvals fields and saved override. Visual
+approval remains pending.

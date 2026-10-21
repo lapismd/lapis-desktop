@@ -2,11 +2,17 @@ import type { AppToolBridgeEvent } from "../../tools/app-tool-bridge.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { applyAgentEventToChatItems } from "../chat-trace.ts";
 import { eventIdentity } from "./event-identity.ts";
+import {
+  automaticallyRespond,
+  currentApprovalPolicy,
+} from "./automatic-approval.ts";
 
 export async function _consumeAppToolEvent(
   this: AiChatController,
   { bindingId, event }: AppToolBridgeEvent,
 ): Promise<void> {
+  const policy =
+    event.type === "permission.request" ? currentApprovalPolicy(this) : "ask";
   if (
     bindingId !== this._activeBindingId &&
     !this.bindings.some((binding) => binding.id === bindingId)
@@ -35,4 +41,6 @@ export async function _consumeAppToolEvent(
   } else if (!this.repository) {
     await this._persist(false, bindingId);
   }
+  if (event.type === "permission.request")
+    await automaticallyRespond(this, event.request, bindingId, policy);
 }

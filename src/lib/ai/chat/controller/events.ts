@@ -2,8 +2,12 @@
 // Retained Lapis chat orchestration; see ../../NOTICE.md.
 import type { AgentSession } from "../../core/runtime.ts";
 import type { AgentUsage } from "../../core/models.ts";
+import {
+  answerStoredApproval,
+  approveRuntimeRequest,
+  currentApprovalPolicy,
+} from "./automatic-approval.ts";
 import { transcriptEntryHash } from "../../conversations/hashes.ts";
-import { persistentDecisionForRequest } from "../../conversations/approval-grants.ts";
 import { CONVERSATION_SCHEMA_VERSION } from "../../conversations/types.ts";
 import { type AiChatItem } from "../chat-items.ts";
 import {
@@ -150,6 +154,10 @@ export async function _consume(
   };
   try {
     for await (const event of session.events()) {
+      const policy =
+        event.type === "permission.request"
+          ? currentApprovalPolicy(this)
+          : "ask";
       if (event.type === "completed") this._runtimeContextReady.add(session);
       if (
         (event.type === "tool.start" || event.type === "tool.end") &&
@@ -174,29 +182,11 @@ export async function _consume(
         }
         continue;
       }
-      if (event.type === "permission.request") {
-        const decision = persistentDecisionForRequest(
-          this._approvalGrants,
-          event.request,
-        );
-        const option = event.request.options.find(
-          (option) => option.kind === decision,
-        );
-        if (decision && option) {
-          try {
-            await waitForNextTask();
-            if (
-              this.session === session &&
-              !this._cancelledSessions.has(session)
-            ) {
-              await session.respondToApproval(event.request.id, option.id);
-              continue;
-            }
-          } catch {
-            // Fall through so an unmatched runtime request still opens the drawer.
-          }
-        }
-      }
+      if (
+        event.type === "permission.request" &&
+        (await answerStoredApproval(this, session, event.request))
+      )
+        continue;
       if (
         [
           "text",
@@ -233,6 +223,14 @@ export async function _consume(
       const cancelled = this._cancelledSessions.has(session);
       if (activeSession && !cancelled) {
         live.receive(event, receivedAt, identify);
+        if (event.type === "permission.request")
+          traceItems = await approveRuntimeRequest(
+            this,
+            event.request,
+            agentBindingId,
+            policy,
+            traceItems,
+          );
       }
       if (event.type === "completed" || event.type === "error") {
         if (event.type === "error" && activeSession) {

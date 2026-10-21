@@ -185,3 +185,8 @@ Add Agent label under LD-AI-002/LD-CAT-003; original native gates are unchanged.
 [E-AI-102](../history/E-AI-102.md) records the single Stop/Queue action through
 pending submission in both chat layouts (LD-AI-002/LD-CAT-003); native gates
 remain.
+
+[E-AI-103](../history/E-AI-103.md) records explicit host approval policy in
+Document/Classic and saved agent overrides (LD-AI-002/003/004, LD-CAT-003).
+Exact one-time IDs, durable decisions and native tool scope are retained; native
+provider and release gates remain open.

@@ -1,3 +1,4 @@
+import { extraReviewValue } from "./review-observations.ts";
 import { modesForReview, modeReviewSettings } from "../execution-modes.ts";
 import { interruptedSnapshot } from "./interrupted-snapshot.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
@@ -282,7 +283,8 @@ export function createTranscriptFixture(
     app: base.app,
     ready,
     inspect: (name: string) =>
-      name === "transcript" && addressedStore
+      extraReviewValue(name, participantSettings.value, base.app) ??
+      (name === "transcript" && addressedStore
         ? JSON.stringify(addressedTranscript)
         : JSON.stringify(
             runtime.sessions.map((session) => ({
@@ -290,7 +292,7 @@ export function createTranscriptFixture(
               prompts: session.prompts,
               context: session.contextBlocks,
             })),
-          ),
+          )),
     close: async () => {
       unregister();
       await close();

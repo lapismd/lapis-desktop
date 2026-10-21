@@ -1,6 +1,7 @@
 <script lang="ts">
   import ChatParticipantDialog from "./ChatParticipantDialog.svelte";
   import ChatPermissions from "./ChatPermissions.svelte";
+  import ChatApprovalPolicy from "./ChatApprovalPolicy.svelte";
   import type { ComposerState } from "../../../lib/ai/chat/panel/composer.svelte.ts";
   import PinIcon from "@lucide/svelte/icons/pin";
   import PinOffIcon from "@lucide/svelte/icons/pin-off";
@@ -121,6 +122,7 @@
     </Popover.Content>
   </Popover.Root>
 {/if}
+<ChatApprovalPolicy {panelProps} {composerState} />
 <DropdownMenu.Root>
   <DropdownMenu.Trigger>
     {#snippet child({ props }: { props: Record<string, unknown> })}

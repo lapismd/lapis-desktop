@@ -36,6 +36,10 @@ import { OwnedAiWork } from "../../core/owned-work.ts";
 import type { ConversationListEntry } from "../../conversations/transcript-store.ts";
 import type { AcpAgentId } from "../../settings/acp-agents.ts";
 export class AiChatControllerState {
+  readonly _approvalPolicy?: (
+    request: Omit<AgentRequest, "prompt">,
+  ) => import("../../core/approval-policy.ts").ApprovalPolicy;
+  readonly _onApprovalError?: (error: unknown) => void;
   _disposed = false;
   _filesProtected = 0;
   _activeDispatch?: import("./dispatch-state.ts").ActiveDispatch;
@@ -138,6 +142,8 @@ export class AiChatControllerState {
     unavailableReason: string | null = null,
     mcpServers: McpServerContribution[] = [],
     options: {
+      approvalPolicy?: AiChatControllerState["_approvalPolicy"];
+      onApprovalError?: (error: unknown) => void;
       store?: AgentSessionStore;
       sessionId?: string;
       workspace?: string;
@@ -164,6 +170,8 @@ export class AiChatControllerState {
     } = {},
   ) {
     this.runtime = runtime;
+    this._approvalPolicy = options.approvalPolicy;
+    this._onApprovalError = options.onApprovalError;
     this.unavailableReason = unavailableReason;
     this.mcpServers = mcpServers;
     this.store = options.store;

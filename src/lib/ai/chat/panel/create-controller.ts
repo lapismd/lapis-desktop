@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat presentation state; see ../../NOTICE.md.
 import { untrack } from "svelte";
+import { effectiveApprovalPolicy } from "../../core/approval-policy.ts";
 import { normalizeAcpAgent } from "../../settings/acp-agents.ts";
 import { AiChatController } from "../chat-controller.svelte.ts";
 import type { AiChatPanelProps } from "./props.ts";
@@ -41,6 +42,20 @@ export function createChatPanelController(
   return untrack(
     () =>
       new AiChatController(runtime, unavailableReason, mcpServers, {
+        approvalPolicy: (request) =>
+          effectiveApprovalPolicy(
+            props.settings ?? {},
+            request,
+            props.agentOptions ?? props.settings?.agentParticipants,
+          ),
+        onApprovalError: (error) =>
+          props.app?.notifications.notify({
+            id: "ai-automatic-approval",
+            source: "ai",
+            title: "Automatic approval failed",
+            severity: "error",
+            message: error instanceof Error ? error.message : String(error),
+          }),
         store: sessionStore,
         sessionId,
         workspace,

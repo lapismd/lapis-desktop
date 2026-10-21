@@ -221,6 +221,30 @@ Imported snapshots carry no permission overrides. Failures retain drafts and use
 the App notification service. M10.2 remains In progress; native provider
 qualification is separate from deterministic renderer and Storybook evidence.
 
+## Approval policy
+
+E-AI-103 separates execution Mode from approval policy. The footer in Document
+and Classic exposes Ask for approval / Approve for me independently of Mode. The
+vault-wide AI setting defaults to Ask; saved agent profiles may inherit it or
+explicitly select either policy. The editor labels provider modes as Mode.
+Settings publish only after a successful save; failures retain the prior policy
+and draft and report an App notification.
+
+Approve for me answers only fresh live requests with a known read, write,
+execute or network kind and a uniquely advertised one-time allow option. It
+forwards the exact opaque ID, records the approved trace and creates no lasting
+grant. Unknown, ambiguous or persistent-only options remain interactive.
+Existing explicit deny grants take precedence. Restricted background workers,
+inactive bindings, cancelled/stale requests and restored transcript records
+cannot auto approve. Policy changes affect subsequent requests, including queued
+deliveries, and never replay pending requests. Agent overrides resolve only
+against the currently configured, matching client/participant.
+
+This is host-side approval of offered actions, not a risk classifier or a
+provider sandbox override. Native admission, enabled tools, guarded edits, vault
+scope and provider execution modes remain authoritative. No native full-access
+launch flags or environment changes are introduced.
+
 ## Composer presentation
 
 E-AI-094 removes the redundant gallery heading under Agents. The footer people
