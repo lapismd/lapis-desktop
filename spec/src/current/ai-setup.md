@@ -150,9 +150,16 @@ The Models tab presents the device's downloaded library before Add model and
 Import GGUF controls. Native inventory survives settings remount and cold
 restart, reports actual sizes without counting hard-linked aliases twice, and
 distinguishes missing files from installed weights. Selected and running models
-are separate facts. Start requires installed weights and prepared runtime;
-successful import/download selects the new model without starting it. Explicit
-removal confirms the model identity and cannot remove a running model. Existing
+are separate facts. Start is an icon-only action which becomes a red Stop
+control for the running model, with an accessible label and Design Core tooltip.
+The AI plugin registers a compact footer item only while its owned controller
+reports a serving model; it shows that model's name and the same Stop control.
+Stop remains explicit, uses the original native ownership check and removes the
+item after acknowledged shutdown. Registration reads reactive state only and
+allocates no helper, download or inference. Plugin disposal removes the item.
+Start requires installed weights and prepared runtime; successful
+import/download selects the new model without starting it. Explicit removal
+confirms the model identity and cannot remove a running model. Existing
 downloads are discovered without re-download or provider credential resolution.
 
 Active operations show stage, current file and byte counts, with a progress bar

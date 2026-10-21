@@ -1,5 +1,6 @@
 # Evidence
 
+- [Compute run controls and workspace status](E-AI-124.md)
 - [Local compute library, progress and recovery](E-AI-123.md)
 
 - [Shared native history service intake](E-REPO-056.md)

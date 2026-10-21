@@ -1,15 +1,14 @@
 <script lang="ts">
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as AlertDialog from "@lapismd/design-core/shadcn/alert-dialog";
-  import PlayIcon from "@lucide/svelte/icons/play";
   import CheckIcon from "@lucide/svelte/icons/circle-check";
   import TrashIcon from "@lucide/svelte/icons/trash-2";
   import BoxIcon from "@lucide/svelte/icons/box";
-  import StopIcon from "@lucide/svelte/icons/square";
   import ClientSettingsEmpty from "./ClientSettingsEmpty.svelte";
   import ClientSettingsCard from "./ClientSettingsCard.svelte";
   import ClientSettingsFooter from "./ClientSettingsFooter.svelte";
   import AiComputeModelSummary from "./AiComputeModelSummary.svelte";
+  import AiComputeRunButton from "./AiComputeRunButton.svelte";
   import type {
     AiCompute,
     ComputeAction,
@@ -49,14 +48,7 @@
               {running}
               selected={management.draft.model === model.id}
             />{/snippet}
-          {#if running}<Button
-              variant="outline"
-              size="sm"
-              aria-label={`Stop model ${model.name}`}
-              onclick={() => void management.stop()}
-              ><StopIcon data-icon="inline-start" aria-hidden="true" />Stop
-              model</Button
-            >{/if}
+
           <Button
             variant="ghost"
             size="sm"
@@ -68,20 +60,22 @@
             onclick={() => management.edit({ model: model.id })}
             ><CheckIcon data-icon="inline-start" aria-hidden="true" />Use model</Button
           >
-          <Button
-            variant="outline"
-            size="sm"
-            disabled={blocked ||
-              serving ||
-              !model.installed ||
-              !management.value.runtimePrepared}
-            aria-label={`Start model ${model.name}`}
-            onclick={async () => {
-              management.edit({ model: model.id });
-              await run({ type: "start" });
+          <AiComputeRunButton
+            name={model.name}
+            {running}
+            disabled={!running &&
+              (blocked ||
+                serving ||
+                !model.installed ||
+                !management.value.runtimePrepared)}
+            onActivate={async () => {
+              if (running) await management.stop();
+              else {
+                management.edit({ model: model.id });
+                await run({ type: "start" });
+              }
             }}
-            ><PlayIcon data-icon="inline-start" aria-hidden="true" />Start model</Button
-          >
+          />
           <Button
             variant="ghost"
             size="icon-sm"

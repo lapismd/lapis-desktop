@@ -47,7 +47,10 @@ export async function prepareLocal(f) {
   let downloadBarObserved = false;
   async function command(label, action) {
     const previous = existsSync(savedPath) ? saved().request?.requestId : null;
-    const button = region.$(`button=${label}`);
+    const button =
+      action === "start"
+        ? region.$('button[aria-label^="Start model "]')
+        : region.$(`button=${label}`);
     await button.waitForEnabled({ timeout: 45_000 });
     await button.click();
     let receipt;

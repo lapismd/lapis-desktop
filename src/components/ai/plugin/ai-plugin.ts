@@ -9,6 +9,7 @@ import { seedBundledSkills } from "../../../lib/ai/skills/seed.ts";
 import { seedReservedCommands } from "../../../lib/ai/commands/seed.ts";
 import AiInventoryResult from "../chat/AiInventoryResult.svelte";
 import { registerAiSettings } from "../settings/register-ai-settings.ts";
+import { registerComputeStatus } from "./register-compute-status.svelte.ts";
 import { registerAiViews } from "./register-views.ts";
 import { registerAiCommands } from "./register-commands.ts";
 export class AiPlugin extends Plugin {
@@ -70,6 +71,7 @@ export class AiPlugin extends Plugin {
       await host.conversations.listAll();
       await host.memoryOwner.start();
       registerAiSettings(this, () => host.currentConversationScope());
+      registerComputeStatus(this);
       for (const tool of createVaultFileAppTools(this.app.vault))
         this.registerAgentTool(tool);
       for (const tool of createSkillAppTools({

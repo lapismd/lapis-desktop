@@ -1,3 +1,4 @@
+import { registerComputeStatus } from "../../../src/components/ai/plugin/register-compute-status.svelte.ts";
 import { setupFixture } from "./setup-fixture.ts";
 import { reviewExecutionModes } from "./execution-modes.ts";
 import { clientsFixture } from "./clients-fixture.ts";
@@ -140,6 +141,7 @@ class SettingsFixturePlugin extends Plugin {
     this.registerTool("read", "official");
     this.registerTool("community_count", "community");
     registerAiSettings(this);
+    registerComputeStatus(this);
   }
   registerTool(name: string, source: "official" | "community") {
     const registration = this.app.agentTools.register(
