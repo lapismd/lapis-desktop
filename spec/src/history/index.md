@@ -347,3 +347,5 @@ by the task ledger, not inferred from this list.
 
 - [Responsive AI and Compute settings](E-AI-109.md)
 - [Compute quantity and file selection](E-AI-110.md)
+
+- [Filled command selection indicators](E-AI-111.md)

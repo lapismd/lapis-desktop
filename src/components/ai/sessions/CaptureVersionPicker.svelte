@@ -5,7 +5,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { formatRelativeTime } from "@lapismd/design-core/shadcn/relative-time";
   import HistoryIcon from "@lucide/svelte/icons/history";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import XIcon from "@lucide/svelte/icons/x";
   import type { SavedSessionVersion } from "../../../lib/ai/session-browser/model.ts";
   let {
@@ -84,7 +84,9 @@
             >
               <span class="version-row"
                 ><span class="version-selected"
-                  >{#if version.id === selected}<CheckIcon
+                  >{#if version.id === selected}<CircleCheckIcon
+                      fill="var(--foreground)"
+                      stroke="var(--background)"
                       aria-hidden="true"
                     />{/if}</span
                 ><span class="version-name">Version {version.sequence}</span

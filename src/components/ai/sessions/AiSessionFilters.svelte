@@ -4,7 +4,7 @@
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import ListFilterIcon from "@lucide/svelte/icons/list-filter";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import XIcon from "@lucide/svelte/icons/x";
   import type { SessionItem } from "../../../lib/ai/session-browser/model.ts";
   let {
@@ -86,7 +86,11 @@
               {#if selected.includes(option)}<span
                   data-ui-component="command-view"
                   data-ui-part="trailing"
-                  ><CheckIcon aria-label="Selected" /></span
+                  ><CircleCheckIcon
+                    fill="var(--foreground)"
+                    stroke="var(--background)"
+                    aria-label="Selected"
+                  /></span
                 >{/if}
             </CommandView.Item>
           {/each}

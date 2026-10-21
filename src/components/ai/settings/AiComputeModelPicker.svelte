@@ -4,7 +4,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import {
     computeModelChoices,
@@ -110,8 +110,13 @@
                     >
                   </span>
                 </CommandView.ItemLabel>
-                {#if value === model.id}<CommandView.Shortcut
-                    ><CheckIcon aria-hidden="true" /></CommandView.Shortcut
+                {#if value === model.id}<span
+                    class="compute-model-picker__selected"
+                    ><CircleCheckIcon
+                      fill="var(--foreground)"
+                      stroke="var(--background)"
+                      aria-hidden="true"
+                    /></span
                   >{/if}
               </CommandView.Item>
             {/each}
@@ -139,6 +144,16 @@
     justify-content: space-between;
     text-align: left;
     white-space: normal;
+  }
+  .compute-model-picker__selected {
+    grid-area: shortcut;
+    display: flex;
+    align-self: center;
+    justify-self: end;
+  }
+  .compute-model-picker__selected :global(svg) {
+    width: 1rem;
+    height: 1rem;
   }
   .compute-model-picker__selection,
   .compute-model-picker__option {

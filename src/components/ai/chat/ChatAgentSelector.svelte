@@ -5,7 +5,7 @@
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import ChatMentionButton from "./ChatMentionButton.svelte";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import ChatPeopleOptions from "./ChatPeopleOptions.svelte";
   import ChatMentionPreference from "./ChatMentionPreference.svelte";
   import PlusIcon from "@lucide/svelte/icons/plus";
@@ -156,7 +156,9 @@
                       : "Cursor"} · {option.model ??
                   "Default model"}</CommandView.ItemDescription
               >
-              {#if selected.includes(option.id)}<CheckIcon
+              {#if selected.includes(option.id)}<CircleCheckIcon
+                  fill="var(--foreground)"
+                  stroke="var(--background)"
                   aria-hidden="true"
                 />{/if}
             </CommandView.Item>

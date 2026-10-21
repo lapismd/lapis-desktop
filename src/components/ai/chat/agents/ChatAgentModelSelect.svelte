@@ -5,7 +5,7 @@
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { Input } from "@lapismd/design-core/shadcn/input";
-  import Check from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import ChevronsUpDown from "@lucide/svelte/icons/chevrons-up-down";
   let {
     id,
@@ -73,14 +73,20 @@
         <CommandView.Group heading="Models">
           <CommandView.Item value={defaultLabel} onSelect={() => select(null)}
             ><CommandView.ItemLabel>{defaultLabel}</CommandView.ItemLabel
-            >{#if !value}<Check aria-label="Selected" />{/if}</CommandView.Item
+            >{#if !value}<CircleCheckIcon
+                fill="var(--foreground)"
+                stroke="var(--background)"
+                aria-label="Selected"
+              />{/if}</CommandView.Item
           >
           {#each options as option (option.id)}
             <CommandView.Item
               value={`${option.name} ${option.id}`}
               onSelect={() => select(option.id)}
               ><CommandView.ItemLabel>{option.name}</CommandView.ItemLabel
-              >{#if value === option.id}<Check
+              >{#if value === option.id}<CircleCheckIcon
+                  fill="var(--foreground)"
+                  stroke="var(--background)"
                   aria-label="Selected"
                 />{/if}</CommandView.Item
             >

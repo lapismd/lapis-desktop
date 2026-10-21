@@ -383,11 +383,12 @@ comparison and uses an App toast plus explicit retry.
 
 The compact JJ Log and Op Log header selectors choose exact pinned operations,
 not workspaces. Both use public Command View/Popover with ID search, explicit
-selection, current-pin indication, keyboard focus and full operation identities.
-Known operation metadata may enrich a card; missing metadata must not invent
-author or workspace information. Opening/searching the picker performs no
-repository reads or writes. Refresh preserves a historical pin among newly
-observed heads; only an explicit choice replaces the selected snapshot.
+selection, filled `circle-check` indication, keyboard focus and full operation
+IDs. Known operation metadata may enrich a card; missing metadata must not
+invent author or workspace information. All repository command pickers share the
+filled selection icon. Opening/searching the picker performs no repository reads
+or writes. Refresh preserves a historical pin among newly observed heads; only
+an explicit choice replaces the selected snapshot.
 
 Split file diffs MUST fill the bounded remaining vertical space in the History
 column and the Op Log file card, including both revision panes. Changing wrap,

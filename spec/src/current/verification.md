@@ -211,3 +211,6 @@ reveal and icon actions. Native/provider gates remain unchanged.
 [E-AI-110](../history/E-AI-110.md) records shared numeric/file inputs,
 compile-checked native selection and focused Compute UI acceptance; M10.4
 product gates remain open.
+
+[E-AI-111](../history/E-AI-111.md) aligns filled selection icons under
+LD-AI-002, LD-COMP-001 and LD-REPO-004; original milestone gates remain.

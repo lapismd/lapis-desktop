@@ -2,7 +2,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import * as CommandView from "@lapismd/design-core/shadcn/command-view";
   import * as Popover from "@lapismd/design-core/shadcn/popover";
-  import CheckIcon from "@lucide/svelte/icons/circle-check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import FolderGit2Icon from "@lucide/svelte/icons/folder-git-2";
   import RepositoryPickerSearch from "./RepositoryPickerSearch.svelte";
@@ -118,7 +118,9 @@
                 }}
               >
                 <CommandView.ItemIcon
-                  >{#if option.workspace === selected}<CheckIcon
+                  >{#if option.workspace === selected}<CircleCheckIcon
+                      fill="var(--foreground)"
+                      stroke="var(--background)"
                       aria-hidden="true"
                     />
                   {:else}<FolderGit2Icon

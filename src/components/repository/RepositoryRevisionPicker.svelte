@@ -8,7 +8,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { TagList } from "@lapismd/design-core/shadcn/tag-list";
   import GitBranchIcon from "@lucide/svelte/icons/git-branch";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import RepositoryPickerSearch from "./RepositoryPickerSearch.svelte";
   import RepositoryRevisionOption from "./RepositoryRevisionOption.svelte";
   import {
@@ -135,7 +135,9 @@
                 }}
               >
                 <span role="gridcell" class="repository-commit-picker-selection"
-                  >{#if option.group.change === selected}<CheckIcon
+                  >{#if option.group.change === selected}<CircleCheckIcon
+                      fill="var(--foreground)"
+                      stroke="var(--background)"
                       aria-hidden="true"
                     />{/if}</span
                 >

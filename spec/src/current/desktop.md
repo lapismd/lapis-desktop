@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-AI-097–108: AI qualification.
+AI/pickers: E-AI-097–111.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

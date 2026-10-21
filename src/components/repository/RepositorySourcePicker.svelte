@@ -5,7 +5,7 @@
   import { Skeleton } from "@lapismd/design-core/shadcn/skeleton";
   import GitBranch from "@lucide/svelte/icons/git-branch";
   import History from "@lucide/svelte/icons/history";
-  import Check from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import type {
     HistorySourcePicker,
     HistorySource,
@@ -83,7 +83,9 @@
                 }}
               >
                 <CommandView.ItemIcon
-                  >{#if option.source === picker.selected}<Check
+                  >{#if option.source === picker.selected}<CircleCheckIcon
+                      fill="var(--foreground)"
+                      stroke="var(--background)"
                       aria-hidden="true"
                     />{:else if option.source === "original"}<GitBranch
                       aria-hidden="true"

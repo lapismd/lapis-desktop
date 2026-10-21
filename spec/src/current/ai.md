@@ -83,7 +83,7 @@ outcomes.
 
 E-AI-108: [per-agent providers and shared header avatars](ai-setup.md); Compute
 is a separate sidebar page. E-AI-109 adds responsive settings tabs and action
-icons; original native gates remain.
+icons; E-AI-111 aligns selected command icons. Original native gates remain.
 
 ## Requirements
 

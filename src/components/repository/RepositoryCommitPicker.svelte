@@ -5,7 +5,7 @@
   import * as Popover from "@lapismd/design-core/shadcn/popover";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import { TagList } from "@lapismd/design-core/shadcn/tag-list";
-  import CheckIcon from "@lucide/svelte/icons/check";
+  import CircleCheckIcon from "@lucide/svelte/icons/circle-check";
   import ChevronDownIcon from "@lucide/svelte/icons/chevron-down";
   import RepositoryPickerSearch from "./RepositoryPickerSearch.svelte";
   import RepositoryRevisionOption from "./RepositoryRevisionOption.svelte";
@@ -167,7 +167,9 @@
                 onSelect={() => choose(option.id)}
               >
                 <span role="gridcell" class="repository-commit-picker-selection"
-                  >{#if option.id === target}<CheckIcon
+                  >{#if option.id === target}<CircleCheckIcon
+                      fill="var(--foreground)"
+                      stroke="var(--background)"
                       aria-hidden="true"
                     />{/if}</span
                 >

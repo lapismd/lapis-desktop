@@ -322,3 +322,5 @@
 
 - [Responsive AI and Compute settings](history/E-AI-109.md)
 - [Compute quantity and file selection](history/E-AI-110.md)
+
+- [Filled command selection indicators](history/E-AI-111.md)
