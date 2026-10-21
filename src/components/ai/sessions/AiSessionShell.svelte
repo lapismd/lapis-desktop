@@ -32,6 +32,9 @@
     footer,
     children,
     toolInspector,
+    bodySidebar,
+    bodySidebarOpen = false,
+    mainInspector,
     harness = "codex",
     identity,
     showMainOnCompact = false,
@@ -54,6 +57,9 @@
     footer?: Snippet;
     children: Snippet;
     toolInspector?: Snippet;
+    bodySidebar?: Snippet<[number, boolean]>;
+    bodySidebarOpen?: boolean;
+    mainInspector?: Snippet;
     harness?: string;
     identity?: Snippet;
     /** Live chat keeps its composer reachable even before a conversation has an id. */
@@ -103,6 +109,9 @@
   bind:width
   contentHidden={compact && listOpen}
   {toolInspector}
+  {bodySidebar}
+  {bodySidebarOpen}
+  {mainInspector}
 >
   {#snippet navigation()}
     <AppShell.Body.Sidebar

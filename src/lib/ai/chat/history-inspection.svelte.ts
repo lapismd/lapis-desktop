@@ -145,6 +145,11 @@ export class AiHistoryInspection {
       this.undoBusy = false;
     }
   }
+  closeFile() {
+    this.#file++;
+    this.path = undefined;
+    this.diff = undefined;
+  }
   reset() {
     this.#epoch++;
     this.#file++;

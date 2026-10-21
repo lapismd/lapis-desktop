@@ -24,6 +24,9 @@
     children,
     footer: composerFooter,
     toolInspector,
+    bodySidebar,
+    bodySidebarOpen,
+    mainInspector,
   }: TranscriptFrameProps = $props();
   const { panelProps, controller, composerState, actions } = $derived(panel);
   let rows = $state<ConversationListEntry[]>([]);
@@ -135,6 +138,9 @@
   showMainOnCompact
   initialListOpen={false}
   {toolInspector}
+  {bodySidebar}
+  {bodySidebarOpen}
+  {mainInspector}
 >
   {#snippet identity()}
     <AvatarGroup items={avatars} label="Chat agents" size="sm" max={4}>

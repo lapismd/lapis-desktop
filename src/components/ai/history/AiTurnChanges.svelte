@@ -10,6 +10,8 @@
   } from "@lapismd/design-core/diff";
   import { Spinner } from "@lapismd/design-core/shadcn/spinner";
   import FileDiffIcon from "@lucide/svelte/icons/file-diff";
+  import RepositoryIdentifiers from "../../repository/RepositoryIdentifiers.svelte";
+  import { encodeJjChangeId } from "../../../lib/repository/graph/repository-log-graph.ts";
   import UndoIcon from "@lucide/svelte/icons/undo-2";
   import type { AiTurnRecord } from "../../../lib/repository/ai-history.ts";
   import type { TurnComparison } from "../../../lib/ai/chat/history-comparison.ts";
@@ -18,10 +20,12 @@
     record,
     inspection,
     busy = false,
+    copyText,
   }: {
     record: AiTurnRecord;
     inspection: AiHistoryInspection;
     busy?: boolean;
+    copyText(value: string): Promise<void>;
   } = $props();
   let root = $state<HTMLElement>();
   let visible = $state(false),
@@ -142,12 +146,12 @@
       </div>
     {:else}<p>No saved file changes in this turn.</p>{/if}
     <footer>
-      <Button
-        variant="ghost"
-        size="sm"
-        onclick={() => void inspection.history.binding?.reveal(record)}
-        >{(record.after?.commit ?? record.before.commit).slice(0, 12)}</Button
-      >
+      <RepositoryIdentifiers
+        {copyText}
+        placement="inline"
+        commitId={(record.after ?? record.before).commit}
+        changeId={encodeJjChangeId((record.after ?? record.before).change_id)}
+      />
       <span>Observed during this turn</span>
       {#if summary.files.length > 3}<Button
           variant="ghost"

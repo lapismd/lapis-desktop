@@ -13,7 +13,10 @@ and offers Retry, Cancel or an explicit continuation without history protection.
 Incomplete terminal capture and restart recovery never fabricate completion.
 
 Both transcript layouts expose per-turn summaries and an embedded Changes rail
-with exact before/after inspection and conversation-wide turn browsing. Local
+using a right body file sidebar, responsive pill scope tabs and main-body
+Diff/Before/After inspection. Closing a file restores the mounted transcript and
+its draft. Saved-change blocks use the plain transcript surface and the shared
+Git/JJ copy controls. Conversation-wide browsing retains exact turns. Local
 conversation records retain portable checkpoint links; native receipts recover
 missed updates. Conversation/runtime metadata stays backed up but outside the
 default session changes and undo selection. Disabled History does not initialize

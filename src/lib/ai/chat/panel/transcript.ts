@@ -15,6 +15,9 @@ export type TranscriptFrameProps = {
   footer: Snippet;
   /** Optional body-covering tool inspector, rendered within the host shell. */
   toolInspector?: Snippet;
+  bodySidebar?: Snippet<[number, boolean]>;
+  bodySidebarOpen?: boolean;
+  mainInspector?: Snippet;
 };
 
 export type TranscriptPanelProps = {

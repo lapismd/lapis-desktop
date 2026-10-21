@@ -331,3 +331,5 @@
 - [AI turn change history and guarded undo](history/E-AI-114.md)
 
 - [Sent context root text alignment](history/E-AI-115.md)
+
+- [AI change inspection layout alignment](history/E-AI-116.md)

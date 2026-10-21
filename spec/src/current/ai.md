@@ -1,6 +1,6 @@
 # Desktop AI and optional compute
 
-E-AI-104/107 qualify providers. E-AI-114 adds [turn history](vault-backup.md)
+E-AI-104/107 qualify providers. E-AI-114/116 add [turn history](vault-backup.md)
 under LD-AI-002 while retaining ordinary ACP and local transcripts. Changes are
 observed during turns; shared-vault edits have no exclusive author. Provider,
 trust and two-device gates remain open.

@@ -357,3 +357,5 @@ by the task ledger, not inferred from this list.
 - [AI turn change history and guarded undo](E-AI-114.md)
 
 - [Sent context root text alignment](E-AI-115.md)
+
+- [AI change inspection layout alignment](E-AI-116.md)

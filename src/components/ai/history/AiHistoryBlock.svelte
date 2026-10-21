@@ -22,5 +22,10 @@
   );
 </script>
 
-{#if record}<AiTurnChanges {record} {inspection} busy={panel.controller.busy} />
+{#if record}<AiTurnChanges
+    {record}
+    {inspection}
+    busy={panel.controller.busy}
+    copyText={(text) => navigator.clipboard.writeText(text)}
+  />
 {:else if item}<AiTranscriptBlock {item} {panel} />{/if}

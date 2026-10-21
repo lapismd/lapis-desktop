@@ -4,6 +4,7 @@
   import { untrack, type Snippet } from "svelte";
   import AiChangesButton from "../history/AiChangesButton.svelte";
   import AiHistoryBlock from "../history/AiHistoryBlock.svelte";
+  import AiHistoryFile from "../history/AiHistoryFile.svelte";
   import AiHistoryRail from "../history/AiHistoryRail.svelte";
   import AiHistoryDialogs from "../history/AiHistoryDialogs.svelte";
   import { saveTranscriptView } from "../../../lib/ai/chat/panel/view-preference.ts";
@@ -32,7 +33,7 @@
   import AiTranscriptToolInspector from "./AiTranscriptToolInspector.svelte";
   import { transcriptToolInspection } from "../../../lib/ai/chat/transcript-inspection.svelte.ts";
   import { transcriptLinks } from "./transcript-agent-links.ts";
-  import { formatAgentMention } from "../../../lib/ai/chat/agent-mentions.ts";
+  import { sendTranscript } from "../../../lib/ai/chat/panel/send-transcript.ts";
   import "../../../styles/ai/transcript-links.css";
   import { observeDraftComments } from "../../../lib/ai/chat/panel/draft-comments.svelte.ts";
 
@@ -139,24 +140,7 @@
       if (next !== commentState.threads) commentState.threads = next;
     });
   });
-  async function send() {
-    const value = composerState.draft;
-    const draftKey = composerState.draftKey;
-    const followup = composerState.automaticallyMentionAgents
-      ? composerState.recipients.display
-          .map((recipient) => formatAgentMention(recipient.id, recipient.label))
-          .join(" ")
-      : "";
-    if (blocked || (!value.trim() && !commentState.pending.length)) return;
-    commentState.message = value;
-    const accepted = await commentState.send();
-    if (
-      accepted &&
-      composerState.matchesDraft(draftKey) &&
-      composerState.draft === value
-    )
-      composerState.draft = followup ? `${followup} ` : "";
-  }
+  const send = () => sendTranscript(composerState, commentState, blocked);
 </script>
 
 {#snippet conversation()}
@@ -228,8 +212,20 @@
   <AiHistoryBlock {block} {panel} inspection={changes} />
 {/snippet}
 
+{#snippet bodySidebar(height: number, compact: boolean)}
+  <AiHistoryRail
+    inspection={changes}
+    busy={controller.busy}
+    {height}
+    {compact}
+  />
+{/snippet}
+
+{#snippet mainInspector()}
+  <AiHistoryFile inspection={changes} busy={controller.busy} />
+{/snippet}
+
 {#snippet toolInspector()}
-  <AiHistoryRail inspection={changes} busy={controller.busy} />
   {#if inspection.tool && inspection.opener}
     <AiTranscriptToolInspector
       tool={inspection.tool}
@@ -267,6 +263,9 @@
       onViewChange={chooseView}
       footer={composerFooter}
       {toolInspector}
+      {bodySidebar}
+      bodySidebarOpen={changes.open}
+      mainInspector={changes.path ? mainInspector : undefined}
     >
       {@render conversation()}
     </Frame>

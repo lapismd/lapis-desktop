@@ -61,6 +61,7 @@ export function historyTranscript(
         id: `history/${record.context.turn}`,
         revision: record.after?.commit ?? "incomplete",
         kind: "custom",
+        surface: "plain",
         text: "",
         label: "Saved file changes",
         commentable: false,

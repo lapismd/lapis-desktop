@@ -31,12 +31,57 @@ export const CapturedChanges: Story = {
       name: "Saved turn changes",
     });
     await waitFor(() => expect(card).toHaveTextContent("3 files changed"));
+    const draft = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(draft);
+    await userEvent.keyboard("Keep this unsent draft");
     await userEvent.click(
       within(card).getByRole("button", { name: "View changes" }),
     );
+    const rail = await canvas.findByRole("complementary", {
+      name: "Session changes",
+    });
+    await expect(rail).toBeVisible();
+    await expect(rail).toHaveAttribute("data-ui-part", "body-sidebar");
     await expect(
-      canvas.findByRole("complementary", { name: "Session changes" }),
-    ).resolves.toBeVisible();
+      await within(rail).findByRole("tab", { name: "This turn" }),
+    ).toHaveAttribute("data-state", "active");
+    await userEvent.click(
+      await within(rail).findByRole("tab", {
+        name: "Conversation",
+      }),
+    );
+    await expect(
+      within(rail).getByRole("navigation", { name: "Conversation turns" }),
+    ).toBeVisible();
+    await userEvent.click(within(rail).getByText("alpha.md", { exact: true }));
+    const file = await canvas.findByRole("region", {
+      name: "Saved changes to Notes/alpha.md",
+    });
+    await expect(file).toBeVisible();
+    await waitFor(() =>
+      expect(file).toHaveTextContent(
+        "A clear, concise summary of the project.",
+      ),
+    );
+    await expect(rail).not.toContainElement(file);
+    await expect(card).not.toBeVisible();
+    await userEvent.click(within(file).getByRole("tab", { name: "Before" }));
+    await waitFor(() =>
+      expect(file).toHaveTextContent("TODO: summarize this note."),
+    );
+    await userEvent.click(
+      within(file).getByRole("button", { name: "Close saved file" }),
+    );
+    await expect(card).toBeVisible();
+    await expect(draft).toHaveTextContent("Keep this unsent draft");
+    await expect(
+      within(card).getByRole("button", { name: /Copy Git commit SHA/ }),
+    ).toBeVisible();
+    await expect(
+      within(card).getByRole("button", { name: /Copy JJ Change ID/ }),
+    ).toBeVisible();
+    const surface = card.closest("[data-surface]");
+    await expect(surface).toHaveAttribute("data-surface", "plain");
     await userEvent.click(
       canvas.getByRole("button", { name: "Close session changes" }),
     );
