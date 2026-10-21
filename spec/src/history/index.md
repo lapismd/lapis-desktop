@@ -355,3 +355,5 @@ by the task ledger, not inferred from this list.
 - [Live sent-context inspection](E-AI-113.md)
 
 - [AI turn change history and guarded undo](E-AI-114.md)
+
+- [Sent context root text alignment](E-AI-115.md)

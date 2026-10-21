@@ -1,5 +1,8 @@
 # Verification
 
+E-AI-115 covers root context Markdown alignment under LD-AI-002/LD-CAT-003; the
+shared package intake and focused stories retain existing milestone gates.
+
 E-REPO-012/013 retain manual previews and visual gates.
 
 <!-- prettier-ignore -->

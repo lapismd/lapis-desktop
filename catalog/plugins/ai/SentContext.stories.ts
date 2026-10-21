@@ -84,6 +84,24 @@ export const AgentSwitch: Story = {
     );
     await expect(context).toHaveTextContent("propose concise revisions");
     const inspector = within(context);
+    const rootProse = inspector.getByText(
+      "User-configured agent context for this session. Instructions remain subject to application permissions.",
+      { exact: true },
+    );
+    const rootLabel = inspector
+      .getByRole("button", {
+        name: /^<lapis-context kind="conversation-handoff"/,
+      })
+      .querySelector(".ui-prompt-context-tag")!;
+    await expect(rootProse).toBeVisible();
+    await waitFor(() =>
+      expect(
+        Math.abs(
+          rootProse.getBoundingClientRect().left -
+            rootLabel.getBoundingClientRect().left,
+        ),
+      ).toBeLessThan(1),
+    );
     await userEvent.click(
       inspector.getByRole("button", {
         name: /^<lapis-context kind="conversation-handoff"/,

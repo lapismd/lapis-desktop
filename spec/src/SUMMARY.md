@@ -329,3 +329,5 @@
 - [Live sent-context inspection](history/E-AI-113.md)
 
 - [AI turn change history and guarded undo](history/E-AI-114.md)
+
+- [Sent context root text alignment](history/E-AI-115.md)

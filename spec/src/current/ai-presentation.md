@@ -355,3 +355,7 @@ the live controller and cleared on close; they are excluded from both local
 transcript formats and legacy session snapshots. Historical context is never
 reconstructed from current files/settings; existing durable comment receipts
 retain their original presentation. Native storage remains separately deferred.
+
+E-AI-115 refreshes the verified Design Core archive so root Markdown between XML
+sections aligns with top-level tag labels, retaining nested indentation. Exact
+source, delivery state, both layouts and capture lifetime stay unchanged.

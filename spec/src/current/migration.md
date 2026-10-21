@@ -397,4 +397,4 @@ changes.
 E-AI-065 adds helper/client setup; E-REPO-045 adds indexed Search. E-SHELL-003
 restores tab drops; E-AI-095/096 cover model discovery and private drafts.
 E-AI-103/105–110: approval/header, tabbed settings and shared Compute inputs;
-full gates remain.
+full gates remain. E-AI-115 verifies shared context root indentation only.
