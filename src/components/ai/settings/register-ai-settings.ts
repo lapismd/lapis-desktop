@@ -1,3 +1,4 @@
+import { addMemorySettingsActions } from "./memory-actions.ts";
 import AiComputeField from "./AiComputeField.svelte";
 import AgentClientsField from "./AgentClientsField.svelte";
 import AgentClientsPage from "./AgentClientsPage.svelte";
@@ -36,7 +37,10 @@ type SettingsOwner = Pick<Plugin, "app" | "register"> & {
   report(error: unknown): void;
 };
 
-export function registerAiSettings(plugin: SettingsOwner): void {
+export function registerAiSettings(
+  plugin: SettingsOwner,
+  currentScope: () => string = () => "",
+): void {
   const { app, settings } = plugin;
   const controller = getWorkspaceHostBinding(app.workspace).controller;
   let disposed = false;
@@ -157,6 +161,7 @@ export function registerAiSettings(plugin: SettingsOwner): void {
   const register = () => {
     const definition = createAiSettingsSection(app, settings.get());
     definition.page = AiSettingsPage;
+    addMemorySettingsActions(definition, app, settings, currentScope);
     return controller.settings.registerDefinition({
       section: definition,
       source,
@@ -176,7 +181,9 @@ export function registerAiSettings(plugin: SettingsOwner): void {
         "acpAgent",
         "defaultRuntime",
         "memoryConsolidationRuntime",
+        "memoryConsolidationAgent",
         "handoffSummaryRuntime",
+        "handoffSummaryAgent",
       ].some((key) => key in patch)
     )
       refresh();
@@ -187,6 +194,14 @@ export function registerAiSettings(plugin: SettingsOwner): void {
       controller.configuration.optionSources.register({
         id: aiModelSourceId(provider),
         load: () => models.load(provider),
+      }),
+    );
+  }
+  for (const kind of ["memory", "handoff"] as const) {
+    cleanups.push(
+      controller.configuration.optionSources.register({
+        id: `ai.processorModels.${kind}`,
+        load: () => models.loadProcessor(kind),
       }),
     );
   }

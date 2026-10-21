@@ -3,17 +3,15 @@
 import type { ConversationLocation } from "../conversations/types.ts";
 import type { DurableMemoryRecord, MemoryScope } from "./types.ts";
 import { sha256ConversationText as sha256Text } from "../conversations/hashes.ts";
-import {
-  memoryRoot,
-  recordPath,
-  serializeMemoryRecord,
-} from "./memory-record-codec.ts";
+import { validateMemoryRecord } from "./memory-record-codec.ts";
 import { sameScope, memoryScopeKey as scopeKey } from "./paths.ts";
 export type StoredMemoryRecord = {
   record: DurableMemoryRecord;
   path: string;
   hash: string;
   content: string;
+  anchor?: string;
+  noteKind?: "daily" | "curated";
 };
 
 export type MemoryRecordWriteOptions = {
@@ -21,6 +19,18 @@ export type MemoryRecordWriteOptions = {
 };
 
 export interface MemoryRecordStore {
+  associatedMemoryIds?(conversationId: string): Promise<string[]>;
+  forgetConversationEntries?(
+    conversationId: string,
+  ): Promise<{ retracted: number; needsReview: number }>;
+  eligibleEntries?(
+    location: ConversationLocation,
+    entries: { id: string; createdAt: string }[],
+  ): Promise<string[]>;
+  checkpointEntries?(
+    location: ConversationLocation,
+    ids: string[],
+  ): Promise<void>;
   list(scope?: MemoryScope): Promise<StoredMemoryRecord[]>;
   find(id: string): Promise<StoredMemoryRecord[]>;
   write(
@@ -64,7 +74,8 @@ export class InMemoryMemoryRecordStore implements MemoryRecordStore {
     record: DurableMemoryRecord,
     options: MemoryRecordWriteOptions = {},
   ): Promise<StoredMemoryRecord> {
-    const content = serializeMemoryRecord(record);
+    validateMemoryRecord(record);
+    const content = JSON.stringify(record);
     const key = `${scopeKey(record.scope)}\u0000${record.id}`;
     const current = this.#records.get(key);
     if (
@@ -96,9 +107,11 @@ export class InMemoryMemoryRecordStore implements MemoryRecordStore {
     } else if (record.revision !== 1 || record.previousRevisionHash) {
       throw new MemoryRecordConflictError("Invalid first memory revision");
     }
-    const stored = {
+    const stored: StoredMemoryRecord = {
       record: structuredClone(record),
-      path: recordPath(record.scope, record.id),
+      path: `Memory/${record.scope.kind}/MEMORY.md`,
+      anchor: record.id,
+      noteKind: "curated",
       hash: await sha256Text(content),
       content,
     };
@@ -120,7 +133,7 @@ export class InMemoryMemoryRecordStore implements MemoryRecordStore {
     jobId: string,
     markdown: string,
   ): Promise<string> {
-    const path = `${memoryRoot(scope)}/reviews/${jobId}.md`;
+    const path = `.lapis/memory/reviews/${jobId}.md`;
     if (this.#reviews.has(path))
       throw new MemoryRecordConflictError("Review exists");
     this.#reviews.set(path, markdown);
@@ -137,7 +150,7 @@ export class InMemoryMemoryRecordStore implements MemoryRecordStore {
     const scope: MemoryScope = location.scopeDir
       ? { kind: "project", projectDir: location.scopeDir }
       : { kind: "workspace" };
-    const path = `${memoryRoot(scope)}/exclusions/${location.conversationId}.yaml`;
+    const path = `.lapis/memory/exclusions/${location.conversationId}.json`;
     this.#exclusions.set(location.conversationId, path);
     return path;
   }

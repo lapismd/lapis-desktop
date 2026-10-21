@@ -191,7 +191,8 @@
           id: "memory:storybook-headings:1",
           content: "Use compact headings in Atlas notes.",
           metadata: {
-            memoryId: "storybook-headings",
+            notePath: "Memory/MEMORY.md",
+            anchor: "storybook-headings",
             revision: 1,
             scope: "project" as const,
           },

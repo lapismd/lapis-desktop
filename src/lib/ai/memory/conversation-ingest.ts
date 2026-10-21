@@ -24,6 +24,7 @@ import type { ConversationLocation } from "../conversations/types.ts";
 export async function ingestConversation(
   host: NativeMemoryHost,
   location: ConversationLocation,
+  capture = true,
 ): Promise<void> {
   if (
     (await host.recordStore.listExcludedConversationIds()).has(
@@ -139,9 +140,10 @@ export async function ingestConversation(
           await host.database.upsertSearchDocument(document);
         }
       }
-      await extractDeterministicCandidates(snapshot, host.database, {
-        entries: batch.map((episode) => episode.entry),
-      });
+      if (capture)
+        await extractDeterministicCandidates(snapshot, host.database, {
+          entries: batch.map((episode) => episode.entry),
+        });
       const cursor = batch.at(-1)!;
       await host.database.upsertMemorySourceState({
         sourceKey: location.conversationId,

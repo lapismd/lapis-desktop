@@ -26,18 +26,14 @@ export async function previewConsolidation(
   host: NativeMemoryHost,
   scope: MemoryScope,
 ): Promise<ConsolidationPreview> {
-  const candidates = await host.database.queryMemoryCandidates({
-    scopeKind: scope.kind,
-    scopePath: scope.kind === "project" ? scope.projectDir : "",
-    states: ["staged", "review"],
-    limit: 10,
-  });
+  const candidates = await consolidationCandidates(host, scope, true);
   return {
     scope,
     candidateIds: candidates.map((candidate) => candidate.candidate.id),
     proposals: candidates.filter(
       (candidate) =>
-        candidate.candidate.state === "staged" &&
+        (candidate.candidate.state === "staged" ||
+          candidate.candidate.state === "promoted") &&
         candidate.candidate.originClass === "owner",
     ).length,
   };
@@ -46,18 +42,15 @@ export async function previewConsolidation(
 export async function consolidateNativeMemory(
   host: NativeMemoryHost,
   scope: MemoryScope,
+  useModel = true,
 ): Promise<ConsolidationResult> {
   const preview = await previewConsolidation(host, scope);
-  const candidates = await host.database.queryMemoryCandidates({
-    scopeKind: scope.kind,
-    scopePath: scope.kind === "project" ? scope.projectDir : "",
-    states: ["staged", "review"],
-    limit: 10,
-  });
+  const candidates = await consolidationCandidates(host, scope, useModel);
   const groundedEvidence = new Map<string, MemoryEvidenceRef[]>();
   for (const candidate of candidates) {
     if (
-      candidate.candidate.state !== "staged" ||
+      (candidate.candidate.state !== "staged" &&
+        candidate.candidate.state !== "promoted") ||
       candidate.candidate.originClass !== "owner"
     ) {
       continue;
@@ -67,8 +60,9 @@ export async function consolidateNativeMemory(
       groundedEvidence.set(candidate.candidate.id, evidence);
     }
   }
-  const consolidationProvider =
-    typeof host.consolidationProvider === "function"
+  const consolidationProvider = !useModel
+    ? undefined
+    : typeof host.consolidationProvider === "function"
       ? host.consolidationProvider()
       : host.consolidationProvider;
   let providerProposals = new Map<
@@ -110,7 +104,8 @@ export async function consolidateNativeMemory(
   for (const candidate of candidates) {
     if (written >= 5) break;
     if (
-      candidate.candidate.state !== "staged" ||
+      (candidate.candidate.state !== "staged" &&
+        candidate.candidate.state !== "promoted") ||
       candidate.candidate.originClass !== "owner"
     ) {
       needsReview += 1;
@@ -139,11 +134,16 @@ export async function consolidateNativeMemory(
       providerProposal?.summary ?? candidate.candidate.normalizedClaim;
     const proposedSupersessionKey =
       providerProposal?.supersessionKey ?? candidate.candidate.supersessionKey;
-    const existing = proposedSupersessionKey
-      ? allStored.find(
-          (stored) => stored.record.supersessionKey === proposedSupersessionKey,
-        )
-      : undefined;
+    const existing =
+      allStored.find(
+        (stored) => stored.record.id === candidate.candidate.promotedMemoryId,
+      ) ??
+      (proposedSupersessionKey
+        ? allStored.find(
+            (stored) =>
+              stored.record.supersessionKey === proposedSupersessionKey,
+          )
+        : undefined);
     if (existing && contradictory(existing.record.summary, proposedSummary)) {
       needsReview += 1;
       await writeConsolidationReview(
@@ -173,7 +173,8 @@ export async function consolidateNativeMemory(
     if (
       existing &&
       existing.record.summary === proposedSummary &&
-      combinedEvidence.length === existing.record.evidence.length
+      combinedEvidence.length === existing.record.evidence.length &&
+      (!providerProposal || existing.record.createdBy === "consolidator")
     ) {
       await markCandidatePromoted(host, candidate, id);
       continue;
@@ -233,4 +234,46 @@ export async function consolidateNativeMemory(
     }
   }
   return { ...preview, written, needsReview };
+}
+
+async function consolidationCandidates(
+  host: NativeMemoryHost,
+  scope: MemoryScope,
+  useModel: boolean,
+) {
+  const query = {
+    scopeKind: scope.kind,
+    scopePath: scope.kind === "project" ? scope.projectDir : "",
+    limit: 10,
+  };
+  const staged = await host.database.queryMemoryCandidates({
+    ...query,
+    states: ["staged"],
+  });
+  const review = await host.database.queryMemoryCandidates({
+    ...query,
+    states: ["review"],
+  });
+  const provider =
+    useModel &&
+    (typeof host.consolidationProvider === "function"
+      ? host.consolidationProvider()
+      : host.consolidationProvider);
+  if (!provider) return [...staged, ...review].slice(0, 10);
+  const records = await host.recordStore.list(scope);
+  const promoted = await host.database.queryMemoryCandidates({
+    ...query,
+    states: ["promoted"],
+  });
+  return [
+    ...staged,
+    ...promoted.filter(({ candidate }) =>
+      records.some(
+        (stored) =>
+          stored.record.id === candidate.promotedMemoryId &&
+          stored.record.createdBy === "deterministic-promotion",
+      ),
+    ),
+    ...review,
+  ].slice(0, 10);
 }

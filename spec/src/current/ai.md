@@ -188,12 +188,12 @@ kind, never an ID prefix. Unadvertised live choices reject; historical unknown
 choices remain visible with neutral answered status. This display projection
 cannot dispatch a permission or infer approval from an unknown option.
 
-Memory policy remains desktop-owned: episodic ingestion, deterministic candidate
-promotion, evidence verification, bounded owner-only automatic recall, explicit
-forget exclusions and leased maintenance reuse public AppDatabase and Vault
-contracts. Portable capture sanitizes derived reads/writes and fails closed on
-omission or changed execution locations. Native credential-detector admission
-remains part of M10.3; portable capture alone cannot qualify it.
+[Markdown-first memory](ai-memory.md) is Desktop-owned. Scoped ingestion,
+deterministic promotion, evidence verification, bounded owner-only recall,
+durable forget exclusions and leased maintenance use public AppDatabase/Vault
+contracts. Portable capture sanitizes derived IO and fails closed on omission or
+changed execution locations. Native credential-detector admission remains M10.3;
+portable capture alone cannot qualify it.
 
 Authoritative schema-1 Markdown/YAML records, exact revision preimages,
 conversation hashes and opaque evidence refs retain their formats. Only
@@ -265,12 +265,12 @@ application or change native lifecycle gates.
 
 ## Retained AI settings
 
-AI reuses the existing declarative Settings fields and controlled plugin-data
-source. Durable writes serialize, retain historical payloads and independent
-provider models, and publish only after persistence succeeds. Settings do not
-create flat application-configuration values. New runtime choices are ACP-only;
-deferred historical preferences remain readable without becoming execution
-authority or being silently rewritten by an unrelated edit.
+AI reuses declarative Settings fields and a controlled plugin-data source.
+Durable writes serialize, retain historical payloads and independent provider
+models, and publish only after persistence. Agents settings use Agents (bot) and
+Clients (terminal) tabs with search reveal. No flat config is created. Runtime
+choices are ACP-only; deferred historical preferences remain readable without
+becoming execution authority or changing during unrelated edits.
 
 Provider model sources retain saved choices on unavailable catalogs, reject
 cross-provider entries and fence stale or disposed asynchronous results.

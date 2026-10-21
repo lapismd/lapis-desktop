@@ -77,6 +77,7 @@ export function automaticRecallQuery(query: string): string {
     tokens
       .filter((token) => token.length > 2 && !stop.has(token))
       .slice(0, 12)
-      .join(" ") || query
+      .map((token) => JSON.stringify(token))
+      .join(" OR ") || query
   );
 }

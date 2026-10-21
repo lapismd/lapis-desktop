@@ -1,6 +1,6 @@
 # Desktop shell
 
-AI: E-AI-097–117; native history.
+AI: E-AI-097–118; memory proof.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

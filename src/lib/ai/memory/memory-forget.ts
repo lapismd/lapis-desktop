@@ -85,7 +85,7 @@ export async function rebuildNativeMemory(
       });
       continue;
     }
-    await ingestConversation(host, entry.location);
+    await ingestConversation(host, entry.location, false);
     const snapshot = await host.repository.read(entry.location);
     for (const episode of await projectEpisodes(snapshot)) {
       expected.add(
@@ -182,7 +182,14 @@ export async function previewForgetConversation(
     conversationId: location.conversationId,
     episodeRefs: [...new Set(episodeRefs)].sort(),
     candidateIds: [...new Set(candidateIds)].sort(),
-    memoryIds: [...new Set(memoryIds)].sort(),
+    memoryIds: [
+      ...new Set([
+        ...memoryIds,
+        ...((await host.recordStore.associatedMemoryIds?.(
+          location.conversationId,
+        )) ?? []),
+      ]),
+    ].sort(),
   };
 }
 
@@ -198,6 +205,13 @@ export async function forgetConversation(
     location.conversationId,
   );
   await host.database.deleteMemorySourceState(location.conversationId);
+  if (host.recordStore.forgetConversationEntries) {
+    const result = await host.recordStore.forgetConversationEntries(
+      location.conversationId,
+    );
+    await rebuildNativeMemory(host);
+    return { ...preview, exclusionPath, ...result };
+  }
   let retracted = 0;
   let needsReview = 0;
   for (const stored of await host.recordStore.list()) {

@@ -56,16 +56,16 @@ describe("owned AI settings", () => {
       .mockResolvedValue(undefined);
     const store = new AiSettingsStore(save);
     const one = store.update({ thinking: "high" });
-    const two = store.update({ memoryAutomaticRecall: true });
+    const two = store.update({ memoryAutomaticRecall: false });
     finish();
     await Promise.all([one, two]);
     expect(store.get()).toMatchObject({
       thinking: "high",
-      memoryAutomaticRecall: true,
+      memoryAutomaticRecall: false,
     });
     expect(save.mock.calls[1][0].settings).toMatchObject({
       thinking: "high",
-      memoryAutomaticRecall: true,
+      memoryAutomaticRecall: false,
     });
   });
 

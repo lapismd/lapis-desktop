@@ -48,14 +48,9 @@ describe("AI controlled setting values", () => {
     const { tools } = registry();
     const settings = mergeAiSettings({
       defaultRuntime: "codex-native",
-      memoryConsolidationRuntime: "codex-native",
       handoffSummaryRuntime: "codex-native",
     });
-    for (const id of [
-      "ai.defaultRuntime",
-      "ai.memoryConsolidationRuntime",
-      "ai.handoffSummaryRuntime",
-    ]) {
+    for (const id of ["ai.defaultRuntime", "ai.handoffSummaryRuntime"]) {
       expect(readAiSetting(settings, id, tools)).toBe("codex-native");
       expect(() => aiSettingPatch(settings, id, "codex-native", tools)).toThrow(
         "Invalid AI setting",
@@ -63,6 +58,7 @@ describe("AI controlled setting values", () => {
       expect(aiSettingPatch(settings, id, "acp", tools)).toBeTruthy();
     }
     expect(settings.defaultRuntime).toBe("codex-native");
+    expect(settings.memoryConsolidationRuntime).toBe("acp");
   });
 
   it("rejects unknown IDs, runtimes, agents, thinking levels and non-boolean toggles", () => {

@@ -68,7 +68,8 @@ export class AiPlugin extends Plugin {
     try {
       // Register existing file writers before restore/sync controls become usable.
       await host.conversations.listAll();
-      registerAiSettings(this);
+      await host.memoryOwner.start();
+      registerAiSettings(this, () => host.currentConversationScope());
       for (const tool of createVaultFileAppTools(this.app.vault))
         this.registerAgentTool(tool);
       for (const tool of createSkillAppTools({

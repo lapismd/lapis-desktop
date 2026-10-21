@@ -7,6 +7,7 @@
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
+    - [Markdown-first memory](current/ai-memory.md)
     - [Local AI setup](current/ai-setup.md)
     - [Native adapter records](current/ai-adapter.md)
   - [Installed AI clients](current/ai-clients.md)
@@ -335,3 +336,6 @@
 - [AI change inspection layout alignment](history/E-AI-116.md)
 
 - [AI body-header actions and view navigation](history/E-AI-117.md)
+
+- [Markdown-first vault memory](history/E-AI-118.md)
+- [Processor model dropdowns and settings tabs](history/E-AI-119.md)

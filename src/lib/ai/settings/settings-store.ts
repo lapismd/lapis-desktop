@@ -19,6 +19,11 @@ export type AiSettingsPatch =
 export class AiSettingsStore {
   #data = parseAiPluginData(null);
   #tail: Promise<void> = Promise.resolve();
+  #transaction?: (
+    current: AiPluginSettings,
+    next: AiPluginSettings,
+    save: () => Promise<void>,
+  ) => Promise<void>;
   #listeners = new Set<(patch: Partial<AiPluginSettings>) => void>();
   constructor(
     private readonly save: (data: Record<string, unknown>) => Promise<void>,
@@ -32,7 +37,14 @@ export class AiSettingsStore {
   get(): AiPluginSettings {
     return structuredClone(this.#data.settings);
   }
-  update(change: AiSettingsPatch): Promise<void> {
+  hasStoredSetting(key: keyof AiPluginSettings): boolean {
+    const source = this.#data.source.settings ?? this.#data.source;
+    return Boolean(source && typeof source === "object" && key in source);
+  }
+  persistDefaults(): Promise<void> {
+    return this.update({}, true);
+  }
+  update(change: AiSettingsPatch, force = false): Promise<void> {
     const operation = this.#tail.then(async () => {
       const patch = typeof change === "function" ? change(this.get()) : change;
       const current = this.#data.settings;
@@ -50,13 +62,29 @@ export class AiSettingsStore {
           this.registeredTools(),
         ),
       };
-      if (equalAiPluginData(this.#data, next)) return;
-      await this.save(serializeAiPluginData(next));
+      if (!force && equalAiPluginData(this.#data, next)) return;
+      const save = () => this.save(serializeAiPluginData(next));
+      if (this.#transaction)
+        await this.#transaction(current, next.settings, save);
+      else await save();
+      next.source = serializeAiPluginData(next);
       this.#data = next;
       for (const listener of this.#listeners) listener(patch);
     });
     this.#tail = operation.catch(() => {});
     return operation;
+  }
+  useTransaction(
+    transaction: (
+      current: AiPluginSettings,
+      next: AiPluginSettings,
+      save: () => Promise<void>,
+    ) => Promise<void>,
+  ): () => void {
+    this.#transaction = transaction;
+    return () => {
+      if (this.#transaction === transaction) this.#transaction = undefined;
+    };
   }
   subscribe(listener: (patch: Partial<AiPluginSettings>) => void): () => void {
     this.#listeners.add(listener);

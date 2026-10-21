@@ -19,6 +19,12 @@ async function ready(element: HTMLElement) {
       element.querySelector('[data-settings-ready="true"]'),
     ).not.toBeNull(),
   );
+  await waitFor(() =>
+    expect(getComputedStyle(element.ownerDocument.body).pointerEvents).not.toBe(
+      "none",
+    ),
+  );
+  await selectSettingsTab(element, "Agent settings", "Clients");
   return within(element);
 }
 async function selectCategory(element: HTMLElement, name: string) {
@@ -45,7 +51,7 @@ export const InstalledClients: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await ready(canvasElement);
     await expect(
-      await canvas.findByRole("heading", { name: "Agents" }),
+      await canvas.findByRole("tablist", { name: "Agent settings" }),
     ).toBeVisible();
     await expect(
       await canvas.findByRole("region", { name: "Installed clients" }),
@@ -129,6 +135,7 @@ export const SettingsCategory: Story = {
       canvas.queryByRole("region", { name: "Installed clients" }),
     ).toBeNull();
     await selectCategory(canvasElement, "Agents");
+    await selectSettingsTab(canvasElement, "Agent settings", "Clients");
     await expect(
       await canvas.findByRole("region", { name: "Installed clients" }),
     ).toBeVisible();

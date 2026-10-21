@@ -80,24 +80,14 @@ export function registerAiCommands(plugin: Plugin, host: AiApplication): void {
     }
     await plugin.app.workspace.openLinkText(file.path, "");
   }
-  add("open-latest-memory-record", "Open latest memory record", () =>
+  add("open-latest-memory-note", "Open latest memory note", () =>
     latest(
-      [
-        ".lapis/agents/memory/user/records/*.md",
-        ".lapis/agents/memory/workspace/records/*.md",
-        "**/.lapis/agents/memory/project/records/*.md",
-      ],
-      "No curated memory records yet",
+      [`${host.getSettings().memoryFolder}/**/*.md`],
+      "No memory notes yet",
     ),
   );
   add("open-latest-memory-review", "Open latest memory review", () =>
-    latest(
-      [
-        ".lapis/agents/memory/reviews/*.md",
-        "**/.lapis/agents/memory/reviews/*.md",
-      ],
-      "No memory review reports yet",
-    ),
+    latest([".lapis/memory/reviews/*.md"], "No memory review reports yet"),
   );
   add(
     "forget-current-conversation-memory",

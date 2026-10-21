@@ -1,3 +1,5 @@
+import { NativeMemoryService } from "../../../../src/lib/ai/memory/native-memory-service.ts";
+import { VaultMemoryRecordStore } from "../../../../src/lib/ai/memory/vault-memory-record-store.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
@@ -10,7 +12,7 @@ import { ParticipantSettings } from "../transcript/participant-settings.svelte.t
 import { acpFixture } from "../../../../tests/fixtures/ai/acp-transport.mjs";
 
 /** Real desktop chat/runtime composition, with a disposable ACP transport. */
-export function createSentContextFixture(unknown = false) {
+export function createSentContextFixture(unknown = false, withMemory = false) {
   const base = createChatApp(() => {});
   const transport = acpFixture();
   transport.backend.client.targets = async () => [
@@ -33,10 +35,15 @@ export function createSentContextFixture(unknown = false) {
   };
   const runtime = new AcpAgentRuntime(transport.backend);
   const repository = new ConversationRepository(new MemoryTranscriptStore());
+  const memoryStore = new VaultMemoryRecordStore(base.app.vault);
+  const memory = new NativeMemoryService(repository, base.app.appDatabase, {
+    recordStore: memoryStore,
+  });
   const settings = new ParticipantSettings(false);
   settings.value = {
     ...settings.value,
     automaticallyMentionAgents: false,
+    memoryAutomaticRecall: withMemory,
     agentParticipants: [
       {
         id: "reviewer",
@@ -82,6 +89,7 @@ export function createSentContextFixture(unknown = false) {
           app: base.app,
           runtime,
           repository,
+          memoryRecall: withMemory ? memory : undefined,
           transcriptFrame: AiChatSession,
           createConversation: () => ({
             scopeDir: "Notes",
@@ -104,6 +112,18 @@ export function createSentContextFixture(unknown = false) {
   }
   const ready = (async () => {
     await base.ready;
+    if (withMemory) {
+      await base.app.vault.mkpath("Memory/Projects/Notes");
+      await base.app.vault.create(
+        "Memory/Projects/Notes/MEMORY.md",
+        "# Memory\n\nUse short sentences and compact headings in these notes.\n",
+      );
+      await base.app.vault.create(
+        "Memory/Projects/Notes/2026-10-21.md",
+        "# 2026-10-21\n\n## 10:30 — Review decision\n\nKeep the introduction concise and put the actionable details first.\n",
+      );
+      await memory.rebuild();
+    }
     base.app.workspace.registerView(
       "ai-sent-context",
       (leaf) => new SentContextView(leaf),

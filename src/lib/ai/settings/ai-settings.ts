@@ -1,3 +1,4 @@
+import { memoryFolder, memoryTimezone } from "../memory/note-paths.ts";
 import { validateAgentParticipants } from "./participants.ts";
 import {
   normalizeApprovalPolicy,
@@ -35,9 +36,12 @@ export type AiPluginSettings = {
   /** Active-agent compatibility alias. Persisted model ownership lives in defaultModels. */
   defaultModel: string;
   thinking: AiThinkingLevel;
+  memoryFolder: string;
+  memoryTimezone: string;
+  memoryAutomaticCapture: boolean;
   memoryAutomaticRecall: boolean;
   memoryConsolidationEnabled: boolean;
-  memoryConsolidationRuntime: "acp" | "codex-native";
+  memoryConsolidationRuntime: "acp";
   memoryConsolidationAgent: ProcessorAgentId;
   memoryConsolidationModel: string;
   handoffSummariesEnabled: boolean;
@@ -69,10 +73,13 @@ export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
   },
   defaultModel: "gpt-5.6-sol",
   thinking: "default",
-  memoryAutomaticRecall: false,
+  memoryFolder: "Memory",
+  memoryTimezone: memoryTimezone(),
+  memoryAutomaticCapture: true,
+  memoryAutomaticRecall: true,
   memoryConsolidationEnabled: false,
   memoryConsolidationRuntime: "acp",
-  memoryConsolidationAgent: "codex",
+  memoryConsolidationAgent: "local",
   memoryConsolidationModel: "gpt-5.6-sol",
   handoffSummariesEnabled: false,
   handoffSummaryRuntime: "acp",
@@ -234,15 +241,13 @@ export function mergeAiSettings(
       thinking && THINKING_LEVELS.has(thinking)
         ? thinking
         : DEFAULT_AI_SETTINGS.thinking,
-    memoryAutomaticRecall: value?.memoryAutomaticRecall === true,
+    memoryFolder: memoryFolder(value?.memoryFolder ?? "Memory"),
+    memoryTimezone: memoryTimezone(value?.memoryTimezone),
+    memoryAutomaticCapture: value?.memoryAutomaticCapture !== false,
+    memoryAutomaticRecall: value?.memoryAutomaticRecall !== false,
     memoryConsolidationEnabled: value?.memoryConsolidationEnabled === true,
-    memoryConsolidationRuntime:
-      value?.memoryConsolidationRuntime === "codex-native"
-        ? "codex-native"
-        : "acp",
-    memoryConsolidationAgent: normalizeProcessorAgent(
-      value?.memoryConsolidationAgent,
-    ),
+    memoryConsolidationRuntime: "acp",
+    memoryConsolidationAgent: "local",
     memoryConsolidationModel:
       value?.memoryConsolidationModel?.trim() ||
       DEFAULT_AI_SETTINGS.memoryConsolidationModel,

@@ -55,6 +55,11 @@ export function decodeCuratedResults(
           score,
           searchResult.snippets.find((snippet) => snippet.field === "content")
             ?.text,
+          {
+            path: metadata.notePath,
+            anchor: metadata.anchor,
+            noteKind: metadata.noteKind,
+          },
         ),
       },
     ];
@@ -66,9 +71,14 @@ export function curatedResult(
   effectiveTrust: MemoryOriginClass,
   score: number,
   snippet = record.summary,
+  note: { path: string; anchor?: string; noteKind?: "daily" | "curated" } = {
+    path: "Memory/MEMORY.md",
+    anchor: record.id,
+  },
 ): MemorySearchResult {
   return {
-    ref: curatedRef(record.id, record.revision),
+    ref: curatedRef(note.path, note.anchor, record.revision),
+    ...note,
     corpus: "curated",
     snippet: truncateSnippet(snippet),
     kind: record.kind,
@@ -212,6 +222,11 @@ export function dedupeEvidence(
 export function recallContent(result: MemorySearchResult): string {
   return [
     result.snippet,
+    ...(result.path
+      ? [
+          `Note: [${result.path}](${encodeURI(result.path)}${result.anchor ? `#^${result.anchor}` : ""})`,
+        ]
+      : []),
     `Provenance: ${result.evidence.map((evidence) => `${evidence.conversationId}/${evidence.entryId}`).join(", ") || "owner-authored memory"}`,
   ].join("\n");
 }

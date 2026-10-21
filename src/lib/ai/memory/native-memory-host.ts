@@ -8,6 +8,8 @@ import type { MemoryConsolidationProvider } from "./types.ts";
 
 export type NativeMemoryServiceOptions = {
   capture?: MemoryCapture;
+  captureEnabled?: () => boolean;
+  promoteAfterTurn?: boolean;
   now?: () => Date;
   yieldToApp?: () => Promise<void>;
   recordStore?: MemoryRecordStore;
@@ -19,6 +21,8 @@ export type NativeMemoryServiceOptions = {
 export type NativeMemoryHost = {
   repository: ConversationRepository;
   database: AppDatabase;
+  captureEnabled?: () => boolean;
+  promoteAfterTurn?: boolean;
   now: () => Date;
   yieldToApp: () => Promise<void>;
   recordStore: MemoryRecordStore;

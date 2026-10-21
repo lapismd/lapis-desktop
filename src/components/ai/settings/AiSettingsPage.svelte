@@ -13,6 +13,12 @@
   import "./settings-tabs.css";
   let { controller, section }: WorkspaceSettingsPageProps = $props();
   let tab = $state("conversation");
+  let modelCatalogRevision = $state(0);
+  $effect(() => {
+    if (tab !== "models" && tab !== "memory") return;
+    const timer = setInterval(() => modelCatalogRevision++, 5 * 60_000);
+    return () => clearInterval(timer);
+  });
   const items = [
     {
       value: "conversation",
@@ -33,7 +39,7 @@
       label: "Memory",
       Icon: BrainIcon,
       description:
-        "Control automatic memory recall and the summaries used when handing off a conversation.",
+        "Review dated Markdown memory in your vault, control capture and recall, and configure conversation handoff summaries.",
     },
     {
       value: "tools",
@@ -52,6 +58,17 @@
   type SettingField = NonNullable<
     WorkspaceSettingsPageProps["section"]["fields"]
   >[number];
+  function refreshedField(field: SettingField): SettingField {
+    return field.type === "string" && field.optionsSource
+      ? {
+          ...field,
+          optionsSourceParams: {
+            ...field.optionsSourceParams,
+            revision: modelCatalogRevision,
+          },
+        }
+      : field;
+  }
   function contains(field: SettingField, id: string): boolean {
     return (
       field.id === id ||
@@ -104,7 +121,10 @@
                       <WorkspaceSettingField {controller} {field} />
                     </div>
                   {:else}
-                    <WorkspaceSettingField {controller} {field} />
+                    <WorkspaceSettingField
+                      {controller}
+                      field={refreshedField(field)}
+                    />
                   {/if}
                 {/each}
               </div>

@@ -1,3 +1,4 @@
+import { completedMemoryTurn } from "./turn-capture.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis memory policy; see ../NOTICE.md.
 import { OwnedAiWork, type AiWorkRunner } from "../core/owned-work.ts";
@@ -15,7 +16,8 @@ type PendingAction =
       location: ConversationLocation;
       requireTerminal: boolean;
     }
-  | { type: "rebuild" };
+  | { type: "rebuild" }
+  | { type: "catch-up" };
 
 export type MemoryIngestionErrorHandler = (
   operation: "ingest" | "rebuild",
@@ -82,6 +84,12 @@ export class MemoryIngestionCoordinator {
 
   startCatchUp(): void {
     if (this.#disposed) return;
+    this.#pending.set("catch-up", { type: "catch-up" });
+    this.schedule();
+  }
+
+  refreshNotes(): void {
+    if (this.#disposed) return;
     this.#pending.set("rebuild", { type: "rebuild" });
     this.schedule();
   }
@@ -100,7 +108,10 @@ export class MemoryIngestionCoordinator {
     for (const action of actions) {
       if (this.#disposed) return;
       try {
-        if (action.type === "rebuild") {
+        if (action.type === "catch-up") {
+          await this.memory.rebuild();
+          await this.memory.recoverCapture?.();
+        } else if (action.type === "rebuild") {
           await this.memory.rebuild();
         } else if (
           !action.requireTerminal ||
@@ -111,7 +122,7 @@ export class MemoryIngestionCoordinator {
         }
       } catch (error) {
         this.onError(
-          action.type,
+          action.type === "ingest" ? "ingest" : "rebuild",
           action.type === "ingest" ? action.location : undefined,
           error,
         );
@@ -141,14 +152,7 @@ export class MemoryIngestionCoordinator {
     location: ConversationLocation,
   ): Promise<boolean> {
     const snapshot = await this.repository.read(location);
-    const last = snapshot.transcript.at(-1);
-    return Boolean(
-      last &&
-        ((last.type === "message" && last.role === "assistant") ||
-          last.type === "tool" ||
-          last.type === "error" ||
-          last.type === "cancelled"),
-    );
+    return completedMemoryTurn(snapshot);
   }
 }
 

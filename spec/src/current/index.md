@@ -14,6 +14,7 @@ gates.
 - [Native workspace windows](windows.md)
 - [Desktop plugins and catalog](plugins.md)
 - [Desktop AI and optional compute](ai.md)
+  - [Markdown-first memory](ai-memory.md)
   - [Local AI setup and optional compute](ai-setup.md)
   - [Native adapter records](ai-adapter.md)
   - [Installed clients and bundled helpers](ai-clients.md)

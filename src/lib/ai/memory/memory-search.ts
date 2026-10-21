@@ -21,6 +21,7 @@ import {
   currentMemoryScopes,
   episodicScopePrefix,
   scopeProximity,
+  sameScope,
 } from "./paths.ts";
 import {
   decodeCuratedResults,
@@ -79,7 +80,11 @@ export async function searchNativeMemory(
         limit: MAX_RESULTS_PER_SCOPE,
         snippetLength: MAX_SNIPPET_CHARS,
       });
-      ranked.push(...decodeCuratedResults(results, context.scopeDir, query));
+      ranked.push(
+        ...decodeCuratedResults(results, context.scopeDir, query).filter(
+          (entry) => sameScope(entry.result.scope, scope),
+        ),
+      );
     }
   }
 
@@ -187,7 +192,8 @@ export async function recallNativeMemory(
           id: result.ref,
           content: recallContent(result),
           metadata: {
-            memoryId: ref.id,
+            notePath: ref.path,
+            anchor: ref.anchor ?? "",
             revision: ref.revision,
             scope: result.scope.kind,
           },

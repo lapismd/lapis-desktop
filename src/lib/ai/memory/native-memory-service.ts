@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis memory policy; see ../NOTICE.md.
+import { captureMemoryTurn } from "./turn-capture.ts";
 import { MemoryCaptureBoundary } from "./capture-port.ts";
 import { InMemoryMemoryRecordStore } from "./memory-record-store.ts";
 import {
@@ -56,11 +57,24 @@ export class NativeMemoryService implements MemoryService {
         options.recordStore ?? new InMemoryMemoryRecordStore(),
       ),
       consolidationProvider: options.consolidationProvider,
+      captureEnabled: options.captureEnabled,
+      promoteAfterTurn: options.promoteAfterTurn,
     };
   }
 
-  ingestConversation(location: ConversationLocation): Promise<void> {
-    return ingestConversation(this.#host, location);
+  async ingestConversation(location: ConversationLocation): Promise<void> {
+    await ingestConversation(this.#host, location, false);
+    if (
+      (await this.#host.database.getMemorySourceState(location.conversationId))
+        ?.status === "ready"
+    )
+      await captureMemoryTurn(this.#host, location);
+  }
+
+  async recoverCapture(): Promise<void> {
+    for (const entry of await this.#host.repository.listAll())
+      if (!entry.unavailableReason)
+        await this.ingestConversation(entry.location);
   }
 
   search(

@@ -141,3 +141,32 @@ export const UnknownOutcome: Story = {
     expect(canvas.queryByRole("button", { name: "Sent context" })).toBeNull();
   },
 };
+
+export const VaultMemory: Story = {
+  args: { memory: true },
+  play: async ({ canvasElement }) => {
+    await send(
+      canvasElement,
+      "Review the notes using short sentences and compact headings.",
+    );
+    const panel = await inspect(canvasElement, 0);
+    const disclosures = within(panel).queryAllByRole("button", {
+      name: /^<lapis-context kind="memory-recall"/,
+    });
+    for (const disclosure of disclosures)
+      if (disclosure.getAttribute("aria-expanded") === "false")
+        await userEvent.click(disclosure);
+    await expect(panel).toHaveTextContent(
+      "Use short sentences and compact headings",
+    );
+    await expect(panel).toHaveTextContent("Memory/Projects/Notes/MEMORY.md");
+    await userEvent.click(
+      within(canvasElement).getByRole("button", {
+        name: "Switch to Classic view",
+      }),
+    );
+    await expect(
+      within(canvasElement).findByRole("button", { name: "Sent context" }),
+    ).resolves.toBeVisible();
+  },
+};

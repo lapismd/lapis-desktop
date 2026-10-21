@@ -1,84 +1,14 @@
 // SPDX-License-Identifier: Apache-2.0
-// Retained Lapis memory policy; see ../NOTICE.md.
-import type { StoredMemoryRecord } from "./memory-record-store.ts";
-import { parse, stringify } from "yaml";
-import { sha256ConversationText as sha256Text } from "../conversations/hashes.ts";
 import {
   hasHiddenApplicationSegment,
   normalizeConversationScope,
 } from "../conversations/paths.ts";
-import type { ConversationLocation } from "../conversations/types.ts";
 import type {
   DurableMemoryRecord,
   MemoryEvidenceRef,
   MemoryScope,
 } from "./types.ts";
-
 const MEMORY_ID_PATTERN = /^[a-z0-9][a-z0-9-]{0,127}$/u;
-const MAX_MEMORY_FILE_BYTES = 512 * 1024;
-
-export function memoryRoot(scope: MemoryScope): string {
-  return [
-    scope.kind === "project" ? scope.projectDir : "",
-    ".lapis",
-    "agents",
-    "memory",
-  ]
-    .filter(Boolean)
-    .join("/");
-}
-
-export function recordDirectory(scope: MemoryScope): string {
-  return `${memoryRoot(scope)}/${scope.kind}/records`;
-}
-
-export function recordPath(scope: MemoryScope, id: string): string {
-  assertMemoryId(id);
-  return `${recordDirectory(scope)}/${id}.md`;
-}
-
-export function revisionDirectory(scope: MemoryScope, id: string): string {
-  return `${memoryRoot(scope)}/revisions/${id}`;
-}
-
-export function serializeMemoryRecord(record: DurableMemoryRecord): string {
-  validateMemoryRecord(record);
-  const { summary, ...frontmatter } = record;
-  const content = `---\n${stringify(frontmatter, { lineWidth: 0 })}---\n\n${summary.trim()}\n`;
-  if (new TextEncoder().encode(content).byteLength > MAX_MEMORY_FILE_BYTES) {
-    throw new Error("Memory record exceeds the maximum supported size");
-  }
-  return content;
-}
-
-export async function parseStoredRecord(
-  path: string,
-  content: string,
-): Promise<StoredMemoryRecord> {
-  if (new TextEncoder().encode(content).byteLength > MAX_MEMORY_FILE_BYTES) {
-    throw new Error("Memory record exceeds the maximum supported size");
-  }
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n(?:\r?\n)?([\s\S]*)$/u.exec(
-    content,
-  );
-  if (!match) throw new Error("Memory record requires YAML frontmatter");
-  const metadata = parse(match[1]!, { maxAliasCount: 10 }) as Record<
-    string,
-    unknown
-  >;
-  const record = validateMemoryRecord({
-    ...metadata,
-    summary: match[2]!.trim(),
-  });
-  const expectedPath = recordPath(record.scope, record.id);
-  const isRevision = path.startsWith(
-    `${revisionDirectory(record.scope, record.id)}/`,
-  );
-  if (path !== expectedPath && !isRevision) {
-    throw new Error("Memory record path does not match its scope and identity");
-  }
-  return { record, path, hash: await sha256Text(content), content };
-}
 
 export function validateMemoryRecord(value: unknown): DurableMemoryRecord {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
@@ -113,6 +43,8 @@ export function validateMemoryRecord(value: unknown): DurableMemoryRecord {
   if (typeof record.summary !== "string" || !record.summary.trim()) {
     throw new Error("Memory summary is required");
   }
+  if (new TextEncoder().encode(record.summary).byteLength >= 512 * 1024)
+    throw new Error("Memory exceeds the maximum supported size");
   if (!Array.isArray(record.evidence))
     throw new Error("Memory evidence is invalid");
   for (const evidence of record.evidence) validateEvidence(evidence);

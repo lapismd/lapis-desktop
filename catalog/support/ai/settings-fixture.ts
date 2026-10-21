@@ -199,8 +199,7 @@ export function createSettingsFixture(scenario: SettingsScenario) {
             }
           : {}),
         defaultRuntime: scenario === "legacy" ? "codex-native" : "acp",
-        memoryConsolidationRuntime:
-          scenario === "legacy" ? "codex-native" : "acp",
+        memoryConsolidationRuntime: "acp",
         handoffSummaryRuntime: scenario === "legacy" ? "codex-native" : "acp",
         defaultModels: {
           codex: "codex-saved",

@@ -14,12 +14,15 @@ import { registeredAppToolRefs } from "./app-tool-setting-rows.ts";
 const keys = Object.keys(AI_FIELD_IDS) as AiSettingKey[];
 const booleans = new Set([
   "automaticallyMentionAgents",
+  "memoryAutomaticCapture",
   "memoryAutomaticRecall",
   "memoryConsolidationEnabled",
   "handoffSummariesEnabled",
   "appToolsEnabled",
 ]);
 const strings = new Set([
+  "memoryFolder",
+  "memoryTimezone",
   "defaultModel",
   "memoryConsolidationModel",
   "handoffSummaryModel",

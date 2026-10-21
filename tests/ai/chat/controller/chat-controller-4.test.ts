@@ -347,7 +347,8 @@ describe("AiChatController", () => {
             id: "memory:handoff-order:1",
             content: "Use the app-owned transcript.",
             metadata: {
-              memoryId: "handoff-order",
+              notePath: "Memory/MEMORY.md",
+              anchor: "handoff-order",
               revision: 1,
               scope: "workspace",
             },

@@ -6,7 +6,8 @@ export type MemoryRecallContextBlock = {
   id: string;
   content: string;
   metadata: {
-    memoryId: string;
+    notePath: string;
+    anchor: string;
     revision: number;
     scope: "user" | "workspace" | "project";
   };

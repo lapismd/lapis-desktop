@@ -19,6 +19,8 @@ import {
   AI_MEMORY_CURATED_PROVIDER_ID,
   conversationMemoryScope,
   curatedMemoryPath,
+  currentMemoryScopes,
+  sameScope,
   episodicMemoryPath,
 } from "./paths.ts";
 import { curatedResult, episodeResultFromDocument } from "./search-ranking.ts";
@@ -40,8 +42,7 @@ export async function getNativeMemory(
 ): Promise<MemoryDetail> {
   signal?.throwIfAborted();
   const curated = parseCuratedRef(ref);
-  if (curated)
-    return getCuratedMemory(host, curated.id, curated.revision, signal);
+  if (curated) return getCuratedMemory(host, ref, curated, _context, signal);
   const parsed = parseEpisodeRef(ref);
   if (!parsed) {
     return {
@@ -143,6 +144,9 @@ export async function curatedSearchDocument(
       ? "owner"
       : verification.effectiveTrust,
     evidenceVerified: verification.allMatching,
+    notePath: stored.path,
+    anchor: stored.anchor,
+    noteKind: stored.noteKind,
   };
   const path = curatedMemoryPath(stored.record.scope, stored.record.id);
   return {
@@ -208,56 +212,56 @@ export async function verifyEvidence(
 
 export async function getCuratedMemory(
   host: NativeMemoryHost,
-  id: string,
-  revision: number,
+  ref: string,
+  note: { path: string; anchor?: string; revision: number },
+  context: MemoryContext,
   signal?: AbortSignal,
 ): Promise<MemoryDetail> {
   signal?.throwIfAborted();
-  const matches = await host.recordStore.find(id);
-  if (matches.length > 1) {
+  const matches = (await host.recordStore.list()).filter(
+    (entry) =>
+      entry.path === note.path &&
+      entry.anchor === note.anchor &&
+      currentMemoryScopes(context.scopeDir).some((scope) =>
+        sameScope(scope, entry.record.scope),
+      ),
+  );
+  if (matches.length !== 1)
     return {
-      ref: curatedRef(id, revision),
+      ref,
       corpus: "curated",
-      status: "ambiguous",
+      status: matches.length ? "ambiguous" : "missing",
       evidenceMessages: [],
     };
-  }
-  const current = matches[0];
-  if (!current) {
-    return {
-      ref: curatedRef(id, revision),
-      corpus: "curated",
-      status: "missing",
-      evidenceMessages: [],
-    };
-  }
-  const history = await host.recordStore.listHistory(id, current.record.scope);
+  const stored = matches[0]!;
+  const history = await host.recordStore.listHistory(
+    stored.record.id,
+    stored.record.scope,
+  );
   const record =
-    current.record.revision === revision
-      ? current.record
-      : history.find((candidate) => candidate.revision === revision);
-  if (!record) {
+    stored.record.revision === note.revision
+      ? stored.record
+      : history.find((item) => item.revision === note.revision);
+  if (!record)
     return {
-      ref: curatedRef(id, revision),
+      ref,
       corpus: "curated",
       status: "missing",
       evidenceMessages: [],
       history,
     };
-  }
   const verification = await verifyEvidence(host, record.evidence);
-  const status = verification.messages.some(
-    (message) => message.verification === "modified",
-  )
-    ? "modified"
-    : verification.messages.length < record.evidence.slice(0, 6).length
-      ? "missing"
-      : "available";
   return {
-    ref: curatedRef(id, revision),
+    ref,
     corpus: "curated",
-    status,
-    result: curatedResult(record, verification.effectiveTrust, 1),
+    status: verification.allMatching ? "available" : "modified",
+    result: curatedResult(
+      record,
+      record.createdBy === "owner-ui" ? "owner" : verification.effectiveTrust,
+      1,
+      record.summary,
+      { path: stored.path, anchor: stored.anchor, noteKind: stored.noteKind },
+    ),
     evidenceMessages: verification.messages,
     history,
   };

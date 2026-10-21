@@ -1,9 +1,6 @@
 import { InMemoryMemoryRecordStore } from "../../../src/lib/ai/memory/memory-record-store.ts";
 import { describe, expect, it } from "vitest";
-import {
-  serializeMemoryRecord,
-  validateMemoryRecord,
-} from "../../../src/lib/ai/memory/memory-record-codec.ts";
+import { validateMemoryRecord } from "../../../src/lib/ai/memory/memory-record-codec.ts";
 import type { DurableMemoryRecord } from "../../../src/lib/ai/memory/types.ts";
 const record: DurableMemoryRecord = {
   schemaVersion: 1,
@@ -31,7 +28,7 @@ describe("memory record validation", () => {
   );
   it("does not write a record larger than the reader can admit", () => {
     expect(() =>
-      serializeMemoryRecord({ ...record, summary: "x".repeat(512 * 1024) }),
+      validateMemoryRecord({ ...record, summary: "x".repeat(512 * 1024) }),
     ).toThrow("maximum supported size");
   });
 

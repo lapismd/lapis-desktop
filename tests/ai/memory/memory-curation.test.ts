@@ -76,6 +76,8 @@ describe("NativeMemoryService memory-curation", () => {
       recordStore,
       now: () => new Date("2026-08-27T12:00:00.000Z"),
     });
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
 
     await expect(
@@ -153,6 +155,8 @@ describe("NativeMemoryService memory-curation", () => {
       },
       now: () => new Date("2026-08-27T12:00:00.000Z"),
     });
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
 
     await expect(
@@ -207,6 +211,8 @@ describe("NativeMemoryService memory-curation", () => {
         })),
       },
     });
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
 
     await expect(
@@ -236,6 +242,8 @@ describe("NativeMemoryService memory-curation", () => {
       recordStore,
       now: () => new Date("2026-08-27T12:00:00.000Z"),
     });
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
     await service.consolidate({
       kind: "project",
@@ -270,6 +278,8 @@ describe("NativeMemoryService memory-curation", () => {
         { scopeDir: "Projects/Atlas" },
       ),
     ).resolves.toMatchObject([{ status: "retracted" }]);
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
     await expect(
       service.search(
@@ -288,6 +298,8 @@ describe("NativeMemoryService memory-curation", () => {
     const database = new MemoryAppDatabase("memory-recurrence");
     await database.open();
     const service = new NativeMemoryService(repository, database);
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
     await expect(
       service.previewConsolidation({
@@ -301,6 +313,8 @@ describe("NativeMemoryService memory-curation", () => {
       text: "The project uses compact headings.",
       createdAt: "2026-08-21T09:00:00.000Z",
     });
+    for (const entry of await repository.listAll())
+      await service.ingestConversation(entry.location);
     await service.rebuild();
     await expect(
       service.previewConsolidation({

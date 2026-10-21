@@ -20,6 +20,7 @@ const DEFAULT_LEASE_MS = 5 * 60 * 1_000;
 
 export type MemorySchedulerOptions = {
   activity?: AiWorkRunner;
+  enabled?: () => boolean;
   ownerId?: string;
   idleMs?: number;
   dailyMs?: number;
@@ -39,6 +40,7 @@ export class MemoryMaintenanceScheduler {
   readonly #dailyMs: number;
   readonly #leaseMs: number;
   readonly #now: () => number;
+  readonly #enabled: () => boolean;
   readonly #onError: NonNullable<MemorySchedulerOptions["onError"]>;
   readonly #idleTimers = new Map<string, ReturnType<typeof setTimeout>>();
   readonly #scopes = new Map<string, MemoryScope>();
@@ -51,6 +53,7 @@ export class MemoryMaintenanceScheduler {
     options: MemorySchedulerOptions = {},
   ) {
     this.#work = new OwnedAiWork(options.activity);
+    this.#enabled = options.enabled ?? (() => true);
     this.#ownerId = options.ownerId ?? crypto.randomUUID();
     this.#idleMs = options.idleMs ?? DEFAULT_IDLE_MS;
     this.#dailyMs = options.dailyMs ?? DEFAULT_DAILY_MS;
@@ -92,7 +95,7 @@ export class MemoryMaintenanceScheduler {
     return this.#work.settle();
   }
   async #run(scope: MemoryScope): Promise<ConsolidationResult | null> {
-    if (this.#disposed) return null;
+    if (this.#disposed || !this.#enabled()) return null;
     const preview = await this.memory.previewConsolidation(scope);
     if (this.#disposed || preview.proposals === 0) return null;
     const now = this.#now();
@@ -100,7 +103,7 @@ export class MemoryMaintenanceScheduler {
     const candidateFingerprint = (
       await sha256Text([...preview.candidateIds].sort().join("\n"))
     ).slice(0, 16);
-    if (this.#disposed) return null;
+    if (this.#disposed || !this.#enabled()) return null;
     const job: AppDatabaseMemoryJobRecord = {
       id: `consolidate:${scopeKey}:${new Date(now).toISOString().slice(0, 10)}:${candidateFingerprint}`,
       kind: "consolidate",

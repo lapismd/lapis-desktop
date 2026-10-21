@@ -178,6 +178,7 @@ export class AiApplication extends AiConversationHost {
         this.operations.settle(),
       ])),
     );
+    this.memoryOwner.stop();
     // Keep native authority while durable persistence needs recovery. A later
     // close retries the same backend's drain before releasing the runtime.
     try {

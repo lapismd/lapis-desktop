@@ -3,8 +3,11 @@
   import { WorkspaceShell } from "@lapis-notes/workspace";
   import { createSentContextFixture } from "./fixture.ts";
   import { registerAiReview } from "../review.ts";
-  let { unknown = false }: { unknown?: boolean } = $props();
-  const fixture = untrack(() => createSentContextFixture(unknown));
+  let {
+    unknown = false,
+    memory = false,
+  }: { unknown?: boolean; memory?: boolean } = $props();
+  const fixture = untrack(() => createSentContextFixture(unknown, memory));
   let ready = $state(false);
   let root = $state<HTMLDivElement>();
   $effect(() =>

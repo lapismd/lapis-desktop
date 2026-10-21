@@ -1,8 +1,7 @@
-import { MemoryVaultAdapter, Vault } from "@lapis-notes/api/vault";
+import { noteVault } from "./note-fixture.ts";
 import { describe, expect, it } from "vitest";
 import { MemoryRecordConflictError } from "../../../src/lib/ai/memory/memory-record-store.ts";
 import { VaultMemoryRecordStore } from "../../../src/lib/ai/memory/vault-memory-record-store.ts";
-import { recordPath } from "../../../src/lib/ai/memory/memory-record-codec.ts";
 import { sha256ConversationText as sha256Text } from "../../../src/lib/ai/conversations/hashes.ts";
 import type { DurableMemoryRecord } from "../../../src/lib/ai/memory/types.ts";
 
@@ -35,8 +34,8 @@ function record(patch: Partial<DurableMemoryRecord> = {}): DurableMemoryRecord {
 }
 
 describe("VaultMemoryRecordStore", () => {
-  it("writes human-readable current records and immutable revision preimages", async () => {
-    const vault = new Vault(new MemoryVaultAdapter());
+  it("writes readable daily history and a current curated conclusion", async () => {
+    const vault = noteVault();
     const store = new VaultMemoryRecordStore(vault);
     const first = await store.write(record());
     const secondRecord = record({
@@ -50,10 +49,10 @@ describe("VaultMemoryRecordStore", () => {
       expectedCurrentHash: first.hash,
     });
 
-    const currentPath = recordPath(secondRecord.scope, secondRecord.id);
+    const currentPath = "Memory/Projects/Projects/Atlas/MEMORY.md";
     const current = vault.getFileByPath(currentPath);
     const revision = vault.getFileByPath(
-      "Projects/Atlas/.lapis/agents/memory/revisions/memory-atlas-headings/1.md",
+      "Memory/Projects/Projects/Atlas/2026-08-20.md",
     );
     expect(current && (await vault.read(current))).toContain(
       "Use compact sentence-case headings",
@@ -70,11 +69,17 @@ describe("VaultMemoryRecordStore", () => {
   });
 
   it("never overwrites an owner edit made after the expected preimage", async () => {
-    const vault = new Vault(new MemoryVaultAdapter());
+    const vault = noteVault();
     const store = new VaultMemoryRecordStore(vault);
     const first = await store.write(record());
     const file = vault.getFileByPath(first.path)!;
-    await vault.modify(file, `${await vault.read(file)}\nOwner edit.\n`);
+    await vault.modify(
+      file,
+      (await vault.read(file)).replace(
+        "Use compact headings in Atlas notes.",
+        "Owner edit.",
+      ),
+    );
 
     await expect(
       store.write(
@@ -88,43 +93,32 @@ describe("VaultMemoryRecordStore", () => {
       ),
     ).rejects.toBeInstanceOf(MemoryRecordConflictError);
     expect(await vault.read(file)).toContain("Owner edit.");
-    expect(
-      vault.getFileByPath(
-        "Projects/Atlas/.lapis/agents/memory/revisions/memory-atlas-headings/1.md",
-      ),
-    ).toBeNull();
+    expect(await store.listHistory(record().id, record().scope)).toEqual([]);
   });
 
-  it("copies the exact owner-formatted preimage before writing a revision", async () => {
-    const vault = new Vault(new MemoryVaultAdapter());
+  it("preserves handwritten paragraphs while updating a generated entry", async () => {
+    const vault = noteVault();
     const store = new VaultMemoryRecordStore(vault);
     const first = await store.write(record());
     const file = vault.getFileByPath(first.path)!;
-    const ownerFormatted = (await vault.read(file)).replace(
-      "importance: 4",
-      "importance: 4 # owner formatting",
+    await vault.modify(
+      file,
+      `${await vault.read(file)}\nOwner formatting and notes.\n`,
     );
-    await vault.modify(file, ownerFormatted);
-    const ownerHash = await sha256Text(ownerFormatted);
-
     await store.write(
       record({
         revision: 2,
-        summary: "Use compact sentence-case headings in Atlas notes.",
-        previousRevisionHash: ownerHash,
-        updatedAt: "2026-08-27T09:00:00.000Z",
+        summary: "Use sentence-case headings.",
+        previousRevisionHash: first.hash,
       }),
-      { expectedCurrentHash: ownerHash },
+      { expectedCurrentHash: first.hash },
     );
-
-    const revision = vault.getFileByPath(
-      "Projects/Atlas/.lapis/agents/memory/revisions/memory-atlas-headings/1.md",
-    )!;
-    expect(await vault.read(revision)).toBe(ownerFormatted);
+    expect(await vault.read(file)).toContain("Owner formatting and notes.");
+    expect(await vault.read(file)).toContain("Use sentence-case headings.");
   });
 
   it("rejects cross-vault and hidden project paths from editable frontmatter", async () => {
-    const vault = new Vault(new MemoryVaultAdapter());
+    const vault = noteVault();
     const store = new VaultMemoryRecordStore(vault);
 
     await expect(
@@ -143,7 +137,7 @@ describe("VaultMemoryRecordStore", () => {
   });
 
   it("requires grounded evidence for every automatic record", async () => {
-    const vault = new Vault(new MemoryVaultAdapter());
+    const vault = noteVault();
     const store = new VaultMemoryRecordStore(vault);
 
     await expect(

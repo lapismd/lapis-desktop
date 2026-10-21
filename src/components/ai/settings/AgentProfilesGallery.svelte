@@ -30,12 +30,6 @@
 </script>
 
 <section class="agent-profiles" aria-label="Your agents">
-  <header>
-    <p>
-      Named agents available to chats in this vault. Choose them with @ or the
-      Agents picker.
-    </p>
-  </header>
   <div class="agent-profiles__grid">
     <button
       class="agent-profiles__add"

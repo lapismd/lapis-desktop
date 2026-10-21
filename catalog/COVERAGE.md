@@ -1103,3 +1103,16 @@ IncompleteTurn refuses unsafe undo. Adapted from jj-store
 `web/src/lib/ui/store-agent-chat/StoreAgentChangesPanel.svelte` and
 `web/src/lib/ui/store-agent-workspace/{StoreWorkspaceFiles,StoreWorkspaceInspector}.svelte`,
 source parent `3998e2b0`, Apache-2.0. Visual approval remains pending.
+
+## Markdown-first memory review
+
+- `Desktop/AI/Settings/MarkdownMemory` uses production AI settings, folder input
+  with a full-width row, automatic capture/recall defaults and note-opening
+  actions.
+- `Desktop/AI/Settings/ProcessorModels` selects independent memory/handoff
+  models and switches the handoff agent without changing chat models.
+- `Desktop/AI/Agent profiles/SavedAgents` switches the production Agents/Clients
+  tabs; installed-client stories explicitly select Clients in both viewports.
+- `Desktop/AI/Sent context/VaultMemory` uses the embedded workspace AppShell and
+  production note store, recall service and Sent context in both chat layouts.
+- Visual review is pending; no baselines changed.

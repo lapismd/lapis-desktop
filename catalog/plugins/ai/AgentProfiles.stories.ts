@@ -1,4 +1,5 @@
 import { cleanupCatalog } from "../../support/lifecycle.ts";
+import { selectSettingsTab } from "../../support/ai/settings-tabs.ts";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import { aiReviewAction, aiReviewValue } from "../../support/ai/review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -18,6 +19,17 @@ export const SavedAgents: Story = {
     const canvas = within(canvasElement);
     await canvas.findByRole("button", { name: "Edit Reviewer" });
     expect(canvas.queryByRole("heading", { name: "Your agents" })).toBeNull();
+    expect(canvas.getByRole("tab", { name: "Agents" })).toHaveAttribute(
+      "aria-selected",
+      "true",
+    );
+    await selectSettingsTab(canvasElement, "Agent settings", "Clients");
+    expect(canvas.queryByRole("button", { name: "Edit Reviewer" })).toBeNull();
+    expect(
+      canvas.getByRole("region", { name: "Installed clients" }),
+    ).toBeVisible();
+    await selectSettingsTab(canvasElement, "Agent settings", "Agents");
+    expect(canvas.getByRole("button", { name: "Edit Reviewer" })).toBeVisible();
   },
 };
 export const NoSavedAgents: Story = { args: { scenario: "profiles-empty" } };

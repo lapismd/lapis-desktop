@@ -64,6 +64,9 @@ export type MemoryCorpus = "curated" | "episodic";
 
 export type MemorySearchResult = {
   ref: string;
+  path?: string;
+  anchor?: string;
+  noteKind?: "daily" | "curated";
   corpus: MemoryCorpus;
   snippet: string;
   kind: DurableMemoryKind | "episode";
@@ -166,6 +169,7 @@ export interface MemoryService {
     context: MemoryContext,
     signal?: AbortSignal,
   ): Promise<MemoryDetail>;
+  recoverCapture?(): Promise<void>;
   ingestConversation(location: ConversationLocation): Promise<void>;
   previewConsolidation(scope: MemoryScope): Promise<ConsolidationPreview>;
   consolidate(scope: MemoryScope): Promise<ConsolidationResult>;

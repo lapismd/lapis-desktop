@@ -42,6 +42,9 @@ export type CuratedDocumentMetadata = {
   record: DurableMemoryRecord;
   effectiveTrust: MemoryOriginClass;
   evidenceVerified: boolean;
+  notePath: string;
+  anchor?: string;
+  noteKind?: "daily" | "curated";
 };
 
 export type ProjectedEpisode = {
@@ -207,19 +210,27 @@ export function episodeRef(conversationId: string, entryId: string): string {
   return `episode:${encodeURIComponent(conversationId)}:${encodeURIComponent(entryId)}`;
 }
 
-export function curatedRef(id: string, revision: number): string {
-  return `memory:${encodeURIComponent(id)}:${revision}`;
+export function curatedRef(
+  path: string,
+  anchor: string | undefined,
+  revision: number,
+): string {
+  return `note:${encodeURIComponent(path)}:${encodeURIComponent(anchor ?? "")}:${revision}`;
 }
 
 export function parseCuratedRef(
   ref: string,
-): { id: string; revision: number } | null {
-  const match = /^memory:([^:]+):(\d+)$/u.exec(ref);
+): { path: string; anchor?: string; revision: number } | null {
+  const match = /^note:([^:]+):([^:]*):(\d+)$/u.exec(ref);
   if (!match) return null;
-  const revision = Number(match[2]);
+  const revision = Number(match[3]);
   if (!Number.isSafeInteger(revision) || revision < 1) return null;
   try {
-    return { id: decodeURIComponent(match[1]!), revision };
+    return {
+      path: decodeURIComponent(match[1]!),
+      anchor: decodeURIComponent(match[2]!) || undefined,
+      revision,
+    };
   } catch {
     return null;
   }

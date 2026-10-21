@@ -19,11 +19,35 @@ export function memorySettingFields(
 ): NonNullable<WorkspaceSettingsSection["fields"]> {
   return [
     {
+      id: "ai.memoryFolder",
+      type: "string",
+      title: "Memory folder",
+      description:
+        "Visible vault folder for daily notes and curated memory. Changing it moves the folder; existing destinations are never overwritten.",
+      default: "Memory",
+    },
+    {
+      id: "ai.memoryTimezone",
+      type: "string",
+      title: "Memory timezone",
+      description:
+        "IANA timezone for future dated notes, for example Europe/London.",
+      default: current.memoryTimezone,
+    },
+    {
+      id: "ai.memoryAutomaticCapture",
+      type: "boolean",
+      title: "Automatic memory capture",
+      description:
+        "Save qualifying observations after completed turns to dated Markdown notes in this vault.",
+      default: true,
+    },
+    {
       id: "ai.memoryAutomaticRecall",
       type: "boolean",
       title: "Automatic memory recall",
       description:
-        "Inject up to three trusted curated memories into a turn. Transcript evidence remains available only through memory tools.",
+        "Recall up to three relevant note excerpts within the current scope. Recalled context links to the original Markdown notes.",
       default: DEFAULT_AI_SETTINGS.memoryAutomaticRecall,
     },
     {
@@ -63,6 +87,8 @@ export function memorySettingFields(
       description:
         "Exact model used only for restricted background consolidation.",
       default: DEFAULT_AI_SETTINGS.memoryConsolidationModel,
+      optionsSource: "ai.processorModels.memory",
+      allowUnknownOptions: false,
     },
     {
       id: "ai.handoffSummariesEnabled",
@@ -100,6 +126,8 @@ export function memorySettingFields(
       title: "Handoff summary model",
       description: "Exact model used only for restricted background summaries.",
       default: DEFAULT_AI_SETTINGS.handoffSummaryModel,
+      optionsSource: "ai.processorModels.handoff",
+      allowUnknownOptions: false,
     },
   ];
 }

@@ -109,7 +109,8 @@ describe("AiChatController", () => {
           id: "memory:writing-headings:2",
           content: "Use compact headings.\nProvenance: conversation/message",
           metadata: {
-            memoryId: "writing-headings",
+            notePath: "Memory/MEMORY.md",
+            anchor: "writing-headings",
             revision: 2,
             scope: "project" as const,
           },

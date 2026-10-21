@@ -1,5 +1,8 @@
 # Evidence
 
+- [Markdown-first vault memory](E-AI-118.md)
+- [Processor model dropdowns and settings tabs](E-AI-119.md)
+
 - [Saved agent context and footer permissions](E-AI-094.md)
 
 - [Local ACP conversations and transcript backup](E-AI-093.md)

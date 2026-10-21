@@ -19,6 +19,8 @@ const { distributionOptions } = await import("./distribution-entry.ts");
 const { bootstrapDesktop } = await import("../../src/lib/desktop/bootstrap.ts");
 await bootstrapDesktop(distributionOptions);
 await import("./watch-entry.ts");
+if (import.meta.env.VITE_LAPIS_MEMORY_PROOF === "1")
+  await import("./ai-memory-entry.ts");
 
 const databases = new Map<string, AppDatabase>();
 

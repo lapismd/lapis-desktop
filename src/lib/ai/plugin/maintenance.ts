@@ -30,6 +30,7 @@ export class AiMaintenance {
       host.memory,
       {
         onError: report,
+        enabled: () => host.getSettings().memoryAutomaticCapture,
         activity: (run) => host.background.run("Maintaining AI memory", run),
       },
     );
@@ -40,6 +41,12 @@ export class AiMaintenance {
       if (!this.host.active) return;
       this.index.handleVaultChange(file.path, oldPath);
       this.ingestion.handleVaultChange(file.path, oldPath);
+      if (
+        [file.path, oldPath].some((path) =>
+          path?.startsWith(`${this.host.getSettings().memoryFolder}/`),
+        )
+      )
+        this.ingestion.refreshNotes();
       if (
         [file.path, oldPath].some((path) =>
           path?.split("/").includes(".agents"),
@@ -82,6 +89,13 @@ export class AiMaintenance {
         .catch((error) => this.host.report(error));
     });
     if (unsubscribeUser) this.#cleanup.push(unsubscribeUser);
+    this.#cleanup.push(
+      this.host.settings.subscribe((patch) => {
+        if ("memoryFolder" in patch) this.ingestion.refreshNotes();
+        if (patch.memoryAutomaticCapture === true)
+          this.ingestion.startCatchUp();
+      }),
+    );
     this.ingestion.startCatchUp();
     this.scheduler.start();
   }

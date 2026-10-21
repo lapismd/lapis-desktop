@@ -97,7 +97,7 @@ export const HistoricalRuntimePreferences: Story = {
       within(canvas.getByRole("tabpanel", { name: "Memory" })).getAllByText(
         /Saved preference: Codex native \(unavailable\)/,
       ),
-    ).toHaveLength(2);
+    ).toHaveLength(1);
     await selectSettingsTab(canvasElement, "AI settings", "Models");
     await userEvent.click(
       canvas.getByRole("combobox", { name: "Default runtime" }),
@@ -112,7 +112,7 @@ export const HistoricalRuntimePreferences: Story = {
     await waitFor(async () =>
       expect((await saved(canvasElement)).settings).toMatchObject({
         defaultRuntime: "codex-native",
-        memoryConsolidationRuntime: "codex-native",
+        memoryConsolidationRuntime: "acp",
         handoffSummaryRuntime: "codex-native",
         thinking: "high",
       }),
@@ -175,8 +175,8 @@ export const SaveFailureAndRetry: Story = {
       await canvas.findByText("Fixture settings write failed"),
     ).toBeVisible();
     expect(
-      (await saved(canvasElement)).settings.memoryAutomaticRecall ?? false,
-    ).toBe(false);
+      (await saved(canvasElement)).settings.memoryAutomaticRecall ?? true,
+    ).toBe(true);
     await userEvent.click(
       canvas.getByRole("switch", {
         name: "Automatic memory recall",
@@ -184,7 +184,7 @@ export const SaveFailureAndRetry: Story = {
     );
     await waitFor(async () =>
       expect((await saved(canvasElement)).settings.memoryAutomaticRecall).toBe(
-        true,
+        false,
       ),
     );
   },
@@ -253,5 +253,84 @@ export const GroupedSettings: Story = {
         canvas.getByRole("button", { name: "More ai settings" }),
       ).toBeVisible();
     await selectSettingsTab(canvasElement, "AI settings", "Conversation");
+  },
+};
+
+export const MarkdownMemory: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Memory");
+    await expect(
+      canvas.getByRole("textbox", { name: "Memory folder" }),
+    ).toHaveValue("Memory");
+    const folderInput = canvas.getByRole("textbox", { name: "Memory folder" });
+    await expect(folderInput.closest("[data-setting-layout]")).toHaveAttribute(
+      "data-setting-layout",
+      "stacked",
+    );
+    expect(folderInput.getBoundingClientRect().width).toBeGreaterThan(
+      canvasElement.ownerDocument.documentElement.clientWidth < 600 ? 80 : 300,
+    );
+    await expect(
+      canvas.getByRole("switch", { name: "Automatic memory capture" }),
+    ).toBeChecked();
+    await expect(
+      canvas.getByRole("switch", { name: "Automatic memory recall" }),
+    ).toBeChecked();
+    await expect(
+      canvas.getByRole("button", { name: "Daily memory" }),
+    ).toBeVisible();
+    await expect(
+      canvas.getByRole("button", { name: "Curated memory" }),
+    ).toBeVisible();
+    await userEvent.clear(
+      canvas.getByRole("textbox", { name: "Memory folder" }),
+    );
+    await userEvent.type(
+      canvas.getByRole("textbox", { name: "Memory folder" }),
+      "Journal/Memory",
+    );
+    await userEvent.click(canvas.getByRole("button", { name: "Apply" }));
+    await waitFor(async () =>
+      expect((await saved(canvasElement)).settings.memoryFolder).toBe(
+        "Journal/Memory",
+      ),
+    );
+  },
+};
+
+export const ProcessorModels: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = await ready(canvasElement);
+    await selectSettingsTab(canvasElement, "AI settings", "Memory");
+    const before = (await saved(canvasElement)).settings.defaultModels;
+    await choose(canvasElement, "Memory processor model", "Example model");
+    await choose(canvasElement, "Handoff summary model", "codex next");
+    await waitFor(async () =>
+      expect((await saved(canvasElement)).settings).toMatchObject({
+        memoryConsolidationModel: "example-model",
+        handoffSummaryModel: "codex-next",
+        defaultModels: before,
+      }),
+    );
+    await choose(canvasElement, "Handoff summary agent", "Lapis AI");
+    await choose(canvasElement, "Handoff summary model", "Example model");
+    await waitFor(async () =>
+      expect((await saved(canvasElement)).settings).toMatchObject({
+        memoryConsolidationModel: "example-model",
+        handoffSummaryAgent: "local",
+        handoffSummaryModel: "example-model",
+        defaultModels: before,
+      }),
+    );
+    expect(
+      canvas.getByRole("combobox", { name: "Memory processor model" }),
+    ).toHaveTextContent("Example model");
+    expect(aiReviewValue(canvasElement, "Model catalog requests")).toContain(
+      "local:acp",
+    );
+    expect(aiReviewValue(canvasElement, "Model catalog requests")).toContain(
+      "codex:acp",
+    );
   },
 };
