@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-097 implements local ACP setup/tool/compute v0; E-AI-098 aligns Settings.
+E-AI-097–099 implement local ACP setup/tool/compute v0, Settings and model fit.
 M10.2–M10.4 keep original provider/native acceptance gates and remaining work.
 M13/M13.3 stay Deferred.
 

@@ -106,6 +106,10 @@ export const RunningCompute: Story = {
         name: "Optional compute",
       }),
     );
+    await expect(
+      await compute.findByRole("combobox", { name: "Model" }),
+    ).toBeDisabled();
+    await expect(compute.getByLabelText("Custom model")).toBeDisabled();
     await userEvent.click(
       await compute.findByRole("button", { name: "Stop compute" }),
     );
@@ -154,5 +158,91 @@ export const Sharing: Story = {
     await expect(
       compute.getByRole("button", { name: "Inference host: This machine" }),
     ).toBeVisible();
+  },
+};
+
+export const ModelPicker: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const portal = within(canvasElement.ownerDocument.body);
+    const picker = await canvas.findByRole("combobox", { name: "Model" });
+    await expect(picker).toHaveTextContent("Fits well");
+    await userEvent.click(picker);
+    const search = await portal.findByRole("combobox", {
+      name: "Search local models",
+    });
+    const menu = canvasElement.ownerDocument.querySelector(
+      ".compute-model-picker__menu",
+    )!;
+    await expect(menu.getBoundingClientRect().left).toBeGreaterThanOrEqual(0);
+    await expect(menu.getBoundingClientRect().right).toBeLessThanOrEqual(
+      canvasElement.ownerDocument.documentElement.clientWidth,
+    );
+    await expect(search).toHaveFocus();
+    await expect(
+      portal.getByRole("option", { name: /gemma-4-E4B/ }),
+    ).toHaveTextContent("Recommended");
+    await expect(
+      portal.getByRole("option", { name: /Qwen3.8-27B/ }),
+    ).toHaveTextContent("Too large");
+    await userEvent.type(search, "Qwen2.5-Coder");
+    await waitFor(() => expect(portal.getAllByRole("option")).toHaveLength(1));
+    await userEvent.keyboard("{ArrowDown}{Enter}");
+    await expect(picker).toHaveFocus();
+    await expect(canvas.getByLabelText("Custom model")).toHaveValue(
+      "Qwen/Qwen2.5-Coder-7B-Instruct-GGUF:Q4_K_M",
+    );
+    await userEvent.clear(canvas.getByLabelText("Custom model"));
+    await userEvent.type(canvas.getByLabelText("Custom model"), "my/model:Q8");
+    await expect(picker).toHaveTextContent("my/model:Q8");
+    await expect(picker).toHaveTextContent("Fit unknown");
+    await expect(
+      canvas.getByRole("button", { name: "Stop compute" }),
+    ).toBeDisabled();
+    await expect(aiReviewValue(canvasElement, "Compute commands")).toBe("[]");
+  },
+};
+
+export const ModelMemoryLimits: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const compute = within(
+      await canvas.findByRole("region", {
+        name: "Optional compute",
+      }),
+    );
+    const portal = within(canvasElement.ownerDocument.body);
+    await userEvent.click(
+      await compute.findByRole("tab", { name: "Resources" }),
+    );
+    await userEvent.type(compute.getByLabelText("Maximum memory / VRAM"), "4");
+    await userEvent.click(compute.getByRole("tab", { name: "Models" }));
+    await userEvent.click(compute.getByRole("combobox", { name: "Model" }));
+    await expect(
+      portal.getByRole("option", { name: /gemma-4-E4B/ }),
+    ).toHaveTextContent("Too large");
+    await userEvent.keyboard("{Escape}");
+    await expect(aiReviewValue(canvasElement, "Compute commands")).toBe("[]");
+  },
+};
+
+export const UnknownModelFit: Story = {
+  args: { scenario: "setup-unknown-hardware" },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const picker = await canvas.findByRole("combobox", { name: "Model" });
+    await expect(picker).toHaveTextContent("custom/model:Q8");
+    await expect(picker).toHaveTextContent("Fit unknown");
+    await userEvent.click(picker);
+    const portal = within(canvasElement.ownerDocument.body);
+    await portal.findByRole("combobox", { name: "Search local models" });
+    for (const option of portal.getAllByRole("option")) {
+      await expect(option).toHaveTextContent("Fit unknown");
+      await expect(option).not.toHaveTextContent("Recommended");
+    }
+    await waitFor(() =>
+      expect(portal.getByText(/Machine memory unavailable/)).toBeVisible(),
+    );
+    await userEvent.keyboard("{Escape}");
   },
 };

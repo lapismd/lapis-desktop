@@ -60,6 +60,18 @@ Start uses installed weights and a prepared native runtime. Import validates and
 copies a selected absolute GGUF path into managed storage. Model/resource/peer
 controls adapt JJ Store’s Settings components through public Design Core fields.
 
+The searchable model picker copies JJ Store's catalog and command-view
+presentation. Choices and the selected trigger show weight estimates and
+advisory memory fit; curated recommendations use 70% of observed host RAM,
+capped by the unsaved memory limit, and the source's 60%/90%/110% thresholds.
+Estimates are not measured GPU capacity, free memory or inference benchmarks.
+Missing hardware and unknown custom/imported sizes remain unknown, without
+invented recommendations or installed badges. An adjacent Custom model field
+preserves exact GGUF references. Picking or typing only edits the draft.
+Serving, pending and busy states lock both controls; no selection downloads,
+saves or starts a model. Device memory facts are cached native read-only status,
+queried off the UI thread without starting compute or changing configuration.
+
 The verified bundled helper owns inference. Its working directory, HOME, native
 runtime and model caches stay in device-owned managed storage outside the vault.
 The persistent machine identity uses Keychain; loopback bearer tokens stay
@@ -92,7 +104,7 @@ helpers and in-memory Settings do not qualify a real provider or loaded model.
 Real external-client/Lapis tool turns, cold mounted restart/trust cleanup,
 native inference with prepared weights and two-device mutual pairing retain the
 original M10.2–M10.4 acceptance gates. Signing/publication and other platforms
-remain M11. Hardware recommendations, richer model catalogs, model removal,
-native GGUF browsing and editable relay settings are secondary work, separate
-from v0’s explicit model/resource/peer lifecycle. No deferred JJ-store chat
-implementation is resumed by this profile.
+remain M11. Expanded model catalogs, model removal, native GGUF browsing and
+editable relay settings are secondary work, separate from v0’s explicit
+model/resource/peer lifecycle. No deferred JJ-store chat implementation is
+resumed by this profile.

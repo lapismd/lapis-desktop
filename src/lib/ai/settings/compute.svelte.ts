@@ -8,6 +8,7 @@ export type ComputeSettings = {
   targetPeer: string | null;
 };
 export type ComputeStatus = {
+  hardware?: unknown;
   settings: ComputeSettings;
   requestId: string | null;
   outcome: string | null;

@@ -172,3 +172,6 @@ retain their current verification status; no completion is inferred.
 
 [E-AI-098](../history/E-AI-098.md) qualifies the provider/compute full-width
 settings layout under LD-AI-002/LD-CAT-003; original native gates are unchanged.
+
+[E-AI-099](../history/E-AI-099.md) records the copied compute model picker,
+advisory memory fit and cached native status under LD-COMP-001/LD-CAT-003.

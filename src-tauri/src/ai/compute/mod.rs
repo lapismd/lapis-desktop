@@ -1,5 +1,6 @@
 //! Optional device-owned compute. Reading status never starts a process or download.
 use crate::ai::tools::Owner;
+mod hardware;
 mod lifecycle;
 mod store;
 mod types;
@@ -70,6 +71,7 @@ impl Compute {
         self.initialize()?;
         let saved = self.store.read()?;
         Ok(Status {
+            hardware: hardware::facts(),
             settings: saved.settings,
             request_id: saved.request.map(|r| r.request_id),
             outcome: saved.outcome,

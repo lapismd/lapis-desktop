@@ -55,6 +55,7 @@ pub struct View {
 #[derive(Serialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Status {
+    pub hardware: Value,
     pub settings: Settings,
     pub request_id: Option<Uuid>,
     pub outcome: Option<String>,

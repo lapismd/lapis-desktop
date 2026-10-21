@@ -764,6 +764,34 @@
         }
       ],
       "use": "E-AI-094 adapts saved provider execution-mode selection, unavailable saved values and fixed-width gallery cards. Desktop owns local profile context, permissions, admission and persistence. Description/instructions compose the public Design Core MarkdownComposer; footer approval presentation follows the user-supplied reference using public Popover, Tooltip and CommandView."
+    },
+    {
+      "sourceRepository": "jj-store",
+      "revision": "3998e2b01cb4a1c4f4dba0e1e81f9c3e72f6e15b",
+      "license": "Apache-2.0",
+      "paths": [
+        {
+          "source": "web/src/lib/ui/store-settings/StoreComputeModelPicker.svelte",
+          "destination": "src/components/ai/settings/AiComputeModelPicker.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-settings/StoreComputeModelMetadata.svelte",
+          "destination": "src/components/ai/settings/AiComputeModelMetadata.svelte"
+        },
+        {
+          "source": "web/src/lib/ui/store-settings/compute-model-catalog.ts",
+          "destination": "src/lib/ai/settings/compute-model-catalog.ts"
+        },
+        {
+          "source": "web/tests/compute-model-catalog.test.ts",
+          "destination": "tests/ai/settings/compute-model-catalog.test.ts"
+        },
+        {
+          "source": "crates/jj-store-server/src/agent_execution/compute/hardware.rs",
+          "destination": "src-tauri/src/ai/compute/hardware.rs"
+        }
+      ],
+      "use": "E-AI-099 copies the searchable Command View model picker, selected metadata, Buzz/mesh-llm GGUF estimates, recommendation and RAM-fit tiers plus regression cases. Desktop owns its model type and draft-only change callback. A separate Custom model field preserves exact IDs. Cached read-only hardware facts run on the existing blocking native status path without spawning compute, downloading or changing settings. Missing hardware/sizes remain unknown; no installed badge is invented without service inventory. Public Design Core primitives remain dependencies; no JJ Store runtime/controller import is added."
     }
   ]
 }

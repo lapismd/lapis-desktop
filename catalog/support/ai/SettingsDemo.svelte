@@ -45,6 +45,9 @@
           "Model catalog requests": calls,
           "AI notifications": notifications,
           "AI model source registered": String(registered),
+          "Compute commands": JSON.stringify(
+            fixture.plugin.setup?.commands ?? [],
+          ),
         };
         return values[name] ?? "";
       },

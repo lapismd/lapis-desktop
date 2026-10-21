@@ -1,8 +1,8 @@
 # Governance
 
-E-AI-097 adds exact main-window provider and compute grants. Unknown fields and
-launch authority remain refused; the source audit retains its closed permission
-inventory.
+E-AI-097/099 retain exact main-window grants and native-only hardware facts.
+Unknown fields and launch authority remain refused; the source audit retains its
+closed permission inventory.
 
 E-AI-094 retains LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

@@ -50,9 +50,15 @@ export function setupFixture(app: App, scenario: string) {
     ],
   };
   let computeValue: ComputeStatus = {
+    hardware: {
+      memory_bytes: scenario === "setup-unknown-hardware" ? null : 16e9,
+    },
     settings: {
       revision: 0,
-      model: "unsloth/Qwen3-0.6B-GGUF:Q4_K_M",
+      model:
+        scenario === "setup-unknown-hardware"
+          ? "custom/model:Q8"
+          : "unsloth/Qwen3-0.6B-GGUF:Q4_K_M",
       memoryGb: null,
       sharing: false,
       peers: {},
@@ -68,6 +74,7 @@ export function setupFixture(app: App, scenario: string) {
     },
   };
   const background = new BackgroundWork(app.notifications, "ai");
+  const commands: string[] = [];
   function report(error: unknown) {
     app.notifications.notify({
       id: "ai-setup-fixture",
@@ -107,6 +114,7 @@ export function setupFixture(app: App, scenario: string) {
       await ready();
       if (action.type === "command") {
         const command = action.command;
+        commands.push(command.action.type);
         if (command.action.type === "configure")
           computeValue.settings = {
             ...command.action.settings,
@@ -125,6 +133,7 @@ export function setupFixture(app: App, scenario: string) {
     report,
   );
   return {
+    commands,
     providers,
     compute,
     async close() {

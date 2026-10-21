@@ -79,6 +79,25 @@ async fn done(compute: &Compute) {
     .await
     .unwrap();
 }
+#[test]
+fn hardware_status_is_read_only_cached_and_does_not_launch_compute() {
+    let directory = tempfile::tempdir().unwrap();
+    let compute = Compute::open(directory.path().into(), Arc::new(Keys::default())).unwrap();
+    let status = serde_json::to_value(compute.status().unwrap()).unwrap();
+    assert!(status["hardware"].get("memory_bytes").is_some());
+    assert!(
+        status["hardware"]["memory_bytes"].is_null()
+            || status["hardware"]["memory_bytes"]
+                .as_u64()
+                .is_some_and(|n| n > 0)
+    );
+    assert_eq!(status["runtime"]["state"], "off");
+    assert_eq!(
+        status["hardware"],
+        serde_json::to_value(compute.status().unwrap()).unwrap()["hardware"]
+    );
+    assert!(!directory.path().join("runtime").exists());
+}
 #[tokio::test]
 async fn disabled_reads_and_configuration_do_not_launch_and_explicit_work_keeps_receipts_and_credentials_native()
  {

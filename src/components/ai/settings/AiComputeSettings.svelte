@@ -5,6 +5,7 @@
   import ClientSettingsEmpty from "./ClientSettingsEmpty.svelte";
   import ComputeSettingRow from "./ComputeSettingRow.svelte";
   import AiComputeSharing from "./AiComputeSharing.svelte";
+  import AiComputeModelPicker from "./AiComputeModelPicker.svelte";
   import * as Tabs from "@lapismd/design-core/shadcn/tabs";
   import * as Field from "@lapismd/design-core/shadcn/field";
   import { Input } from "@lapismd/design-core/shadcn/input";
@@ -83,10 +84,25 @@
           <ComputeSettingRow
             id={`${id}-model`}
             label="Model"
-            description="Enter a Hugging Face GGUF reference or the identity of an imported model."
+            description="Choose a model with estimated memory fit, then download weights explicitly."
+          >
+            <AiComputeModelPicker
+              id={`${id}-model`}
+              value={management.draft.model}
+              onValueChange={(model) => management.edit({ model })}
+              models={[]}
+              hardware={management.value.hardware}
+              memoryLimit={management.draft.memoryGb}
+              disabled={blocked || management.value.runtime.state === "serving"}
+            />
+          </ComputeSettingRow>
+          <ComputeSettingRow
+            id={`${id}-custom`}
+            label="Custom model"
+            description="Hugging Face GGUF reference or the exact identity of an imported model."
           >
             <Input
-              id={`${id}-model`}
+              id={`${id}-custom`}
               value={management.draft.model ?? ""}
               disabled={blocked || management.value.runtime.state === "serving"}
               placeholder="unsloth/Qwen3-0.6B-GGUF:Q4_K_M"

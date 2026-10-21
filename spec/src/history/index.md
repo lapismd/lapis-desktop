@@ -328,3 +328,5 @@ by the task ledger, not inferred from this list.
 - [E-AI-097 — Local ACP setup, native tools and optional compute](E-AI-097.md)
 
 - [AI provider and compute settings sections](E-AI-098.md)
+
+- [Compute model picker and memory fit](E-AI-099.md)

@@ -1025,3 +1025,9 @@ StoreComputeModels, StoreComputePeers, StoreWorkField and environment key field.
 Native/real-provider qualification is separate; all stories remain
 visual-pending. E-AI-098 checks separate full-width provider/compute cards,
 single titles and aligned table styling copied from the existing Agents page.
+
+E-AI-099 expands `Desktop/AI setup` with Model picker, Model memory limits and
+Unknown model fit. It copies JJ Store's production picker/catalog, tests
+keyboard search/selection, exact custom IDs, draft memory caps, honest unknown
+estimates, serving locks and no dispatch on selection. All stories remain
+visual-pending.
