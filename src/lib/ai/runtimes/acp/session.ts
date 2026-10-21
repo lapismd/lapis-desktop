@@ -162,6 +162,7 @@ export class AcpAgentSession implements AgentSession {
         turn.abort.signal.throwIfAborted();
       }
       this.#profile.apply(prepared);
+      options.onContextPrepared?.(prepared.context);
       const frame = await native.send(turn.requestId, {
         type: "prompt",
         ...prepared,

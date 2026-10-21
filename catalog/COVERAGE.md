@@ -1085,3 +1085,6 @@ AgentSwitch reviews the new binding's instructions and conversation handoff;
 UnknownOutcome keeps uncertain delivery distinct from Sent. No provider is
 contacted and no live settings or history are changed. The shared SentContext
 component already carries its JJ Store source attribution.
+
+Sent-context captures remain live-controller-owned and are not reconstructed
+from current files/settings on a cold reopen. E-AI-113 retains that boundary.

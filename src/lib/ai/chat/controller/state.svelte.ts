@@ -35,6 +35,7 @@ import { SlashCommandRouter } from "../../commands/router.ts";
 import { OwnedAiWork } from "../../core/owned-work.ts";
 import type { ConversationListEntry } from "../../conversations/transcript-store.ts";
 import type { AcpAgentId } from "../../settings/acp-agents.ts";
+import { LiveSentContexts } from "../sent-context.svelte.ts";
 export class AiChatControllerState {
   readonly _approvalPolicy?: (
     request: Omit<AgentRequest, "prompt">,
@@ -46,6 +47,7 @@ export class AiChatControllerState {
   _recoveredDispatchId?: string;
   readonly _backgroundWork = new OwnedAiWork();
   items = $state.raw<AiChatItem[]>([]);
+  readonly sentContexts = new LiveSentContexts();
   busy = $state(false);
   commandWorking = $state(false);
   error = $state<string | null>(null);

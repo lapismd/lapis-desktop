@@ -342,3 +342,16 @@ E-AI-089 resumes main-component adoption for the
 and a review-app launch remain distinct from full provider, restart and
 distribution qualification. Native and normal ACP remain separate available
 routes in the same workspace.
+
+E-AI-113 exposes the exact outgoing startup/profile, handoff, attachment and
+recall context through Design Core's existing SentContext disclosure, including
+rendered XML/Markdown and raw captures in both views. The observer runs after
+ACP startup additions; authored text and native prompt payloads stay unchanged.
+Each message retains independent captures per target binding. Preparation is not
+delivery: successful send confirmation marks Sent, known rejection marks not
+sent, and uncertain/cancelled outcomes remain unknown without replay. Inspection
+starts no runtime or tool and grants no authority. These previews are owned by
+the live controller and cleared on close; they are excluded from both local
+transcript formats and legacy session snapshots. Historical context is never
+reconstructed from current files/settings; existing durable comment receipts
+retain their original presentation. Native storage remains separately deferred.

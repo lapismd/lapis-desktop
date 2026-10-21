@@ -1,5 +1,16 @@
 // Deterministic public-contract transport for desktop orchestration acceptance.
 import { createAcpClient } from "@lapismd/ai";
+/**
+ * @returns {{
+ * calls: unknown[][],
+ * onPrompt: ((id: string, requestId: string, request: Record<string, unknown>) => Promise<void>) | undefined,
+ * unknown: boolean,
+ * modeReady: boolean,
+ * configuration?: unknown,
+ * backend: import("../../../src/lib/ai/runtimes/acp/runtime.ts").AcpRuntimeBackend,
+ * emit(id: string, type: string, requestId: string, extra?: Record<string, unknown>): void
+ * }}
+ */
 export function acpFixture() {
   const sessions = new Map(),
     calls = [];

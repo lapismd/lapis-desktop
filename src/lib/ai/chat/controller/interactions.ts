@@ -221,6 +221,7 @@ export async function close(this: AiChatController): Promise<void> {
     this._slashRouter?.catalog.clearNativeCommands(this._activeBindingId);
   }
   this._skillSnapshots.clear();
+  this.sentContexts.value = {};
   const failures = results.flatMap((result) =>
     result.status === "rejected" ? [result.reason] : [],
   );

@@ -44,6 +44,8 @@ export type AgentContextBlock =
     };
 
 export type AgentTurnOptions = {
+  /** Session-only inspection of the final outgoing context, after startup additions. */
+  onContextPrepared?(context: string | undefined): void;
   /** Exact host-owned prompt identity, shared across recipients of one authored turn. */
   requestId?: string;
   /** Called by the desktop when this turn is eligible for dispatch. */

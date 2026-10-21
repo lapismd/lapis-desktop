@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat orchestration; see ../../NOTICE.md.
-import type { AgentContextBlock } from "../../core/context.ts";
+import {
+  projectAgentTurn,
+  type AgentContextBlock,
+} from "../../core/context.ts";
 import type { AgentRequest } from "../../core/runtime.ts";
 import { buildConversationContextHandoff } from "../../conversations/context-handoff.ts";
 import { reduceAgentBindings } from "../../conversations/binding-state.ts";
@@ -13,6 +16,7 @@ import { publishCommentContext } from "./comment-publication.ts";
 import type { AiChatController } from "../chat-controller.svelte.ts";
 import { validateRecipients } from "../../conversations/recipients.ts";
 import type { ActiveDelivery } from "./dispatch-state.ts";
+import type { SentContextCapture } from "../sent-context.svelte.ts";
 export async function deliverTurn(
   this: AiChatController,
   userItem: AiChatItem,
@@ -40,6 +44,9 @@ export async function deliverTurn(
   const previousBinding = this._activeBinding;
   const previousBindingId = this._activeBindingId;
   const previousSessionRequest = this._sessionRequest;
+  let settleContext: (
+    delivery: SentContextCapture["delivery"],
+  ) => void = () => {};
   try {
     if (this.repository) await this._ensureConversation();
     if (this._isAbandoned(turnId)) return;
@@ -81,6 +88,18 @@ export async function deliverTurn(
       !this._isAbandoned(turnId) &&
       this.session === session &&
       this.location?.conversationId === location?.conversationId;
+    const capture = this.sentContexts.forMessage(
+      userItem.id,
+      bindingId ?? session.id,
+      request.recipients?.[0]?.label ??
+        request.agentProfile?.name ??
+        request.agent ??
+        "Agent",
+    );
+    settleContext = capture.settle;
+    const onContextPrepared = (content?: string) => {
+      if (authorized()) capture.prepared(content);
+    };
     const prepareContext = async (
       signal: AbortSignal,
     ): Promise<AgentContextBlock[]> => {
@@ -173,17 +192,21 @@ export async function deliverTurn(
       await session.send(text, {
         prepareContext,
         authorizeContext: async () => authorized(),
+        onContextPrepared,
       });
     } else {
       const blocks = await prepareContext(new AbortController().signal);
       if (this._isAbandoned(turnId)) return;
-      await session.send(text, { contextBlocks: blocks });
+      onContextPrepared(projectAgentTurn(text, blocks).context);
+      await session.send(text, { contextBlocks: blocks, onContextPrepared });
     }
+    settleContext(this._isAbandoned(turnId) || this.error ? "unknown" : "sent");
     if (this._isAbandoned(turnId) || this.error) return false;
     if (!dispatch) await publishCommentContext(this, userItem, turnId);
     if (!this.repository) await this._persist();
     return true;
   } catch (error) {
+    settleContext(knownTurnError(error) ? "failed" : "unknown");
     if (this._isAbandoned(turnId)) return;
     const failedSession = this.session;
     const failedBindingId = this._activeBindingId;

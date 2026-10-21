@@ -11,6 +11,10 @@ import { toolCallStatus, isLocalCommandTool } from "./chat-tool-display.ts";
 import { discussionReplyContexts } from "./transcript-discussions.ts";
 import { agentAvatar } from "../presentation/agent-avatar.ts";
 import type { AgentRecipientOption } from "../conversations/recipients.ts";
+import {
+  projectSentContext,
+  type SentContextPreviews,
+} from "./sent-context.svelte.ts";
 
 /** Display-only revision. Native source IDs and receipt authority remain untouched. */
 function revision(text: string): string {
@@ -74,6 +78,7 @@ export function projectAiTranscript(
   source: readonly AiChatItem[],
   bindings: readonly AgentBindingCreatedRecord[] = [],
   profiles: readonly AgentRecipientOption[] = [],
+  contextPreviews: SentContextPreviews = {},
 ): TranscriptItem[] {
   const agents = new Map(bindings.map((binding) => [binding.id, binding]));
   const items: TranscriptItem[] = [];
@@ -188,16 +193,18 @@ export function projectAiTranscript(
         : undefined,
       turn,
       createdAt: item.createdAt,
-      sentContext: item.contextBlocks?.length
-        ? {
-            content: item.contextBlocks
-              .map((block) => block.content)
-              .join("\n\n"),
-            rawContent: JSON.stringify(item.contextBlocks, null, 2),
-            rawLanguage: "json",
-            delivery: item.contextDelivery ?? "prepared",
-          }
-        : undefined,
+      sentContext:
+        projectSentContext(contextPreviews[item.id]) ??
+        (item.contextBlocks?.length
+          ? {
+              content: item.contextBlocks
+                .map((block) => block.content)
+                .join("\n\n"),
+              rawContent: JSON.stringify(item.contextBlocks, null, 2),
+              rawLanguage: "json",
+              delivery: item.contextDelivery ?? "prepared",
+            }
+          : undefined),
       defaultExpanded:
         item.type === "thinking"
           ? item.state === "streaming"

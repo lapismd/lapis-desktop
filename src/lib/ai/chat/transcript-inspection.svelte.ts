@@ -25,6 +25,7 @@ export function transcriptToolInspection(
       controller.items,
       controller.bindings,
       composerState.recipientOptions,
+      controller.sentContexts.value,
     );
     if (!enabled()) return projected;
     const source = new Map(controller.items.map((item) => [item.id, item]));

@@ -137,7 +137,7 @@ authority. A failed drain retains the backend and makes close retryable. This
 seam does not itself qualify a JJ backend or native capture ownership.
 
 App-owned handoff retains hash-verified full/delta/summary-tail evidence and
-explicit target bindings. E-AI-113 adds captured sent-context inspection.
+explicit target bindings. E-AI-113 adds exact live sent-context inspection.
 Private reasoning is excluded and tool output is labeled untrusted. Handoff
 never resumes a provider or changes the stored authored messages.
 

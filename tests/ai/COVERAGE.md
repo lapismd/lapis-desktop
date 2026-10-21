@@ -166,3 +166,8 @@ writes, stale reads/errors and drained closure. The catalog inventory regression
 rejects file commands duplicated as app-owned commands. Real minimal-shell
 stories separately qualify visible refresh and retained inventory on IO failure.
 Ordinary service binding and mounted native recovery remain M10.2 work.
+
+E-AI-113: `chat/controller/sent-context.test.ts` compares live inspection to the
+actual ACP prompt context, including startup/profile instructions, binding
+switches, per-recipient captures, uncertain delivery and raw-persistence
+refusal.
