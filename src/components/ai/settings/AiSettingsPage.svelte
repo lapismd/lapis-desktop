@@ -1,10 +1,25 @@
 <script lang="ts">
+  // Follow AgentClientsPage: custom settings cards own their section presentation.
   import {
     AppSettingsRoot,
     AppSettingsSection,
     type WorkspaceSettingsPageProps,
   } from "@lapismd/design-core/workspace/settings";
+  import AiProvidersField from "./AiProvidersField.svelte";
+  import AiComputeField from "./AiComputeField.svelte";
   let { controller, app, section }: WorkspaceSettingsPageProps = $props();
+  const provider = $derived(
+    section.fields?.find((field) => field.id === "ai.providers"),
+  );
+  const compute = $derived(
+    section.fields?.find((field) => field.id === "ai.compute"),
+  );
+  const general = $derived({
+    ...section,
+    fields: section.fields?.filter(
+      (field) => field.id !== "ai.providers" && field.id !== "ai.compute",
+    ),
+  });
 </script>
 
 <div class="ai-settings-page">
@@ -12,15 +27,25 @@
     <h1>{section.title}</h1>
     {#if section.description}<p>{section.description}</p>{/if}
   </header>
-  <AppSettingsRoot {controller} {app}
-    ><AppSettingsSection {section} /></AppSettingsRoot
-  >
+  {#if provider?.type === "custom"}
+    <div data-setting-id={provider.id}>
+      <AiProvidersField field={provider} />
+    </div>
+  {/if}
+  {#if compute?.type === "custom"}
+    <div data-setting-id={compute.id}>
+      <AiComputeField field={compute} />
+    </div>
+  {/if}
+  <AppSettingsRoot {controller} {app}>
+    <AppSettingsSection section={general} />
+  </AppSettingsRoot>
 </div>
 
 <style>
   .ai-settings-page {
     display: grid;
-    gap: 1.75rem;
+    gap: 0.85rem;
     min-width: 0;
   }
   h1 {

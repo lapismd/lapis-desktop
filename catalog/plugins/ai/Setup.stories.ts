@@ -18,12 +18,26 @@ export const ProvidersAndCompute: Story = {
     const provider = await canvas.findByRole("region", {
       name: "Lapis provider",
     });
+    await expect(canvas.getAllByText("Lapis provider")).toHaveLength(1);
+    await expect(canvas.getAllByText("Optional compute")).toHaveLength(1);
+    const page = canvasElement.querySelector(".ai-settings-page")!;
+    await expect(provider.getBoundingClientRect().width).toBeCloseTo(
+      page.getBoundingClientRect().width,
+      0,
+    );
     await expect(await within(provider).findByLabelText("API key")).toHaveValue(
       "",
     );
     const compute = await canvas.findByRole("region", {
       name: "Optional compute",
     });
+    await expect(compute.getBoundingClientRect().width).toBeCloseTo(
+      page.getBoundingClientRect().width,
+      0,
+    );
+    await expect(canvas.getAllByRole("heading", { name: "AI" })).toHaveLength(
+      1,
+    );
     await waitFor(() =>
       expect(
         within(compute).getByRole("button", { name: "Start model" }),

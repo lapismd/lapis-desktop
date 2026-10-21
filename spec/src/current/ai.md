@@ -2,7 +2,8 @@
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.
-Existing local conversations and private drafts remain supported.
+Existing local conversations and private drafts remain supported. E-AI-098
+aligns provider/compute settings with the Agents page's full-width cards.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 Native-store clauses below preserve the Deferred checkpoint experiment.

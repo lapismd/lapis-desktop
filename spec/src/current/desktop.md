@@ -1,6 +1,6 @@
 # Desktop shell
 
-E-AI-097: native AI setup.
+E-AI-097/098: native AI setup.
 
 E-AI-093: [local ACP](ai-local-history.md).
 

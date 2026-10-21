@@ -1023,4 +1023,5 @@ App notifications and retained drafts; Running compute covers Stop. Source
 presentation is copied/adapted from JJ Store’s StoreComputeSettings,
 StoreComputeModels, StoreComputePeers, StoreWorkField and environment key field.
 Native/real-provider qualification is separate; all stories remain
-visual-pending.
+visual-pending. E-AI-098 checks separate full-width provider/compute cards,
+single titles and aligned table styling copied from the existing Agents page.

@@ -24,10 +24,13 @@ discovery; it never delegates to an external client.
 ## Providers and application tools
 
 The existing AI Settings page owns provider and compute sections; named agent
-profiles remain in Agents. Provider choices use the public native catalog,
-excluding subscription OAuth. This machine and Paired machine are explicit
-inference selections. A missing cloud credential cannot select compute, and
-unavailable compute cannot select cloud inference.
+profiles remain in Agents. Lapis provider and Optional compute render as
+separate full-width cards using the Agents table header, body and footer
+styling, with one title each. They are not nested inside ordinary label/control
+rows. Provider choices use the public native catalog, excluding subscription
+OAuth. This machine and Paired machine are explicit inference selections. A
+missing cloud credential cannot select compute, and unavailable compute cannot
+select cloud inference.
 
 Device configuration contains opaque Keychain references. API-key input is
 transient and write-only; status, JSON diagnostics, transcripts, vault settings

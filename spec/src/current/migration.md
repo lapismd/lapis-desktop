@@ -1,7 +1,7 @@
 # Migration inventory and progress
 
-E-AI-097 implements the active local ACP setup/tool/compute v0. M10.2–M10.4 keep
-their original provider/native acceptance gates and explicit remaining work;
+E-AI-097 implements local ACP setup/tool/compute v0; E-AI-098 aligns Settings.
+M10.2–M10.4 keep original provider/native acceptance gates and remaining work.
 M13/M13.3 stay Deferred.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.

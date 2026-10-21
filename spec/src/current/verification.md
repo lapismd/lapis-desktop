@@ -169,3 +169,6 @@ Conversation-scoped private drafts and cold reload:
 [E-AI-097](../history/E-AI-097.md) records LD-AI-001–004/LD-COMP-001 v0
 implementation and focused acceptance. Original full native/provider/model gates
 retain their current verification status; no completion is inferred.
+
+[E-AI-098](../history/E-AI-098.md) qualifies the provider/compute full-width
+settings layout under LD-AI-002/LD-CAT-003; original native gates are unchanged.

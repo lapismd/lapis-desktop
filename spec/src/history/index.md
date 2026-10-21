@@ -326,3 +326,5 @@ by the task ledger, not inferred from this list.
 - [Conversation-scoped private drafts](E-AI-096.md)
 
 - [E-AI-097 — Local ACP setup, native tools and optional compute](E-AI-097.md)
+
+- [AI provider and compute settings sections](E-AI-098.md)
