@@ -1,10 +1,25 @@
 //! Read-only local Codex snapshots. No provider execution or JJ publication.
+mod browser_index;
+mod browser_preview;
+mod browser_types;
 mod capture;
 mod catalog;
+mod codex_preview;
+mod index_cache;
+mod index_scan;
+mod index_selection;
 mod lifetime;
+mod local_projection;
+mod normalization;
+mod privacy;
 mod projection;
 mod snapshot;
 mod types;
+pub use browser_index::{BrowserSelection, ImportIndex};
+pub use browser_preview::BrowserPreview;
+pub use browser_types::{
+    BrowserSession, FolderPage, Harness, ImportFolder, PreviewPage, SessionPage,
+};
 pub use capture::{CaptureQueue, CaptureRead};
 pub use catalog::{Catalog, discover};
 pub use lifetime::{ImportScope, ImportWork};
@@ -22,7 +37,7 @@ pub(crate) fn denied() -> io::Error {
 pub(crate) fn invalid() -> io::Error {
     io::Error::new(
         io::ErrorKind::InvalidData,
-        "Codex snapshot is unavailable, changed or exceeds its supported bounds",
+        "Local session source is unavailable, changed or exceeds its supported bounds",
     )
 }
 pub(crate) fn digest(domain: &[u8], value: &[u8]) -> [u8; 32] {

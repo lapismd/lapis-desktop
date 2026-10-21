@@ -1,48 +1,9 @@
+use super::requests::Request;
 use super::{NativeImports, Purpose, denied};
 use crate::host::state::{NativeError, NativeHost, access};
-use serde::Deserialize;
 use serde_json::{Value, json};
 use std::{io, sync::Arc};
 use tauri::{Manager, WebviewWindow};
-use uuid::Uuid;
-#[derive(Deserialize)]
-#[serde(tag = "type", rename_all = "camelCase", deny_unknown_fields)]
-pub enum Request {
-    #[serde(rename_all = "camelCase")]
-    Open {
-        session_id: String,
-        #[serde(default)]
-        purpose: Purpose,
-    },
-    Prepare {
-        handle: Uuid,
-    },
-    List {
-        handle: Uuid,
-        ticket: Uuid,
-    },
-    Preview {
-        handle: Uuid,
-        ticket: Uuid,
-        selector: String,
-    },
-    NextCapture {
-        handle: Uuid,
-        ticket: Uuid,
-    },
-    ConfirmCapture {
-        handle: Uuid,
-        ticket: Uuid,
-        delivery: Uuid,
-    },
-    Cancel {
-        handle: Uuid,
-        ticket: Uuid,
-    },
-    Close {
-        handle: Uuid,
-    },
-}
 #[tauri::command]
 pub async fn desktop_ai_imports(
     window: WebviewWindow,
@@ -110,14 +71,24 @@ pub async fn desktop_ai_imports(
             imports.scope(&owner, handle)?.cancel(ticket)?;
             return Ok(Value::Null);
         }
-        Request::List { handle, .. }
+        Request::Folders { handle, .. }
+        | Request::Sessions { handle, .. }
+        | Request::StartPreview { handle, .. }
+        | Request::NextPreview { handle, .. }
+        | Request::ReleasePreview { handle, .. }
+        | Request::List { handle, .. }
         | Request::Preview { handle, .. }
         | Request::NextCapture { handle, .. }
         | Request::ConfirmCapture { handle, .. } => handle,
     };
     let scope = imports.scope(&owner, handle)?;
     let ticket = match &request {
-        Request::List { ticket, .. }
+        Request::Folders { ticket, .. }
+        | Request::Sessions { ticket, .. }
+        | Request::StartPreview { ticket, .. }
+        | Request::NextPreview { ticket, .. }
+        | Request::ReleasePreview { ticket, .. }
+        | Request::List { ticket, .. }
         | Request::Preview { ticket, .. }
         | Request::NextCapture { ticket, .. }
         | Request::ConfirmCapture { ticket, .. } => *ticket,
@@ -135,8 +106,12 @@ pub async fn desktop_ai_imports(
     // Registered before spawn_blocking, including when the worker pool is busy.
     let work = scope.begin(ticket)?;
     let home = imports.home.clone();
+    let owner = imports.clone();
     tauri::async_runtime::spawn_blocking(move || -> io::Result<Value> {
         work.check()?;
+        if let Some(value) = super::browser::execute(&request, &scope, &owner, &|| work.check())? {
+            return Ok(value);
+        }
         let result = match request {
             Request::List { .. } => {
                 let catalog = lapis_desktop::ai::imports::discover(&home, &|| work.check())?;

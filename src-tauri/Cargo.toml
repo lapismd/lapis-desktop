@@ -23,7 +23,7 @@ tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", 
 jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
 jj-store-service = { path = "../../jj-store/crates/jj-store-service", version = "0.1.0" }
 jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1.0" }
-lapis-ai-capture = { path = "../../lapis-ai/crates/lapis-ai-capture", version = "0.1.1" }
+lapis-ai-capture = { path = "../../lapis-ai/crates/lapis-ai-capture", version = "0.1.1", features = ["opencode-sqlite"] }
 jj-store-capture = { path = "../../jj-store/crates/jj-store-capture", version = "0.1.0", default-features = false }
 chrono = { version = "0.4", default-features = false, features = ["std"] }
 jj-agent = { path = "../../jj-store/crates/jj-agent", version = "0.1.0" }
@@ -68,6 +68,9 @@ objc2-foundation = { version = "=0.3.2", default-features = false, features = ["
 
 [build-dependencies]
 tauri-build = { version = "=2.7.3", features = [] }
+
+[dev-dependencies]
+rusqlite = { version = "0.37", features = ["bundled"] }
 
 [profile.dev]
 debug = 0

@@ -14,6 +14,8 @@ export type SessionItem = {
 export function profileLabel(profile: string): string {
   if (profile.startsWith("codex-cli-")) return "Codex CLI";
   if (profile.startsWith("codex-desktop-")) return "Codex Desktop";
+  if (profile === "cursor-jsonl-v1") return "Cursor";
+  if (profile === "opencode-sqlite-v1") return "OpenCode";
   return profile;
 }
 
@@ -31,3 +33,13 @@ export type SavedSessionGroup = {
   group: string;
   versions: SavedSessionVersion[];
 };
+
+export function profileHarness(
+  profile: string,
+): "codex" | "cursor" | "opencode" {
+  return profile.startsWith("cursor-")
+    ? "cursor"
+    : profile.startsWith("opencode-")
+      ? "opencode"
+      : "codex";
+}

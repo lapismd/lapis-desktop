@@ -59,12 +59,51 @@ function fixture() {
         updatedAt: c.createdAt,
       },
     ]),
-    preview: vi.fn(async () => structuredClone(c)),
+    preview: vi.fn(async (_selector?: string, _signal?: AbortSignal) =>
+      structuredClone(c),
+    ),
   };
   const state = createImportState({
     app,
     repository,
-    sources: source,
+    sources: {
+      folders: async () => ({
+        folders: [
+          {
+            selector: "folder",
+            label: "Project",
+            location: "~/Project",
+            count: 1,
+          },
+        ],
+        indexed: 1,
+        complete: true,
+        limited: false,
+      }),
+      sessions: async () => ({
+        rows: (await source.list()).map((row) => ({
+          ...row,
+          kind: "codex" as const,
+          folder: "folder",
+          bytes: 1024,
+        })),
+        next: null,
+        total: 1,
+      }),
+      startPreview: async (selector, signal) => {
+        const capture = await source.preview(selector, signal);
+        return {
+          reader: "read",
+          entries: capture.entries,
+          progress: 100,
+          capture,
+        };
+      },
+      nextPreview: async () => {
+        throw new Error("Already complete");
+      },
+      releasePreview: async () => {},
+    },
     scopeDir: "Notes",
     onDispose: () => {},
   });
@@ -73,6 +112,7 @@ function fixture() {
 it("preview is non-writing and explicit save reports App progress", async () => {
   const f = fixture();
   await f.state.refresh();
+  await f.state.browser.openFolder("folder", "codex");
   await f.state.select("opaque");
   expect(await f.repository.listAll()).toEqual([]);
   expect(f.state.plan?.entries).toHaveLength(1);
@@ -86,7 +126,7 @@ it("preview is non-writing and explicit save reports App progress", async () => 
       title: "Saving imported transcript",
     }),
   );
-  expect(f.progress.complete).toHaveBeenCalledTimes(4);
+  expect(f.progress.complete).toHaveBeenCalledTimes(5);
   await f.state.close();
 });
 it("unknown source selectors cannot read, save or publish a preview", async () => {
@@ -98,29 +138,34 @@ it("unknown source selectors cannot read, save or publish a preview", async () =
   expect(await f.repository.listAll()).toEqual([]);
   await f.state.close();
 });
-it("failure retains the selected preview and uses one stable notification", async () => {
+it("reload failure retains read-only content and removes save authority until verified", async () => {
   const f = fixture();
   await f.state.refresh();
+  await f.state.browser.openFolder("folder", "codex");
   await f.state.select("opaque");
-  const before = f.state.plan;
+  const before = f.state.entries;
   f.source.preview.mockRejectedValueOnce(new Error("Source unavailable"));
-  await f.state.select("opaque");
-  expect(f.state.plan).toEqual(before);
+  await f.state.reload();
+  expect(f.state.entries).toEqual(before);
+  expect(f.state.plan).toBeUndefined();
   expect(f.state.selected).toBe("opaque");
   expect(f.notifications.notify).toHaveBeenCalledWith(
     expect.objectContaining({
-      id: "ai-import-failure",
+      id: "ai-import-preview-failure",
       message: "Source unavailable",
       severity: "error",
     }),
   );
-  await f.state.select("opaque");
-  expect(f.notifications.clear).toHaveBeenLastCalledWith("ai-import-failure");
+  await f.state.reload();
+  expect(f.notifications.clear).toHaveBeenLastCalledWith(
+    "ai-import-preview-failure",
+  );
   await f.state.close();
 });
 it("closing aborts and drains an outstanding native read without late updates or toasts", async () => {
   const f = fixture();
   await f.state.refresh();
+  await f.state.browser.openFolder("folder", "codex");
   let aborted = false;
   f.source.preview.mockImplementationOnce(
     async (_selector?: string, signal?: AbortSignal) =>

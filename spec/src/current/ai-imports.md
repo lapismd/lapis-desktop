@@ -2,30 +2,68 @@
 
 ## Progressive browser design review
 
-E-AI-120 adds a catalog-only proposal for harness/project-folder navigation,
-lazy session listings, cached folder results and progressive transcript batches.
-It composes the existing embedded AppShell, File Listing and recorded transcript
-components with disposable simulated sources. Codex is the supported example;
-other harnesses remain visibly unavailable. Partial previews cannot be imported;
-source changes require reload, and switching selection fences late batches. The
-proposal includes loading, empty, cached, interrupted and complete states.
-Production components, native contracts and ordinary import behavior remain
-unchanged. User design confirmation is required before live implementation.
+E-AI-120 records the approved catalog prototype. E-AI-121 adopts its progressive
+browser in the live import view. Older simulated scenarios remain isolated
+design fixtures; the StreamingPreview and Indexed imports stories mount
+production.
+
+## Indexed progressive imports
+
+The user approved E-AI-120's design. IMPORT-02 now implements it in the ordinary
+import view with Codex JSONL, Cursor project transcripts and OpenCode's local
+SQLite session store. These are read-only source formats, not execution profiles
+or automatic capture grants. The existing Codex capture watcher remains
+separate.
+
+A private, device-local metadata index lives in the application cache outside
+vaults. It stores only source identities, physical file stamps, native folder
+metadata and source titles, never transcript bodies, prompts, tool payloads or
+credentials. It is rebuildable and grants no read authority. Every selection
+revalidates its admitted source. Metadata discovery proceeds in bounded worker
+steps; cached folders appear immediately while changed metadata is reconciled.
+The index is capped at 8192 sessions globally and 16 MiB on disk; discovery
+examines at most 131072 entries and sources are bounded to 64 MiB. Sessions page
+in groups of 128. Opening a folder lists only that folder's cached metadata.
+Refresh and view reopening discover additions/removals. Corrupt caches rebuild;
+missing sources and unknown IO remain distinct.
+
+Harness children are visibly indented. The embedded AppShell retains navigation,
+header, transcript mode controls and footer. Selection cancels and drains the
+previous read. Sanitized provisional batches may cross IPC for read-only
+display; they carry no import identity or save authority. Pause stops pulling
+more pages. Only completion after the unchanged JSONL fence or pinned SQLite
+read transaction produces the final immutable snapshot. Failure/source change
+disables Import and offers reload; stale batches cannot replace another
+selection. Existing imports, stable deduplication, read-only authority and
+unknown-write recovery remain intact.
+
+Codex uses its qualified headers and shared normalizer. Cursor JSONL and
+OpenCode SQLite use explicit structural version-1 import profiles and retain
+only known user/assistant text and observed tool evidence. Reasoning and
+permission state are omitted. Metadata labels and all provisional/final content
+pass native privacy before rendering. The renderer supplies opaque
+harness/folder/session/read IDs, never filesystem paths, SQL, executables or
+source roots. Lifecycle disable, vault close and window destruction fence and
+drain both index and preview work.
 
 IMPORT-01 advances LD-AI-002/004 using local files. IMPORT-01A provides the
 production import journal and injected preview UI; IMPORT-01B connects native
 Codex discovery, reading and privacy. Catalog clients are fixtures, never proof
 that ordinary native discovery is available. JJ persistence remains deferred.
 
-Native discovery uses only the host home’s `.codex/sessions` root. It selects up
-to 256 qualified CLI/Desktop sessions from the 1,024 most recent candidates; no
-archived root, environment override or renderer-supplied path is admitted.
-Opaque per-client handles and prepared request tickets bind cancellation before
-worker start. Disable, vault close and window destruction fence and drain reads
+The Codex adapter reads the host home’s `.codex/sessions` root. Cursor reads
+`.cursor/projects/*/agent-transcripts` with bounded workspaceStorage metadata
+mapping when available; unmapped projects retain their encoded folder labels and
+home privacy context. OpenCode reads `.local/share/opencode/opencode.db`. No
+archived root, environment override or renderer-supplied path is admitted. The
+legacy Codex watcher/catalog retains its separate 256/1024 limits. Opaque
+per-client handles and prepared request tickets bind cancellation before worker
+start. Disable, vault close and window destruction fence and drain reads
 independently of execution admission; imports require no configured provider.
-Completed immutable snapshots alone cross IPC. Tool output remains unknown
-unless the native normalizer has affirmative terminal evidence; output alone
-cannot prove success. Both saved and displayed states retain that distinction.
+Only sanitized provisional entries and completed immutable snapshots cross IPC.
+Tool output remains unknown unless the native normalizer has affirmative
+terminal evidence; output alone cannot prove success. Both saved and displayed
+states retain that distinction.
 
 Import is an explicit, bounded snapshot operation. Native acquisition keeps raw
 paths, headers, private reasoning and credentials outside the renderer. The

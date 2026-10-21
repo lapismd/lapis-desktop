@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-AI-097–120 cover ACP, history, memory and import UI review. M14.8 is Partial
+E-AI-097–121 cover ACP, history, memory and indexed imports. M14.8 is Partial
 pending visible provider/native acceptance. M10.2–M10.4 retain LD-MIG-002 gates;
 native/model and two-device evidence stays separate. M13/M13.3 remain Deferred.
 

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import ImportReviewDemo from "../imports/ImportReviewDemo.svelte";
   import { onMount, untrack } from "svelte";
   import { WorkspaceShell } from "@lapis-notes/workspace";
   import { registerCatalogCleanup } from "../../lifecycle.ts";
@@ -8,10 +9,17 @@
     scenario = "browse",
     automatic = true,
   }: { scenario?: Scenario; automatic?: boolean } = $props();
-  const fixture = untrack(() => progressiveImportFixture(scenario, automatic));
+  const fixture = untrack(() =>
+    scenario === "streaming" && automatic
+      ? undefined
+      : progressiveImportFixture(scenario, automatic),
+  );
   let ready = $state(false);
-  const unregister = registerCatalogCleanup(fixture.close);
+  const unregister = registerCatalogCleanup(
+    () => fixture?.close() ?? Promise.resolve(),
+  );
   onMount(() => {
+    if (!fixture) return;
     let active = true;
     void fixture.ready.then(() => {
       if (active) ready = true;
@@ -24,12 +32,16 @@
   });
 </script>
 
-<div class="progressive-import-demo">
-  {#if ready}<WorkspaceShell
-      app={fixture.app}
-      workspaceLabel="Lapis Notes"
-    />{/if}
-</div>
+{#if scenario === "streaming" && automatic}
+  <ImportReviewDemo scenario="streaming" sessionLayout />
+{:else}
+  <div class="progressive-import-demo">
+    {#if ready && fixture}<WorkspaceShell
+        app={fixture.app}
+        workspaceLabel="Lapis Notes"
+      />{/if}
+  </div>
+{/if}
 
 <style>
   .progressive-import-demo {

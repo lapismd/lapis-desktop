@@ -1,6 +1,6 @@
 # Desktop plugins and catalog
 
-E-AI-120 previews progressive imports; live work awaits approval.
+E-AI-121 adopts progressive imports and three harnesses in production.
 
 E-AI-108/109/112–118 cover agent editors, headers, responsive AI/Compute
 settings, sent context, indentation and Markdown memory review (LD-CAT-003).

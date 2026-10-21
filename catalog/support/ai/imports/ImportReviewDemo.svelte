@@ -1,7 +1,8 @@
 <script lang="ts">
   import { onMount, untrack } from "svelte";
   import { WorkspaceShell } from "@lapis-notes/workspace";
-  import { createImportFixture, type ImportScenario } from "./fixture.ts";
+  import { createImportFixture } from "./fixture.ts";
+  import type { ImportScenario } from "./sources.ts";
   let {
     scenario = "ready",
     sessionLayout = false,

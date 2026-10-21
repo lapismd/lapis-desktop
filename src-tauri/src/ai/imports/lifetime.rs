@@ -1,4 +1,4 @@
-use super::{CaptureQueue, Catalog, Check, denied};
+use super::{BrowserPreview, CaptureQueue, Catalog, Check, denied};
 use std::{
     collections::HashMap,
     io,
@@ -25,6 +25,7 @@ pub struct ImportScope {
     changed: Notify,
     pub catalog: Mutex<Catalog>,
     pub capture: Mutex<CaptureQueue>,
+    pub browser: Mutex<HashMap<Uuid, BrowserPreview>>,
 }
 pub struct ImportWork {
     scope: Arc<ImportScope>,
@@ -39,6 +40,7 @@ impl ImportScope {
             changed: Notify::new(),
             catalog: Mutex::new(Catalog::default()),
             capture: Mutex::new(CaptureQueue::default()),
+            browser: Mutex::new(HashMap::new()),
         })
     }
     pub fn check(&self) -> io::Result<()> {

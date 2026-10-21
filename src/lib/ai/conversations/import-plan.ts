@@ -8,13 +8,9 @@ import {
   type SessionImportPlan,
 } from "./import-types.ts";
 import { normalizeConversationScope } from "./paths.ts";
-import { sanitizeTranscriptEntry } from "./sanitize-entry.ts";
-import {
-  sanitizeDurableField,
-  type DurableSanitizationOptions,
-} from "./redaction.ts";
-import { CONVERSATION_SCHEMA_VERSION, type TranscriptEntry } from "./types.ts";
-import { validateTranscriptEntry } from "./transcript-validation.ts";
+import { projectImportEntries } from "./import-entries.ts";
+import { type DurableSanitizationOptions } from "./redaction.ts";
+import { CONVERSATION_SCHEMA_VERSION } from "./types.ts";
 import { assertTimestamp, record } from "./validation-fields.ts";
 
 /** The identity excludes contentDigest so different content claiming the same source refuses. */
@@ -38,85 +34,7 @@ export async function planSessionImport(
     throw new Error(
       "Captured session exceeds the supported import format or bounds",
     );
-  const ids = new Set<string>();
-  const entries = c.entries.map((value): TranscriptEntry => {
-    const e = record(value, "Captured entry");
-    if (
-      typeof e.id !== "string" ||
-      !/^[A-Za-z0-9._:-]{1,128}$/u.test(e.id) ||
-      ids.has(e.id)
-    )
-      throw new Error(
-        "Captured source event identities must be distinct and portable",
-      );
-    ids.add(e.id);
-    assertTimestamp(e, "createdAt", "Captured entry");
-    const base = {
-      schemaVersion: CONVERSATION_SCHEMA_VERSION,
-      id: `import:${e.id}`,
-      createdAt: e.createdAt as string,
-    };
-    let entry: TranscriptEntry;
-    if (e.type === "message") {
-      if (Object.keys(e).sort().join() !== "createdAt,id,role,text,type")
-        throw new Error("Unsupported imported message fields");
-      entry = {
-        ...base,
-        type: "message",
-        role: e.role as "user" | "assistant",
-        text: e.text as string,
-      };
-    } else if (e.type === "tool") {
-      if (
-        Object.keys(e).some(
-          (k) =>
-            ![
-              "createdAt",
-              "id",
-              "type",
-              "name",
-              "state",
-              "input",
-              "output",
-            ].includes(k),
-        )
-      )
-        throw new Error("Unsupported imported tool fields");
-      entry = {
-        ...base,
-        type: "tool",
-        toolId: base.id,
-        name: e.name as string,
-        state: e.state as Extract<TranscriptEntry, { type: "tool" }>["state"],
-        ...(e.input !== undefined ? { input: e.input as string } : {}),
-        ...(e.output !== undefined ? { output: e.output as string } : {}),
-      };
-    } else if (e.type === "notice") {
-      if (Object.keys(e).sort().join() !== "createdAt,id,text,type")
-        throw new Error("Unsupported imported notice fields");
-      entry = { ...base, type: "system.notice", text: e.text as string };
-    } else
-      throw new Error(
-        "Import cannot retain executable or permission authority",
-      );
-    entry.provenance = {
-      originClass: "untrusted",
-      sourceKind:
-        entry.type === "message"
-          ? entry.role === "user"
-            ? "user-message"
-            : "assistant-message"
-          : "runtime-output",
-    };
-    validateTranscriptEntry(entry);
-    if (entry.type === "message" || entry.type === "system.notice")
-      entry.text = sanitizeDurableField(entry.text, sanitization).text ?? "";
-    if (entry.type === "tool")
-      entry.name = sanitizeDurableField(entry.name, sanitization).text ?? "";
-    return validateTranscriptEntry(
-      sanitizeTranscriptEntry(validateTranscriptEntry(entry), sanitization),
-    );
-  });
+  const entries = projectImportEntries(c.entries, sanitization);
   const scope = normalizeConversationScope(scopeDir);
   const key = await sha256ConversationText(
     canonicalConversationJson(["lapis-notes/session-import/v1", scope, source]),
@@ -126,7 +44,7 @@ export async function planSessionImport(
   const title =
     first?.type === "message"
       ? [...first.text.replace(/\s+/gu, " ").trim()].slice(0, 80).join("")
-      : "Imported Codex session";
+      : `Imported ${source.kind === "opencode" ? "OpenCode" : source.kind === "cursor" ? "Cursor" : "Codex"} session`;
   const createdAt = c.createdAt as string;
   const updatedAt = entries.reduce(
     (latest, e) => (e.createdAt > latest ? e.createdAt : latest),

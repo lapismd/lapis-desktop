@@ -1,8 +1,10 @@
+mod browser;
 pub(crate) mod commands;
 mod lifetime;
+mod requests;
 use crate::host::state::{NativeHost, NativeServices};
 use lapis_desktop::{
-    ai::imports::{Catalog, ImportScope},
+    ai::imports::{Catalog, ImportIndex, ImportScope},
     vault::admission::VaultLease,
 };
 pub use lifetime::{close_vault, window_destroyed};
@@ -23,6 +25,7 @@ pub enum Purpose {
 }
 pub struct NativeImports {
     pub(super) home: PathBuf,
+    pub(super) index: Mutex<ImportIndex>,
     owners: Mutex<HashMap<Uuid, Owner>>,
     destroyed: Mutex<HashSet<String>>,
     pub(super) transitions: Arc<tokio::sync::Mutex<()>>,
@@ -46,7 +49,16 @@ pub fn initialize(app: &tauri::AppHandle) -> io::Result<()> {
     #[cfg(feature = "e2e")]
     let home = PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT").map_err(|_| denied())?)
         .join("import-home");
+    #[cfg(not(feature = "e2e"))]
+    let cache = app
+        .path()
+        .app_cache_dir()
+        .map_err(|_| denied())?
+        .join("ai-session-index");
+    #[cfg(feature = "e2e")]
+    let cache = home.parent().ok_or_else(denied)?.join("import-cache");
     app.manage(Arc::new(NativeImports {
+        index: Mutex::new(ImportIndex::new(home.clone(), cache)),
         home,
         owners: Mutex::new(HashMap::new()),
         destroyed: Mutex::new(HashSet::new()),

@@ -8,9 +8,51 @@ export type ImportSourceRow = {
   profile: string;
   updatedAt: string;
 };
+export type ImportHarness = "codex" | "cursor" | "opencode";
+export type ImportFolder = {
+  selector: string;
+  label: string;
+  location: string;
+  count: number;
+};
+export type FolderPage = {
+  folders: ImportFolder[];
+  indexed: number;
+  complete: boolean;
+  limited: boolean;
+};
+export type BrowserSession = ImportSourceRow & {
+  kind: ImportHarness;
+  folder: string;
+  bytes: number;
+};
+export type SessionPage = {
+  rows: BrowserSession[];
+  next: string | null;
+  total: number;
+};
+export type PreviewPage = {
+  reader: string;
+  entries: CapturedSession["entries"];
+  /** Delta entries plus the complete portable ordering while provisional. */
+  order?: string[];
+  progress: number;
+  capture?: CapturedSession;
+};
 export interface AiImportSources {
-  list(signal: AbortSignal): Promise<ImportSourceRow[]>;
-  preview(selector: string, signal: AbortSignal): Promise<CapturedSession>;
+  folders(
+    harness: ImportHarness,
+    refresh: boolean,
+    signal: AbortSignal,
+  ): Promise<FolderPage>;
+  sessions(
+    folder: string,
+    after: string | undefined,
+    signal: AbortSignal,
+  ): Promise<SessionPage>;
+  startPreview(selector: string, signal: AbortSignal): Promise<PreviewPage>;
+  nextPreview(reader: string, signal: AbortSignal): Promise<PreviewPage>;
+  releasePreview(reader: string, signal: AbortSignal): Promise<void>;
 }
 export function validateImportRows(rows: ImportSourceRow[]): ImportSourceRow[] {
   if (

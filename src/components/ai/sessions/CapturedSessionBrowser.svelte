@@ -7,7 +7,7 @@
   import MessagesIcon from "@lucide/svelte/icons/messages-square";
   import * as Empty from "@lapismd/design-core/shadcn/empty";
   import HistoryIcon from "@lucide/svelte/icons/history";
-  import codexIcon from "../../../lib/ai/presentation/assets/codex.svg";
+  import { agentAvatar } from "../../../lib/ai/presentation/agent-avatar.ts";
   import AiRecordedTranscript from "./AiRecordedTranscript.svelte";
   import AiTranscriptLoading from "../chat/AiTranscriptLoading.svelte";
   import TranscriptViewToggle from "./TranscriptViewToggle.svelte";
@@ -16,6 +16,7 @@
   import AiSessionMenu from "./AiSessionMenu.svelte";
   import {
     profileLabel,
+    profileHarness,
     type SavedSessionGroup,
   } from "../../../lib/ai/session-browser/model.ts";
   let {
@@ -54,7 +55,7 @@
       group: s.group,
       updatedAt: s.versions[0].updatedAt,
       status: `${s.versions.length} versions`,
-      harness: "codex",
+      harness: profileHarness(s.profile),
     })),
   );
   function select(id: string) {
@@ -74,6 +75,7 @@
 
 <AiSessionShell
   {items}
+  harness={profileHarness(session?.profile ?? "")}
   activeId={selected}
   title={session?.title ?? "Captured AI sessions"}
   status={session
@@ -136,7 +138,10 @@
         entries={version.entries}
         bind:view
         showViewToolbar={false}
-        assistant={{ name: "Codex", image: codexIcon }}
+        assistant={{
+          name: profileLabel(session?.profile ?? "Codex"),
+          image: agentAvatar(profileHarness(session?.profile ?? "")),
+        }}
       />{/key}
   {:else}<Empty.Root
       ><Empty.Header

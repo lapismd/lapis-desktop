@@ -1119,16 +1119,14 @@ source parent `3998e2b0`, Apache-2.0. Visual approval remains pending.
 
 ## Progressive import browser design review
 
-`Desktop/AI/Progressive imports` is a catalog-only proposal pending user
-approval. It composes production AiSessionFrame/AiSessionThread and
-AiRecordedTranscript inside the owned WorkspaceShell, with the public
-FileListing directory API. BrowseByHarnessAndFolder covers no eager transcript
-reads and lazy folder loads; StreamingPreview/PauseAndComplete show batches,
-progress, pause/resume and both transcript modes; CachedFolderAndPreview retains
-results during refresh; SwitchDuringRead fences late batches; SourceChanged
-requires reload before import; EmptyFolder and DiscoveringFolders retain their
-own visible states. Only Codex is interactive; other harnesses stay unavailable.
-Source and save behavior is disposable simulation, with no native paths,
-providers or writes. Existing production import stories and components are
-unchanged. Native streaming/performance/privacy and visual baselines remain
-unqualified (E-AI-120).
+`Desktop/AI/Progressive imports` retains the E-AI-120 design scenarios; its
+StreamingPreview now mounts the live importer. `Desktop/AI/Indexed imports`
+exercises production progressive pause/resume and explicit Cursor/OpenCode save.
+`Import review` and `Import layout review` exercise lazy folder selection,
+read-only modes, deduplication, retry and failure toasts. Production and
+fixtures use the ordinary embedded AppShell and public FileListing. Harness
+folder children are indented. File timestamps use the public relative-time
+formatter inside a noninteractive time element because the complete file row is
+a button. Native qualification is recorded separately in E-AI-121; browser
+fixtures do not qualify source compatibility or performance. Visual baselines
+remain unapproved.

@@ -9,12 +9,17 @@ const meta = {
 } satisfies Meta<typeof ImportReviewDemo>;
 export default meta;
 type Story = StoryObj<typeof meta>;
+async function previewSession(element: HTMLElement) {
+  const canvas = within(element);
+  await userEvent.click(await canvas.findByRole("button", { name: "Notes" }));
+  await userEvent.click(
+    await canvas.findByRole("button", { name: /^Weekly review/ }),
+  );
+}
 export const SelectAndPreview: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
-      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
-    );
+    await previewSession(canvasElement);
     await expect(
       canvas.findByRole("region", { name: "Captured conversation" }),
     ).resolves.toBeVisible();
@@ -37,9 +42,7 @@ export const SelectAndPreview: Story = {
 export const SaveAndDeduplicate: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.click(
-      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
-    );
+    await previewSession(canvasElement);
     await userEvent.click(
       await canvas.findByRole("button", { name: "Import snapshot" }),
     );
@@ -59,9 +62,7 @@ export const InterruptedSave: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
-    await userEvent.click(
-      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
-    );
+    await previewSession(canvasElement);
     await userEvent.click(
       await canvas.findByRole("button", { name: "Import snapshot" }),
     );
@@ -93,9 +94,7 @@ export const PreviewRecovery: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
-    await userEvent.click(
-      await canvas.findByRole("button", { name: /^Preview Weekly review/ }),
-    );
+    await previewSession(canvasElement);
     await expect(
       page.findByText(
         "The selected source changed. Preview it again to read its current snapshot.",
@@ -105,7 +104,7 @@ export const PreviewRecovery: Story = {
       canvas.getByRole("button", { name: "Import snapshot" }),
     ).toBeDisabled();
     await userEvent.click(
-      canvas.getByRole("button", { name: /^Preview Weekly review/ }),
+      canvas.getByRole("button", { name: "Reload preview" }),
     );
     await expect(
       canvas.findByText("A focused weekly review"),
@@ -126,7 +125,7 @@ export const LoadingSources: Story = {
   play: async ({ canvasElement }) => {
     await expect(
       within(canvasElement).findByRole("status", {
-        name: "Loading importable sessions",
+        name: "Finding Codex folders",
       }),
     ).resolves.toBeVisible();
   },

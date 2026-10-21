@@ -1,126 +1,145 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { App } from "@lapis-notes/api";
 import type { ConversationRepository } from "../conversations/conversation-repository.ts";
-import type {
-  CapturedSession,
-  SessionImportPlan,
-} from "../conversations/import-types.ts";
 import type { ConversationLocation } from "../conversations/types.ts";
-import type { AiImportSources, ImportSourceRow } from "./source-port.ts";
-import { validateImportRows } from "./source-port.ts";
-import { BackgroundWork } from "../../desktop/background-work.ts";
-import { OwnedAiWork } from "../core/owned-work.ts";
-
+import type { AiImportSources } from "./source-port.ts";
+import { ImportTasks } from "./tasks.ts";
+import { createImportBrowser } from "./browser.svelte.ts";
+import { createImportPreview } from "./preview.svelte.ts";
 export type AiImportProps = {
   app: App;
   repository: ConversationRepository;
   sources?: AiImportSources;
   scopeDir: string;
-  /** Optional opaque selection restored only after a fresh source listing. */
   initialSelector?: string;
   onOpen?: (location: ConversationLocation) => Promise<void>;
   onDispose: (pending: Promise<void>) => void;
 };
 export function createImportState(props: AiImportProps) {
-  const work = new OwnedAiWork(),
-    background = new BackgroundWork(props.app.notifications, "ai-import");
-  const abort = new AbortController();
-  let active = true,
-    capture: CapturedSession | undefined;
-  let rows = $state<ImportSourceRow[]>([]),
-    busy = $state(false),
-    loaded = $state(false);
-  let selected = $state<string>(),
-    plan = $state<SessionImportPlan>();
-  let saved = $state<{ location: ConversationLocation; duplicate: boolean }>();
-  function run(title: string, task: () => Promise<void>) {
-    return work.run(async () => {
-      if (!active || busy) return;
-      busy = true;
-      try {
-        await background.run(title, task);
-        if (active) await props.app.notifications.clear("ai-import-failure");
-      } catch (error) {
-        if (active && !abort.signal.aborted)
-          props.app.notifications.notify({
-            id: "ai-import-failure",
-            title: "Import AI session",
-            source: "ai",
-            severity: "error",
-            message: error instanceof Error ? error.message : String(error),
-          });
-      } finally {
-        if (active) busy = false;
-      }
-    });
+  const tasks = new ImportTasks(props.app),
+    abort = new AbortController();
+  const browser = createImportBrowser(props.sources, tasks),
+    preview = createImportPreview(
+      props.sources,
+      props.repository,
+      props.scopeDir,
+      tasks,
+    );
+  let saved = $state<{ location: ConversationLocation; duplicate: boolean }>(),
+    saving = $state(false),
+    active = true;
+  const select = (selector: string) => {
+    const row = browser.rows.find((row) => row.selector === selector);
+    if (!row || !active) return Promise.resolve();
+    saved = undefined;
+    return preview.select(row);
+  };
+  async function save() {
+    if (
+      !active ||
+      saving ||
+      preview.phase !== "ready" ||
+      !preview.capture ||
+      !preview.plan
+    )
+      return;
+    saving = true;
+    const capture = structuredClone(preview.capture),
+      selector = preview.selected?.selector;
+    const result = await tasks.run(
+      "Saving imported transcript",
+      "ai-import-failure",
+      abort.signal,
+      () => props.repository.imports.save(capture, props.scopeDir),
+    );
+    if (active) {
+      saving = false;
+      if (
+        result &&
+        preview.selected?.selector === selector &&
+        preview.capture?.source.snapshotKey === capture.source.snapshotKey
+      )
+        saved = {
+          location: result.snapshot.location,
+          duplicate: result.duplicate,
+        };
+    }
   }
-  const refresh = () =>
-    run("Finding importable AI sessions", async () => {
-      if (!props.sources) return;
-      const next = await props.sources.list(abort.signal);
-      if (!active) return;
-      rows = validateImportRows(next);
-      loaded = true;
-    });
-  const select = (selector: string) =>
-    run("Preparing transcript preview", async () => {
-      if (!props.sources || !rows.some((r) => r.selector === selector)) return;
-      // Keep an earlier successful preview until its replacement is confirmed.
-      const next = await props.sources.preview(selector, abort.signal);
-      const preview = await props.repository.imports.preview(
-        next,
-        props.scopeDir,
-      );
-      if (!active) return;
-      capture = structuredClone(next);
-      plan = preview;
-      selected = selector;
-      saved = undefined;
-    });
-  const save = () =>
-    run("Saving imported transcript", async () => {
-      if (!capture || !plan) return;
-      const result = await props.repository.imports.save(
-        capture,
-        props.scopeDir,
-      );
-      if (!active) return;
-      saved = {
-        location: result.snapshot.location,
-        duplicate: result.duplicate,
-      };
-    });
-  const open = () =>
-    run("Opening imported transcript", async () => {
-      if (saved) await props.onOpen?.(saved.location);
-    });
   return {
+    browser,
     get rows() {
-      return rows;
+      return browser.rows;
     },
     get busy() {
-      return busy;
+      return saving;
     },
     get loaded() {
-      return loaded;
+      return browser.indexes.codex.loaded;
     },
     get selected() {
-      return selected;
+      return preview.selected?.selector;
+    },
+    get selectedRow() {
+      return preview.selected;
+    },
+    get entries() {
+      return preview.entries;
     },
     get plan() {
-      return plan;
+      return preview.plan;
+    },
+    get phase() {
+      return preview.phase;
+    },
+    get progress() {
+      return preview.progress;
+    },
+    get paused() {
+      return preview.paused;
+    },
+    get cachedPreview() {
+      return preview.cached;
     },
     get saved() {
       return saved;
     },
-    refresh,
     select,
     save,
-    open,
-    close() {
+    togglePause: preview.togglePause,
+    reload() {
+      saved = undefined;
+      return preview.reload();
+    },
+    async refresh() {
+      await browser.refresh();
+    },
+    async restore(selector: string) {
+      for (const folder of browser.indexes.codex.folders) {
+        await browser.openFolder(folder.selector, "codex");
+        if (browser.rows.some((r) => r.selector === selector)) {
+          await select(selector);
+          break;
+        }
+      }
+    },
+    open() {
+      return tasks.run(
+        "Opening imported transcript",
+        "ai-import-failure",
+        abort.signal,
+        async () => {
+          if (saved) await props.onOpen?.(saved.location);
+        },
+      );
+    },
+    async close() {
       active = false;
       abort.abort();
-      return work.settle();
+      browser.close();
+      preview.close();
+      tasks.fence();
+      await tasks.settle();
     },
   };
 }
+export type ImportState = ReturnType<typeof createImportState>;

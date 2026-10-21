@@ -15,7 +15,7 @@ pub struct ImportSource {
     pub session_key: String,
     pub snapshot_key: String,
 }
-#[derive(Clone, Serialize)]
+#[derive(Clone, PartialEq, Eq, Serialize)]
 #[serde(tag = "type", rename_all = "camelCase")]
 pub enum CapturedEntry {
     #[serde(rename_all = "camelCase")]

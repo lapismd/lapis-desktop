@@ -31,6 +31,10 @@ impl Fixture {
             fs_gate: Arc::new(Mutex::new(())),
         })));
         let imports = Arc::new(NativeImports {
+            index: Mutex::new(ImportIndex::new(
+                root.path().into(),
+                root.path().join("import-cache"),
+            )),
             home: root.path().into(),
             owners: Mutex::new(HashMap::new()),
             destroyed: Mutex::new(HashSet::new()),

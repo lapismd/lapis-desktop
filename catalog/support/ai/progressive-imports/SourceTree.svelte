@@ -178,6 +178,7 @@
   }
   .folder-tree {
     padding: 0 0.375rem 0.5rem;
+    padding-inline-start: 1.375rem;
   }
   .session-label {
     display: flex;

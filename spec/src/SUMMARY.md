@@ -341,3 +341,4 @@
 - [Processor model dropdowns and settings tabs](history/E-AI-119.md)
 
 - [Progressive import browser design review](history/E-AI-120.md)
+- [Indexed progressive local imports](history/E-AI-121.md)

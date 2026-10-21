@@ -5,7 +5,7 @@ import { createChatApp } from "../app-fixture.ts";
 import { registerCatalogCleanup } from "../../lifecycle.ts";
 import CapturedSessionReview from "../../../../src/components/ai/sessions/CapturedSessionBrowser.svelte";
 import type { SavedSessionGroup as ReviewSession } from "../../../../src/lib/ai/session-browser/model.ts";
-import { sampleCapture } from "../imports/fixture.ts";
+import { sampleCapture } from "../imports/sample-capture.ts";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 import ImportedConversation from "../../../../src/components/ai/imports/ImportedConversation.svelte";

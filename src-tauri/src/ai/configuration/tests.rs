@@ -162,10 +162,10 @@ fn legacy_missing_model_blocks_launch_but_retains_receipt_replay_and_key_removal
             ..State::default()
         })
         .unwrap();
-    let error = store
-        .environment()
-        .err()
-        .expect("missing model must block launch");
+    let error = match store.environment() {
+        Err(error) => error,
+        Ok(_) => panic!("missing model must block launch"),
+    };
     assert!(error.to_string().contains("default model"));
     assert_eq!(store.save(legacy).unwrap().revision, 1);
 

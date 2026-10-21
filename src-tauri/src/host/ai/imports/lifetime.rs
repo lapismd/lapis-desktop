@@ -37,7 +37,17 @@ impl NativeImports {
             .collect();
         for (id, scope) in retained {
             scope.drain().await?;
+            scope.browser.lock().map_err(|_| denied())?.clear();
             self.owners.lock().map_err(|_| denied())?.remove(&id);
+        }
+        if !self
+            .owners
+            .lock()
+            .map_err(|_| denied())?
+            .values()
+            .any(|o| o.purpose == Purpose::Import)
+        {
+            self.index.lock().map_err(|_| denied())?.cancel_scans();
         }
         Ok(())
     }

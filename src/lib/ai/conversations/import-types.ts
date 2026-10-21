@@ -3,7 +3,7 @@ import type { TranscriptEntry, ConversationMetadata } from "./types.ts";
 import { record } from "./validation-fields.ts";
 
 export type ImportSource = {
-  kind: "codex";
+  kind: "codex" | "cursor" | "opencode";
   profile: string;
   sessionKey: string;
   snapshotKey: string;
@@ -51,9 +51,13 @@ export function validateImportSource(value: unknown): ImportSource {
   const s = record(value, "Import source");
   if (
     Object.keys(s).sort().join() !== "kind,profile,sessionKey,snapshotKey" ||
-    s.kind !== "codex" ||
+    !["codex", "cursor", "opencode"].includes(String(s.kind)) ||
     typeof s.profile !== "string" ||
-    !/^codex-(?:cli|desktop)-[0-9]+\.[0-9]+\.[0-9]+$/u.test(s.profile) ||
+    !(s.kind === "codex"
+      ? /^codex-(?:cli|desktop)-[0-9]+\.[0-9]+\.[0-9]+$/u.test(s.profile)
+      : s.kind === "cursor"
+        ? s.profile === "cursor-jsonl-v1"
+        : s.profile === "opencode-sqlite-v1") ||
     s.profile.length > 80 ||
     typeof s.sessionKey !== "string" ||
     !digest.test(s.sessionKey) ||
