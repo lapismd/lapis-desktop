@@ -198,16 +198,19 @@ session retains its original instructions when its profile changes. A new
 session captures the latest profile. Description remains visible in profile
 presentation.
 
-The compact icon-only ghost shield with a tooltip in both chat layouts selects a
-conversation-local mode for the selected participant, falling back to its saved
-agent default and then the existing reviewed provider default. Overrides persist
-with local conversation metadata and remain scoped to the participant; clearing
-restores inheritance. Multiple-recipient sends resolve each participant
-independently. Mode choices come from negotiated ACP mode configuration, never
-guessed universal modes. Unavailable saved choices stay visible but cannot
-silently fall back. Native configuration acknowledgement and mode readiness
-precede any prompt. Provider modes do not alter AppToolHost approvals, workspace
-trust or native admission.
+The footer Conversation actions menu in both layouts owns a Mode submenu and
+Pin/Unpin Chat. Mode shows the effective selection and offers only negotiated
+choices, plus Use agent default. Pin no longer occupies a separate footer
+button. The menu remains available before a conversation has been saved; pinning
+requires a saved conversation. Mode selects a conversation-local mode for the
+selected participant, inheriting its saved agent default and then the existing
+reviewed provider default. Overrides persist with local conversation metadata
+and remain scoped to the participant; clearing restores inheritance.
+Multiple-recipient sends resolve each participant independently. Mode choices
+come from negotiated ACP mode configuration, never guessed universal modes.
+Unavailable saved choices stay visible but cannot silently fall back. Native
+configuration acknowledgement and mode readiness precede any prompt. Provider
+modes do not alter AppToolHost approvals, workspace trust or native admission.
 
 Queued messages capture instructions and mode along with model/effort; later
 profile changes cannot rewrite them. Context and modes are bounded on load as

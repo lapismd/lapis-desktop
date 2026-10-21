@@ -20,6 +20,7 @@ export function recordedReviewStore(scenario: string) {
   if (
     ![
       "addressed",
+      "mode-menu",
       "addressed-approval",
       "participant-settings",
       "participant-settings-failure",

@@ -81,13 +81,29 @@ export const FollowScope: Story = {
       );
     });
     await userEvent.click(
-      within(panel).getByRole("button", { name: "Pin conversation" }),
+      within(panel).getByRole("button", { name: "Conversation actions" }),
     );
-    await waitFor(() => {
+    const menu = within(canvasElement.ownerDocument.body);
+    await userEvent.click(
+      await menu.findByRole("menuitem", { name: "Pin Chat" }),
+    );
+    await waitFor(() =>
       expect(
-        within(panel).getByRole("button", { name: "Unpin conversation" }),
-      ).toHaveAttribute("aria-pressed", "true");
-    });
+        getComputedStyle(canvasElement.ownerDocument.body).pointerEvents,
+      ).not.toBe("none"),
+    );
+    await userEvent.click(
+      within(panel).getByRole("button", { name: "Conversation actions" }),
+    );
+    await waitFor(() =>
+      expect(menu.getByRole("menuitem", { name: "Unpin Chat" })).toBeVisible(),
+    );
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(
+        getComputedStyle(canvasElement.ownerDocument.body).pointerEvents,
+      ).not.toBe("none"),
+    );
     const welcome = app.vault.getFileByPath("Notes/Welcome.md");
     if (!welcome) throw new Error("Notes/Welcome.md was not seeded");
     const noteLeaf = app.workspace.getLeaf("tab");

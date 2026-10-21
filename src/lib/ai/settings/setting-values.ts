@@ -28,7 +28,7 @@ const choices: Partial<Record<AiSettingKey, readonly string[]>> = {
   transcriptView: ["document", "classic"],
   defaultRuntime: ["auto", "acp"],
   acpAgent: ACP_AGENT_IDS,
-  thinking: ["off", "low", "medium", "high"],
+  thinking: ["default", "off", "low", "medium", "high"],
   memoryConsolidationRuntime: ["acp"],
   memoryConsolidationAgent: PROCESSOR_AGENT_IDS,
   handoffSummaryRuntime: ["acp"],
@@ -68,7 +68,12 @@ export function aiSettingPatch(
         ? typeof value === "string"
         : typeof value === "string" && choices[key]?.includes(value);
     if (!valid) throw new Error(`Invalid AI setting: ${id}`);
-    return { [key]: value };
+    return {
+      [key]: value,
+      ...(key === "acpAgent" && value !== settings.acpAgent
+        ? { thinking: "default" as const }
+        : {}),
+    };
   }
   if (!id.startsWith(APP_TOOL_SETTING_PREFIX) || typeof value !== "boolean")
     throw new Error(`Unknown AI setting: ${id}`);

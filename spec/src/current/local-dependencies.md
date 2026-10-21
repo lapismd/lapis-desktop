@@ -39,3 +39,8 @@ snapshot and runs normal public prepack lanes. Generated tracked-source changes
 require review and repacking. `--already-built` requires prior public build
 acceptance; all source stability, archive identity, version and integrity checks
 remain required. This helper does not qualify complete review freshness.
+
+E-AI-100 consumes the prepared Design Core `54e142bc` dropdown contrast/priority
+repair. All other archived sources retain their verified receipts; the linked AI
+client was rebuilt at `157bc082`. Intake checks all 21 packages and 64 import
+routes.

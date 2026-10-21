@@ -77,7 +77,22 @@ export class AdmittedAiTransport implements AcpTransport {
     return this.#run((raw) => raw.list());
   }
   open(options: OpenOptions) {
-    return this.#run((raw) => raw.open(options));
+    return this.#run(async (raw) => {
+      try {
+        return await raw.open(options);
+      } catch (error) {
+        const code = error instanceof Error ? error.message : error;
+        if (
+          options.targetId.split(":")[0] === "cursor" &&
+          code === "agent_rejected"
+        )
+          throw new Error(
+            "Cursor rejected session startup. Run cursor-agent login in a terminal, then retry. If already signed in, check your Cursor installation.",
+            { cause: error },
+          );
+        throw error;
+      }
+    });
   }
   submit(id: string, requestId: string, request: SessionRequest) {
     return this.#run((raw) => raw.submit(id, requestId, request));

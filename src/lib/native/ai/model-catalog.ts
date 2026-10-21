@@ -152,7 +152,15 @@ export class NativeAiModels implements AiModelCatalog {
 }
 
 export function modelsFromFacts(facts: unknown, provider: string): ModelRef[] {
-  const models = record(record(record(facts).session).models);
+  const session = record(record(facts).session);
+  const configs = Array.isArray(session.configOptions)
+    ? session.configOptions
+        .map(record)
+        .filter((option) => option.category === "model")
+    : [];
+  const models = configs.length
+    ? stableModels(configs)
+    : record(session.models);
   if (models.availableModels === undefined) return [];
   if (
     !Array.isArray(models.availableModels) ||
@@ -180,4 +188,25 @@ export function modelsFromFacts(facts: unknown, provider: string): ModelRef[] {
       isDefault: entry.modelId === models.currentModelId,
     };
   });
+}
+
+/** Match the shared ACP selector: stable config options precede legacy models. */
+function stableModels(configs: Record<string, unknown>[]) {
+  if (configs.length !== 1) throw new Error("Invalid native model catalog");
+  const option = configs[0]!;
+  const id = option.configId ?? option.id;
+  if (
+    typeof id !== "string" ||
+    !id.trim() ||
+    !Array.isArray(option.options) ||
+    option.options.length > 512
+  )
+    throw new Error("Invalid native model catalog");
+  return {
+    currentModelId: option.currentValue,
+    availableModels: option.options.map((value) => {
+      const entry = record(value);
+      return { ...entry, modelId: entry.value };
+    }),
+  };
 }

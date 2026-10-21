@@ -221,3 +221,8 @@ Unknown model fit. It copies JJ Store's production picker/catalog, tests
 keyboard search/selection, exact custom IDs, draft memory caps, honest unknown
 estimates, serving locks and no dispatch on selection. All stories remain
 visual-pending.
+
+E-AI-100 maps the footer Mode submenu and Pin/Unpin to
+`Desktop/AI/Local ACP conversations/Supported modes and pin`, using the ordinary
+embedded AppShell. It covers provider-advertised choices, current selection and
+layout persistence; native client login/provider acceptance remains separate.

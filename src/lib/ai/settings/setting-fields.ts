@@ -108,6 +108,7 @@ export function createAiSettingsSection(
       default: DEFAULT_AI_SETTINGS.thinking,
       options: [
         { value: "off", label: "Off" },
+        { value: "default", label: "Provider default" },
         { value: "low", label: "Low" },
         { value: "medium", label: "Medium" },
         { value: "high", label: "High" },

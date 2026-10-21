@@ -62,7 +62,7 @@ export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
     local: "",
   },
   defaultModel: "gpt-5.6-sol",
-  thinking: "medium",
+  thinking: "default",
   memoryAutomaticRecall: false,
   memoryConsolidationEnabled: false,
   memoryConsolidationRuntime: "acp",
@@ -81,6 +81,7 @@ export const DEFAULT_AI_SETTINGS: AiPluginSettings = {
 export const APP_TOOL_SETTING_PREFIX = "ai.appTools.";
 
 const THINKING_LEVELS = new Set<AiThinkingLevel>([
+  "default",
   "off",
   "low",
   "medium",

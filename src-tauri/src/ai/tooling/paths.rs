@@ -49,6 +49,18 @@ pub fn directories(profile: &Path, selection: Option<RequestId>) -> Vec<PathBuf>
             .filter(|p| p.is_dir()),
     );
     paths.dedup();
+    match std::env::var_os("HOME") {
+        Some(home) => with_user_bin(paths, Path::new(&home)),
+        None => paths,
+    }
+}
+/// Supplement device configuration with the ordinary user-local client install.
+/// Configured and selected managed directories keep their original priority.
+pub fn with_user_bin(mut paths: Vec<PathBuf>, home: &Path) -> Vec<PathBuf> {
+    let user_bin = home.join(".local/bin");
+    if user_bin.is_absolute() && user_bin.is_dir() && !paths.contains(&user_bin) {
+        paths.push(user_bin);
+    }
     paths
 }
 pub(super) fn resolve(paths: &[PathBuf], name: &str) -> Option<PathBuf> {

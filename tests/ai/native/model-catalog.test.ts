@@ -28,6 +28,63 @@ function fixture(
   return { raw, catalog };
 }
 describe("native ACP model catalog", () => {
+  it("reads OpenCode stable model choices, preserving IDs, labels and the current model", async () => {
+    const f = fixture({
+      configOptions: [
+        {
+          id: "provider-model",
+          category: "model",
+          type: "select",
+          currentValue: "opencode/big-pickle",
+          options: [
+            { value: "opencode/beam-free", name: "OpenCode/Beam Free" },
+            {
+              value: "opencode/big-pickle",
+              name: "Big Pickle",
+              description: "Current",
+            },
+          ],
+        },
+      ],
+      models: {
+        currentModelId: "obsolete",
+        availableModels: [{ modelId: "obsolete" }],
+      },
+    });
+    expect(await f.catalog.listModels("codex")).toEqual([
+      {
+        provider: "codex",
+        model: "opencode/beam-free",
+        displayName: "OpenCode/Beam Free",
+        isDefault: false,
+      },
+      {
+        provider: "codex",
+        model: "opencode/big-pickle",
+        displayName: "Big Pickle",
+        description: "Current",
+        isDefault: true,
+      },
+    ]);
+    expect(f.raw.open).toHaveBeenCalledOnce();
+    expect(f.raw.close).toHaveBeenCalledWith("probe");
+    await f.catalog.close();
+  });
+  it("rejects malformed stable choices without falling back or retaining the probe", async () => {
+    for (const options of [
+      null,
+      [{ value: "" }],
+      [{ value: "same" }, { value: "same" }],
+      Array.from({ length: 513 }, (_, i) => ({ value: String(i) })),
+    ]) {
+      const f = fixture({
+        configOptions: [{ configId: "model", category: "model", options }],
+      });
+      await expect(f.catalog.listModels("codex")).rejects.toThrow(/catalog/);
+      expect(f.raw.close).toHaveBeenCalledWith("probe");
+      await f.catalog.close();
+    }
+  });
   it("projects advertised provider models and closes the non-prompting probe", async () => {
     const f = fixture();
     expect(await f.catalog.listModels("codex", "acp")).toEqual([

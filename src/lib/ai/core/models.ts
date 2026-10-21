@@ -11,7 +11,7 @@ export type ModelRef = {
   supportedThinking?: AiThinkingLevel[];
 };
 
-export type AiThinkingLevel = "off" | "low" | "medium" | "high";
+export type AiThinkingLevel = "default" | "off" | "low" | "medium" | "high";
 
 export type AgentUsage = {
   used: number;

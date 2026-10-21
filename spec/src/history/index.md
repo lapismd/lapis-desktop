@@ -330,3 +330,5 @@ by the task ledger, not inferred from this list.
 - [AI provider and compute settings sections](E-AI-098.md)
 
 - [Compute model picker and memory fit](E-AI-099.md)
+
+- [External-client discovery and footer modes](E-AI-100.md)

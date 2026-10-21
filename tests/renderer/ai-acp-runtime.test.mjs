@@ -11,6 +11,41 @@ const memory = {
 };
 const submits = (f) => f.calls.filter(([call]) => call === "submit");
 
+test("provider-default reasoning sends no effort override while explicit levels remain exact", async () => {
+  for (const thinking of ["default", "high"]) {
+    const f = acpFixture();
+    const session = await new AcpAgentRuntime(f.backend).start({
+      ...request,
+      thinking,
+    });
+    assert.equal(
+      submits(f)[0][3].effort,
+      thinking === "default" ? undefined : "high",
+    );
+    await session.close();
+  }
+});
+
+test("OpenCode starts with its advertised plan mode and preserves an explicit build choice", async () => {
+  for (const executionMode of [undefined, "build"]) {
+    const f = acpFixture();
+    f.backend.client.targets = async () => [
+      { id: "opencode", label: "OpenCode" },
+    ];
+    const session = await new AcpAgentRuntime(f.backend).start({
+      ...request,
+      agent: "opencode",
+      executionMode,
+    });
+    assert.equal(submits(f)[0][3].mode, executionMode ?? "plan");
+    assert.equal(
+      submits(f).some((call) => call[3].type === "prompt"),
+      false,
+    );
+    await session.close();
+  }
+});
+
 test("ACP start attaches before configuring and never sends the initial prompt implicitly", async () => {
   const f = acpFixture();
   const runtime = new AcpAgentRuntime(f.backend);

@@ -56,6 +56,7 @@
       {panelProps}
       {controller}
       {attachmentsState}
+      {composerState}
       actions={panel.actions}
     />
     {@render documentActions?.()}
@@ -70,12 +71,7 @@
           actions={panel.actions}
           variant="ring"
         />{/if}
-      <ChatComposerOptions
-        {panelProps}
-        {controller}
-        {composerState}
-        actions={panel.actions}
-      />
+      <ChatComposerOptions {panelProps} {composerState} />
     </div>
   {/snippet}
   {#snippet workspace()}<ChatScopeFooter

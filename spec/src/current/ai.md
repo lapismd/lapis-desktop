@@ -7,6 +7,12 @@ aligns provider/compute settings with the Agents page's full-width cards.
 E-AI-099 adds JJ Store's compute picker and read-only native memory-fit
 guidance.
 
+E-AI-100 repairs stable ACP model discovery and user-local Cursor detection.
+Both chat layouts expose advertised modes and Pin/Unpin in the footer actions
+menu, retaining conversation-local overrides and provider confirmation. An
+explicit Provider default reasoning option omits effort configuration; switching
+harnesses selects it rather than carrying another client's effort.
+
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 Native-store clauses below preserve the Deferred checkpoint experiment.
 
@@ -134,13 +140,14 @@ Interrupted or uncertain terminal outcomes remain explicit failures.
 The adapted ACP runtime attaches before configuration and never prompts during
 startup. It confirms model/effort and an advertised execution mode before Send.
 E-AI-094 adds saved-agent defaults and conversation overrides; defaults remain
-Codex `read-only` and `ask` elsewhere. The footer cannot bypass AppToolHost.
-Preparation belongs to the active turn; cancel/close fence late dispatch.
-Unknown submissions block the session without replay. Detach retains the worker;
-close releases it. Failed startup finds its original request for cleanup and
-retains cleanup errors. Bounded initial skill/context delivery and the explicit
-tool-free restricted Lapis profile follow [local setup](ai-setup.md); resume and
-arbitrary MCP remain refused.
+Codex `read-only`, OpenCode `plan`, and `ask` elsewhere. Explicit saved modes
+remain exact; an unavailable mode never falls back. The footer cannot bypass
+AppToolHost. Preparation belongs to the active turn; cancel/close fence late
+dispatch. Unknown submissions block the session without replay. Detach retains
+the worker; close releases it. Failed startup finds its original request for
+cleanup and retains cleanup errors. Bounded initial skill/context delivery and
+the explicit tool-free restricted Lapis profile follow
+[local setup](ai-setup.md); resume and arbitrary MCP remain refused.
 
 Retained skill parsing, discovery precedence, immutable snapshots and bundled
 seeding remain application-owned and Vault-scoped. The migrated policy test lane

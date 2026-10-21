@@ -29,6 +29,21 @@ function registry() {
 }
 
 describe("AI controlled setting values", () => {
+  it("offers provider-default reasoning and resets the global preference only when switching clients", () => {
+    const { tools } = registry();
+    const settings = mergeAiSettings({ acpAgent: "codex", thinking: "high" });
+    expect(aiSettingPatch(settings, "ai.thinking", "default", tools)).toEqual({
+      thinking: "default",
+    });
+    expect(aiSettingPatch(settings, "ai.acpAgent", "opencode", tools)).toEqual({
+      acpAgent: "opencode",
+      thinking: "default",
+    });
+    expect(aiSettingPatch(settings, "ai.acpAgent", "codex", tools)).toEqual({
+      acpAgent: "codex",
+    });
+    expect(settings.thinking).toBe("high");
+  });
   it("retains deferred historical runtime preferences without offering new execution authority", () => {
     const { tools } = registry();
     const settings = mergeAiSettings({

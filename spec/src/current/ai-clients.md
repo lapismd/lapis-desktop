@@ -111,3 +111,24 @@ Layout-only changes, including opening/closing the bottom panel, MUST retain the
 existing chat controller/draft and MUST NOT launch another model probe. Focused
 production-shell stories assert view identity, source calls and native probes;
 they are separate from live-provider and distribution qualification.
+
+Discovery accepts stable ACP model `configOptions` before legacy
+`models.availableModels`, preserving exact IDs, labels and current selection.
+Malformed, duplicate and oversized inventories fail closed and release their
+probe. OpenCode defaults to advertised `plan` unless a saved mode is selected;
+every mode still needs provider confirmation before Send.
+
+Device discovery and launch also search an existing native HOME `.local/bin`
+after explicit/managed directories, preserving their priority and cleared
+environment. Explicit malformed/missing directories still refuse admission.
+Cursor startup rejection includes device-login guidance (`cursor-agent login`);
+discovery never authenticates or retries a rejected session automatically. Other
+failures retain their original identity.
+
+Reasoning offers an explicit Provider default (`default`) in chat, agent and AI
+settings. New chat defaults and an explicit harness switch select it, preventing
+one provider's global effort preference from being imposed on another. Existing
+saved explicit levels remain valid; named-profile overrides remain exact.
+Provider default omits the effort request and its acknowledgement requirement.
+Every explicitly requested effort still requires confirmation and never falls
+back after refusal. It is distinct from requesting reasoning Off.

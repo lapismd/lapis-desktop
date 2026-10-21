@@ -23,7 +23,7 @@ describe("AI plugin data", () => {
           local: "",
         },
         defaultModel: "gpt-5.6-sol",
-        thinking: "medium",
+        thinking: "default",
         memoryAutomaticRecall: false,
         memoryConsolidationEnabled: false,
         memoryConsolidationRuntime: "acp",

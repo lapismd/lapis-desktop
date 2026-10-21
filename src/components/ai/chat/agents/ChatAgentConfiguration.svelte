@@ -76,11 +76,20 @@
     opencode: "OpenCode",
     local: "Lapis AI",
   };
-  const efforts = ["inherit", "off", "low", "medium", "high"] as const;
+  const efforts = [
+    "inherit",
+    "default",
+    "off",
+    "low",
+    "medium",
+    "high",
+  ] as const;
   const effortLabel = (value: typeof thinking) =>
     value === "inherit"
       ? "Use the chat default"
-      : value[0]!.toUpperCase() + value.slice(1);
+      : value === "default"
+        ? "Provider default"
+        : value[0]!.toUpperCase() + value.slice(1);
   let models = $state<ModelRef[]>([]),
     loading = $state(false);
   const options = $derived(

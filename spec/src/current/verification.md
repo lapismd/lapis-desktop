@@ -175,3 +175,6 @@ settings layout under LD-AI-002/LD-CAT-003; original native gates are unchanged.
 
 [E-AI-099](../history/E-AI-099.md) records the copied compute model picker,
 advisory memory fit and cached native status under LD-COMP-001/LD-CAT-003.
+
+[E-AI-100](../history/E-AI-100.md) records LD-AI-001/002 client discovery,
+advertised startup modes and footer mode/pin controls; full native gates remain.

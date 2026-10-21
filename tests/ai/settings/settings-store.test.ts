@@ -38,7 +38,7 @@ describe("owned AI settings", () => {
     await expect(store.update({ thinking: "high" })).rejects.toThrow(
       "Disk full",
     );
-    expect(store.get().thinking).toBe("medium");
+    expect(store.get().thinking).toBe("default");
     expect(listener).not.toHaveBeenCalled();
     await store.update({ thinking: "low" });
     expect(store.get().thinking).toBe("low");

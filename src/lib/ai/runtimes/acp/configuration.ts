@@ -16,13 +16,14 @@ export async function configureAcpSession(
   provider = native.info.targetId,
 ): Promise<AgentSessionConfigurationResult> {
   assertExecutionMode(input.executionMode);
+  const thinking = input.thinking === "default" ? undefined : input.thinking;
   const frame = await native.send(crypto.randomUUID(), {
     type: "configure",
     // Codex calls its user-reviewed approval mode "read-only". The shared
     // runtime resolves this exact advertised ID and must confirm modeReady.
     mode: input.executionMode ?? defaultExecutionMode(provider),
     ...(input.model ? { model: input.model.model } : {}),
-    ...(input.thinking ? { effort: input.thinking } : {}),
+    ...(thinking ? { effort: thinking } : {}),
   });
   if (frame.type === "error")
     throw new AgentTurnFailure(
@@ -45,7 +46,7 @@ export async function configureAcpSession(
   return {
     executionMode: field(report.mode),
     ...(input.model ? { model: field(report.model) } : {}),
-    ...(input.thinking ? { thinking: field(report.effort) } : {}),
+    ...(thinking ? { thinking: field(report.effort) } : {}),
   };
 }
 

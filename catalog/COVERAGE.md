@@ -856,6 +856,12 @@ are separately asserted, with keyboard shadcn tooltips and count refresh.
 reveal intent without a real file-manager launch or migration. E-REPO-043;
 visual-pending.
 
+E-AI-100: `Desktop/AI/Local ACP conversations/Supported modes and pin` uses the
+production footer in the embedded AppShell to check advertised Plan/Build,
+checked selection, layout retention and Pin/Unpin in Conversation actions.
+`Permissions in footer` retains inheritance/overrides; Shell FollowScope keeps
+its pinned-conversation navigation proof. These remain visual-pending.
+
 `ai/ChatScrollRecovery.stories.ts` mounts the production Notes chat/inbox with
 long captured content. DocumentRecovery and ClassicRecovery verify actual
 viewport end navigation, real controller busy/cancel transitions, three-dot

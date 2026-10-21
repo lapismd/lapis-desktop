@@ -1,5 +1,9 @@
 <script lang="ts">
   import ChatParticipantDialog from "./ChatParticipantDialog.svelte";
+  import ChatPermissions from "./ChatPermissions.svelte";
+  import type { ComposerState } from "../../../lib/ai/chat/panel/composer.svelte.ts";
+  import PinIcon from "@lucide/svelte/icons/pin";
+  import PinOffIcon from "@lucide/svelte/icons/pin-off";
   import type { ChatPanelActions } from "../../../lib/ai/chat/panel/actions.ts";
   // SPDX-License-Identifier: Apache-2.0
   // Retained Lapis chat presentation; see src/lib/ai/NOTICE.md.
@@ -26,6 +30,7 @@
     controller,
     actions,
     attachmentsState,
+    composerState,
     compact = false,
   }: {
     compact?: boolean;
@@ -33,6 +38,7 @@
     controller: AiChatController;
     actions: ChatPanelActions;
     attachmentsState: AttachmentsState;
+    composerState: ComposerState;
   } = $props();
   const initializing = $derived(panelProps.initializing ?? false);
   const repository = $derived(panelProps.repository);
@@ -115,22 +121,39 @@
     </Popover.Content>
   </Popover.Root>
 {/if}
-{#if repository}
-  <DropdownMenu.Root>
-    <DropdownMenu.Trigger>
-      {#snippet child({ props }: { props: Record<string, unknown> })}
-        <Button
-          {...props}
-          size={compact ? "icon-sm" : "icon"}
-          variant="ghost"
-          aria-label="Conversation actions"
-          data-testid="ai-chat-conversation-menu"
-        >
-          <MoreHorizontalIcon aria-hidden="true" />
-        </Button>
-      {/snippet}
-    </DropdownMenu.Trigger>
-    <DropdownMenu.Content data-ai-part="conversation-menu" align="end">
+<DropdownMenu.Root>
+  <DropdownMenu.Trigger>
+    {#snippet child({ props }: { props: Record<string, unknown> })}
+      <Button
+        {...props}
+        size={compact ? "icon-sm" : "icon"}
+        variant="ghost"
+        aria-label="Conversation actions"
+        data-testid="ai-chat-conversation-menu"
+      >
+        <MoreHorizontalIcon aria-hidden="true" />
+      </Button>
+    {/snippet}
+  </DropdownMenu.Trigger>
+  <DropdownMenu.Content data-ai-part="conversation-menu" align="end">
+    <DropdownMenu.Group>
+      <ChatPermissions {panelProps} {controller} {composerState} />
+      <DropdownMenu.Item
+        disabled={initializing || !controller.location}
+        onclick={() =>
+          void actions.perform(() =>
+            controller.setPinned(!controller.conversationPinned),
+          )}
+      >
+        {#if controller.conversationPinned}
+          <PinOffIcon data-icon="inline-start" aria-hidden="true" />Unpin Chat
+        {:else}
+          <PinIcon data-icon="inline-start" aria-hidden="true" />Pin Chat
+        {/if}
+      </DropdownMenu.Item>
+    </DropdownMenu.Group>
+    {#if repository}
+      <DropdownMenu.Separator />
       <DropdownMenu.Group>
         <DropdownMenu.Item
           disabled={initializing ||
@@ -183,8 +206,8 @@
           New Chat
         </DropdownMenu.Item>
       </DropdownMenu.Group>
-    </DropdownMenu.Content>
-  </DropdownMenu.Root>
-{/if}
+    {/if}
+  </DropdownMenu.Content>
+</DropdownMenu.Root>
 
 <ChatParticipantDialog bind:open={participantOpen} {panelProps} {controller} />

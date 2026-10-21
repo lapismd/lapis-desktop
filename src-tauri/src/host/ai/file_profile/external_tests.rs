@@ -1,6 +1,27 @@
 use super::*;
 
 #[test]
+fn user_local_clients_supplement_explicit_paths_without_replacing_their_priority() {
+    let (temp, settings, home) = tests::fixture();
+    let user_bin = home.join(".local/bin");
+    std::fs::create_dir_all(&user_bin).unwrap();
+    std::fs::write(user_bin.join("cursor-agent"), "fixture, never executed").unwrap();
+    let files = FileProfile::default();
+    files.configure(settings, home).unwrap();
+    files.prepare().unwrap();
+    assert!(files.contains("codex"));
+    assert!(files.contains("cursor"));
+    let launch = files.launch("cursor", temp.path()).unwrap().unwrap();
+    let paths: Vec<_> = std::env::split_paths(&launch.prepared.environment.0["PATH"]).collect();
+    assert_eq!(paths[0], temp.path().join("bin"));
+    assert_eq!(paths.iter().filter(|path| **path == user_bin).count(), 1);
+    std::fs::remove_file(user_bin.join("cursor-agent")).unwrap();
+    files.prepare().unwrap();
+    assert!(!files.contains("cursor"));
+    assert!(files.contains("codex"));
+}
+
+#[test]
 fn opencode_and_cursor_are_admitted_without_codex_and_keep_fixed_launch_policy() {
     let (temp, settings, home) = tests::fixture();
     let bin = temp.path().join("bin");

@@ -108,6 +108,11 @@
       <DropdownMenu.SubContent>
         <DropdownMenu.RadioGroup value={composerState.selectedThinking}>
           <DropdownMenu.RadioItem
+            value="default"
+            onclick={() => composerState.changeThinking("default")}
+            >Provider default</DropdownMenu.RadioItem
+          >
+          <DropdownMenu.RadioItem
             value="off"
             onclick={() => composerState.changeThinking("off")}
             >Off</DropdownMenu.RadioItem

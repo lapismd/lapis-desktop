@@ -62,6 +62,7 @@ pub(super) fn load(
     } else {
         settings.path.unwrap_or(discovered)
     };
+    let paths = lapis_desktop::ai::tooling::paths::with_user_bin(paths, &source.home);
     if settings.version != 1
         || !bundle_path.is_absolute()
         || paths.is_empty()

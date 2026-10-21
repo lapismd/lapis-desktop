@@ -1,4 +1,4 @@
-import { reviewExecutionModes } from "../execution-modes.ts";
+import { modesForReview, modeReviewSettings } from "../execution-modes.ts";
 import { interruptedSnapshot } from "./interrupted-snapshot.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
@@ -42,6 +42,7 @@ export type TranscriptScenario =
   | "queue-crashed"
   | "participant-settings"
   | "participant-settings-failure"
+  | "mode-menu"
   | "failure";
 const type = "ai-transcript-review";
 
@@ -63,6 +64,10 @@ export function createTranscriptFixture(
       agentParticipants: agentReviewProfiles,
       automaticallyMentionAgents: true,
     };
+  participantSettings.value = modeReviewSettings(
+    scenario,
+    participantSettings.value,
+  );
   const runtime = new FakeAgentRuntime({
     requireApproval:
       scenario === "approval" ||
@@ -186,7 +191,7 @@ export function createTranscriptFixture(
               value: "[Sam Chen](lapis://people/review-sam)",
             },
           ],
-          loadExecutionModes: async () => reviewExecutionModes,
+          loadExecutionModes: async () => modesForReview(scenario),
           models: [{ provider: "codex", model: "gpt-5.6-sol" }],
           initializing: scenario === "loading",
           fileSearch: async (query) =>

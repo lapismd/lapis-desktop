@@ -396,5 +396,5 @@
 - [Local AI setup v0](history/E-AI-097.md)
 
 - [AI provider and compute settings sections](history/E-AI-098.md)
-
 - [Compute model picker and memory fit](history/E-AI-099.md)
+- [External-client discovery and footer modes](history/E-AI-100.md)

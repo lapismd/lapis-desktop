@@ -20,6 +20,7 @@ export function changeComposerAgent(
   )
     composer.removeRecipient();
   const { settings, models = [], loadModels } = props;
+  if (agent !== composer.selectedAgent) composer.localThinking = "default";
   composer.localAgent = agent;
   composer.localRuntime = runtime;
   const configured = settings?.defaultModels?.[agent];

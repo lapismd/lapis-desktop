@@ -23,6 +23,24 @@ function fixture(activate = vi.fn(async () => {})) {
   return { scope, raw, create, release, activate, allowed };
 }
 describe("App-owned admitted ACP transport", () => {
+  it("adds Cursor login guidance only to rejected startup, without retrying or changing other failures", async () => {
+    const f = fixture();
+    f.raw.open = vi.fn(async () => {
+      throw "agent_rejected";
+    });
+    await expect(
+      f.scope.open({ targetId: "cursor", requestId: "first" }),
+    ).rejects.toThrow(/cursor-agent login/);
+    await expect(
+      f.scope.open({ targetId: "opencode", requestId: "second" }),
+    ).rejects.toBe("agent_rejected");
+    vi.mocked(f.raw.open).mockRejectedValueOnce("timed_out");
+    await expect(
+      f.scope.open({ targetId: "cursor", requestId: "third" }),
+    ).rejects.toBe("timed_out");
+    expect(f.raw.open).toHaveBeenCalledTimes(3);
+    await f.scope.dispose(false);
+  });
   it("permits cleanup in an existing admission after disable while rejecting new storage work", async () => {
     const f = fixture();
     await f.scope.withAdmission(async () => {});

@@ -62,7 +62,7 @@ export function validateAgentParticipants(
       throw new Error("Invalid agent model");
     if (
       thinking !== undefined &&
-      !["off", "low", "medium", "high"].includes(thinking)
+      !["default", "off", "low", "medium", "high"].includes(thinking)
     )
       throw new Error("Invalid agent effort");
     ids.add(id);
