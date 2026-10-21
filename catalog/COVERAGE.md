@@ -1116,3 +1116,19 @@ source parent `3998e2b0`, Apache-2.0. Visual approval remains pending.
 - `Desktop/AI/Sent context/VaultMemory` uses the embedded workspace AppShell and
   production note store, recall service and Sent context in both chat layouts.
 - Visual review is pending; no baselines changed.
+
+## Progressive import browser design review
+
+`Desktop/AI/Progressive imports` is a catalog-only proposal pending user
+approval. It composes production AiSessionFrame/AiSessionThread and
+AiRecordedTranscript inside the owned WorkspaceShell, with the public
+FileListing directory API. BrowseByHarnessAndFolder covers no eager transcript
+reads and lazy folder loads; StreamingPreview/PauseAndComplete show batches,
+progress, pause/resume and both transcript modes; CachedFolderAndPreview retains
+results during refresh; SwitchDuringRead fences late batches; SourceChanged
+requires reload before import; EmptyFolder and DiscoveringFolders retain their
+own visible states. Only Codex is interactive; other harnesses stay unavailable.
+Source and save behavior is disposable simulation, with no native paths,
+providers or writes. Existing production import stories and components are
+unchanged. Native streaming/performance/privacy and visual baselines remain
+unqualified (E-AI-120).

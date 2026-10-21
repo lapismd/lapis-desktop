@@ -1,5 +1,17 @@
 # Explicit local transcript imports
 
+## Progressive browser design review
+
+E-AI-120 adds a catalog-only proposal for harness/project-folder navigation,
+lazy session listings, cached folder results and progressive transcript batches.
+It composes the existing embedded AppShell, File Listing and recorded transcript
+components with disposable simulated sources. Codex is the supported example;
+other harnesses remain visibly unavailable. Partial previews cannot be imported;
+source changes require reload, and switching selection fences late batches. The
+proposal includes loading, empty, cached, interrupted and complete states.
+Production components, native contracts and ordinary import behavior remain
+unchanged. User design confirmation is required before live implementation.
+
 IMPORT-01 advances LD-AI-002/004 using local files. IMPORT-01A provides the
 production import journal and injected preview UI; IMPORT-01B connects native
 Codex discovery, reading and privacy. Catalog clients are fixtures, never proof

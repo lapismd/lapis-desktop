@@ -339,3 +339,5 @@
 
 - [Markdown-first vault memory](history/E-AI-118.md)
 - [Processor model dropdowns and settings tabs](history/E-AI-119.md)
+
+- [Progressive import browser design review](history/E-AI-120.md)
