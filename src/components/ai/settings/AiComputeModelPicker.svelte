@@ -68,7 +68,10 @@
             <span class="compute-model-picker__name"
               >{selected?.name ?? "Choose a model"}</span
             >
-            {#if selected}<AiComputeModelMetadata model={selected} />{/if}
+            {#if selected}<AiComputeModelMetadata
+                model={selected}
+                inline
+              />{/if}
           </span>
           <ChevronDownIcon aria-hidden="true" />
         </Button>
@@ -139,11 +142,11 @@
   }
   :global(.compute-model-picker__trigger) {
     width: 100%;
-    height: auto;
+    height: 2.25rem;
     min-height: 2.25rem;
     justify-content: space-between;
     text-align: left;
-    white-space: normal;
+    white-space: nowrap;
   }
   .compute-model-picker__selected {
     grid-area: shortcut;
@@ -155,7 +158,20 @@
     width: 1rem;
     height: 1rem;
   }
-  .compute-model-picker__selection,
+  .compute-model-picker__selection {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .compute-model-picker__selection .compute-model-picker__name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
   .compute-model-picker__option {
     display: grid;
     gap: 0.25rem;

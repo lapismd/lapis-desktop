@@ -116,16 +116,17 @@ The searchable compute model picker copies JJ Store's catalog and command-view
 presentation. Selected command choices use a neutral filled `circle-check` with
 a contrasting check, without keyboard-shortcut borders. Agent/model,
 session-filter and capture-version command pickers share this treatment. Choices
-and the selected trigger show weight estimates and advisory memory fit; curated
-recommendations use 70% of observed host RAM, capped by the unsaved memory
-limit, and the source's 60%/90%/110% thresholds. Estimates are not measured GPU
-capacity, free memory or inference benchmarks. Missing hardware and unknown
-custom/imported sizes remain unknown, without invented recommendations or
-installed badges. An adjacent Custom model field preserves exact GGUF
-references. Picking or typing only edits the draft. Serving, pending and busy
-states lock both controls; no selection downloads, saves or starts a model.
-Device memory facts are cached native read-only status, queried off the UI
-thread without starting compute or changing configuration.
+and the selected trigger show weight estimates and advisory memory fit. The
+closed trigger keeps the model name, size and fit on one line, truncating long
+names within the available width. Curated recommendations use 70% of observed
+host RAM, capped by the unsaved memory limit, and the source's 60%/90%/110%
+thresholds. Estimates are not measured GPU capacity, free memory or inference
+benchmarks. Missing hardware and unknown custom/imported sizes remain unknown,
+without invented recommendations or installed badges. An adjacent Custom model
+field preserves exact GGUF references. Picking or typing only edits the draft.
+Serving, pending and busy states lock both controls; no selection downloads,
+saves or starts a model. Device memory facts are cached native read-only status,
+queried off the UI thread without starting compute or changing configuration.
 
 The verified bundled helper owns inference. Its working directory, HOME, native
 runtime and model caches stay in device-owned managed storage outside the vault.

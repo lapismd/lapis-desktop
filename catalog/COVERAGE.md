@@ -5,13 +5,13 @@ avatar table, with downloaded and imported GGUF rows, selection and running
 state, known-byte download progress, unknown totals, missing weights, confirmed
 removal, actionable failure notifications and interrupted operations. It reuses
 `AI setup`'s owned Settings fixture and public Design Core controls. Existing
-`AI setup` stories retain resources, searchable model fit, import file
-selection, tabs and disabled/loading/error states. JJ Store/Buzz reference
-adaptations remain destination-owned; source and native acceptance are E-AI-123.
-`AI compute status` mounts the production AppShell footer and Settings dialog,
-starts a model using its icon-only control, checks the red Stop replacement,
-then stops from the registered footer and verifies removal. Visual baselines
-remain pending.
+`AI setup` stories retain resources, searchable model fit with a single-line
+selected value, import file selection, tabs and disabled/loading/error states.
+JJ Store/Buzz reference adaptations remain destination-owned; source and native
+acceptance are E-AI-123. `AI compute status` mounts the production AppShell
+footer and Settings dialog, starts a model using its icon-only control, checks
+the red Stop replacement, then stops from the registered footer and verifies
+removal. Visual baselines remain pending.
 
 `Desktop/AI/Note links/Conversation` reviews current file mentions, Markdown
 note links, wiki aliases and literal code/unavailable references through the

@@ -5,10 +5,13 @@
     modelSizeLabel,
     type ComputeModelChoice,
   } from "../../../lib/ai/settings/compute-model-catalog.ts";
-  let { model }: { model: ComputeModelChoice } = $props();
+  let {
+    model,
+    inline = false,
+  }: { model: ComputeModelChoice; inline?: boolean } = $props();
 </script>
 
-<span class="compute-model-meta">
+<span class="compute-model-meta" class:inline>
   <span>{modelSizeLabel(model.sizeGb)}</span>
   <span data-fit={model.fit}>{model.fit}</span>
   {#if model.recommended}<Badge variant="secondary">Recommended</Badge>{/if}
@@ -24,6 +27,11 @@
     gap: 0.5rem;
     color: var(--muted-foreground);
     font-size: 0.8rem;
+  }
+  .inline {
+    flex: none;
+    flex-wrap: nowrap;
+    white-space: nowrap;
   }
   [data-fit="Fits well"] {
     color: var(--success-foreground, var(--foreground));

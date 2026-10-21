@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-REPO-056 retains shared history. E-AI-097–124 cover AI/memory/imports/models.
+E-REPO-056 retains shared history. E-AI-097–125 cover AI/memory/imports/models.
 M14.8 remains Partial. M10.2–M10.4 retain LD-MIG-002 gates; M13/M13.3 Deferred.
 E-PLAN-004: [deferred AI tools](../backlog/ai-tool-expansion.md).
 
