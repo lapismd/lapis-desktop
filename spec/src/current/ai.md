@@ -1,6 +1,6 @@
 # Desktop AI and optional compute
 
-E-AI-104 records real-provider, native lifecycle and catalog qualification.
+E-AI-104/107 record provider qualification and Lapis picker/model setup.
 LD-AI-001–004 and LD-COMP-001 remain unchanged; failed runs and outstanding
 provider, trust and two-device gates remain explicit in the milestone ledger.
 

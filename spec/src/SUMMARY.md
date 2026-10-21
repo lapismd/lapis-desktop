@@ -316,3 +316,5 @@
 - [M10 provider and local compute qualification](history/E-AI-104.md)
 - [Filled approval selection marker](history/E-AI-105.md)
 - [AI chat header and collapsed sidebar](history/E-AI-106.md)
+
+- [Lapis picker and explicit cloud model setup](history/E-AI-107.md)

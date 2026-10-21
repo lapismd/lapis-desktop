@@ -100,6 +100,13 @@ impl ProviderStore {
                 "AI provider settings changed. Check again before saving.",
             ));
         }
+        if !command.clear_secret
+            && providers()
+                .iter()
+                .any(|p| p.id == command.configuration.provider && !p.managed)
+        {
+            required_model(&command.configuration)?;
+        }
         let id = command.request_id.to_string();
         if state.retired.len() >= 64 {
             return Err(unavailable());
@@ -169,12 +176,10 @@ impl ProviderStore {
         if provider.managed {
             return Err(unavailable());
         }
+        let model = required_model(&state.configuration)?.to_owned();
         let mut environment = BTreeMap::from([
             ("BUZZ_AGENT_PROVIDER".into(), provider.runtime_provider),
-            (
-                "BUZZ_AGENT_MODEL".into(),
-                state.configuration.model.unwrap_or_else(|| "auto".into()),
-            ),
+            ("BUZZ_AGENT_MODEL".into(), model),
         ]);
         if let Some(endpoint) = state.configuration.endpoint.or(provider.default_endpoint) {
             environment.insert(provider.endpoint_env, endpoint);
@@ -188,6 +193,18 @@ impl ProviderStore {
         }
         Ok(environment)
     }
+}
+fn required_model(configuration: &ProviderConfiguration) -> io::Result<&str> {
+    configuration
+        .model
+        .as_deref()
+        .filter(|s| !s.trim().is_empty())
+        .ok_or_else(|| {
+            io::Error::new(
+                io::ErrorKind::InvalidInput,
+                "Enter a default model in Lapis provider settings",
+            )
+        })
 }
 fn validate(configuration: &ProviderConfiguration) -> io::Result<()> {
     let provider = providers()

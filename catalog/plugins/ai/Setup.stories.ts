@@ -246,3 +246,44 @@ export const UnknownModelFit: Story = {
     await userEvent.keyboard("{Escape}");
   },
 };
+
+export const RequiredProviderModel: Story = {
+  play: async ({ canvasElement }) => {
+    const provider = within(
+      await within(canvasElement).findByRole("region", {
+        name: "Lapis provider",
+      }),
+    );
+    const model = await provider.findByLabelText("Default model");
+    await userEvent.clear(model);
+    await expect(
+      provider.getByRole("button", { name: "Save provider" }),
+    ).toBeDisabled();
+    await expect(model).toBeRequired();
+    await userEvent.type(model, "qwen3.8-max");
+    await userEvent.click(
+      provider.getByRole("button", { name: "Save provider" }),
+    );
+    await waitFor(() =>
+      expect(
+        provider.getByRole("button", { name: "Save provider" }),
+      ).toBeEnabled(),
+    );
+    await userEvent.click(
+      provider.getByRole("button", { name: "Check again" }),
+    );
+    await expect(model).toHaveValue("qwen3.8-max");
+    await userEvent.click(
+      provider.getByRole("button", { name: "Provider: OpenAI" }),
+    );
+    await userEvent.click(
+      await within(canvasElement.ownerDocument.body).findByRole("option", {
+        name: "This machine",
+      }),
+    );
+    await expect(provider.queryByLabelText("Default model")).toBeNull();
+    await expect(
+      provider.getByRole("button", { name: "Save provider" }),
+    ).toBeEnabled();
+  },
+};

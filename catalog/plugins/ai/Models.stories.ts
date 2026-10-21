@@ -137,3 +137,44 @@ export const SettingsHarnessModelRefresh: Story = {
     await dismissHarnessPreferences(canvasElement);
   },
 };
+
+export const LapisAgentPicker: Story = {
+  args: {
+    showRuntimeSelection: true,
+    loadModels: async (agent: string) => [
+      { provider: agent, model: "qwen3.8-max", isDefault: true },
+    ],
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement),
+      body = within(canvasElement.ownerDocument.body);
+    const open = async () => {
+      await clickHarnessControl(
+        await canvas.findByRole("button", { name: "Effort and model" }),
+      );
+    };
+    await open();
+    await hoverHarnessControl(await body.findByTestId("ai-chat-agent"));
+    for (const name of ["Codex ACP", "Cursor ACP", "OpenCode ACP", "Lapis AI"])
+      await waitFor(() =>
+        expect(body.getByRole("menuitemradio", { name })).toBeVisible(),
+      );
+    await clickHarnessControl(
+      body.getByRole("menuitemradio", { name: "Lapis AI" }),
+    );
+    await dismissHarnessPreferences(canvasElement);
+    await waitForHarnessCatalog(canvasElement, "local", "acp");
+    await open();
+    await hoverHarnessControl(await body.findByTestId("ai-chat-model"));
+    await expect(
+      await body.findByRole("menuitemradio", { name: "qwen3.8-max" }),
+    ).toHaveAttribute("data-state", "checked");
+    await dismissHarnessPreferences(canvasElement);
+    await open();
+    await hoverHarnessControl(await body.findByTestId("ai-chat-agent"));
+    await expect(
+      await body.findByRole("menuitemradio", { name: "Lapis AI" }),
+    ).toHaveAttribute("aria-checked", "true");
+    await dismissHarnessPreferences(canvasElement);
+  },
+};

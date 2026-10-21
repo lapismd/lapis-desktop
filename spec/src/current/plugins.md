@@ -394,5 +394,5 @@ assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
 catalog fixture enters production. Cached metadata and status work retain
 App/vault ownership.
 
-E-AI-106 reviews the collapsed AI list, header actions and roomier footer
-through the existing production chat stories; original native gates remain.
+E-AI-106/107 review chat header actions, the Lapis harness picker and required
+provider models through production stories; original native gates remain.

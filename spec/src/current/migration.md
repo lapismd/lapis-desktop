@@ -396,4 +396,4 @@ changes.
 
 E-AI-065 adds helper/client setup; E-REPO-045 adds indexed Search. E-SHELL-003
 restores tab drops; E-AI-095/096 cover model discovery and private drafts.
-E-AI-103/105/106: approval/header UI; native/provider gates remain.
+E-AI-103/105–107: approval/header UI and cloud Lapis smoke; full gates remain.

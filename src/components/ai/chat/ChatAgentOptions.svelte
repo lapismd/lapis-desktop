@@ -52,6 +52,11 @@
             value={`${composerState.selectedRuntime}:${composerState.selectedAgent}`}
           >
             <DropdownMenu.RadioItem
+              value="acp:local"
+              onclick={() => composerState.changeAgent("local", "acp")}
+              >Lapis AI</DropdownMenu.RadioItem
+            >
+            <DropdownMenu.RadioItem
               value="acp:codex"
               onclick={() => composerState.changeAgent("codex", "acp")}
               >Codex ACP</DropdownMenu.RadioItem

@@ -100,3 +100,80 @@ fn missing_credentials_and_invalid_endpoints_cannot_start_a_local_agent() {
             .all(|provider| provider.id != "chatgpt-plan")
     );
 }
+
+#[test]
+fn cloud_provider_requires_a_model_before_saving_credentials() {
+    let directory = tempfile::tempdir().unwrap();
+    let keys = Arc::new(Keys::default());
+    let store = ProviderStore::with_secrets(directory.path().into(), keys.clone());
+    let mut save = command(Uuid::new_v4(), 0, Some("private-provider-test-key"));
+    save.configuration.model = None;
+    let error = store.save(save).err().expect("missing model must reject");
+    assert_eq!(error.kind(), io::ErrorKind::InvalidInput);
+    assert!(error.to_string().contains("default model"));
+    assert_eq!(store.status().unwrap().revision, 0);
+    assert!(keys.0.lock().unwrap().is_empty());
+    assert!(!directory.path().join("ai-providers/settings.json").exists());
+
+    let mut save = command(Uuid::new_v4(), 0, Some("private-provider-test-key"));
+    save.configuration.provider = "openai-compat".into();
+    save.configuration.endpoint = Some("https://provider.example/v1".into());
+    save.configuration.model = Some("qwen3.8-max".into());
+    store.save(save).unwrap();
+    assert_eq!(
+        store.environment().unwrap()["BUZZ_AGENT_MODEL"],
+        "qwen3.8-max"
+    );
+}
+
+#[test]
+fn managed_compute_does_not_require_a_provider_model() {
+    for provider in ["local", "paired"] {
+        let directory = tempfile::tempdir().unwrap();
+        let store = ProviderStore::with_secrets(directory.path().into(), Arc::new(Keys::default()));
+        let mut save = command(Uuid::new_v4(), 0, None);
+        save.configuration.provider = provider.into();
+        save.configuration.model = None;
+        assert_eq!(store.save(save).unwrap().revision, 1);
+        assert!(store.compute_selected().unwrap());
+    }
+}
+
+#[test]
+fn legacy_missing_model_blocks_launch_but_retains_receipt_replay_and_key_removal() {
+    let directory = tempfile::tempdir().unwrap();
+    let keys = Arc::new(Keys::default());
+    let store = ProviderStore::with_secrets(directory.path().into(), keys.clone());
+    let request = Uuid::new_v4();
+    let mut legacy = command(request, 0, None);
+    legacy.configuration.model = None;
+    let mut digest = Sha256::new();
+    digest.update(serde_json::to_vec(&legacy.configuration).unwrap());
+    digest.update(0u64.to_be_bytes());
+    digest.update([0, 0]);
+    keys.set("old-key", "private-provider-test-key").unwrap();
+    store
+        .persist(&State {
+            revision: 1,
+            configuration: legacy.configuration.clone(),
+            credentials: BTreeMap::from([("openai-api".into(), "old-key".into())]),
+            last_request: Some(request),
+            last_digest: format!("{:x}", digest.finalize()),
+            ..State::default()
+        })
+        .unwrap();
+    let error = store
+        .environment()
+        .err()
+        .expect("missing model must block launch");
+    assert!(error.to_string().contains("default model"));
+    assert_eq!(store.save(legacy).unwrap().revision, 1);
+
+    let mut clear = command(Uuid::new_v4(), 1, None);
+    clear.configuration.model = None;
+    clear.clear_secret = true;
+    let saved = store.save(clear).unwrap();
+    assert_eq!(saved.revision, 2);
+    assert!(!saved.credential_available);
+    assert!(keys.0.lock().unwrap().is_empty());
+}

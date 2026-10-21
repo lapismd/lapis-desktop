@@ -341,3 +341,5 @@ by the task ledger, not inferred from this list.
 - [Filled approval selection marker](E-AI-105.md)
 
 - [AI chat header and collapsed sidebar](E-AI-106.md)
+
+- [Lapis picker and explicit cloud model setup](E-AI-107.md)

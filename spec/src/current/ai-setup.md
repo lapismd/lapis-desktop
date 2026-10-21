@@ -10,8 +10,10 @@ sessions stay supported.
 Codex, OpenCode and Cursor are independently admitted from the fixed installed
 runner catalog. A missing or unconfigured client never disables another client.
 The bundled Lapis agent becomes available only after explicit provider setup.
-Model, reasoning effort and execution mode are confirmed through advertised ACP
-configuration before sending. Running workers keep their captured configuration.
+The chat agent picker includes Lapis AI alongside Codex, Cursor and OpenCode,
+using the same native admission as Settings. Model, reasoning effort and
+execution mode are confirmed through advertised ACP configuration before
+sending. Running workers keep their captured configuration.
 
 A binding freezes bounded application bootstrap, the available-skills manifest
 and selected skill instructions into initial context. This is separate from
@@ -38,6 +40,13 @@ and browser persistence never expose it. Conditional saves retain exact request
 identities, revisions and receipts. Unknown saves are observed or retried with
 the same identity. Adopting a superseding revision is explicit. Provider changes
 invalidate discovery and new admission without interrupting running workers.
+Cloud providers require an explicit nonblank default model at setup and native
+launch; a missing model never becomes an implicit `auto`. Settings identify the
+required field and explain that supported endpoints discover alternatives in the
+chat model picker. This machine and Paired machine use their separate compute
+model configuration. Legacy incomplete settings remain readable, exact committed
+save receipts remain replayable, and credential removal stays available without
+supplying a model. Validation occurs before new credential writes.
 
 Codex, OpenCode and Lapis use the existing private stdio MCP bridge. Cursor uses
 an authenticated stateless HTTP MCP endpoint on literal loopback with an

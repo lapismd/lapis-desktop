@@ -241,3 +241,7 @@ native scope; fixture turns never contact a provider.
 E-AI-106: Local ACP conversations/Supported modes and pin reviews the collapsed
 initial conversation list, header pin/archive controls and vertical action menu
 in Document and Classic. Action approvals/Picker shows the larger filled marker.
+
+E-AI-107: AI setup/Required provider model rejects an empty cloud default and
+keeps compute selection independent. AI/Models/Lapis agent picker selects the
+bundled harness and discovers its model alongside the three external clients.

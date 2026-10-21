@@ -1054,3 +1054,7 @@ closed list, its toggle and header pin/archive actions across both transcript
 views. Conversation actions moves to the far-right vertical header menu. Chat
 layout review/Long messages with sidebars explicitly opens the inner list for
 its wide-layout wrapping checks. The approval picker uses a filled 16px marker.
+
+E-AI-107: AI/Models/Lapis agent picker and AI setup/Required provider model
+exercise production menu/settings components with synthetic ports; no live
+provider credentials enter the catalog.

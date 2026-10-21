@@ -17,6 +17,9 @@
     management.value?.providers.find((p) => p.id === management.draft.provider),
   );
   const blocked = $derived(management.busy || management.pending);
+  const needsModel = $derived(
+    !["local", "paired"].includes(management.draft.provider),
+  );
   $effect(() => {
     if (!management.value && !management.busy && !management.failed)
       void management.refresh();
@@ -46,7 +49,7 @@
               aria-label={`Provider: ${selected?.label ?? "Choose a provider"}`}
               >{selected?.label ?? "Choose a provider"}</Select.Trigger
             >
-            <Select.Content
+            <Select.Content aria-label="AI providers"
               ><Select.Group>
                 {#each management.value.providers as provider (provider.id)}<Select.Item
                     value={provider.id}>{provider.label}</Select.Item
@@ -72,14 +75,22 @@
             />
           </Field.Field>
         {/if}
-        {#if !["local", "paired"].includes(management.draft.provider)}
+        {#if needsModel}
           <Field.Field class="provider-row">
-            <Field.Label for={`${id}-model`}>Default model</Field.Label>
+            <div>
+              <Field.Label for={`${id}-model`}>Default model</Field.Label>
+              <Field.Description id={`${id}-model-help`}>
+                Required. Enter an exact model ID. Supported providers discover
+                more models in the chat picker.
+              </Field.Description>
+            </div>
             <Input
               id={`${id}-model`}
+              required
+              aria-describedby={`${id}-model-help`}
               disabled={blocked}
               value={management.draft.model ?? ""}
-              placeholder="Discover available models"
+              placeholder="Enter a model ID"
               oninput={(event) =>
                 management.configure({
                   model: event.currentTarget.value.trim() || null,
@@ -154,7 +165,10 @@
         size="sm"
         disabled={management.busy ||
           !management.value ||
-          !management.draft.provider}
+          !management.draft.provider ||
+          (!management.pending &&
+            needsModel &&
+            !management.draft.model?.trim())}
         onclick={() => void management.save()}
         >{management.pending ? "Retry save" : "Save provider"}</Button
       >
