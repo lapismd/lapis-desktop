@@ -393,8 +393,8 @@
 
 - [Conversation-scoped private drafts](history/E-AI-096.md)
 - [Local AI setup v0](history/E-AI-097.md)
-
 - [AI provider and compute settings sections](history/E-AI-098.md)
 - [Compute model picker and memory fit](history/E-AI-099.md)
 - [External-client discovery and footer modes](history/E-AI-100.md)
 - [Chat mode icons and compact agent action](history/E-AI-101.md)
+- [Single composer action during submission](history/E-AI-102.md)

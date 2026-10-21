@@ -333,3 +333,4 @@ by the task ledger, not inferred from this list.
 
 - [External-client discovery and footer modes](E-AI-100.md)
 - [Chat mode icons and compact agent action](E-AI-101.md)
+- [Single composer action during submission](E-AI-102.md)

@@ -181,3 +181,7 @@ advertised startup modes and footer mode/pin controls; full native gates remain.
 
 [E-AI-101](../history/E-AI-101.md) records decorative mode/default icons and the
 Add Agent label under LD-AI-002/LD-CAT-003; original native gates are unchanged.
+
+[E-AI-102](../history/E-AI-102.md) records the single Stop/Queue action through
+pending submission in both chat layouts (LD-AI-002/LD-CAT-003); native gates
+remain.

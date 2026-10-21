@@ -226,3 +226,8 @@ E-AI-100 maps the footer Mode submenu and Pin/Unpin to
 `Desktop/AI/Local ACP conversations/Supported modes and pin`, using the ordinary
 embedded AppShell. It covers provider-advertised choices, current selection and
 layout persistence; native client login/provider acceptance remains separate.
+
+E-AI-102 maps `Desktop/AI/Queued messages/Single composer action` to the
+embedded AppShell. Submission never exposes Stop beside a disabled Queue; typing
+a ready follow-up selects Queue and clearing it restores Stop in Document and
+Classic.

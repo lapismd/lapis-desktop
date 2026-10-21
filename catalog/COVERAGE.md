@@ -651,6 +651,9 @@ composers, FIFO after completion, whole-message cancellation, explicit live and
 cold resume, visible waiting follow-ups and retained failed-save draft/one
 toast. Interrupted-before-checkpoint recovery keeps one notice and renders the
 new approval after explicit Resume without repeating the interrupted prompt.
+`Single composer action` observes the live footer through initial submission,
+then types and removes a follow-up in both layouts. It asserts that Stop and
+Queue never coexist and that empty drafts omit Queue entirely (E-AI-102).
 
 `Desktop/AI/Comment history/Linked code table and tool replies` uses the
 production local parent/receipt projection and unchanged Design Core controls.

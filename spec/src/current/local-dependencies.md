@@ -44,3 +44,7 @@ E-AI-100 consumes the prepared Design Core `54e142bc` dropdown contrast/priority
 repair. All other archived sources retain their verified receipts; the linked AI
 client was rebuilt at `157bc082`. Intake checks all 21 packages and 64 import
 routes.
+
+E-AI-102 consumes Design Core `98c64887` to keep one composer action through
+pending submission. Its prepared archive and complete-cohort intake are pinned
+in the fresh evidence; runtime authority and distribution gates are unchanged.

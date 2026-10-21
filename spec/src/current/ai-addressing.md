@@ -159,12 +159,14 @@ responses retain the exact visible item identity and stale actions refuse.
 ## Persisted follow-up queues
 
 AGENT-01C keeps Document and Classic composers editable during active work.
-Nonempty drafts use Queue message; empty drafts retain Stop. Explicit queuing
-saves one exact authored message, captured recipient IDs/labels, model/thinking
-preferences and bounded attachment paths in optional version-one local queue
-metadata before clearing the draft. Credentials, executable routes, native
-bindings and raw file snapshots are never saved in a queue. Comment captures
-retain their existing validated bounds. Attached files are read at dispatch.
+Ready nonempty drafts use Queue message; empty drafts and pending submissions
+retain only Stop. A disabled Queue MUST NOT appear beside Stop (E-AI-102).
+Explicit queuing saves one exact authored message, captured recipient
+IDs/labels, model/thinking preferences and bounded attachment paths in optional
+version-one local queue metadata before clearing the draft. Credentials,
+executable routes, native bindings and raw file snapshots are never saved in a
+queue. Comment captures retain their existing validated bounds. Attached files
+are read at dispatch.
 
 A conversation admits at most sixteen pending messages and 128 KiB of encoded
 queue data. Each message retains at most four recipients and eight file paths.

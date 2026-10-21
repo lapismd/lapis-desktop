@@ -13,7 +13,9 @@ menu, retaining conversation-local overrides and provider confirmation. An
 explicit Provider default reasoning option omits effort configuration; switching
 harnesses selects it rather than carrying another client's effort. E-AI-101 adds
 decorative mode/default icons and the compact Add Agent action; advertised
-choices, overrides, approval policy and dispatch remain unchanged.
+choices, overrides, approval policy and dispatch remain unchanged. E-AI-102
+consumes the shared single-action footer repair: pending submission and empty
+drafts show Stop; only a ready nonempty follow-up shows Queue.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 Native-store clauses below preserve the Deferred checkpoint experiment.

@@ -11,6 +11,59 @@ const meta = {
 } satisfies Meta<typeof TranscriptReviewDemo>;
 export default meta;
 type Story = StoryObj<typeof meta>;
+export const SingleComposerAction: Story = {
+  args: { embeddedShell: true },
+  play: async ({ canvasElement }) => {
+    const duplicates: string[][] = [];
+    const observer = new MutationObserver(() => {
+      const actions = Array.from(
+        canvasElement.querySelectorAll(
+          'button[aria-label="Stop agent"], button[aria-label="Queue message"]',
+        ),
+      ).map((button) => button.getAttribute("aria-label")!);
+      if (actions.length > 1) duplicates.push(actions);
+    });
+    observer.observe(canvasElement, {
+      childList: true,
+      attributes: true,
+      subtree: true,
+    });
+    try {
+      const { c } = await start(canvasElement);
+      for (const view of ["Document", "Classic"]) {
+        if (view === "Classic")
+          await userEvent.click(
+            c.getByRole("button", {
+              name: /^(?:Classic|Switch to Classic view)$/,
+            }),
+          );
+        const editor = await c.findByRole("textbox", { name: "Message" });
+        await expect(
+          c.findByRole("button", { name: "Stop agent" }),
+        ).resolves.toBeVisible();
+        expect(c.queryByRole("button", { name: "Queue message" })).toBeNull();
+        await userEvent.click(editor);
+        const draft = `Follow-up from ${view}`;
+        await userEvent.keyboard(draft);
+        await expect(
+          c.findByRole("button", { name: "Queue message" }),
+        ).resolves.toBeEnabled();
+        expect(c.queryByRole("button", { name: "Stop agent" })).toBeNull();
+        await userEvent.keyboard("{Backspace}".repeat(draft.length));
+        await expect(
+          c.findByRole("button", { name: "Stop agent" }),
+        ).resolves.toBeVisible();
+      }
+      await expect(
+        c.findByRole("button", { name: "Stop agent" }),
+      ).resolves.toBeVisible();
+      expect(c.queryByRole("button", { name: "Queue message" })).toBeNull();
+      expect(duplicates).toEqual([]);
+    } finally {
+      observer.disconnect();
+    }
+  },
+};
 async function start(canvasElement: HTMLElement) {
   const c = within(canvasElement),
     editor = await c.findByRole("textbox", { name: "Message" });
