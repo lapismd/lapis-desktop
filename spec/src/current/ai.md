@@ -1,7 +1,7 @@
 # Desktop AI and optional compute
 
-[Shared-screen integration](shared-screen-integration.md) governs ai admission.
-Durable queues retain provider-default thinking; native gates stay unchanged.
+[Shared-screen integration](shared-screen-integration.md) governs AI admission.
+Host syntax, error reporting and durable queues retain their existing authority.
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

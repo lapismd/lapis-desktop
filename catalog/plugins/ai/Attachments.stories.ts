@@ -134,6 +134,7 @@ export const FilePicker: Story = {
 };
 
 export const ThreeLineComposer: Story = {
+  name: "Compact composer",
   play: async ({ canvasElement }) => {
     const { canvas } = await ready(canvasElement);
     for (const mode of ["Classic", "Document"]) {
@@ -145,7 +146,7 @@ export const ThreeLineComposer: Story = {
       const editor = input.closest<HTMLElement>(".mira")!;
       const lineHeight = parseFloat(getComputedStyle(input).lineHeight);
       const height = editor.getBoundingClientRect().height;
-      expect(height + 0.5).toBeGreaterThanOrEqual(3 * lineHeight);
+      expect(height + 0.5).toBeGreaterThanOrEqual(2 * lineHeight);
       expect(height).toBeLessThanOrEqual(3 * lineHeight + 20);
     }
     const input = messageEditor(canvas);

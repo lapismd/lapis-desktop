@@ -88,7 +88,8 @@ export const LinkedCodeTableAndToolReplies: Story = {
     const source = canvasElement.querySelector(
       '[data-block-id="review-response/body"]',
     )!;
-    source.scrollIntoView({ block: "end" });
+    await userEvent.click(c.getByRole("button", { name: "Preview turn 1" }));
+    source.scrollIntoView({ block: "center" });
     let table: HTMLElement | undefined;
     await waitFor(() => {
       table = c
@@ -133,9 +134,9 @@ export const ContinueRestoredThread: Story = {
       within(area).queryByText("Keep this code feedback after reopening."),
     )!;
     expect(code).toBeDefined();
-    await userEvent.click(
-      within(code).getByRole("button", { name: /^Reply$/ }),
-    );
+    const reply = within(code).getByRole("button", { name: /^Reply$/ });
+    reply.focus();
+    await userEvent.click(reply);
     const text = "Keep the original example and explain cold recovery.";
     await userEvent.click(
       within(code).getByRole("textbox", {

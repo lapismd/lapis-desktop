@@ -143,7 +143,9 @@ export const SidebarHeaderAlignment: StoryObj = {
     expect(
       sidebar.queryByRole("combobox", { name: "File history operation" }),
     ).toBeNull();
-    expect(sidebar.queryByRole("button", { name: /About Ada/ })).toBeNull();
+    await expect(
+      sidebar.findByRole("button", { name: /About Ada/ }),
+    ).resolves.toBeVisible();
     const sidebarHeader = sidebar
       .getByRole("button", { name: "Blame file" })
       .closest("header")!;

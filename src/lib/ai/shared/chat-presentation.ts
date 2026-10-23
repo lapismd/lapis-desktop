@@ -116,6 +116,12 @@ export function desktopChatPresentation(
         return owner().panelProps.settings;
       },
       onSettingsChange: (patch) => owner().panelProps.onSettingsChange?.(patch),
+      onError: (error) => {
+        if (error)
+          void owner().actions.perform(() => {
+            throw error;
+          });
+      },
     },
     controller: {
       get busy() {

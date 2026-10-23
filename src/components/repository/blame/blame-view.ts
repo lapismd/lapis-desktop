@@ -8,6 +8,10 @@ import type { RepositoryPlugin } from "../repository-plugin.ts";
 import type { BlameController } from "@lapismd/repository-ui/history";
 import type { BlameSelection } from "../../../lib/repository/blame-model.ts";
 import { RepositoryBlamePanel } from "@lapismd/repository-ui/jj";
+import {
+  readBlameWrap,
+  saveBlameWrap,
+} from "../../../lib/repository/blame-preferences.ts";
 
 export class BlameView extends View {
   #source: HistorySource = "backup";
@@ -57,6 +61,8 @@ export class BlameView extends View {
       target: this.containerEl,
       props: {
         controller,
+        wrap: readBlameWrap(),
+        onWrapChange: saveBlameWrap,
         copyText: (value: string) => this.plugin.copyIdentifier(value),
         onOpen: (commit: string) => {
           const operation = controller.state.selection?.operation;

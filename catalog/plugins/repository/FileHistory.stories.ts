@@ -84,13 +84,15 @@ export const FollowEditorAndOpenRevision: StoryObj = {
   play: async ({ canvasElement }) => {
     const panel = await sidebar(canvasElement, "Welcome.md"),
       canvas = within(canvasElement);
-    const row = await panel.findByRole("button", {
+    const row = await panel.findByRole("article", {
       name: /Keep repository history beside the notes/,
     });
     expect(
       panel.queryByRole("combobox", { name: "File history operation" }),
     ).toBeNull();
-    expect(panel.queryByRole("button", { name: /About Ada/ })).toBeNull();
+    await expect(
+      within(row).getByRole("button", { name: /About Ada/ }),
+    ).toBeVisible();
     await userEvent.click(canvas.getByRole("tab", { name: "File history" }));
     await expect(row).toBeVisible();
     await userEvent.click(
@@ -100,13 +102,14 @@ export const FollowEditorAndOpenRevision: StoryObj = {
       await panel.findByText(/No revisions changed this file/),
     ).toBeVisible();
     expect(
-      panel.queryByRole("button", { name: /Keep repository history/ }),
+      panel.queryByRole("article", { name: /Keep repository history/ }),
     ).toBeNull();
     await userEvent.click(canvas.getByRole("button", { name: "Welcome.md" }));
+    const restored = await panel.findByRole("article", {
+      name: /Keep repository history beside the notes/,
+    });
     await userEvent.click(
-      await panel.findByRole("button", {
-        name: /Keep repository history beside the notes/,
-      }),
+      within(restored).getByRole("button", { name: "View code at this point" }),
     );
     const log = within(
       await canvas.findByRole("region", { name: "Repository history" }),
@@ -139,7 +142,7 @@ export const FailureAndRecovery: StoryObj = {
       panel.getByRole("button", { name: "Refresh file history" }),
     );
     await expect(
-      await panel.findByRole("button", {
+      await panel.findByRole("article", {
         name: /Keep repository history beside the notes/,
       }),
     ).toBeVisible();
@@ -168,18 +171,20 @@ export const OpenDuringLogPreparation: StoryObj = {
       }
       return read(handle, query);
     };
-    await userEvent.click(
-      await panel.findByRole("button", {
-        name: /Keep repository history beside the notes/,
-      }),
-    );
-    const body = within(canvasElement.ownerDocument.body);
     try {
+      const row = await panel.findByRole("article", {
+        name: /Keep repository history beside the notes/,
+      });
+      await userEvent.click(
+        within(row).getByRole("button", { name: "View code at this point" }),
+      );
       await waitFor(() => expect(requested).toBe(true));
+      const body = within(canvasElement.ownerDocument.body);
       expect(body.queryByText(/outside the bounded JJ Log history/)).toBeNull();
     } finally {
       release();
     }
+    const body = within(canvasElement.ownerDocument.body);
     const log = within(
       await within(canvasElement).findByRole("region", {
         name: "Repository history",
@@ -216,7 +221,7 @@ export const Preparing: StoryObj = {
 export const RenameAndDelete: StoryObj = {
   play: async ({ canvasElement }) => {
     const panel = await sidebar(canvasElement, "Welcome.md");
-    await panel.findByRole("button", {
+    await panel.findByRole("article", {
       name: /Keep repository history beside the notes/,
     });
     await userEvent.click(

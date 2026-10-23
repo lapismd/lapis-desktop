@@ -199,11 +199,11 @@ export const SlashRetainsPendingComments: Story = {
     await userEvent.hover(
       await canvas.findByRole("textbox", { name: "Assistant response" }),
     );
-    await userEvent.click(
-      await canvas.findByRole("button", {
-        name: "Comment on Assistant response",
-      }),
-    );
+    const commentAction = await canvas.findByRole("button", {
+      name: "Comment on Assistant response",
+    });
+    commentAction.focus();
+    await userEvent.click(commentAction);
     const comment = await canvas.findByRole("textbox", {
       name: "Comment on Assistant response",
     });
@@ -214,7 +214,9 @@ export const SlashRetainsPendingComments: Story = {
     await userEvent.keyboard("/model");
     await userEvent.keyboard("{Escape}");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
-    await expect(canvas.findByRole("alert")).resolves.toHaveTextContent(
+    await expect(
+      canvas.findByRole("group", { name: "Composer feedback" }),
+    ).resolves.toHaveTextContent(
       "Slash commands do not submit comment context",
     );
     expect(composer).toHaveTextContent("/model");

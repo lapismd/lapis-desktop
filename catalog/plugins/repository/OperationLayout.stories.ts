@@ -147,7 +147,7 @@ export const StackedOperationAndDiff: StoryObj = {
     ).toBeNull();
     await userEvent.click(toggle);
     await userEvent.click(
-      card.getByRole("button", { name: "Close Diff column" }),
+      log.getByRole("button", { name: "Close Diff column" }),
     );
     await chooseChangedRevision(log);
     await userEvent.click(

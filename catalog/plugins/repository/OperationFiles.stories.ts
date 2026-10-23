@@ -99,9 +99,10 @@ export const UnavailableComparison: StoryObj = {
     const canvas = await open(canvasElement);
     await group(canvas);
     await expect(
-      await canvas.findByText(
-        "This change has no available content comparison.",
-      ),
+      await canvas.findByText("Content comparison unavailable"),
+    ).toBeVisible();
+    await expect(
+      canvas.getByText("This recorded change has no available revision pair."),
     ).toBeVisible();
     expect(canvas.queryByRole("region", { name: "Changed files" })).toBeNull();
   },

@@ -27,7 +27,13 @@
   import { saveTranscriptView } from "../../../lib/ai/chat/panel/view-preference.ts";
   import ChatConversationMenu from "../chat/ChatConversationMenu.svelte";
   import AiTranscriptBlock from "../chat/AiTranscriptBlock.svelte";
+  import { composerReferences } from "../chat/composer-references.ts";
   let panel: TranscriptPanelProps = $props();
+  const references = composerReferences(
+    () => panel.composerState.recipientOptions,
+    () => panel.panelProps.mentionPeople ?? [],
+    () => panel.panelProps.app,
+  );
   let rows = $state<ConversationListEntry[]>([]);
   const inspection = transcriptToolInspection(
     () => panel,
@@ -189,6 +195,7 @@
     customBlock,
     composer: {
       triggers: panel.composerState.mentionTriggers,
+      extensions: [references],
       status: panel.composerState.composerStatus,
     },
     onCopyResponse: panel.actions.copyResponse,

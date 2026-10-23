@@ -5,6 +5,10 @@ import type { BlameController } from "@lapismd/repository-ui/history";
 import type { BlameSelection } from "../../../../src/lib/repository/blame-model.ts";
 import { RepositoryBlamePanel } from "@lapismd/repository-ui/jj";
 import { reviewCommitStats } from "./commit-stats.ts";
+import {
+  readBlameWrap,
+  saveBlameWrap,
+} from "../../../../src/lib/repository/blame-preferences.ts";
 
 /** Catalog-owned native reader and optional statistics; production presentation. */
 export class BlameReviewView extends View {
@@ -50,6 +54,8 @@ export class BlameReviewView extends View {
       target: this.containerEl,
       props: {
         controller,
+        wrap: readBlameWrap(),
+        onWrapChange: saveBlameWrap,
         commitStats: reviewCommitStats,
         copyText: (value: string) => this.plugin.copyIdentifier(value),
         onOpen: (commit: string) => {

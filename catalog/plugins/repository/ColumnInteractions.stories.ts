@@ -142,12 +142,12 @@ export const ResizingAndCompactReturn: StoryObj = {
     });
     if (canvasElement.ownerDocument.defaultView!.innerWidth > 800) {
       await waitFor(() =>
-        expect(root).toHaveAttribute("data-display-mode", "wide"),
+        expect(root).toHaveAttribute("data-display-mode", "fixed"),
       );
       const revisions = canvas.getByRole("region", { name: "Revisions" }),
         before = revisions.getBoundingClientRect().width;
       const resize = canvas.getByRole("separator", {
-        name: "Resize JJ Log and Diff columns",
+        name: "Resize JJ Log column",
       });
       resize.focus();
       await userEvent.keyboard("{ArrowRight}");
@@ -164,7 +164,7 @@ export const ResizingAndCompactReturn: StoryObj = {
         ),
       );
     } else {
-      await expect(root).toHaveAttribute("data-display-mode", "compact");
+      await expect(root).toHaveAttribute("data-display-mode", "fixed");
     }
     await userEvent.click(
       canvas.getByRole("button", { name: "Close Diff column" }),

@@ -356,3 +356,4 @@
 - [Isolated shared-screen dependency intake](history/E-ARCHIVES-003.md)
 - [Isolated shared UI migration intake](history/E-SHARED-001.md)
 - [Shared-screen queue and consumer qualification](history/E-SHARED-002.md)
+- [Shared-screen host hooks and history cards](history/E-SHARED-003.md)

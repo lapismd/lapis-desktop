@@ -203,7 +203,9 @@ export const SeparateApprovals: Story = {
     await userEvent.keyboard("Each participant must ask for approval");
     await userEvent.click(c.getByRole("button", { name: "Send message" }));
     for (let index = 0; index < 2; index++) {
-      const allow = await c.findByRole("button", { name: /Allow once/ });
+      const allow = await c.findByRole("button", {
+        name: "Allow once",
+      });
       await userEvent.click(allow);
       await waitFor(() => {
         const group = c.getAllByRole("group", { name: "Sent to" }).at(-1)!;

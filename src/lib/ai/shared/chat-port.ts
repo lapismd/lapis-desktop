@@ -94,7 +94,7 @@ export class DesktopChatPort implements AgentPort {
         if (context.length && /^\/(?!\/)/u.test(submission.text.trimStart()))
           return {
             status: "refused",
-            reason: "Send comments with a regular message.",
+            reason: "Slash commands do not submit comment context",
           };
         const draftKey = composerState.draftKey;
         const followup = composerState.automaticallyMentionAgents

@@ -1,7 +1,7 @@
 # Desktop shell
 
 [Shared-screen integration](shared-screen-integration.md) keeps queue-capable
-chat in the Notes host; permission requests retain the existing draft/composer.
+chat in Notes. Leaf history uses public shell tokens for its 40px header.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

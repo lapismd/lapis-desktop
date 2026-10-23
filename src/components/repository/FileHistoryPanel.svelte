@@ -8,4 +8,8 @@
   let props: ComponentProps<typeof RepositoryFileHistory> = $props();
 </script>
 
-<RepositoryShell><RepositoryFileHistory {...props} /></RepositoryShell>
+<div
+  style="height:100%;--ui-shell-main-block-inset:0;--ui-shell-main-border:0;--ui-shell-main-radius:0;--ui-shell-toolbar-height:2.5rem"
+>
+  <RepositoryShell><RepositoryFileHistory {...props} /></RepositoryShell>
+</div>
