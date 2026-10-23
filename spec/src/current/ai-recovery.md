@@ -1,5 +1,9 @@
 # Local AI turn recovery
 
+Durable queue captures MUST preserve the valid `default` thinking choice for
+both the queue selection and each target. It delegates effort to the provider;
+it cannot acquire authority or change the queued recipient.
+
 Native tool uncertainty retains the original pending turn and authored-message
 parent anchor through live/durable projection. Tool drain precedes terminal
 acknowledgement. Exact replies may reconcile; callbacks are never replayed.

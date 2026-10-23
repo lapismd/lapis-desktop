@@ -16,7 +16,7 @@ export const PermissionReplyRejected: Story = {
     await userEvent.type(await findMessageEditor(canvas), "Update a note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await userEvent.click(
-      await canvas.findByRole("button", { name: /Allow once/ }),
+      await canvas.findByRole("button", { name: "Allow once" }),
     );
     await waitFor(() =>
       expect(canvas.getByRole("alert")).toHaveTextContent(

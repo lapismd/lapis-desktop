@@ -1,7 +1,7 @@
 # Desktop plugins and catalog
 
 [Shared-screen integration](shared-screen-integration.md) governs view
-registrations. Existing native and distribution gates remain unchanged.
+registrations. Catalog approval decisions remain distinct from allowance menus.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

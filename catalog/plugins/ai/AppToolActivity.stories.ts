@@ -48,7 +48,7 @@ export const AppToolPatchApproval: Story = {
     await expect(await canvas.findByText("Notes/alpha.md")).toBeVisible();
     await expect(canvas.getByText(/--- before/)).toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: /Allow once/ }),
+      canvas.getByRole("button", { name: "Allow once" }),
     ).toBeVisible();
     await expect(
       canvas.getByRole("button", { name: /Allow for this session/ }),
@@ -77,6 +77,6 @@ export const AppToolSessionGrant: Story = {
         name: "Show details for edit",
       }),
     ).toHaveLength(2);
-    expect(canvas.queryByRole("button", { name: /Allow once/ })).toBeNull();
+    expect(canvas.queryByRole("button", { name: "Allow once" })).toBeNull();
   },
 };

@@ -47,6 +47,7 @@ it("acknowledges durable authoring before completion, then drains queued message
     expect(
       await c.queuedMessages.enqueue("Second message", {
         agent: "codex",
+        thinking: "default",
         metadata: { runtime: "acp" },
       }),
     ).toBe(true);
@@ -57,6 +58,8 @@ it("acknowledges durable authoring before completion, then drains queued message
       }),
     ).toBe(true);
     const q = (await repository.read(c.location!)).metadata.queuedMessages!;
+    expect(q[0].selection.thinking).toBe("default");
+    expect(q[0].selection.targets[0].thinking).toBe("default");
     expect(q.map((e) => e.user.text)).toEqual([
       "Second message",
       "Cancel this follow-up",

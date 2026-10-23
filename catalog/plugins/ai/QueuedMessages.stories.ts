@@ -100,9 +100,9 @@ export const QueueAndCancel: Story = {
     await expect(
       c.getByRole("region", { name: "Queued messages" }),
     ).toBeVisible();
-    await userEvent.click(
-      c.getByRole("button", { name: /Cancel queued message for/ }),
-    );
+    const cancel = c.getByRole("button", { name: /Cancel queued message for/ });
+    cancel.focus();
+    await userEvent.click(cancel);
     await waitFor(() =>
       expect(c.queryByRole("region", { name: "Queued messages" })).toBeNull(),
     );
@@ -119,7 +119,7 @@ export const DispatchAfterCompletion: Story = {
     await userEvent.keyboard("Then check the queued follow-up");
     await userEvent.click(c.getByRole("button", { name: "Queue message" }));
     await c.findByRole("region", { name: "Queued messages" });
-    await userEvent.click(c.getByRole("button", { name: /Allow once/ }));
+    await userEvent.click(c.getByRole("button", { name: "Allow once" }));
     await waitFor(() =>
       expect(
         JSON.parse(aiReviewValue(canvasElement, "sessions")).flatMap(
@@ -127,7 +127,7 @@ export const DispatchAfterCompletion: Story = {
         ),
       ).toContain("Then check the queued follow-up"),
     );
-    await userEvent.click(await c.findByRole("button", { name: /Allow once/ }));
+    await userEvent.click(await c.findByRole("button", { name: "Allow once" }));
     await waitFor(() =>
       expect(c.queryByRole("button", { name: "Stop agent" })).toBeNull(),
     );
@@ -159,7 +159,7 @@ export const PauseAndResume: Story = {
         ),
       ).toContain("Keep this follow-up while paused"),
     );
-    await userEvent.click(await c.findByRole("button", { name: /Allow once/ }));
+    await userEvent.click(await c.findByRole("button", { name: "Allow once" }));
     await waitFor(() =>
       expect(c.queryByRole("button", { name: "Stop agent" })).toBeNull(),
     );
@@ -209,7 +209,10 @@ export const FailedQueueSave: Story = {
     expect(JSON.parse(aiReviewValue(canvasElement, "sessions"))).toHaveLength(
       1,
     );
-    await userEvent.click(c.getByRole("button", { name: "Stop agent" }));
+    await userEvent.click(c.getByRole("button", { name: "Deny once" }));
+    await expect(editor).toHaveTextContent(
+      "Keep this draft when queue storage fails",
+    );
   },
 };
 
@@ -224,7 +227,7 @@ export const InterruptedBeforeCheckpoint: Story = {
     expect(
       c.getAllByText(/The previous turn's outcome is unknown/),
     ).toHaveLength(1);
-    await userEvent.click(c.getByRole("button", { name: /Allow once/ }));
+    await userEvent.click(c.getByRole("button", { name: "Allow once" }));
     await waitFor(() =>
       expect(c.queryByRole("region", { name: "Queued messages" })).toBeNull(),
     );

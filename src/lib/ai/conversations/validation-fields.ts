@@ -122,6 +122,7 @@ export function assertOptionalCount(value: unknown, label: string): void {
 export function assertThinking(value: unknown, label: string): void {
   if (
     value != null &&
+    value !== "default" &&
     value !== "off" &&
     value !== "low" &&
     value !== "medium" &&

@@ -83,7 +83,7 @@ export const AutomaticApproval: Story = {
     await waitFor(() =>
       expect(c.getByRole("button", { name: "Send message" })).toBeVisible(),
     );
-    expect(c.queryByRole("button", { name: /Allow once/ })).toBeNull();
+    expect(c.queryByRole("button", { name: "Allow once" })).toBeNull();
     await waitFor(() =>
       expect(aiReviewValue(canvasElement, "sessions")).toContain(
         "A fixture turn with automatic approval",

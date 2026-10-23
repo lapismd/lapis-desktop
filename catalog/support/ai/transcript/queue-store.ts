@@ -1,3 +1,4 @@
+import { QueueRefusedError } from "../../../../src/lib/ai/conversations/queued-message.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
 import type {
   ConversationMetadata,
@@ -9,7 +10,7 @@ export class QueueFailureStore extends MemoryTranscriptStore {
     m: ConversationMetadata,
   ) {
     if (m.queuedMessages?.length)
-      throw new Error("Fixture queue storage unavailable");
+      throw new QueueRefusedError("Fixture queue storage unavailable");
     return super.writeMetadata(l, m);
   }
 }

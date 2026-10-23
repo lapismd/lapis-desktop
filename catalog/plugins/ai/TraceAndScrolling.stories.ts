@@ -140,7 +140,7 @@ export const AgentTrace: Story = {
     await userEvent.click(readTrigger);
     const inspector = await canvas.findByLabelText("Tool details");
     await expect(inspector).toHaveTextContent("Notes/alpha.md");
-    await expect(inspector).toHaveTextContent("TODO: summarize this note.");
+    await expect(inspector).toHaveTextContent("heading: Notes");
     await userEvent.click(
       canvas.getByRole("button", { name: "Close tool details" }),
     );
@@ -155,7 +155,7 @@ export const AgentTrace: Story = {
       "[data-transcript-composer]",
     ) as HTMLElement | null;
     const viewport = panel.querySelector(
-      '[data-ui-part="scroll-area-viewport"]',
+      '[data-ui-component="transcript"] [data-ui-part="scroll-area-viewport"]',
     ) as HTMLElement | null;
     const assistant = canvas.getByRole("article", {
       name: /Message from codex/i,

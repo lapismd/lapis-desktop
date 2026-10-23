@@ -24,7 +24,9 @@ export const PermissionRequested: Story = {
     const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Apply the change");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
-    const allow = await canvas.findByRole("button", { name: /Allow once/ });
+    const allow = await canvas.findByRole("button", {
+      name: "Allow once",
+    });
     const drawer = allow.closest(
       '[data-ui-component="ai-chat-composer-drawer"]',
     );
@@ -48,7 +50,9 @@ export const PermissionAccepted: Story = {
     const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Apply the change");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
-    const allow = await canvas.findByRole("button", { name: /Allow once/ });
+    const allow = await canvas.findByRole("button", {
+      name: "Allow once",
+    });
     await userEvent.click(allow);
     await canvas.findByRole("button", { name: "Permission response" });
     await expandTranscriptActivity(canvasElement);
