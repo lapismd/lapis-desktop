@@ -1,8 +1,9 @@
 # Shared-screen integration
 
-M15.1 replaces existing Desktop views in isolated workspaces. Complete public
-screens own layout; the host owns runtime and authority. The retired optional
-chat frame is removed rather than retaining an ignored parallel layout.
+M15.1 replaces existing Desktop views, initially in isolated workspaces.
+Complete public screens own layout; the host owns runtime and authority. The
+retired optional chat frame is removed rather than retaining an ignored parallel
+layout.
 
 ## AI admission
 
@@ -34,10 +35,11 @@ semantics.
 
 ## Source governance
 
-Shared-screen adoption consumes public built package exports in isolated JJ
-workspaces. Portable dependency ranges remain tracked; temporary verified
-archive cohorts and before/after catalogs retain source revisions and separate
-evidence.
+Shared-screen adoption consumes public built package exports. After review, the
+user-authorized migration is integrated into the default JJ workspaces and
+temporary workspaces are retired; follow-up fixes use those defaults. Portable
+dependency ranges remain tracked; temporary verified archive cohorts and
+before/after catalogs retain source revisions and separate evidence.
 
 ## Milestone gates
 

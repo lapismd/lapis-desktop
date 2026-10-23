@@ -1,7 +1,7 @@
 # Migration inventory and progress
 
-[Shared-screen integration](shared-screen-integration.md) retains separate
-consumer/native gates and E-SHARED-006 live view-state qualification.
+E-SHARED-007 records integration; M15.1 MUST retain its original gates.
+[Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;

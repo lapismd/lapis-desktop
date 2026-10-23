@@ -362,3 +362,4 @@
 - [Shared-screen runtime failures and public controls](history/E-SHARED-005.md)
 
 - [Shared-screen final qualification and live view state](history/E-SHARED-006.md)
+- [Shared-screen main workspace integration](history/E-SHARED-007.md)

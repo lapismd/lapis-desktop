@@ -59,7 +59,7 @@ deferred to their distribution gates.
 | M0.2  | Done        | Complete; native qualification remains explicit                                                           |
 | M8.4  | Done        | Complete; extend inventory with new desktop UI                                                            |
 | M8.5  | Done        | Complete; continue AI and backup                                                                          |
-| M15.1 | In progress | Finish consumer qualification and compare the isolated catalogs                                           |
+| M15.1 | In progress | Integrated into default workspaces; finish remaining consumer qualification here                          |
 | M14   | Partial     | Real-provider acceptance                                                                                  |
 | M14.1 | Done        | Complete; continue capture lifecycle                                                                      |
 | M14.2 | Done        | Complete; continue restore/provider acceptance                                                            |
