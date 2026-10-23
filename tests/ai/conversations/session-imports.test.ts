@@ -133,18 +133,32 @@ describe("explicit snapshot imports", () => {
     writes.forEach((spy) => expect(spy).not.toHaveBeenCalled());
     expect(await reopened.read(h.location)).toEqual(saved.snapshot);
   });
-  it("serializes simultaneous imports and retains one copy of every entry", async () => {
-    const h = await setup();
-    const results = await Promise.all([
-      h.repository.imports.save(h.c, "Notes"),
-      h.repository.imports.save(h.c, "Notes"),
-    ]);
-    expect(results.map((r) => r.duplicate)).toEqual([false, true]);
-    expect(await h.repository.listAll()).toHaveLength(1);
-    expect((await h.repository.read(h.location)).transcript).toEqual(
-      h.plan.entries,
-    );
-  });
+  it.each([0, 1])(
+    "serializes imports when preparation %i finishes first",
+    async (first) => {
+      const h = await setup();
+      const ready: (() => void)[] = [];
+      vi.spyOn(h.repository.imports, "preview").mockImplementation(
+        () => new Promise((resolve) => ready.push(() => resolve(h.plan))),
+      );
+      const pending = [
+        h.repository.imports.save(h.c, "Notes"),
+        h.repository.imports.save(h.c, "Notes"),
+      ];
+      expect(ready).toHaveLength(2);
+      ready[first]!();
+      ready[1 - first]!();
+      const results = await Promise.all(pending);
+      expect(results.map((r) => r.duplicate)).toEqual(
+        first === 0 ? [false, true] : [true, false],
+      );
+      expect(results[0]!.snapshot).toEqual(results[1]!.snapshot);
+      expect(await h.repository.listAll()).toHaveLength(1);
+      expect((await h.repository.read(h.location)).transcript).toEqual(
+        h.plan.entries,
+      );
+    },
+  );
   it("refuses a different payload claiming the same snapshot, preserving saved bytes", async () => {
     const h = await setup();
     const saved = await h.repository.imports.save(h.c, "Notes");

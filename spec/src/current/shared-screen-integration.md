@@ -11,7 +11,9 @@ admission, exact requests, draft/storage ownership and controller disposal; UI
 migration cannot enable deferred native conversation backends. The host's
 existing Mira extension reaches the shared composer's public hook: Notes file
 links, saved agent identities and profile details retain their exact syntax and
-explicit App. Shared screen adoption cannot drop those decorations.
+explicit App. Shared screen adoption cannot drop those decorations. The host
+Markdown hook preserves leaf-node shape while decorating mentions so captured
+handoff links remain renderable with prompt-context extensions.
 
 ## Desktop host
 

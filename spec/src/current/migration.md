@@ -1,8 +1,8 @@
 # Migration inventory and progress
 
 [Shared-screen integration](shared-screen-integration.md) retains separate
-queue, consumer-matrix and visible native gates; partial story repairs retain
-open gates.
+queue, four-mode consumer and cold native gates; partial story repairs retain
+the remaining qualification work.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;

@@ -35,8 +35,14 @@ export const FollowScope: Story = {
     const picker = await canvas.findByLabelText("Conversations", {
       selector: "aside",
     });
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle conversations" }),
+    );
     await expect(within(picker).getByText("Near folder chat")).toBeVisible();
     await expect(within(picker).getByText("Atlas folder chat")).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle conversations" }),
+    );
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-scope-path")).toHaveTextContent(
         "Projects",
@@ -54,16 +60,18 @@ export const FollowScope: Story = {
       "Search chat folders",
     );
     await waitFor(() => expect(folderSearch).toBeVisible());
-    await userEvent.click(body.getByRole("option", { name: "Vault" }));
+    await userEvent.click(body.getByRole("option", { name: "Vault root" }));
     await waitFor(() => {
       expect(canvas.getByTestId("ai-chat-scope-path")).toHaveTextContent(
         "Vault",
       );
-      expect(picker).toBeVisible();
       const explorer = app.workspace.getLeavesOfType("file-explorer")[0]
         ?.view as { selectedPath?: string } | undefined;
       expect(explorer?.selectedPath).toBe("");
     });
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Toggle conversations" }),
+    );
     await userEvent.click(within(picker).getByText("Near folder chat"));
     await waitFor(() => {
       expect(

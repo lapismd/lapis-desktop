@@ -18,6 +18,29 @@ import {
 import { ComposerRecipients } from "../../../src/lib/ai/chat/panel/recipients.svelte.ts";
 import { transcriptLinks } from "../../../src/components/ai/chat/transcript-agent-links.ts";
 
+it("preserves Markdown leaf shape in captured handoff context", () => {
+  const leaf = {
+    type: "pathlink",
+    value: "User",
+    data: { hName: "pathlink", hChildren: [{ type: "text", value: "User" }] },
+  };
+  const tree = {
+    type: "root",
+    children: [{ type: "paragraph", children: [leaf] }],
+  };
+  const original = structuredClone(tree);
+  const extension = transcriptLinks().markdown.extensions.find(
+    (entry) => entry.name === "lapis-agent-mentions",
+  )!;
+  const plugin = extension.remarkPlugins![0] as () => (
+    tree: unknown,
+    file: unknown,
+  ) => void;
+  plugin()(tree, { value: "[User]" });
+  expect(tree).toStrictEqual(original);
+  expect(leaf).not.toHaveProperty("children");
+});
+
 it("inserts a Markdown agent link without dispatching a message", () => {
   const selectRecipient = vi.fn();
   const composer = {

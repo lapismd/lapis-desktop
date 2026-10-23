@@ -100,7 +100,8 @@ export function transcriptLinks(
           }
           if (["code", "inlineCode", "html", "image"].includes(node.type))
             return;
-          node.children = node.children?.flatMap((child) => {
+          if (!node.children) return;
+          node.children = node.children.flatMap((child) => {
             visit(child);
             const value = child.value;
             if (

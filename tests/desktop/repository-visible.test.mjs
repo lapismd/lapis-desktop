@@ -72,8 +72,9 @@ function sourceState(root) {
     entries.push([name, readFileSync(join(root, name), "utf8")]);
   return entries.sort((a, b) => a[0].localeCompare(b[0]));
 }
-const panel = '[aria-label="Repository history"]';
-const operationSelect = `${panel} select[aria-label="Operation"]`;
+const historyPanel = 'section[aria-label="Repository history"][aria-busy]';
+const panel = `${historyPanel}:has(button[aria-label="History source: Original"])`;
+const operationSelect = `${panel} [role="combobox"][aria-label="Operation"]`;
 const diff = `${panel} [aria-label="Changes to Note.md"]`;
 const button = (browser, scope, text, partial = false) =>
   browser.$(scope).$(`button${partial ? "*" : ""}=${text}`);
@@ -81,6 +82,22 @@ async function ready(browser) {
   await browser
     .$('[data-notes-ready="true"]')
     .waitForDisplayed({ timeout: 30000 });
+  await browser.waitUntil(
+    async () => {
+      const info = await browser.execute(() =>
+        globalThis.__TAURI__.core.invoke("shell_info"),
+      );
+      return (
+        JSON.stringify(info.nativeVisibility) ===
+        JSON.stringify({ Ok: [true, false, true, true, true] })
+      );
+    },
+    {
+      timeout: 15000,
+      timeoutMsg:
+        "Native history requires a visible, unoccluded keyboard window on the current Space",
+    },
+  );
   assert.deepEqual(
     await browser.execute(async () => {
       const info = await globalThis.__TAURI__.core.invoke("shell_info");
@@ -95,18 +112,29 @@ async function choose(session, root, vault) {
   await session.browser.$("button*=Open Vault").click();
   await ready(session.browser);
 }
-async function openHistory(browser) {
+async function openHistory(browser, originalSource = true) {
   const button = browser.$('button[aria-label="Repository History"]');
   if (!(await button.isDisplayed()))
     await browser.$('button[aria-label="Open left sidebar"]').click();
   await button.waitForDisplayed();
   await button.click();
-  await browser.$(panel).waitForDisplayed();
+  await browser.$(historyPanel).waitForDisplayed();
+  const source = browser.$('button[aria-label="History source: Backup"]');
+  if (await source.isDisplayed()) {
+    await source.click();
+    if (!originalSource) return;
+    const original = browser.$('[role="option"]*=Original repository');
+    await original.waitForDisplayed();
+    await original.click();
+    await browser
+      .$(`${panel} button[aria-label="History source: Original"]`)
+      .waitForDisplayed();
+  }
 }
 async function pinned(browser, expected) {
   await browser.waitUntil(
     async () =>
-      (await browser.$(operationSelect).getValue()) === expected &&
+      (await browser.$(operationSelect).getAttribute("value")) === expected &&
       (await browser.$(panel).getAttribute("aria-busy")) === "false",
     {
       timeout: 30000,
@@ -114,7 +142,7 @@ async function pinned(browser, expected) {
     },
   );
   assert.match(
-    await browser.$(`${panel} .repository-pin`).getText(),
+    await browser.$(operationSelect).getAttribute("title"),
     new RegExp(expected),
   );
 }
@@ -125,7 +153,9 @@ async function inspectSecond(browser) {
     "Native history second",
     true,
   ).waitForDisplayed();
-  await button(browser, panel, "Native history second", true).click();
+  const revision = button(browser, panel, "Native history second", true);
+  if ((await revision.getAttribute("aria-pressed")) !== "true")
+    await revision.click();
   await button(browser, panel, "Note.md").waitForDisplayed();
   await button(browser, panel, "Note.md").click();
   await browser.$(diff).waitForDisplayed({ timeout: 15000 });
@@ -135,24 +165,10 @@ async function inspectSecond(browser) {
   assert.match(await browser.$(diff).getText(), /First committed text/);
 }
 async function selectOperation(browser, value) {
-  // The embedded driver clicks options with el.click(), which WebKit ignores.
-  // Exercise the mounted select's normal handler, without calling its controller.
-  await browser.execute(
-    (selector, value) => {
-      const select = document.querySelector(selector);
-      if (
-        !(select instanceof HTMLSelectElement) ||
-        select.disabled ||
-        !Array.from(select.options).some((option) => option.value === value)
-      )
-        throw new Error("The visible operation must be selectable");
-      select.value = value;
-      select.dispatchEvent(new Event("input", { bubbles: true }));
-      select.dispatchEvent(new Event("change", { bubbles: true }));
-    },
-    operationSelect,
-    value,
-  );
+  await browser.$(operationSelect).click();
+  const row = browser.$(`[role="row"][aria-label="Select operation ${value}"]`);
+  await row.waitForDisplayed();
+  await row.click();
 }
 
 test("cold visible history preserves dirty source, exact pins and native restart recovery", async (context) => {
@@ -184,12 +200,15 @@ test("cold visible history preserves dirty source, exact pins and native restart
   await openHistory(first.browser);
   await pinned(first.browser, original);
   await inspectSecond(first.browser);
+  await first.browser.$(`${panel} button[aria-label="Unified"]`).click();
   assert.equal(
-    await button(first.browser, diff, "Unified").getAttribute("aria-pressed"),
+    await first.browser
+      .$(`${panel} button[aria-label="Unified"]`)
+      .getAttribute("aria-checked"),
     "true",
   );
   await first.browser.saveScreenshot(join(root, "history-unified.png"));
-  await button(first.browser, diff, "Split").click();
+  await first.browser.$(`${panel} button[aria-label="Split"]`).click();
   for (const label of ["Previous revision", "Later revision"])
     await first.browser.$(`${diff} [aria-label="${label}"]`).waitForDisplayed();
   assert.match(
@@ -212,10 +231,12 @@ test("cold visible history preserves dirty source, exact pins and native restart
   assert.notEqual(advanced, original);
   writeFileSync(join(vault, "Note.md"), "Dirty after external advance\n");
   const afterAdvance = sourceState(vault);
-  await button(first.browser, panel, "Refresh").click();
+  await first.browser.$(`${panel} button[aria-label="Refresh"]`).click();
+  await first.browser.$(operationSelect).click();
   await first.browser
-    .$(`${operationSelect} option[value="${advanced}"]`)
-    .waitForExist();
+    .$(`[role="row"][aria-label="Select operation ${advanced}"]`)
+    .waitForDisplayed();
+  await first.browser.$('button[aria-label="Close operation picker"]').click();
   await pinned(first.browser, original);
   assert.match(await first.browser.$(diff).getText(), /Second committed text/);
   await first.close();
@@ -267,11 +288,13 @@ test("cold visible history preserves dirty source, exact pins and native restart
   mkdirSync(plain);
   writeFileSync(join(plain, "Note.md"), "Plain folder remains plain\n");
   await choose(second, root, plain);
-  await openHistory(second.browser);
+  await openHistory(second.browser, false);
   await second.browser.waitUntil(async () =>
-    (await second.browser.$(panel).getText()).includes(
-      "Repository history is unavailable for this vault",
-    ),
+    (
+      await second.browser
+        .$('[aria-label="Select history source"][data-slot="popover-content"]')
+        .getText()
+    ).includes("Original repository unavailable"),
   );
   assert.equal(existsSync(join(plain, ".jj")), false);
   assert.equal(existsSync(join(plain, ".git")), false);

@@ -90,9 +90,11 @@ export const AutomaticApproval: Story = {
       ),
     );
     await userEvent.click(
-      await c.findByRole("button", { name: "Permission response" }),
+      await c.findByRole("button", { name: /^Permission granted:/ }),
     );
-    await expect(c.findByText("Permission approved")).resolves.toBeVisible();
+    const result = await c.findByTestId("ai-approval-card");
+    await expect(result).toBeVisible();
+    await expect(result).toHaveAttribute("data-state", "approved");
   },
 };
 export const SaveFailure: Story = {

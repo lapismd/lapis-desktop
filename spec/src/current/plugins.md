@@ -1,8 +1,8 @@
 # Desktop plugins and catalog
 
 [Shared-screen integration](shared-screen-integration.md) governs view
-registrations. Tests exercise shared cards, portals and keyboard-visible
-actions.
+registrations. Tests exercise public source/pin pickers, portalled shared cards
+and keyboard-visible actions.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

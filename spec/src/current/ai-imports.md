@@ -90,6 +90,8 @@ the same destination. A separately recorded content digest detects mismatched
 content claiming the same identity. Source event IDs remain distinct in order.
 
 The repository's shared write queue serializes imports with conversation writes.
+Preparation may finish in either order; the first queued import writes and the
+other confirms the same snapshot without duplication. Tests control both orders.
 An import marker is written before transcript entries; missing empty journals
 may be initialized only for that exact preparing marker. An entirely empty
 deterministic directory may be claimed without replacing any data. Existing

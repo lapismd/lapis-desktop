@@ -36,6 +36,11 @@ async function verify(
   await waitFor(() =>
     expect(panel).toHaveAttribute("data-initializing", "false"),
   );
+  await canvas.findByRole(
+    "textbox",
+    { name: "Assistant response" },
+    { timeout: 30000 },
+  );
   if (classic)
     await userEvent.click(
       canvas.getByRole("button", { name: "Switch to Classic view" }),
@@ -47,7 +52,10 @@ async function verify(
   await waitFor(() =>
     expect(viewport.scrollHeight).toBeGreaterThan(viewport.clientHeight + 100),
   );
+  await userEvent.click(canvas.getByRole("button", { name: "Preview turn 1" }));
+  await afterLayout();
   viewport.scrollTo({ top: 0 });
+  await afterLayout();
   await userEvent.click(
     await canvas.findByRole("button", { name: "Scroll to latest" }),
   );
@@ -61,7 +69,9 @@ async function verify(
   await userEvent.keyboard(" Check scroll recovery");
   await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
   const stop = await canvas.findByRole("button", { name: "Stop agent" });
-  await expect(await canvas.findByTestId("ai-approval-card")).toBeVisible();
+  await expect(
+    await canvas.findByRole("button", { name: "Allow once" }),
+  ).toBeVisible();
   // Let the held request's reader sizing settle before scrolling away.
   await afterLayout();
   viewport.scrollTo({ top: 0 });
@@ -108,7 +118,7 @@ export const PendingPermissionAcrossViews: Story = {
   play: async ({ canvasElement }) => {
     await verify(canvasElement, false, true);
     const canvas = within(canvasElement);
-    const editor = messageEditor(canvas);
+    const draft = messageEditor(canvas).textContent;
     const sessions = shellFixture(canvasElement).runtimes.flatMap(
       (runtime) => runtime.sessions,
     );
@@ -117,8 +127,10 @@ export const PendingPermissionAcrossViews: Story = {
       await userEvent.click(
         canvas.getByRole("button", { name: `Switch to ${next} view` }),
       );
-      await expect(await canvas.findByTestId("ai-approval-card")).toBeVisible();
-      expect(messageEditor(canvas)).toBe(editor);
+      await expect(
+        await canvas.findByRole("button", { name: "Allow once" }),
+      ).toBeVisible();
+      expect(messageEditor(canvas)).toHaveTextContent(draft ?? "");
       expect(
         shellFixture(canvasElement).runtimes.flatMap(
           (runtime) => runtime.sessions,
@@ -126,7 +138,7 @@ export const PendingPermissionAcrossViews: Story = {
       ).toEqual(sessions);
       expect(sessions.flatMap((session) => session.prompts)).toEqual(prompts);
     }
-    await userEvent.click(canvas.getByRole("button", { name: "A Allow once" }));
+    await userEvent.click(canvas.getByRole("button", { name: "Allow once" }));
     await waitFor(() =>
       expect(canvas.queryByRole("button", { name: "Stop agent" })).toBeNull(),
     );
