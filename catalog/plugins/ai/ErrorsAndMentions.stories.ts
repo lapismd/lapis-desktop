@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -58,7 +59,7 @@ export const FileMentions: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "@alp");
     const option = await canvas.findByText("alpha");
     const menu = option.closest("[role='listbox']");

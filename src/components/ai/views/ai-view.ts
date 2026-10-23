@@ -13,8 +13,6 @@ import {
   type ConversationRoute,
 } from "../../../lib/ai/conversations/conversation-route.ts";
 import { AI_VIEW, AI_HISTORY_VIEW } from "../../../lib/ai/plugin/view-types.ts";
-import type { AiChatPanelProps } from "../../../lib/ai/chat/panel/props.ts";
-import AiChatSession from "../sessions/AiChatSession.svelte";
 export class AiView extends OwnedAiPanelView {
   #routeEpoch = 0;
   #retired = false;
@@ -22,8 +20,6 @@ export class AiView extends OwnedAiPanelView {
     if (this.#retired) redirectRetiredConversation(this.leaf, this.host);
     else super.onload();
   }
-  protected transcriptFrame: AiChatPanelProps["transcriptFrame"] =
-    AiChatSession;
   getViewType() {
     return AI_VIEW;
   }
@@ -93,7 +89,6 @@ export class AiView extends OwnedAiPanelView {
       props: {
         app: this.app,
         host: this.host,
-        transcriptFrame: this.transcriptFrame,
         workspaceLeaf: this.leaf,
         initialLocation:
           route?.backend === "vault-files" ? route.location : null,

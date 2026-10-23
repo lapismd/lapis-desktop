@@ -9,7 +9,7 @@
   import { createConversationsState } from "../../../lib/ai/chat/panel/conversations.svelte.ts";
   import { createChatPanelActions } from "../../../lib/ai/chat/panel/actions.ts";
   import { observeChatPanel } from "../../../lib/ai/chat/panel/lifecycle.svelte.ts";
-  import AiTranscriptPanel from "./AiTranscriptPanel.svelte";
+  import DesktopAgentChat from "../shared/DesktopAgentChat.svelte";
   import ImportedConversation from "../imports/ImportedConversation.svelte";
   import { observeConversationDraft } from "../../../lib/ai/chat/panel/drafts.svelte.ts";
   import "./panel.css";
@@ -68,7 +68,7 @@
       onLocationChange={panelProps.onConversationLocationChange}
     />
   {:else}
-    <AiTranscriptPanel
+    <DesktopAgentChat
       {panelProps}
       {controller}
       {composerState}

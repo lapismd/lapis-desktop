@@ -4,7 +4,7 @@
   import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { TagList } from "@lapismd/design-core/shadcn/tag-list";
   import { formatRelativeTime } from "@lapismd/design-core/shadcn/relative-time";
-  import ReviewAuthorAvatar from "../../../../src/components/repository/RepositoryAuthorAvatar.svelte";
+  import { RepositoryAuthorAvatar as ReviewAuthorAvatar } from "@lapismd/repository-ui/jj";
   import { encodeJjChangeId } from "../../../../src/lib/repository/graph/repository-log-graph.ts";
   import { repositoryCommitTags } from "../../../../src/lib/repository/tags.ts";
   let { target, commit }: { target: string; commit?: LocalGraphCommit } =

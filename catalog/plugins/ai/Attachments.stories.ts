@@ -1,3 +1,4 @@
+import { messageEditor } from "../../support/ai/message-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -140,14 +141,14 @@ export const ThreeLineComposer: Story = {
         name: `Switch to ${mode} view`,
       });
       if (toggle) await userEvent.click(toggle);
-      const input = canvas.getByRole("textbox", { name: "Message" });
+      const input = messageEditor(canvas);
       const editor = input.closest<HTMLElement>(".mira")!;
       const lineHeight = parseFloat(getComputedStyle(input).lineHeight);
       const height = editor.getBoundingClientRect().height;
       expect(height + 0.5).toBeGreaterThanOrEqual(3 * lineHeight);
       expect(height).toBeLessThanOrEqual(3 * lineHeight + 20);
     }
-    const input = canvas.getByRole("textbox", { name: "Message" });
+    const input = messageEditor(canvas);
     await userEvent.type(
       input,
       "One{Shift>}{Enter}{/Shift}Two{Shift>}{Enter}{/Shift}Three{Shift>}{Enter}{/Shift}Four",
@@ -155,8 +156,6 @@ export const ThreeLineComposer: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Switch to Classic view" }),
     );
-    expect(canvas.getByRole("textbox", { name: "Message" })).toHaveTextContent(
-      "Four",
-    );
+    expect(messageEditor(canvas)).toHaveTextContent("Four");
   },
 };

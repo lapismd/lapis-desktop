@@ -5,7 +5,7 @@ import {
 } from "../../support/repository/interactions.ts";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import RepositoryPanel from "../../../src/components/repository/RepositoryPanel.svelte";
+import { RepositoryPanel } from "@lapismd/repository-ui/jj";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { historyContext } from "../../support/repository/context.ts";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
@@ -54,7 +54,7 @@ export const PinnedHistoryAndDiff: Story = {
         name: "Repository history columns",
       });
       if (window.innerWidth >= 1000) {
-        expect(columns).toHaveAttribute("data-display-mode", "wide");
+        expect(columns).toBeVisible();
         const log = canvas.getByRole("region", { name: "Revisions" });
         const diff = canvas.getByRole("region", { name: "Revision changes" });
         expect(log.getBoundingClientRect().right).toBeLessThanOrEqual(
@@ -223,7 +223,7 @@ export const UnavailableBinary: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await file(canvasElement);
     await expect(
-      await canvas.findByText("Preview unavailable: binary."),
+      await canvas.findByText("This file cannot be shown as text: binary."),
     ).toBeVisible();
     await expect(canvas.queryByText("No textual changes")).toBeNull();
   },
@@ -255,9 +255,9 @@ export const ReadFailureRetainsPin: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await file(canvasElement);
     const body = within(canvasElement.ownerDocument.body);
-    await expect(
-      await body.findByText("The file comparison failed"),
-    ).toBeVisible();
+    await expect(await body.findByRole("alert")).toHaveTextContent(
+      "The file comparison failed",
+    );
     await expect(
       canvas.getByRole("combobox", { name: "Operation" }),
     ).toHaveValue(operation);

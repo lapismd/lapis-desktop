@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -43,7 +44,7 @@ export const MarkdownBadges: Story = {
 export const ComposerSuggestions: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("@review");
     const option = await within(document.body).findByRole("option", {

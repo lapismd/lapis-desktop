@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -35,7 +36,7 @@ export const SendAndComplete: Story = {
     expect(dock!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
       shell!.getBoundingClientRect().bottom + 2,
     );
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Summarize this note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
@@ -54,7 +55,7 @@ export const AutomaticMemoryRecall: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Draft the Atlas summary");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {

@@ -1,3 +1,4 @@
+import { messageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import AiShellDemo from "../../support/ai/shell/AiShellDemo.svelte";
@@ -55,7 +56,7 @@ async function verify(
       viewport.scrollHeight - viewport.clientHeight - viewport.scrollTop,
     ).toBeLessThanOrEqual(8),
   );
-  const editor = canvas.getByRole("textbox", { name: /^Message$/ });
+  const editor = messageEditor(canvas);
   await userEvent.click(editor);
   await userEvent.keyboard(" Check scroll recovery");
   await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
@@ -107,7 +108,7 @@ export const PendingPermissionAcrossViews: Story = {
   play: async ({ canvasElement }) => {
     await verify(canvasElement, false, true);
     const canvas = within(canvasElement);
-    const editor = canvas.getByRole("textbox", { name: /^Message$/ });
+    const editor = messageEditor(canvas);
     const sessions = shellFixture(canvasElement).runtimes.flatMap(
       (runtime) => runtime.sessions,
     );
@@ -117,7 +118,7 @@ export const PendingPermissionAcrossViews: Story = {
         canvas.getByRole("button", { name: `Switch to ${next} view` }),
       );
       await expect(await canvas.findByTestId("ai-approval-card")).toBeVisible();
-      expect(canvas.getByRole("textbox", { name: /^Message$/ })).toBe(editor);
+      expect(messageEditor(canvas)).toBe(editor);
       expect(
         shellFixture(canvasElement).runtimes.flatMap(
           (runtime) => runtime.sessions,

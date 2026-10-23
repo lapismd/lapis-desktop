@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { BlameController } from "../../src/lib/repository/blame-controller.ts";
+import { BlameController } from "@lapismd/repository-ui/history";
 import { validateBlame } from "../../src/lib/repository/blame-model.ts";
 import {
   blameChunks,

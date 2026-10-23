@@ -4,7 +4,7 @@ import type {
   RestorePreview,
   RestoreService,
   VaultRestorePreview,
-} from "../../repository/restore.ts";
+} from "@lapismd/repository-ui/history";
 export function nativeRestore(
   sessionId: string,
   call: NativeCall,

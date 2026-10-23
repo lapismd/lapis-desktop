@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HistoryController } from "../../src/lib/repository/history-controller.ts";
+import { HistoryController } from "@lapismd/repository-ui/history";
 import { historyFixture } from "../../catalog/support/repository/fixture.ts";
 test("collapsed and reopened revision rejects its previous file-list response", async () => {
   const f = historyFixture(),

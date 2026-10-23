@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { OperationController } from "../../src/lib/repository/operation-controller.ts";
+import { OperationController } from "@lapismd/repository-ui/history";
 import { operationFixture } from "../../catalog/support/repository/operations.ts";
 import {
   operation,
@@ -71,7 +71,10 @@ test("late operation files cannot return after collapse and selecting the same o
   release();
   await old;
   assert.equal(f.c.state.files.diff, undefined);
-  assert.equal(f.c.state.files.group, undefined);
+  // A sole exact group is freshly selected by the shared screen's controller.
+  // The obsolete file response must not restore its path or diff into that group.
+  assert.equal(f.c.state.files.group.change, f.c.state.files.groups[0].change);
+  assert.equal(f.c.state.files.path, undefined);
   assert.equal(f.c.state.selected.id, operation);
   await f.c.close();
 });

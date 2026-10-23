@@ -1,3 +1,4 @@
+import { messageEditor } from "../../support/ai/message-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -30,7 +31,7 @@ export const LazyStartAndFirstLocation: Story = {
       released: 0,
       sessions: [],
     });
-    const input = canvas.getByRole("textbox", { name: "Message" });
+    const input = messageEditor(canvas);
     await userEvent.type(
       input,
       "Keep this controller through the first durable location",
@@ -46,7 +47,7 @@ export const LazyStartAndFirstLocation: Story = {
     const plugin = fixture.plugin()!;
     await plugin.application.operations.settle();
     expect(canvas.getByTestId("ai-chat-panel")).toBe(panel);
-    expect(canvas.getByRole("textbox", { name: "Message" })).toBe(input);
+    expect(messageEditor(canvas)).toBe(input);
     const sent = await inspect();
     expect(sent.sessions).toHaveLength(1);
     expect(sent.sessions[0].prompts).toEqual([
@@ -118,7 +119,7 @@ export const LayoutDoesNotReloadModels: Story = {
   play: async ({ canvasElement }) => {
     const { fixture, canvas, panel } = await chat(canvasElement);
     const initial = JSON.parse(await fixture.inspect()).modelRequests;
-    const input = canvas.getByRole("textbox", { name: "Message" });
+    const input = messageEditor(canvas);
     await userEvent.type(input, "Keep this draft while changing the layout");
     fixture.app.workspace.getBottomLeaf();
     await waitFor(() =>

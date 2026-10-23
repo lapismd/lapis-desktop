@@ -1,9 +1,9 @@
 import { guardTranscriptReplacement } from "../../lib/repository/transcript-writers.ts";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
-import { RestoreController } from "../../lib/repository/restore.ts";
+import { RestoreController } from "@lapismd/repository-ui/history";
 import { restoreRecovery } from "../../lib/repository/restore-recovery.ts";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
-import type { RestoreService } from "../../lib/repository/restore.ts";
+import type { RestoreService } from "@lapismd/repository-ui/history";
 import { updateRepositoryData } from "../../lib/repository/plugin-data.ts";
 export const RESTORE_NOTICE = "repository-history:pending-restore";
 export function createRestoreController(

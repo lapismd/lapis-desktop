@@ -1,5 +1,15 @@
 # Desktop catalog coverage
 
+Shared-screen migration: existing story IDs remain comparable between baseline
+7480 and migration 7481. Production repository/history/blame/restore/conflict
+surfaces import public Repository UI exports. Chat uses AgentChatScreen;
+History, Catalog and Imports use their complete Agent UI screens. Recorded
+captures retain exact host groups and the shared recorded reader. App/native
+services and disposable catalog adapters remain host-owned. Legacy layout-review
+fixtures remain explicitly catalog-only. Large blame data is a frozen baseline
+source fixture, not a shipping controller copy. All affected stories remain
+visual-pending. See `docs/shared-ui-migration.md` and E-SHARED-001.
+
 `AI compute library` covers the separate Installed clients-style header and
 avatar table, with downloaded and imported GGUF rows, selection and running
 state, known-byte download progress, unknown totals, missing weights, confirmed

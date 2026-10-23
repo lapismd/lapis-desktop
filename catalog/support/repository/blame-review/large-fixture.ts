@@ -1,4 +1,4 @@
-import contents from "../../../../src/lib/repository/blame-controller.ts?raw";
+import contents from "./large-file.txt?raw";
 import type { BlameCommit } from "../../../../src/lib/repository/blame-model.ts";
 import type { HistoryReader } from "../../../../src/lib/repository/history-reader.ts";
 import { revision, parent } from "../fixture.ts";

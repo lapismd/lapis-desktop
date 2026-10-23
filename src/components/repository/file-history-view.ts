@@ -1,8 +1,8 @@
 import { FileView, View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
-import type { FileHistoryController } from "../../lib/repository/file-history-controller.ts";
-import RepositoryFileHistory from "./RepositoryFileHistory.svelte";
+import type { FileHistoryController } from "@lapismd/repository-ui/history";
+import RepositoryFileHistory from "./FileHistoryPanel.svelte";
 import { followBackup } from "../../lib/repository/backup-follow.ts";
 
 export class FileHistoryView extends View {

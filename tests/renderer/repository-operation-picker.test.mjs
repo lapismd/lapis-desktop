@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { OperationController } from "../../src/lib/repository/operation-controller.ts";
+import { OperationController } from "@lapismd/repository-ui/history";
 import { operationParents } from "../../src/lib/repository/operation-parent.ts";
 import {
   operationFixture,

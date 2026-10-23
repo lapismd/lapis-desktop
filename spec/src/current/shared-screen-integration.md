@@ -1,0 +1,89 @@
+# Shared-screen integration
+
+M15.1 replaces existing Desktop views in isolated workspaces. Complete public
+screens own layout; the host owns runtime and authority. The retired optional
+chat frame is removed rather than retaining an ignored parallel layout.
+
+## AI admission
+
+Shared UI adoption uses complete public Agent screens. Desktop retains native
+admission, exact requests, draft/storage ownership and controller disposal; UI
+migration cannot enable deferred native conversation backends.
+
+## Desktop host
+
+The isolated shared-screen migration preserves the existing Tauri window and
+Notes AppShell. Shared screens occupy the existing view hosts; no new product
+routes, installed profiles or native chrome are introduced.
+
+## Source governance
+
+Shared-screen adoption consumes public built package exports in isolated JJ
+workspaces. Portable dependency ranges remain tracked; temporary verified
+archive cohorts and before/after catalogs retain source revisions and separate
+evidence.
+
+## Milestone gates
+
+M15.1 tracks isolated shared-screen adoption of existing views. It has separate
+consumer interaction and cold native gates; original M10, M13, distribution and
+visual-review statuses remain unchanged.
+
+## View registrations
+
+Existing AI and repository view registrations mount shared production screens.
+Desktop retains explicit App/native adapters and host lifetime. Catalog stories
+retain matching IDs and use the same production integration after migration.
+
+## Repository pins
+
+History and Op Log mount the complete public Repository UI screens; portable
+controllers retain admitted native readers and exact operation/revision pins.
+Leaf File History uses its documented public RepositoryShell context because API
+view mounts cannot inherit another component tree’s Svelte context.
+
+## Retained qualification context
+
+The following existing references are retained from the owning chapters.
+
+### AI admission
+
+E-AI-104/107 qualify providers. E-AI-114/116/117 add
+[turn history](vault-backup.md) under LD-AI-002 while retaining ordinary ACP and
+local transcripts. Changes are observed during turns; shared-vault edits have no
+exclusive author. Provider, trust and two-device gates remain open.
+
+### Desktop host
+
+AI: E-AI-097–118/122–125.
+
+E-AI-093: [local ACP](ai-local-history.md).
+
+Footer E-CATALOG-012/013; scroll E-AI-064; repo E-REPO-043/044/055/056; backup
+E-REPO-035–041/046–054; imports E-AI-121 ([contract](ai-imports.md)). Gravatar:
+`https://www.gravatar.com`; status: `repository-navigation.md`.
+
+### Source governance
+
+E-AI-097/099 retain grants; E-AI-108/114 retain LD-GOV-006 source attribution.
+Turn-history IPC has one named main-window permission; source-size and App
+ownership audits remain enforced. Publication and baselines stay separate.
+
+### Milestone gates
+
+E-REPO-056 retains shared history. E-AI-097–125 cover AI/memory/imports/models.
+M14.8 remains Partial. M10.2–M10.4 retain LD-MIG-002 gates; M13/M13.3 Deferred.
+E-PLAN-004: [deferred AI tools](../backlog/ai-tool-expansion.md).
+
+### View registrations
+
+E-AI-121/122: imports/model search; E-AI-123–125: compute and inline choice.
+
+E-AI-108/109/112–118 cover agent editors, headers, responsive AI/Compute
+settings, sent context, indentation and Markdown memory review (LD-CAT-003).
+
+### Repository pins
+
+[Local ACP](ai-local-history.md) joins LD-REPO-005 backup. E-AI-114 adds native
+[turn observations and guarded undo](vault-backup.md) without AgentStore. The
+LD-REPO-003 experiment stays Deferred; existing history/sync remain active.

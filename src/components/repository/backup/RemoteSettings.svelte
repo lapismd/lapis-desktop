@@ -19,7 +19,7 @@
   import type { ForgeState } from "../../../lib/repository/forge-accounts.ts";
   import type { RemoteController } from "../../../lib/repository/remote-controller.ts";
   import type { RemoteViewState } from "../../../lib/repository/remote.ts";
-  import type { RestoreController } from "../../../lib/repository/restore.ts";
+  import type { RestoreController } from "@lapismd/repository-ui/history";
   let {
     controller,
     accounts,

@@ -1,9 +1,7 @@
 # Desktop plugins and catalog
 
-E-AI-121/122: imports/model search; E-AI-123–125: compute and inline choice.
-
-E-AI-108/109/112–118 cover agent editors, headers, responsive AI/Compute
-settings, sent context, indentation and Markdown memory review (LD-CAT-003).
+[Shared-screen integration](shared-screen-integration.md) governs view
+registrations. Existing native and distribution gates remain unchanged.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

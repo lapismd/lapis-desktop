@@ -7,7 +7,10 @@
   import type { AiChatItem } from "../../../lib/ai/chat/chat-items.ts";
   import type { TranscriptPanelProps } from "../../../lib/ai/chat/panel/transcript.ts";
   import AiInventoryResult from "./AiInventoryResult.svelte";
-  import AiCommandReport from "./AiCommandReport.svelte";
+  import {
+    AgentCommandReport as AiCommandReport,
+    AgentToolResult,
+  } from "@lapismd/agent-ui/chat";
   import { isSlashCommandNotice } from "../../../lib/ai/chat/chat-items.ts";
 
   let { item, panel }: { item: AiChatItem; panel: TranscriptPanelProps } =
@@ -36,11 +39,13 @@
       state="completed"
     />
   {:else}
-    <Chat.ToolCallDetail
-      input={item.input}
-      output={item.state === "error" ? undefined : item.output}
-      error={item.state === "error" ? item.output : undefined}
-      toolName={item.name}
+    <AgentToolResult
+      result={{
+        name: item.name,
+        input: item.input,
+        output: item.state === "error" ? undefined : item.output,
+        error: item.state === "error" ? item.output : undefined,
+      }}
     />
   {/if}
 {:else if item.type === "status" && item.layout === "inventory"}

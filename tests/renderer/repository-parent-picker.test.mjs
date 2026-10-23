@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HistoryController } from "../../src/lib/repository/history-controller.ts";
+import { HistoryController } from "@lapismd/repository-ui/history";
 import { parentCandidates } from "../../src/lib/repository/parent-candidates.ts";
 import {
   commitCardSearch,

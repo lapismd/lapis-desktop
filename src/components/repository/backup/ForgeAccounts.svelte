@@ -10,7 +10,7 @@
   import Trash2 from "@lucide/svelte/icons/trash-2";
   import KeyRound from "@lucide/svelte/icons/key-round";
   import RefreshCw from "@lucide/svelte/icons/refresh-cw";
-  import RepositoryAuthorAvatar from "../RepositoryAuthorAvatar.svelte";
+  import { RepositoryAuthorAvatar } from "@lapismd/repository-ui/jj";
   import ForgeAuthorization from "./ForgeAuthorization.svelte";
   import ForgeIcon from "./ForgeIcon.svelte";
   import BackupCard from "./BackupCard.svelte";

@@ -1,8 +1,7 @@
 # Governance
 
-E-AI-097/099 retain grants; E-AI-108/114 retain LD-GOV-006 source attribution.
-Turn-history IPC has one named main-window permission; source-size and App
-ownership audits remain enforced. Publication and baselines stay separate.
+[Shared-screen integration](shared-screen-integration.md) governs source
+governance. Existing native and distribution gates remain unchanged.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

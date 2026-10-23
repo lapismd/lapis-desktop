@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within } from "storybook/test";
 import { agentMentionToken } from "@lapismd/jj-conversations";
@@ -14,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 export const ParticipantAvatars: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     const group = await canvas.findByRole("group", { name: "Chat agents" });
     await userEvent.type(
       editor,

@@ -1,3 +1,7 @@
+import {
+  findMessageEditor,
+  messageEditor,
+} from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import NativeNotesDemo from "../../support/ai/NativeNotesDemo.svelte";
@@ -17,7 +21,7 @@ export const LayoutKeepsModelDiscovery: Story = {
     const f = await ready(canvasElement),
       canvas = within(canvasElement);
     await userEvent.click(canvas.getByRole("button", { name: /^Open Chat$/ }));
-    const input = await canvas.findByRole("textbox", { name: "Message" });
+    const input = await findMessageEditor(canvas);
     await waitFor(() => expect(input).toBeEnabled());
     await waitFor(() => expect(f.probes).toBe(1));
     await userEvent.type(
@@ -44,7 +48,7 @@ export const LayoutKeepsModelDiscovery: Story = {
         canvas.getAllByRole("button", { name: "Close bottom panel" }).length,
       ).toBeGreaterThan(0),
     );
-    expect(canvas.getByRole("textbox", { name: "Message" })).toBe(input);
+    expect(messageEditor(canvas)).toBe(input);
     expect(input).toHaveTextContent(
       "Retain this draft across bottom panel changes",
     );

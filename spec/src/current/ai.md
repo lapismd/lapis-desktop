@@ -1,9 +1,7 @@
 # Desktop AI and optional compute
 
-E-AI-104/107 qualify providers. E-AI-114/116/117 add
-[turn history](vault-backup.md) under LD-AI-002 while retaining ordinary ACP and
-local transcripts. Changes are observed during turns; shared-vault edits have no
-exclusive author. Provider, trust and two-device gates remain open.
+[Shared-screen integration](shared-screen-integration.md) governs ai admission.
+Existing native and distribution gates remain unchanged.
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import AiChatDemo from "../../support/ai/AiChatDemo.svelte";
@@ -12,10 +13,7 @@ export const PermissionReplyRejected: Story = {
   args: { requireApproval: true, rejectApproval: true },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(
-      await canvas.findByRole("textbox", { name: /^Message$/ }),
-      "Update a note",
-    );
+    await userEvent.type(await findMessageEditor(canvas), "Update a note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await userEvent.click(
       await canvas.findByRole("button", { name: /Allow once/ }),
@@ -33,10 +31,7 @@ export const QuestionReplyRejected: Story = {
   args: { requireQuestion: true, rejectQuestion: true },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await userEvent.type(
-      await canvas.findByRole("textbox", { name: /^Message$/ }),
-      "Update a note",
-    );
+    await userEvent.type(await findMessageEditor(canvas), "Update a note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await userEvent.click(
       await canvas.findByRole("button", { name: /Make the smallest change/ }),

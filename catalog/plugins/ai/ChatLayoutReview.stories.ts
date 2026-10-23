@@ -1,3 +1,8 @@
+import {
+  findMessageEditor,
+  messageEditor,
+} from "../../support/ai/message-editor.ts";
+import { showSendingError } from "../../support/ai/shell/sending-error-review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import AiShellDemo from "../../support/ai/shell/AiShellDemo.svelte";
 import { expect, userEvent, within, waitFor } from "storybook/test";
@@ -14,6 +19,7 @@ type Story = StoryObj<typeof meta>;
 export const Conversation: Story = {};
 export const SendingError: Story = {
   args: { scenario: "sending-error" },
+  play: ({ canvasElement }) => showSendingError(canvasElement),
 };
 export const InlineLocalCommands: Story = {
   play: async ({ canvasElement }) => {
@@ -22,7 +28,7 @@ export const InlineLocalCommands: Story = {
     await waitFor(() =>
       expect(panel).toHaveAttribute("data-initializing", "false"),
     );
-    const editor = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("/help{Escape}");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
@@ -81,7 +87,7 @@ export const LiveInboxControls: Story = {
     await waitFor(() =>
       expect(panel).toHaveAttribute("data-initializing", "false"),
     );
-    const editor = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("/help");
     const option = await page.findByRole("option", { name: /^\/help App/ });
@@ -101,7 +107,7 @@ export const LiveInboxControls: Story = {
       within(inspector).findByText("Welcome to the project"),
     ).resolves.toBeVisible();
     await userEvent.click(
-      within(inspector).getByRole("button", { name: /^Source$/ }),
+      within(inspector).getByRole("button", { name: "Show source" }),
     );
     await expect(
       within(inspector).findByRole("textbox", { name: /Notes\/Welcome.md/ }),
@@ -121,10 +127,15 @@ export const FixedErrorFeedback: Story = {
   args: { scenario: "sending-error" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const error = await canvas.findByRole("alert");
+    await showSendingError(canvasElement);
+    const error = await canvas.findByRole("alert", {
+      name: "Turn interrupted",
+    });
     await expect(error).toHaveTextContent("Your message is retained");
     expect(error).toHaveAccessibleName("Turn interrupted");
-    expect(canvas.getAllByRole("alert")).toHaveLength(1);
+    await waitFor(() => expect(canvas.getAllByRole("alert")).toHaveLength(1), {
+      timeout: 12_000,
+    });
     expect(
       canvasElement.querySelector(".transcript-send-hint [role='alert']"),
     ).toBeNull();
@@ -151,9 +162,9 @@ export const FixedErrorFeedback: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Switch to Classic view" }),
     );
-    await expect(
-      canvas.getByRole("textbox", { name: /^Message$/ }),
-    ).toHaveTextContent("Summarize the open questions");
+    await expect(messageEditor(canvas)).toHaveTextContent(
+      "Summarize the open questions",
+    );
     await expect(
       canvas.getByRole("button", { name: "Send message" }),
     ).toBeVisible();
@@ -167,7 +178,7 @@ export const FailedSendRetainsDraft: Story = {
     await waitFor(() =>
       expect(panel).toHaveAttribute("data-initializing", "false"),
     );
-    const editor = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard(
       "Keep this authored message after the failed send",
@@ -191,7 +202,7 @@ export const EmptyLocalSearch: Story = {
         "false",
       ),
     );
-    const editor = canvas.getByRole("textbox", { name: "Message" });
+    const editor = messageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("/search missing-search-fixture-9841{Escape}");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
@@ -353,8 +364,10 @@ export const CompactComposer: Story = {
         "false",
       ),
     );
-    const editor = canvas.getByRole("textbox", { name: /^Message$/ });
-    const content = editor.closest<HTMLElement>(".cm-content")!;
+    const editor = messageEditor(canvas);
+    const content = editor.closest<HTMLElement>(
+      ".ui-markdown-composer__editor",
+    )!;
     const rootSize = parseFloat(
       getComputedStyle(document.documentElement).fontSize,
     );

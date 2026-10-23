@@ -3,7 +3,7 @@ import type {
   RestoreService,
   VaultRestorePreview,
   VaultRestoreRequest,
-} from "./restore.ts";
+} from "@lapismd/repository-ui/history";
 export type RemoteConfiguration = {
   account: string;
   project: string;

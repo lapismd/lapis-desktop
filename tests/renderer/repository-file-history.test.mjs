@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { FileHistoryController } from "../../src/lib/repository/file-history-controller.ts";
+import { FileHistoryController } from "@lapismd/repository-ui/history";
 import {
   historyFixture,
   operation,

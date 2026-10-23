@@ -30,6 +30,7 @@ gates.
   - [Explicit local transcript imports](ai-imports.md)
 - [Repository history and conversations](repository.md)
 - [Enabled writer audit](writer-audit.md)
+- [Shared-screen integration](shared-screen-integration.md)
 - [Migration inventory](migration.md)
 - [Milestones and next actions](progress/milestones.md)
 - [Requirement verification](verification.md)

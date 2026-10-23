@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
@@ -13,7 +14,7 @@ export const PendingPermission: Story = {
   args: { requireApproval: true },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Update a note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await canvas.findByTestId("ai-approval-card");

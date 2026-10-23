@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -15,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 export const OneAuthoredMessage: Story = {
   play: async ({ canvasElement }) => {
     const c = within(canvasElement),
-      editor = await c.findByRole("textbox", { name: "Message" });
+      editor = await findMessageEditor(c);
     await userEvent.click(editor);
     for (const name of ["Reviewer", "Writer"]) {
       await userEvent.keyboard(`@${name.toLowerCase()}`);
@@ -56,7 +57,9 @@ export const OneAuthoredMessage: Story = {
     expect(JSON.parse(aiReviewValue(canvasElement, "sessions"))).toHaveLength(
       2,
     );
-    await userEvent.click(c.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      c.getByRole("button", { name: "Switch to Classic view" }),
+    );
     expect(
       within(c.getAllByRole("group", { name: "Sent to" }).at(-1)!).getAllByText(
         "Completed",
@@ -99,7 +102,7 @@ export const CreateNamedParticipant: Story = {
       ).toBeNull(),
     );
     const c = within(canvasElement),
-      editor = await c.findByRole("textbox", { name: "Message" });
+      editor = await findMessageEditor(c);
     await waitFor(() =>
       expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"),
     );
@@ -138,7 +141,7 @@ export const VisibleWorkAndCancellation: Story = {
   args: { scenario: "addressed-approval" },
   play: async ({ canvasElement }) => {
     const c = within(canvasElement),
-      editor = await c.findByRole("textbox", { name: "Message" });
+      editor = await findMessageEditor(c);
     await waitFor(() =>
       expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"),
     );
@@ -184,7 +187,7 @@ export const SeparateApprovals: Story = {
   args: { scenario: "addressed-approval" },
   play: async ({ canvasElement }) => {
     const c = within(canvasElement),
-      editor = await c.findByRole("textbox", { name: "Message" });
+      editor = await findMessageEditor(c);
     await waitFor(() =>
       expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"),
     );

@@ -11,10 +11,10 @@
   import type { AdoptionController } from "../../../lib/repository/adoption-controller.ts";
   import StorageSettings from "./StorageSettings.svelte";
   import type { StorageController } from "../../../lib/repository/storage-controller.ts";
-  import RepositoryRestoreDialog from "../RepositoryRestoreDialog.svelte";
+  import { RepositoryRestoreDialog } from "@lapismd/repository-ui/jj";
   import type { ForgeController } from "../../../lib/repository/forge-controller.ts";
   import type { RemoteController } from "../../../lib/repository/remote-controller.ts";
-  import type { RestoreController } from "../../../lib/repository/restore.ts";
+  import type { RestoreController } from "@lapismd/repository-ui/history";
   let {
     controller,
     remote,

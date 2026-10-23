@@ -9,7 +9,7 @@
   import RefreshCw from "@lucide/svelte/icons/refresh-cw";
   import Check from "@lucide/svelte/icons/check";
   import CircleAlert from "@lucide/svelte/icons/circle-alert";
-  import RepositoryIdentifiers from "./RepositoryIdentifiers.svelte";
+  import { RepositoryIdentifiers } from "@lapismd/repository-ui/jj";
   import { encodeJjChangeId } from "../../lib/repository/graph/repository-log-graph.ts";
   import type {
     BackupController,

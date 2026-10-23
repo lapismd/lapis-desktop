@@ -3,7 +3,6 @@ import { VaultMemoryRecordStore } from "../../../../src/lib/ai/memory/vault-memo
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
-import AiChatSession from "../../../../src/components/ai/sessions/AiChatSession.svelte";
 import { AcpAgentRuntime } from "../../../../src/lib/ai/runtimes/acp/runtime.ts";
 import { ConversationRepository } from "../../../../src/lib/ai/conversations/conversation-repository.ts";
 import { MemoryTranscriptStore } from "../../../../src/lib/ai/conversations/memory-transcript-store.ts";
@@ -90,7 +89,6 @@ export function createSentContextFixture(unknown = false, withMemory = false) {
           runtime,
           repository,
           memoryRecall: withMemory ? memory : undefined,
-          transcriptFrame: AiChatSession,
           createConversation: () => ({
             scopeDir: "Notes",
             launchNotePath: "Notes/alpha.md",

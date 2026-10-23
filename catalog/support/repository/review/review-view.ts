@@ -2,7 +2,7 @@ import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import type { HistoryReader } from "../../../../src/lib/repository/history-reader.ts";
 import type { LocalGraphCommit } from "@lapismd/jj-history";
-import { OperationController } from "../../../../src/lib/repository/operation-controller.ts";
+import { OperationController } from "@lapismd/repository-ui/history";
 import RepositoryOperationsReview from "./RepositoryOperationsReview.svelte";
 import { operation } from "../fixture.ts";
 import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";

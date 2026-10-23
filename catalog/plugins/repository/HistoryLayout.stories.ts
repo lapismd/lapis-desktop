@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, waitFor } from "storybook/test";
-import RepositoryPanel from "../../../src/components/repository/RepositoryPanel.svelte";
+import { RepositoryPanel } from "@lapismd/repository-ui/jj";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { openHistoryFile } from "../../support/repository/interactions.ts";

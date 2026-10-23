@@ -318,7 +318,7 @@ export const LargeTranscript: Story = {
       within(inspector).findByText("Release plan"),
     ).resolves.toBeVisible();
     await userEvent.click(
-      within(inspector).getByRole("button", { name: /^Source$/ }),
+      within(inspector).getByRole("button", { name: "Show source" }),
     );
     await expect(
       within(inspector).findByRole("textbox", { name: /Notes\/Plan.md/ }),

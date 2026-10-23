@@ -1,3 +1,5 @@
+import "@lapismd/repository-ui/styles.css";
+import "@lapismd/agent-ui/styles.css";
 import type { Preview } from "@storybook/svelte-vite";
 import { withThemeByDataAttribute } from "@storybook/addon-themes";
 import "@lapismd/design-core/styles.css";

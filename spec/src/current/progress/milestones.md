@@ -83,3 +83,10 @@ original gates are unchanged. Plan approval is not product acceptance.
 | M8.5 | Done | M8.4 | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes. | Complete; continue AI and backup | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014,E-CATALOG-015,E-CATALOG-016 |
 
 E-CATALOG-010/016: footer/native qualified.
+
+## Shared-screen adoption
+
+<!-- prettier-ignore -->
+| ID | Status | Depends | Requirements | Gate | Next | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| M15.1 | In progress | M8.5 | LD-CAT-001,LD-AI-002,LD-REPO-002 | Existing Desktop chat, history, catalog, imports, recorded and repository views mount shared public complete screens; exact and affected interaction checks pass in an isolated workspace, with comparable before/after stories and cold native acceptance. | Finish consumer qualification and compare the isolated catalogs | E-SHARED-001 |

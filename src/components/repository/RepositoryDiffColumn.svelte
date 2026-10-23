@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RepositorySkeleton from "./RepositorySkeleton.svelte";
+  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
   import RepositoryFileTitle from "./RepositoryFileTitle.svelte";
   import {
     FileChangeStats,
@@ -11,7 +11,7 @@
 
   import { changeStats } from "../../lib/repository/history-files.ts";
   import RepositoryDiffControls from "./RepositoryDiffControls.svelte";
-  import RepositoryDiff from "./RepositoryDiff.svelte";
+  import { RepositoryDiff } from "@lapismd/repository-ui/jj";
   import RotateCcwIcon from "@lucide/svelte/icons/rotate-ccw";
   let {
     state: snapshot,

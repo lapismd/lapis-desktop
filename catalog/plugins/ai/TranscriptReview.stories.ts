@@ -1,3 +1,7 @@
+import {
+  findMessageEditor,
+  messageEditor,
+} from "../../support/ai/message-editor.ts";
 import { reviewInlineFooter } from "../../support/ai/transcript/footer-review.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
@@ -22,8 +26,8 @@ export const DocumentConversation: Story = {
       canvas.findByRole("region", { name: "AI conversation" }),
     ).resolves.toBeVisible();
     await expect(
-      canvas.getByRole("button", { name: "Document" }),
-    ).toHaveAttribute("aria-pressed", "true");
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    ).toBeVisible();
     await expect(
       canvas.findByText("A quieter daily review"),
     ).resolves.toBeInTheDocument();
@@ -64,8 +68,8 @@ export const ClassicConversation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     await expect(
-      canvas.findByRole("button", { name: "Classic" }),
-    ).resolves.toHaveAttribute("aria-pressed", "true");
+      canvas.findByRole("button", { name: "Switch to Document view" }),
+    ).resolves.toBeVisible();
     await expect(
       canvas.findByText("A quieter daily review"),
     ).resolves.toBeInTheDocument();
@@ -75,27 +79,31 @@ export const GroupedToolDisclosures: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     for (const mode of ["Document", "Classic"]) {
-      await userEvent.click(await canvas.findByRole("button", { name: mode }));
+      if (mode === "Classic")
+        await userEvent.click(
+          await canvas.findByRole("button", { name: "Switch to Classic view" }),
+        );
       await userEvent.click(
         await canvas.findByRole("button", { name: "Expand Tool activity" }),
       );
       const read = await canvas.findByRole("button", {
-        name: "Show details for vault.read",
+        name: "Show details for vault.read · Notes/alpha.md",
       });
       await expect(
         canvas.getByRole("button", { name: "Show details for notes_search" }),
       ).toBeVisible();
       await userEvent.click(read);
       const comment = await canvas.findByRole("button", {
-        name: "Comment on vault.read details",
+        name: "Comment on Notes/alpha.md",
       });
+      comment.focus();
       await userEvent.click(comment);
       await expect(
-        canvas.findByRole("textbox", { name: "Comment on vault.read details" }),
+        canvas.findByRole("textbox", { name: "Comment on Notes/alpha.md" }),
       ).resolves.toBeVisible();
       await userEvent.keyboard("{Escape}");
       await userEvent.click(
-        canvas.getByRole("button", { name: "Hide details for vault.read" }),
+        canvas.getByRole("button", { name: "Close tool details" }),
       );
       await userEvent.click(
         canvas.getByRole("button", { name: "Collapse Tool activity" }),
@@ -107,15 +115,19 @@ export const SwitchWithDraft: Story = {
   args: { scenario: "empty" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("Keep this draft while switching views");
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(editor).toBeInTheDocument();
     await expect(editor).toHaveTextContent(
       "Keep this draft while switching views",
     );
-    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Document view" }),
+    );
     await expect(editor).toBeInTheDocument();
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(canvas.findByText("Summary")).resolves.toBeInTheDocument();
@@ -159,10 +171,14 @@ export const UnknownLocalTurn: Story = {
     ).toBeVisible();
     expect(canvas.queryByRole("button", { name: "Retry message" })).toBeNull();
     expect(aiReviewValue(canvasElement, "sessions")).toBe("[]");
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     expect(canvas.queryByRole("button", { name: "Retry message" })).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
-    const editor = canvas.getByRole("textbox", { name: "Message" });
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Document view" }),
+    );
+    const editor = messageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("A new explicitly authored message");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
@@ -180,14 +196,16 @@ export const PermissionRequest: Story = {
   args: { scenario: "approval" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("Review the note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(
       canvas.findByText("Allow the fake agent to continue?"),
     ).resolves.toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(
       canvas.getByText("Allow the fake agent to continue?"),
     ).toBeVisible();
@@ -203,12 +221,14 @@ export const QuestionRequest: Story = {
   args: { scenario: "question" },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("Help plan the review");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(
-      canvas.findByText("How should I update the sample file?"),
+      canvas.findByRole("group", {
+        name: "How should I update the sample file?",
+      }),
     ).resolves.toBeVisible();
   },
 };
@@ -220,17 +240,22 @@ export const CommentsAsContext: Story = {
     const comment = canvas.getAllByRole("button", {
       name: "Comment on Assistant response",
     })[0]!;
+    comment.focus();
     await userEvent.click(comment);
     const editor = await canvas.findByRole("textbox", {
       name: "Comment on Assistant response",
     });
     await userEvent.click(editor);
     await userEvent.keyboard("Use a weekly review for this part instead.");
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(
       canvas.getByRole("group", { name: "Pending comments" }),
     ).toHaveTextContent("Use a weekly review for this part instead.");
-    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Document view" }),
+    );
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await expect(canvas.findByText("Summary")).resolves.toBeInTheDocument();
     await waitFor(() => {
@@ -260,6 +285,7 @@ export const CodeAndTableComments: Story = {
     const comment = await canvas.findByRole("textbox", {
       name: "Comment on Assistant response",
     });
+    comment.focus();
     await userEvent.click(comment);
     await userEvent.keyboard("Keep this code example.");
     const table = canvas.getByRole("table");

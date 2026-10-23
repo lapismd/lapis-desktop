@@ -4,7 +4,7 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import RepositoryReviewDemo from "../../support/repository/review/RepositoryReviewDemo.svelte";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import RepositoryPanel from "../../../src/components/repository/RepositoryPanel.svelte";
+import { RepositoryPanel } from "@lapismd/repository-ui/jj";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { historyContext } from "../../support/repository/context.ts";
 import { operation } from "../../support/repository/fixture.ts";

@@ -1,3 +1,4 @@
+import { messageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import AiWorkspaceDemo from "../../support/ai/workspace/AiWorkspaceDemo.svelte";
@@ -40,7 +41,7 @@ export const SeparateConversations: Story = {
         expect(canvas.getByRole("heading", { name: title })).toBeVisible(),
       );
     };
-    const input = () => canvas.getByRole("textbox", { name: /^Message$/ });
+    const input = () => messageEditor(canvas);
     await open("Summarize project notes");
     await userEvent.type(input(), "Draft for the notes conversation");
     await userEvent.click(canvas.getByRole("button", { name: "Attach file" }));
@@ -49,9 +50,11 @@ export const SeparateConversations: Story = {
         name: /Welcome/,
       }),
     );
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Comment on Your message" }),
-    );
+    const comment = canvas.getByRole("button", {
+      name: "Comment on Your message",
+    });
+    comment.focus();
+    await userEvent.click(comment);
     await userEvent.type(
       await canvas.findByRole("textbox", { name: "Comment on Your message" }),
       "Comment only for the notes conversation",
@@ -115,7 +118,7 @@ export const ReopenWithoutSending: Story = {
         "false",
       ),
     );
-    const input = () => canvas.getByRole("textbox", { name: /^Message$/ });
+    const input = () => messageEditor(canvas);
     await userEvent.type(
       input(),
       "A private draft that survives restarting AI",
@@ -167,7 +170,7 @@ export const NewChatAndAcknowledgement: Story = {
         "false",
       ),
     );
-    const input = () => canvas.getByRole("textbox", { name: /^Message$/ });
+    const input = () => messageEditor(canvas);
     await userEvent.type(input(), "Keep this in the original conversation");
     if (!canvas.queryByRole("button", { name: "New conversation" }))
       await userEvent.click(
@@ -178,7 +181,7 @@ export const NewChatAndAcknowledgement: Story = {
     );
     await waitFor(() => {
       expect(
-        canvas.getByRole("heading", { name: "New conversation" }),
+        canvas.getByRole("heading", { name: "Untitled conversation" }),
       ).toBeVisible();
       expect(canvas.getByTestId("ai-chat-panel")).toHaveAttribute(
         "data-draft-ready",
@@ -229,7 +232,7 @@ export const StorageFailureKeepsDraft: Story = {
     host.drafts.save = async () => {
       throw new Error("Fixture draft disk is full");
     };
-    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    const input = messageEditor(canvas);
     await userEvent.type(input, "Retain this draft after a failed save");
     const body = within(canvasElement.ownerDocument.body);
     await expect(
@@ -260,7 +263,7 @@ export const FirstSendAdoptsUnassignedDraft: Story = {
       );
     });
     const host = fixture.plugin()!.application;
-    const input = () => canvas.getByRole("textbox", { name: /^Message$/ });
+    const input = () => messageEditor(canvas);
     await userEvent.type(input(), "A first message from an unassigned draft");
     await userEvent.click(
       canvas.getByRole("button", { name: /^Send message$/ }),
@@ -338,7 +341,7 @@ export const LateReadDoesNotReplaceSelectedDraft: Story = {
         "true",
       ),
     );
-    const input = canvas.getByRole("textbox", { name: /^Message$/ });
+    const input = messageEditor(canvas);
     await userEvent.type(input, "Keep the selected parser draft");
     release();
     await held;

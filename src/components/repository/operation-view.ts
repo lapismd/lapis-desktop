@@ -4,9 +4,9 @@ import {
 } from "../../lib/repository/history-source.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
-import type { OperationController } from "../../lib/repository/operation-controller.ts";
+import type { OperationController } from "@lapismd/repository-ui/history";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
-import RepositoryOperations from "./RepositoryOperations.svelte";
+import { RepositoryOperations } from "@lapismd/repository-ui/jj";
 import { followBackup } from "../../lib/repository/backup-follow.ts";
 
 export class OperationView extends View {
@@ -82,6 +82,7 @@ export class OperationView extends View {
       target: this.containerEl,
       props: {
         controller: this.#controller,
+        searchable: false,
         sources: this.plugin.sourcePicker(this.#source, (source) => {
           void this.plugin
             .openOperations(source)

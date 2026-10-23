@@ -101,3 +101,11 @@ before notification; a serialized object cannot become `[object Object]` text.
 The working-copy and automatic-history popovers share the upstream header
 actions and capability gating specified in
 [Automatic vault backup](vault-backup.md).
+
+The shared-screen migration consumes complete `RepositoryPanel` and
+`RepositoryOperations`, plus public file-history, blame, conflict and restore
+components from Repository UI. Desktop retains view registration, admitted
+services, source selection, saved state, notifications and guarded writes.
+Portable controllers come from `/history`; internal package imports are
+forbidden. The baseline and migrated catalogs retain matching story identities
+in isolated workspaces and ports, with immutable baseline dependency receipts.

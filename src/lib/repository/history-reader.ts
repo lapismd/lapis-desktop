@@ -17,7 +17,7 @@ export interface RepositoryServices {
   sync?: import("./sync.ts").SyncService;
   remote?: import("./remote.ts").RemoteService;
   forges?: import("./forge-accounts.ts").ForgeService;
-  restore?: import("./restore.ts").RestoreService;
+  restore?: import("@lapismd/repository-ui/history").RestoreService;
   backup?: import("./backup.ts").BackupService;
   reader: HistoryReader;
   workingCopy?: () => Promise<

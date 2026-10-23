@@ -19,7 +19,6 @@ import { FakeAgentRuntime } from "../../../../tests/ai/support/fake-runtime.ts";
 import { shellSeed } from "./seed.ts";
 import type { ShellScenario } from "./types.ts";
 import { registerCatalogCleanup } from "../../lifecycle.ts";
-import { registerChatReview } from "../sessions/chat-review-view.ts";
 import { chatReviewSeed } from "../sessions/chat-review-seed.ts";
 import { SendingErrorRuntime } from "../sessions/sending-error-runtime.ts";
 export function createShellFixture(
@@ -149,8 +148,6 @@ export function createShellFixture(
       communityPlugins: "disabled",
       optionalCorePlugins: "configured",
     });
-    if (reviewLayout && scenario === "sending-error")
-      registerChatReview(app, true);
     stopMetadata = app.metadataTypeManager.trackChanges();
     await app.metadataCache.load();
     const search = app.plugins.plugins.get("search");

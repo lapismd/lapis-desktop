@@ -1,5 +1,13 @@
 # AI transcript delivery review
 
+The isolated shared-screen migration mounts public AgentChatScreen,
+AgentHistoryScreen, AgentCatalogScreen, AgentImportsScreen and recorded/session
+surfaces from Agent UI. Desktop retains its explicit App, admitted native
+controller, settings, note navigation, raw import validation/save and disposal.
+Structural presentation ports preserve existing host search and registry events.
+Unknown send recovery reads original native identities without dispatching or
+replaying the prompt. No new routes or JJ persistence are enabled.
+
 The 2026-10-20 review pauses full native implementation and validation. The
 native source picker uses a compact ghost footer button and searchable Command
 View. Recorded status and capture-gap facts render once in centered system

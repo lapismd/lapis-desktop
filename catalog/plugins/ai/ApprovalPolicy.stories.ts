@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -75,7 +76,7 @@ export const AutomaticApproval: Story = {
     await choose(canvasElement, "Approve for me");
     await c.findByRole("button", { name: "Action approvals: Approve for me" });
     await settled();
-    const editor = await c.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(c);
     await userEvent.click(editor);
     await userEvent.keyboard("A fixture turn with automatic approval");
     await userEvent.click(c.getByRole("button", { name: "Send message" }));
@@ -98,7 +99,7 @@ export const SaveFailure: Story = {
   args: { scenario: "participant-settings-failure" },
   play: async ({ canvasElement }) => {
     const c = within(canvasElement);
-    const editor = await c.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(c);
     await settled();
     await userEvent.click(editor);
     await userEvent.keyboard("Retain this draft");

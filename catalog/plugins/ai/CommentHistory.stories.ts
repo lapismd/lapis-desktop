@@ -1,3 +1,4 @@
+import { messageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -39,12 +40,16 @@ export const RestoredCodeAndTableFeedback: Story = {
     expect(inline).not.toBeNull();
     expect(within(inline).getByRole("img", { name: /^Sent$/ })).toBeVisible();
     expect(aiReviewValue(canvasElement, "sessions")).toBe("[]");
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(
       canvas.findByText("Keep this table feedback and its original row."),
     ).resolves.toBeVisible();
-    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
-    await userEvent.click(canvas.getByRole("textbox", { name: "Message" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Document view" }),
+    );
+    await userEvent.click(messageEditor(canvas));
     await userEvent.keyboard("Continue using the saved feedback");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
@@ -107,7 +112,9 @@ export const LinkedCodeTableAndToolReplies: Story = {
     });
     await expect(reply).toBeVisible();
     expect(aiReviewValue(canvasElement, "sessions")).toBe("[]");
-    await userEvent.click(c.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      c.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(
       c.findByText("A clarified daily review"),
     ).resolves.toBeVisible();
@@ -144,7 +151,9 @@ export const ContinueRestoredThread: Story = {
     expect(pending).not.toHaveTextContent(
       "Keep this code feedback after reopening.",
     );
-    await userEvent.click(c.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      c.getByRole("button", { name: "Switch to Classic view" }),
+    );
     expect(
       c.getByRole("group", { name: "Pending comments" }),
     ).toHaveTextContent(text);

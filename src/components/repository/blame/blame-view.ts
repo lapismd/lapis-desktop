@@ -5,9 +5,9 @@ import {
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import type { RepositoryPlugin } from "../repository-plugin.ts";
-import type { BlameController } from "../../../lib/repository/blame-controller.ts";
+import type { BlameController } from "@lapismd/repository-ui/history";
 import type { BlameSelection } from "../../../lib/repository/blame-model.ts";
-import RepositoryBlamePanel from "./RepositoryBlamePanel.svelte";
+import { RepositoryBlamePanel } from "@lapismd/repository-ui/jj";
 
 export class BlameView extends View {
   #source: HistorySource = "backup";

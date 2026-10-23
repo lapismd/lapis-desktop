@@ -4,7 +4,6 @@ import { interruptedSnapshot } from "./interrupted-snapshot.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
 import AiChatPanel from "../../../../src/components/ai/chat/AiChatPanel.svelte";
-import AiChatSession from "../../../../src/components/ai/sessions/AiChatSession.svelte";
 import { createMemorySessionStore } from "../../../../src/lib/ai/sessions/session-store.ts";
 import { DEFAULT_AI_SETTINGS } from "../../../../src/lib/ai/settings/ai-settings.ts";
 import {
@@ -169,7 +168,6 @@ export function createTranscriptFixture(
         target: this.containerEl,
         props: {
           app: base.app,
-          transcriptFrame: embeddedShell ? AiChatSession : undefined,
           initialTranscriptView:
             scenario === "classic" ? "classic" : "document",
           runtime,

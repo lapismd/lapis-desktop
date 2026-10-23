@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RepositorySkeleton from "../../../../src/components/repository/RepositorySkeleton.svelte";
+  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
   import { onMount, onDestroy, untrack } from "svelte";
   import type {
     LocalGraphOperationNode,
@@ -9,10 +9,10 @@
   import { createHistoryCanvas } from "../../../../src/lib/repository/history-canvas.ts";
   import ReviewConflictResolution from "./ReviewConflictResolution.svelte";
   import ReviewEvolutionColumn from "./ReviewEvolutionColumn.svelte";
-  import RepositoryLogHeader from "../../../../src/components/repository/RepositoryLogHeader.svelte";
-  import type { HistoryController } from "../../../../src/lib/repository/history-controller.ts";
-  import { initialHistoryState } from "../../../../src/lib/repository/history-state.ts";
-  import RepositoryRevisions from "../../../../src/components/repository/RepositoryRevisions.svelte";
+  import { RepositoryLogHeader } from "@lapismd/repository-ui/jj";
+  import type { HistoryController } from "@lapismd/repository-ui/history";
+  import { initialHistoryState } from "@lapismd/repository-ui/history";
+  import { RepositoryRevisions } from "@lapismd/repository-ui/jj";
   import RepositoryDiffColumn from "../../../../src/components/repository/RepositoryDiffColumn.svelte";
   import RepositoryShell from "../../../../src/components/repository/RepositoryShell.svelte";
   import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";

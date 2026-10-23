@@ -10,19 +10,19 @@ import type {
 } from "../../lib/repository/history-source.ts";
 import { Plugin, type App } from "@lapis-notes/api";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
-import { HistoryController } from "../../lib/repository/history-controller.ts";
+import { HistoryController } from "@lapismd/repository-ui/history";
 import {
   ownedRepository,
   repositoryLeaveMode,
 } from "../../lib/repository/services.ts";
 import type { RepositoryServices } from "../../lib/repository/history-reader.ts";
-import { OperationController } from "../../lib/repository/operation-controller.ts";
+import { OperationController } from "@lapismd/repository-ui/history";
 import { OperationView } from "./operation-view.ts";
 import { RepositoryView } from "./repository-view.ts";
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
-import { FileHistoryController } from "../../lib/repository/file-history-controller.ts";
+import { FileHistoryController } from "@lapismd/repository-ui/history";
 import { registerFileHistoryView } from "./file-history-view.ts";
-import { BlameController } from "../../lib/repository/blame-controller.ts";
+import { BlameController } from "@lapismd/repository-ui/history";
 import { BlameView } from "./blame/blame-view.ts";
 import { registerBlameEditorActions } from "./blame/editor-actions.ts";
 import { RepositoryStatus } from "./repository-status.ts";

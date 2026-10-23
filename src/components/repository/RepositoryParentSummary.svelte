@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RepositoryAuthorAvatar from "./RepositoryAuthorAvatar.svelte";
+  import { RepositoryAuthorAvatar } from "@lapismd/repository-ui/jj";
   let {
     target,
     author,

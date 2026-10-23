@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HistoryController } from "../../src/lib/repository/history-controller.ts";
-import { OperationController } from "../../src/lib/repository/operation-controller.ts";
+import { HistoryController } from "@lapismd/repository-ui/history";
+import { OperationController } from "@lapismd/repository-ui/history";
 import {
   historyFixture,
   operation,
@@ -57,8 +57,15 @@ test("operation revision cards use exact pinned commit reads and retain the sele
   assert.equal(f.controller.state.operation, operation);
   assert.equal(f.controller.state.files.path, "Welcome.md");
   assert.ok(f.calls.slice(before).every(([, q]) => q.kind === "commit"));
+  const loaded = f.calls.length;
+  const exact = f.calls.filter(([, q]) => q?.kind === "commit");
+  assert.deepEqual(
+    new Set(exact.map(([h, q]) => `${h}/${q.query.commit}`)),
+    new Set([`handle-1/${parent}`, `handle-1/${revision}`]),
+  );
+  assert.equal(exact.length, 2);
   await f.controller.loadRevisions();
-  assert.equal(f.calls.length, before + 2);
+  assert.equal(f.calls.length, loaded);
   await f.controller.close();
 });
 

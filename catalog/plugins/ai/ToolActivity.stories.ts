@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
@@ -21,7 +22,7 @@ export const QuestionAnswered: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Update the sample file");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     const option = await canvas.findByRole("button", {

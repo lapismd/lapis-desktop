@@ -39,7 +39,9 @@ export const Conversation: Story = {
     expect(canvas.getAllByRole("link")).toHaveLength(3);
     expect(canvas.getByRole("link", { name: "Alpha" })).toBeVisible();
     expect(canvas.queryByRole("link", { name: "Missing.md" })).toBeNull();
-    await userEvent.click(canvas.getByRole("button", { name: "Document" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Document view" }),
+    );
     const note = canvas.getByRole("link", { name: "the note" });
     note.focus();
     await userEvent.keyboard("{Enter}");

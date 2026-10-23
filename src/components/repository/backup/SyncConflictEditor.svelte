@@ -4,7 +4,7 @@
   import { Button } from "@lapismd/design-core/shadcn/button";
   import RepositoryConflictSurface from "../conflicts/RepositoryConflictSurface.svelte";
   import RepositoryConflictText from "../conflicts/RepositoryConflictText.svelte";
-  import RepositorySkeleton from "../RepositorySkeleton.svelte";
+  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
   import type { SyncController } from "../../../lib/repository/sync-controller.ts";
   import type { SyncState } from "../../../lib/repository/sync.ts";
   let {

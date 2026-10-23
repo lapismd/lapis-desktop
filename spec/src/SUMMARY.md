@@ -29,6 +29,7 @@
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
+  - [Shared-screen integration](current/shared-screen-integration.md)
   - [Migration inventory](current/migration.md)
   - [Milestones](current/progress/milestones.md)
   - [Verification](current/verification.md)
@@ -351,3 +352,6 @@
 - [Compute model selection and fresh app qualification](history/E-AI-125.md)
 - [Compute run controls and workspace status](history/E-AI-124.md)
 - [Local compute library, progress and recovery](history/E-AI-123.md)
+
+- [Isolated shared-screen dependency intake](history/E-ARCHIVES-003.md)
+- [Isolated shared UI migration intake](history/E-SHARED-001.md)

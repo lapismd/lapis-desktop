@@ -1,3 +1,7 @@
+import {
+  findMessageEditor,
+  messageEditor,
+} from "../../support/ai/message-editor.ts";
 import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 import { aiReviewAction } from "../../support/ai/review.ts";
@@ -22,7 +26,7 @@ export const SkillsAndSlash: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "/research-notes authentication");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await canvas.findByRole("button", { name: "Skill activation" });
@@ -205,7 +209,7 @@ export const SlashRetainsPendingComments: Story = {
     });
     await userEvent.click(comment);
     await userEvent.keyboard("Preserve this feedback.");
-    const composer = canvas.getByRole("textbox", { name: /^Message$/ });
+    const composer = messageEditor(canvas);
     await userEvent.click(composer);
     await userEvent.keyboard("/model");
     await userEvent.keyboard("{Escape}");

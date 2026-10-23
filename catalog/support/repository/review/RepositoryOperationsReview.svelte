@@ -1,17 +1,17 @@
 <script lang="ts">
-  import RepositorySkeleton from "../../../../src/components/repository/RepositorySkeleton.svelte";
+  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
   import { onMount, onDestroy, untrack } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
-  import RepositoryLogHeader from "../../../../src/components/repository/RepositoryLogHeader.svelte";
+  import { RepositoryLogHeader } from "@lapismd/repository-ui/jj";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
-  import type { OperationController } from "../../../../src/lib/repository/operation-controller.ts";
-  import { initialOperationState } from "../../../../src/lib/repository/operation-state.ts";
+  import type { OperationController } from "@lapismd/repository-ui/history";
+  import { initialOperationState } from "@lapismd/repository-ui/history";
   import { operationRows } from "../../../../src/lib/repository/graph/model.ts";
   import { createLogCanvas } from "../../../../src/lib/repository/log-canvas.ts";
   import RepositoryOperationFiles from "../../../../src/components/repository/RepositoryOperationFiles.svelte";
-  import RepositoryOperationColumn from "../../../../src/components/repository/RepositoryOperationColumn.svelte";
+  import { RepositoryOperationColumn } from "@lapismd/repository-ui/jj";
   import RepositoryShell from "../../../../src/components/repository/RepositoryShell.svelte";
-  import RepositoryGraph from "../../../../src/components/repository/RepositoryGraph.svelte";
+  import { RepositoryGraph } from "@lapismd/repository-ui/jj";
   import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";
   let {
     controller,

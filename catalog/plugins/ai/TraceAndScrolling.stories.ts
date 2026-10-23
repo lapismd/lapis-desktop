@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -29,9 +30,7 @@ export const AgentTrace: Story = {
       configurable: true,
       value: writeText,
     });
-    await expect(
-      await canvas.findByText("Ask about your notes…"),
-    ).toBeVisible();
+    await expect(await findMessageEditor(canvas)).toBeVisible();
     await userEvent.click(
       canvas.getByRole("button", { name: "Effort and model" }),
     );
@@ -106,7 +105,7 @@ export const AgentTrace: Story = {
         ?.closest('[data-ai-part="attach-popover"]'),
     ).not.toBeNull();
     await userEvent.keyboard("{Escape}");
-    const input = await canvas.findByRole("textbox", { name: /^Message$/ });
+    const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Summarize this note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => {
@@ -127,21 +126,24 @@ export const AgentTrace: Story = {
           'article[data-role="assistant"] time[datetime]',
         ),
       ).not.toBeNull();
-      expect(canvas.getByText("Context")).toBeVisible();
       expect(
-        canvas.getByRole("progressbar", { name: "Context window usage" }),
-      ).toHaveAttribute("value", "12920");
+        canvas.getByRole("button", { name: /^Context window:/ }),
+      ).toBeVisible();
       expect(canvas.queryByText("session updated")).toBeNull();
       expect(canvas.queryByText("available commands updated (75)")).toBeNull();
     });
     const readTrigger = canvas.getByRole("button", {
-      name: "Show details for vault.read",
+      name: "Show details for vault.read · Notes/alpha.md",
     });
     const readCall = readTrigger.closest('[data-kind="tools"]');
     expect(readCall).not.toBeNull();
     await userEvent.click(readTrigger);
-    await expect(readCall).toHaveTextContent("Notes/alpha.md");
-    await expect(readCall).toHaveTextContent("heading: Notes");
+    const inspector = await canvas.findByLabelText("Tool details");
+    await expect(inspector).toHaveTextContent("Notes/alpha.md");
+    await expect(inspector).toHaveTextContent("TODO: summarize this note.");
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Close tool details" }),
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Copy response" }),
     );
@@ -223,7 +225,7 @@ export const ScrollRecovery: Story = {
     const canvas = within(canvasElement);
     await canvas.findByText("Latest seeded message");
     const viewport = canvasElement.querySelector(
-      '[data-ui-part="scroll-area-viewport"]',
+      '[data-ui-component="transcript"] [data-ui-part="scroll-area-viewport"]',
     ) as HTMLElement | null;
     expect(viewport).not.toBeNull();
     await waitFor(() => {

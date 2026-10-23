@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HistoryController } from "../../src/lib/repository/history-controller.ts";
+import { HistoryController } from "@lapismd/repository-ui/history";
 import {
   historyFixture,
   commit,
@@ -27,7 +27,10 @@ test("commit paging retains exact pinned cursors, rejects duplicates and stops a
     const response = await read(handle, query);
     if (query.kind === "graph") {
       queries.push([handle, query.query[1].after]);
-      response.data.next = { kind: "commit", id: parent };
+      response.data.next = {
+        kind: "commit",
+        id: ((page + 1) * 50 - 1).toString(16).padStart(40, "0"),
+      };
       response.data.data.nodes = Array.from({ length: 50 }, (_, n) => ({
         commit: commit((page * 50 + n).toString(16).padStart(40, "0")),
         edges: [],
@@ -42,9 +45,12 @@ test("commit paging retains exact pinned cursors, rejects duplicates and stops a
   assert.equal(f.controller.state.next, null);
   assert.deepEqual(queries, [
     ["handle-1", null],
-    ...Array.from({ length: 3 }, () => [
+    ...Array.from({ length: 3 }, (_, page) => [
       "handle-1",
-      { kind: "commit", id: parent },
+      {
+        kind: "commit",
+        id: ((page + 1) * 50 - 1).toString(16).padStart(40, "0"),
+      },
     ]),
   ]);
   assert.equal(f.controller.state.operation, operation);

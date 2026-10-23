@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -24,7 +25,7 @@ export const SavedRecipients: Story = {
 export const ReadyToSend: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("@review");
     await userEvent.click(
@@ -42,7 +43,7 @@ export const ReadyToSend: Story = {
 export const SelectRemoveAndSwitch: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("@review");
     await userEvent.click(
@@ -54,7 +55,9 @@ export const SelectRemoveAndSwitch: Story = {
     expect(editor).not.toHaveTextContent("jj-store-agent:");
     expect(aiReviewValue(canvasElement, "sessions")).toBe("[]");
     await userEvent.keyboard("Keep my draft");
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(recipient).toBeVisible();
     await expect(editor).toHaveTextContent("Keep my draft");
     await userEvent.click(recipient);
@@ -67,7 +70,7 @@ export const SelectRemoveAndSwitch: Story = {
 export const ExplicitSend: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const editor = await canvas.findByRole("textbox", { name: "Message" });
+    const editor = await findMessageEditor(canvas);
     await userEvent.click(editor);
     await userEvent.keyboard("@review");
     await userEvent.click(
@@ -111,7 +114,7 @@ export const IndependentParticipants: Story = {
       ["Writer", "Draft the follow-up"],
       ["Reviewer", "Review the follow-up"],
     ]) {
-      const editor = await canvas.findByRole("textbox", { name: "Message" });
+      const editor = await findMessageEditor(canvas);
       await userEvent.click(editor);
       await userEvent.keyboard(`@${name.toLowerCase()}`);
       await userEvent.click(
@@ -138,7 +141,9 @@ export const IndependentParticipants: Story = {
       expect(sessions[2].id).toBe(sessions[0].id);
       expect(sessions[1].id).not.toBe(sessions[0].id);
     });
-    await userEvent.click(canvas.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(canvas.findAllByText(/Writer/)).resolves.not.toHaveLength(0);
     await expect(canvas.findAllByText(/Reviewer/)).resolves.not.toHaveLength(0);
   },

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { LocalGraphCommit } from "@lapismd/jj-history";
-  import RepositoryIdentifiers from "./RepositoryIdentifiers.svelte";
+  import { RepositoryIdentifiers } from "@lapismd/repository-ui/jj";
   import { encodeJjChangeId } from "../../lib/repository/graph/repository-log-graph.ts";
   import RepositoryParentSummary from "./RepositoryParentSummary.svelte";
   import RepositoryComparisonTime from "./RepositoryComparisonTime.svelte";

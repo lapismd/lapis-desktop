@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -37,7 +38,7 @@ export const SingleComposerAction: Story = {
               name: /^(?:Classic|Switch to Classic view)$/,
             }),
           );
-        const editor = await c.findByRole("textbox", { name: "Message" });
+        const editor = await findMessageEditor(c);
         await expect(
           c.findByRole("button", { name: "Stop agent" }),
         ).resolves.toBeVisible();
@@ -66,7 +67,7 @@ export const SingleComposerAction: Story = {
 };
 async function start(canvasElement: HTMLElement) {
   const c = within(canvasElement),
-    editor = await c.findByRole("textbox", { name: "Message" });
+    editor = await findMessageEditor(c);
   await waitFor(() =>
     expect(getComputedStyle(document.body).pointerEvents).not.toBe("none"),
   );
@@ -93,7 +94,9 @@ export const QueueAndCancel: Story = {
       within(queue).getByText("Review the documentation after this turn"),
     ).toBeVisible();
     await expect(c.getByRole("button", { name: "Stop agent" })).toBeVisible();
-    await userEvent.click(c.getByRole("button", { name: "Classic" }));
+    await userEvent.click(
+      c.getByRole("button", { name: "Switch to Classic view" }),
+    );
     await expect(
       c.getByRole("region", { name: "Queued messages" }),
     ).toBeVisible();

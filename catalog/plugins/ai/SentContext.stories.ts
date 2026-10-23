@@ -1,3 +1,4 @@
+import { findMessageEditor } from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import SentContextDemo from "../../support/ai/sent-context/SentContextDemo.svelte";
@@ -15,7 +16,7 @@ type Story = StoryObj<typeof meta>;
 async function send(element: HTMLElement, text: string) {
   await aiReviewAction(element, "ready");
   const canvas = within(element);
-  const editor = await canvas.findByRole("textbox", { name: "Message" });
+  const editor = await findMessageEditor(canvas);
   await waitFor(() =>
     expect(canvas.getByTestId("ai-chat-panel")).toHaveAttribute(
       "data-initializing",

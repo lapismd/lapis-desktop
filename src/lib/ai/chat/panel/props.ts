@@ -1,8 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained Lapis chat presentation state; see ../../NOTICE.md.
 import type { App, WorkspaceLeaf } from "@lapis-notes/api";
-import type { Component } from "svelte";
-import type { TranscriptFrameProps } from "./transcript.ts";
 import type { ComposerSearchSource } from "@lapismd/design-core/ai/chat";
 import type {
   AgentRequest,
@@ -35,8 +33,6 @@ export type AiChatPanelProps = {
   agentProviders?: import("../../settings/agent-profile-editor.ts").AgentProfileEditorContext["agentProviders"];
   mentionPeople?: readonly import("../../conversations/recipients.ts").ComposerPersonOption[];
   agentOptions?: readonly import("../../conversations/recipients.ts").AgentRecipientOption[];
-  /** Optional frame for standalone embeddings; the ordinary plugin supplies the session shell. */
-  transcriptFrame?: Component<TranscriptFrameProps>;
   initialTranscriptView?: "document" | "classic";
   app?: App;
   runtime: AgentRuntime;

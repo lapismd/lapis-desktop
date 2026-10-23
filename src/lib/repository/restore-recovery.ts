@@ -1,5 +1,5 @@
 import { portableBackupFile } from "./transcript-paths.ts";
-import type { PendingRestore } from "./restore.ts";
+import type { PendingRestore } from "@lapismd/repository-ui/history";
 /** Saved view/config state is input, never native authority. */
 export function restoreRecovery(value: unknown): PendingRestore | undefined {
   if (value == null) return;

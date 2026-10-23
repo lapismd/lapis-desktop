@@ -4,11 +4,11 @@ import {
 } from "../../lib/repository/history-source.ts";
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
-import type { HistoryController } from "../../lib/repository/history-controller.ts";
+import type { HistoryController } from "@lapismd/repository-ui/history";
 import type { RepositoryPlugin } from "./repository-plugin.ts";
-import RepositoryPanel from "./RepositoryPanel.svelte";
-import { openHistoryRevision } from "../../lib/repository/open-history-revision.ts";
-import { RestoreController } from "../../lib/repository/restore.ts";
+import { RepositoryPanel } from "@lapismd/repository-ui/jj";
+import { openHistoryRevision } from "@lapismd/repository-ui/history";
+import { RestoreController } from "@lapismd/repository-ui/history";
 import { createRestoreController } from "./restore-controller.ts";
 import { BackgroundWork } from "../../lib/desktop/background-work.ts";
 import { followBackup } from "../../lib/repository/backup-follow.ts";
@@ -130,6 +130,7 @@ export class RepositoryView extends View {
         }),
 
         restore: this.#restore,
+        searchable: false,
         initialOperation: this.#operation,
         initialRevision: this.#revision,
         initialLoad: this.#initialLoad,

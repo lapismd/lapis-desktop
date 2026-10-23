@@ -1,5 +1,8 @@
 import type { BackupCheckpoint } from "./backup.ts";
-import type { VaultRestorePreview, VaultRestoreRequest } from "./restore.ts";
+import type {
+  VaultRestorePreview,
+  VaultRestoreRequest,
+} from "@lapismd/repository-ui/history";
 export type SyncProposal = {
   local: BackupCheckpoint;
   incoming: BackupCheckpoint;

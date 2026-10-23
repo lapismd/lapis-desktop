@@ -1,8 +1,7 @@
 # Repository history and conversations
 
-[Local ACP](ai-local-history.md) joins LD-REPO-005 backup. E-AI-114 adds native
-[turn observations and guarded undo](vault-backup.md) without AgentStore. The
-LD-REPO-003 experiment stays Deferred; existing history/sync remain active.
+[Shared-screen integration](shared-screen-integration.md) governs repository
+pins. Existing native and distribution gates remain unchanged.
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.

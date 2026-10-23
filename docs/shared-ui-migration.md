@@ -3,7 +3,8 @@
 The migration lives in the `shared-ui` Jujutsu workspace at
 `../lapis-desktop-shared-ui`. The default checkout stays the before reference.
 The source packages use `../agent-ui-desktop-integration`,
-`../lapis-notes-shared-ui` and `../lapis-plugins-shared-ui`.
+`../lapis-notes-shared-ui`, `../lapis-plugins-shared-ui` and
+`../design-core-desktop-integration`.
 
 The baseline source is `52516ae9`; dependency receipts and a fresh static
 catalog are retained under `.local/migration` in the migration workspace.
@@ -25,7 +26,7 @@ imports or consumer CSS conceal package defects.
 For development refresh, select the exact isolated source inputs:
 
 ```sh
-export LAPIS_DESKTOP_SOURCE_WORKSPACES='{"agent-ui":"/Users/stevejuma/code/lapismd/agent-ui-desktop-integration","lapis-notes":"/Users/stevejuma/code/lapismd/lapis-notes-shared-ui","lapis-plugins":"/Users/stevejuma/code/lapismd/lapis-plugins-shared-ui"}'
+export LAPIS_DESKTOP_SOURCE_WORKSPACES='{"design-core":"/Users/stevejuma/code/lapismd/design-core-desktop-integration","agent-ui":"/Users/stevejuma/code/lapismd/agent-ui-desktop-integration","lapis-notes":"/Users/stevejuma/code/lapismd/lapis-notes-shared-ui","lapis-plugins":"/Users/stevejuma/code/lapismd/lapis-plugins-shared-ui"}'
 pnpm local:refresh
 pnpm local:install
 pnpm local:status

@@ -1,3 +1,7 @@
+import {
+  findMessageEditor,
+  messageEditor,
+} from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import ChangeHistoryDemo from "../../support/ai/history/ChangeHistoryDemo.svelte";
@@ -15,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 async function send(element: HTMLElement) {
   await aiReviewAction(element, "ready");
   const canvas = within(element);
-  const editor = await canvas.findByRole("textbox", { name: "Message" });
+  const editor = await findMessageEditor(canvas);
   await waitFor(() =>
     expect(getComputedStyle(editor).pointerEvents).not.toBe("none"),
   );
@@ -62,7 +66,7 @@ export const CapturedChanges: Story = {
       within(headerRail).getByRole("button", { name: "Close session changes" }),
     );
 
-    const draft = canvas.getByRole("textbox", { name: "Message" });
+    const draft = messageEditor(canvas);
     await userEvent.click(draft);
     await userEvent.keyboard("Keep this unsent draft");
     await userEvent.click(
@@ -137,7 +141,7 @@ export const ViewNavigation: Story = {
     await send(canvasElement);
     const canvas = within(canvasElement),
       page = within(canvasElement.ownerDocument.body);
-    const draft = canvas.getByRole("textbox", { name: "Message" });
+    const draft = messageEditor(canvas);
     await userEvent.click(draft);
     await userEvent.keyboard("Keep this navigation draft");
     expect(

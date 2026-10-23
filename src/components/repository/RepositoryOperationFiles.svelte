@@ -1,5 +1,5 @@
 <script lang="ts">
-  import RepositorySkeleton from "./RepositorySkeleton.svelte";
+  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
   import RepositoryRevisionPicker from "./RepositoryRevisionPicker.svelte";
   import UndoIcon from "@lucide/svelte/icons/undo-2";
   import InfoIcon from "@lucide/svelte/icons/info";
@@ -8,9 +8,9 @@
   import * as Menu from "@lapismd/design-core/shadcn/dropdown-menu";
   import { Button } from "@lapismd/design-core/shadcn/button";
   import type { OperationState } from "../../lib/repository/operation-state.ts";
-  import type { OperationController } from "../../lib/repository/operation-controller.ts";
+  import type { OperationController } from "@lapismd/repository-ui/history";
   import { listingFiles } from "../../lib/repository/history-files.ts";
-  import RepositoryChangedFiles from "./RepositoryChangedFiles.svelte";
+  import { RepositoryChangedFiles } from "@lapismd/repository-ui/jj";
   let {
     state: snapshot,
     controller,

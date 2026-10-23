@@ -8,8 +8,8 @@
   import { RelativeTime } from "@lapismd/design-core/shadcn/relative-time";
   import RefreshCw from "@lucide/svelte/icons/refresh-cw";
   import GitCommitHorizontal from "@lucide/svelte/icons/git-commit-horizontal";
-  import RepositoryAuthorAvatar from "./RepositoryAuthorAvatar.svelte";
-  import RepositoryIdentifiers from "./RepositoryIdentifiers.svelte";
+  import { RepositoryAuthorAvatar } from "@lapismd/repository-ui/jj";
+  import { RepositoryIdentifiers } from "@lapismd/repository-ui/jj";
   import { encodeJjChangeId } from "../../lib/repository/graph/repository-log-graph.ts";
   import type {
     WorkingCopyController,
