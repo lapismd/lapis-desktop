@@ -60,7 +60,7 @@ deferred to their distribution gates.
 | M8.4  | Done        | Complete; extend inventory with new desktop UI                                                            |
 | M8.5  | Done        | Complete; continue AI and backup                                                                          |
 | M15.1 | In progress | Integrated into default workspaces; finish remaining consumer qualification here                          |
-| M16.1 | Done        | Shared file engine qualified; service ownership/HTTP remain R1.2/R1.3                                     |
+| M16.1 | Done        | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3                                      |
 | M14   | Partial     | Real-provider acceptance                                                                                  |
 | M14.1 | Done        | Complete; continue capture lifecycle                                                                      |
 | M14.2 | Done        | Complete; continue restore/provider acceptance                                                            |

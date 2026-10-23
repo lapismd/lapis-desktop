@@ -378,3 +378,5 @@ by the task ledger, not inferred from this list.
 - [AI change inspection layout alignment](E-AI-116.md)
 
 - [AI body-header actions and view navigation](E-AI-117.md)
+
+- [Shared core protocol dependency intake](E-CORE-002.md)

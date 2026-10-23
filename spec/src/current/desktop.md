@@ -1,5 +1,8 @@
 # Desktop shell
 
+E-CORE-002 qualifies the R1.2 source dependency lock; service adapter intake
+remains R1.3.
+
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state before shell unmount and retains failed-leave/native gates. Core intake:
 E-CORE-001.
