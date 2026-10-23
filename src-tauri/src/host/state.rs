@@ -11,6 +11,7 @@ pub struct NativeServices {
     pub imports: lapis_desktop::vault::admission::VaultAdmissions,
     pub ai: lapis_desktop::vault::admission::VaultAdmissions,
     pub vaults: VaultManager,
+    pub core_vaults: lapis_desktop::vault::services::VaultServices,
     pub databases: NativeDatabases,
     pub watches: WatchRegistry,
     pub fs_gate: Arc<Mutex<()>>,
@@ -27,6 +28,7 @@ impl NativeServices {
         }
         // A watcher never acquires the services lock. Do not hold fs_gate here:
         // joining a worker waiting to snapshot would otherwise deadlock.
+        self.core_vaults.close(&self.vaults, session_id)?;
         self.watches.close_session(session_id)?;
         self.with_files(|services| services.vaults.close(session_id))?;
         self.ai.finish_close_vault(session_id);
@@ -64,6 +66,29 @@ impl std::fmt::Display for NativeError {
 
 impl From<io::Error> for NativeError {
     fn from(error: io::Error) -> Self {
+        if let Some(service) = error
+            .get_ref()
+            .and_then(|cause| cause.downcast_ref::<lapis_app_core::services::Error>())
+        {
+            use lapis_app_protocol::ErrorCode;
+            let code = match service.code() {
+                ErrorCode::InvalidRequest | ErrorCode::ProtocolMismatch => "EINVAL",
+                ErrorCode::PermissionDenied | ErrorCode::Closed => "EACCES",
+                ErrorCode::NotFound => "ENOENT",
+                ErrorCode::Conflict => "ECONFLICT",
+                ErrorCode::AlreadyExists => "EEXIST",
+                ErrorCode::DirectoryNotEmpty => "ENOTEMPTY",
+                ErrorCode::IsDirectory => "EISDIR",
+                ErrorCode::NotDirectory => "ENOTDIR",
+                ErrorCode::Busy => "EBUSY",
+                ErrorCode::Unsupported => "ENOTSUP",
+                ErrorCode::Io => "EIO",
+            };
+            return Self {
+                code,
+                message: service.to_string(),
+            };
+        }
         let code = if error
             .get_ref()
             .is_some_and(|cause| cause.is::<lapis_app_core::vault::TextWriteConflict>())
@@ -105,6 +130,7 @@ pub fn initialize(
         ai: lapis_desktop::vault::admission::VaultAdmissions::default(),
         repository: lapis_desktop::repository::RepositoryAdmissions::default(),
         vaults: VaultManager::new(&profile)?,
+        core_vaults: lapis_desktop::vault::services::VaultServices::default(),
         databases: NativeDatabases::new(profile.join("databases")),
         watches: WatchRegistry::default(),
         fs_gate: Arc::new(Mutex::new(())),

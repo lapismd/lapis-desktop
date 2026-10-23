@@ -10,7 +10,7 @@
 
 Completed: M0.0, M0.1, M1, M2, M3, M4, M5, M6, M7, M7.1, M7.2, M7.3, M8, M9,
 M13.1, M13.2, M8.0, M8.1, M8.2, M8.3, M9.1, M10.1, M0.2, M8.4, M8.5, M16.1,
-M14.1, M14.2, M14.3, M14.6.
+M16.2, M14.1, M14.2, M14.3, M14.6.
 
 Open completion gates: M10, M11, M12, M10.2, M10.3, M10.4, M15.1, M14, M14.4,
 M14.5, M14.7, M14.8.
@@ -61,6 +61,7 @@ deferred to their distribution gates.
 | M8.5  | Done        | Complete; continue AI and backup                                                                          |
 | M15.1 | In progress | Integrated into default workspaces; finish remaining consumer qualification here                          |
 | M16.1 | Done        | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3                                      |
+| M16.2 | Done        | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3                                      |
 | M14   | Partial     | Real-provider acceptance                                                                                  |
 | M14.1 | Done        | Complete; continue capture lifecycle                                                                      |
 | M14.2 | Done        | Complete; continue restore/provider acceptance                                                            |

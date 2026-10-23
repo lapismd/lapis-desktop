@@ -380,3 +380,5 @@ by the task ledger, not inferred from this list.
 - [AI body-header actions and view navigation](E-AI-117.md)
 
 - [Shared core protocol dependency intake](E-CORE-002.md)
+
+- [Shared native file-service adapter](E-CORE-003.md)

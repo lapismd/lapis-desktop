@@ -5,7 +5,7 @@ remains R1.3.
 
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state before shell unmount and retains failed-leave/native gates. Core intake:
-E-CORE-001.
+E-CORE-001. E-CORE-003 tracks shared file-service IPC intake.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

@@ -366,3 +366,5 @@
 - [Shared native vault engine intake](history/E-CORE-001.md)
 
 - [Shared core protocol dependency intake](history/E-CORE-002.md)
+
+- [Shared native file-service adapter](history/E-CORE-003.md)

@@ -3,7 +3,7 @@
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
 shell stories MUST join owned fixture readiness before querying controls. Core
-intake: E-CORE-001.
+intake: E-CORE-001/003.
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

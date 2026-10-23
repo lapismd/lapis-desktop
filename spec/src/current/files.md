@@ -8,6 +8,15 @@ preserves LD-VAULT-001–006 and LD-FILE-002/003; client-independent work and
 hosted use remain later shared-service gates. Native directory handles stay
 inside Rust and never enter the Tauri request or response shape.
 
+R1.3 file IPC delegates portable operations to the shared vault service while
+preserving existing renderer frames and portable file errors. Native retained
+capabilities bind service admission; profiles, watches, resources and OS actions
+stay here. The existing file IO gate also covers repository operations during
+this staged intake. Last-client explicit close retires its shared file owner;
+closing one of several admissions preserves the others.
+Backup/window-independent work and hosted acceptance remain separate R1.3 gates
+(E-CORE-003).
+
 Workspace teardown MUST capture live view state before shell unmount;
 E-SHARED-006 preserves exact restored operation pins and existing writer guards.
 

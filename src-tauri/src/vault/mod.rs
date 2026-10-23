@@ -1,5 +1,6 @@
 pub mod admission;
 pub mod resources;
+pub mod services;
 pub mod system_actions;
 
 mod profiles;

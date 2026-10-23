@@ -5531,6 +5531,7 @@ dependencies = [
  "lapis-ai-app-tools",
  "lapis-ai-capture",
  "lapis-app-core",
+ "lapis-app-protocol",
  "libc",
  "mac-usernotifications",
  "mime_guess",

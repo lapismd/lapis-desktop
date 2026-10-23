@@ -13,6 +13,7 @@ custom-protocol = ["tauri/custom-protocol"]
 e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
+lapis-app-protocol = { path = "../../lapis-notes/crates/lapis-app-protocol", version = "0.1.0" }
 lapis-app-core = { path = "../../lapis-notes/crates/lapis-app-core", version = "0.1.0" }
 jj-forge = { path = "../../jj-store/crates/jj-forge", version = "0.1.0" }
 jj-vault = { path = "../../jj-store/crates/jj-vault", version = "0.1.0" }
