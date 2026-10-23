@@ -14,8 +14,11 @@ native product, provider, distribution and visual gates remain unchanged.
 
 Local review refreshes MUST rebuild the complete direct/transitive first-party
 cohort from the latest committed source in each owning default checkout,
-including work ahead of or separate from its `main` bookmark. Refresh MUST
-reject uncommitted package/build inputs; unrelated documentation edits may
+including work ahead of or separate from its `main` bookmark. Explicit isolated
+review workspaces may be selected with `LAPIS_DESKTOP_SOURCE_WORKSPACES`, a JSON
+map of repository names to absolute workspace roots. The same committed-input
+and payload verification applies; default checkouts remain untouched. Refresh
+MUST reject uncommitted package/build inputs; unrelated documentation edits may
 remain.
 
 `pnpm local:refresh` rebuilds public exports, uses source-owned package
@@ -53,3 +56,8 @@ routes.
 E-AI-102 consumes Design Core `98c64887` to keep one composer action through
 pending submission. Its prepared archive and complete-cohort intake are pinned
 in the fresh evidence; runtime authority and distribution gates are unchanged.
+
+Local archive overlays also route transitive imports of explicitly declared
+linked native packages to the same built public exports. Normal semver ranges
+must match the local version; only the root's exact declared link may bypass
+range parsing. Tracked dependency manifests and lockfiles remain portable.

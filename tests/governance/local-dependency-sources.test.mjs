@@ -5,6 +5,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   committedSource,
+  sourceWorkspaceRoots,
   assertDependencyCompatibility,
   jj,
 } from "../../scripts/local-dependency-sources.mjs";
@@ -139,4 +140,19 @@ test("cohort preflight rejects the original Design Core range before building or
   assert.doesNotThrow(() =>
     assertDependencyCompatibility(manifests, new Map([[core, "0.5.1"]])),
   );
+});
+
+test("isolated package workspaces are explicit and cannot silently select unknown sources", () => {
+  const roots = { "agent-ui": "/tmp/agent-ui-integration" };
+  assert.deepEqual(sourceWorkspaceRoots(JSON.stringify(roots)), roots);
+  assert.deepEqual(sourceWorkspaceRoots(""), {});
+  assert.throws(
+    () => sourceWorkspaceRoots('{"unknown":"/tmp/source"}'),
+    /Unknown source/,
+  );
+  assert.throws(
+    () => sourceWorkspaceRoots('{"agent-ui":"relative"}'),
+    /absolute/,
+  );
+  assert.throws(() => sourceWorkspaceRoots("[]"), /object/);
 });

@@ -17,6 +17,11 @@ export const localSourceGroups = [
     build: ["build"],
   },
   { repo: "design-core", dirs: ["."] },
+  {
+    repo: "agent-ui",
+    dirs: ["packages/agent-ui", "packages/repository-ui"],
+    build: ["build"],
+  },
   { repo: "agent-redaction", dirs: ["."], build: ["build"] },
   { repo: "ai-host", dirs: ["."], build: ["build"] },
   {
@@ -110,13 +115,35 @@ export function committedSource(root, dirs) {
   return revision;
 }
 
-export function dependencySources(desktopRoot) {
+export function sourceWorkspaceRoots(
+  value = process.env.LAPIS_DESKTOP_SOURCE_WORKSPACES,
+) {
+  if (!value) return {};
+  const roots = JSON.parse(value);
+  assert.ok(
+    roots && !Array.isArray(roots) && typeof roots === "object",
+    "Source workspaces must be an object",
+  );
+  for (const [name, path] of Object.entries(roots)) {
+    assert.ok(
+      localSourceGroups.some((group) => group.repo === name),
+      `Unknown source repository: ${name}`,
+    );
+    assert.ok(
+      typeof path === "string" && path.startsWith("/"),
+      `Source workspace must be absolute: ${name}`,
+    );
+  }
+  return roots;
+}
+
+export function dependencySources(desktopRoot, roots = sourceWorkspaceRoots()) {
   const manifest = JSON.parse(
     readFileSync(join(desktopRoot, "package.json"), "utf8"),
   );
   const declared = { ...manifest.dependencies, ...manifest.devDependencies };
   const groups = localSourceGroups.map((group) => {
-    const root = resolve(desktopRoot, "..", group.repo);
+    const root = roots[group.repo] ?? resolve(desktopRoot, "..", group.repo);
     const revision = committedSource(root, [
       ...group.dirs,
       ...(group.inputs ?? []),

@@ -220,3 +220,49 @@ test("installation rejects a workspace peer that resolves a second registry API 
     /identity/,
   );
 });
+
+test("local built dependencies resolve for transitive shared screen imports without registry fallback", (context) => {
+  const { root, manifest } = fixture(context);
+  const hook = join(root, "linked-hook.cjs");
+  const link = {
+    name: "@lapismd/jj-history",
+    version: "0.1.0",
+    target: "link:/verified/jj-history",
+    declared: "link:../jj-store/packages/jj-history",
+  };
+  writeFileSync(
+    hook,
+    archiveHookSource(readArchiveManifest(manifest), ["desktop"], [link]),
+  );
+  const { hooks } = createRequire(import.meta.url)(hook);
+  assert.equal(
+    hooks.readPackage({
+      name: "repository-ui",
+      dependencies: { "@lapismd/jj-history": "^0.1.0" },
+    }).dependencies[link.name],
+    link.target,
+  );
+  assert.equal(
+    hooks.readPackage({
+      name: "desktop",
+      dependencies: { [link.name]: link.declared },
+    }).dependencies[link.name],
+    link.target,
+  );
+  assert.throws(
+    () =>
+      hooks.readPackage({
+        name: "repository-ui",
+        dependencies: { [link.name]: "^0.2.0" },
+      }),
+    /does not satisfy/u,
+  );
+  assert.throws(
+    () =>
+      hooks.readPackage({
+        name: "repository-ui",
+        dependencies: { [link.name]: link.declared },
+      }),
+    /does not satisfy/u,
+  );
+});

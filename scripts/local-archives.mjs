@@ -54,11 +54,14 @@ export function readArchiveManifest(manifestPath) {
     return { ...entry, tarball, sha256 };
   });
 }
-export function archiveHookSource(entries, localProjects = []) {
-  const packages = entries.map(({ name, version, tarball }) => [
-    name,
-    { version, tarball },
-  ]);
+export function archiveHookSource(entries, localProjects = [], links = []) {
+  const packages = [
+    ...entries.map(({ name, version, tarball }) => [
+      name,
+      { version, target: "file:" + tarball },
+    ]),
+    ...links.map(({ name, ...entry }) => [name, entry]),
+  ];
   return `const semver = require(${JSON.stringify(require.resolve("semver"))});
 const archives = new Map(${JSON.stringify(packages)});
 const localProjects = new Set(${JSON.stringify(localProjects)});
@@ -69,9 +72,10 @@ module.exports = { hooks: { readPackage(pkg) {
     for (const [name, entry] of archives) {
       const range = pkg[field]?.[name];
       if (!range) continue;
-      const target = "file:" + entry.tarball;
+      const target = entry.target;
       if (field !== "peerDependencies" && range === target) continue;
-      if (!semver.satisfies(entry.version, range, { includePrerelease: true }))
+      const localLink = localProjects.has(pkg.name) && entry.declared === range;
+      if (!localLink && !semver.satisfies(entry.version, range, { includePrerelease: true }))
         throw new Error(name + " archive " + entry.version + " does not satisfy " + range);
       if (field === "peerDependencies") {
         // Give peer-only workspace consumers the same verified package identity.
@@ -138,6 +142,21 @@ export async function installLocalArchives(root, manifestPath) {
     archiveHookSource(
       entries,
       localProjects.map((project) => project.name),
+      Object.entries(declared)
+        .filter(([, value]) => value.startsWith("link:"))
+        .map(([name, declared]) => {
+          const directory = resolve(root, declared.slice(5));
+          const manifest = JSON.parse(
+            readFileSync(join(directory, "package.json"), "utf8"),
+          );
+          assert.equal(manifest.name, name, "Local build identity mismatch");
+          return {
+            name,
+            version: manifest.version,
+            declared,
+            target: "link:" + directory,
+          };
+        }),
     ),
   );
   await preserveDependencyFiles(root, () =>
