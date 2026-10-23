@@ -25,9 +25,12 @@ ordinary status. Both public composer status paths use that same host result.
 
 The isolated shared-screen migration preserves the existing Tauri window and
 Notes AppShell. Shared screens occupy the existing view hosts; no new product
-routes, installed profiles or native chrome are introduced. Disposal MUST await
-the rendered shell's unmount before retiring workspace and file-editing
-authority, so delayed Explorer opens cannot outlive their owner.
+routes, installed profiles or native chrome are introduced. Disposal MUST finish
+workspace projection and persistence while views remain mounted, then join
+rendered shell cleanup before retiring plugin resources. This preserves exact
+operation pins through cold restart and drains restored capture views on close.
+Explorer's UI handles rejected late opens without changing programmatic failure
+semantics.
 
 ## Source governance
 

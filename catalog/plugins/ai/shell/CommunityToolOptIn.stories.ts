@@ -5,6 +5,7 @@ import { WorkspaceShell } from "@lapis-notes/workspace";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import AiShellDemo from "../../../support/ai/shell/AiShellDemo.svelte";
 import { demoApp } from "../../../support/ai/shell/assertions.ts";
+import { shellFixture } from "../../../support/ai/shell/fixture.ts";
 import { shellParameters } from "../../../support/ai/shell/examples.ts";
 import { cleanupCatalog } from "../../../support/lifecycle.ts";
 import { selectSettingsTab } from "../../../support/ai/settings-tabs.ts";
@@ -25,6 +26,7 @@ export const CommunityToolOptIn: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
+    await shellFixture(canvasElement).ready;
     await waitFor(() =>
       expect(canvas.getByTestId("ai-shell-demo")).toHaveAttribute(
         "data-status",

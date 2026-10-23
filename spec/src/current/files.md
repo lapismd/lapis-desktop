@@ -1,5 +1,8 @@
 # File management (M5)
 
+Workspace teardown MUST capture live view state before shell unmount;
+E-SHARED-006 preserves exact restored operation pins and existing writer guards.
+
 The shared Explorer MUST present failed pointer opens without unhandled
 rejections and allow retry. Its programmatic controller continues rejecting so
 host callers can preserve failure acknowledgement.

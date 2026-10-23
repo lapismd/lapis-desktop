@@ -41,8 +41,10 @@ export function disposeNotesWorkspace(
           }
           throw failure;
         }
-        await options.beforeDispose();
+        // Projection and layout saves still need their mounted view state.
         await app.workspace.disposeWorkspaceHost();
+        // Join shell cleanup before retiring the resources its views use.
+        await options.beforeDispose();
         await options.popouts?.dispose();
         options.stopMetadataTracking?.();
         await app.metadataCache.dispose();

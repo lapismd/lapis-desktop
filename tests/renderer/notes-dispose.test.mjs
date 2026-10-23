@@ -43,25 +43,45 @@ function fixture() {
   return { app, options, events };
 }
 
-test("workspace teardown waits for the rendered shell to unmount", async () => {
+test("workspace teardown captures live view state before shell unmount", async () => {
   const f = fixture();
-  const entered = Promise.withResolvers();
-  const unmounted = Promise.withResolvers();
+  let livePin = "exact historical operation",
+    savedPin;
+  f.options.beforeDispose = () => {
+    queueMicrotask(() => {
+      livePin = undefined;
+    });
+  };
+  f.app.workspace.disposeWorkspaceHost = async () => {
+    // The public host first joins projection and layout persistence.
+    await Promise.resolve();
+    savedPin = livePin;
+    f.events.push("workspace-dispose");
+  };
+  await disposeNotesWorkspace(f.app, f.options);
+  assert.equal(savedPin, "exact historical operation");
+});
+
+test("workspace teardown joins shell cleanup before retiring plugin resources", async () => {
+  const f = fixture();
+  const entered = Promise.withResolvers(),
+    unmounted = Promise.withResolvers();
   f.options.beforeDispose = async () => {
     entered.resolve();
     await unmounted.promise;
   };
   const leaving = disposeNotesWorkspace(f.app, f.options);
   await entered.promise;
-  await Promise.resolve();
+  await new Promise((resolve) => setImmediate(resolve));
   try {
-    assert.equal(f.events.includes("workspace-dispose"), false);
+    assert.equal(f.events.includes("workspace-dispose"), true);
+    assert.equal(f.events.includes("metadata-dispose"), false);
     assert.equal(f.events.includes("plugin-disable"), false);
   } finally {
     unmounted.resolve();
     await leaving;
   }
-  assert.equal(f.events.includes("workspace-dispose"), true);
+  assert.equal(f.events.includes("plugin-disable"), true);
 });
 
 test("an unresolved native window keeps plugin and metadata owners alive until it retires", async () => {

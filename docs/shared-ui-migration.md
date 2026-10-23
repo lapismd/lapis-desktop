@@ -23,6 +23,14 @@ complete screen layout; Desktop owns native admission, routing, storage,
 preferences, notifications and controller lifetime. No private dependency
 imports or consumer CSS conceal package defects.
 
+The before source remains `52516ae9`. Its ignored review setup now uses the same
+verified package cohort for its 17 declared packages, including the source-owned
+MemoryVault conditional-write correction. Temporary compatible package ranges
+are restored after installation; tracked baseline code and dependency files stay
+unchanged. The before implementation does not import the two new shared UI
+packages. This compares the original and migrated Desktop layouts against the
+same corrected foundation, with receipts under the checkout's `.local/`.
+
 For development refresh, select the exact isolated source inputs:
 
 ```sh

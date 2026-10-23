@@ -1,7 +1,8 @@
 # Governance
 
-[Shared-screen integration](shared-screen-integration.md) governs source
-governance. Existing native and distribution gates remain unchanged.
+[Shared-screen integration](shared-screen-integration.md) governs isolated
+source/archive cohorts and baseline review. Tracked reference code/dependencies
+MUST remain unchanged; native, distribution and visual gates remain separate.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

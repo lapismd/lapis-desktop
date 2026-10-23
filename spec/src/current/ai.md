@@ -1,7 +1,8 @@
 # Desktop AI and optional compute
 
 [Shared-screen integration](shared-screen-integration.md) governs admission,
-Markdown leaves, queue authority and exact request/send failure recovery.
+Markdown leaves, queue authority and exact request/send failure recovery. AI
+shell stories MUST join owned fixture readiness before querying controls.
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

@@ -1,7 +1,7 @@
 # Desktop shell
 
-[Shared-screen integration](shared-screen-integration.md) requires shell unmount
-before owner disposal and preserves failed-leave/native gates.
+[Shared-screen integration](shared-screen-integration.md) preserves live view
+state before shell unmount and retains failed-leave/native gates.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

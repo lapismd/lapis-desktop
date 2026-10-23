@@ -360,3 +360,5 @@
 - [Shared-screen captured context and requests](history/E-SHARED-004.md)
 
 - [Shared-screen runtime failures and public controls](history/E-SHARED-005.md)
+
+- [Shared-screen final qualification and live view state](history/E-SHARED-006.md)
