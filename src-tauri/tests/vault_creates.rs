@@ -1,4 +1,4 @@
-use lapis_desktop::vault::{MAX_FILE_BYTES, VaultRoot, WriteOptions};
+use lapis_app_core::vault::{MAX_FILE_BYTES, VaultRoot, WriteOptions};
 use std::{
     fs,
     io::{self, Cursor, Read},

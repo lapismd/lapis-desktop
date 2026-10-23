@@ -1,4 +1,4 @@
-use crate::vault::ActionTarget;
+use lapis_app_core::vault::ActionTarget;
 use objc2::rc::{Retained, autoreleasepool};
 use objc2_app_kit::NSWorkspace;
 use objc2_foundation::{NSArray, NSError, NSFileManager, NSString, NSURL};

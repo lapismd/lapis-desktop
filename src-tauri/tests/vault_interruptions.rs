@@ -1,4 +1,4 @@
-use lapis_desktop::vault::{VaultRoot, WriteOptions};
+use lapis_app_core::vault::{VaultRoot, WriteOptions};
 use std::fs;
 use std::io::{self, BufRead, Read, Write};
 use std::process::{Command, Stdio};

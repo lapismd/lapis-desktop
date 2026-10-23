@@ -1,5 +1,13 @@
 # File management (M5)
 
+The R1.1 shared-core extraction moves checked file IO, atomic/conditional
+writes, exclusive mutations and retained action targets into Notes-owned
+`lapis-app-core`. Desktop consumes those public native types directly and keeps
+profiles, admission, OS actions, resource policy and the existing IO gate. This
+preserves LD-VAULT-001–006 and LD-FILE-002/003; client-independent work and
+hosted use remain later shared-service gates. Native directory handles stay
+inside Rust and never enter the Tauri request or response shape.
+
 Workspace teardown MUST capture live view state before shell unmount;
 E-SHARED-006 preserves exact restored operation pins and existing writer guards.
 

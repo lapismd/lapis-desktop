@@ -1,4 +1,4 @@
-use crate::vault::VaultRoot;
+use lapis_app_core::vault::VaultRoot;
 use std::{io, path::PathBuf};
 
 #[cfg(target_os = "macos")]

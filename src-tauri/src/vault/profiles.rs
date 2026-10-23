@@ -1,6 +1,7 @@
-use super::{VaultRoot, invalid};
+use super::invalid;
 use cap_std::{ambient_authority, fs::Dir};
 use cap_tempfile::TempFile;
+use lapis_app_core::vault::VaultRoot;
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::io::{self, Write};
@@ -41,9 +42,8 @@ pub struct VaultManager {
 fn identity(root: &VaultRoot) -> io::Result<String> {
     #[cfg(unix)]
     {
-        use cap_std::fs::MetadataExt;
-        let metadata = root.dir.dir_metadata()?;
-        Ok(format!("{}:{}", metadata.dev(), metadata.ino()))
+        let (device, inode) = root.physical_identity()?;
+        Ok(format!("{device}:{inode}"))
     }
     #[cfg(not(unix))]
     Ok(root.path().to_string_lossy().into_owned())

@@ -363,3 +363,4 @@
 
 - [Shared-screen final qualification and live view state](history/E-SHARED-006.md)
 - [Shared-screen main workspace integration](history/E-SHARED-007.md)
+- [Shared native vault engine intake](history/E-CORE-001.md)

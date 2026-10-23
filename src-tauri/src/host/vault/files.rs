@@ -1,5 +1,5 @@
 use crate::host::state::{NativeError, NativeHost, access};
-use lapis_desktop::vault::WriteOptions;
+use lapis_app_core::vault::WriteOptions;
 use serde::Deserialize;
 use serde_json::{Value, json};
 

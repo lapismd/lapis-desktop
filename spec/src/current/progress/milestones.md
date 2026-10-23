@@ -90,3 +90,10 @@ E-CATALOG-010/016: footer/native qualified.
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | M15.1 | In progress | M8.5 | LD-CAT-001,LD-AI-002,LD-REPO-002 | Existing Desktop chat, history, catalog, imports, recorded and repository views mount shared public complete screens; exact and affected interaction checks pass in an isolated workspace, with comparable before/after stories and cold native acceptance. | Integrated into default workspaces; finish remaining consumer qualification here | E-SHARED-001,E-SHARED-002,E-SHARED-003,E-SHARED-004,E-SHARED-005,E-SHARED-006,E-SHARED-007 |
+
+## Shared Rust application services
+
+<!-- prettier-ignore -->
+| ID | Status | Depends | Requirements | Gate | Next | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Shared file engine qualified; service ownership/HTTP remain R1.2/R1.3 | E-CORE-001 |

@@ -1,4 +1,5 @@
-use crate::vault::{MAX_FILE_BYTES, VaultManager, invalid};
+use crate::vault::{VaultManager, invalid};
+use lapis_app_core::vault::MAX_FILE_BYTES;
 use percent_encoding::percent_decode_str;
 use serde::Deserialize;
 use sha2::{Digest, Sha256};
@@ -166,7 +167,7 @@ pub fn read(manager: &VaultManager, uri: &str) -> io::Result<PluginAsset> {
         .iter()
         .find(|file| file.path == *path)
         .ok_or_else(|| invalid("Plugin asset is not declared"))?;
-    let directory = root.dir.open_dir(format!(".lapis/plugins/{plugin}"))?;
+    let directory = root.open_directory(&format!(".lapis/plugins/{plugin}"))?;
     let handle = directory.open(path)?;
     if handle.metadata()?.len() > MAX_FILE_BYTES {
         return Err(invalid("Plugin asset is too large"));

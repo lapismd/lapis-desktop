@@ -1,5 +1,7 @@
 # Evidence
 
+- [Shared native vault engine intake](E-CORE-001.md)
+
 - [Compute model selection and fresh app qualification](E-AI-125.md)
 - [Compute run controls and workspace status](E-AI-124.md)
 - [Local compute library, progress and recovery](E-AI-123.md)

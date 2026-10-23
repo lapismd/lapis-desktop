@@ -1,4 +1,5 @@
-use lapis_desktop::vault::{VaultManager, VaultRoot, WriteOptions};
+use lapis_app_core::vault::{VaultRoot, WriteOptions};
+use lapis_desktop::vault::VaultManager;
 use std::fs;
 use std::io::{self, Read};
 use tempfile::tempdir;

@@ -1,5 +1,5 @@
 use super::{NativeWatch, WatchBatch, WatchOptions};
-use crate::vault::VaultRoot;
+use lapis_app_core::vault::VaultRoot;
 use std::{
     collections::HashMap,
     io,

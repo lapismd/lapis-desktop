@@ -1,7 +1,5 @@
-use lapis_desktop::{
-    vault::{VaultRoot, WriteOptions},
-    watch::{NativeWatch, WatchBatch},
-};
+use lapis_app_core::vault::{VaultRoot, WriteOptions};
+use lapis_desktop::watch::{NativeWatch, WatchBatch};
 use std::{
     fs,
     sync::{Arc, Mutex, mpsc},

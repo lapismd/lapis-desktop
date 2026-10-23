@@ -1,5 +1,5 @@
-use crate::vault::staged::StagedFile;
 use cap_std::{ambient_authority, fs::Dir};
+use lapis_app_core::vault::staged::StagedFile;
 use serde::Serialize;
 use std::{
     ffi::OsStr,

@@ -1,4 +1,4 @@
-use lapis_desktop::vault::{TextWriteConflict, VaultRoot, WriteOptions};
+use lapis_app_core::vault::{TextWriteConflict, VaultRoot, WriteOptions};
 use std::fs;
 use std::io::{self, Read};
 use tempfile::tempdir;
@@ -183,7 +183,7 @@ fn conditional_writes_keep_path_and_symlink_containment() {
 
 #[test]
 fn conditional_snapshots_remain_bounded_and_large_external_files_are_conflicts() {
-    use lapis_desktop::vault::MAX_FILE_BYTES;
+    use lapis_app_core::vault::MAX_FILE_BYTES;
     let directory = tempdir().unwrap();
     let root = VaultRoot::open(directory.path()).unwrap();
     fs::write(directory.path().join("note.md"), b"old").unwrap();

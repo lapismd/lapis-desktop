@@ -1,4 +1,4 @@
-use crate::vault::VaultRoot;
+use lapis_app_core::vault::VaultRoot;
 use serde_json::Value;
 use std::path::{Path, PathBuf};
 use tauri_plugin_lapis_terminal::runtime::{LaunchSpec, Target, shell};

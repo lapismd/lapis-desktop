@@ -1,7 +1,8 @@
 # Desktop shell
 
 [Shared-screen integration](shared-screen-integration.md) preserves live view
-state before shell unmount and retains failed-leave/native gates.
+state before shell unmount and retains failed-leave/native gates. Core intake:
+E-CORE-001.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

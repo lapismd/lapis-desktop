@@ -5487,6 +5487,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "lapis-app-core"
+version = "0.1.0"
+dependencies = [
+ "cap-std",
+ "cap-tempfile",
+ "libc",
+ "rustix 1.1.5",
+ "serde",
+ "uuid",
+]
+
+[[package]]
 name = "lapis-desktop"
 version = "0.1.0"
 dependencies = [
@@ -5505,6 +5517,7 @@ dependencies = [
  "jj-vault",
  "lapis-ai-app-tools",
  "lapis-ai-capture",
+ "lapis-app-core",
  "libc",
  "mac-usernotifications",
  "mime_guess",

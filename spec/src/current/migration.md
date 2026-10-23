@@ -2,6 +2,7 @@
 
 E-SHARED-007 records integration; M15.1 MUST retain its original gates.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
+Core intake: E-CORE-001.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;

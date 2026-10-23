@@ -1,4 +1,5 @@
-use lapis_desktop::{vault::VaultRoot, watch::WatchRegistry};
+use lapis_app_core::vault::VaultRoot;
+use lapis_desktop::watch::WatchRegistry;
 use std::{
     fs,
     sync::{Arc, Mutex, mpsc},

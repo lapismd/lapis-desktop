@@ -270,7 +270,7 @@ fn current(vaults: &VaultManager, session: &str, generation: String) -> io::Resu
         profile: descriptor.profile_id.clone(),
         root: root.path().into(),
         identity: root.physical_identity()?,
-        witness: Arc::new(root.dir.try_clone()?),
+        witness: Arc::new(root.directory_handle()?),
     })
 }
 fn denied(message: &'static str) -> io::Error {

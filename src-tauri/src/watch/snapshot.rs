@@ -1,5 +1,5 @@
 use super::WatchChange;
-use crate::vault::VaultRoot;
+use lapis_app_core::vault::VaultRoot;
 use std::{
     collections::{BTreeMap, HashMap, HashSet},
     io,
@@ -25,10 +25,8 @@ pub(super) fn validate_root(root: &VaultRoot) -> io::Result<()> {
     }
     #[cfg(unix)]
     {
-        use cap_std::fs::MetadataExt as CapMetadataExt;
         use std::os::unix::fs::MetadataExt;
-        let owned = root.dir.dir_metadata()?;
-        if (ambient.dev(), ambient.ino()) != (owned.dev(), owned.ino()) {
+        if (ambient.dev(), ambient.ino()) != root.physical_identity()? {
             return Err(io::Error::new(
                 io::ErrorKind::PermissionDenied,
                 "Watched root identity changed",
@@ -53,8 +51,7 @@ pub(super) fn read(
         if super::ignored(&path, ignored_names, backup_content) {
             continue;
         }
-        let relative = root.checked(&path, path.is_empty())?;
-        let metadata = match root.dir.symlink_metadata(relative) {
+        let metadata = match root.entry_metadata(&path) {
             Ok(metadata) => metadata,
             Err(error) if error.kind() == io::ErrorKind::NotFound => continue,
             Err(error) => return Err(error),

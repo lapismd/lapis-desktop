@@ -66,7 +66,7 @@ impl From<io::Error> for NativeError {
     fn from(error: io::Error) -> Self {
         let code = if error
             .get_ref()
-            .is_some_and(|cause| cause.is::<lapis_desktop::vault::TextWriteConflict>())
+            .is_some_and(|cause| cause.is::<lapis_app_core::vault::TextWriteConflict>())
         {
             "ECONFLICT"
         } else {

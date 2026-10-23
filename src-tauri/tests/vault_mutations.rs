@@ -1,4 +1,4 @@
-use lapis_desktop::vault::{VaultRoot, WriteOptions};
+use lapis_app_core::vault::{VaultRoot, WriteOptions};
 use std::{fs, io};
 use tempfile::tempdir;
 
@@ -189,7 +189,7 @@ fn bounded_copy_failure_preserves_existing_files_and_leaves_no_partial_destinati
     let root = tempdir().unwrap();
     let oversized = fs::File::create(root.path().join("large.bin")).unwrap();
     oversized
-        .set_len(lapis_desktop::vault::MAX_FILE_BYTES + 1)
+        .set_len(lapis_app_core::vault::MAX_FILE_BYTES + 1)
         .unwrap();
     let vault = VaultRoot::open(root.path()).unwrap();
     assert_eq!(

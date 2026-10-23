@@ -23,7 +23,7 @@ fn ignored(path: &str, names: &[String], backup_content: bool) -> bool {
         .any(|part| names.iter().any(|name| part == name))
 }
 
-use crate::vault::VaultRoot;
+use lapis_app_core::vault::VaultRoot;
 use notify::{Config, RecommendedWatcher, RecursiveMode, Watcher};
 use pending::Pending;
 use serde::Serialize;
@@ -87,7 +87,7 @@ impl NativeWatch {
         io_gate: Arc<Mutex<()>>,
         listener: impl Fn(WatchBatch) -> bool + Send + 'static,
     ) -> io::Result<Self> {
-        let root = root.clone_for_watch()?;
+        let root = root.try_clone()?;
         let WatchOptions {
             scope,
             recursive,
@@ -112,7 +112,7 @@ impl NativeWatch {
         let guard = io_gate
             .lock()
             .map_err(|_| io::Error::other("File IO owner is unavailable"))?;
-        root.checked(&scope, scope.is_empty())?;
+        root.validate_path(&scope, scope.is_empty())?;
         snapshot::validate_root(&root)?;
         let mut watcher = RecommendedWatcher::new(
             move |event| {

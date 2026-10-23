@@ -28,6 +28,11 @@ non-blocking and baselines require explicit approval.
 
 - `src` owns desktop presentation and the renderer transport adapter;
   `src-tauri` owns native windows, admission, services and resource lifetime.
+- Shared native application policy belongs to Notes-owned `lapis-app-core`.
+  Consume its public Rust modules directly; keep Tauri/window/OS policy here.
+  Extract implementations instead of copying them or retaining old-path exports.
+  Existing public Agent/Repository screens observe those services. Do not add
+  authoritative renderer background schedulers while moving work into the core.
 - Keep published dependency ranges portable. The private migration app may link
   an unpublished sibling through its built public exports; record its revision
   and remove that temporary prerequisite at the distribution gate. During this

@@ -1,7 +1,5 @@
-use lapis_desktop::{
-    terminal::policy::{TARGET, resolve},
-    vault::VaultRoot,
-};
+use lapis_app_core::vault::VaultRoot;
+use lapis_desktop::terminal::policy::{TARGET, resolve};
 use std::fs;
 
 #[test]
