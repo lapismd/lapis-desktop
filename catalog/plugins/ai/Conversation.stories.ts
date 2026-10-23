@@ -24,17 +24,20 @@ export const SendAndComplete: Story = {
     const dock = panel.querySelector(
       ".transcript-composer",
     ) as HTMLElement | null;
-    const shell = panel.querySelector(
-      '[data-ui-part="scroll-area-viewport"]',
-    ) as HTMLElement | null;
+    const shell = canvas
+      .getByRole("region", { name: "AI conversation" })
+      .querySelector(
+        '[data-ui-part="scroll-area-viewport"]',
+      ) as HTMLElement | null;
     expect(dock).not.toBeNull();
     expect(shell).not.toBeNull();
     expect(
       panel.querySelector('[data-conversation-view="classic"]'),
     ).not.toBeNull();
     expect(getComputedStyle(shell!).overflowY).toMatch(/auto|scroll/);
+    expect(shell!.clientHeight).toBeGreaterThan(100);
     expect(dock!.getBoundingClientRect().bottom).toBeLessThanOrEqual(
-      shell!.getBoundingClientRect().bottom + 2,
+      panel.getBoundingClientRect().bottom + 2,
     );
     const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Summarize this note");
@@ -71,8 +74,8 @@ export const AutomaticMemoryRecall: Story = {
       ).toHaveTextContent("Draft the Atlas summary");
     });
     expect(
-      canvas.queryByText("Use compact headings in Atlas notes."),
-    ).toBeNull();
+      canvas.getByText("Use compact headings in Atlas notes."),
+    ).not.toBeVisible();
   },
 };
 

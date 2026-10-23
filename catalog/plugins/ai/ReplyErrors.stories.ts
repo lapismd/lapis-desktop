@@ -34,7 +34,7 @@ export const QuestionReplyRejected: Story = {
     await userEvent.type(await findMessageEditor(canvas), "Update a note");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await userEvent.click(
-      await canvas.findByRole("button", { name: /Make the smallest change/ }),
+      await canvas.findByRole("radio", { name: /Make the smallest change/ }),
     );
     await userEvent.click(
       canvas.getByRole("button", { name: "Submit answer" }),

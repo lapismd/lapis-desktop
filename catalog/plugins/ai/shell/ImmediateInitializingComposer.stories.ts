@@ -36,8 +36,8 @@ export const ImmediateInitializingComposer: Story = {
       panel.querySelectorAll('[data-ui-component="skeleton"]').length,
     ).toBeGreaterThan(4);
     expect(
-      within(panel).queryByRole("textbox", { name: /^Message$/ }),
-    ).toBeNull();
+      within(panel).getByRole("textbox", { name: /^Message$/ }),
+    ).toHaveAttribute("aria-readonly", "true");
     expect(
       within(panel).getByRole("button", { name: /^Send message$/ }),
     ).toBeDisabled();

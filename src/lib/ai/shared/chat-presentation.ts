@@ -5,6 +5,7 @@ import type { TranscriptPanelProps } from "../chat/panel/transcript.ts";
 /** Only the portable presentation contract crosses into Agent UI; App and native services remain here. */
 export function desktopChatPresentation(
   owner: () => TranscriptPanelProps,
+  capturedRefusal?: () => string | undefined,
 ): AgentChatPresentation {
   return {
     get composerState(): AgentChatPresentation["composerState"] {
@@ -32,7 +33,11 @@ export function desktopChatPresentation(
           return host.contextPercent;
         },
         get composerStatus() {
-          return host.composerStatus;
+          const status = host.composerStatus;
+          return status?.type === "error" &&
+            capturedRefusal?.() === status.message
+            ? undefined
+            : status;
         },
         get recipientOptions() {
           return host.recipientOptions;

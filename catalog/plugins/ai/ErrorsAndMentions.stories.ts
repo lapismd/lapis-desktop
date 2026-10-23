@@ -36,17 +36,22 @@ export const FailedToolCall: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    const trigger = await canvas.findByRole("button", {
+    const details = await canvas.findByRole("button", {
       name: "Show details for shell.execute",
     });
-    await expect(trigger).toHaveAccessibleDescription("Error");
-    await expect(trigger).toHaveAttribute("aria-expanded", "false");
-    await userEvent.click(trigger);
-    await expect(trigger).toHaveAttribute("aria-expanded", "true");
-    await expect(
-      canvasElement.querySelector('[data-ui-part="code-block-line"]'),
-    ).toHaveTextContent("pnpm --filter @lapis-notes/ai test");
+    await expect(details).toHaveAccessibleDescription("Error");
+    expect(canvas.queryByRole("region", { name: "Tool details" })).toBeNull();
+    await userEvent.click(details);
+    const inspector = await canvas.findByRole("region", {
+      name: "Tool details",
+    });
     await expect(canvas.getByText("Process exited with code 1")).toBeVisible();
+    await userEvent.click(
+      within(inspector).getByRole("button", { name: "Show source" }),
+    );
+    await expect(inspector).toHaveTextContent(
+      "pnpm --filter @lapis-notes/ai test",
+    );
     const output = canvas.getAllByText(/FAIL ai-chat-panel\.test\.ts/);
     await expect(output[output.length - 1]).toBeVisible();
   },
@@ -61,7 +66,9 @@ export const FileMentions: Story = {
     const canvas = within(canvasElement);
     const input = await findMessageEditor(canvas);
     await userEvent.type(input, "@alp");
-    const option = await canvas.findByText("alpha");
+    const option = await within(canvasElement.ownerDocument.body).findByText(
+      "alpha",
+    );
     const menu = option.closest("[role='listbox']");
     expect(menu).toBeTruthy();
     await waitFor(() => {

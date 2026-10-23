@@ -1,9 +1,8 @@
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
-import { expect, userEvent, within } from "storybook/test";
+import { expect, userEvent, waitFor, within } from "storybook/test";
 import AiChatDemo from "../../support/ai/AiChatDemo.svelte";
-import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 import {
   createAppToolReadSeedItems,
   createAppToolPatchPendingSeedItems,
@@ -26,7 +25,7 @@ export const AppToolReadTranscript: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     const trigger = await canvas.findByRole("button", {
-      name: "Show details for read",
+      name: /^Show details for .*read/i,
     });
     await userEvent.click(trigger);
     expect(canvas.getAllByText(/Notes\/alpha\.md/).length).toBeGreaterThan(0);
@@ -50,9 +49,25 @@ export const AppToolPatchApproval: Story = {
     await expect(
       canvas.getByRole("button", { name: "Allow once" }),
     ).toBeVisible();
-    await expect(
-      canvas.getByRole("button", { name: /Allow for this session/ }),
-    ).toBeVisible();
+    await userEvent.click(
+      canvas.getByRole("button", { name: /^Permission allowance:/ }),
+    );
+    try {
+      await waitFor(() =>
+        expect(
+          within(canvasElement.ownerDocument.body).getByRole("menuitemradio", {
+            name: /Allow for this session/,
+          }),
+        ).toBeVisible(),
+      );
+    } finally {
+      await userEvent.keyboard("{Escape}");
+      await waitFor(() =>
+        expect(
+          getComputedStyle(canvasElement.ownerDocument.body).pointerEvents,
+        ).not.toBe("none"),
+      );
+    }
     await expect(canvas.getByRole("button", { name: /Deny/ })).toBeVisible();
   },
 };
@@ -64,11 +79,13 @@ export const AppToolSessionGrant: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await canvas.findByRole("button", { name: "Permission response" });
-    await expandTranscriptActivity(canvasElement);
-    await expect(
-      canvas.findByRole("textbox", { name: "Permission response" }),
-    ).resolves.toHaveTextContent("Permission approved");
+    await userEvent.click(
+      await canvas.findByRole("button", { name: /^Permission granted:/ }),
+    );
+    await expect(canvas.getByTestId("ai-approval-card")).toHaveAttribute(
+      "data-state",
+      "approved",
+    );
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Tool activity" }),
     );

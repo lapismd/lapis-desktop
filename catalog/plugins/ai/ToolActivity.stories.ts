@@ -1,5 +1,4 @@
 import { findMessageEditor } from "../../support/ai/message-editor.ts";
-import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -25,20 +24,26 @@ export const QuestionAnswered: Story = {
     const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Update the sample file");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
-    const option = await canvas.findByRole("button", {
+    const option = await canvas.findByRole("radio", {
       name: /Make the smallest change/,
     });
     await userEvent.click(option);
     const submit = canvas.getByRole("button", { name: "Submit answer" });
     await expect(submit).toBeEnabled();
     await userEvent.click(submit);
-    await canvas.findByRole("button", { name: "Question response" });
-    await expandTranscriptActivity(canvasElement);
-    await waitFor(() => {
-      expect(canvas.getByText("Question answered")).toBeInTheDocument();
-      expect(canvas.queryByTestId("ai-question-card")).toBeNull();
-      expect(canvas.queryByTestId("ai-chat-working")).toBeNull();
+    const response = await canvas.findByRole("button", {
+      name: /^Response submitted:/,
     });
+    await expect(response).toHaveAttribute("aria-expanded", "false");
+    await waitFor(() => {
+      expect(canvas.queryByTestId("ai-question-card")).toBeNull();
+      expect(canvas.queryByText("Agent is working…")).toBeNull();
+    });
+    await userEvent.click(response);
+    await expect(canvas.getByTestId("ai-question-card")).toHaveAttribute(
+      "data-state",
+      "answered",
+    );
   },
 };
 
@@ -55,7 +60,7 @@ export const ToolRunning: Story = {
     const trigger = await canvas.findByRole("button", {
       name: "Show details for shell.execute",
     });
-    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(canvas.queryByRole("region", { name: "Tool details" })).toBeNull();
     await expect(trigger).toHaveAccessibleDescription("Running");
   },
 };
@@ -70,12 +75,17 @@ export const SuccessfulToolCall: Story = {
     const trigger = await canvas.findByRole("button", {
       name: "Show details for shell.execute",
     });
-    await expect(trigger).toHaveAttribute("aria-expanded", "false");
+    expect(canvas.queryByRole("region", { name: "Tool details" })).toBeNull();
     await userEvent.click(trigger);
-    await expect(trigger).toHaveAttribute("aria-expanded", "true");
-    await expect(
-      canvasElement.querySelector('[data-ui-part="code-block-line"]'),
-    ).toHaveTextContent("pnpm --filter @lapis-notes/ai test");
-    await expect(canvas.getByText("121 tests passed")).toBeVisible();
+    const inspector = await canvas.findByRole("region", {
+      name: "Tool details",
+    });
+    await expect(within(inspector).getByText("121 tests passed")).toBeVisible();
+    await userEvent.click(
+      within(inspector).getByRole("button", { name: "Show source" }),
+    );
+    await expect(inspector).toHaveTextContent(
+      "pnpm --filter @lapis-notes/ai test",
+    );
   },
 };

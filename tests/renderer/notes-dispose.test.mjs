@@ -43,6 +43,27 @@ function fixture() {
   return { app, options, events };
 }
 
+test("workspace teardown waits for the rendered shell to unmount", async () => {
+  const f = fixture();
+  const entered = Promise.withResolvers();
+  const unmounted = Promise.withResolvers();
+  f.options.beforeDispose = async () => {
+    entered.resolve();
+    await unmounted.promise;
+  };
+  const leaving = disposeNotesWorkspace(f.app, f.options);
+  await entered.promise;
+  await Promise.resolve();
+  try {
+    assert.equal(f.events.includes("workspace-dispose"), false);
+    assert.equal(f.events.includes("plugin-disable"), false);
+  } finally {
+    unmounted.resolve();
+    await leaving;
+  }
+  assert.equal(f.events.includes("workspace-dispose"), true);
+});
+
 test("an unresolved native window keeps plugin and metadata owners alive until it retires", async () => {
   const f = fixture();
   const gate = Promise.withResolvers(),

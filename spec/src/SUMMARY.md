@@ -358,3 +358,5 @@
 - [Shared-screen queue and consumer qualification](history/E-SHARED-002.md)
 - [Shared-screen host hooks and history cards](history/E-SHARED-003.md)
 - [Shared-screen captured context and requests](history/E-SHARED-004.md)
+
+- [Shared-screen runtime failures and public controls](history/E-SHARED-005.md)

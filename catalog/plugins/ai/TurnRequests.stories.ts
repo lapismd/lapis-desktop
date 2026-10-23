@@ -1,5 +1,4 @@
 import { findMessageEditor } from "../../support/ai/message-editor.ts";
-import { expandTranscriptActivity } from "../../support/ai/transcript/interactions.ts";
 // SPDX-License-Identifier: Apache-2.0
 // Retained from lapis-plugins tree 56b5d6c1; ACP-only runtime choices.
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
@@ -28,15 +27,13 @@ export const PermissionRequested: Story = {
       name: "Allow once",
     });
     const drawer = allow.closest(
-      '[data-ui-component="ai-chat-composer-drawer"]',
+      '[role="group"][aria-label="Permission request"]',
     );
     expect(drawer).not.toBeNull();
     expect(
       canvas.queryByTestId("ai-approval-card")?.closest("article"),
     ).toBeNull();
-    await expect(canvas.getByTestId("ai-chat-working")).toHaveTextContent(
-      "Agent is working…",
-    );
+    await expect(canvas.getByText("Agent is working…")).toBeVisible();
   },
 };
 
@@ -54,11 +51,15 @@ export const PermissionAccepted: Story = {
       name: "Allow once",
     });
     await userEvent.click(allow);
-    await canvas.findByRole("button", { name: "Permission response" });
-    await expandTranscriptActivity(canvasElement);
+    await userEvent.click(
+      await canvas.findByRole("button", { name: /^Permission granted:/ }),
+    );
     await waitFor(() => {
-      expect(canvas.getByText(/Permission approved/i)).toBeInTheDocument();
-      expect(canvas.queryByTestId("ai-chat-working")).toBeNull();
+      expect(canvas.getByTestId("ai-approval-card")).toHaveAttribute(
+        "data-state",
+        "approved",
+      );
+      expect(canvas.queryByText("Agent is working…")).toBeNull();
     });
   },
 };
@@ -73,14 +74,10 @@ export const QuestionAsked: Story = {
     const input = await findMessageEditor(canvas);
     await userEvent.type(input, "Update the sample file");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
-    const option = await canvas.findByRole("button", {
+    const option = await canvas.findByRole("radio", {
       name: /Make the smallest change/,
     });
-    expect(
-      option.closest('[data-ui-component="ai-chat-composer-drawer"]'),
-    ).not.toBeNull();
-    await expect(canvas.getByTestId("ai-chat-working")).toHaveTextContent(
-      "Agent is working…",
-    );
+    expect(option.closest('[data-testid="ai-question-card"]')).not.toBeNull();
+    await expect(canvas.getByText("Agent is working…")).toBeVisible();
   },
 };

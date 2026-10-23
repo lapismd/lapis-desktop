@@ -85,7 +85,10 @@
       ),
   );
   const presentation: AgentChatPresentation = untrack(() =>
-    desktopChatPresentation(() => panel),
+    desktopChatPresentation(
+      () => panel,
+      () => port.recovery.refusal(panel),
+    ),
   );
   observeDraftComments(() => panel.composerState, controller.transcript);
   const restored = new WeakSet<object>();
@@ -196,7 +199,7 @@
     composer: {
       triggers: panel.composerState.mentionTriggers,
       extensions: [references],
-      status: panel.composerState.composerStatus,
+      status: presentation.composerState.composerStatus,
     },
     onCopyResponse: panel.actions.copyResponse,
     workingLabel: panel.composerState.showWorkingIndicator

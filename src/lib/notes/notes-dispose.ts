@@ -6,7 +6,7 @@ type NotesDisposeOptions = {
   popouts?: DesktopPopouts;
   prepareLeave(): void | Promise<void>;
   resumeLeave?(): void | Promise<void>;
-  beforeDispose(): void;
+  beforeDispose(): void | Promise<void>;
   stopMetadataTracking?(): void;
   disposeSync(): void | Promise<void>;
   disposeSettings(): void;
@@ -41,7 +41,7 @@ export function disposeNotesWorkspace(
           }
           throw failure;
         }
-        options.beforeDispose();
+        await options.beforeDispose();
         await app.workspace.disposeWorkspaceHost();
         await options.popouts?.dispose();
         options.stopMetadataTracking?.();

@@ -67,7 +67,9 @@ export const FileDiff: StoryObj = {
   play: async ({ canvasElement }) => {
     const view = await openHistoryFile(canvasElement);
     await expect(
-      await view.findByRole("status", { name: "Loading file changes…" }),
+      await view.findByRole("status", {
+        name: "Loading changes to Welcome.md",
+      }),
     ).toBeVisible();
   },
 };

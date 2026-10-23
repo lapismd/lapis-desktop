@@ -25,7 +25,13 @@ export const PendingPermission: Story = {
     await expandTranscriptActivity(canvasElement);
     await expect(canvas.getByText("Agent turn cancelled")).toBeVisible();
     await expect(canvas.queryByTestId("ai-approval-card")).toBeNull();
-    await expect(canvas.queryByTestId("ai-chat-working")).toBeNull();
-    await expect(canvas.getByText("Permission cancelled")).toBeVisible();
+    await expect(canvas.queryByText("Agent is working…")).toBeNull();
+    await userEvent.click(
+      await canvas.findByRole("button", { name: /^Request cancelled:/ }),
+    );
+    await expect(canvas.getByTestId("ai-approval-card")).toHaveAttribute(
+      "data-state",
+      "cancelled",
+    );
   },
 };

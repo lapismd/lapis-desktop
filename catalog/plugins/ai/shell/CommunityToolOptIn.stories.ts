@@ -7,6 +7,7 @@ import AiShellDemo from "../../../support/ai/shell/AiShellDemo.svelte";
 import { demoApp } from "../../../support/ai/shell/assertions.ts";
 import { shellParameters } from "../../../support/ai/shell/examples.ts";
 import { cleanupCatalog } from "../../../support/lifecycle.ts";
+import { selectSettingsTab } from "../../../support/ai/settings-tabs.ts";
 const meta = {
   title: "Desktop/AI/Shell/CommunityToolOptIn",
   component: WorkspaceShell,
@@ -41,7 +42,8 @@ export const CommunityToolOptIn: Story = {
     await userEvent.click(
       await within(dialog).findByRole("button", { name: "AI" }),
     );
-    const master = within(dialog).getByRole("switch", {
+    await selectSettingsTab(dialog, "AI settings", "Tools");
+    const master = await within(dialog).findByRole("switch", {
       name: "Application tools",
     });
     const community = within(dialog).getByRole("switch", {

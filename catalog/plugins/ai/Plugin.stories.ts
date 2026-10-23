@@ -58,7 +58,9 @@ export const ClosedScopeRejectsNewWork: Story = {
       "rejected",
       "rejected",
     ]);
-    expect(await host.conversations.listAll()).toEqual(entries);
+    await expect(host.conversations.listAll()).rejects.toThrow(
+      "Conversation persistence is closed",
+    );
     expect(JSON.stringify(fixture.app.workspace.getLayout())).toBe(layout);
     expect(host.getSettings()).toEqual(settings);
   },

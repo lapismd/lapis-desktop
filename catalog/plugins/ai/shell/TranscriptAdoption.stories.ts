@@ -15,11 +15,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 async function ready(root: HTMLElement) {
   const canvas = within(root);
+  const fixture = shellFixture(root);
+  await fixture.ready;
   const panel = await canvas.findByTestId("ai-chat-panel");
   await waitFor(() =>
     expect(panel).toHaveAttribute("data-initializing", "false"),
   );
-  const fixture = shellFixture(root);
   const plugin = fixture.app.plugins.plugins.get("ai");
   if (!(plugin instanceof AiPlugin)) throw new Error("Owned AI plugin missing");
   return { canvas, panel, fixture, plugin };
@@ -72,13 +73,10 @@ export const DocumentDefaultAndSavedClassic: Story = {
 };
 export const PreferenceSaveFailure: Story = {
   play: async ({ canvasElement }) => {
-    const { panel, fixture, plugin } = await ready(canvasElement);
-    const original = fixture.app.vault.adapter.write.bind(
-      fixture.app.vault.adapter,
-    );
-    fixture.app.vault.adapter.write = async (path, data) => {
-      if (path === ".lapis/ai.json") throw new Error("The vault is read-only");
-      await original(path, data);
+    const { panel, plugin } = await ready(canvasElement);
+    const original = plugin.saveData.bind(plugin);
+    plugin.saveData = async () => {
+      throw new Error("The vault is read-only");
     };
     try {
       await userEvent.click(
@@ -93,7 +91,7 @@ export const PreferenceSaveFailure: Story = {
       expect(plugin.settings.get().transcriptView).toBe("document");
       expect(panel).not.toHaveTextContent("The vault is read-only");
     } finally {
-      fixture.app.vault.adapter.write = original;
+      plugin.saveData = original;
     }
   },
 };

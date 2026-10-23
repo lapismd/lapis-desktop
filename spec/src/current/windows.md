@@ -1,5 +1,9 @@
 # Native workspace windows
 
+After successful leave preflight, the rendered Notes shell MUST unmount before
+workspace or related plugin authority is retired. Existing related-window
+admission and failure-preservation gates remain required.
+
 E-REPO-050 retains LD-POP-004's original final-persistence-before-teardown gate;
 failed backup preparation must preserve the same related editors and drafts.
 

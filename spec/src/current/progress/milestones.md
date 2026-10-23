@@ -89,4 +89,4 @@ E-CATALOG-010/016: footer/native qualified.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M15.1 | In progress | M8.5 | LD-CAT-001,LD-AI-002,LD-REPO-002 | Existing Desktop chat, history, catalog, imports, recorded and repository views mount shared public complete screens; exact and affected interaction checks pass in an isolated workspace, with comparable before/after stories and cold native acceptance. | Finish consumer qualification and compare the isolated catalogs | E-SHARED-001,E-SHARED-002,E-SHARED-003,E-SHARED-004 |
+| M15.1 | In progress | M8.5 | LD-CAT-001,LD-AI-002,LD-REPO-002 | Existing Desktop chat, history, catalog, imports, recorded and repository views mount shared public complete screens; exact and affected interaction checks pass in an isolated workspace, with comparable before/after stories and cold native acceptance. | Finish consumer qualification and compare the isolated catalogs | E-SHARED-001,E-SHARED-002,E-SHARED-003,E-SHARED-004,E-SHARED-005 |

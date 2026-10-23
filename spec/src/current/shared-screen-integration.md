@@ -15,11 +15,19 @@ explicit App. Shared screen adoption cannot drop those decorations. The host
 Markdown hook preserves leaf-node shape while decorating mentions so captured
 handoff links remain renderable with prompt-context extensions.
 
+A native first send can create its conversation before refusing execution. The
+host adapter MUST correlate that captured error with the original attempt and
+new conversation, suppressing only its duplicate host status while preserving
+the exact retained draft; another conversation or a removed notice restores the
+ordinary status. Both public composer status paths use that same host result.
+
 ## Desktop host
 
 The isolated shared-screen migration preserves the existing Tauri window and
 Notes AppShell. Shared screens occupy the existing view hosts; no new product
-routes, installed profiles or native chrome are introduced.
+routes, installed profiles or native chrome are introduced. Disposal MUST await
+the rendered shell's unmount before retiring workspace and file-editing
+authority, so delayed Explorer opens cannot outlive their owner.
 
 ## Source governance
 

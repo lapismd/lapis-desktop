@@ -1,8 +1,7 @@
 # Desktop AI and optional compute
 
-[Shared-screen integration](shared-screen-integration.md) governs AI admission.
-Host hooks preserve Markdown leaves, captured feedback and durable queue
-authority.
+[Shared-screen integration](shared-screen-integration.md) governs admission,
+Markdown leaves, queue authority and exact request/send failure recovery.
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

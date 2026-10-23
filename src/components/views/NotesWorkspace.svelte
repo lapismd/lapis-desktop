@@ -209,8 +209,9 @@
           popouts,
           prepareLeave: () => bundled.prepareLeave(mode),
           resumeLeave: () => bundled.resumeLeave(),
-          beforeDispose: () => {
+          beforeDispose: async () => {
             ready = false;
+            await tick();
           },
           stopMetadataTracking,
           disposeSync: () => sync.dispose(),

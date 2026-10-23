@@ -103,11 +103,12 @@ export const UnavailableAdmission: Story = {
     );
     await fixture.plugin()!.application.operations.settle();
     expect(JSON.parse(await fixture.inspect()).sessions).toEqual([]);
-    const errors = within(panel).getAllByText(
+    await expect(
+      within(panel).getByRole("textbox", { name: "Message" }),
+    ).toHaveTextContent("Cannot execute without admission");
+    expect(within(panel).getAllByRole("alert")).toHaveLength(1);
+    await expect(within(panel).getByRole("alert")).toHaveTextContent(
       "Fixture native AI is unavailable",
     );
-    expect(errors).toHaveLength(1);
-    expect(within(panel).getAllByRole("alert")).toHaveLength(1);
-    for (const error of errors) expect(error).toBeVisible();
   },
 };

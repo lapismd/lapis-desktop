@@ -45,6 +45,13 @@ export class DesktopActionRecovery {
   refusal(panel: TranscriptPanelProps): string | undefined {
     const pending = this.pending;
     if (!pending || pending.action.kind !== "send") return;
+    const current = panel.controller.location;
+    if (
+      pending.location &&
+      (current?.scopeDir !== pending.location.scopeDir ||
+        current.conversationId !== pending.location.conversationId)
+    )
+      return;
     const failures = panel.controller.items.filter(
       (item) =>
         item.type === "error" &&

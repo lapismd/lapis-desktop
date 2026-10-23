@@ -1,5 +1,9 @@
 # File management (M5)
 
+The shared Explorer MUST present failed pointer opens without unhandled
+rejections and allow retry. Its programmatic controller continues rejecting so
+host callers can preserve failure acknowledgement.
+
 E-AI-093 keeps LD-FILE-002/003 ordinary watch, picker and containment contracts
 unchanged. Backup-only watches use the shared native transcript allowlist;
 private runtime/JJ writes remain excluded and cannot trigger backup loops.

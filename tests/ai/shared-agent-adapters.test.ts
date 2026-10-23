@@ -1,6 +1,7 @@
 import { test } from "vitest";
 import assert from "node:assert/strict";
 import { DesktopChatPort } from "../../src/lib/ai/shared/chat-port.ts";
+import { desktopChatPresentation } from "../../src/lib/ai/shared/chat-presentation.ts";
 import { DesktopActionRecovery } from "../../src/lib/ai/shared/action-recovery.ts";
 function fixture() {
   let reads = 0,
@@ -159,4 +160,29 @@ test("native retryable refusal is distinct from an unknown native turn", () => {
   assert.equal(recovery.refusal(f.panel), "Provider refused before dispatch");
   f.panel.controller.items.at(-1).retryable = false;
   assert.equal(recovery.refusal(f.panel), undefined);
+});
+
+test("new native conversation capture owns its single refusal status", () => {
+  const f = fixture();
+  f.panel.controller.location = null;
+  f.port.recovery.begin(f.action, f.panel);
+  const status = { type: "error", message: "Native execution unavailable" };
+  f.panel.composerState.composerStatus = status;
+  const presentation = desktopChatPresentation(
+    () => f.panel,
+    () => f.port.recovery.refusal(f.panel),
+  );
+  assert.equal(presentation.composerState.composerStatus, status);
+  f.panel.controller.location = f.location;
+  f.panel.controller.items.push(
+    { id: "new-user", type: "message", role: "user", text: "hello" },
+    { id: "new-error", type: "error", text: status.message },
+  );
+  f.port.recovery.capture(f.panel);
+  assert.equal(presentation.composerState.composerStatus, undefined);
+  f.panel.controller.location = { ...f.location, conversationId: "other" };
+  assert.equal(presentation.composerState.composerStatus, status);
+  f.panel.controller.location = f.location;
+  f.panel.controller.items.pop();
+  assert.equal(presentation.composerState.composerStatus, status);
 });
