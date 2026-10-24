@@ -393,3 +393,5 @@
 - [Native ONNX encoder dependency compatibility](history/E-CORE-013.md)
 
 - [Live migration tracking and task navigation](history/E-PROGRESS-001.md)
+
+- [Native Search provider and retained SQL intake](history/E-CORE-014.md)

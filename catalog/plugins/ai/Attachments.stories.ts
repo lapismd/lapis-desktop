@@ -97,7 +97,14 @@ export const Document: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse Attachments 2" }),
     );
-    expect(canvas.queryByRole("button", { name: "Remove Welcome" })).toBeNull();
+    await waitFor(() => {
+      expect(
+        canvas.getByRole("button", { name: "Expand Attachments 2" }),
+      ).toHaveAttribute("aria-expanded", "false");
+      expect(
+        canvas.queryByRole("button", { name: "Remove Welcome" }),
+      ).toBeNull();
+    });
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Attachments 2" }),
     );

@@ -3,7 +3,7 @@
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 Generated tables group gate statuses, naturally sort task IDs and link each ID
-to its defining spec ledger. Commits MUST refresh activity and UTC date/time.
+to its spec ledger. Commits MUST refresh activity/UTC date/time (E-CORE-014).
 
 E-AI-093 selects local ACP/vault transcripts. M13/M13.3 are Deferred at
 checkpoint codex/desktop-jj-chat-checkpoint-20261020; M10.2 retains its ordinary

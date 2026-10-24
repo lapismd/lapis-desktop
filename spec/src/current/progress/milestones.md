@@ -1,21 +1,20 @@
 # Milestones and gates
 
-Last updated **2026-10-24 19:28:42 UTC**.
+Last updated **2026-10-24 20:31:06 UTC**.
 
 <!-- migration-activity:start -->
 
 ## Current work — shared Rust migration
 
-- Verified: Notes Search provider source at `e6de56ef`; five refreshed Notes
-  archives; four rebuilt hidden native API cases; 230 native service cases; 411
-  renderer/governance and 744 AI cases; repaired attachment family 16/16.
-- Running: Desktop intake requalification; both light runs passed 500/500. The
-  two dark startup repairs pass exactly and across all 32 family cases; a fresh
-  full catalog run and remaining intake checks are still required.
-- Waiting: native semantic retrieval, model installation/progress, batch/rebuild
-  host intake, complete facade adoption by both hosts, then unattended indexing
-  and the remaining R1.3/R2–R7 gates. Both hosts still use their old database
-  adapters; hosted access remains Node.
+- Verified: five Notes archives at `e6de56ef`; four hidden API cases; 230 native
+  service, 411 renderer/governance and 744 AI cases; renderer/static builds; all
+  2000 catalog cases. Source semantic retrieval is qualified at `8fd7b926`, with
+  Desktop file-service and strict normal/e2e dependency checks passing.
+- Running: source facade conformance audit (schema lifecycle, defaults and exact
+  return shapes). E-AI-109 retains its accepted historical format exception.
+- Waiting: model installation/progress, complete facade selection by both hosts,
+  then unattended indexing and the remaining R1.3/R2–R7 gates. Both hosts still
+  use their old database adapters; hosted access remains Node. M11 is Deferred.
 
 <!-- migration-activity:end -->
 
@@ -116,7 +115,7 @@ E-CATALOG-010/016: footer/native qualified.
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3 | E-CORE-001,E-CORE-002 |
-| M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013 |
+| M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014 |
 
 ## Markdown document review
 

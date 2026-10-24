@@ -15,3 +15,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Native Search retrieval compatibility and tracker timestamps](../E-CORE-011.md)
 - [Native indexed-file facade dependency compatibility](../E-CORE-012.md)
 - [Native ONNX encoder dependency compatibility](../E-CORE-013.md)
+
+- [Native Search provider and retained SQL intake](../E-CORE-014.md)

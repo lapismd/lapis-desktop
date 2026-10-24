@@ -10,6 +10,7 @@
   import { DesktopUrlDelivery } from "../../src/lib/native/integration-urls";
   import { normalRecovery } from "../../src/lib/notes/startup-recovery";
   import { registerCatalogCleanup } from "./lifecycle";
+  import { registerNotesReadiness } from "./notes/readiness.ts";
 
   import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
   import type { AiFactory } from "../../src/lib/ai/plugin/services";
@@ -36,6 +37,15 @@
   let workspace = $state<{ dispose(): Promise<void> }>();
   let failure = $state("");
   let ready = $state(false);
+  let root = $state<HTMLDivElement>();
+  let finishStartup: () => void;
+  let failStartup: (reason: unknown) => void;
+  const startup = new Promise<void>((resolve, reject) => {
+    finishStartup = resolve;
+    failStartup = reject;
+  });
+  // Stories may observe only the visible error; explicit startup joins still reject.
+  void startup.catch(() => undefined);
   const urls = new DesktopUrlDelivery(
     async <T,>() => null as T,
     (error) => {
@@ -44,6 +54,7 @@
   );
   onMount(() => {
     let disposed = false;
+    const unregisterStartup = registerNotesReadiness(root!, startup);
     const boot = createVaultSession(
       new MemoryVaultAdapter({
         ...files,
@@ -69,11 +80,14 @@
       })
       .catch((error) => {
         failure = String(error);
+        failStartup(error);
       });
     let shutdown: Promise<void> | undefined;
     const dispose = () =>
       (shutdown ??= (async () => {
         disposed = true;
+        unregisterStartup();
+        failStartup(new Error("Notes catalog closed before startup completed"));
         urls.dispose();
         const value = await boot;
         if (workspace) await workspace.dispose();
@@ -87,7 +101,11 @@
   });
 </script>
 
-<div class={`notes-demo ${className}`} data-catalog-ready={ready}>
+<div
+  bind:this={root}
+  class={`notes-demo ${className}`}
+  data-catalog-ready={ready}
+>
   {#if session}
     <NotesWorkspace
       bind:this={workspace}
@@ -99,6 +117,7 @@
       urlDelivery={urls}
       onReady={async () => {
         ready = true;
+        finishStartup();
       }}
       onBack={async () => {
         session = undefined;

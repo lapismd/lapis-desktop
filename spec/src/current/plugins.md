@@ -1,9 +1,9 @@
 # Desktop plugins and catalog
 
-[Shared-screen integration](shared-screen-integration.md) requires public
-request/source/pin controls and pointer release after portalled menus. Fixture
-boot promises remain part of the catalog lifecycle boundary; controls are
-asserted only after their owning fixture is ready.
+[Shared-screen integration](shared-screen-integration.md) retains public
+source/pin/request controls and pointer release after portalled menus. Owned
+Notes/AI boot promises bound catalog startup. Controls await readiness; collapse
+checks await closed state/unmount before unchanged absence assertions.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.

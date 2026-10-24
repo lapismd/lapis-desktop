@@ -18,6 +18,7 @@ import {
   AI_HISTORY_VIEW as AiHistoryViewType,
 } from "../../../../src/lib/ai/plugin/view-types.ts";
 import { cleanupCatalog } from "../../../support/lifecycle.ts";
+import { shellFixture } from "../../../support/ai/shell/fixture.ts";
 const meta = {
   title: "Desktop/AI/Shell/LocalConversations",
   component: WorkspaceShell,
@@ -34,6 +35,7 @@ export const LocalConversations: Story = {
     props: { scenario: "local-conversations", displayMode: "desktop" },
   }),
   play: async ({ canvasElement }) => {
+    await shellFixture(canvasElement).ready;
     const canvas = within(canvasElement);
     await waitFor(() =>
       expect(canvas.getByTestId("ai-shell-demo")).toHaveAttribute(

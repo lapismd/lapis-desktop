@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import UpstreamDemo from "../../support/repository/UpstreamDemo.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
+import { notesReady } from "../../support/notes/readiness.ts";
 const meta = {
   title: "Desktop/Repository upstream status",
   component: UpstreamDemo,
@@ -11,6 +12,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 async function open(element: HTMLElement) {
+  await notesReady(element);
   const canvas = within(element),
     page = within(element.ownerDocument.body);
   const trigger = await canvas.findByRole("button", {

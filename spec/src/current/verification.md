@@ -44,7 +44,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-VAULT-006 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md); [E-REVIEW-001](../history/E-REVIEW-001.md) |
 | LD-DB-001 | Implemented | [E-DB-001](../history/E-DB-001.md) |
 | LD-DB-002 | Implemented | [E-DB-001](../history/E-DB-001.md) |
-| LD-DB-003 | Implemented | [E-DB-001](../history/E-DB-001.md); [E-SESSION-002](../history/E-SESSION-002.md) |
+| LD-DB-003 | Implemented | [E-DB-001](../history/E-DB-001.md); [E-SESSION-002](../history/E-SESSION-002.md); E-CORE-014 adds hidden native SQL provider-invalidation acceptance; native semantic provider adoption remains separate. |
 | LD-DB-004 | Implemented | [E-DB-001](../history/E-DB-001.md) |
 | LD-SESSION-001 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md) |
 | LD-SESSION-002 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md) |
@@ -107,7 +107,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-AI-003 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](../history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | [E-TEST-001](../history/E-TEST-001.md): quiet default, fail-closed modes, complete retained headed runner and explicit native CI gate; all quiet lanes pass. |
-| LD-CAT-003 | Implemented | [E-CATALOG-002](../history/E-CATALOG-002.md): qualified state inventory; [E-CATALOG-007](../history/E-CATALOG-007.md): Lapis Reading review added, suites deferred.; [E-REPO-011](../history/E-REPO-011.md); [E-REPO-012](../history/E-REPO-012.md); [E-REPO-013](../history/E-REPO-013.md). |
+| LD-CAT-003 | Implemented | E-CORE-014 retains attachment collapse absence after the controlled closed/unmount boundary;  [E-CATALOG-002](../history/E-CATALOG-002.md): qualified state inventory; [E-CATALOG-007](../history/E-CATALOG-007.md): Lapis Reading review added, suites deferred.; [E-REPO-011](../history/E-REPO-011.md); [E-REPO-012](../history/E-REPO-012.md); [E-REPO-013](../history/E-REPO-013.md). |
 | LD-COMP-001 | Planned | [E-AI-123](../history/E-AI-123.md): model library/progress/recovery; [E-AI-124](../history/E-AI-124.md): model controls/footer; [E-AI-125](../history/E-AI-125.md): inline selection and fresh app checks. Original inference, lifecycle and pairing gates remain. |
 | LD-REPO-001 | Implemented | [E-REPO-002](../history/E-REPO-002.md): physical admission, real caller/origin frames and independent history/AI grants; M13.1. |
 | LD-REPO-002 | Implemented | [E-REPO-006](../history/E-REPO-006.md): cold native pins/diffs/restart; [M13.2 ledger](progress/milestones.md): transport and presentation history; [E-REPO-056](../history/E-REPO-056.md): neutral service compatibility; [E-REPO-016](../history/E-REPO-016.md): background work. |

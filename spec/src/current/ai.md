@@ -360,12 +360,12 @@ or resume ACP; native admission and recovery stay separately gated.
 
 Retained shell checks cover model preparation with a disabled, stable composer,
 conversation menus and offline recovery, provider attribution and scope follow.
-Catalog controls retain explicit expand/collapse and source navigation for both
-commands and skills. The Notes copy's additional assertions remain required even
-where its story names match maintained plugin cases. Test clients and timing
-gates remain catalog-owned. Definite fixture heights retain full-window checks
-on unnamed test canvases. Native dependency intake and ordinary execution
-preserve separate admission gates.
+Catalog controls retain expand/collapse and command/skill source navigation. The
+Notes copy keeps extra assertions even when plugin case names match.
+Catalog-owned clients await closed/unmounted attachments before the unchanged
+absence check, without fixed delays or longer timeouts. Fixture heights retain
+full-window checks on unnamed canvases. Native dependency intake and ordinary
+execution retain separate admission gates.
 
 User-wide command files use the native `~/.lapis/agents/commands` directory. An
 admitted local main window may list, check, create missing files or replace one
