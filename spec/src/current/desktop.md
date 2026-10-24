@@ -1,9 +1,10 @@
 # Desktop shell
 
-Core: E-CORE-001–005; E-CORE-006–009 are focused dependency checks. Notes
-`575bef1f` adds native memory storage; hosted shell/backup and native database
-adoption remain R1.3. [Shared-screen integration](shared-screen-integration.md)
-preserves live view state and failed-leave/native gates.
+Core: E-CORE-001–005; E-CORE-006–010 are focused dependency checks. Notes
+`113cb2ec` adds native Search storage/preparation; hosted shell/backup and
+native database adoption remain R1.3.
+[Shared-screen integration](shared-screen-integration.md) preserves live view
+state and failed-leave/native gates.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

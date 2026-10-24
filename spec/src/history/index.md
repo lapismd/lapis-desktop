@@ -394,3 +394,5 @@ by the task ledger, not inferred from this list.
 - [Native task facade dependency compatibility](E-CORE-008.md)
 
 - [Native memory storage dependency compatibility](E-CORE-009.md)
+
+- [Native Search storage and preparation dependency compatibility](E-CORE-010.md)

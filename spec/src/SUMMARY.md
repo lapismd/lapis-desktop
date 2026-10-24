@@ -381,3 +381,5 @@
 - [Native task facade dependency compatibility](history/E-CORE-008.md)
 
 - [Native memory storage dependency compatibility](history/E-CORE-009.md)
+
+- [Native Search storage and preparation dependency compatibility](history/E-CORE-010.md)

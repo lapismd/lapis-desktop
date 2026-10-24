@@ -2,7 +2,7 @@
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
-Core: E-CORE-001–005; E-CORE-006–009 focused; HTTP shell/backup is R1.3.
+Core: E-CORE-001–005; E-CORE-006–010 focused; HTTP shell/backup is R1.3.
 
 E-AI-093 makes local ACP and vault transcript files the active desktop profile.
 M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;
