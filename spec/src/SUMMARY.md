@@ -370,3 +370,5 @@
 - [Shared native file-service adapter](history/E-CORE-003.md)
 
 - [Shared byte-writer dependency intake](history/E-CORE-004.md)
+
+- [Shared database-foundation dependency intake](history/E-CORE-005.md)

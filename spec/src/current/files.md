@@ -17,8 +17,9 @@ closing one of several admissions preserves the others.
 Backup/window-independent work and hosted acceptance remain separate R1.3 gates
 (E-CORE-003).
 
-E-CORE-004 refreshes the shared core byte-writer dependency. Existing Desktop
-file IPC and media policy stay unchanged; hosted stream intake is separate.
+E-CORE-004/005 refresh shared byte-writer/database dependencies. Desktop file
+IPC, database adapters and media policy stay unchanged; hosted intake is
+separate.
 
 Workspace teardown MUST capture live view state before shell unmount;
 E-SHARED-006 preserves exact restored operation pins and existing writer guards.

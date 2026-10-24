@@ -384,3 +384,5 @@ by the task ledger, not inferred from this list.
 - [Shared native file-service adapter](E-CORE-003.md)
 
 - [Shared byte-writer dependency intake](E-CORE-004.md)
+
+- [Shared database-foundation dependency intake](E-CORE-005.md)
