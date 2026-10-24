@@ -2,7 +2,7 @@
 
 [Shared-screen integration](shared-screen-integration.md) owns integration.
 Retirement MUST preserve revisions, archives and evidence. Native, distribution
-and visual gates stay separate. E-CORE-006–011 are focused. Each commit MUST
+and visual gates stay separate. E-CORE-006–012 are focused. Each commit MUST
 refresh the ledger and generated `MIGRATION.md` with an explicit UTC date/time.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and

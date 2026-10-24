@@ -1,6 +1,6 @@
 # Evidence
 
-- [Shared native vault engine intake](E-CORE-001.md)
+- [Shared Rust application-services evidence](core/index.md)
 
 - [Compute model selection and fresh app qualification](E-AI-125.md)
 - [Compute run controls and workspace status](E-AI-124.md)
@@ -379,22 +379,3 @@ by the task ledger, not inferred from this list.
 - [AI change inspection layout alignment](E-AI-116.md)
 
 - [AI body-header actions and view navigation](E-AI-117.md)
-
-- [Shared core protocol dependency intake](E-CORE-002.md)
-
-- [Shared native file-service adapter](E-CORE-003.md)
-
-- [Shared byte-writer dependency intake](E-CORE-004.md)
-
-- [Shared database-foundation dependency intake](E-CORE-005.md)
-
-- [Focused native projection dependency compatibility](E-CORE-006.md)
-- [Native projection query dependency compatibility](E-CORE-007.md)
-
-- [Native task facade dependency compatibility](E-CORE-008.md)
-
-- [Native memory storage dependency compatibility](E-CORE-009.md)
-
-- [Native Search storage and preparation dependency compatibility](E-CORE-010.md)
-
-- [Native Search retrieval compatibility and tracker timestamps](E-CORE-011.md)

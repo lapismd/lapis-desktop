@@ -366,6 +366,7 @@
 
 - [Shared-screen final qualification and live view state](history/E-SHARED-006.md)
 - [Shared-screen main workspace integration](history/E-SHARED-007.md)
+- [Shared Rust application-services evidence](history/core/index.md)
 - [Shared native vault engine intake](history/E-CORE-001.md)
 
 - [Shared core protocol dependency intake](history/E-CORE-002.md)
@@ -385,3 +386,5 @@
 - [Native Search storage and preparation dependency compatibility](history/E-CORE-010.md)
 
 - [Native Search retrieval compatibility and tracker timestamps](history/E-CORE-011.md)
+
+- [Native indexed-file facade dependency compatibility](history/E-CORE-012.md)

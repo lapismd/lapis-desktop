@@ -1,8 +1,8 @@
 # Desktop shell
 
-Core: E-CORE-001–005; E-CORE-006–011 cover dependency compatibility. Native
-Search retrieval adds one locked regex package. Database adoption, hosted shell
-and backup remain R1.3.
+Core: E-CORE-001–005 retain native gates; E-CORE-006–012 cover dependencies.
+Native indexed-file methods compile against Notes. Database adoption, hosted
+shell and backup remain R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.
 
