@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-24 21:54:34 UTC**.
+Last updated **2026-10-24 22:48:00 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -16,9 +16,13 @@ Last updated **2026-10-24 21:54:34 UTC**.
 - Verified source: complete native database conformance at Notes `77ae786b`,
   with Desktop compatibility recorded in Notes `7180b24c`. The audit is
   finished; this does not select the database in either host.
-- Running in Notes: native model/cache installation (R3.1.18); first acceptance
-  run stopped at the 30 GiB disk guard before compilation. No new native gate
-  passes yet. E-AI-109 retains its accepted historical format exception.
+- Verified source: Notes `a18c84bb` qualifies native runtime/model installation,
+  eleven cache cases, 216 ordinary Rust cases, four live/four offline model
+  targets and ten specification lanes / 49 regressions. No host selects it yet.
+- Verified here: native model/cache dependency compatibility; both file-service
+  cases and strict normal/e2e checks pass. Only two required lock edges change;
+  all nineteen archives stay intact. All four specification lanes pass. E-AI-109
+  keeps its accepted historical format exception.
 - Waiting: both database adapters, unattended indexing and remaining R1.3/R2–R7
   gates. Hosted access remains Node. M11 is Deferred.
 
@@ -121,7 +125,7 @@ E-CATALOG-010/016: footer/native qualified.
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3 | E-CORE-001,E-CORE-002 |
-| M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014 |
+| M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014,E-CORE-015 |
 
 ## Markdown document review
 

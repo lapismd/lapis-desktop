@@ -384,3 +384,5 @@ by the task ledger, not inferred from this list.
 - [Live migration tracking and task navigation](E-PROGRESS-001.md)
 
 - [Master migration tracker routing and checkpoint refresh](E-PROGRESS-002.md)
+
+- [Native model-cache dependency intake](E-CORE-015.md)

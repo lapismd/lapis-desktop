@@ -3,9 +3,9 @@
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 Generated tables group gate statuses, naturally sort task IDs and link each ID
-to its spec ledger. Commits MUST refresh activity/UTC date/time (E-CORE-014).
-Shared Rust R0–R7 activity follows the Notes main-workspace master; Desktop
-retains M-series gates and links that tracker (E-PROGRESS-002).
+to its spec ledger. Commits MUST refresh activity/UTC date/time
+(E-CORE-014/015). Shared Rust R0–R7 activity follows the Notes main-workspace
+master; Desktop retains M-series gates and links that tracker (E-PROGRESS-002).
 
 E-AI-093 retains local ACP/vault transcripts and M13/M13.3 Deferred at
 `codex/desktop-jj-chat-checkpoint-20261020`; M10.2 keeps its ordinary ACP gate.

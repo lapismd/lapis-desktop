@@ -1,8 +1,8 @@
 # Desktop shell
 
-Core: E-CORE-001–005 retain native gates; E-CORE-006–014 cover dependencies.
-E-CORE-014 checks providers and native SQL. Semantic Search, database adoption,
-hosted shell and backup remain R1.3.
+Core: E-CORE-001–005 retain native gates; 006–015 qualify dependencies. 014
+covers providers/SQL; 015 adds unused cache dependencies. Database, semantic
+Search, hosted shell and backup remain R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.
 
