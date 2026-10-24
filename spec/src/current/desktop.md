@@ -1,7 +1,7 @@
 # Desktop shell
 
-Core: E-CORE-001–005 retain native gates; E-CORE-006–012 cover dependencies.
-Native indexed-file methods compile against Notes. Database adoption, hosted
+Core: E-CORE-001–005 retain native gates; E-CORE-006–013 cover dependencies.
+E-CORE-013 covers ONNX dependencies; semantic Search, database adoption, hosted
 shell and backup remain R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.

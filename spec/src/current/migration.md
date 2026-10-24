@@ -2,7 +2,7 @@
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
-Core: E-CORE-001–005; E-CORE-006–012 focused; HTTP shell/backup is R1.3. Each
+Core: E-CORE-001–005; E-CORE-006–013 focused; HTTP shell/backup is R1.3. Each
 commit MUST refresh the ledger and generated summary UTC date/time.
 
 E-AI-093 selects local ACP/vault transcripts. M13/M13.3 are Deferred at

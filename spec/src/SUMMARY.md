@@ -388,3 +388,5 @@
 - [Native Search retrieval compatibility and tracker timestamps](history/E-CORE-011.md)
 
 - [Native indexed-file facade dependency compatibility](history/E-CORE-012.md)
+
+- [Native ONNX encoder dependency compatibility](history/E-CORE-013.md)
