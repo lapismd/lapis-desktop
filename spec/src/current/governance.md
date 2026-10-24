@@ -2,14 +2,14 @@
 
 [Shared-screen integration](shared-screen-integration.md) owns integration.
 Retirement MUST preserve revisions, archives and evidence. Native, distribution
-and visual gates stay separate. E-CORE-006–010 are focused.
+and visual gates stay separate. E-CORE-006–011 are focused. Each commit MUST
+refresh the ledger and generated `MIGRATION.md` with an explicit UTC date/time.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog
 imports; no ownership, admission, baseline or dependency policy is relaxed.
 
 E-AI-093 retains M13 gates; E-AI-121 adds isolated SQLite import fixtures.
-
 E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain
 boundary/identity evidence; LD-GOV-002 rules remain unchanged.
 

@@ -17,7 +17,9 @@ behavior and milestone tasks alone own completion status.
    counts, failures, versions, gaps and an explicit milestone review.
 6. Update the task's selected evidence and run `pnpm progress:generate`,
    `pnpm check:progress` and the applicable specification checks.
-7. Commit each verified slice with Jujutsu and a descriptive message.
+7. Refresh the task ledger UTC date/time and regenerate `MIGRATION.md` with
+   every slice commit; refresh the Notes master tracker after consumer commits.
+   Commit each verified slice with Jujutsu and a descriptive message.
 
 Keep failed attempts in evidence. Done requires the original completion gate;
 compilation, browser mocks, bookkeeping and screenshots cannot replace native

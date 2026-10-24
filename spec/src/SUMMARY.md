@@ -383,3 +383,5 @@
 - [Native memory storage dependency compatibility](history/E-CORE-009.md)
 
 - [Native Search storage and preparation dependency compatibility](history/E-CORE-010.md)
+
+- [Native Search retrieval compatibility and tracker timestamps](history/E-CORE-011.md)

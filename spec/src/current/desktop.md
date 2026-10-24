@@ -1,8 +1,8 @@
 # Desktop shell
 
-Core: E-CORE-001–005; E-CORE-006–010 are focused dependency checks. Notes
-`113cb2ec` adds native Search storage/preparation; hosted shell/backup and
-native database adoption remain R1.3.
+Core: E-CORE-001–005; E-CORE-006–011 cover dependency compatibility. Native
+Search retrieval adds one locked regex package. Database adoption, hosted shell
+and backup remain R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.
 

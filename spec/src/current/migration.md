@@ -2,16 +2,16 @@
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
-Core: E-CORE-001–005; E-CORE-006–010 focused; HTTP shell/backup is R1.3.
+Core: E-CORE-001–005; E-CORE-006–011 focused; HTTP shell/backup is R1.3. Each
+commit MUST refresh the ledger and generated summary UTC date/time.
 
-E-AI-093 makes local ACP and vault transcript files the active desktop profile.
-M13/M13.3 are Deferred at checkpoint codex/desktop-jj-chat-checkpoint-20261020;
-M10.2 retains its ordinary ACP gate; E-AI-094 adds agent context/permissions.
-
-E-AI-066 adds Agents Settings. E-AI-072–086 retain unqualified agent/native-chat
-drafts; LD-MIG-002 milestones and original gates remain unchanged. Normal ACP
-chat/sessions stay supported alongside optional native JJ history/persistence;
-native adoption does not automatically migrate or replace them.
+E-AI-093 selects local ACP/vault transcripts. M13/M13.3 are Deferred at
+checkpoint codex/desktop-jj-chat-checkpoint-20261020; M10.2 retains its ordinary
+ACP gate; E-AI-094 adds agent context/permissions. E-AI-066 adds Agents
+Settings. E-AI-072–086 retain unqualified agent/native-chat drafts; LD-MIG-002
+milestones and original gates remain unchanged. Normal ACP chat/sessions stay
+supported alongside optional native JJ history/persistence; native adoption does
+not automatically migrate or replace them.
 
 Managed Codex launch binds an existing native conversation to a single-use
 target. E-AI-068 adds typed native authored messages and original-receipt

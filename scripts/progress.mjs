@@ -10,6 +10,8 @@ import {
   validateProgress,
   inventoryErrors,
   migrationSummary,
+  migrationTimestamp,
+  taskPath,
   taskPaths,
   markdownProjection,
 } from "./progress-model.mjs";
@@ -111,7 +113,7 @@ export function progressFindings(
       );
     }),
   );
-  const summary = migrationSummary(tasks);
+  const summary = migrationSummary(tasks, migrationTimestamp(read(taskPath)));
   if (
     checkSummary &&
     markdownProjection(read("MIGRATION.md")) !== markdownProjection(summary)
@@ -150,7 +152,13 @@ if (
       const tasks = taskPaths.flatMap((path) =>
         parseTasks(readFileSync(path, "utf8")),
       );
-      writeFileSync("MIGRATION.md", migrationSummary(tasks));
+      writeFileSync(
+        "MIGRATION.md",
+        migrationSummary(
+          tasks,
+          migrationTimestamp(readFileSync(taskPath, "utf8")),
+        ),
+      );
       console.log("Generated MIGRATION.md.");
     } else {
       const result = progressFindings(process.cwd());

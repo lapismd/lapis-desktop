@@ -396,3 +396,5 @@ by the task ledger, not inferred from this list.
 - [Native memory storage dependency compatibility](E-CORE-009.md)
 
 - [Native Search storage and preparation dependency compatibility](E-CORE-010.md)
+
+- [Native Search retrieval compatibility and tracker timestamps](E-CORE-011.md)

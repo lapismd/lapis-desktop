@@ -5,6 +5,7 @@ import {
   validateProgress,
   inventoryErrors,
   migrationSummary,
+  migrationTimestamp,
 } from "../../scripts/progress-model.mjs";
 
 test("generated status comparison tolerates Markdown alignment but rejects changed status", () => {
@@ -51,6 +52,18 @@ const record = (overrides = {}) => ({
   ...overrides,
 });
 const requirements = new Set(["LD-GOV-004"]);
+test("migration summary retains the ledger's explicit UTC update time", () => {
+  const stamp = "2026-10-24 15:20:00 UTC";
+  const source = `# Milestones\n\nLast updated **${stamp}**.\n`;
+  assert.equal(migrationTimestamp(source), stamp);
+  const summary = migrationSummary([task("M0.0")], stamp);
+  assert.match(summary, /Last updated \*\*2026-10-24 15:20:00 UTC\*\*\./u);
+  assert.notEqual(
+    markdownProjection(summary),
+    markdownProjection(summary.replace("15:20:00", "15:19:00")),
+  );
+  assert.throws(() => migrationTimestamp("Last updated **2026-10-24**."));
+});
 test("migration summary lists open gates without labelling deferred qualification as active work", () => {
   const tasks = [
     task("M3", { status: "Done" }),
