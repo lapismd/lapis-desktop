@@ -11,6 +11,7 @@ import {
   inventoryErrors,
   migrationSummary,
   migrationTimestamp,
+  migrationActivity,
   taskPath,
   taskPaths,
   markdownProjection,
@@ -56,7 +57,7 @@ export function progressFindings(
 ) {
   const files = repositoryFiles(root);
   const read = (file) => readFileSync(resolve(root, file), "utf8");
-  const tasks = taskPaths.flatMap((path) => parseTasks(read(path)));
+  const tasks = taskPaths.flatMap((path) => parseTasks(read(path), path));
   const evidenceFiles = files.filter((file) =>
     /^spec\/src\/history\/E-.+\.md$/u.test(file),
   );
@@ -113,7 +114,11 @@ export function progressFindings(
       );
     }),
   );
-  const summary = migrationSummary(tasks, migrationTimestamp(read(taskPath)));
+  const summary = migrationSummary(
+    tasks,
+    migrationTimestamp(read(taskPath)),
+    migrationActivity(read(taskPath)),
+  );
   if (
     checkSummary &&
     markdownProjection(read("MIGRATION.md")) !== markdownProjection(summary)
@@ -150,13 +155,14 @@ if (
   try {
     if (process.argv.includes("--write")) {
       const tasks = taskPaths.flatMap((path) =>
-        parseTasks(readFileSync(path, "utf8")),
+        parseTasks(readFileSync(path, "utf8"), path),
       );
       writeFileSync(
         "MIGRATION.md",
         migrationSummary(
           tasks,
           migrationTimestamp(readFileSync(taskPath, "utf8")),
+          migrationActivity(readFileSync(taskPath, "utf8")),
         ),
       );
       console.log("Generated MIGRATION.md.");

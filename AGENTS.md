@@ -19,7 +19,9 @@ behavior and milestone tasks alone own completion status.
    `pnpm check:progress` and the applicable specification checks.
 7. Refresh the task ledger UTC date/time and regenerate `MIGRATION.md` with
    every slice commit; refresh the Notes master tracker after consumer commits.
-   Commit each verified slice with Jujutsu and a descriptive message.
+   Refresh current activity when validation or remaining work changes too; do
+   not leave the generated summary unchanged until the next commit. Commit each
+   verified slice with Jujutsu and a descriptive message.
 
 Keep failed attempts in evidence. Done requires the original completion gate;
 compilation, browser mocks, bookkeeping and screenshots cannot replace native

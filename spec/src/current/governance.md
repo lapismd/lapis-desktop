@@ -1,9 +1,9 @@
 # Governance
 
-[Shared-screen integration](shared-screen-integration.md) owns integration.
-Retirement MUST preserve revisions, archives and evidence. Native, distribution
-and visual gates stay separate. E-CORE-006–013 are focused. Each commit MUST
-refresh the ledger and generated `MIGRATION.md` with an explicit UTC date/time.
+[Shared screens](shared-screen-integration.md) own integration. Retirement MUST
+preserve revisions, archives and evidence; keep native, distribution and visual
+gates separate. Commits MUST refresh ledger/MIGRATION UTC date/time and
+verified/running/waiting activity, also when work changes.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

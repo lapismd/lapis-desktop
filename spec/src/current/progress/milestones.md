@@ -1,8 +1,24 @@
 # Milestones and gates
 
-Last updated **2026-10-24 16:55:13 UTC**.
+Last updated **2026-10-24 18:37:43 UTC**.
 
-## Current checkpoint — 2026-10-20
+<!-- migration-activity:start -->
+
+## Current work — shared Rust migration
+
+- Verified: Notes Search provider source at `e6de56ef`; five refreshed Notes
+  archives; four rebuilt hidden native API cases; 230 native service cases; 411
+  renderer/governance and 744 AI cases; repaired attachment family 16/16.
+- Running: full catalog requalification. Desktop/light passes 500/500;
+  narrow/light and both dark-mode combinations remain.
+- Waiting: native semantic retrieval, model installation/progress,
+  batch/rebuild, complete facade conformance and adoption by both hosts, then
+  unattended indexing and the remaining R1.3/R2–R7 gates. Both hosts still use
+  their old database adapters; hosted access remains Node.
+
+<!-- migration-activity:end -->
+
+## Earlier desktop checkpoint — 2026-10-20
 
 Done: M0–M9, M7.3/M8.5, M10.1, M13.1/M13.2. M10.2 continues with local ACP and
 file-backed transcripts. M13/M13.3 native AgentStore/ThreadStore chat is
@@ -80,7 +96,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001 |
+| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-PROGRESS-001 |
 | M8.4 | Done | M8.0 | LD-GOV-002,LD-GOV-003,LD-CAT-003 | Every implemented desktop-specific UI state and desktop-only plugin maps to a discoverable production-component scenario in a minimal real shell, with both-theme and both-viewport interaction/accessibility checks. | Complete; extend inventory with new desktop UI | E-CATALOG-002 |
 | M8.5 | Done | M8.4 | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes. | Complete; continue AI and backup | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014,E-CATALOG-015,E-CATALOG-016 |
 

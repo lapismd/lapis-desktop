@@ -390,3 +390,5 @@
 - [Native indexed-file facade dependency compatibility](history/E-CORE-012.md)
 
 - [Native ONNX encoder dependency compatibility](history/E-CORE-013.md)
+
+- [Live migration tracking and task navigation](history/E-PROGRESS-001.md)
