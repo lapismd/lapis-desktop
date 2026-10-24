@@ -23,7 +23,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-GOV-001 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-GOV-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-GOV-003 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
-| LD-GOV-004 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)  [E-PROGRESS-001](../history/E-PROGRESS-001.md): live UTC/activity projection, grouped natural task order and source-spec links. |
+| LD-GOV-004 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)  [E-PROGRESS-001](../history/E-PROGRESS-001.md): live UTC/activity projection, grouped natural task order and source-spec links. [E-PROGRESS-002](../history/E-PROGRESS-002.md): main Notes master routing and refreshed activity; gates unchanged. |
 | LD-GOV-005 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |
 | LD-GOV-006 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-SESSION-002](../history/E-SESSION-002.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md) |
 | LD-GOV-007 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |

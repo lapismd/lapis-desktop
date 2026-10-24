@@ -1,20 +1,26 @@
 # Milestones and gates
 
-Last updated **2026-10-24 20:31:06 UTC**.
+Last updated **2026-10-24 21:54:34 UTC**.
 
 <!-- migration-activity:start -->
 
 ## Current work — shared Rust migration
 
+- Master tracker: `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md`, in
+  the main Notes Jujutsu `default` workspace. This file owns Desktop M-series
+  gates; Notes owns current R0–R7 delivery.
 - Verified: five Notes archives at `e6de56ef`; four hidden API cases; 230 native
   service, 411 renderer/governance and 744 AI cases; renderer/static builds; all
   2000 catalog cases. Source semantic retrieval is qualified at `8fd7b926`, with
   Desktop file-service and strict normal/e2e dependency checks passing.
-- Running: source facade conformance audit (schema lifecycle, defaults and exact
-  return shapes). E-AI-109 retains its accepted historical format exception.
-- Waiting: model installation/progress, complete facade selection by both hosts,
-  then unattended indexing and the remaining R1.3/R2–R7 gates. Both hosts still
-  use their old database adapters; hosted access remains Node. M11 is Deferred.
+- Verified source: complete native database conformance at Notes `77ae786b`,
+  with Desktop compatibility recorded in Notes `7180b24c`. The audit is
+  finished; this does not select the database in either host.
+- Running in Notes: native model/cache installation (R3.1.18); first acceptance
+  run stopped at the 30 GiB disk guard before compilation. No new native gate
+  passes yet. E-AI-109 retains its accepted historical format exception.
+- Waiting: both database adapters, unattended indexing and remaining R1.3/R2–R7
+  gates. Hosted access remains Node. M11 is Deferred.
 
 <!-- migration-activity:end -->
 
@@ -96,7 +102,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-PROGRESS-001 |
+| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-PROGRESS-001,E-PROGRESS-002 |
 | M8.4 | Done | M8.0 | LD-GOV-002,LD-GOV-003,LD-CAT-003 | Every implemented desktop-specific UI state and desktop-only plugin maps to a discoverable production-component scenario in a minimal real shell, with both-theme and both-viewport interaction/accessibility checks. | Complete; extend inventory with new desktop UI | E-CATALOG-002 |
 | M8.5 | Done | M8.4 | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes. | Complete; continue AI and backup | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014,E-CATALOG-015,E-CATALOG-016 |
 

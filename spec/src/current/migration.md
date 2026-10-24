@@ -4,14 +4,14 @@ M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 Generated tables group gate statuses, naturally sort task IDs and link each ID
 to its spec ledger. Commits MUST refresh activity/UTC date/time (E-CORE-014).
+Shared Rust R0–R7 activity follows the Notes main-workspace master; Desktop
+retains M-series gates and links that tracker (E-PROGRESS-002).
 
-E-AI-093 selects local ACP/vault transcripts. M13/M13.3 are Deferred at
-checkpoint codex/desktop-jj-chat-checkpoint-20261020; M10.2 retains its ordinary
-ACP gate; E-AI-094 adds agent context/permissions. E-AI-066 adds Agents
-Settings. E-AI-072–086 retain unqualified agent/native-chat drafts; LD-MIG-002
-milestones and original gates remain unchanged. Normal ACP chat/sessions stay
-supported alongside optional native JJ history/persistence; native adoption does
-not automatically migrate or replace them.
+E-AI-093 retains local ACP/vault transcripts and M13/M13.3 Deferred at
+`codex/desktop-jj-chat-checkpoint-20261020`; M10.2 keeps its ordinary ACP gate.
+E-AI-094 adds agent context/permissions; E-AI-066 adds Agents Settings.
+E-AI-072–086 are unqualified drafts; LD-MIG-002 original gates stay unchanged.
+Native JJ history/persistence does not migrate or replace supported ACP chat.
 
 Managed Codex launch binds an existing native conversation to a single-use
 target. E-AI-068 adds typed native authored messages and original-receipt

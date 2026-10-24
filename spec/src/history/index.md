@@ -382,3 +382,5 @@ by the task ledger, not inferred from this list.
 - [AI body-header actions and view navigation](E-AI-117.md)
 
 - [Live migration tracking and task navigation](E-PROGRESS-001.md)
+
+- [Master migration tracker routing and checkpoint refresh](E-PROGRESS-002.md)

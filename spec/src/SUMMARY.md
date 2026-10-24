@@ -394,4 +394,6 @@
 
 - [Live migration tracking and task navigation](history/E-PROGRESS-001.md)
 
+- [Master migration tracker routing and checkpoint refresh](history/E-PROGRESS-002.md)
+
 - [Native Search provider and retained SQL intake](history/E-CORE-014.md)
