@@ -1,7 +1,8 @@
 # Desktop shell
 
-Core: E-CORE-001–005; E-CORE-006 is focused (Notes `65a6c0e0`). Hosted
-shell/backup and native database adoption remain R1.3.
+Core: E-CORE-001–005; E-CORE-006/007 are focused dependency checks. Notes
+`5deb28b0` adds projection query readers; hosted shell/backup and native
+database adoption remain R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.
 

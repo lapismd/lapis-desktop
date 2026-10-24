@@ -388,3 +388,4 @@ by the task ledger, not inferred from this list.
 - [Shared database-foundation dependency intake](E-CORE-005.md)
 
 - [Focused native projection dependency compatibility](E-CORE-006.md)
+- [Native projection query dependency compatibility](E-CORE-007.md)
