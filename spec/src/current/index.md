@@ -29,6 +29,7 @@ gates.
   - [Addressed local messages](ai-addressing.md)
   - [Explicit local transcript imports](ai-imports.md)
 - [Repository history and conversations](repository.md)
+- [Planned: Markdown document Review mode](markdown-review.md)
 - [Enabled writer audit](writer-audit.md)
 - [Shared-screen integration](shared-screen-integration.md)
 - [Migration inventory](migration.md)

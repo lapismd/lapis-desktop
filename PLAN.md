@@ -40,6 +40,15 @@ checks and both related-host allow/deny cases pass against the verified API and
 Design Core archives. E-CATALOG-016 completes M8.5 native presentation. Release,
 signing and publication remain deferred.
 
+## Deferred document review
+
+The [Markdown Review plan](spec/src/backlog/markdown-review-mode.md) and
+[planned contract](spec/src/current/markdown-review.md) preserve the agreed
+cursor-based commenting experience for future implementation (E-PLAN-005).
+M17.1–M17.5 cover shared transcript rendering, saved-document JJ persistence,
+anchor placement after changes, complete Markdown/host qualification and
+optional agent handoff. All five tasks remain Deferred in the task ledger.
+
 ## Original target and architecture
 
 The agreed first target is **macOS ARM64: open an existing vault, browse and

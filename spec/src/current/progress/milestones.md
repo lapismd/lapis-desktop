@@ -98,3 +98,19 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3 | E-CORE-001,E-CORE-002 |
 | M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009 |
+
+## Markdown document review
+
+[Saved plan](../../backlog/markdown-review-mode.md) and
+[planned contract](../markdown-review.md). All slices are Deferred until
+implementation is requested. E-PLAN-005 verifies documentation only; no product
+gate is completed and existing milestones retain their status and gates.
+
+<!-- prettier-ignore -->
+| ID | Status | Depends | Requirements | Gate | Next | Evidence |
+| --- | --- | --- | --- | --- | --- | --- |
+| M17.1 | Deferred | M8.5 | LD-REVIEW-001,LD-REVIEW-002,LD-REVIEW-003,LD-REVIEW-005 | A shared public Markdown review reader supports cursor/selection comments without source edits; keyboard, IME, accessibility and affected chat regressions pass in production-component stories. | Await implementation request; qualify the shared reader in its owning packages | E-PLAN-005 |
+| M17.2 | Deferred | M17.1,M13.1,M14.2 | LD-REVIEW-004,LD-REVIEW-006,LD-REVIEW-007,LD-REVIEW-009,LD-REVIEW-010 | An admitted saved Markdown document publishes, restores after cold native restart, replies, edits and resolves JJ-backed comments with unchanged document bytes and exact failed/unknown-request recovery. | Qualify the selected local JJ profile and App/native service, then integrate Review | E-PLAN-005 |
+| M17.3 | Deferred | M17.2 | LD-REVIEW-004,LD-REVIEW-005,LD-REVIEW-008 | Edits, repeated text, renames, copies, deletions and concurrent source changes retain original anchors and expose unproved placements without silent retargeting, including after restart. | Add source-change and placement qualification after native persistence | E-PLAN-005 |
+| M17.4 | Deferred | M17.3 | LD-REVIEW-001,LD-REVIEW-002,LD-REVIEW-003,LD-REVIEW-005,LD-REVIEW-009,LD-REVIEW-010 | The supported Markdown matrix, multiple windows, draft/leave recovery and affected chat/Preview/Edit consumers pass functional, accessibility and cold native acceptance through verified public packages. | Complete Markdown compatibility and host lifecycle acceptance; visual baselines stay excluded | E-PLAN-005 |
+| M17.5 | Deferred | M17.4,M10.2 | LD-REVIEW-011 | Explicit agent handoff delivers exact authorized review-comment revisions and links proven answers without duplicate sends after uncertain outcomes; ordinary review remains independent of AI. | Qualify handoff separately against the supported conversation backend | E-PLAN-005 |

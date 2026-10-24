@@ -62,6 +62,11 @@ deferred to their distribution gates.
 | M15.1 | In progress | Integrated into default workspaces; finish remaining consumer qualification here                          |
 | M16.1 | Done        | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3                                      |
 | M16.2 | Done        | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3                                      |
+| M17.1 | Deferred    | Await implementation request; qualify the shared reader in its owning packages                            |
+| M17.2 | Deferred    | Qualify the selected local JJ profile and App/native service, then integrate Review                       |
+| M17.3 | Deferred    | Add source-change and placement qualification after native persistence                                    |
+| M17.4 | Deferred    | Complete Markdown compatibility and host lifecycle acceptance; visual baselines stay excluded             |
+| M17.5 | Deferred    | Qualify handoff separately against the supported conversation backend                                     |
 | M14   | Partial     | Real-provider acceptance                                                                                  |
 | M14.1 | Done        | Complete; continue capture lifecycle                                                                      |
 | M14.2 | Done        | Complete; continue restore/provider acceptance                                                            |

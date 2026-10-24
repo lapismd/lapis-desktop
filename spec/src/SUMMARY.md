@@ -26,6 +26,7 @@
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
+  - [Planned: Markdown document Review mode](current/markdown-review.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
@@ -34,6 +35,7 @@
   - [Milestones](current/progress/milestones.md)
   - [Verification](current/verification.md)
 - [Deferred backlog: AI tool expansion](backlog/ai-tool-expansion.md)
+- [Deferred backlog: Markdown Review mode](backlog/markdown-review-mode.md)
 
 - [Evidence](history/index.md)
 
@@ -43,6 +45,7 @@
   - [Shared application state plan](history/E-PLAN-002.md)
   - [Local archive migration workflow](history/E-PLAN-003.md)
   - [Saved AI tool expansion backlog](history/E-PLAN-004.md)
+  - [Saved Markdown Review plan and contract](history/E-PLAN-005.md)
   - [Shared host qualification](history/E-HOST-001.md)
 
   - [E-VAULT-001: admitted native vault access](history/E-VAULT-001.md)

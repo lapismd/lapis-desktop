@@ -8,6 +8,17 @@ E-REPO-012/013 retain manual previews and visual gates.
 <!-- prettier-ignore -->
 | ID | Status | Evidence |
 | --- | --- | --- |
+| LD-REVIEW-001 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.4 mode and retained-state acceptance pending. |
+| LD-REVIEW-002 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.4 input, IME, keyboard and source immutability pending. |
+| LD-REVIEW-003 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.4 shared reader and Markdown compatibility pending. |
+| LD-REVIEW-004 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.2/M17.3 exact retained snapshot and dirty-source acceptance pending. |
+| LD-REVIEW-005 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.3/M17.4 source and Unicode range mapping pending. |
+| LD-REVIEW-006 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.2 selected-profile native admission and ReviewStore qualification pending. |
+| LD-REVIEW-007 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.2 receipt, version-conflict and unknown-outcome recovery pending. |
+| LD-REVIEW-008 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.3 immutable anchors and derived placement pending. |
+| LD-REVIEW-009 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.2/M17.4 private drafts, multiple windows and close/restart pending. |
+| LD-REVIEW-010 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.2/M17.4 inline/overview discussion lifecycle pending. |
+| LD-REVIEW-011 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.5 explicit delivery and proven answer links pending. |
 | LD-SESSION-003 | Implemented | [E-MUTATION-001](../history/E-MUTATION-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-GOV-001 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-GOV-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |

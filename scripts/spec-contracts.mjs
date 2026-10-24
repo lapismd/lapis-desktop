@@ -11,6 +11,7 @@ const chapters = [
   "ai-presentation",
   "repository",
   "repository-navigation",
+  "markdown-review",
   "vault-backup",
   "governance",
   "local-dependencies",

@@ -1,6 +1,6 @@
 # Migration inventory and progress
 
-E-SHARED-007 records integration; M15.1 MUST retain its original gates.
+M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 Core: E-CORE-001–005; E-CORE-006–009 focused; HTTP shell/backup is R1.3.
 
