@@ -382,3 +382,5 @@ by the task ledger, not inferred from this list.
 - [Shared core protocol dependency intake](E-CORE-002.md)
 
 - [Shared native file-service adapter](E-CORE-003.md)
+
+- [Shared byte-writer dependency intake](E-CORE-004.md)

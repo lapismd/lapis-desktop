@@ -1,11 +1,8 @@
 # Desktop shell
 
-E-CORE-002 qualifies the R1.2 source dependency lock; service adapter intake
-remains R1.3.
-
+Core intake: E-CORE-001–004. Hosted shell/backup intake remains R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
-state before shell unmount and retains failed-leave/native gates. Core intake:
-E-CORE-001. E-CORE-003 tracks shared file-service IPC intake.
+state and failed-leave/native gates.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

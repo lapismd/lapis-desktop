@@ -368,3 +368,5 @@
 - [Shared core protocol dependency intake](history/E-CORE-002.md)
 
 - [Shared native file-service adapter](history/E-CORE-003.md)
+
+- [Shared byte-writer dependency intake](history/E-CORE-004.md)
