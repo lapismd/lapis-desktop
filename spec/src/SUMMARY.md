@@ -374,3 +374,5 @@
 - [Shared database-foundation dependency intake](history/E-CORE-005.md)
 - [Focused native projection dependency compatibility](history/E-CORE-006.md)
 - [Native projection query dependency compatibility](history/E-CORE-007.md)
+
+- [Native task facade dependency compatibility](history/E-CORE-008.md)

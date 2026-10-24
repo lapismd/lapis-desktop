@@ -2,7 +2,7 @@
 
 [Shared-screen integration](shared-screen-integration.md) owns integration.
 Retirement MUST preserve revisions, archives and evidence. Native, distribution
-and visual gates stay separate. E-CORE-006/007 are focused.
+and visual gates stay separate. E-CORE-006–008 are focused.
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

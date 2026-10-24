@@ -5493,6 +5493,7 @@ dependencies = [
  "base64 0.22.1",
  "cap-std",
  "cap-tempfile",
+ "chrono",
  "icu_collator",
  "lapis-app-protocol",
  "libc",
