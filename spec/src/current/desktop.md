@@ -1,7 +1,7 @@
 # Desktop shell
 
-Core: E-CORE-001–005; E-CORE-006–008 are focused dependency checks. Notes
-`fa9581f0` adds native task methods; hosted shell/backup and native database
+Core: E-CORE-001–005; E-CORE-006–009 are focused dependency checks. Notes
+`575bef1f` adds native memory storage; hosted shell/backup and native database
 adoption remain R1.3. [Shared-screen integration](shared-screen-integration.md)
 preserves live view state and failed-leave/native gates.
 

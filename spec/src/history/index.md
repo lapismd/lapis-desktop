@@ -391,3 +391,5 @@ by the task ledger, not inferred from this list.
 - [Native projection query dependency compatibility](E-CORE-007.md)
 
 - [Native task facade dependency compatibility](E-CORE-008.md)
+
+- [Native memory storage dependency compatibility](E-CORE-009.md)
