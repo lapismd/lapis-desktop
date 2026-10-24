@@ -3,7 +3,7 @@
 [Shared screens](shared-screen-integration.md) own integration. Retirement MUST
 preserve revisions, archives and evidence; keep native, distribution and visual
 gates separate. Commits MUST refresh ledger/MIGRATION UTC date/time and
-verified/running/waiting activity, also when work changes.
+verified/running/waiting activity when work changes (E-PLAN-006).
 
 E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
 tool-title projection. Added mode icons are preoptimized for cold catalog

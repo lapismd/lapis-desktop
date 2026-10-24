@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-24 18:37:43 UTC**.
+Last updated **2026-10-24 19:28:42 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -9,12 +9,13 @@ Last updated **2026-10-24 18:37:43 UTC**.
 - Verified: Notes Search provider source at `e6de56ef`; five refreshed Notes
   archives; four rebuilt hidden native API cases; 230 native service cases; 411
   renderer/governance and 744 AI cases; repaired attachment family 16/16.
-- Running: full catalog requalification. Desktop/light passes 500/500;
-  narrow/light and both dark-mode combinations remain.
-- Waiting: native semantic retrieval, model installation/progress,
-  batch/rebuild, complete facade conformance and adoption by both hosts, then
-  unattended indexing and the remaining R1.3/R2–R7 gates. Both hosts still use
-  their old database adapters; hosted access remains Node.
+- Running: Desktop intake requalification; both light runs passed 500/500. The
+  two dark startup repairs pass exactly and across all 32 family cases; a fresh
+  full catalog run and remaining intake checks are still required.
+- Waiting: native semantic retrieval, model installation/progress, batch/rebuild
+  host intake, complete facade adoption by both hosts, then unattended indexing
+  and the remaining R1.3/R2–R7 gates. Both hosts still use their old database
+  adapters; hosted access remains Node.
 
 <!-- migration-activity:end -->
 
@@ -32,8 +33,8 @@ storage/adoption qualified, provider Partial.
 
 Background: E-AI-031–066, E-REPO-007–025/E-CATALOG-008, E-QUALIFICATION-001/002,
 E-PLAN-002, E-POPOUT-004. Native/visual gaps retain E-REPO-012–014; Deno stays
-frozen. AI: M10.2 → M10.3 → M10.4. M11/M12 signing/publication/cutover gates
-remain.
+frozen. AI: M10.2 → M10.3 → M10.4. M11 distribution is Deferred until requested;
+M12 retains its M11 dependency and cutover gate (E-PLAN-006).
 
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
@@ -53,7 +54,7 @@ remain.
 | M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002 |
 | M9 | Done | M8 | LD-MIG-002 | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app. | Complete; continue to M10.1 native ACP adapter | E-PLUGINS-001,E-PLUGINS-003,E-INSTALL-001 |
 | M10 | In progress | M9 | LD-MIG-002 | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification. | Continue native AI and persistence qualification | E-PLUGINS-001,E-PLUGINS-002,E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
-| M11 | Planned | M10 | LD-MIG-002 | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution. | Qualify signed distribution and each additional platform | - |
+| M11 | Deferred | M10 | LD-MIG-002 | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution. | Await explicit resumption; retain distribution and platform gates | E-PLAN-006 |
 | M12 | Planned | M11 | LD-MIG-002,LD-MIG-003 | Every currently supported desktop capability is migrated or explicitly retired, and the replacement has no Deno runtime dependency. | Qualify Tauri coverage and remove frozen Deno desktop | E-PLAN-002,E-REVIEW-001 |
 
 ## Repository history milestones

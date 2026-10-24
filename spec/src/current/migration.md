@@ -41,8 +41,8 @@ complete. M7.3 ordinary pop-outs and M8.5 native presentation are qualified.
 M10.2/M13.3 managed conversation/execution, context/skills and restart
 acceptance remain In progress. Native store/privacy/journal ownership, exact
 receipt recovery and bounded transcript reads already have evidence; shared AI
-transcript UI is adopted. M10.3 tools/credentials, M10.4 compute, M11
-distribution and M12 cutover remain Planned.
+transcript UI is adopted. M10.3 tools/credentials and M10.4 compute retain their
+gates. M11 is Deferred; M12 stays Planned and depends on M11.
 
 [Automatic backup](progress/vault-backup.md) has seven implemented stages
 integrated into main: vault-owned external JJ history, internal/external
@@ -212,9 +212,9 @@ slices. Shared-library ownership remains unchanged, and Deno services used by
 web/server hosts remain outside this freeze. The freeze does not complete M12 or
 change its capability-coverage gate.
 
-Application signing and notarization remain deferred to M11 per the user's
-2026-10-15 instruction. Publication and clean-machine/platform distribution
-qualification remain separate from the local macOS preview.
+M11 distribution, including signing/notarization, updates/rollback and platform
+qualification, is Deferred until explicitly resumed (E-PLAN-006). Its original
+gate and M10 dependency remain; M12 stays Planned and depends on M11.
 
 ## Authorized plugin delivery
 

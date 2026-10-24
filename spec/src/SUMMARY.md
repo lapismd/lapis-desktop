@@ -46,6 +46,7 @@
   - [Local archive migration workflow](history/E-PLAN-003.md)
   - [Saved AI tool expansion backlog](history/E-PLAN-004.md)
   - [Saved Markdown Review plan and contract](history/E-PLAN-005.md)
+  - [Deferred desktop distribution milestone](history/E-PLAN-006.md)
   - [Shared host qualification](history/E-HOST-001.md)
 
   - [E-VAULT-001: admitted native vault access](history/E-VAULT-001.md)

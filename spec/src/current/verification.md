@@ -34,7 +34,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-DESK-004 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-DESK-005 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-SESSION-002](../history/E-SESSION-002.md); [E-REVIEW-002](../history/E-REVIEW-002.md) |
 | LD-MIG-001 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
-| LD-MIG-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-002](../history/E-PLAN-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
+| LD-MIG-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-002](../history/E-PLAN-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass; [E-PLAN-006](../history/E-PLAN-006.md): M11 Deferred; original gate and M12 dependency retained. |
 | LD-HOST-001 | Implemented | [E-HOST-001](../history/E-HOST-001.md). |
 | LD-VAULT-001 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
 | LD-VAULT-002 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |

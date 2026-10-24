@@ -18,7 +18,7 @@ Deferred; current AI milestone gates and statuses remain unchanged (E-PLAN-004).
 | Foundation and plugins, M0–M9     | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                        | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                |
 | AI and conversations, M10/M13     | Local ACP UI/drafts/context, independent clients, native providers/tools and optional compute v0 implemented (E-AI-097); transcripts join Repository History | M13/M13.3 native chat Deferred; M10.2–M10.4 keep real-provider/model/recovery gates and documented secondary work                |
 | Automatic backup, M14             | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded               | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain |
-| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                    | Publication, signing/notarization, upgrade/platform qualification and final cutover remain Planned                               |
+| Distribution and cutover, M11/M12 | Roadmap retained; frozen Deno desktop remains a reference                                                                                                    | M11 Deferred until requested; M12 Planned with its M11 dependency and original gate retained                                     |
 
 Repository History now includes automatic internal/external file capture,
 vault-ID-owned external JJ storage, history/blame/diffs and guarded restoration,
@@ -156,7 +156,7 @@ Commit each verified task in its owning repository.
 | **M8 — Desktop plugin foundation**             | After M7 qualification, implement plugin-plan Stages 0–3: desktop Storybook, bundled Terminal, web AI/Terminal retirement and remaining portable plugins/workers.                                                     | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths.                                         |
 | **M9 — Installed-plugin support**              | Implement plugin-plan Stage 4: verified registry installation, asset delivery, enable/disable persistence, compatibility and recovery, with bundled plugin IDs reserved.                                              | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app.                                                                    |
 | **M10 — Direct ACP AI and optional compute**   | Implement plugin-plan Stages 5–6: desktop-owned AI and copied stories, the reusable lapis-ai Tauri adapter, direct ACP and Rust application tools; optional compute last.                                             | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification.                                           |
-| **M11 — Distribution and other platforms**     | Signed/notarized macOS distribution and update/rollback handling; then separate Linux and Windows qualification tasks.                                                                                                | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                            |
+| **M11 — Distribution and other platforms**     | Deferred until requested: signed/notarized macOS, updates/rollback, then Linux/Windows qualification.                                                                                                                 | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution.                                                                            |
 | **M12 — Desktop cutover**                      | Make Tauri the default desktop application and retire the old desktop host. No legacy application-state import is required.                                                                                           | Every currently supported desktop capability is migrated or explicitly retired, and the replacement has no Deno runtime dependency.                                                                                                 |
 | **M13 — Repository history and conversations** | Reusable admitted JJ history/diffs qualified; native AgentStore/ThreadStore conversation experiment Deferred (E-AI-092/093).                                                                                          | Cold Notes history/diffs and one recoverable AgentStore/ThreadStore AI conversation in an existing Git-backed JJ vault.                                                                                                             |
 | **M14 — Automatic vault backup**               | Vault-owned external history, automatic capture, restore, historical search, GitHub/Forgejo synchronization, root storage and adoption.                                                                               | Functional automatic backup, restore, GitHub/Forgejo synchronization and historical search integrated into main workspaces                                                                                                          |
@@ -199,9 +199,9 @@ The remaining AI/distribution sequence is:
 3. **M10.4:** explicit compute model/resource/peer lifecycle is implemented.
    Qualify loaded native inference and mutual two-device admission independently
    of ACP.
-4. **M11:** publication/distribution prerequisites, signing/notarization,
-   updates/rollback and separate Linux/Windows qualification. Signing remains
-   deferred until this stage and requires the governing release authorization.
+4. **M11 — Deferred:** resume only on request; distribution,
+   signing/notarization, updates/rollback and Linux/Windows qualification retain
+   their original gates. Release authorization remains separate.
 5. **M12:** final capability audit, Tauri default and frozen Deno host removal.
 
 Before admitting an AI execution target, cover full service shutdown after an
@@ -237,8 +237,8 @@ legacy-state import requirement.
 Roles/CV, Docs, Tasks, both Sync variants and the parked Community plugin are
 outside this workstream. Sync-only signing/key-custody work remains excluded. No
 Node/Deno compatibility runtime, AI controller integration, web AI/Terminal
-gateway or arbitrary native plugin installer is planned. M11 distribution and
-M12 desktop cutover remain subsequent milestones.
+gateway or arbitrary native plugin installer is planned. M11 distribution is
+Deferred; M12 cutover retains its dependency on M11.
 
 The shared `.lapis` default applies to web/server hosts in M1 as well. Replacing
 their runtime hosts is separate work. Retiring `desktop-deno` must preserve Deno
@@ -312,9 +312,9 @@ explicit Rust path dependencies and record source revisions. Package publication
 is deferred until the final release gate, after functional qualification. This
 replaces M1's earlier publication requirement at the user's request.
 
-Application signing and notarization are deferred to M11. M0.1 validates local
-launch, bundle contents and native behavior without a signing gate (confirmed
-2026-10-15).
+M11 distribution, including signing/notarization, is Deferred until requested.
+M0.1 retains local launch, bundle and native acceptance without a signing gate
+(2026-10-15); E-PLAN-006 records the whole-M11 deferral.
 
 - Start each task at its narrowest acceptance boundary and record its before
   state. Rerun that exact target before widening.

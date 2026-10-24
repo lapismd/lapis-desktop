@@ -10,6 +10,7 @@
 
 - [Saved AI tool expansion backlog](E-PLAN-004.md)
 - [Saved Markdown Review plan and contract](E-PLAN-005.md)
+- [Deferred desktop distribution milestone](E-PLAN-006.md)
 
 - [Progressive import browser design review](E-AI-120.md)
 - [Indexed progressive local imports](E-AI-121.md)
