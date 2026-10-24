@@ -1,6 +1,7 @@
 # Desktop shell
 
-Core intake: E-CORE-001–005. Hosted shell/backup intake remains R1.3.
+Core: E-CORE-001–005; E-CORE-006 is focused (Notes `65a6c0e0`). Hosted
+shell/backup and native database adoption remain R1.3.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.
 

@@ -386,3 +386,5 @@ by the task ledger, not inferred from this list.
 - [Shared byte-writer dependency intake](E-CORE-004.md)
 
 - [Shared database-foundation dependency intake](E-CORE-005.md)
+
+- [Focused native projection dependency compatibility](E-CORE-006.md)
