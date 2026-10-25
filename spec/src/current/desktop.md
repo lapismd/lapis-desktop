@@ -1,8 +1,10 @@
 # Desktop shell
 
 Core: E-CORE-001–005 retain native gates; 006–015 qualify dependencies. 014
-covers providers/SQL; 015 adds unused cache dependencies. Database, semantic
-Search, hosted shell and backup remain R1.3.
+covers providers/SQL; 015 adds unused cache dependencies. E-CORE-016–018 qualify
+the shared database/backup/file intake. E-CORE-019 checks the optional turn-core
+dependency; Desktop does not select that execution owner. R2.2 host/chat
+adoption and R3 unattended indexing retain their original gates.
 [Shared-screen integration](shared-screen-integration.md) preserves live view
 state and failed-leave/native gates.
 

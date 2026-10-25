@@ -5633,6 +5633,7 @@ dependencies = [
  "icu_collator",
  "jj-store-jj",
  "jj-vault",
+ "lapis-ai-service",
  "lapis-app-protocol",
  "libc",
  "notify",

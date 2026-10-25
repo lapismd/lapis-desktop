@@ -4,8 +4,8 @@
 preserve revisions/archives/evidence and separate native/distribution/visual
 gates. Commits MUST refresh ledger/MIGRATION UTC date/time and
 verified/running/waiting activity when work changes (E-PLAN-006; E-CORE-014).
-M16.3 groups database admission/observation under `database`; Notes owns its
-shared engine/generated public call contract.
+M16.3 groups database admission/observation under `database`; Notes owns the
+engine/calls. E-CORE-019 checks optional turn-core intake without selecting AI.
 
 E-AI-094/101 split ACP configuration/tool titles under LD-GOV-005. Mode icons
 are preoptimized for cold imports; existing policies and baselines stay intact.

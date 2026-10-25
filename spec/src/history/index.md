@@ -393,3 +393,4 @@ by the task ledger, not inferred from this list.
 
 - [Shared vault-owned backup intake](E-CORE-017.md)
 - [Shared asset reader and native file-action compatibility](E-CORE-018.md)
+- [Native turn-core dependency compatibility](E-CORE-019.md)

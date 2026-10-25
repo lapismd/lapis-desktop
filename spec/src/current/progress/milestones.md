@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-25 07:31:19 UTC**.
+Last updated **2026-10-25 07:50:13 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -50,10 +50,14 @@ Last updated **2026-10-25 07:31:19 UTC**.
   this consumer commit; the source repair remains pending.
   [E-CORE-017](../../history/E-CORE-017.md) retains the exact receipts.
 
-- Next: commit this verified database/backup/file-action intake and refresh the
-  Notes master tracker. R2 native execution is under source qualification; it is
-  not yet selected by either host. Unattended indexing and R2–R7 remain open.
-  Node stays the serving baseline; M11 remains Deferred.
+- Committed intake: `efa44bb0`; the Notes master tracker closes R1.3. Notes
+  `1c793d8b` qualifies the native R2.1 worker/journal with 303 ordinary Rust
+  cases/doctests and full source gates. Desktop compatibility passes all six
+  file/database/backup cases and strict normal/e2e checks (E-CORE-019). Only one
+  native lock dependency edge changes; package versions stay fixed. Neither host
+  selects the new execution path. R2.2 host/chat adoption and R2.3 provider/cold
+  acceptance remain next; unattended indexing and R3–R7 remain open. Node stays
+  the serving baseline; M11 remains Deferred.
 
 <!-- migration-activity:end -->
 
@@ -155,7 +159,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3 | E-CORE-001,E-CORE-002 |
 | M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014,E-CORE-015 |
-| M16.3 | Done | M16.2 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004 | R1.3.8 Tauri intake uses the shared high-level database owner through the existing packed provider. Native admission, commit observation, rollback, view/vault closure, cold persistence and existing Notes/Search UI acceptance pass without a renderer SQL engine. | Qualified with explicitly accepted pre-existing Markdown exception; continue R2 | E-CORE-016,E-CORE-018 |
+| M16.3 | Done | M16.2 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004 | R1.3.8 Tauri intake uses the shared high-level database owner through the existing packed provider. Native admission, commit observation, rollback, view/vault closure, cold persistence and existing Notes/Search UI acceptance pass without a renderer SQL engine. | Qualified with explicitly accepted pre-existing Markdown exception; continue R2 | E-CORE-016,E-CORE-018,E-CORE-019 |
 
 ## Markdown document review
 

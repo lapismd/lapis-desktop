@@ -333,3 +333,4 @@
 
 - [Shared vault-owned backup intake](history/E-CORE-017.md)
 - [Shared asset reader and native file-action compatibility](history/E-CORE-018.md)
+- [Native turn-core dependency compatibility](history/E-CORE-019.md)
