@@ -1,5 +1,9 @@
 # Verification
 
+[E-CORE-026](../history/E-CORE-026.md) qualifies the matching Notes pin and
+three native policy cases under LD-GOV-006/010 and LD-AI-002; UI and provider
+acceptance retain their original gates.
+
 E-AI-115 covers root context Markdown alignment under LD-AI-002/LD-CAT-003; the
 shared package intake and focused stories retain existing milestone gates.
 
@@ -263,3 +267,29 @@ distribution qualification.
 transport detach, durable completion, reattachment and cold retention under
 LD-AI-001/002/004. It uses the existing native binary; existing
 application-screen and hosted-provider R2.3 acceptance remain required.
+
+[E-CORE-025](../history/E-CORE-025.md) records trusted native target defaults
+under LD-AI-001/002 and LD-GOV-006. Prepared native runner metadata owns
+defaults; explicit turn modes and the original native/application gates remain
+unchanged.
+
+[E-VALIDATION-003](../history/E-VALIDATION-003.md) tracks the source-qualified
+26-package compatible cohort, Svelte peer alignment and remaining cold Desktop
+consumer qualification. Its original failed and provisional attempts remain
+distinct; actual-provider/native, signed-plugin and distribution gates stay
+separate.
+
+[E-CORE-027](../history/E-CORE-027.md) tracks the opt-in actual-provider
+composer, normal reload teardown and retained History recovery under
+LD-AI-001/002/004 and LD-DESK-005. Its actual native case and retained fixture
+pass with one journal and unchanged transcript; final dependency/catalog intake
+and default cutover remain separate.
+
+[E-CATALOG-017](../history/E-CATALOG-017.md) qualifies the current public
+control roles and declared native fixture modes with 28 exact and 48 complete
+catalog cases. Original M10.2/M15.1 native and aggregate gates remain separate.
+
+[E-DEPENDENCY-003](../history/E-DEPENDENCY-003.md) qualifies repaired Bases
+installed-asset adoption under LD-GOV-006/008 and LD-PLUG-003: one existing
+native metadata/edit/watch/cold-restart case, unchanged document bytes and
+verified signed payloads. Aggregate UI intake and distribution remain separate.

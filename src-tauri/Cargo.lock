@@ -5636,6 +5636,7 @@ dependencies = [
  "lapis-ai-service",
  "lapis-app-protocol",
  "lapis-plugin-services",
+ "lapis-task-services",
  "libc",
  "notify",
  "ort",
@@ -5727,6 +5728,15 @@ dependencies = [
  "md5",
  "regex",
  "serde_json",
+ "serde_yaml",
+]
+
+[[package]]
+name = "lapis-task-services"
+version = "0.1.0"
+dependencies = [
+ "regex",
+ "serde",
  "serde_yaml",
 ]
 

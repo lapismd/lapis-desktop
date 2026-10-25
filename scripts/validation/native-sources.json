@@ -1,7 +1,7 @@
 [
   {
     "name": "lapis-notes",
-    "revision": "7161a447ef365df498371d7bad491df5f5da431c"
+    "revision": "f0cf7b1abb370ea50595c3355763d9bf5abea9fe"
   },
   {
     "name": "lapis-ai",
@@ -22,5 +22,9 @@
   {
     "name": "lapis-terminal",
     "revision": "d7e0a7cd710fef626e1350c116ca6e4b18986972"
+  },
+  {
+    "name": "lapis-plugin-tasks",
+    "revision": "569d7e30ed86bd4514365e50befb908b2a8400e2"
   }
 ]

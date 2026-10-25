@@ -116,7 +116,7 @@ export const Sharing: Story = {
       compute.getByRole("switch", { name: "Share this machine" }),
     ).not.toBeChecked();
     await expect(
-      compute.getByRole("button", { name: "Inference host: This machine" }),
+      compute.getByRole("combobox", { name: "Inference host: This machine" }),
     ).toBeVisible();
   },
 };

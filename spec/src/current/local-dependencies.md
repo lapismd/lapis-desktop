@@ -84,3 +84,9 @@ registry-only install: App Profile, Agent UI and Repository UI are unpublished.
 Publishing those prerequisites and regenerating a complete frozen registry lock
 remain distribution work. [E-CORE-023](../history/E-CORE-023.md) records the
 dependency cohort and its separate consumer qualification.
+
+E-DEPENDENCY-003 qualifies the repaired separately signed Bases bundle through
+the existing native metadata/edit/watch/cold-restart case. Keep its signed build
+source identity and exact archive hash; a documentation-only source successor
+may be recorded as equivalent only after verifying unchanged public inputs. The
+static UI cohort does not qualify dynamically installed plugin assets.

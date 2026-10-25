@@ -5,7 +5,9 @@
 policy. [Local validation](../../../docs/validation.md) defines Docker/native
 commands, isolated archive prerequisites, reports and owned cleanup.
 E-VALIDATION-001 records the Docker-first intake; native and release gates
-remain separate.
+remain separate. E-CORE-025 pins shared Core/Tasks sources with a bounded
+path-crate lock update; native platform and application acceptance remain
+separate. E-CORE-026 aligns qualified Notes source/DTO inputs.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
@@ -55,7 +57,7 @@ not qualify deferred native-store capture or application-tool integration.
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                            |
 | LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006. |
 | LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit headed option MUST retain the complete native WebView/window/OS suite. Headless success MUST NOT substitute for a native acceptance gate; invalid mode flags MUST reject before launching children.                                                                                    |
-| LD-GOV-010 | Portable validation MUST default to isolated Docker execution of exact tracked Jujutsu snapshots and ancestry, with pinned tools, bounded resources, checksummed explicit prerequisites, keyed caches and retained reports. Docker failures MUST NOT fall back to the host. Native macOS application/window and visual-approval gates MUST remain separate; CI MAY explicitly select its provisioned native runtime.                                     |
+| LD-GOV-010 | Portable validation MUST default to isolated Docker execution of exact tracked Jujutsu snapshots and ancestry, with pinned tools, bounded resources and heap limits at build dispatch, checksummed explicit prerequisites, keyed caches and retained reports. Docker failures MUST NOT fall back to the host. Native macOS application/window and visual-approval gates MUST remain separate; CI MAY explicitly select its provisioned native runtime.   |
 
 Checkout leases MUST remain held for created, running, paused or uncertain
 workers. Release and cleanup MUST require known completed owned runs and

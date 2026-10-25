@@ -96,8 +96,25 @@ export function cacheKeys({
   };
 }
 
-export function workerEnvironment(imageTarget) {
-  return imageTarget === "full"
-    ? { TAURI_CONFIG: JSON.stringify({ bundle: { resources: [] } }) }
-    : {};
+export function buildEnvironment(lane, memoryBytes) {
+  if (
+    (lane !== "build" && lane !== "build-storybook") ||
+    !Number.isFinite(memoryBytes) ||
+    memoryBytes <= 0
+  )
+    return {};
+  const heapMiB = Math.min(
+    6144,
+    Math.max(1, Math.floor(memoryBytes / 2 / 1024 ** 2)),
+  );
+  return { NODE_OPTIONS: `--max-old-space-size=${heapMiB}` };
+}
+
+export function workerEnvironment(imageTarget, lane, memoryGiB = 24) {
+  return {
+    ...(imageTarget === "full"
+      ? { TAURI_CONFIG: JSON.stringify({ bundle: { resources: [] } }) }
+      : {}),
+    ...buildEnvironment(lane, memoryGiB * 1024 ** 3),
+  };
 }

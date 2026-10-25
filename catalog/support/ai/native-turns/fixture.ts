@@ -33,7 +33,9 @@ export function nativeTurnFixture(unknown = false) {
           if (command.kind === "targets")
             return {
               kind: "targets",
-              targets: [{ id: "codex", label: "Codex" }],
+              targets: [
+                { id: "codex", label: "Codex", default_mode: "read-only" },
+              ],
             };
           if (command.kind === "list")
             return {

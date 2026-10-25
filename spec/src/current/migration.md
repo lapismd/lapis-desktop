@@ -4,7 +4,9 @@ The shared Rust master tracker remains in Notes. This Desktop intake separately
 qualifies the retained chat/History presentation and records its exact source
 archives under [E-CORE-022](../history/E-CORE-022.md). Native Markdown and Tasks
 parser source completion does not complete metadata host adoption, M10.2 or the
-remaining R3–R7 gates. M11 remains Deferred.
+remaining R3–R7 gates. M11 remains Deferred. E-CORE-025 prepares trusted native
+default modes; E-CORE-026 aligns their qualified Notes source/DTO input. Product
+gates remain open.
 
 Evidence for Docker-first portable validation, governed story composition and
 public archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux
@@ -394,3 +396,5 @@ E-AI-065 adds helper/client setup; E-REPO-045 adds indexed Search. E-SHELL-003
 restores tab drops; E-AI-095/096 cover model discovery and private drafts.
 E-AI-103/105–110: approval/header, tabbed settings and shared Compute inputs;
 full gates remain. E-AI-115 verifies shared context root indentation only.
+E-CORE-027 and E-DEPENDENCY-003 qualify provider recovery and signed Bases
+intake. Final dependency intake and native AI default selection remain separate.

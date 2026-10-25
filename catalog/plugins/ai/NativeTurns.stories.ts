@@ -41,6 +41,7 @@ export const SendAndFollowUp: Story = {
     await userEvent.type(editor, "First native prompt");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => expect(fixture.records).toHaveLength(1));
+    expect(fixture.records[0].input.options.mode).toBe("read-only");
     await waitFor(() =>
       expect(canvasElement).toHaveTextContent(
         "A response persisted by the native service.",
@@ -49,6 +50,7 @@ export const SendAndFollowUp: Story = {
     await userEvent.type(editor, "Explicit follow-up");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => expect(fixture.records).toHaveLength(2));
+    expect(fixture.records[1].input.options.mode).toBe("read-only");
     expect(fixture.records[1].input.continuation).toEqual({
       conversation_id: fixture.records[0].conversation_id,
       after_request_id: fixture.records[0].input.request_id,
@@ -62,6 +64,7 @@ export const LostReply: Story = {
     await userEvent.type(editor, "Retain this exact request");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => expect(fixture.records).toHaveLength(1));
+    expect(fixture.records[0].input.options.mode).toBe("read-only");
     await waitFor(() =>
       expect(canvasElement).toHaveTextContent(/unknown|uncertain/i),
     );
@@ -74,6 +77,7 @@ export const RetainedHistoryNavigation: Story = {
     await userEvent.type(editor, "Keep this main conversation");
     await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
     await waitFor(() => expect(fixture.records).toHaveLength(1));
+    expect(fixture.records[0].input.options.mode).toBe("read-only");
     const main = fixture.app.workspace.getLeavesOfType("ai")[0];
     await fixture.app.commands.executeCommand("ai:open-history");
     const historyElement = await canvas.findByTestId("ai-conversation-history");

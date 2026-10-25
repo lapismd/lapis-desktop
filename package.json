@@ -74,7 +74,7 @@
     "@lapismd/mira-plugin-ai": "~0.0.3",
     "@lapismd/mira-plugin-mermaid": "~0.0.3",
     "@tauri-apps/api": "~2.12.4",
-    "svelte": "5.57.2",
+    "svelte": "5.56.10",
     "@lapismd/terminal": "link:../lapis-terminal/packages/terminal",
     "@codemirror/autocomplete": "^6.20.3",
     "@codemirror/commands": "^6.11.1",

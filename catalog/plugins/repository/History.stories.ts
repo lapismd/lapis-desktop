@@ -320,9 +320,7 @@ export const ComparisonFailureAndRecovery: Story = {
     ).toBeNull();
     expect(canvas.queryByRole("region", { name: "Changed files" })).toBeNull();
     historyContext(canvasElement).fixture.recover();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Retry comparison" }),
-    );
+    await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
     await expect(
       await canvas.findByRole("button", { name: "Welcome.md" }),
     ).toBeVisible();

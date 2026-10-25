@@ -23,7 +23,7 @@ async function edit(canvasElement: HTMLElement, name: string) {
     await within(canvasElement).findByRole("button", { name }),
   );
   const dialog = within(await body.findByRole("dialog"));
-  await dialog.findByRole("button", { name: /^LLM provider:/ });
+  await dialog.findByRole("combobox", { name: /^LLM provider:/ });
   return { body, dialog };
 }
 export const IndependentProviders: Story = {
@@ -57,7 +57,7 @@ export const IndependentProviders: Story = {
     expect(JSON.stringify(saved)).not.toContain("models.example");
     const next = await edit(canvasElement, "Edit Offline assistant");
     expect(
-      next.dialog.getByRole("button", { name: /^LLM provider:/ }),
+      next.dialog.getByRole("combobox", { name: /^LLM provider:/ }),
     ).toHaveTextContent("This machine");
     expect(next.dialog.queryByRole("combobox", { name: "Model" })).toBeNull();
   },
@@ -71,7 +71,7 @@ export const ExistingConfiguration: Story = {
     ).toBeNull();
     const { dialog } = await edit(canvasElement, "Edit Qwen research");
     expect(
-      dialog.getByRole("button", { name: /^LLM provider:/ }),
+      dialog.getByRole("combobox", { name: /^LLM provider:/ }),
     ).toHaveTextContent("OpenAI compatible");
     expect(dialog.getByLabelText("API key")).toHaveValue("");
     expect(dialog.getByRole("combobox", { name: "Model" })).toHaveTextContent(

@@ -6,7 +6,8 @@ inputs include the committed private Markdown parser dependency; this transitive
 intake does not select unattended indexing at host startup. Evidence remains
 [E-CORE-022](../history/E-CORE-022.md).
 
-Earlier Core intake remains in [native adapter records](ai-adapter.md).
+[Adapters](ai-adapter.md): defaults E-CORE-025; actual-provider screen recovery
+E-CORE-027.
 
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.

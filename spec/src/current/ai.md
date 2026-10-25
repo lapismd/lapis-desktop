@@ -1,18 +1,20 @@
 # Desktop AI and optional compute
 
-The staged Core chat uses the shared Notes-owned navigator for retained History
-and exact main-area scope/conversation reuse. Opening History or restoring a
-saved leaf never submits a prompt. [E-CORE-022](../history/E-CORE-022.md)
-separates fixture-worker/native acceptance from R2.3 actual-provider
-qualification.
+Staged Core chat retains History and exact scope/conversation reuse; restoration
+never submits. E-CORE-022 qualifies fixture/native adoption; E-CORE-025 seals
+runner defaults. R2.3 requires actual-provider composer acceptance, reload
+teardown before completion and History recovery after reload/cold Quit without
+replay. A test-only hold may delay and forward the saved reload result after
+disposal; admission, teardown, persistence and screens remain production.
 
 Portable native checks retain unsupported credential ports outside macOS; only
 the supported Keychain backend constructs its device service identity.
 
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
-shell stories MUST join owned fixture readiness before querying controls. Core
-intake: E-CORE-001/003/016; [native selection and observation](ai-adapter.md).
+shell stories MUST await owned fixtures and use labelled public controls. Native
+fixtures MUST declare target default modes and assert submitted modes. Core:
+E-CORE-001/003/016; [native selection and observation](ai-adapter.md).
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

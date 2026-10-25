@@ -65,14 +65,14 @@ export const ContextAndPermissions: Story = {
     );
     await userEvent.type(description, "Reviews the whole notebook");
     await waitFor(() =>
-      expect(dialog.getByRole("button", { name: "Mode" })).toBeEnabled(),
+      expect(dialog.getByRole("combobox", { name: "Mode" })).toBeEnabled(),
     );
-    await userEvent.click(dialog.getByRole("button", { name: "Mode" }));
+    await userEvent.click(dialog.getByRole("combobox", { name: "Mode" }));
     await userEvent.click(
       await body.findByRole("option", { name: "Workspace edits" }),
     );
     await userEvent.click(
-      dialog.getByRole("button", { name: "Action approvals" }),
+      dialog.getByRole("combobox", { name: "Action approvals" }),
     );
     await userEvent.click(
       await body.findByRole("option", { name: "Approve for me" }),

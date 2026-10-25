@@ -57,6 +57,13 @@ scope and profile identity without acquiring the window's NativeHost mutex. This
 preparation does not select the new chat owner; Tauri transport, retained Agent
 screen adoption and real-provider/cold-application gates remain required.
 
+Native target metadata declares the existing trusted runner's safe default mode
+under Notes LN-CORE-009/010: Codex `read-only`, OpenCode `plan`, and `ask` for
+other admitted runners. Resolve that runner through the immutable prepared
+launch, never from renderer IDs or labels. This file-profile configuration has
+no saved native mode override; explicit turn modes remain unchanged and still
+pass native negotiation. Unavailable launch metadata must fail closed.
+
 The staged `LAPIS_DESKTOP_AI_OWNER=core` startup profile selects the shared
 native owner and reports that fixed selection to the shell. The renderer profile
 remains the serving default until cutover; invalid selections fail startup. Core

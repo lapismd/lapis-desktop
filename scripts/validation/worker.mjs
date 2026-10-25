@@ -95,7 +95,14 @@ try {
   process.env.LAPIS_DESKTOP_HEAD = source.revision;
   if (source.base) process.env.LAPIS_DESKTOP_BASE = source.base;
   process.env.LAPIS_DESKTOP_CI_REPORTS = "1";
-  Object.assign(process.env, workerEnvironment(request.imageTarget));
+  Object.assign(
+    process.env,
+    workerEnvironment(
+      request.imageTarget,
+      request.lane,
+      request.resources.memoryGiB,
+    ),
+  );
   process.env.PNPM_HOME = "/opt/pnpm";
   const archives = validateArchives(source.archives);
   if (archives.length) {

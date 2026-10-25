@@ -3,7 +3,11 @@
 Portable checks, unit tests, renderer builds, specification checks and catalog
 interaction/accessibility commands default to Docker. Native macOS app packaging
 and actual WebView/window/OS acceptance remain explicit separate commands.
-Docker failures stay failures; there is no automatic host fallback.
+Docker failures stay failures; there is no automatic host fallback. Renderer and
+static catalog builds receive a Node heap capped at 6 GiB and half the
+configured worker memory. Nested builds apply the same bound at their actual
+build dispatch using Docker memory limits; other lane environments and explicit
+native execution retain their existing settings.
 
 ## Commands
 
@@ -21,7 +25,7 @@ pnpm test:storybook -- catalog/plugins/ai/NativeTurns.stories.ts
 
 The UI image owns TypeScript, renderer/AI tests, Storybook and renderer builds.
 The full image additionally contains pinned Rust and Linux Tauri development
-libraries for native service tests, strict Clippy and Rust formatting. Its six
+libraries for native service tests, strict Clippy and Rust formatting. Its seven
 committed sibling inputs are pinned in `scripts/validation/native-sources.json`;
 dirty sibling work is never included. Linux service qualification cannot qualify
 a macOS application or native window. Use the existing `pnpm desktop:bundle`,
@@ -142,16 +146,20 @@ component subjects, archive prerequisites and macOS acceptance boundary.
 and acceptance configurations. They qualify compilation and service code only;
 actual native WebView, OS and bundle checks retain their separate gates.
 
-## Deferred cache optimization
+## Cache boundaries
 
-After this intake, port Notes' independent cache families to the Desktop runner.
-Fingerprint tool images from their actual Dockerfile/tool-installer inputs plus
-architecture and target. Separate JavaScript lock/archive keys from native
-Cargo-lock/source keys, retain workspace isolation and record both identities.
-Use immutable image IDs for execution. Keep ordinary Cargo source fingerprints.
+Tool images fingerprint their actual Dockerfile and tool-installer inputs,
+package-manager/Rust pins, architecture and target. JavaScript lock/archive
+identities key the package cache; native Cargo-lock/source identities key the
+native cache independently. Workspace isolation remains intact. Legacy native
+cache adoption requires the exact old key, owned volume labels and a retained
+migration receipt; normal Cargo source fingerprints remain authoritative.
 
-Qualify the exact before/after key regressions, complete runner/lease/guard
-suite, permission-denial and Chromium/WebKit smoke, then the affected cold
-consumer lanes. This bounded tooling follow-up waits until the current frozen
-dependency and catalog intake is committed; original product gates keep their
-current scope.
+`E-VALIDATION-001` already qualifies the cache/image-key regressions, mounted
+cache bootstrap exclusion and complete runner/lease/guard suite. JavaScript
+metadata edits no longer rebuild tool images or invalidate identical native
+inputs. Its permission-denial and Chromium/WebKit smoke remain separate from
+actual macOS product acceptance.
+
+Further cache optimization is Deferred. No additional cache implementation is
+part of the current dependency/catalog intake.

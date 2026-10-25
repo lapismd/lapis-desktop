@@ -170,3 +170,35 @@ test("JavaScript metadata cannot invalidate the Docker toolchain image", async (
     await rm(root, { recursive: true, force: true });
   }
 });
+
+test("renderer build heaps stay within half worker memory and do not affect other lanes", async () => {
+  const { workerEnvironment, buildEnvironment } = await import(
+    "../../scripts/validation/model.mjs"
+  );
+  for (const memory of [0, undefined, NaN])
+    assert.deepEqual(buildEnvironment("build", memory), {});
+  for (const lane of ["build", "build-storybook"]) {
+    for (const [memoryGiB, heap] of [
+      [3, 1536],
+      [8, 4096],
+      [12, 6144],
+      [24, 6144],
+    ])
+      assert.deepEqual(workerEnvironment("ui", lane, memoryGiB), {
+        NODE_OPTIONS: `--max-old-space-size=${heap}`,
+      });
+  }
+  for (const lane of [
+    "test",
+    "test:ai",
+    "test:storybook",
+    "check",
+    "validation:check",
+    "spec:build",
+  ])
+    for (const target of ["ui", "full"])
+      assert.deepEqual(
+        workerEnvironment(target, lane, 12),
+        workerEnvironment(target),
+      );
+});
