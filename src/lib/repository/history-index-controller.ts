@@ -8,14 +8,14 @@ export type HistoryIndexState = {
   phase: string;
   status?: HistoryIndexStatus;
 };
-/** Schedules disposable native batches; capture never waits for indexing. */
+/** Observe cached vault-owned progress; no renderer request schedules a batch. */
 export class HistoryIndexController {
   #closed = false;
+  #started = false;
   #job?: Promise<void>;
   #timer?: ReturnType<typeof setTimeout>;
   #listeners = new Set<(state: HistoryIndexState) => void>();
   #state: HistoryIndexState = { busy: false, phase: "ready" };
-  #again = false;
   #failure = "";
   constructor(
     readonly service: IndexedHistoryService,
@@ -33,43 +33,36 @@ export class HistoryIndexController {
     this.#state = state;
     for (const listener of this.#listeners) listener(state);
   }
-  schedule() {
-    if (this.#closed) return;
-    clearTimeout(this.#timer);
-    if (this.#job) {
-      this.#again = true;
-      return;
-    }
-    this.#job = this.#run().finally(() => {
+  start() {
+    if (this.#closed || this.#started) return;
+    this.#started = true;
+    this.#set({ busy: true, phase: "indexing" });
+    this.#observe(true);
+  }
+  #observe(initial = false) {
+    if (this.#closed || this.#job) return;
+    this.#job = this.#read(initial).finally(() => {
       this.#job = undefined;
-      if (!this.#closed)
-        this.#timer = setTimeout(
-          () => this.schedule(),
-          this.#again ? 0 : this.#failure ? 5000 : 60_000,
-        );
-      this.#again = false;
+      if (!this.#closed) this.#timer = setTimeout(() => this.#observe(), 1000);
     });
   }
-  async #run() {
-    this.#set({ ...this.#state, busy: true, phase: "indexing" });
+  async #read(initial: boolean) {
     try {
-      while (!this.#closed) {
-        const status = await this.service.step();
-        if (this.#closed) return;
-        this.#set({
-          busy: !status.complete,
-          phase: status.complete ? "ready" : "indexing",
-          status,
-        });
-        if (status.complete) break;
-        await new Promise((resolve) => setTimeout(resolve, 30));
-      }
+      const status = await (initial
+        ? this.service.start()
+        : this.service.status());
+      if (this.#closed) return;
+      this.#set({
+        busy: !status.complete,
+        phase: status.complete ? "ready" : "indexing",
+        status,
+      });
       this.#failure = "";
       this.feedback.recovered();
     } catch (error) {
+      if (this.#closed) return;
       const message = String(error);
-      if (!this.#closed && message !== this.#failure)
-        this.feedback.report(error);
+      if (message !== this.#failure) this.feedback.report(error);
       this.#failure = message;
       this.#set({ ...this.#state, busy: false, phase: "paused" });
     }

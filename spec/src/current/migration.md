@@ -1,12 +1,11 @@
 # Migration inventory and progress — [native turns](ai-adapter.md)
 
-The shared Rust master tracker remains in Notes. This Desktop intake separately
-qualifies the retained chat/History presentation and records its exact source
-archives under [E-CORE-022](../history/E-CORE-022.md). Native Markdown and Tasks
-parser source completion does not complete metadata host adoption, M10.2 or the
-remaining R3–R7 gates. M11 remains Deferred. E-CORE-025 prepares trusted native
-default modes; E-CORE-026 aligns their qualified Notes source/DTO input. Product
-gates remain open.
+Notes owns shared Rust master progress. Desktop's public archive and retained
+chat/History intake is [E-CORE-022](../history/E-CORE-022.md). E-CORE-028
+qualifies vault-owned History indexing; its source/native proof cannot qualify
+metadata host adoption, M10.2 or R3–R7. E-CORE-025/026 select qualified native
+defaults; metadata/Search writers, AI defaults, product gates and Deferred M11
+remain separate from this History intake.
 
 Evidence for Docker-first portable validation, governed story composition and
 public archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux

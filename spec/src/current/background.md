@@ -34,3 +34,9 @@ R1.3.8 database adapters await the shared worker outside the host resource
 mutex. Commit forwarding is passive transport observation; it never starts
 another indexer or owns the database lifetime. The retained metadata/index
 scheduler moves separately under R3 rather than being recreated in the renderer.
+
+Desktop History indexing uses the shared vault-owned scheduler. Renderer
+progress is passive cached-status observation: no capture subscription, native
+batch stepping or browser retry loop owns derived work. Closing an observer
+drains its current request without stopping the native service. Backup pause,
+renderer reload and zero clients preserve the owner until explicit vault close.

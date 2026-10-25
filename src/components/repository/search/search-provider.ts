@@ -132,7 +132,6 @@ export function registerHistoryResultProvider(
         }),
       );
       request.signal.throwIfAborted();
-      if (!page.status.complete && phase !== "paused") index.schedule();
       return {
         generation: String(page.status.generation),
         hits: page.hits.map((hit) => hitModel(hit, request.text)),
@@ -185,10 +184,7 @@ export function registerHistoryResultProvider(
       };
     },
   });
-  index.schedule();
-  const capture = plugin.backup?.controller.subscribe((state) => {
-    if (state.checkpoint && state.phase === "ready") index.schedule();
-  });
+  index.start();
   plugin.app.workspace.onLayoutReady(() => {
     if (closed) return;
     plugin.app.workspace.iterateAllLeaves((leaf) => {
@@ -230,7 +226,6 @@ export function registerHistoryResultProvider(
   return async () => {
     closed = true;
     registration.dispose();
-    capture?.();
     changed();
     await index.close();
     progress();

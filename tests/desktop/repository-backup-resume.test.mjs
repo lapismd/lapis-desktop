@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { chmodSync, mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
+import { queryHistoryIndex } from "./history-index-observation.mjs";
 
 test(
   "failed final capture resumes automatic watching for later saved files",
@@ -83,43 +84,16 @@ test(
     writeFileSync(join(vault, "Later.md"), "saved after close was cancelled\n");
     const later = await savedAfter(repaired);
     assert.notEqual(later.commit, repaired.commit);
-    let complete = false;
-    for (let batch = 0; batch < 20; batch++) {
-      const progress = await browser.execute(
-        (request) =>
-          globalThis.__TAURI__.core.invoke("desktop_backup_history_search", {
-            request: { ...request, action: { kind: "step" } },
-          }),
-        request,
-      );
-      if (progress.complete) {
-        complete = true;
-        break;
-      }
-    }
-    assert.equal(complete, true);
-    const retained = await browser.execute(
-      (request) =>
-        globalThis.__TAURI__.core.invoke("desktop_backup_history_search", {
-          request: {
-            ...request,
-            action: {
-              kind: "query",
-              search: {
-                expression: {
-                  type: "term",
-                  field: "content",
-                  value: "saved after close was cancelled",
-                },
-                case_sensitive: false,
-                cursor: null,
-                limit: 100,
-              },
-            },
-          },
-        }),
-      request,
-    );
+    const retained = await queryHistoryIndex(session, selected.sessionId, {
+      expression: {
+        type: "term",
+        field: "content",
+        value: "saved after close was cancelled",
+      },
+      case_sensitive: false,
+      cursor: null,
+      limit: 100,
+    });
     assert.equal(retained.hits.length, 1);
     assert.equal(
       retained.hits[0].record.revision.checkpoint.commit,

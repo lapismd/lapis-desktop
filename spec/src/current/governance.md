@@ -4,10 +4,9 @@
 [checkpoint notes](../../../docs/governance-checkpoints.md) preserve prior
 policy. [Local validation](../../../docs/validation.md) defines Docker/native
 commands, isolated archive prerequisites, reports and owned cleanup.
-E-VALIDATION-001 records the Docker-first intake; native and release gates
-remain separate. E-CORE-025 pins shared Core/Tasks sources with a bounded
-path-crate lock update; native platform and application acceptance remain
-separate. E-CORE-026 aligns qualified Notes source/DTO inputs.
+E-VALIDATION-001 retains Docker/native/release boundaries. E-CORE-025/026 pin
+Core/Tasks and align source/DTOs; E-CORE-028 selects qualified History through
+bounded path-crate lock updates. Product acceptance remains separate.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.

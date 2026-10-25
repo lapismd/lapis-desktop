@@ -10,6 +10,7 @@ import {
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
+import { queryHistoryIndex } from "./history-index-observation.mjs";
 
 const call = (session, command, request) =>
   session.browser.execute(
@@ -65,36 +66,11 @@ async function automaticallySaved(session, previous) {
   return latest.checkpoint;
 }
 async function indexed(session, sessionId, value) {
-  let complete = false;
-  for (let batch = 0; batch < 20; batch++) {
-    if (
-      (
-        await call(session, "desktop_backup_history_search", {
-          sessionId,
-          action: { kind: "step" },
-        })
-      ).complete
-    ) {
-      complete = true;
-      break;
-    }
-  }
-  assert.equal(
-    complete,
-    true,
-    "The bounded immutable history scan must finish",
-  );
-  return call(session, "desktop_backup_history_search", {
-    sessionId,
-    action: {
-      kind: "query",
-      search: {
-        expression: { type: "term", field: "content", value },
-        case_sensitive: false,
-        cursor: null,
-        limit: 100,
-      },
-    },
+  return queryHistoryIndex(session, sessionId, {
+    expression: { type: "term", field: "content", value },
+    case_sensitive: false,
+    cursor: null,
+    limit: 100,
   });
 }
 

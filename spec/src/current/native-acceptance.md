@@ -43,3 +43,8 @@ preserving dirty notes and the JJ operation. It invokes the production command
 and real Git ThreadStore without enabling an execution target. This prerequisite
 cannot qualify a managed conversation, its capture processor or chat UI
 recovery.
+
+The quiet native API catalog retains History owner selection/status, paused and
+cold cache rebuild, storage relocation, capture recovery and detached lifetime
+regressions. These use hidden isolated WebViews; no foreground/window/OS or
+provider acceptance is inferred.

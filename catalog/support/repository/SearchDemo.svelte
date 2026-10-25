@@ -42,7 +42,10 @@
         reader: fixture.reader,
         search: {
           indexed: {
-            async step() {
+            async start() {
+              return { generation: 1, indexed: 42, omitted: 2, complete: true };
+            },
+            async status() {
               return { generation: 1, indexed: 42, omitted: 2, complete: true };
             },
             async query(request) {

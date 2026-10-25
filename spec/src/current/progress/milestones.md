@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-25 22:52:53 UTC**.
+Last updated **2026-10-26 01:20:47 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -9,15 +9,16 @@ Last updated **2026-10-25 22:52:53 UTC**.
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
 
-| Work                                           | Current state                                                  | Remaining work                                                                 |
-| ---------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Docker runner and Storybook guards             | Implemented and verified                                       | Final compatible package intake below; macOS acceptance stays separate         |
-| Design Core, Mira, API and Agent/Repository UI | Source-qualified public packages selected                      | No source repair pending; publication and registry-only distribution deferred  |
-| Compatible Desktop dependency intake           | Complete: 2,016 catalog cases plus all scoped functional gates | No remaining work in this intake; continue shared application work below       |
-| Native target modes                            | E-CORE-025/026 verified                                        | Complete for this intake; broader M10 qualification remains separate           |
-| Signed Bases bundle                            | E-DEPENDENCY-003 native case passes                            | Metadata, write/watch and cold restart verified; distribution remains separate |
-| Retained native chat and History               | E-CORE-027 actual-provider case and retained fixture pass      | Complete for this intake; broader M10 and default cutover remain separate      |
-| Next shared application work                   | Parallel indexing, History and Search lanes                    | Complete Notes R3–R7 and each required Desktop service intake                  |
+| Work                                           | Current state                                                   | Remaining work                                                                               |
+| ---------------------------------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Docker runner and Storybook guards             | Implemented and verified                                        | Final compatible package intake below; macOS acceptance stays separate                       |
+| Design Core, Mira, API and Agent/Repository UI | Source-qualified public packages selected                       | No source repair pending; publication and registry-only distribution deferred                |
+| Compatible Desktop dependency intake           | Complete: 2,016 catalog cases plus all scoped functional gates  | No remaining work in this intake; continue shared application work below                     |
+| Native target modes                            | E-CORE-025/026 verified                                         | Complete for this intake; broader M10 qualification remains separate                         |
+| Signed Bases bundle                            | E-DEPENDENCY-003 native case passes                             | Metadata, write/watch and cold restart verified; distribution remains separate               |
+| Retained native chat and History               | E-CORE-027 actual-provider case and retained fixture pass       | Complete for this intake; broader M10 and default cutover remain separate                    |
+| Desktop History scheduler intake               | Complete: E-CORE-028 source, catalog and cold native acceptance | No remaining work in this intake; broader provider and default cutover gates remain separate |
+| Next shared application work                   | History intake complete; indexing and Search lanes continue     | Complete Notes R3–R7 and each required Desktop service intake                                |
 
 The final intake uses one frozen source and 26 verified archives, with Svelte
 5.56.10 matching the API peer. Design Core `b40f8c93` and Agent UI `0e549ebc`

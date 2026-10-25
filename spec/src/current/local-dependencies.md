@@ -90,3 +90,10 @@ the existing native metadata/edit/watch/cold-restart case. Keep its signed build
 source identity and exact archive hash; a documentation-only source successor
 may be recorded as equivalent only after verifying unchanged public inputs. The
 static UI cohort does not qualify dynamically installed plugin assets.
+
+E-CORE-028 selects qualified Notes `211bff3c` with Tasks `fcb2a8b5` for the
+shared History lifetime and final closed-watch reconciliation, plus jj-store
+`5f4bf729` for bounded committed-reader admission (source E-VAULT-BACKUP-022).
+Other native pins and the final 26-package UI cohort remain fixed. Metadata
+writers, current-file Search and AI defaults are separate intakes; no
+corresponding default switch is inferred.

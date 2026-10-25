@@ -123,23 +123,30 @@ pub async fn desktop_backup_storage(
         .revoke(&caller.window)
         .await
         .map_err(failure)?;
+    let session = request.session_id.clone();
+    let service = access(host.inner().clone(), move |services| {
+        services.core_vaults.service(&services.vaults, &session)
+    })
+    .await?;
     let (status, binding) = worker(&repository, move || {
-        runtime()?.block_on(async {
-            match request.action {
-                Action::Change {
-                    revision,
-                    location,
-                    request_id,
-                } => storage.change(revision, location, &request_id).await,
-                Action::Recover => storage.recover().await,
-                Action::Rollback { request_id } => storage.rollback(&request_id).await,
-                Action::Status | Action::Reveal { .. } => unreachable!(),
-            }
-            .map_err(std::io::Error::other)?;
-            Ok((
-                presentation::view(&storage)?,
-                storage.binding().map_err(std::io::Error::other)?,
-            ))
+        super::history_owner::relocate(service, &storage, || {
+            runtime()?.block_on(async {
+                match request.action {
+                    Action::Change {
+                        revision,
+                        location,
+                        request_id,
+                    } => storage.change(revision, location, &request_id).await,
+                    Action::Recover => storage.recover().await,
+                    Action::Rollback { request_id } => storage.rollback(&request_id).await,
+                    Action::Status | Action::Reveal { .. } => unreachable!(),
+                }
+                .map_err(std::io::Error::other)?;
+                Ok((
+                    presentation::view(&storage)?,
+                    storage.binding().map_err(std::io::Error::other)?,
+                ))
+            })
         })
     })
     .await?;

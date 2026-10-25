@@ -43,6 +43,9 @@ await run(
     "tests/desktop/ai-turn-owner.test.mjs",
     "tests/desktop/repository-admission.test.mjs",
     "tests/desktop/repository-service-lifetime.test.mjs",
+    "tests/desktop/repository-indexed-search.test.mjs",
+    "tests/desktop/repository-backup-recovery.test.mjs",
+    "tests/desktop/repository-backup-resume.test.mjs",
   ],
   environment,
 );

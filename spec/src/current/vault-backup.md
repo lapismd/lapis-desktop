@@ -294,8 +294,20 @@ redirect to Search with History selected. Search being disabled does not enable
 it implicitly or stop backup.
 
 A disposable native Tantivy index records checkpoint ancestry and changed-path
-references while indexing each immutable body once. The plugin schedules bounded
-native batches after captures and reconciles missed work after reopening.
+references while indexing each immutable body once. The shared vault service
+owns bounded native batches after captures and reconciles missed work
+independently of renderer clients. The Desktop adapter selects that owner
+explicitly, then observes cached status; polling never steps an index or
+restarts its owner. Backup pause leaves derived immutable reads alive. Renderer
+disposal drains observation only; explicit vault close drains the shared owner.
+Closing the backup status sender requests one final reconciliation and retires
+that watch. Pause cannot discard the final checkpoint notification or leave a
+closed-channel loop running. Cold read admission resolves existing storage
+without recovery, initialization or capture, including rebuilding a deleted
+disposable index while preserving later unsnapshotted disk bytes. Queries admit
+an existing committed generation, waiting at most five seconds for a publisher,
+then release its lock before source membership/search. Queries never initialize
+or repair the index; cached complete status is not a read barrier.
 Indexing/query progress uses the shared status API; errors use App feedback.
 Capture never awaits indexing. Committed pages remain usable during catch-up,
 with incomplete coverage and unsupported filters explicit. Cancellation,
@@ -307,3 +319,8 @@ its existing preview, safety checkpoint and durable request authority.
 selects vault/index identity and bounded workers; frames supply no paths or
 caller authority. Storage relocation drains that search permit. Saved targets
 retain the operation, commit and file (LD-REPO-002/005).
+
+Storage relocation explicitly stops and drains the shared History owner before
+change/recovery/rollback, then reselects only stable existing immutable history.
+Reselection cannot start capture or recover a move. If both mutation and
+reselection fail, the original mutation error remains authoritative.

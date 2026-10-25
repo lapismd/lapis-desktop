@@ -6,6 +6,7 @@ mod backup_close;
 pub(crate) mod backup_restore;
 pub(crate) mod commands;
 pub(crate) mod forges;
+mod history_owner;
 pub(crate) mod indexed_search;
 mod policy;
 mod publication;

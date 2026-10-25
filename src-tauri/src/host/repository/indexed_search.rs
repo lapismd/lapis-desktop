@@ -17,7 +17,8 @@ pub struct Request {
 #[derive(Deserialize)]
 #[serde(tag = "kind", rename_all = "snake_case", deny_unknown_fields)]
 enum Action {
-    Step {},
+    Start {},
+    Status {},
     Query {
         search: indexed::Request,
     },
@@ -53,18 +54,24 @@ pub async fn desktop_backup_history_search(
 ) -> Result<Response, NativeError> {
     policy::caller(&window).map_err(failure)?;
     let session = request.session_id.clone();
-    let descriptor = access(host.inner().clone(), move |state| {
+    let observe = matches!(request.action, Action::Start {} | Action::Status {});
+    let (descriptor, service) = access(host.inner().clone(), move |state| {
         state.vaults.get(&session)?.verify_physical_root()?;
-        Ok(state.vaults.descriptor(&session)?.clone())
+        let service = if observe {
+            Some(state.core_vaults.service(&state.vaults, &session)?)
+        } else {
+            None
+        };
+        Ok((state.vaults.descriptor(&session)?.clone(), service))
     })
     .await?;
-    let binding = super::storage::resolve(&repository, descriptor, false).await?;
     let permit = repository
         .search_slots
         .clone()
         .acquire_owned()
         .await
         .map_err(|_| failure("History search is closed"))?;
+    let binding = super::storage::resolve(&repository, descriptor, false).await?;
     let source = binding.clone();
     let result = tauri::async_runtime::spawn_blocking(move || {
         let _permit = permit;
@@ -79,7 +86,7 @@ pub async fn desktop_backup_history_search(
                 complete: true,
             };
             return match request.action {
-                Action::Step {} => Ok(Response::Status(status)),
+                Action::Start {} | Action::Status {} => Ok(Response::Status(status)),
                 Action::Query { .. } => Ok(Response::Page(indexed::Page {
                     status,
                     hits: vec![],
@@ -94,7 +101,14 @@ pub async fn desktop_backup_history_search(
             exclusions: vec![],
         };
         let value = match request.action {
-            Action::Step {} => Response::Status(history.index_step()?),
+            Action::Start {} => Response::Status(super::history_owner::status(
+                service.ok_or("History owner is unavailable")?,
+                true,
+            )?),
+            Action::Status {} => Response::Status(super::history_owner::status(
+                service.ok_or("History owner is unavailable")?,
+                false,
+            )?),
             Action::Query { search } => Response::Page(history.indexed_search(&search)?),
             Action::Context {
                 commit,
@@ -144,8 +158,10 @@ mod tests {
     use super::*;
     #[test]
     fn index_actions_cannot_select_storage_paths_or_caller_authority() {
-        let frame = serde_json::json!({"sessionId":"opaque","action":{"kind":"step"}});
+        let frame = serde_json::json!({"sessionId":"opaque","action":{"kind":"status"}});
         assert!(serde_json::from_value::<Request>(frame.clone()).is_ok());
+        let legacy = serde_json::json!({"sessionId":"opaque","action":{"kind":"step"}});
+        assert!(serde_json::from_value::<Request>(legacy).is_err());
         for key in ["root", "state", "index", "window", "token", "exclusions"] {
             for nested in [false, true] {
                 let mut value = frame.clone();

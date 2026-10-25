@@ -2,7 +2,7 @@
 use super::VaultManager;
 use lapis_app_core::{
     embedding::host::NativeEmbeddingHost,
-    services::{BackupStorage, Client, DatabaseStorage, Runtime},
+    services::{BackupStorage, Client, DatabaseStorage, Runtime, VaultService},
     vault::VaultRoot,
 };
 use lapis_app_protocol::files::{FileCommand, FileValue};
@@ -72,7 +72,8 @@ impl VaultServices {
         directories.create(history)?;
         let storage = BackupStorage::new(history)
             .map_err(io::Error::other)?
-            .with_files_gate(files);
+            .with_files_gate(files)
+            .with_history_indexing(true);
         services.runtime = services.runtime.with_backup(storage);
         Ok(services)
     }
@@ -132,6 +133,18 @@ impl VaultServices {
             self.detached.remove(&id);
         }
         Ok(self.clients[session].clone())
+    }
+
+    /// Retain the admitted vault owner for work outside the NativeHost mutex.
+    pub fn service(
+        &mut self,
+        vaults: &VaultManager,
+        session: &str,
+    ) -> io::Result<Arc<VaultService>> {
+        let client = self.client(vaults, session)?;
+        self.runtime
+            .get(client.descriptor().vault_id)
+            .map_err(io::Error::other)
     }
 
     pub fn files(

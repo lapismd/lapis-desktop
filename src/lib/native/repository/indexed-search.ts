@@ -96,7 +96,8 @@ export function nativeIndexedSearch(
     }
   };
   return {
-    step: async () => indexStatus(await action({ kind: "step" })),
+    start: async () => indexStatus(await action({ kind: "start" })),
+    status: async () => indexStatus(await action({ kind: "status" })),
     query: async (search) =>
       indexedPage(await action({ kind: "query", search })),
     context: async (request) =>

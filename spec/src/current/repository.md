@@ -1,12 +1,11 @@
 # Repository history and conversations
 
 [Shared-screen integration](shared-screen-integration.md) governs source/pin
-selection, history-card actions and host-owned Blame wrap preferences. Core
-intake: E-CORE-001/003/014/016 (passive test resources; authority intact).
-
-E-REPO-043 governs upstream actions/counts and OS directory reveal in
-[automatic backup](vault-backup.md), retaining admission and operation pins.
-E-REPO-024/025 and E-CATALOG-009/010/012 govern footer status/clearance
+selection, history cards and host-owned Blame wrapping; Core intake is
+E-CORE-001/003/014/016. [Automatic backup](vault-backup.md) owns shared native
+History scheduling, cached renderer observation (E-CORE-028) and E-REPO-043
+upstream/reveal actions. Admission and operation pins remain unchanged.
+E-REPO-024/025 and E-CATALOG-009/010/012 retain footer status/clearance
 ([navigation](repository-navigation.md)); read authority is unchanged.
 
 ## Requirements

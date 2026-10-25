@@ -349,3 +349,5 @@
 - [E-CORE-026: Qualified Notes target-mode inputs](history/E-CORE-026.md)
 - [Actual provider retained Desktop screen](history/E-CORE-027.md)
 - [Repaired signed Bases native adoption](history/E-DEPENDENCY-003.md)
+
+- [Vault-owned Desktop History indexing](history/E-CORE-028.md)

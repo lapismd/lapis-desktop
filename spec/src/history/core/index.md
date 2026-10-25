@@ -17,3 +17,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Native ONNX encoder dependency compatibility](../E-CORE-013.md)
 
 - [Native Search provider and retained SQL intake](../E-CORE-014.md)
+
+- [Vault-owned Desktop History indexing](../E-CORE-028.md)

@@ -4,6 +4,7 @@ import { mkdirSync, mkdtempSync, writeFileSync, chmodSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { nativeSession } from "./native-session.mjs";
+import { observeHistoryIndex } from "./history-index-observation.mjs";
 
 async function invoke(session, command, args = {}) {
   return session.browser.execute(
@@ -55,9 +56,6 @@ async function detach(session, selected) {
   });
 }
 async function query(session, selected, text) {
-  await invoke(session, "desktop_backup_history_search", {
-    request: { sessionId: selected.sessionId, action: { kind: "step" } },
-  });
   return invoke(session, "desktop_backup_history_search", {
     request: {
       sessionId: selected.sessionId,
@@ -74,17 +72,27 @@ async function query(session, selected, text) {
   });
 }
 async function retained(session, selected, text) {
+  await observeHistoryIndex(session, selected.sessionId);
   let page;
+  let failed = false;
+  let failure;
   await session.browser.waitUntil(
     async () => {
-      page = await query(session, selected, text);
-      return page.hits.some((hit) => hit.record.path === "Note.md");
+      try {
+        page = await query(session, selected, text);
+        return page.hits.some((hit) => hit.record.path === "Note.md");
+      } catch (error) {
+        failed = true;
+        failure = error;
+        return true;
+      }
     },
     {
       timeout: 20000,
       timeoutMsg: `History must retain ${text} without starting another capture owner`,
     },
   );
+  if (failed) throw failure;
   return page;
 }
 
@@ -129,7 +137,7 @@ test(
     const reading = await invoke(first, "vault_open_recent", {
       profileId: original.profileId,
     });
-    // Immutable history calls do not construct a Core client or start backup.
+    // History observation may attach a reader; it never starts backup capture.
     await retained(first, reading, "saved without a renderer client");
     writeFileSync(
       join(vault, "Note.md"),

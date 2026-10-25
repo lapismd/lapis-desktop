@@ -37,7 +37,8 @@ export type HistoryMatchContext = {
   after: boolean;
 };
 export interface IndexedHistoryService {
-  step(): Promise<HistoryIndexStatus>;
+  start(): Promise<HistoryIndexStatus>;
+  status(): Promise<HistoryIndexStatus>;
   query(request: {
     expression: HistoryExpression;
     case_sensitive: boolean;

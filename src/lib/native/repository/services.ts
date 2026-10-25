@@ -146,7 +146,8 @@ export function createNativeRepository(
     search: {
       page: (request) => run(() => search.page(request)),
       indexed: {
-        step: () => track(() => indexed.step()),
+        start: () => track(() => indexed.start()),
+        status: () => track(() => indexed.status()),
         query: (request) => track(() => indexed.query(request)),
         context: (request) => track(() => indexed.context(request)),
       },
