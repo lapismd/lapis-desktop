@@ -1,5 +1,11 @@
 # Migration inventory and progress — [native turns](ai-adapter.md)
 
+The shared Rust master tracker remains in Notes. This Desktop intake separately
+qualifies the retained chat/History presentation and records its exact source
+archives under [E-CORE-022](../history/E-CORE-022.md). Native Markdown and Tasks
+parser source completion does not complete metadata host adoption, M10.2 or the
+remaining R3–R7 gates. M11 remains Deferred.
+
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 Generated tables group gates, sort IDs and link their spec ledger. Commits MUST
@@ -12,13 +18,6 @@ E-AI-093 retains local ACP/vault transcripts and M13/M13.3 Deferred at
 E-AI-094 adds agent context/permissions; E-AI-066 adds Agents Settings.
 E-AI-072–086 are unqualified drafts; LD-MIG-002 original gates stay unchanged.
 Native JJ history/persistence does not migrate or replace supported ACP chat.
-
-Managed Codex launch binds an existing native conversation to a single-use
-target. E-AI-068 adds typed native authored messages and original-receipt
-recovery. E-AI-069 fences native dispatch behind confirmed authorship. E-AI-070
-adds committed discovery/reads; E-AI-071 adds exact canonical edits. Renderer
-persistence/context adoption and M10.2/M13.3 restart gates remain open; these
-native boundaries alone cannot complete either milestone.
 
 E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
 archive refresh. E-REPO-047 completes M14.1 native identity/storage;

@@ -77,3 +77,58 @@ compares it to the current main-window lease while holding the AI transition
 guard, before obtaining the Core client or accepting work. A callback retained
 by an earlier vault cannot acquire the newer vault's authority after a switch.
 The token cannot choose a root, executable or native generation.
+
+The staged Core profile retains the shared public History screen in the right
+sidebar by default. Selecting a conversation preserves History and opens or
+reuses its exact main-area scope/conversation. New chat opens a local scoped
+draft; restoring a view never dispatches a prompt. Qualification includes the
+actual Tauri composer, portable files and cold restart with a protocol peer;
+that fixture does not replace R2.3 actual-provider acceptance.
+
+## Retained composer and provider receipts
+
+E-AI-100 repairs stable ACP model discovery and user-local Cursor detection.
+Both chat layouts expose modes, Pin/Unpin and Archive/Restore in the header
+kebab menu. E-AI-112 removes duplicate header buttons and the legacy Settings
+editor; conversation-local state, provider configuration and admission remain.
+An explicit Provider default reasoning option omits effort configuration;
+switching harnesses selects it rather than carrying another client's effort.
+E-AI-101 adds decorative mode/default icons and the compact Add Agent action;
+advertised choices, overrides, approval policy and dispatch remain unchanged.
+E-AI-102 consumes the shared single-action footer repair: pending submission and
+empty drafts show Stop; only a ready nonempty follow-up shows Queue. E-AI-103
+adds an independent, saved host approval policy in the footer and agent editor;
+[approval policy](ai-addressing.md#approval-policy) retains native scope/modes.
+
+## Retained native store checkpoint
+
+Managed Codex launch binds an existing native conversation to a single-use
+target. E-AI-068 adds typed native authored messages and original-receipt
+recovery. E-AI-069 fences native dispatch behind confirmed authorship. E-AI-070
+adds committed discovery/reads; E-AI-071 adds exact canonical edits. Renderer
+persistence/context adoption and M10.2/M13.3 restart gates remain open; these
+native boundaries alone cannot complete either milestone.
+
+## Retained AI catalog receipts
+
+E-AI-097–101: model fit, client fixes, footer mode/pin/icons and
+provider/compute Settings loading, failure/toast, disabled and explicit
+lifecycle controls through production components in Desktop/AI setup. Catalog
+icon preoptimization prevents cold dependency reloads; visual baselines remain
+pending.
+
+E-AI-094 adds agent context/permissions review stories using production editors,
+MarkdownComposer and the embedded chat shell. Shared mode icons are preoptimized
+for cold catalog runs. Plugin registration, isolation and lifecycle are
+unchanged.
+
+## Earlier shared Core intake
+
+Core: E-CORE-001–005 retain native gates; 006–015 qualify dependencies. 014
+covers providers/SQL; 015 adds unused cache dependencies. E-CORE-016–018 qualify
+the shared database/backup/file intake. E-CORE-019 checks the optional turn-core
+dependency; Desktop does not select that execution owner. E-CORE-020 prepares
+immutable per-vault native launch policy without a NativeHost lock. R2.2
+host/chat adoption and R3 unattended indexing retain their original gates.
+[Shared-screen integration](shared-screen-integration.md) preserves live view
+state and failed-leave/native gates.

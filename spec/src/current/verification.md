@@ -247,3 +247,7 @@ under LD-AI-001/002 separately from selected service/chat/provider acceptance.
 typed Tauri commands and existing Agent screen observation under LD-AI-001/002,
 LD-AI-004 and LD-GOV-006. Source, catalog, native transport, both-host
 application and provider/cold gates remain distinct.
+
+E-CORE-022 tracks retained public History routing, scoped drafts and native
+chat/cold recovery under LD-AI-001/002/004 and LD-CAT-001/002. Original provider
+and M10 completion gates stay open.

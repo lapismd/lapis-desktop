@@ -68,3 +68,39 @@ export const LostReply: Story = {
     expect(fixture.calls.filter((c) => c.kind === "submit")).toHaveLength(1);
   },
 };
+export const RetainedHistoryNavigation: Story = {
+  play: async ({ canvasElement }) => {
+    const { fixture, editor, canvas } = await open(canvasElement);
+    await userEvent.type(editor, "Keep this main conversation");
+    await userEvent.click(canvas.getByRole("button", { name: "Send message" }));
+    await waitFor(() => expect(fixture.records).toHaveLength(1));
+    const main = fixture.app.workspace.getLeavesOfType("ai")[0];
+    await fixture.app.commands.executeCommand("ai:open-history");
+    const historyElement = await canvas.findByTestId("ai-conversation-history");
+    expect(historyElement.closest("[data-workspace-surface]")).toHaveAttribute(
+      "data-workspace-surface",
+      "right-sidebar",
+    );
+    const history = within(historyElement);
+    await userEvent.click(
+      await history.findByRole("button", { name: /^Native conversation\b/ }),
+    );
+    await waitFor(() => expect(fixture.app.workspace.activeLeaf).toBe(main));
+    expect(fixture.app.workspace.getLeavesOfType("ai")).toHaveLength(1);
+    expect(historyElement).toBeVisible();
+    await userEvent.click(
+      history.getByRole("button", {
+        name: "New chat in Vault root",
+      }),
+    );
+    await waitFor(() =>
+      expect(fixture.app.workspace.getLeavesOfType("ai")).toHaveLength(2),
+    );
+    await userEvent.click(
+      history.getByRole("button", { name: /^Native conversation\b/ }),
+    );
+    await waitFor(() => expect(fixture.app.workspace.activeLeaf).toBe(main));
+    expect(fixture.app.workspace.getLeavesOfType("ai")).toHaveLength(2);
+    expect(fixture.calls.filter((c) => c.kind === "submit")).toHaveLength(1);
+  },
+};

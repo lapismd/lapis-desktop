@@ -1,45 +1,37 @@
 # Milestones and gates
 
-Last updated **2026-10-25 13:48:26 UTC**.
+Last updated **2026-10-25 15:55:37 UTC**.
 
 <!-- migration-activity:start -->
 
 ## Current work — shared Rust migration
 
 - **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md`
-  in the main Notes Jujutsu `default` workspace owns R0–R7. This file owns the
-  Desktop M-series gates and consumer intake. Both active checkouts are the main
-  workspaces.
-- **Latest checkpoint:** R2.2.3 stages a startup-fixed Core owner, vault-scoped
-  typed turn IPC and the existing public Agent screens through Notes source
-  `58dc50ac`. Core rejects legacy ACP execution. The renderer owner and Node
-  server remain defaults; this checkpoint does not promote the staged profile.
-- **Source qualification:** twenty forced check tasks, 2,173 package cases,
-  eleven builds, all 261 cold catalog cases, specification/49 validator cases
-  and seven Rust-hosted/twelve PWA/one Node browser journeys pass. Retained
-  native source has 326 Rust passes. Source and consumer receipts stay distinct.
-- **Desktop qualification:** all 420 renderer/governance, 744 AI, 242 native,
-  seven fresh hidden IPC and 2,012 catalog cases pass. All four catalog modes
-  pass 503 cases each. Types, strict normal/e2e Rust, architecture/App
-  ownership, both fresh bundles, ordinary automation audit, static Storybook,
-  Rust format and specification lanes pass. E-CORE-021 retains original failures
-  and reruns.
-- **Archive intake:** five Notes public packages and the private built profile
-  entry come from clean source `58dc50ac`. All twenty checksums/import routes
-  validate; fourteen peer receipts retain earlier qualification. No complete
-  cohort freshness or package-publication claim is made.
-- **Accepted exception:** full formatting still reports immutable E-AI-109,
-  byte-identical to its parent; its existing acceptance is retained. The
-  separate earlier Markdown image exception belongs to R1.3 intake and does not
-  waive this checkpoint's gates.
-- **Still open:** R2.2.3/M10.2 require mounted chat, retained History routing
-  and trust/recovery through both actual hosts. R2.3 still requires
-  actual-provider detach and cold application recovery without replay.
-  Unattended indexing, tools, memory, native jobs and hosted cutover remain
-  R3–R7. M11 stays Deferred.
-- **Earlier committed intake:** `efa44bb0` qualified shared database, backup
-  detach/Quit and native file actions; `d098b218` qualified immutable native
-  launch preparation. Their detailed receipts remain in the evidence index.
+  in Notes `default` owns R0–R7. This file owns Desktop M-series gates.
+- **Verified slice:** E-CORE-022 qualifies retained native chat and
+  right-sidebar History through the actual Tauri composer, exact main-tab reuse
+  and clean Quit/cold restart without prompt replay. Notes source is `7161a447`;
+  the protocol peer is a fixture, not actual-provider acceptance.
+- **Qualification:** all 2,016 catalog, 420 renderer/governance, 744 AI, 242
+  native service and seven fresh hidden IPC cases pass. Strict normal/e2e
+  Clippy, types, architecture/App ownership, both fresh app bundles, ordinary
+  automation audit and static Storybook pass. Four final cold chat stories pass
+  against the committed private profile; callback formatting has byte-identical
+  compiled JS/CSS. Source and consumer receipts remain separate.
+- **Archive intake:** twenty checksums/import routes validate. The private
+  profile comes from committed Notes `7161a447`; nineteen peer identities retain
+  their earlier qualification. New Docker/dependency work is a separate slice.
+- **Next:** adopt Docker-first portable tests and composition guards, refresh
+  Design Core/Mira through verified public outputs, then resume independent
+  provider-recovery and indexing lanes. Notes/Plugins default workspaces already
+  contain the Docker tooling; no wholesale historical-workspace rebase is
+  needed.
+- **Accepted exception:** immutable E-AI-109 still fails formatting and is
+  byte-identical to its parent. Its explicit prior acceptance is retained; the
+  separate earlier Markdown image exception does not waive new failures.
+- **Still open:** R2.3 actual-provider detach/cold recovery, R3–R7 and original
+  M10.2/M10.3 feature gates. Renderer AI/Node serving remain defaults, M11 stays
+  Deferred, and visual review remains pending.
 
 <!-- migration-activity:end -->
 
@@ -112,7 +104,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | M10.1 | Done | M9 | LD-MIG-002,LD-AI-001 | Reusable native ACP adapter preserves ordered correlated events, exact permission choices, cancellation, worker isolation and teardown with no automatic uncertain replay. | Complete; continue to M10.2 desktop-owned AI | E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
-| M10.2 | In progress | M10.1 | LD-MIG-002,LD-PLUG-001,LD-AI-002,LD-AI-004 | Desktop AI retains conversations, context, memory and current UI with complete migrated story coverage through direct ACP and no controller. | Qualify staged Core chat/history/trust; finish Lapis, avatar accessibility and provider recovery |E-PLUGINS-003,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-012,E-STRUCTURE-002,E-AI-013,E-AI-014,E-AI-015,E-AI-016,E-AI-017,E-AI-018,E-AI-019,E-AI-020,E-AI-021,E-STRUCTURE-003,E-AI-022,E-AI-023,E-AI-024,E-AI-025,E-AI-029,E-AI-030,E-REPO-016,E-AI-039,E-AI-040,E-AI-041,E-REPO-042,E-AI-042,E-AI-043,E-AI-044,E-AI-045,E-AI-046,E-AI-047,E-AI-048,E-AI-049,E-AI-050,E-AI-051,E-AI-052,E-AI-053,E-AI-054,E-AI-055,E-AI-056,E-AI-057,E-AI-058,E-AI-059,E-AI-060,E-AI-061,E-AI-062,E-AI-063,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-AI-064,E-CATALOG-014,E-AI-065,E-AI-066,E-AI-067,E-AI-069,E-AI-070,E-AI-071,E-AI-072,E-AI-073,E-AI-074,E-AI-075,E-AI-076,E-AI-077,E-AI-078,E-AI-079,E-AI-080,E-AI-081,E-AI-082,E-AI-083,E-AI-084,E-AI-085,E-AI-086,E-AI-088,E-AI-089,E-AI-090,E-AI-091,E-AI-092,E-AI-093,E-AI-094,E-AI-095,E-AI-096,E-AI-097,E-AI-098,E-AI-100,E-AI-101,E-AI-102,E-AI-103,E-AI-104,E-AI-105,E-AI-106,E-AI-107,E-AI-108,E-AI-109,E-AI-111,E-AI-112,E-AI-113,E-AI-115,E-AI-118,E-AI-119,E-AI-120,E-AI-121,E-AI-122,E-PLAN-004,E-CORE-020,E-CORE-021 |
+| M10.2 | In progress | M10.1 | LD-MIG-002,LD-PLUG-001,LD-AI-002,LD-AI-004 | Desktop AI retains conversations, context, memory and current UI with complete migrated story coverage through direct ACP and no controller. | Qualify staged Core chat/history/trust; finish Lapis, avatar accessibility and provider recovery |E-PLUGINS-003,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-012,E-STRUCTURE-002,E-AI-013,E-AI-014,E-AI-015,E-AI-016,E-AI-017,E-AI-018,E-AI-019,E-AI-020,E-AI-021,E-STRUCTURE-003,E-AI-022,E-AI-023,E-AI-024,E-AI-025,E-AI-029,E-AI-030,E-REPO-016,E-AI-039,E-AI-040,E-AI-041,E-REPO-042,E-AI-042,E-AI-043,E-AI-044,E-AI-045,E-AI-046,E-AI-047,E-AI-048,E-AI-049,E-AI-050,E-AI-051,E-AI-052,E-AI-053,E-AI-054,E-AI-055,E-AI-056,E-AI-057,E-AI-058,E-AI-059,E-AI-060,E-AI-061,E-AI-062,E-AI-063,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-AI-064,E-CATALOG-014,E-AI-065,E-AI-066,E-AI-067,E-AI-069,E-AI-070,E-AI-071,E-AI-072,E-AI-073,E-AI-074,E-AI-075,E-AI-076,E-AI-077,E-AI-078,E-AI-079,E-AI-080,E-AI-081,E-AI-082,E-AI-083,E-AI-084,E-AI-085,E-AI-086,E-AI-088,E-AI-089,E-AI-090,E-AI-091,E-AI-092,E-AI-093,E-AI-094,E-AI-095,E-AI-096,E-AI-097,E-AI-098,E-AI-100,E-AI-101,E-AI-102,E-AI-103,E-AI-104,E-AI-105,E-AI-106,E-AI-107,E-AI-108,E-AI-109,E-AI-111,E-AI-112,E-AI-113,E-AI-115,E-AI-118,E-AI-119,E-AI-120,E-AI-121,E-AI-122,E-PLAN-004,E-CORE-020,E-CORE-021,E-CORE-022 |
 | M10.3 | In progress | M10.2 | LD-MIG-002,LD-AI-001,LD-AI-003,LD-AI-004 | Packaged lapis-agent performs native chat, exact approvals, guarded tool reads/edits, cancellation, recovery and isolated cleanup over authenticated Rust app-tool IPC. | External native tools verified; bundled Lapis local app-tool turns fail the native grammar sampler | E-PLUGINS-003,E-AI-097,E-AI-098,E-AI-103,E-AI-104,E-AI-107,E-AI-108,E-PLAN-004,E-AI-123 |
 | M10.4 | In progress | M10.3 | LD-MIG-002,LD-COMP-001 | Optional compute downloads/imports, starts and stops explicitly; disabled startup, admitted pairing, failures and shutdown pass independently of ACP. | Downloaded library, progress and recovery added; qualify real local tool inference and two-device pairing | E-PLUGINS-003,E-AI-097,E-AI-098,E-AI-099,E-AI-104,E-AI-108,E-AI-109,E-AI-110,E-AI-111,E-AI-123,E-AI-124,E-AI-125 |
 

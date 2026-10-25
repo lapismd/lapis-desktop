@@ -5635,6 +5635,7 @@ dependencies = [
  "jj-vault",
  "lapis-ai-service",
  "lapis-app-protocol",
+ "lapis-plugin-services",
  "libc",
  "notify",
  "ort",
@@ -5717,6 +5718,16 @@ dependencies = [
  "url",
  "uuid",
  "zeroize",
+]
+
+[[package]]
+name = "lapis-plugin-services"
+version = "0.1.0"
+dependencies = [
+ "md5",
+ "regex",
+ "serde_json",
+ "serde_yaml",
 ]
 
 [[package]]
@@ -6107,6 +6118,12 @@ name = "maybe-owned"
 version = "0.3.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4facc753ae494aeb6e3c22f839b158aebd4f9270f55cd3c79906c45476c47ab4"
+
+[[package]]
+name = "md5"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ae960838283323069879657ca3de837e9f7bbb4c7bf6ea7f1b290d5e9476d2e0"
 
 [[package]]
 name = "measure_time"

@@ -1,5 +1,11 @@
 # Desktop plugins and catalog — [native turns](ai-adapter.md)
 
+The native-turn catalog includes retained History navigation through the real
+App workspace and shared Agent screens. Its protocol fixture covers saved
+titles, sidebar retention, exact chat reuse and scoped drafts. The story remains
+`visual-pending`; catalog success is separate from actual native application
+acceptance in [E-CORE-022](../history/E-CORE-022.md).
+
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned
 Notes/AI boot promises bound catalog startup. Controls await readiness; collapse
@@ -7,17 +13,6 @@ checks await closed state/unmount before unchanged absence assertions.
 
 E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
 covers a single composer action through submission in both chat layouts.
-
-E-AI-097–101: model fit, client fixes, footer mode/pin/icons and
-provider/compute Settings loading, failure/toast, disabled and explicit
-lifecycle controls through production components in Desktop/AI setup. Catalog
-icon preoptimization prevents cold dependency reloads; visual baselines remain
-pending.
-
-E-AI-094 adds agent context/permissions review stories using production editors,
-MarkdownComposer and the embedded chat shell. Shared mode icons are preoptimized
-for cold catalog runs. Plugin registration, isolation and lifecycle are
-unchanged.
 
 The active chat/settings profile is [local ACP](ai-local-history.md). Native
 conversation storage controls and catalog fixtures are retired; grouped AI

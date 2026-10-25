@@ -1174,3 +1174,9 @@ SendAndFollowUp retains one native conversation and exact predecessor; LostReply
 retains one unknown request without replay. The disposable port simulates native
 state/files only. Real Tauri/HTTP and provider/cold recovery retain their
 independent gates.
+
+R2.2.3 retained History navigation is covered by
+`AI/Native turn observer/Retained history navigation`: the shared Notes profile
+and public Agent History screen stay in the right sidebar, reuse an exact main
+conversation, preserve other drafts and never dispatch on selection. The source
+is Notes native-chat navigation; this catalog adds no replacement screen.

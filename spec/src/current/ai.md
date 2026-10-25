@@ -1,5 +1,11 @@
 # Desktop AI and optional compute
 
+The staged Core chat uses the shared Notes-owned navigator for retained History
+and exact main-area scope/conversation reuse. Opening History or restoring a
+saved leaf never submits a prompt. [E-CORE-022](../history/E-CORE-022.md)
+separates fixture-worker/native acceptance from R2.3 actual-provider
+qualification.
+
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
 shell stories MUST join owned fixture readiness before querying controls. Core
@@ -11,19 +17,6 @@ Existing local conversations and private drafts remain supported. E-AI-098
 aligns provider/compute settings with the Agents page's full-width cards.
 E-AI-099 adds compute fit; E-AI-121 adds [indexed imports](ai-imports.md).
 E-AI-122: model search; E-AI-123–125: compute library, status and inline choice.
-
-E-AI-100 repairs stable ACP model discovery and user-local Cursor detection.
-Both chat layouts expose modes, Pin/Unpin and Archive/Restore in the header
-kebab menu. E-AI-112 removes duplicate header buttons and the legacy Settings
-editor; conversation-local state, provider configuration and admission remain.
-An explicit Provider default reasoning option omits effort configuration;
-switching harnesses selects it rather than carrying another client's effort.
-E-AI-101 adds decorative mode/default icons and the compact Add Agent action;
-advertised choices, overrides, approval policy and dispatch remain unchanged.
-E-AI-102 consumes the shared single-action footer repair: pending submission and
-empty drafts show Stop; only a ready nonempty follow-up shows Queue. E-AI-103
-adds an independent, saved host approval policy in the footer and agent editor;
-[approval policy](ai-addressing.md#approval-policy) retains native scope/modes.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 Native-store clauses below preserve the Deferred checkpoint experiment.

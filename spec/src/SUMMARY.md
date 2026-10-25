@@ -336,3 +336,4 @@
 - [Native turn-core dependency compatibility](history/E-CORE-019.md)
 - [Immutable native turn launch profiles](history/E-CORE-020.md)
 - [Native turn selection and existing chat observer](history/E-CORE-021.md)
+- [Retained native chat and History navigation](history/E-CORE-022.md)
