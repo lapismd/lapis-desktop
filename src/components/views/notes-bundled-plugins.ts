@@ -56,7 +56,7 @@ export function notesBundledPlugins(
     async prepareLeave(mode: "close" | "reload"): Promise<void> {
       const history = app.plugins.plugins.get("repository-history");
       if (history instanceof RepositoryPlugin)
-        await history.backup?.prepareLeave();
+        await history.backup?.prepareLeave(mode);
       prepareTerminalLeave(app, mode);
       prepareAiLeave(app, mode);
       prepareRepositoryLeave(app, mode);

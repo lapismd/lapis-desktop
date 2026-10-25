@@ -1,13 +1,19 @@
-import type {
-  AppDatabaseOpenContext,
-  AppDatabaseProvider,
+import {
+  REMOTE_APP_DATABASE_METHODS,
+  type AppDatabase,
+  type AppDatabaseOpenContext,
+  type AppDatabaseProvider,
 } from "@lapis-notes/api/app-database";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
-import { NativeTursoConnection } from "./native-connection.ts";
+import {
+  NativeDatabaseTransport,
+  type DatabaseChannelFactory,
+} from "./database-transport.ts";
 
 export function createNativeDatabaseProvider(
   selected: VaultDescriptor,
   call?: NativeCall,
+  channel?: DatabaseChannelFactory,
 ): AppDatabaseProvider {
   return {
     id: "turso-native-desktop",
@@ -23,31 +29,40 @@ export function createNativeDatabaseProvider(
         throw new Error(
           "The native database provider requires its admitted Tauri vault and direct role",
         );
-      const connection = await NativeTursoConnection.open(selected, call);
-      try {
-        const { TursoAppDatabase } = await import(
-          "@lapis-notes/api/app-database"
-        );
-        const database = new TursoAppDatabase(context.vaultId, {
-          kind: "turso-native",
+      const transport = await NativeDatabaseTransport.open(
+        selected,
+        call,
+        channel,
+      );
+      const database: Record<string, unknown> = {
+        kind: "turso-native",
+        vaultId: context.vaultId,
+        descriptor: {
           providerId: this.id,
+          engine: "turso",
           transport: "native",
           role: "direct",
-          connectionFactory: async () => connection,
-        });
-        await database.open();
-        return database;
-      } catch (error) {
-        try {
-          await connection.close();
-        } catch (cleanup) {
-          throw new AggregateError(
-            [error, cleanup],
-            "Native database startup and cleanup failed",
-          );
-        }
-        throw error;
-      }
+          storageMode: "local",
+          capabilities: {
+            nativeFullTextSearch: true,
+            vectorSearch: true,
+            approximateNearestNeighbors: false,
+            localEmbeddings: true,
+            crossTabCoordination: false,
+            sync: false,
+          },
+        },
+        async open() {
+          transport.requireOpen();
+        },
+        close: () => transport.close(),
+        subscribeToChanges: (
+          listener: Parameters<AppDatabase["subscribeToChanges"]>[0],
+        ) => transport.subscribe(listener),
+      };
+      for (const method of REMOTE_APP_DATABASE_METHODS)
+        database[method] = (...args: unknown[]) => transport.call(method, args);
+      return database as unknown as AppDatabase;
     },
   };
 }

@@ -72,9 +72,13 @@ export class VaultClient {
     });
   }
 
-  async closeAll(): Promise<void> {
+  async prepareLeave(mode: "close" | "reload"): Promise<void> {
+    if (mode === "close") await this.#call("vault_prepare_leave");
+  }
+
+  async closeAll(mode: "close" | "reload" = "close"): Promise<void> {
     for (const selected of this.#admissions.values())
-      await this.close(selected);
+      await this.close(selected, mode);
   }
 
   async select(createName?: string): Promise<VaultDescriptor | null> {
@@ -101,11 +105,14 @@ export class VaultClient {
     return selected;
   }
 
-  close(selected: VaultDescriptor): Promise<void> {
+  close(
+    selected: VaultDescriptor,
+    mode: "close" | "reload" = "close",
+  ): Promise<void> {
     const current = this.#closing.get(selected.sessionId);
     if (current) return current;
     this.#retiring.add(selected.sessionId);
-    const operation = this.#release(selected).finally(() => {
+    const operation = this.#release(selected, mode).finally(() => {
       this.#closing.delete(selected.sessionId);
       this.#retiring.delete(selected.sessionId);
     });
@@ -113,7 +120,10 @@ export class VaultClient {
     return operation;
   }
 
-  async #release(selected: VaultDescriptor): Promise<void> {
+  async #release(
+    selected: VaultDescriptor,
+    mode: "close" | "reload",
+  ): Promise<void> {
     const results = await Promise.allSettled(
       [...(this.#watches.get(selected.sessionId) ?? [])].map(async (watch) =>
         watch.close(),
@@ -121,7 +131,10 @@ export class VaultClient {
     );
     const failed = results.find((result) => result.status === "rejected");
     if (failed?.status === "rejected") throw failed.reason;
-    await this.#call("vault_close", { sessionId: selected.sessionId });
+    await this.#call("vault_close", {
+      sessionId: selected.sessionId,
+      ...(mode === "reload" ? { reload: true } : {}),
+    });
     this.#admissions.delete(selected.sessionId);
     this.#watches.delete(selected.sessionId);
   }

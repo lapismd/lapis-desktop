@@ -19,6 +19,10 @@ pub struct NativeServices {
 
 impl NativeServices {
     pub fn close_vault(&mut self, session_id: &str) -> io::Result<()> {
+        self.close_vault_mode(session_id, false)
+    }
+
+    pub fn close_vault_mode(&mut self, session_id: &str, reload: bool) -> io::Result<()> {
         self.vaults.get(session_id)?;
         if self.databases.has_session(session_id) {
             return Err(io::Error::new(
@@ -28,7 +32,11 @@ impl NativeServices {
         }
         // A watcher never acquires the services lock. Do not hold fs_gate here:
         // joining a worker waiting to snapshot would otherwise deadlock.
-        self.core_vaults.close(&self.vaults, session_id)?;
+        if reload {
+            self.core_vaults.detach(&self.vaults, session_id)?;
+        } else {
+            self.core_vaults.close(&self.vaults, session_id)?;
+        }
         self.watches.close_session(session_id)?;
         self.with_files(|services| services.vaults.close(session_id))?;
         self.ai.finish_close_vault(session_id);
@@ -115,6 +123,23 @@ impl From<io::Error> for NativeError {
     }
 }
 
+pub fn history_root(
+    app: &tauri::AppHandle,
+) -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
+    #[cfg(not(feature = "e2e"))]
+    {
+        Ok(app.path().app_data_dir()?.join("vault-history"))
+    }
+    #[cfg(feature = "e2e")]
+    {
+        let _ = app;
+        Ok(
+            std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
+                .join("vault-history"),
+        )
+    }
+}
+
 pub fn initialize(
     app: &tauri::AppHandle,
 ) -> Result<std::path::PathBuf, Box<dyn std::error::Error>> {
@@ -125,15 +150,22 @@ pub fn initialize(
     #[cfg(feature = "e2e")]
     let profile =
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
+    let vaults = VaultManager::new(&profile)?;
+    let fs_gate = Arc::new(Mutex::new(()));
+    let core_vaults = lapis_desktop::vault::services::VaultServices::new_with_backup(
+        &profile,
+        &history_root(app)?,
+        fs_gate.clone(),
+    )?;
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
         imports: lapis_desktop::vault::admission::VaultAdmissions::default(),
         ai: lapis_desktop::vault::admission::VaultAdmissions::default(),
         repository: lapis_desktop::repository::RepositoryAdmissions::default(),
-        vaults: VaultManager::new(&profile)?,
-        core_vaults: lapis_desktop::vault::services::VaultServices::default(),
-        databases: NativeDatabases::new(profile.join("databases")),
+        vaults,
+        core_vaults,
+        databases: NativeDatabases::default(),
         watches: WatchRegistry::default(),
-        fs_gate: Arc::new(Mutex::new(())),
+        fs_gate,
     }))));
     Ok(profile)
 }

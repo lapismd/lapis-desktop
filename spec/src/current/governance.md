@@ -1,21 +1,21 @@
 # Governance
 
 [Shared screens](shared-screen-integration.md) own integration. Retirement MUST
-preserve revisions, archives and evidence; keep native, distribution and visual
-gates separate. Commits MUST refresh ledger/MIGRATION UTC date/time and
+preserve revisions/archives/evidence and separate native/distribution/visual
+gates. Commits MUST refresh ledger/MIGRATION UTC date/time and
 verified/running/waiting activity when work changes (E-PLAN-006; E-CORE-014).
+M16.3 groups database admission/observation under `database`; Notes owns its
+shared engine/generated public call contract.
 
-E-AI-094/101 retain LD-GOV-005 source limits by separating ACP configuration and
-tool-title projection. Added mode icons are preoptimized for cold catalog
-imports; no ownership, admission, baseline or dependency policy is relaxed.
+E-AI-094/101 split ACP configuration/tool titles under LD-GOV-005. Mode icons
+are preoptimized for cold imports; existing policies and baselines stay intact.
 
 E-AI-093 retains M13 gates; E-AI-121 adds isolated SQLite import fixtures.
 E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain
 boundary/identity evidence; LD-GOV-002 rules remain unchanged.
 
-M5 owns App watch/leave; archives own tree/views and hosts own teardown.
-Development ignores generated docs/build roots while retaining source HMR
-(E-CATALOG-016); vault watching and native admission remain unchanged.
+M5 owns App watch/leave, archives tree/views, hosts teardown. E-CATALOG-016
+ignores generated roots; source HMR, vault watching and admission stay intact.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.

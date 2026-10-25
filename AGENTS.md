@@ -80,7 +80,7 @@ src/
     desktop/               Startup, window behavior and leave coordination
     launcher/              Launcher appearance preferences
     native/                Native bridge, vault client and transport errors
-      database/            Database frames, connections and provider
+      database/            High-level database calls, observation and provider
     notes/                 Notes session construction and plugin profile
     terminal/              Session coordination, preferences and owned bindings
   styles/                  Global shell, workspace and window chrome CSS
@@ -111,7 +111,7 @@ src-tauri/src/
   main.rs                  Binary entrypoint and debug acceptance feature gate
   lib.rs                   Reusable native service module declarations
   ai/                      Native AI admission and user-command policy
-  database/                Database connections, registry, SQL guard and frames
+  database/                Database view admission and scoped commit observation
   integration/             URL and desktop-service policy
   lifecycle/               Leave request state machine
   plugins/                 Admitted installed-plugin assets

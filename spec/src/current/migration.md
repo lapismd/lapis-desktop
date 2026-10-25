@@ -2,10 +2,10 @@
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
-Generated tables group gates, naturally sort IDs and link their spec ledger.
-Commits MUST refresh UTC date/time and activity (E-CORE-014/015). Notes owns
-R0–R7 in main/default; Desktop projects its own ledger and adoption, linking the
-master rather than copying source status (E-PROGRESS-002/003).
+Generated tables group gates, sort IDs and link their spec ledger. Commits MUST
+refresh UTC date/time and activity. Notes main/default owns R0–R7; Desktop
+projects its own ledger and adoption (E-PROGRESS-002/003, E-CORE-014/015).
+M16.3/E-CORE-016 tracks R1.3.8 database intake.
 
 E-AI-093 retains local ACP/vault transcripts and M13/M13.3 Deferred at
 `codex/desktop-jj-chat-checkpoint-20261020`; M10.2 keeps its ordinary ACP gate.

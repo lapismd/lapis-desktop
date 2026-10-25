@@ -73,6 +73,7 @@
           async openAuthorization() {},
         },
         backup: {
+          async detach() {},
           async start() {
             return { phase: "ready", checkpoint: null, error: null };
           },

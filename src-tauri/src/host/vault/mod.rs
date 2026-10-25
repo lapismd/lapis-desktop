@@ -153,10 +153,19 @@ pub async fn vault_open_recent(
 }
 
 #[tauri::command]
+pub async fn vault_prepare_leave(host: tauri::State<'_, VaultHost>) -> Result<(), NativeError> {
+    access(host.inner().clone(), |manager| {
+        manager.core_vaults.close_detached()
+    })
+    .await
+}
+
+#[tauri::command]
 pub async fn vault_close(
     app: tauri::AppHandle,
     host: tauri::State<'_, VaultHost>,
     session_id: String,
+    reload: Option<bool>,
 ) -> Result<(), NativeError> {
     let repository = app.state::<crate::host::repository::RepositoryHost>();
     crate::host::windows::popups::close_vault(&app, &session_id)?;
@@ -164,10 +173,19 @@ pub async fn vault_close(
     let closing = session_id.clone();
     crate::host::ai::imports::close_vault(&app, host.inner().clone(), &session_id).await?;
     crate::host::ai::admission::close_vault(&app, host.inner().clone(), &session_id).await?;
-    crate::host::repository::commands::close_vault(&repository, host.inner().clone(), &session_id)
-        .await?;
+    crate::host::repository::commands::close_vault(
+        &repository,
+        host.inner().clone(),
+        &session_id,
+        reload.unwrap_or(false),
+    )
+    .await?;
     access(host.inner().clone(), move |manager| {
-        manager.close_vault(&closing)
+        if reload.unwrap_or(false) {
+            manager.close_vault_mode(&closing, true)
+        } else {
+            manager.close_vault(&closing)
+        }
     })
     .await?;
     crate::host::terminal::close_vault(&app, &session_id)

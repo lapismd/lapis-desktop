@@ -31,7 +31,7 @@ fn fixture() -> Fixture {
         ai: VaultAdmissions::default(),
         repository: lapis_desktop::repository::RepositoryAdmissions::default(),
         vaults,
-        databases: NativeDatabases::new(profile.path().join("databases")),
+        databases: NativeDatabases::default(),
         watches: WatchRegistry::default(),
         fs_gate: Arc::new(Mutex::new(())),
     })));

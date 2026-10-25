@@ -328,3 +328,8 @@
 - [Native model-cache dependency intake](history/E-CORE-015.md)
 
 - [Desktop and master migration checkpoint alignment](history/E-PROGRESS-003.md)
+
+- [Shared native AppDatabase intake](history/E-CORE-016.md)
+
+- [Shared vault-owned backup intake](history/E-CORE-017.md)
+- [Shared asset reader and native file-action compatibility](history/E-CORE-018.md)

@@ -36,6 +36,7 @@
       return {
         reader: fixture.reader,
         backup: {
+          async detach() {},
           async start(changed) {
             listener = changed;
             root.dataset.backupStops = String(stops);

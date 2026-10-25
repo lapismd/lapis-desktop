@@ -5631,8 +5631,11 @@ dependencies = [
  "cap-tempfile",
  "chrono",
  "icu_collator",
+ "jj-store-jj",
+ "jj-vault",
  "lapis-app-protocol",
  "libc",
+ "notify",
  "ort",
  "regress",
  "reqwest 0.12.28",
@@ -5645,6 +5648,7 @@ dependencies = [
  "tokio",
  "turso",
  "uuid",
+ "zip",
 ]
 
 [[package]]
@@ -5709,7 +5713,6 @@ dependencies = [
  "tauri-plugin-window-state",
  "tempfile",
  "tokio",
- "turso",
  "url",
  "uuid",
  "zeroize",
@@ -10660,6 +10663,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "typed-path"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ce898823d8cd0f028662d2f349694b1af0a5cc9be83f1d213a00d3147445e1e"
+
+[[package]]
 name = "typeid"
 version = "1.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -12309,6 +12318,22 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.9",
+]
+
+[[package]]
+name = "zip"
+version = "9.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2886b00003a72c4ccee3f42cfc34908d33b2508a74d827dc2a4244706475c704"
+dependencies = [
+ "crc32fast",
+ "flate2",
+ "getrandom 0.4.3",
+ "indexmap 2.14.2",
+ "memchr",
+ "nix 0.31.3",
+ "typed-path",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]

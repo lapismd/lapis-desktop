@@ -109,7 +109,7 @@ test("failed note saves block native close, retain the dirty editor and permit r
   chmodSync(join(vault, "Notes"), 0o555);
   await edit(session, "# Dirty text must survive\n");
   await session.requestClose();
-  await session.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await session.browser.$('.desktop-failure [role="alert"]').waitForDisplayed();
   assert.equal(session.isRunning(), true);
   assert.equal(readFileSync(file, "utf8"), "# Initial note\n");
   await editorText(session, "Dirty text must survive");
@@ -142,7 +142,7 @@ test("failed layout saves block reload; repaired reload restores in the same nat
     document.documentElement.dataset.reloadProbe = "old-document";
   });
   await reloadNotes(session.browser);
-  await session.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await session.browser.$('.desktop-failure [role="alert"]').waitForDisplayed();
   assert.equal(session.isRunning(), true);
   assert.equal(
     await session.browser.execute(
@@ -177,7 +177,7 @@ test("failed physical-root restoration stays visible and preserves the recovery 
   renameSync(vault, `${vault}-moved`);
   const second = await nativeSession("missing-profile", root);
   context.after(second.cleanup);
-  await second.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await second.browser.$('.desktop-failure [role="alert"]').waitForDisplayed();
   await second.browser.$("button*=Open Vault").waitForDisplayed();
   assert.equal(
     readFileSync(join(root, "profile/last-notes.json"), "utf8"),

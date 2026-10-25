@@ -1,10 +1,9 @@
 pub(crate) mod adoption;
 pub(crate) mod ai_history;
 pub(crate) mod backup;
+mod backup_client;
 mod backup_close;
-mod backup_provider;
 pub(crate) mod backup_restore;
-mod backup_watch;
 pub(crate) mod commands;
 pub(crate) mod forges;
 pub(crate) mod indexed_search;
@@ -47,17 +46,7 @@ pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Erro
     app.plugin(tauri_plugin_jj_store::Builder::new(history.clone()).build())?;
     forges::initialize(app)?;
     if !app.manage(RepositoryHost {
-        backups: backup::Backups::new({
-            #[cfg(not(feature = "e2e"))]
-            {
-                app.path().app_data_dir()?.join("vault-history")
-            }
-            #[cfg(feature = "e2e")]
-            {
-                std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
-                    .join("vault-history")
-            }
-        }),
+        backups: backup::Backups::new(crate::host::state::history_root(app)?),
         history,
         working_tree: jj_store_service::working_tree::Observer::new(
             tauri_plugin_jj_store::local::Executor::new(1)

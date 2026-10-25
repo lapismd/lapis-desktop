@@ -108,13 +108,37 @@ pub fn lifecycle_quit(app: AppHandle) {
 }
 
 #[tauri::command]
-pub fn lifecycle_result(app: AppHandle, request_id: String, saved: bool) -> Result<(), String> {
-    let action = app
-        .state::<NativeLifecycle>()
-        .0
-        .lock()
-        .unwrap()
-        .finish(&request_id, saved)?;
+pub async fn lifecycle_result(
+    app: AppHandle,
+    request_id: String,
+    saved: bool,
+) -> Result<(), String> {
+    let immediate = {
+        let state = app.state::<NativeLifecycle>();
+        let mut lifecycle = state.0.lock().unwrap();
+        if !saved || lifecycle.action(&request_id)? == LeaveAction::Reload {
+            Some(lifecycle.finish(&request_id, saved)?)
+        } else {
+            None
+        }
+    };
+    let action = match immediate {
+        Some(action) => action,
+        None => {
+            let host = app
+                .state::<crate::host::state::NativeHost>()
+                .inner()
+                .clone();
+            crate::host::state::access(host, |services| services.core_vaults.shutdown())
+                .await
+                .map_err(|error| error.to_string())?;
+            app.state::<NativeLifecycle>()
+                .0
+                .lock()
+                .unwrap()
+                .finish(&request_id, true)?
+        }
+    };
     match action {
         Some(LeaveAction::Close) => app.exit(0),
         Some(LeaveAction::Reload) => app

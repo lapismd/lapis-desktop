@@ -85,13 +85,28 @@ The native coordinator and filesystem watcher own bounded workers. The named
 immutable history admission and accept only an opaque admitted vault session.
 Native code chooses roots and paths. Source replacements revoke the binding. The
 writer shares the guarded file-IO gate and drains after normal editor saves.
-Vault/plugin close stops watching and completes final local capture before
-native release. A failed final capture retains the original native owner and
-visible failure; retry captures repaired saved files before release. Final
-capture MUST complete before destructive workspace teardown. Failed leave MUST
-retain the same editor, views and plugin owners, resume both ordinary and backup
-watching, and permit a later retry. Reattachment MUST resolve any previous close
-outcome before starting another worker. Network failure cannot block closure.
+Explicit vault close or plugin disable stops watching and completes final local
+capture before native release. The shared-Rust intake gives the vault service
+ownership of that coordinator and watch; native window entries retain only
+admitted command/status clients. Renderer reload detaches those clients and
+keeps capture running. Explicit disable and storage migration drain the selected
+engine before restart. Quit also drains vaults retained by earlier reloads;
+preflight of those detached vaults happens before destructive App teardown. The
+exact main-only `vault_prepare_leave` command takes no paths or caller identity
+and performs that retained-vault preflight. A failed final capture retains the
+original native owner and visible failure; retry captures repaired saved files
+before release. Final capture MUST complete before destructive workspace
+teardown. Failed leave MUST retain the same editor, views and plugin owners,
+resume both ordinary and backup watching, and permit a later retry. Reattachment
+MUST resolve any previous close outcome before starting another worker. Network
+failure cannot block closure.
+
+R1.3.10 native IPC acceptance detaches the admitted backup client, reloads the
+WebView, verifies external captures through immutable history without another
+start, and checks final Quit bytes after a cold reopen. Explicit stop/restart
+and failed retained-vault preflight keep their own assertions. A hidden WebView
+qualifies these service/transport operations; actual editor/visible-window leave
+and recovery remain separate packaged acceptance.
 
 Automatic history enablement is independent of status visibility. The status
 control reports saving, saved, paused or attention; background work uses the

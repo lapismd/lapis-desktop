@@ -42,10 +42,10 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-VAULT-004 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
 | LD-VAULT-005 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
 | LD-VAULT-006 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md); [E-REVIEW-001](../history/E-REVIEW-001.md) |
-| LD-DB-001 | Implemented | [E-DB-001](../history/E-DB-001.md) |
-| LD-DB-002 | Implemented | [E-DB-001](../history/E-DB-001.md) |
-| LD-DB-003 | Implemented | [E-DB-001](../history/E-DB-001.md); [E-SESSION-002](../history/E-SESSION-002.md); E-CORE-014 adds hidden native SQL provider-invalidation acceptance; native semantic provider adoption remains separate. |
-| LD-DB-004 | Implemented | [E-DB-001](../history/E-DB-001.md) |
+| LD-DB-001 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
+| LD-DB-002 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
+| LD-DB-003 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
+| LD-DB-004 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-SESSION-001 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md) |
 | LD-SESSION-002 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md) |
 | LD-LIFE-001 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
@@ -101,7 +101,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-PLUG-003 | Implemented | [E-PORTABLE-002](../history/E-PORTABLE-002.md): Seven portable plugins, native writes/freshness/isolation, real worker/WASM cleanup, 84 catalog and 108 cold native cases pass. |
 | LD-PLUG-004 | Implemented | [E-PORTABLE-002](../history/E-PORTABLE-002.md): Seven portable plugins, native writes/freshness/isolation, real worker/WASM cleanup, 84 catalog and 108 cold native cases pass. |
 | LD-INSTALL-001 | Implemented | [E-INSTALL-001](../history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. |
-| LD-INSTALL-002 | Implemented | [E-INSTALL-001](../history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. |
+| LD-INSTALL-002 | Implemented | [E-INSTALL-001](../history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. [E-CORE-018](../history/E-CORE-018.md) separately tracks the shared verifier intake and native compatibility. |
 | LD-AI-001 | Planned | [E-AI-002](../history/E-AI-002.md): Reusable adapter passes; production orchestration and tools/credentials retain M10.2-M10.3 gates.; [E-AI-094](../history/E-AI-094.md): saved agent context and negotiated permissions.  [E-AI-095](../history/E-AI-095.md): shared discovery/cache and progress. |
 | LD-AI-002 | Planned | [E-AI-011](../history/E-AI-011.md): Memory/tool policy qualified; mounted UI and native recovery remain required., [E-REPO-016](../history/E-REPO-016.md); [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](../history/E-AI-094.md): saved agent context and negotiated permissions.  [E-AI-095](../history/E-AI-095.md): shared discovery/cache and progress. |
 | LD-AI-003 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
@@ -113,7 +113,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-REPO-002 | Implemented | [E-REPO-006](../history/E-REPO-006.md): cold native pins/diffs/restart; [M13.2 ledger](progress/milestones.md): transport and presentation history; [E-REPO-056](../history/E-REPO-056.md): neutral service compatibility; [E-REPO-016](../history/E-REPO-016.md): background work. |
 | LD-REPO-003 | Planned | Native-store experiment **Deferred** at `codex/desktop-jj-chat-checkpoint-20261020`; [E-AI-092](../history/E-AI-092.md) preserves evidence/gates; [E-AI-093](../history/E-AI-093.md) makes local ACP the active profile. |
 | LD-REPO-004 | Implemented | [M13.2 ledger](progress/milestones.md): repository UI history and original gates; [E-REPO-016](../history/E-REPO-016.md): loading progress. |
-| LD-REPO-005 | Planned | [E-REPO-053](../history/E-REPO-053.md): native storage/adoption; [E-REPO-054](../history/E-REPO-054.md): sync persistence; [M14](progress/vault-backup.md) retains provider gates.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI. |
+| LD-REPO-005 | Planned | [E-REPO-053](../history/E-REPO-053.md): native storage/adoption; [E-REPO-054](../history/E-REPO-054.md): sync persistence; [M14](progress/vault-backup.md) retains provider gates.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-CORE-017](../history/E-CORE-017.md): shared backup intake checks pass, including complete catalog and native lifecycle acceptance; the separate Markdown exception is explicitly accepted for the consumer commit. |
 
 LD-REPO-004 picker sizing preview: [E-REPO-014](../history/E-REPO-014.md). Inset
 right-sidebar blame sizing: [E-REPO-055](../history/E-REPO-055.md).

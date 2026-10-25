@@ -140,11 +140,12 @@ pub fn run() -> tauri::Result<()> {
             crate::host::vault::vault_select,
             crate::host::vault::vault_open_recent,
             crate::host::vault::vault_close,
+            crate::host::vault::vault_prepare_leave,
             crate::host::vault::files::vault_fs,
             crate::host::vault::watch::vault_watch_start,
             crate::host::vault::watch::vault_watch_stop,
             crate::host::database::vault_db_open,
-            crate::host::database::vault_db_execute,
+            crate::host::database::vault_db_call,
             crate::host::database::vault_db_close
         ])
         .setup(move |app| {

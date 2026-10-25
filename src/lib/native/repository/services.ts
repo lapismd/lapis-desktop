@@ -39,6 +39,7 @@ export function createNativeRepository(
   const backup: typeof backupTransport = {
     ...backupTransport,
     start(changed) {
+      attempted = true;
       return (initialBackup = backupTransport.start(changed)) as ReturnType<
         typeof backupTransport.start
       >;

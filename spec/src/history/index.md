@@ -388,3 +388,8 @@ by the task ledger, not inferred from this list.
 - [Native model-cache dependency intake](E-CORE-015.md)
 
 - [Desktop and master migration checkpoint alignment](E-PROGRESS-003.md)
+
+- [Shared native AppDatabase intake](E-CORE-016.md)
+
+- [Shared vault-owned backup intake](E-CORE-017.md)
+- [Shared asset reader and native file-action compatibility](E-CORE-018.md)

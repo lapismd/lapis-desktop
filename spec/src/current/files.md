@@ -17,6 +17,11 @@ closing one of several admissions preserves the others.
 Backup/window-independent work and hosted acceptance remain separate R1.3 gates
 (E-CORE-003).
 
+R1.3.10 reload revokes native session/resource admission and detaches its shared
+service client while preserving vault-owned capture. Explicit close drains the
+selected owner. Quit preflights vaults retained by earlier reloads before App
+teardown, and service drain precedes exit approval (E-CORE-017).
+
 E-CORE-004/005 refresh shared byte-writer/database dependencies. Desktop file
 IPC, database adapters and media policy stay unchanged; hosted intake is
 separate.

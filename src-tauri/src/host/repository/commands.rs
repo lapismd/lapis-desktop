@@ -116,6 +116,9 @@ pub async fn desktop_repository_release(
         Ok(())
     })
     .await?;
+    if request.reload {
+        repository.backups.detach_window(&context.window).await;
+    }
     repository
         .history
         .revoke(&context.window)
@@ -128,8 +131,13 @@ pub async fn close_vault(
     repository: &RepositoryHost,
     host: NativeHost,
     session: &str,
+    reload: bool,
 ) -> Result<(), NativeError> {
-    repository.backups.close(host.clone(), session).await?;
+    if reload {
+        repository.backups.detach(session).await;
+    } else {
+        repository.backups.close(host.clone(), session).await?;
+    }
     let session = session.to_owned();
     let retired = access(host.clone(), move |services| {
         services.vaults.get(&session)?;

@@ -238,10 +238,10 @@ attachment; development-only catalog helpers retain their separate owner.
 
 ## Portable plugin asset admission
 
-M8.3 reuses the public Notes asset-server contract and explicit Tauri execution
-selection. A Tauri session selects the portable workspace ESM entry; Electron,
-Node and CommonJS compatibility entries cannot execute. Supported portable
-plugins remain dynamically installed rather than entering the static profile.
+M8.3 selects portable workspace ESM through the public asset-server contract;
+Electron/Node/CommonJS cannot execute. Plugins remain dynamic. Notes Core
+verifies installed bytes; Tauri retains URL, origin and physical admission
+([E-CORE-018](../history/E-CORE-018.md)).
 
 Bundled-origin assets use
 `/__lapis/plugins/<admission>/<plugin>/<version>/<fingerprint>/<path>`. Rust
@@ -352,9 +352,9 @@ through their real controls so desktop review shows the log and diff together.
 NarrowPaneInWideShell retains the crowded-pane acceptance; preview choices do
 not change application sidebar preferences. E-REPO-008 records this correction.
 
-Automatic backup stories mount the production status control with owned service
-lifetime, saving skeleton and failure/recovery toast. E-REPO-026 records the
-focused catalog proof; LD-CAT-001/002/003 baseline/release gates are unchanged.
+Backup stories retain production status, saving skeleton and failure/recovery
+toasts. Detach keeps service-owned capture; disable drains. E-CORE-017 extends
+E-REPO-026; LD-CAT-001/002/003 baseline/release gates remain unchanged.
 
 E-REPO-027 adds production file-restore and responsive initial-capture stories.
 LD-CAT-001/002/003 teardown, loading, failure-toast and visual gates remain.

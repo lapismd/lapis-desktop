@@ -50,7 +50,7 @@ impl Lifecycle {
         self.ready.then_some(request)
     }
 
-    pub fn finish(&mut self, request_id: &str, saved: bool) -> Result<Option<LeaveAction>, String> {
+    pub fn action(&self, request_id: &str) -> Result<LeaveAction, String> {
         let request = self
             .pending
             .as_ref()
@@ -58,7 +58,11 @@ impl Lifecycle {
         if request.request_id != request_id {
             return Err("Lifecycle acknowledgement does not match the pending request".into());
         }
-        let action = request.action;
+        Ok(request.action)
+    }
+
+    pub fn finish(&mut self, request_id: &str, saved: bool) -> Result<Option<LeaveAction>, String> {
+        let action = self.action(request_id)?;
         self.pending = None;
         if !saved {
             return Ok(None);

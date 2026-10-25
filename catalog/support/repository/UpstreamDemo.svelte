@@ -81,6 +81,7 @@
       return {
         reader: fixture.reader,
         backup: {
+          detach: async () => {},
           start: async () => backup,
           capture: async () => backup,
           stop: async () => {

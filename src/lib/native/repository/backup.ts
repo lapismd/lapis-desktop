@@ -49,5 +49,9 @@ export function nativeBackup(
       if (events) events.onmessage = () => {};
       events = undefined;
     },
+    async detach() {
+      if (events) events.onmessage = () => {};
+      events = undefined;
+    },
   };
 }

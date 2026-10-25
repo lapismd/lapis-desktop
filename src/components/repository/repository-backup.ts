@@ -55,8 +55,8 @@ export class RepositoryBackup {
     else await this.controller.pause();
     await this.sync?.start();
   }
-  async prepareLeave() {
-    await this.controller.pause();
+  async prepareLeave(mode: "close" | "reload" = "close") {
+    await this.controller.prepareLeave(mode);
   }
   async resumeLeave() {
     if (this.#enabled) await this.controller.resume();

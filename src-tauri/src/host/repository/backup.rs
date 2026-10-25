@@ -1,7 +1,8 @@
 //! Explicit vault backup writer; immutable history admission does not initialize it.
+use super::backup_client::BackupClient;
 use super::{RepositoryHost, policy};
 use crate::host::state::{NativeError, NativeHost, access};
-use jj_vault::{Backup, NativeRepository, Status, Timing};
+use jj_vault::Status;
 use lapis_desktop::repository::storage::Locations;
 use serde::Deserialize;
 use std::{
@@ -22,8 +23,7 @@ pub struct Request {
 }
 pub(super) struct Owner {
     pub window: String,
-    pub backup: Backup,
-    pub(super) watch: Option<String>,
+    pub backup: BackupClient,
     pub(super) events: Option<tokio::task::JoinHandle<()>>,
 }
 pub struct Backups {
@@ -61,38 +61,6 @@ impl Backups {
     pub fn fence(&self) {
         self.active.store(false, Ordering::Release);
     }
-    async fn prepare_start(
-        &self,
-        host: NativeHost,
-        session: &str,
-        window: &str,
-    ) -> Result<(), NativeError> {
-        let draining = {
-            let entries = self.entries.lock().await;
-            if let Some(owner) = entries.get(session) {
-                if owner.window != window {
-                    return Err(error("Backup belongs to another window"));
-                }
-                owner.watch.is_none()
-            } else {
-                false
-            }
-        };
-        if draining && let Err(failure) = self.close(host, session).await {
-            // Failed capture restores watching; an unknown close is resolved
-            // before this owner is reattached or a replacement is created.
-            if !self
-                .entries
-                .lock()
-                .await
-                .get(session)
-                .is_some_and(|owner| owner.watch.is_some())
-            {
-                return Err(failure);
-            }
-        }
-        Ok(())
-    }
 }
 #[tauri::command]
 pub async fn desktop_backup_start(
@@ -108,79 +76,41 @@ pub async fn desktop_backup_start(
     }
     let _transition = repository.transitions.lock().await;
     let session = request.session_id.clone();
-    let (descriptor, files) = access(host.inner().clone(), move |s| {
-        Ok((s.vaults.descriptor(&session)?.clone(), s.fs_gate.clone()))
+    let (descriptor, client) = access(host.inner().clone(), move |s| {
+        Ok((
+            s.vaults.descriptor(&session)?.clone(),
+            s.core_vaults.client(&s.vaults, &session)?,
+        ))
     })
     .await?;
-    repository
-        .backups
-        .prepare_start(host.inner().clone(), &request.session_id, &caller.window)
-        .await?;
     let mut entries = repository.backups.entries.lock().await;
+    if entries
+        .get(&request.session_id)
+        .is_some_and(|owner| owner.window != caller.window)
+    {
+        return Err(error("Backup belongs to another window"));
+    }
+    // Resolve an earlier stop even when its caller did not observe completion.
+    // Core reuses a live owner or explicitly restarts a successfully drained one.
+    let backup = BackupClient::start(client).await.map_err(error)?;
     if !entries.contains_key(&request.session_id) {
-        let binding = super::storage::resolve(&repository, descriptor, true).await?;
-        let backup = Backup::start_idle(
-            super::backup_provider::Provider {
-                native: NativeRepository {
-                    binding: binding.clone(),
-                    exclusions: vec![],
-                },
-                files,
-                active: repository.backups.active.clone(),
-            },
-            Timing::default(),
-        )
-        .map_err(error)?;
-        let watch = super::backup_watch::start(
-            host.inner().clone(),
-            request.session_id.clone(),
-            backup.changes(),
-        )
-        .await;
-        let watch = match watch {
-            Ok(watch) => watch,
-            Err(failure) => {
-                let _ = backup.close().await;
-                return Err(failure);
-            }
-        };
-        // Watching is live before initialization and the first tree scan. Any
-        // concurrent write is retained by the coordinator's dirty flag.
-        if let Err(failure) = backup.capture().await {
-            let session = request.session_id.clone();
-            let id = watch.clone();
-            let _ = access(host.inner().clone(), move |s| {
-                s.watches.close(&session, &id)
-            })
-            .await;
-            let _ = backup.close().await;
-            return Err(error(failure));
-        }
+        let binding = super::storage::resolve(&repository, descriptor, false).await?;
         let session = request.session_id.clone();
         let state = binding.state;
-        if let Err(failure) = access(host.inner().clone(), move |s| {
+        access(host.inner().clone(), move |s| {
             s.repository.bind_backup(&s.vaults, &session, &state)
         })
-        .await
-        {
-            let session = request.session_id.clone();
-            let id = watch.clone();
-            let _ = access(host.inner().clone(), move |s| {
-                s.watches.close(&session, &id)
-            })
-            .await;
-            let _ = backup.close().await;
-            return Err(failure);
-        }
+        .await?;
         entries.insert(
             request.session_id.clone(),
             Owner {
                 window: caller.window.clone(),
                 backup,
-                watch: Some(watch),
                 events: None,
             },
         );
+    } else {
+        entries.get_mut(&request.session_id).unwrap().backup = backup;
     }
     let owner = entries
         .get_mut(&request.session_id)

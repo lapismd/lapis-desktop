@@ -1,70 +1,36 @@
-use lapis_desktop::database::{DbReply, NativeDatabases};
-use serde_json::json;
-use tempfile::tempdir;
+use lapis_app_core::services::Runtime;
+use lapis_desktop::database::NativeDatabases;
+use std::sync::Arc;
 use uuid::Uuid;
 
-#[test]
-fn connection_authority_is_idempotent_for_its_owner_and_rejects_other_admissions() {
-    tauri::async_runtime::block_on(async {
-        let root = tempdir().unwrap();
-        let mut databases = NativeDatabases::new(root.path().to_owned());
-        let profile = Uuid::new_v4().to_string();
-        let connection = databases
-            .open("owner".into(), profile.clone())
-            .await
-            .unwrap();
-        assert_eq!(
-            connection,
-            databases
-                .open("owner".into(), profile.clone())
-                .await
-                .unwrap()
-        );
-        assert!(
-            databases
-                .open("other".into(), profile.clone())
-                .await
-                .is_err()
-        );
-        assert!(
-            databases
-                .open("owner".into(), Uuid::new_v4().to_string())
-                .await
-                .is_err()
-        );
-        let request = || {
-            serde_json::from_value(
-                json!({"operation":"get","statement":{"sql":"SELECT 1 AS value"}}),
-            )
-            .unwrap()
-        };
-        assert!(
-            databases
-                .execute("other", &connection, request())
-                .await
-                .is_err()
-        );
-        assert!(
-            databases
-                .execute("owner", "unknown", request())
-                .await
-                .is_err()
-        );
-        assert!(
-            matches!(databases.execute("owner", &connection, request()).await.unwrap(), DbReply::Rows { rows } if rows.len() == 1)
-        );
-        assert!(databases.close("other", &connection).await.is_err());
-        assert!(databases.has_session("owner"));
-        databases.close("owner", &connection).await.unwrap();
-        assert!(!databases.has_session("owner"));
-        assert!(
-            databases
-                .execute("owner", &connection, request())
-                .await
-                .is_err()
-        );
-        let reopened = databases.open("other".into(), profile).await.unwrap();
-        assert_ne!(reopened, connection);
-        databases.close("other", &reopened).await.unwrap();
-    });
+#[tokio::test]
+async fn database_view_authority_is_idempotent_and_scoped_to_its_native_client() {
+    let root = tempfile::tempdir().unwrap();
+    let runtime = Runtime::default();
+    let vault = runtime.admit(Uuid::new_v4(), root.path()).unwrap();
+    let first = Arc::new(vault.attach().unwrap());
+    let other = Arc::new(vault.attach().unwrap());
+    let mut registry = NativeDatabases::default();
+    let (id, connection) = registry.open("owner", first.clone()).unwrap();
+    assert_eq!(registry.open("owner", first.clone()).unwrap().0, id);
+    assert!(registry.open("owner", other.clone()).is_err());
+    assert!(registry.get("foreign", &id).is_err());
+    assert!(registry.get("owner", "unknown").is_err());
+    assert!(registry.remove("owner", &id).is_err());
+    let (other_id, other_connection) = registry.open("other", other).unwrap();
+    assert_ne!(other_id, id);
+    assert!(registry.remove("foreign", &id).is_err());
+    assert!(registry.has_session("owner"));
+    connection.close().await;
+    registry.remove("owner", &id).unwrap();
+    assert!(!registry.has_session("owner"));
+    assert!(registry.get("owner", &id).is_err());
+    let (reopened, current) = registry.open("owner", first).unwrap();
+    assert_ne!(reopened, id);
+    assert!(!current.is_closed());
+    current.close().await;
+    registry.remove("owner", &reopened).unwrap();
+    other_connection.close().await;
+    registry.remove("other", &other_id).unwrap();
+    runtime.shutdown().unwrap();
 }

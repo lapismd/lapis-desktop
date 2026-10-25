@@ -5,7 +5,7 @@ import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 import { createNativeDatabaseProvider } from "../../src/lib/native/database/native-database-provider.ts";
 
-test("retained Search provider invalidates native SQL vectors atomically and survives reopen without showing a window", async (context) => {
+test("retained Search provider invalidates shared Rust vectors atomically and survives reopen without showing a window", async (context) => {
   mkdirSync(".local/native-test", { recursive: true });
   const root = mkdtempSync(resolve(".local/native-test/search-provider-"));
   const vault = join(root, "Search café 笔记");
@@ -44,7 +44,11 @@ test("retained Search provider invalidates native SQL vectors atomically and sur
   await quiet();
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
   const selected = await call("vault_select", { createName: null });
-  const provider = createNativeDatabaseProvider(selected, call);
+  const provider = createNativeDatabaseProvider(
+    selected,
+    call,
+    () => undefined,
+  );
   const open = () =>
     provider.open({
       vaultId: selected.profileId,

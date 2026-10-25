@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-25 00:02:53 UTC**.
+Last updated **2026-10-25 07:31:19 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -18,13 +18,42 @@ Last updated **2026-10-25 00:02:53 UTC**.
   cases; 230 native service, 411 renderer/governance and 744 AI cases; renderer
   and static builds; all 2000 catalog cases. These remain evidence for that
   implementation, not adoption of later shared services.
-- Current Desktop work: R1.3.8 Tauri high-level database intake. Desktop still
-  uses its renderer SQL adapter; the shared HTTP adapter is already qualified at
-  Notes `d1a6ddec`. Source prerequisites and their live qualification are
-  tracked in the Notes master rather than duplicated here.
-- Waiting: Tauri database selection/native acceptance, unattended indexing and
-  the remaining R1.3/R2–R7 gates. The retained hosted Web application remains on
-  Node until its replacement acceptance passes. M11 is Deferred.
+- Verified Desktop intake: R1.3.8 / M16.3 replaces renderer SQL with the shared
+  high-level database owner. Nine exact native and eight renderer cases pass;
+  complete checks, four hidden API and all 2000 catalog cases pass. The
+  five-spec native UI lane has 27 passes and one pre-existing Markdown
+  attachment failure. The user explicitly accepted that separate defect as
+  non-blocking on 2026-10-25 and authorized the intake commit; its upstream
+  repair remains pending. M16.3 is Done with that recorded exception.
+- Fresh shared source: Notes `96b01a4b` qualifies installed-plugin delivery and
+  `fe604931` qualifies hosted file actions. Both use the retained production
+  screens. The Rust browser lane has seven passes; PWA twelve and Node24 one.
+  Desktop's asset reader delegates to the shared verifier. Its architecture/
+  App-ownership audits, all seven original asset cases, strict normal/e2e checks
+  and the fresh ordinary bundle/audit pass. One needless reference is corrected
+  without changing behavior. Both bundles and two actual native file-action
+  journeys pass, including rename/move/cold layout and exclusive creation. The
+  Markdown exception is explicitly accepted for this commit.
+  [E-CORE-018](../../history/E-CORE-018.md) keeps source and consumer evidence
+  separate. Five Notes JS archives remain at `b55d3492`; all nineteen receipts
+  are retained without a full-cohort freshness claim.
+- Current backup intake: R1.3.10 selects the Core backup owner through native
+  command/status clients; the duplicate Desktop provider/watch are removed.
+  Reload detaches, explicit close/disable drains and Quit preflights retained
+  vaults before App teardown. All 235 native, 416 renderer/governance, 744 AI,
+  104 focused backup catalog, 12 Shell catalog and 2,000 complete catalog cases
+  pass. All six hidden native API and eleven original lifecycle cases pass;
+  three obsolete Notes banner selectors are repaired without weakening the
+  persistence/recovery assertions. Types, normal/e2e strict checks, both builds,
+  ordinary bundle audit and specification lanes pass. Backup intake checks are
+  complete. The separate Markdown image failure has explicit user acceptance for
+  this consumer commit; the source repair remains pending.
+  [E-CORE-017](../../history/E-CORE-017.md) retains the exact receipts.
+
+- Next: commit this verified database/backup/file-action intake and refresh the
+  Notes master tracker. R2 native execution is under source qualification; it is
+  not yet selected by either host. Unattended indexing and R2–R7 remain open.
+  Node stays the serving baseline; M11 remains Deferred.
 
 <!-- migration-activity:end -->
 
@@ -126,6 +155,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3 | E-CORE-001,E-CORE-002 |
 | M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014,E-CORE-015 |
+| M16.3 | Done | M16.2 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004 | R1.3.8 Tauri intake uses the shared high-level database owner through the existing packed provider. Native admission, commit observation, rollback, view/vault closure, cold persistence and existing Notes/Search UI acceptance pass without a renderer SQL engine. | Qualified with explicitly accepted pre-existing Markdown exception; continue R2 | E-CORE-016,E-CORE-018 |
 
 ## Markdown document review
 

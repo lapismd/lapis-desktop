@@ -1,155 +1,191 @@
-use lapis_desktop::database::{
-    DbReply, DbRequest, NativeDatabase, SqlArgs, SqlStatement, SqlValue,
+use lapis_app_core::{
+    database::Database,
+    embedding::host::NativeEmbeddingHost,
+    services::{DatabaseStorage, Runtime},
 };
-use serde_json::json;
-use tempfile::tempdir;
+use lapis_app_protocol::database::call::{DatabaseCall, DatabaseValue};
+use lapis_desktop::database::{DatabaseConnection, NativeDatabases};
+use serde_json::{Value, json};
+use std::{path::Path, sync::Arc};
 use uuid::Uuid;
 
-fn request(value: serde_json::Value) -> DbRequest {
-    serde_json::from_value(value).unwrap()
+fn selected(profile: &Path, root: &Path) -> (Arc<Runtime>, Uuid, Arc<DatabaseConnection>) {
+    let runtime = Arc::new(Runtime::with_database(
+        DatabaseStorage::new(profile, NativeEmbeddingHost::default()).unwrap(),
+    ));
+    let id = Uuid::new_v4();
+    let client = Arc::new(runtime.admit(id, root).unwrap().attach().unwrap());
+    let (_, connection) = NativeDatabases::default().open("owner", client).unwrap();
+    (runtime, id, connection)
 }
-fn statement(sql: &str, args: Vec<SqlValue>) -> SqlStatement {
-    SqlStatement {
-        sql: sql.to_owned(),
-        args: SqlArgs::Positional(args),
+fn call(method: &str, args: Vec<Value>) -> DatabaseCall {
+    serde_json::from_value(json!({"method":method,"args":args.into_iter().map(|value|json!({"kind":"value","value":value})).collect::<Vec<_>>()})).unwrap()
+}
+fn value(value: DatabaseValue) -> Value {
+    serde_json::to_value(value).unwrap()
+}
+
+#[tokio::test]
+async fn high_level_values_preserve_unicode_null_and_committed_restart_data() {
+    let profile = tempfile::tempdir().unwrap();
+    let root = tempfile::tempdir().unwrap();
+    let (runtime, id, connection) = selected(profile.path(), root.path());
+    connection.subscribe().await.unwrap();
+    let stored = json!({"text":"café 🪨\0","real":1.25,"bytes":[0,255,128],"empty":null});
+    assert_eq!(
+        value(
+            connection
+                .call(call("setMeta", vec![json!("stored"), stored.clone()]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"undefined"})
+    );
+    assert_eq!(
+        value(
+            connection
+                .call(call("getMeta", vec![json!("stored")]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":stored})
+    );
+    assert_eq!(
+        value(
+            connection
+                .call(call("getMeta", vec![json!("missing")]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"undefined"})
+    );
+    connection
+        .call(call("setMeta", vec![json!("null"), Value::Null]))
+        .await
+        .unwrap();
+    assert_eq!(
+        value(
+            connection
+                .call(call("getMeta", vec![json!("null")]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":null})
+    );
+    connection.close().await;
+    assert!(
+        connection
+            .call(call("getMeta", vec![json!("stored")]))
+            .await
+            .is_err()
+    );
+    tokio::task::spawn_blocking(move || runtime.close_vault(id))
+        .await
+        .unwrap()
+        .unwrap();
+    let reopened = Database::open(profile.path(), id).await.unwrap();
+    assert_eq!(reopened.get_meta("stored").await.unwrap(), Some(stored));
+    reopened.close().await.unwrap();
+}
+
+#[tokio::test]
+async fn conditional_transactions_reject_failed_writes_and_publish_one_atomic_commit() {
+    let profile = tempfile::tempdir().unwrap();
+    let root = tempfile::tempdir().unwrap();
+    let (runtime, _, connection) = selected(profile.path(), root.path());
+    let mut changes = connection.subscribe().await.unwrap();
+    connection
+        .call(call("setMeta", vec![json!("counter"), json!(0)]))
+        .await
+        .unwrap();
+    assert_eq!(changes.recv().await.unwrap().revision, 1);
+    let transaction = |expected| json!({"checks":[{"key":"counter","value":expected}],"mutations":[{"key":"counter","value":1},{"key":"other","value":2}]});
+    assert_eq!(
+        value(
+            connection
+                .call(call("transactMeta", vec![transaction(99)]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":{"applied":false}})
+    );
+    assert!(changes.try_recv().is_err());
+    assert_eq!(
+        value(
+            connection
+                .call(call("transactMeta", vec![transaction(0)]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":{"applied":true}})
+    );
+    assert_eq!(changes.recv().await.unwrap().revision, 2);
+    assert!(
+        connection
+            .call(call(
+                "transactMeta",
+                vec![json!({"mutations":[{"key":"counter","value":3},{"value":4}]})]
+            ))
+            .await
+            .is_err()
+    );
+    assert_eq!(
+        value(
+            connection
+                .call(call("getMeta", vec![json!("counter")]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":1})
+    );
+    assert_eq!(
+        value(
+            connection
+                .call(call("getMeta", vec![json!("other")]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":2})
+    );
+    assert_eq!(
+        value(
+            connection
+                .call(call("getChangeRevision", vec![]))
+                .await
+                .unwrap()
+        ),
+        json!({"kind":"value","value":2})
+    );
+    assert!(changes.try_recv().is_err());
+    connection.close().await;
+    tokio::task::spawn_blocking(move || runtime.shutdown())
+        .await
+        .unwrap()
+        .unwrap();
+}
+
+#[tokio::test]
+async fn raw_sql_paths_unknown_methods_and_oversized_argument_lists_have_no_authority() {
+    for request in [
+        json!({"operation":"exec","sql":"ATTACH DATABASE '/tmp/outside' AS outside"}),
+        json!({"method":"exec","args":[]}),
+        json!({"method":"getMeta","args":[],"path":"/tmp/outside.db"}),
+        json!({"method":"getMeta","args":[{"kind":"undefined","sql":"SELECT readfile('/etc/passwd')"}]}),
+    ] {
+        assert!(serde_json::from_value::<DatabaseCall>(request).is_err());
     }
-}
-
-#[test]
-fn real_turso_round_trips_typed_values_and_survives_close_and_restart() {
-    tauri::async_runtime::block_on(async {
-        let root = tempdir().unwrap();
-        let profile_id = Uuid::new_v4().to_string();
-        let mut database = NativeDatabase::open(root.path(), &profile_id)
-            .await
-            .unwrap();
-        database.execute(request(json!({"operation":"exec","sql":"CREATE TABLE values_test (id INTEGER PRIMARY KEY, text_value TEXT, real_value REAL, int_value INTEGER, bytes BLOB, empty TEXT);"}))).await.unwrap();
-        database
-            .execute(DbRequest::Run {
-                statement: statement(
-                    "INSERT INTO values_test VALUES (?, ?, ?, ?, ?, ?)",
-                    vec![
-                        SqlValue::Integer("1".into()),
-                        SqlValue::Text("café 🪨\0".into()),
-                        SqlValue::Real(1.25),
-                        SqlValue::Integer("9223372036854775807".into()),
-                        SqlValue::Blob(vec![0, 255, 128, 42]),
-                        SqlValue::Null,
-                    ],
-                ),
-            })
-            .await
-            .unwrap();
-        let reply = database
-            .execute(request(
-                json!({"operation":"all","statement":{"sql":"SELECT * FROM values_test"}}),
-            ))
-            .await
-            .unwrap();
-        let DbReply::Rows { rows } = reply else {
-            panic!("Expected rows");
-        };
-        assert_eq!(rows[0]["text_value"], SqlValue::Text("café 🪨\0".into()));
-        assert_eq!(rows[0]["real_value"], SqlValue::Real(1.25));
-        assert_eq!(
-            rows[0]["int_value"],
-            SqlValue::Integer("9223372036854775807".into())
-        );
-        assert_eq!(rows[0]["bytes"], SqlValue::Blob(vec![0, 255, 128, 42]));
-        assert_eq!(rows[0]["empty"], SqlValue::Null);
-        database.close().await.unwrap();
-        assert!(
-            database
-                .execute(request(
-                    json!({"operation":"all","statement":{"sql":"SELECT 1"}})
-                ))
-                .await
-                .is_err()
-        );
-        let mut reopened = NativeDatabase::open(root.path(), &profile_id)
-            .await
-            .unwrap();
-        let reply = reopened.execute(request(json!({"operation":"get","statement":{"sql":"SELECT text_value FROM values_test WHERE id = :id","args":{":id":{"type":"integer","value":"1"}}}}))).await.unwrap();
-        let DbReply::Rows { rows } = reply else {
-            panic!("Expected rows");
-        };
-        assert_eq!(rows[0]["text_value"], SqlValue::Text("café 🪨\0".into()));
-        reopened.close().await.unwrap();
-    });
-}
-
-#[test]
-fn failing_batches_roll_back_and_later_operations_can_commit() {
-    tauri::async_runtime::block_on(async {
-        let root = tempdir().unwrap();
-        let mut database = NativeDatabase::open(root.path(), &Uuid::new_v4().to_string())
-            .await
-            .unwrap();
-        database.execute(request(json!({"operation":"exec","sql":"CREATE TABLE atomic_test (id INTEGER PRIMARY KEY, value TEXT);"}))).await.unwrap();
-        assert!(database.execute(request(json!({"operation":"batch","behavior":"immediate","statements":[
-            {"sql":"INSERT INTO atomic_test VALUES (1, 'first')"}, {"sql":"INSERT INTO atomic_test VALUES (1, 'collision')"}
-        ]}))).await.is_err());
-        let reply = database
-            .execute(request(
-                json!({"operation":"all","statement":{"sql":"SELECT * FROM atomic_test"}}),
-            ))
-            .await
-            .unwrap();
-        assert!(matches!(reply, DbReply::Rows { rows } if rows.is_empty()));
-        database.execute(request(json!({"operation":"batch","behavior":"immediate","statements":[
-            {"sql":"INSERT INTO atomic_test VALUES (1, 'committed')"}, {"sql":"INSERT INTO atomic_test VALUES (2, 'second')"}
-        ]}))).await.unwrap();
-        let reply = database.execute(request(json!({"operation":"all","statement":{"sql":"SELECT * FROM atomic_test ORDER BY id"}}))).await.unwrap();
-        assert!(matches!(reply, DbReply::Rows { rows } if rows.len() == 2));
-        database.close().await.unwrap();
-    });
-}
-
-#[test]
-fn unsafe_sql_and_invalid_profile_paths_reject_before_mutating_a_batch() {
-    tauri::async_runtime::block_on(async {
-        let root = tempdir().unwrap();
-        assert!(
-            NativeDatabase::open(root.path(), "../outside")
-                .await
-                .is_err()
-        );
-        let mut database = NativeDatabase::open(root.path(), &Uuid::new_v4().to_string())
-            .await
-            .unwrap();
-        database
-            .execute(request(
-                json!({"operation":"exec","sql":"CREATE TABLE safe_test (id INTEGER);"}),
-            ))
-            .await
-            .unwrap();
-        for sql in [
-            "ATTACH DATABASE '/tmp/escape' AS outside",
-            "VACUUM INTO '/tmp/escape'",
-            "SELECT load_extension('/tmp/escape')",
-            "SELECT \"load_extension\"('/tmp/escape')",
-            "SELECT readfile('/etc/passwd')",
-            "PRAGMA temp_store_directory='/tmp'",
-            "BEGIN",
-            "COMMIT",
-            "ROLLBACK",
-            "SELECT * FROM pragma_database_list",
-            "SELECT * FROM pragma_temp_store_directory('/tmp')",
-            "CREATE VIRTUAL TABLE x USING fsdir('/etc')",
-        ] {
-            assert!(database.execute(request(json!({"operation":"batch","statements":[{"sql":"INSERT INTO safe_test VALUES (1)"},{"sql":sql}]}))).await.is_err(), "admitted {sql}");
-        }
-        let reply = database
-            .execute(request(
-                json!({"operation":"all","statement":{"sql":"SELECT * FROM safe_test"}}),
-            ))
-            .await
-            .unwrap();
-        assert!(matches!(reply, DbReply::Rows { rows } if rows.is_empty()));
-        let reply = database.execute(request(json!({"operation":"get","statement":{"sql":"SELECT 'load_extension; ATTACH' AS harmless /* VACUUM */"}}))).await.unwrap();
-        assert!(
-            matches!(reply, DbReply::Rows { rows } if rows[0]["harmless"] == SqlValue::Text("load_extension; ATTACH".into()))
-        );
-        database.close().await.unwrap();
-    });
+    let profile = tempfile::tempdir().unwrap();
+    let root = tempfile::tempdir().unwrap();
+    let (runtime, _, connection) = selected(profile.path(), root.path());
+    let too_many = serde_json::from_value(
+        json!({"method":"getMeta","args":vec![json!({"kind":"undefined"});5]}),
+    )
+    .unwrap();
+    assert!(connection.call(too_many).await.is_err());
+    connection.close().await;
+    tokio::task::spawn_blocking(move || runtime.shutdown())
+        .await
+        .unwrap()
+        .unwrap();
+    assert_eq!(std::fs::read_dir(root.path()).unwrap().count(), 0);
 }

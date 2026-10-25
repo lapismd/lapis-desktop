@@ -1,63 +1,63 @@
-use super::{DbReply, DbRequest, NativeDatabase, invalid};
-use std::{collections::HashMap, io, path::PathBuf};
+use super::{DatabaseConnection, invalid};
+use lapis_app_core::services::Client;
+use std::{collections::HashMap, io, sync::Arc};
 use uuid::Uuid;
 
 struct Entry {
     session_id: String,
-    profile_id: String,
-    database: NativeDatabase,
+    connection: Arc<DatabaseConnection>,
 }
 
+#[derive(Default)]
 pub struct NativeDatabases {
-    directory: PathBuf,
     entries: HashMap<String, Entry>,
 }
 
 impl NativeDatabases {
-    pub fn new(directory: PathBuf) -> Self {
-        Self {
-            directory,
-            entries: HashMap::new(),
+    pub fn open(
+        &mut self,
+        session: &str,
+        client: Arc<Client>,
+    ) -> io::Result<(String, Arc<DatabaseConnection>)> {
+        if session.is_empty() {
+            return Err(invalid("Native database session is required"));
         }
-    }
-
-    pub async fn open(&mut self, session_id: String, profile_id: String) -> io::Result<String> {
-        let profile_id = Uuid::parse_str(&profile_id)
-            .map_err(|_| invalid("Invalid database profile identity"))?
-            .to_string();
         if let Some((id, entry)) = self
             .entries
             .iter()
-            .find(|(_, entry)| entry.profile_id == profile_id || entry.session_id == session_id)
+            .find(|(_, entry)| entry.session_id == session)
         {
-            if entry.profile_id == profile_id && entry.session_id == session_id {
-                return Ok(id.clone());
+            entry.connection.require_open()?;
+            if entry.connection.client.descriptor().client_id != client.descriptor().client_id {
+                return Err(invalid(
+                    "Database admission belongs to another vault client",
+                ));
             }
-            return Err(invalid("Database is already owned by another admission"));
+            return Ok((id.clone(), entry.connection.clone()));
         }
-        let database = NativeDatabase::open(&self.directory, &profile_id).await?;
         let id = Uuid::new_v4().to_string();
+        let connection = Arc::new(DatabaseConnection::new(client));
         self.entries.insert(
             id.clone(),
             Entry {
-                session_id,
-                profile_id,
-                database,
+                session_id: session.into(),
+                connection: connection.clone(),
             },
         );
-        Ok(id)
+        Ok((id, connection))
     }
 
-    pub fn has_session(&self, session_id: &str) -> bool {
+    pub fn has_session(&self, session: &str) -> bool {
         self.entries
             .values()
-            .any(|entry| entry.session_id == session_id)
+            .any(|entry| entry.session_id == session)
     }
 
-    fn owned(&mut self, session_id: &str, connection_id: &str) -> io::Result<&mut Entry> {
+    pub fn get(&self, session: &str, id: &str) -> io::Result<Arc<DatabaseConnection>> {
         self.entries
-            .get_mut(connection_id)
-            .filter(|entry| entry.session_id == session_id)
+            .get(id)
+            .filter(|entry| entry.session_id == session)
+            .map(|entry| entry.connection.clone())
             .ok_or_else(|| {
                 io::Error::new(
                     io::ErrorKind::PermissionDenied,
@@ -66,24 +66,14 @@ impl NativeDatabases {
             })
     }
 
-    pub async fn execute(
-        &mut self,
-        session_id: &str,
-        connection_id: &str,
-        request: DbRequest,
-    ) -> io::Result<DbReply> {
-        self.owned(session_id, connection_id)?
-            .database
-            .execute(request)
-            .await
-    }
-
-    pub async fn close(&mut self, session_id: &str, connection_id: &str) -> io::Result<()> {
-        self.owned(session_id, connection_id)?
-            .database
-            .close()
-            .await?;
-        self.entries.remove(connection_id);
+    pub fn remove(&mut self, session: &str, id: &str) -> io::Result<()> {
+        if !self.get(session, id)?.is_closed() {
+            return Err(io::Error::new(
+                io::ErrorKind::WouldBlock,
+                "Close database observation before retiring admission",
+            ));
+        }
+        self.entries.remove(id);
         Ok(())
     }
 }

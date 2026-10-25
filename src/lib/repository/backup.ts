@@ -14,6 +14,7 @@ export interface BackupService {
   start(changed: (status: BackupStatus) => void): Promise<BackupStatus>;
   capture(): Promise<BackupStatus>;
   stop(): Promise<void>;
+  detach(): Promise<void>;
 }
 /** Plugin owns this independently of the optional status-bar contribution. */
 export class BackupController {
@@ -24,6 +25,7 @@ export class BackupController {
   #attempted = false;
   #epoch = 0;
   #starting?: Promise<BackupStatus>;
+  #retaining = false;
   readonly service: BackupService;
   readonly feedback: { report(error: unknown): void; recovered(): void };
   constructor(
@@ -105,6 +107,7 @@ export class BackupController {
     }
   }
   async pause() {
+    this.#retaining = false;
     this.#epoch++;
     this.#running = false;
     try {
@@ -123,8 +126,30 @@ export class BackupController {
     this.#attempted = false;
     this.#set({ ...this.#state, phase: "closed", error: null });
   }
+  async prepareLeave(mode: "close" | "reload") {
+    if (mode === "close") return this.pause();
+    if (this.#starting) await Promise.allSettled([this.#starting]);
+    if (this.#attempted) {
+      try {
+        this.#set(await this.service.capture());
+      } catch (error) {
+        this.#set({
+          ...this.#state,
+          phase: "failed",
+          error: error instanceof Error ? error.message : String(error),
+        });
+        throw error;
+      }
+    }
+    this.#retaining = true;
+  }
   async close() {
-    await this.pause();
+    if (this.#retaining) {
+      this.#epoch++;
+      this.#running = false;
+      await this.service.detach();
+      this.#attempted = false;
+    } else await this.pause();
     this.#closed = true;
     this.#listeners.clear();
   }

@@ -24,6 +24,8 @@
   });
   const call: NativeCall = async <T,>(command: string) => {
     if (command === "vault_recents") return [] as T;
+    // This launcher fixture has no service-owned vaults retained by reload.
+    if (command === "vault_prepare_leave") return undefined as T;
     if (command === "vault_restore") {
       if (scenario === "restoring") await held;
       if (scenario === "restore-failed")

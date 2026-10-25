@@ -29,3 +29,8 @@ Progress publication and imperative task setup stay outside reactive dependency
 tracking. Publishing status MUST NOT retrigger a chat or view effect that
 started the work. The unchanged native-factory Chat/catalog story qualifies this
 edge.
+
+R1.3.8 database adapters await the shared worker outside the host resource
+mutex. Commit forwarding is passive transport observation; it never starts
+another indexer or owns the database lifetime. The retained metadata/index
+scheduler moves separately under R3 rather than being recreated in the renderer.

@@ -2,7 +2,7 @@
 
 [Shared-screen integration](shared-screen-integration.md) governs source/pin
 selection, history-card actions and host-owned Blame wrap preferences. Core
-intake: E-CORE-001/003/014.
+intake: E-CORE-001/003/014/016 (passive test resources; authority intact).
 
 E-REPO-043 governs upstream actions/counts and OS directory reveal in
 [automatic backup](vault-backup.md), retaining admission and operation pins.

@@ -31,7 +31,7 @@ fn fixture() -> (tempfile::TempDir, Policy, String) {
         ai: VaultAdmissions::default(),
         repository: RepositoryAdmissions::default(),
         vaults,
-        databases: NativeDatabases::new(root.path().join("db")),
+        databases: NativeDatabases::default(),
         watches: WatchRegistry::default(),
         fs_gate: Arc::new(Mutex::new(())),
     })));

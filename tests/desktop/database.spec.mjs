@@ -6,7 +6,7 @@ import { join } from "node:path";
 const profile = process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
 let selected;
 
-describe("native Turso public consumer conformance", () => {
+describe("shared Rust database public consumer conformance", () => {
   before(async () => {
     await browser.waitUntil(() =>
       browser.execute(() =>
@@ -22,7 +22,7 @@ describe("native Turso public consumer conformance", () => {
     );
   });
 
-  it("opens the actual packed TursoAppDatabase schema over Rust and persists metadata", async () => {
+  it("opens the actual packed AppDatabase provider over Rust and persists metadata", async () => {
     const descriptor = await browser.execute(
       (selected) => globalThis.__lapisNativeDatabaseAcceptance.open(selected),
       selected,
@@ -58,6 +58,37 @@ describe("native Turso public consumer conformance", () => {
     assert.deepEqual(result, value);
   });
 
+  it("forwards committed changes through the actual Tauri channel", async () => {
+    await browser.execute(async (selected) => {
+      const core = globalThis.__TAURI__.core;
+      const changes = [];
+      const channel = new core.Channel((change) => changes.push(change));
+      globalThis.__lapisDatabaseChangeAcceptance = { changes, channel };
+      const { connectionId } = await core.invoke("vault_db_open", {
+        sessionId: selected.sessionId,
+        onChange: channel,
+      });
+      await core.invoke("vault_db_call", {
+        sessionId: selected.sessionId,
+        connectionId,
+        request: {
+          method: "setMeta",
+          args: [
+            { kind: "value", value: "acceptance.native-channel" },
+            { kind: "value", value: "committed" },
+          ],
+        },
+      });
+    }, selected);
+    await browser.waitUntil(() =>
+      browser.execute(() =>
+        globalThis.__lapisDatabaseChangeAcceptance.changes.some(
+          (change) => change.domains.includes("meta") && change.revision > 0,
+        ),
+      ),
+    );
+  });
+
   it("requires live owner admissions and prevents vault close while the database is live", async () => {
     const denials = await browser.tauri.execute(async ({ core }, selected) => {
       const { connectionId } = await core.invoke("vault_db_open", {
@@ -66,23 +97,23 @@ describe("native Turso public consumer conformance", () => {
       const attempts = [
         ["vault_db_open", { sessionId: "unknown" }],
         [
-          "vault_db_execute",
+          "vault_db_call",
           {
             sessionId: "unknown",
             connectionId,
-            request: { operation: "exec", sql: "SELECT 1" },
+            request: { method: "getMeta", args: [] },
           },
         ],
         [
-          "vault_db_execute",
+          "vault_db_call",
           {
             sessionId: selected.sessionId,
             connectionId: "unknown",
-            request: { operation: "exec", sql: "SELECT 1" },
+            request: { method: "getMeta", args: [] },
           },
         ],
         [
-          "vault_db_execute",
+          "vault_db_call",
           {
             sessionId: selected.sessionId,
             connectionId,
@@ -119,6 +150,9 @@ describe("native Turso public consumer conformance", () => {
     }, selected);
     assert.equal(result.descriptor.transport, "native");
     assert.equal(result.value.text, "café 🪨");
+    await browser.execute(() => {
+      delete globalThis.__lapisDatabaseChangeAcceptance;
+    });
     await browser.tauri.execute(
       ({ core }, selected) =>
         core.invoke("vault_close", { sessionId: selected.sessionId }),

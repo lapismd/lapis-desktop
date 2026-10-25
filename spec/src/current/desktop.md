@@ -32,10 +32,10 @@ authority; renderer paths, actors, executables and environment denied.
 | LD-VAULT-005   | Attachment URLs MUST use revocable, unguessable admission tokens and the contained native resource handler. Responses MUST have explicit media types, no-store and nosniff headers; executable document types, arbitrary file URLs, traversal, and closed admissions MUST remain unavailable.                                                                                                                                                   |
 | LD-VAULT-006   | The launcher MUST reuse the shared Deno desktop chooser, including its branding, Create New Vault, Open Vault, recent-project search and appearance controls. Successful selection MUST open Notes directly. Returning to vaults MUST close the Notes owner and admission before another selection. Native acceptance MUST preserve bounded-listing, cancellation, collision and byte-integrity evidence through isolated real folders.         |
 | LD-VAULT-007   | The shared chooser MUST expose its existing close button after leaving a ready vault. Activating it MUST reopen that vault through host-owned profile admission and restore its saved layout. Picker cancellation MUST preserve the return route.                                                                                                                                                                                               |
-| LD-DB-001      | Tauri database connections MUST use pinned in-process Rust Turso and host-owned profile paths. Opening MUST require a live vault admission; renderer payloads MUST NOT select database paths. Unknown, closed, mismatched, or conflicting connection authority MUST reject.                                                                                                                                                                     |
-| LD-DB-002      | Native connection operations MUST serialize. A batch MUST execute atomically with explicit transaction behavior, roll back on failure, and expose none of a failed batch's writes. Close and restart MUST preserve committed data; failed rollback MUST block further operations until recovery.                                                                                                                                                |
-| LD-DB-003      | The desktop MUST implement the public TursoConnection methods through typed bounded frames, preserving null, text, real, signed 64-bit integer, binary, positional and named parameter values. The actual packed TursoAppDatabase schema and operations MUST pass native consumer qualification before App startup is enabled.                                                                                                                  |
-| LD-DB-004      | Native SQL MUST NOT attach other databases, vacuum into arbitrary files, load extensions, perform file-access functions, or change filesystem-related pragmas. Transaction control MUST remain native-owned; validation MUST precede batch execution.                                                                                                                                                                                           |
+| LD-DB-001      | Tauri databases MUST use pinned in-process shared Rust services and host-owned profile paths. Opening MUST require a live vault admission; renderer payloads MUST NOT select database or model paths. Unknown, closed or mismatched connection authority MUST reject. Multiple admitted clients of one vault MUST share its existing service owner.                                                                                             |
+| LD-DB-002      | Accepted database operations MUST serialize at the shared worker. Conditional metadata transactions MUST commit atomically and publish no failed writes. Closing a view MUST fence its calls and dispose observation without closing shared storage. Explicit vault close and Quit MUST drain accepted work and preserve committed data, independently of response consumption.                                                                 |
+| LD-DB-003      | Desktop MUST adapt the public AppDatabase through Rust-generated high-level call, value and change types, retaining its complete method catalogue and explicit undefined/null arguments and replies. The actual packed provider MUST pass native schema, operation and restart qualification before selection. Renderer SQL and a duplicate JavaScript database engine MUST NOT remain selected.                                                |
+| LD-DB-004      | Renderer database requests MUST NOT expose SQL, database paths, filesystem functions or transaction-control authority. Native argument validation MUST reject unknown methods, extra fields, more than four arguments and messages over 32 MiB before mutation. Shared native changes MUST be bounded, scoped and disposable; lag MUST trigger a complete refresh before incremental delivery resumes.                                          |
 | LD-SESSION-001 | Each Notes session MUST construct one explicitly owned App with an injected direct native Turso provider. It MUST use the shared .lapis state default and public plugin/workspace packages. The compatibility lease MUST span plugin loading through complete owned teardown.                                                                                                                                                                   |
 | LD-SESSION-002 | M3 MUST prove a real seeded vault in the actual WebView: open a note, edit and save it to disk, display a local attachment, close the database and reopen successfully. Browser mocks or an in-memory database MUST NOT qualify that gate.                                                                                                                                                                                                      |
 | LD-LIFE-001    | Close, Quit, reload and returning to vaults MUST protect registered writers and await pending note and layout persistence before destructive teardown. Persistence failure MUST leave the owned session available and show a recoverable error.                                                                                                                                                                                                 |
@@ -193,31 +193,25 @@ requested directory, as required by the public Notes vault adapter contract.
 
 ## Native database and Notes intake (M3)
 
-Native Turso is the early feasibility gate. The host opens one database per
-admitted profile, addressed only through opaque connection IDs. Databases live
-under the native OS profile, separate from vault-local `.lapis` state. Root
-admission, connection lifetime and all filesystem/database requests share the
-native owner's serialization boundary. Closing a vault with a live database MUST
-fail until that database closes. Repeated opens for the same live admission
-return its existing connection ID; another admission cannot claim that database.
+M3's original SQL-connection receipts retain their historical scope. R1.3.8 /
+M16.3 supersedes that transport with the same high-level shared Rust database
+used by HTTP. The public AppDatabase interface and stored schema remain intact;
+renderer SQL frames, SQL guards and the duplicate renderer engine are retired.
 
-The public connection adapter implements exec, run, get, all, batch and close.
-Integer frames use canonical decimal strings to avoid JSON precision loss; the
-renderer returns safe integers as numbers and larger integers as bigint. Binary
-frames preserve every byte. Named bindings include their SQL prefix. Each
-statement is limited to 128 KiB; batches to 1,024 statements and 4 MiB of
-encoded input; results to 100,000 rows and 16 MiB. Unsupported values fail
-explicitly. The renderer cannot silently substitute WASM, memory or a JS
-runtime.
+File and database commands use one admitted `VaultServices` runtime. Native
+installation policy selects private database/model directories outside vaults;
+callers pass only opaque session/connection IDs and generated calls. Async
+execution and change forwarding release the host mutex before waiting. Repeated
+opens for an admission retain its connection; independent admissions share the
+vault's worker. Closing a vault with a live database view still rejects.
 
-SQL validation recognizes strings, quoted identifiers and comments before
-checking statements. It permits the SQL needed by the shared AppDatabase while
-denying attachment, vacuum, extension/file functions and external transaction
-control. Only table/index/foreign-key schema introspection pragmas and their
-table-valued equivalents are public. Virtual tables and filesystem modules
-remain denied. Turso attachment and vacuum features remain disabled. Host-owned
-batches select deferred, immediate or exclusive behavior and prevalidate every
-statement.
+Closing a view stops its observation and future calls, while accepted native
+work and storage remain vault-owned. The last explicit vault close drains and
+releases the worker even with stale client handles or unpolled replies. Change
+channels are bounded by the core's 128-entry buffer, and overflow publishes a
+complete reset at the current revision before later changes. No subscription
+owns a native work lease, and no WASM, memory or JavaScript engine is
+substituted.
 
 The shared desktop launcher selects or creates a native folder and opens the
 owned Notes session immediately, matching the Deno flow. Returning to vaults

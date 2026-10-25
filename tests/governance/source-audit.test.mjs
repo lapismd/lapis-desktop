@@ -119,6 +119,21 @@ test("desktop integration retains exact local grants and rejects additional plug
     readFileSync("src-tauri/tauri.conf.json", "utf8"),
   );
   assert.deepEqual(auditManifest(manifest, capabilities, configuration), []);
+  assert.ok(
+    auditManifest(
+      manifest,
+      {
+        ...capabilities,
+        permissions: capabilities.permissions.map((permission) =>
+          permission === "allow-vault-db-call"
+            ? "allow-vault-db-execute"
+            : permission,
+        ),
+      },
+      configuration,
+    ).some((finding) => finding.code === "LD-CAPABILITY-SCOPE"),
+    "retired raw SQL authority must remain denied",
+  );
   for (const permission of [
     "opener:default",
     "clipboard-manager:default",

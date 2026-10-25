@@ -139,12 +139,13 @@
     await restoration;
     await opening;
     await tick();
+    await client.prepareLeave(mode);
     if (session) {
       if (!notes)
         throw new Error("The workspace is still starting. Please try again.");
       await notes.dispose(mode);
     }
-    await client.closeAll();
+    await client.closeAll(mode);
   }
 
   export async function openVaults(): Promise<void> {
