@@ -11,6 +11,7 @@ pub struct ShellState {
 #[serde(rename_all = "camelCase")]
 pub struct ShellInfo {
     runtime: &'static str,
+    ai_owner: super::ai::turns::TurnOwner,
     os: &'static str,
     version: String,
     process_id: u32,
@@ -49,6 +50,7 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
     };
     ShellInfo {
         runtime: "tauri-desktop",
+        ai_owner: *app.state::<super::ai::turns::TurnOwner>(),
         os: std::env::consts::OS,
         version: app.package_info().version.to_string(),
         process_id: std::process::id(),

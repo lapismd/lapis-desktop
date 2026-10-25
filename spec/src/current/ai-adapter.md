@@ -56,3 +56,24 @@ vault's or the default provider. The native policy uses the admitted physical
 scope and profile identity without acquiring the window's NativeHost mutex. This
 preparation does not select the new chat owner; Tauri transport, retained Agent
 screen adoption and real-provider/cold-application gates remain required.
+
+The staged `LAPIS_DESKTOP_AI_OWNER=core` startup profile selects the shared
+native owner and reports that fixed selection to the shell. The renderer profile
+remains the serving default until cutover; invalid selections fail startup. Core
+selection denies legacy ACP execution. The same optional AI plugin ID therefore
+cannot construct two transcript writers. The existing public Agent screen
+observes native commands and portable files through the shared Notes
+application-profile adapter.
+
+Typed turn IPC checks the local main-window caller and exact current native AI
+admission. Authorization and Core acceptance share the owned AI transition
+guard; blocking IO and drain release NativeHost first. Losing a reply does not
+abandon accepted work or cleanup. Reload suspends admission without stopping
+native turns. Explicit disable/close drains before retiring AI/compute
+authority.
+
+Every turn frame carries its owning opaque vault-session token. Native admission
+compares it to the current main-window lease while holding the AI transition
+guard, before obtaining the Core client or accepting work. A callback retained
+by an earlier vault cannot acquire the newer vault's authority after a switch.
+The token cannot choose a root, executable or native generation.

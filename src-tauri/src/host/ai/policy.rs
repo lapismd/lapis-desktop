@@ -20,6 +20,7 @@ struct PolicyState {
     host: OnceLock<NativeHost>,
     backends: OnceLock<Arc<NativeAiOwner>>,
     files: super::file_profile::FileProfile,
+    turn_owner: OnceLock<super::turns::TurnOwner>,
     compute: OnceLock<Arc<lapis_desktop::ai::compute::Compute>>,
 }
 pub fn local(context: &HostContext) -> Result<()> {
@@ -40,6 +41,13 @@ pub fn caller(window: &WebviewWindow) -> Result<HostContext> {
     Ok(context)
 }
 impl DesktopAiPolicy {
+    pub fn select_turn_owner(&self, owner: super::turns::TurnOwner) -> io::Result<()> {
+        self.0
+            .turn_owner
+            .set(owner)
+            .map_err(|_| io::Error::other("AI owner already selected"))
+    }
+
     pub fn configure_file_profile(
         &self,
         settings: std::path::PathBuf,
@@ -128,6 +136,9 @@ impl DesktopAiPolicy {
     }
     fn current(&self, context: &HostContext) -> Result<VaultLease> {
         local(context)?;
+        if self.0.turn_owner.get().is_some_and(|owner| owner.is_core()) {
+            return Err(Error("renderer_execution_disabled"));
+        }
         let backends = self.0.backends.get().ok_or(Error("host_unavailable"))?;
         backends
             .ensure_live()

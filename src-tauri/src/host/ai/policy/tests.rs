@@ -285,3 +285,15 @@ fn codex_tool_alias_is_native_scoped_single_claim_and_never_constructs_jj_captur
         .unwrap();
     assert!(fixture.policy.processor(&caller(), &binding).is_err());
 }
+#[test]
+fn core_profile_denies_legacy_acp_execution_for_the_same_admitted_vault() {
+    let fixture = fixture();
+    activate(&fixture);
+    fixture
+        .policy
+        .select_turn_owner(crate::host::ai::turns::TurnOwner::Core)
+        .unwrap();
+    assert!(fixture.policy.authorize(&caller()).is_err());
+    assert!(fixture.policy.targets(&caller()).is_err());
+    assert!(fixture.policy.resolve(&caller(), "codex", None).is_err());
+}

@@ -1164,3 +1164,13 @@ Lapis AI restriction for unattended work. Existing Settings scenarios retain
 unavailable catalogs, saved preferences, failures and disposal; Agent profiles,
 Agent providers and Setup cover the reused editor and compute pickers. Visual
 baselines and native/provider qualification remain separate.
+
+## Native chat service observer
+
+`plugins/ai/NativeTurns.stories.ts` mounts NotesWorkspace with the shared
+application-profile native-chat plugin and public AgentChatScreen.
+NewConversation proves no renderer AI application is constructed;
+SendAndFollowUp retains one native conversation and exact predecessor; LostReply
+retains one unknown request without replay. The disposable port simulates native
+state/files only. Real Tauri/HTTP and provider/cold recovery retain their
+independent gates.

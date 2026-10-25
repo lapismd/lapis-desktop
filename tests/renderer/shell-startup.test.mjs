@@ -54,3 +54,14 @@ test("native startup failure preserves loading presentation for the error handle
   assert.deepEqual(events, []);
   assert.equal(document.documentElement.dataset.shellReady, undefined);
 });
+test("the native owner selection is available before any application plugins mount", async () => {
+  const { document } = fixture();
+  await startShell({
+    document,
+    mount: () => assert.equal(document.documentElement.dataset.aiOwner, "core"),
+    call: async (command) =>
+      command === "shell_info"
+        ? { runtime: "tauri-desktop", os: "macos", aiOwner: "core" }
+        : undefined,
+  });
+});

@@ -157,6 +157,19 @@ pub fn initialize(
         &history_root(app)?,
         fs_gate.clone(),
     )?;
+    let core_vaults = if app.state::<crate::host::ai::turns::TurnOwner>().is_core() {
+        core_vaults.with_turns(
+            &profile,
+            Arc::new(
+                app.state::<crate::host::ai::policy::DesktopAiPolicy>()
+                    .inner()
+                    .clone(),
+            ),
+            tauri::async_runtime::handle().inner().clone(),
+        )?
+    } else {
+        core_vaults
+    };
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
         imports: lapis_desktop::vault::admission::VaultAdmissions::default(),
         ai: lapis_desktop::vault::admission::VaultAdmissions::default(),

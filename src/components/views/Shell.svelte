@@ -6,6 +6,7 @@
   import DesktopFailure from "./DesktopFailure.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
+  import { createNativeChatHost } from "../../lib/native/ai/native-chat.ts";
   import { createNativeAi } from "../../lib/native/ai/services.ts";
   import { createNativeRepository } from "../../lib/native/repository/services.ts";
   import type { AiServices } from "../../lib/ai/plugin/services.ts";
@@ -46,6 +47,7 @@
       tools: import("../../lib/ai/tools/app-tool-host.ts").AppToolHost,
     ) => AiServices;
   } = $props();
+  const coreChat = document.documentElement.dataset.aiOwner === "core";
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
@@ -210,7 +212,12 @@
         selected!.resourceToken,
       )}
       createTerminal={(app) => createNativeTerminal(app, selected!)}
-      createAi={(app, tools) => createAi(app, selected!, tools)}
+      createAi={coreChat
+        ? undefined
+        : (app, tools) => createAi(app, selected!, tools)}
+      nativeChat={coreChat
+        ? (app) => createNativeChatHost(app, selected!)
+        : undefined}
       createRepository={() => createNativeRepository(selected!)}
       createPopouts={createPopouts
         ? (app) => createPopouts!(app, selected!)

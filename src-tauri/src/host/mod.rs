@@ -23,7 +23,13 @@ pub fn run() -> tauri::Result<()> {
     };
     let terminal = crate::host::terminal::DesktopTerminalPolicy::default();
     let ai = crate::host::ai::policy::DesktopAiPolicy::default();
+    let turn_owner = crate::host::ai::turns::TurnOwner::parse(
+        std::env::var("LAPIS_DESKTOP_AI_OWNER").ok().as_deref(),
+    )
+    .map_err(tauri::Error::Io)?;
+    ai.select_turn_owner(turn_owner).map_err(tauri::Error::Io)?;
     let builder = tauri::Builder::default()
+        .manage(turn_owner)
         .manage(ai.clone())
         .manage(terminal.clone())
         .plugin(tauri_plugin_lapis_terminal::Builder::new(terminal).build())
@@ -98,6 +104,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::terminal::desktop_terminal_release,
             crate::host::ai::user_commands::desktop_ai_user_commands,
             crate::host::ai::admission::desktop_ai_admit,
+            crate::host::ai::turns::desktop_ai_turn,
             crate::host::ai::clients::desktop_ai_clients,
             crate::host::ai::providers::desktop_ai_providers,
             crate::host::ai::compute::desktop_ai_compute,

@@ -1,4 +1,4 @@
-# Governance
+# Governance — [native turns](ai-adapter.md)
 
 [Shared screens](shared-screen-integration.md) own integration. Retirement MUST
 preserve revisions/archives/evidence and separate native/distribution/visual

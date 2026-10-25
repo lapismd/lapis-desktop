@@ -395,3 +395,4 @@ by the task ledger, not inferred from this list.
 - [Shared asset reader and native file-action compatibility](E-CORE-018.md)
 - [Native turn-core dependency compatibility](E-CORE-019.md)
 - [Immutable native turn launch profiles](E-CORE-020.md)
+- [Native turn selection and existing chat observer](E-CORE-021.md)

@@ -13,6 +13,7 @@ fn main() {
         "desktop_terminal_release",
         "desktop_ai_user_commands",
         "desktop_ai_admit",
+        "desktop_ai_turn",
         "desktop_ai_clients",
         "desktop_ai_providers",
         "desktop_ai_compute",

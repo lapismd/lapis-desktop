@@ -1,4 +1,4 @@
-# Desktop plugins and catalog
+# Desktop plugins and catalog — [native turns](ai-adapter.md)
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned

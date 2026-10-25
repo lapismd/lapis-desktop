@@ -54,8 +54,12 @@ export const UnreadableRecovery: Story = {
     const canvas = await ready(canvasElement);
     await aiReviewAction(canvasElement, "Make commands unreadable");
     await expect(
-      await canvas.findByText("Review commands are unreadable", {}, observed),
-    ).toBeVisible();
+      await within(canvas.getByTestId("ai-catalog")).findByRole(
+        "alert",
+        {},
+        observed,
+      ),
+    ).toHaveTextContent("Review commands are unreadable");
     await expect(canvas.getByText("Original review command")).toBeVisible();
     await aiReviewAction(canvasElement, "Make commands readable");
     await expect(

@@ -242,3 +242,8 @@ separate.
 
 [E-CORE-020](../history/E-CORE-020.md) tracks immutable per-vault launch policy
 under LD-AI-001/002 separately from selected service/chat/provider acceptance.
+
+[E-CORE-021](../history/E-CORE-021.md) records staged native turn selection,
+typed Tauri commands and existing Agent screen observation under LD-AI-001/002,
+LD-AI-004 and LD-GOV-006. Source, catalog, native transport, both-host
+application and provider/cold gates remain distinct.

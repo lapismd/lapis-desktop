@@ -61,3 +61,9 @@ Local archive overlays also route transitive imports of explicitly declared
 linked native packages to the same built public exports. Normal semver ranges
 must match the local version; only the root's exact declared link may bypass
 range parsing. Tracked dependency manifests and lockfiles remain portable.
+
+R2.2.3 consumes the private Notes application-profile through its packed public
+`native-chat` entry with a normal package range. The temporary verified archive
+is an ignored development prerequisite until distribution. Its Agent UI and API
+imports use the same verified consumer package identities. Source aliases,
+copied screens and a second chat writer remain prohibited.

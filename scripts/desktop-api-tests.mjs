@@ -40,6 +40,7 @@ await run(
     "tests/desktop/core-file-service.test.mjs",
     "tests/desktop/search-provider.test.mjs",
     "tests/desktop/ai-admission.test.mjs",
+    "tests/desktop/ai-turn-owner.test.mjs",
     "tests/desktop/repository-admission.test.mjs",
     "tests/desktop/repository-service-lifetime.test.mjs",
   ],

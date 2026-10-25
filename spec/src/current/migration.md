@@ -1,4 +1,4 @@
-# Migration inventory and progress
+# Migration inventory and progress — [native turns](ai-adapter.md)
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.

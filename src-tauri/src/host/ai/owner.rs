@@ -14,6 +14,7 @@ use tauri_plugin_lapis_ai::AcpHost;
 #[derive(Default)]
 pub struct NativeAiOwner {
     pub tools: lapis_desktop::ai::tools::Registry,
+    pub turns: super::turns::Retained,
     pub transitions: Arc<tokio::sync::Mutex<()>>,
     pub compute: OnceLock<Arc<lapis_desktop::ai::compute::Compute>>,
     workers: OnceLock<Weak<AcpHost>>,
@@ -57,6 +58,7 @@ impl NativeAiOwner {
         self.tools.fence(window, generation)
     }
     pub async fn drain(&self, window: &str, generation: Option<&str>) -> io::Result<()> {
+        self.turns.drain(window, generation).await?;
         self.tools.drain(window, generation).await?;
         if window == "main"
             && let Some(compute) = self.compute.get()

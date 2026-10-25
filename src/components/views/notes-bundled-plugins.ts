@@ -1,3 +1,8 @@
+import {
+  createNativeChatPlugin,
+  prepareNativeChatLeave,
+  type NativeChatHost,
+} from "@lapis-notes/app-profile/native-chat";
 import type { App } from "@lapis-notes/api";
 import { TerminalPlugin } from "../terminal/terminal-plugin.ts";
 import { AiPlugin } from "../ai/plugin/ai-plugin.ts";
@@ -26,8 +31,10 @@ export function notesBundledPlugins(
   terminal?: TerminalFactory,
   ai?: AiFactory,
   repository?: RepositoryFactory,
+  nativeChat?: (app: App) => NativeChatHost,
 ) {
   if (terminal) bindTerminal(app, terminal);
+  if (ai && nativeChat) throw new Error("Only one AI owner may be selected");
   const unbind = ai ? bindAi(app, ai) : () => {};
   const unbindHistory = repository ? bindRepository(app, repository) : () => {};
   return {
@@ -42,6 +49,14 @@ export function notesBundledPlugins(
             plugin: TerminalPlugin,
             required: false,
             enabledByDefault: await terminalEnabledByDefault(app),
+          },
+        ]);
+      if (nativeChat)
+        app.plugins.registerStaticPlugins([
+          {
+            plugin: createNativeChatPlugin(nativeChat),
+            required: false,
+            enabledByDefault: await aiEnabledByDefault(app),
           },
         ]);
       if (ai)
@@ -59,6 +74,7 @@ export function notesBundledPlugins(
         await history.backup?.prepareLeave(mode);
       prepareTerminalLeave(app, mode);
       prepareAiLeave(app, mode);
+      prepareNativeChatLeave(app, mode === "reload" ? "detach" : "close");
       prepareRepositoryLeave(app, mode);
     },
     async resumeLeave(): Promise<void> {

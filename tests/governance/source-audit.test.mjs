@@ -169,6 +169,7 @@ test("AI session permission stays exact and bound to the admitted main window", 
       ...new Set([
         ...capabilities.permissions,
         "allow-desktop-ai-admit",
+        "allow-desktop-ai-turn",
         "allow-desktop-ai-imports",
         "allow-desktop-ai-release",
         "allow-desktop-ai-tools",

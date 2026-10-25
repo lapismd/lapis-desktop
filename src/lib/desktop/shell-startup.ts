@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/core";
 
 export interface ShellInfo {
   runtime: "tauri-desktop";
+  aiOwner?: "renderer" | "core";
   os: string;
   version: string;
   ready: boolean;
@@ -29,6 +30,7 @@ export async function startShell({
   document.documentElement.dataset.lapisRuntime = info.runtime;
   document.documentElement.dataset.runtimeClass = "desktop";
   document.documentElement.dataset.lapisPlatform = info.os;
+  document.documentElement.dataset.aiOwner = info.aiOwner ?? "renderer";
   mount();
   await call("shell_ready");
   document.getElementById("boot")?.setAttribute("hidden", "");

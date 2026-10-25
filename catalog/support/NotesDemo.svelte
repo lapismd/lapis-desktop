@@ -12,6 +12,8 @@
   import { registerCatalogCleanup } from "./lifecycle";
   import { registerNotesReadiness } from "./notes/readiness.ts";
 
+  import type { NativeChatHost } from "@lapis-notes/app-profile/native-chat";
+  import type { App } from "@lapis-notes/api";
   import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
   import type { AiFactory } from "../../src/lib/ai/plugin/services";
   import type { RepositoryFactory } from "../../src/lib/repository/services.ts";
@@ -21,6 +23,7 @@
     class: className = "",
     createTerminal,
     createAi,
+    nativeChat,
     createRepository,
     files = {},
     safeMode,
@@ -28,6 +31,7 @@
     class?: string;
     createTerminal?: TerminalFactory;
     createAi?: AiFactory;
+    nativeChat?: (app: App) => NativeChatHost;
     createRepository?: RepositoryFactory;
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
@@ -112,6 +116,7 @@
       {session}
       {createTerminal}
       {createAi}
+      {nativeChat}
       {createRepository}
       safeMode={safeMode ?? normalRecovery()}
       urlDelivery={urls}

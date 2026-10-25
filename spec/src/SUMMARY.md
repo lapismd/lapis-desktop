@@ -335,3 +335,4 @@
 - [Shared asset reader and native file-action compatibility](history/E-CORE-018.md)
 - [Native turn-core dependency compatibility](history/E-CORE-019.md)
 - [Immutable native turn launch profiles](history/E-CORE-020.md)
+- [Native turn selection and existing chat observer](history/E-CORE-021.md)

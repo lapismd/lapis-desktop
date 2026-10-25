@@ -76,6 +76,34 @@ impl VaultServices {
         Ok(services)
     }
 
+    pub fn with_turns(
+        mut self,
+        profile: &Path,
+        policy: Arc<dyn lapis_app_core::services::AgentPolicy>,
+        runtime: tokio::runtime::Handle,
+    ) -> io::Result<Self> {
+        let root = VaultRoot::open(profile)?;
+        if let Err(error) = root.mkdir("turns", false)
+            && error.kind() != io::ErrorKind::AlreadyExists
+        {
+            return Err(error);
+        }
+        let directory = root.open_directory("turns")?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            directory
+                .into_std_file()
+                .set_permissions(std::fs::Permissions::from_mode(0o700))?;
+        }
+        root.verify_physical_root()?;
+        let storage =
+            lapis_app_core::services::TurnStorage::new(&root.path().join("turns"), policy, runtime)
+                .map_err(io::Error::other)?;
+        self.runtime = self.runtime.with_turns(storage);
+        Ok(self)
+    }
+
     pub fn client(&mut self, vaults: &VaultManager, session: &str) -> io::Result<Arc<Client>> {
         let root = vaults.get(session)?;
         root.verify_physical_root()?;

@@ -7,6 +7,7 @@ import {
   readFileSync,
   rmSync,
   symlinkSync,
+  unlinkSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -187,7 +188,7 @@ test("installation rejects a workspace peer that resolves a second registry API 
     () => archives.verifyArchiveResolution(root, [entry], [root, workspace]),
     /identity|archive/i,
   );
-  rmSync(peer);
+  unlinkSync(peer);
   symlinkSync(verified, peer);
   assert.equal(
     archives.verifyArchiveResolution(root, [entry], [root, workspace]),
@@ -202,7 +203,7 @@ test("installation rejects a workspace peer that resolves a second registry API 
     join(peerContext, "package.json"),
     readFileSync(join(verified, "package.json")),
   );
-  rmSync(peer);
+  unlinkSync(peer);
   symlinkSync(peerContext, peer);
   assert.equal(
     archives.verifyArchiveResolution(root, [entry], [root, workspace]),
@@ -213,7 +214,7 @@ test("installation rejects a workspace peer that resolves a second registry API 
     "node_modules/.pnpm/api@file+unverified+api.tgz_peer-two/node_modules/@lapis-notes/api",
   );
   mkdirSync(unverified, { recursive: true });
-  rmSync(peer);
+  unlinkSync(peer);
   symlinkSync(unverified, peer);
   assert.throws(
     () => archives.verifyArchiveResolution(root, [entry], [root, workspace]),

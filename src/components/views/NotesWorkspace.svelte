@@ -16,7 +16,7 @@
     DesktopWorkspaceStartup,
     DesktopRecoveryBanner,
   } from "@lapis-notes/workspace";
-  import type { WorkspaceNavigation } from "@lapismd/design-core/workspace/app-shell";
+  import { notesNavigation } from "../../lib/notes/notes-navigation.ts";
   import type {
     WorkspaceStartupFailure,
     WorkspaceStartupTask,
@@ -37,6 +37,7 @@
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
 
   import type { TerminalFactory } from "../../lib/terminal/terminal-binding.ts";
+  import type { NativeChatHost } from "@lapis-notes/app-profile/native-chat";
   import type { AiFactory } from "../../lib/ai/plugin/services.ts";
   import type { RepositoryFactory } from "../../lib/repository/services.ts";
   import type {
@@ -52,6 +53,7 @@
     pluginDistributionOptions,
     createTerminal,
     createAi,
+    nativeChat,
     createRepository,
     createPopouts,
     onBack,
@@ -66,6 +68,7 @@
     pluginDistributionOptions?: AppPluginDistributionOptions;
     createTerminal?: TerminalFactory;
     createAi?: AiFactory;
+    nativeChat?: (app: App) => NativeChatHost;
     createRepository?: RepositoryFactory;
     createPopouts?: PopoutFactory;
     onBack(): Promise<void>;
@@ -81,14 +84,21 @@
         session,
         pluginAssetServer,
         pluginDistributionOptions,
-        unavailablePlugins: createAi ? {} : unavailableDesktopPlugins,
+        unavailablePlugins:
+          createAi || nativeChat ? {} : unavailableDesktopPlugins,
         safeMode,
         workspaceShell: { notifications: true },
         markdownRenderer: async () => {},
       }),
   );
   const bundled = untrack(() =>
-    notesBundledPlugins(app, createTerminal, createAi, createRepository),
+    notesBundledPlugins(
+      app,
+      createTerminal,
+      createAi,
+      createRepository,
+      nativeChat,
+    ),
   );
   provideApplicationState(app);
   const releaseCompatibility = installApplicationCompatibility(app);
@@ -109,20 +119,9 @@
   let disposed = false;
   let coreDisposed = false;
   let section: HTMLElement | undefined;
-  const workspaceNavigation = $derived<WorkspaceNavigation>({
-    currentLabel: session.profile?.name ?? "Lapis Notes",
-    menuLabel: "Vault",
-    items: [
-      {
-        id: "current",
-        label: session.profile?.name ?? "Lapis Notes",
-        disabled: true,
-      },
-    ],
-    manageLabel: "Back to vaults",
-    onSelect: () => {},
-    onManage: back,
-  });
+  const workspaceNavigation = $derived(
+    notesNavigation(session.profile?.name ?? "Lapis Notes", back),
+  );
 
   function message(failure: unknown): string {
     return failure instanceof Error ? failure.message : String(failure);

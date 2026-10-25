@@ -300,3 +300,8 @@ through actual reader drain before the vault is released. Delayed old-vault
 cleanup cannot revoke a newer repository generation. Database opening uses the
 same transition guard; it cannot race a successful close preflight. See
 `repository.md`.
+
+Staged native AI views read portable conversations through the admitted vault
+adapter. Their selected Core service is the only transcript writer. Explicit
+feature/vault close drains accepted work before dependent services retire;
+renderer reload detaches observation while retaining native vault work.

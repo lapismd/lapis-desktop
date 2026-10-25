@@ -86,7 +86,8 @@
     "@lapismd/jj-conversations": "link:../jj-store/packages/jj-conversations",
     "@tanstack/svelte-virtual": "^3.13.46",
     "@lapismd/agent-ui": "^0.1.0",
-    "@lapismd/repository-ui": "^0.1.0"
+    "@lapismd/repository-ui": "^0.1.0",
+    "@lapis-notes/app-profile": "^0.0.0"
   },
   "devDependencies": {
     "@lapismd/spec-validator": "^0.1.4",
