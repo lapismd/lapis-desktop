@@ -67,3 +67,20 @@ R2.2.3 consumes the private Notes application-profile through its packed public
 is an ignored development prerequisite until distribution. Its Agent UI and API
 imports use the same verified consumer package identities. Source aliases,
 copied screens and a second chat writer remain prohibited.
+
+The Docker-first intake raises the Mira minimum to released `0.1.1`; its three
+companion packages remain at released `0.0.3`. The temporary Design Core archive
+uses committed `944cd448`, which includes the qualified autocomplete lifecycle
+repair and requires Mira `~0.1.1`. Independent uncommitted source changes MUST
+NOT enter that archive. The remaining first-party cohort retains its
+individually recorded qualified inputs; this selective intake does not claim
+complete latest-source freshness.
+
+Portable validation MUST declare every unpublished or linked package as a
+checksum-pinned archive prerequisite. It MUST resolve an isolated projected
+lockfile before frozen installation and restore the tracked dependency files
+before checking the source. The existing tracked lock does not yet qualify a
+registry-only install: App Profile, Agent UI and Repository UI are unpublished.
+Publishing those prerequisites and regenerating a complete frozen registry lock
+remain distribution work. [E-CORE-023](../history/E-CORE-023.md) records the
+dependency cohort and its separate consumer qualification.

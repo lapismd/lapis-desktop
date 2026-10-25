@@ -1,21 +1,11 @@
 # Governance — [native turns](ai-adapter.md)
 
-[Shared screens](shared-screen-integration.md) own integration. Retirement MUST
-preserve revisions/archives/evidence and separate native/distribution/visual
-gates. Commits MUST refresh ledger/MIGRATION UTC date/time and
-verified/running/waiting activity when work changes (E-PLAN-006; E-CORE-014).
-M16.3 groups database admission/observation under `database`; Notes owns the
-engine/calls. E-CORE-019 checks optional turn-core intake without selecting AI.
-
-E-AI-094/101 split ACP configuration/tool titles under LD-GOV-005. Mode icons
-are preoptimized for cold imports; existing policies and baselines stay intact.
-
-E-AI-093 retains M13 gates; E-AI-121 adds isolated SQLite import fixtures.
-E-CATALOG-016: native conflict proof. E-AI-031–033/E-REPO-047 retain
-boundary/identity evidence; LD-GOV-002 rules remain unchanged.
-
-M5 owns App watch/leave, archives tree/views, hosts teardown. E-CATALOG-016
-ignores generated roots; source HMR, vault watching and admission stay intact.
+[Shared screens](shared-screen-integration.md) own integration; retained
+[checkpoint notes](../../../docs/governance-checkpoints.md) preserve prior
+policy. [Local validation](../../../docs/validation.md) defines Docker/native
+commands, isolated archive prerequisites, reports and owned cleanup.
+E-VALIDATION-001 records the Docker-first intake; native and release gates
+remain separate.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
@@ -65,6 +55,13 @@ not qualify deferred native-store capture or application-tool integration.
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                            |
 | LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006. |
 | LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit headed option MUST retain the complete native WebView/window/OS suite. Headless success MUST NOT substitute for a native acceptance gate; invalid mode flags MUST reject before launching children.                                                                                    |
+| LD-GOV-010 | Portable validation MUST default to isolated Docker execution of exact tracked Jujutsu snapshots and ancestry, with pinned tools, bounded resources, checksummed explicit prerequisites, keyed caches and retained reports. Docker failures MUST NOT fall back to the host. Native macOS application/window and visual-approval gates MUST remain separate; CI MAY explicitly select its provisioned native runtime.                                     |
+
+Checkout leases MUST remain held for created, running, paused or uncertain
+workers. Release and cleanup MUST require known completed owned runs and
+immutable container identities; failed transport queries cannot prove
+completion. Workers MUST drop Linux capabilities so permission checks cannot
+bypass DAC.
 
 The user authorized verified local pnpm archives until the publication gate. The
 ignored overlay verifies checksums/revisions, redirects matching ranges and

@@ -10,6 +10,9 @@ export async function readyPanel(element: HTMLElement, testId: string) {
     expect(
       canvas.queryByRole("status", { name: "Loading conversations" }),
     ).toBeNull();
+    expect(
+      canvas.queryByRole("status", { name: "Loading catalog" }),
+    ).toBeNull();
   });
   return within(canvas.getByTestId(testId));
 }

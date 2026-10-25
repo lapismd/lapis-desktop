@@ -163,6 +163,13 @@ review story using production components and the smallest real shell required.
 Include applicable loading, empty, disabled, failure and recovery states; keep
 the inventory current when adding behavior. Do not create replacement screens.
 
+Keep `catalog/story-parity.json` current and run `pnpm check:storybook-parity`.
+Application examples retain the actual production shell; component examples name
+the genuine public or Desktop-owned production surface. Synthetic controls never
+replace product presentation; use `catalog/FixtureControls.svelte` for visibly
+labelled, dotted-border setup actions outside the production shell. Follow
+[local validation](docs/validation.md).
+
 Use `pnpm storybook` (port 7480), `pnpm build-storybook` and
 `pnpm test:storybook`. The test command runs desktop and narrow viewports
 sequentially, with light/dark stories and accessibility failures enabled. Visual
@@ -180,6 +187,11 @@ default script. Headless success cannot qualify a native product gate. Use
 `pnpm test:desktop:api` for opt-in macOS ARM64 IPC checks in a hidden native
 WebView. This e2e-only mode prohibits activation and tests no animation or OS
 UI; it is separate from the quiet default and refuses a running acceptance app.
-Use `pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation
-qualification. Do not publish, replace installed applications, or reuse a user's
-profile for tests.
+Portable `check`, `test`, `build`, specification and catalog lanes default to
+isolated Docker snapshots. Use `pnpm validation:doctor` and
+`pnpm validation:images`; `LAPIS_DESKTOP_VALIDATION_RUNTIME=native` deliberately
+selects the host. Docker errors never trigger host fallback. Shared-package
+archives remain explicit private prerequisites; never transfer dirty sibling
+sources or user profiles. Use `pnpm check`, `pnpm test`, and `pnpm spec:check`
+for foundation qualification. Do not publish, replace installed applications, or
+reuse a user's profile for tests.

@@ -23,6 +23,21 @@ fn selected_native_turn_owner_reopens_after_renderer_detach_and_explicit_disable
         .unwrap()
         .with_turns(profile.path(), Arc::new(Policy), runtime.handle().clone())
         .unwrap();
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        for directory in ["databases", "models", "turns"] {
+            assert_eq!(
+                std::fs::metadata(profile.path().join(directory))
+                    .unwrap()
+                    .permissions()
+                    .mode()
+                    & 0o777,
+                0o700,
+                "Native service storage must remain private"
+            );
+        }
+    }
     let old = services.client(&vaults, &first.session_id).unwrap();
     assert!(
         matches!(old.call_turn(TurnCommand::List {}).unwrap(), TurnValue::Records { records } if records.is_empty())

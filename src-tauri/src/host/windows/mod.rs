@@ -90,21 +90,21 @@ pub fn build(app: &AppHandle) -> tauri::Result<WebviewWindow> {
             route_link(&popup, &url);
             related::open(&popup, &url, _features)
         })
-        .on_page_load(|window, payload| {
+        .on_page_load(|_window, payload| {
             if payload.event() == tauri::webview::PageLoadEvent::Finished {
                 #[cfg(target_os = "macos")]
-                crate::host::windows::macos_chrome::align(&window);
+                crate::host::windows::macos_chrome::align(&_window);
             }
         })
         .build()
         .inspect(chrome_events)
 }
 
-pub fn chrome_events(window: &WebviewWindow) {
+pub fn chrome_events(_window: &WebviewWindow) {
     #[cfg(target_os = "macos")]
     {
-        let chrome = window.clone();
-        window.on_window_event(move |event| {
+        let chrome = _window.clone();
+        _window.on_window_event(move |event| {
             if matches!(
                 event,
                 tauri::WindowEvent::Focused(_)
@@ -114,6 +114,6 @@ pub fn chrome_events(window: &WebviewWindow) {
                 crate::host::windows::macos_chrome::align(&chrome);
             }
         });
-        crate::host::windows::macos_chrome::align(window);
+        crate::host::windows::macos_chrome::align(_window);
     }
 }

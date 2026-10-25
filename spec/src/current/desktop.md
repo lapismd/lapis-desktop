@@ -17,6 +17,10 @@ authority; renderer paths, actors, executables and environment denied.
 [Plugins/Terminal](plugins.md); [background](background.md);
 [history](repository.md).
 
+Portable Docker service checks use an explicit test-only bundle configuration
+and compatible registry dependencies. Actual helper delivery, native windows and
+platform resources retain the ordinary app-build acceptance gate.
+
 ## Requirements
 
 | ID             | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                     |
@@ -195,17 +199,17 @@ requested directory, as required by the public Notes vault adapter contract.
 
 ## Native database and Notes intake (M3)
 
-M3's original SQL-connection receipts retain their historical scope. R1.3.8 /
-M16.3 supersedes that transport with the same high-level shared Rust database
-used by HTTP. The public AppDatabase interface and stored schema remain intact;
-renderer SQL frames, SQL guards and the duplicate renderer engine are retired.
+R1.3.8/M16.3 supersedes M3's historical SQL transport with the shared Rust
+AppDatabase used by HTTP. Its interface and schema remain unchanged; renderer
+SQL frames, guards and the duplicate renderer engine are retired.
 
 File and database commands use one admitted `VaultServices` runtime. Native
 installation policy selects private database/model directories outside vaults;
 callers pass only opaque session/connection IDs and generated calls. Async
 execution and change forwarding release the host mutex before waiting. Repeated
 opens for an admission retain its connection; independent admissions share the
-vault's worker. Closing a vault with a live database view still rejects.
+vault's worker. Closing a vault with a live database view still rejects. Private
+directory permissions use readable capability handles, including on Linux.
 
 Closing a view stops its observation and future calls, while accepted native
 work and storage remain vault-owned. The last explicit vault close drains and

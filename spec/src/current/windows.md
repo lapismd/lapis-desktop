@@ -22,6 +22,9 @@ ordinary-app popup admission. M7.2 and M7.3 remain separate review slices.
 | LD-POP-005 | Ordinary popup admission MUST be limited to owned blank related windows in the current App session. Native filesystem, database and watcher ownership MUST remain in the main session; attachment reads MUST require a registered window in that session. Arbitrary navigation and unowned windows MUST remain denied.                                                                              |
 | LD-POP-006 | Each popup MUST reserve the main window's full native-control safe area in its top-left top or stacked tab strip, including after resize. The shared surface MUST consume public clearance tokens without main-window ribbon subtraction, and tabs MUST remain at the top edge.                                                                                                                     |
 
+Portable Linux compilation keeps macOS-only chrome callbacks behind their
+existing OS guards. It does not qualify native-control alignment or dragging.
+
 ## Hosting proof boundary
 
 The installed Tauri 2.12.4 exposes `NewWindowResponse::Create` and

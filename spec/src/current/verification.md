@@ -107,7 +107,9 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-AI-003 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](../history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | [E-TEST-001](../history/E-TEST-001.md): quiet default, fail-closed modes, complete retained headed runner and explicit native CI gate; all quiet lanes pass. |
+| LD-GOV-010 | Implemented | [E-VALIDATION-001](../history/E-VALIDATION-001.md): isolated Docker-first portable validation; native product qualification remains separate. |
 | LD-CAT-003 | Implemented | E-CORE-014 retains attachment collapse absence after the controlled closed/unmount boundary;  [E-CATALOG-002](../history/E-CATALOG-002.md): qualified state inventory; [E-CATALOG-007](../history/E-CATALOG-007.md): Lapis Reading review added, suites deferred.; [E-REPO-011](../history/E-REPO-011.md); [E-REPO-012](../history/E-REPO-012.md); [E-REPO-013](../history/E-REPO-013.md). |
+| LD-CAT-005 | Implemented | [E-VALIDATION-001](../history/E-VALIDATION-001.md): complete selected-render composition inventory and fail-closed parser regressions. |
 | LD-COMP-001 | Planned | [E-AI-123](../history/E-AI-123.md): model library/progress/recovery; [E-AI-124](../history/E-AI-124.md): model controls/footer; [E-AI-125](../history/E-AI-125.md): inline selection and fresh app checks. Original inference, lifecycle and pairing gates remain. |
 | LD-REPO-001 | Implemented | [E-REPO-002](../history/E-REPO-002.md): physical admission, real caller/origin frames and independent history/AI grants; M13.1. |
 | LD-REPO-002 | Implemented | [E-REPO-006](../history/E-REPO-006.md): cold native pins/diffs/restart; [M13.2 ledger](progress/milestones.md): transport and presentation history; [E-REPO-056](../history/E-REPO-056.md): neutral service compatibility; [E-REPO-016](../history/E-REPO-016.md): background work. |
@@ -251,3 +253,13 @@ application and provider/cold gates remain distinct.
 E-CORE-022 tracks retained public History routing, scoped drafts and native
 chat/cold recovery under LD-AI-001/002/004 and LD-CAT-001/002. Original provider
 and M10 completion gates stay open.
+
+[E-CORE-023](../history/E-CORE-023.md) tracks released Mira and committed-source
+Design Core intake under LD-GOV-006/008. Temporary archive consumer checks
+remain distinct from complete freshness, registry-only installation and
+distribution qualification.
+
+[E-CORE-024](../history/E-CORE-024.md) qualifies actual Codex native Core
+transport detach, durable completion, reattachment and cold retention under
+LD-AI-001/002/004. It uses the existing native binary; existing
+application-screen and hosted-provider R2.3 acceptance remain required.

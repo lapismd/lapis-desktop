@@ -1,0 +1,434 @@
+{
+  "catalog/plugins/Launcher.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/vaults/VaultLauncher.svelte#default"
+  },
+  "catalog/plugins/Workspace.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Addressing.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Admission.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/AgentHeader.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/AgentMentionLinks.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/AgentProfiles.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/AgentProviders.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/AgentSetupReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/AppToolActivity.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/ApprovalPolicy.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Attachments.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Cancellation.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/Catalog.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/catalog/AiCatalogPanel.svelte#default"
+  },
+  "catalog/plugins/ai/ChangeHistory.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ChatLayoutReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ChatScrollRecovery.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Clients.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/CommandsAndResults.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/CommentHistory.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ComputeLibrary.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/ComputeStatus.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/app-shell#AppShell.StatusBar"
+  },
+  "catalog/plugins/ai/Conversation.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/DesignCoreReference.stories.ts": {
+    "kind": "application",
+    "stories": {
+      "DocumentConversation": {
+        "kind": "application"
+      },
+      "ClassicConversation": {
+        "kind": "application"
+      },
+      "StandaloneConversation": {
+        "kind": "component",
+        "subject": "@lapismd/design-core/chat#Transcript"
+      }
+    }
+  },
+  "catalog/plugins/ai/Drafts.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ErrorsAndMentions.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/History.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/history/AiHistoryPanel.svelte#default"
+  },
+  "catalog/plugins/ai/ImportLayoutReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ImportReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/IndexedImports.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Jsonl.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Lifetime.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/LocalConversationStorage.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/LocalConversations.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ModelSettingsSearch.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/Models.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/MultiRecipient.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/NativeNotes.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/NativeTurns.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/NoteLinks.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/PanelLifetime.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/history/AiHistoryPanel.svelte#default",
+    "stories": {
+      "HistoryPendingRead": {
+        "kind": "component",
+        "subject": "src/components/ai/history/AiHistoryPanel.svelte#default"
+      },
+      "CatalogPendingRead": {
+        "kind": "component",
+        "subject": "src/components/ai/catalog/AiCatalogPanel.svelte#default"
+      },
+      "ChatPendingRestore": {
+        "kind": "component",
+        "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+      }
+    }
+  },
+  "catalog/plugins/ai/Plugin.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ProgressiveImports.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/QueuedMessages.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/ReplyErrors.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/Requests.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiApprovalCard.svelte#default",
+    "stories": {
+      "OpaquePermission": {
+        "kind": "component",
+        "subject": "src/components/ai/chat/AiApprovalCard.svelte#default"
+      },
+      "DisabledPermission": {
+        "kind": "component",
+        "subject": "src/components/ai/chat/AiApprovalCard.svelte#default"
+      },
+      "Question": {
+        "kind": "component",
+        "subject": "src/components/ai/chat/AiQuestionCard.svelte#default"
+      },
+      "FreshQuestion": {
+        "kind": "component",
+        "subject": "src/components/ai/chat/AiQuestionCard.svelte#default"
+      }
+    }
+  },
+  "catalog/plugins/ai/ResourceOrder.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/SentContext.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/SessionLayoutReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/Settings.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/Setup.stories.ts": {
+    "kind": "component",
+    "subject": "@lapismd/design-core/workspace/settings#WorkspaceSettingsSurface"
+  },
+  "catalog/plugins/ai/ToolActivity.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/TraceAndScrolling.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/TranscriptReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/TurnRequests.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/ai/chat/AiChatPanel.svelte#default"
+  },
+  "catalog/plugins/ai/UserCommands.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/VaultListingReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/WorkspaceLifecycle.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/placements/Catalog.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/placements/Chat.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/placements/History.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/AgentSwitching.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/CommunityToolOptIn.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/Compositions.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/Desktop.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/FollowScope.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/ImmediateInitializingComposer.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/Initialization.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/LocalConversations.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/Mobile.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/Recovery.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/ai/shell/TranscriptAdoption.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/background/Work.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/desktop/FileConflicts.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/files/FileConflicts.svelte#default"
+  },
+  "catalog/plugins/desktop/Shell.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/Shell.svelte#default"
+  },
+  "catalog/plugins/desktop/ShellStartup.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/ShellStartup.svelte#default"
+  },
+  "catalog/plugins/desktop/Startup.stories.ts": {
+    "kind": "component",
+    "subject": "@lapis-notes/workspace#DesktopWorkspaceStartup",
+    "stories": {
+      "LoadingNotes": {
+        "kind": "component",
+        "subject": "@lapis-notes/workspace#DesktopWorkspaceStartup"
+      },
+      "RestoringVault": {
+        "kind": "component",
+        "subject": "@lapis-notes/workspace#DesktopWorkspaceStartup"
+      },
+      "FailedLayout": {
+        "kind": "component",
+        "subject": "src/components/views/NotesWorkspace.svelte#default"
+      },
+      "OptionalPluginsDisabled": {
+        "kind": "component",
+        "subject": "src/components/views/NotesWorkspace.svelte#default"
+      },
+      "SavedLayoutSkipped": {
+        "kind": "component",
+        "subject": "src/components/views/NotesWorkspace.svelte#default"
+      },
+      "FailedRecoveryAction": {
+        "kind": "component",
+        "subject": "src/components/views/NotesWorkspace.svelte#default"
+      }
+    }
+  },
+  "catalog/plugins/repository/AutomaticBackup.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/Blame.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/BlameLayoutReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/BlameWrapping.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/ColumnInteractions.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/Comparison.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/DiffLayout.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/FileHistory.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/Forges.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/Header.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/History.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/HistoryAdoption.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/HistoryLayout.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/HistoryStorage.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/LivePlugin.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/Loading.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/OperationFiles.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/OperationLayout.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/Operations.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/ParentPicker.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/ParityReview.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/Publication.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/RemoteBackup.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/Restore.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/RowSelection.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/Search.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/Sync.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/TranscriptHistory.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/repository/UpstreamStatus.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/repository/WorkingCopyStatus.stories.ts": {
+    "kind": "application"
+  },
+  "catalog/plugins/terminal/Terminal.stories.ts": {
+    "kind": "application"
+  }
+}

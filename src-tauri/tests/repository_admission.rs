@@ -4,23 +4,22 @@ use lapis_desktop::{
 };
 use std::{path::Path, process::Command};
 fn jj(root: &Path, args: &[&str]) -> String {
-    let output = Command::new(
-        std::env::var_os("JJ_STORE_TEST_STOCK_JJ").unwrap_or_else(|| "/opt/homebrew/bin/jj".into()),
-    )
-    .current_dir(root)
-    .args([
-        "--no-pager",
-        "--config",
-        "user.name='Fixture'",
-        "--config",
-        "user.email='fixture@invalid'",
-    ])
-    .args(args)
-    .env("JJ_CONFIG", "/dev/null")
-    .env("GIT_CONFIG_NOSYSTEM", "1")
-    .env("GIT_CONFIG_GLOBAL", "/dev/null")
-    .output()
-    .unwrap();
+    let executable = std::env::var_os("JJ_STORE_TEST_STOCK_JJ").unwrap_or_else(|| "jj".into());
+    let output = Command::new(executable)
+        .current_dir(root)
+        .args([
+            "--no-pager",
+            "--config",
+            "user.name='Fixture'",
+            "--config",
+            "user.email='fixture@invalid'",
+        ])
+        .args(args)
+        .env("JJ_CONFIG", "/dev/null")
+        .env("GIT_CONFIG_NOSYSTEM", "1")
+        .env("GIT_CONFIG_GLOBAL", "/dev/null")
+        .output()
+        .unwrap();
     assert!(
         output.status.success(),
         "{}",

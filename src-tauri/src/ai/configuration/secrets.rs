@@ -9,11 +9,22 @@ pub trait Secrets: Send + Sync {
     fn remove(&self, id: &str) -> io::Result<()>;
 }
 
+#[cfg(target_os = "macos")]
 struct Keychain(String);
+#[cfg(not(target_os = "macos"))]
+struct Keychain;
 pub fn device(root: &Path) -> Arc<dyn Secrets> {
-    use sha2::{Digest, Sha256};
-    let digest = Sha256::digest(root.as_os_str().as_encoded_bytes());
-    Arc::new(Keychain(format!("org.lapismd.desktop.ai.{digest:x}")))
+    #[cfg(target_os = "macos")]
+    {
+        use sha2::{Digest, Sha256};
+        let digest = Sha256::digest(root.as_os_str().as_encoded_bytes());
+        Arc::new(Keychain(format!("org.lapismd.desktop.ai.{digest:x}")))
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        let _ = root;
+        Arc::new(Keychain)
+    }
 }
 
 impl Secrets for Keychain {

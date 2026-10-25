@@ -40,14 +40,14 @@ Native product proof exceeds service tests; E-REPO-056 retains LD-REPO-001/002.
 
 ## Qualification
 
-Real stock-JJ fixtures must cover internal and colocated Git, shared repository
-links, source/dirty-file preservation, no companion initialization, physical
-replacement, stale tickets, independent AI grants, closure fencing and explicit
-reload. Native command integration additionally requires a cold hidden WebView
-with actual caller frames and exact permission grants. Presentation uses
-released Design Core Chat/Diff exports with production component stories. A
-recoverable one-agent conversation completes the first usable milestone only
-after actual native persistence and restart acceptance.
+Stock-JJ fixtures use `JJ_STORE_TEST_STOCK_JJ` or `jj` on PATH. They must cover
+internal/colocated Git, shared links, source/dirty-file preservation, no
+companion initialization, physical replacement, stale tickets, independent AI
+grants, closure fences and explicit reload. Native command integration also
+needs a cold hidden WebView with actual caller frames and exact permission
+grants. Presentation uses released Design Core Chat/Diff exports and production
+stories. A recoverable one-agent conversation qualifies the first usable
+milestone only after actual native persistence and restart acceptance.
 
 Visible history acceptance uses the actual native window and ribbon/diff
 controls, preserves dirty source bytes and JJ/Git metadata, observes an external

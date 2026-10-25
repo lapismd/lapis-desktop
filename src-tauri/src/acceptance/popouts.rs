@@ -41,9 +41,9 @@ pub fn open(
             )
             .on_navigation(|url| url.as_str() == "about:blank")
             .on_new_window(|_, _| NewWindowResponse::Deny)
-            .on_page_load(|window, _| {
+            .on_page_load(|_window, _| {
                 #[cfg(target_os = "macos")]
-                crate::host::windows::macos_chrome::align(&window);
+                crate::host::windows::macos_chrome::align(&_window);
             })
             .build()
             .inspect(crate::host::windows::chrome_events)

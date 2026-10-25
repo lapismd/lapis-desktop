@@ -337,3 +337,8 @@
 - [Immutable native turn launch profiles](history/E-CORE-020.md)
 - [Native turn selection and existing chat observer](history/E-CORE-021.md)
 - [Retained native chat and History navigation](history/E-CORE-022.md)
+- [Docker-first dependency intake](history/E-CORE-023.md)
+- [Docker-first portable validation and story composition](history/E-VALIDATION-001.md)
+
+- [Docker-first consumer qualification](history/E-VALIDATION-002.md)
+- [Actual provider reload-detach preflight](history/E-CORE-024.md)

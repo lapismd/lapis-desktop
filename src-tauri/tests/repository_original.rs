@@ -3,7 +3,8 @@ use jj_vault::Binding;
 use lapis_desktop::{repository::RepositoryAdmissions, vault::VaultManager};
 use std::{fs, path::Path, process::Command};
 fn stock(root: &Path, args: &[&str]) {
-    let result = Command::new("/opt/homebrew/bin/jj")
+    let executable = std::env::var_os("JJ_STORE_TEST_STOCK_JJ").unwrap_or_else(|| "jj".into());
+    let result = Command::new(executable)
         .current_dir(root)
         .args([
             "--no-pager",

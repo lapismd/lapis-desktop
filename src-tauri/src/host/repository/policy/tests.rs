@@ -10,7 +10,8 @@ fn fixture() -> (tempfile::TempDir, Policy, String) {
     let root = tempfile::tempdir().unwrap();
     let vault = root.path().join("Vault");
     std::fs::create_dir(&vault).unwrap();
-    let output = Command::new("/opt/homebrew/bin/jj")
+    let executable = std::env::var_os("JJ_STORE_TEST_STOCK_JJ").unwrap_or_else(|| "jj".into());
+    let output = Command::new(executable)
         .current_dir(&vault)
         .args(["--no-pager", "git", "init", "--colocate"])
         .env("JJ_CONFIG", "/dev/null")

@@ -6,6 +6,12 @@ archives under [E-CORE-022](../history/E-CORE-022.md). Native Markdown and Tasks
 parser source completion does not complete metadata host adoption, M10.2 or the
 remaining R3–R7 gates. M11 remains Deferred.
 
+Evidence for Docker-first portable validation, governed story composition and
+public archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux
+service/compiler and headless browser evidence MUST NOT complete native macOS,
+actual-provider, distribution or original migration gates. The current task
+ledger retains their completion status and next actions.
+
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
 Generated tables group gates, sort IDs and link their spec ledger. Commits MUST
@@ -19,19 +25,10 @@ E-AI-094 adds agent context/permissions; E-AI-066 adds Agents Settings.
 E-AI-072–086 are unqualified drafts; LD-MIG-002 original gates stay unchanged.
 Native JJ history/persistence does not migrate or replace supported ACP chat.
 
-E-POPOUT-003/004 qualify M7.3 ordinary native windows after the source-owned
-archive refresh. E-REPO-047 completes M14.1 native identity/storage;
-E-REPO-048–050 and E-REPO-046 qualify M14.2 capture/final persistence and retry.
-E-REPO-051–053 qualify native restore/search and storage/adoption under
-unchanged LD-MIG-002 gates. Real-provider, AI, distribution and cutover gates
-remain open; release stays deferred. Historical failed attempts are retained.
+[Window, backup and catalog checkpoints](../../../docs/governance-checkpoints.md#migration-window-and-backup-checkpoints)
+retain their original evidence and gates.
 
-E-CATALOG-016 qualifies the original M8.5 native gate, including retired-writer
-recovery. Shared close policy belongs in the API; release remains deferred.
-E-REPO-054 fixes sync recovery persistence outside App writer protection;
-LD-MIG-002 and original cold native/provider gates remain unchanged.
-
-## Current checkpoint — 2026-10-20
+## Earlier checkpoint — 2026-10-20
 
 The [roadmap](../../../PLAN.md#current-delivery-checkpoint) and
 [main task ledger](progress/milestones.md) now include the M13 repository and

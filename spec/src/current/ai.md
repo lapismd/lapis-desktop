@@ -6,6 +6,9 @@ saved leaf never submits a prompt. [E-CORE-022](../history/E-CORE-022.md)
 separates fixture-worker/native acceptance from R2.3 actual-provider
 qualification.
 
+Portable native checks retain unsupported credential ports outside macOS; only
+the supported Keychain backend constructs its device service identity.
+
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
 shell stories MUST join owned fixture readiness before querying controls. Core
@@ -169,7 +172,9 @@ formatting remain app-owned. Unknown commands stay local errors; literal slash
 escapes and explicit skill/tool routing retain their source behavior. Bootstrap
 reads admitted vault-relative folder instructions with bounds and omits host
 paths. User-global command persistence is an injected host port; the legacy Node
-implementation and runtime-only loader are not migrated.
+implementation and runtime-only loader are not migrated. Native command
+publication MUST sync a readable handle reopened within its directory
+capability; Linux search-only handles cannot provide durability.
 
 File context stays separate and bounded (8 files/64 KiB each/128 KiB total).
 Preparation checks cancellation. Projection excludes raw reasoning and redacts

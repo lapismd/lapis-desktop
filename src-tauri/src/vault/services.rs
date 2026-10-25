@@ -36,7 +36,8 @@ impl VaultServices {
             {
                 use std::os::unix::fs::PermissionsExt;
                 directory
-                    .into_std_file()
+                    .open(".")?
+                    .into_std()
                     .set_permissions(std::fs::Permissions::from_mode(0o700))?;
             }
             #[cfg(not(unix))]
@@ -93,7 +94,8 @@ impl VaultServices {
         {
             use std::os::unix::fs::PermissionsExt;
             directory
-                .into_std_file()
+                .open(".")?
+                .into_std()
                 .set_permissions(std::fs::Permissions::from_mode(0o700))?;
         }
         root.verify_physical_root()?;

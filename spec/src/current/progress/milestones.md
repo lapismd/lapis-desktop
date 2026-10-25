@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-25 15:55:37 UTC**.
+Last updated **2026-10-25 19:27:58 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -21,11 +21,30 @@ Last updated **2026-10-25 15:55:37 UTC**.
 - **Archive intake:** twenty checksums/import routes validate. The private
   profile comes from committed Notes `7161a447`; nineteen peer identities retain
   their earlier qualification. New Docker/dependency work is a separate slice.
-- **Next:** adopt Docker-first portable tests and composition guards, refresh
-  Design Core/Mira through verified public outputs, then resume independent
+- **Tooling complete:** all 108 composition families, 77 runner/guard cases,
+  final EACCES/Chromium/WebKit smoke, 238 Linux service cases and strict
+  normal/e2e Linux Clippy pass. macOS product acceptance remains separate.
+- **Active intake:** all original Desktop lifetime regressions now pass:
+  composer/remount 28 cases, conditional transcript focus four and complete
+  hover-card family eight, across the four viewport/theme modes. Design Core
+  source `8318eb6d` passes its complete gate: 922 unit/browser, 974 stories, 189
+  browser cases and one existing intentional skip. Its audited archive's 1,557
+  public inputs match that commit. All 497 renderer/governance, 744 AI and 238
+  Linux service cases also pass. Final Desktop catalog acceptance waits for one
+  combined Bits/Mira/API/UI dependency cohort. Notes found a distinct
+  already-running hover callback; upstream Bits source repair `a27be819` is
+  qualified separately. No consumer patch is forwarded. Complete the final
+  2,016-case catalog, types/build/static and governance checks next
+  (E-VALIDATION-002, E-CORE-023).
+- **Native provider preflight:** E-CORE-024 passes actual Codex native transport
+  detach, durable completion, reattachment and cold retention (one case). It
+  uses the existing binary; R2.3 retained-screen and hosted acceptance remain
+  open.
+- **Next:** finish this tooling/dependency intake, then resume independent
   provider-recovery and indexing lanes. Notes/Plugins default workspaces already
-  contain the Docker tooling; no wholesale historical-workspace rebase is
-  needed.
+  contain Docker tooling; no wholesale historical-workspace rebase is needed.
+  Independent Desktop cache families are a
+  [deferred tooling follow-up](../../../../docs/validation.md#deferred-cache-optimization).
 - **Accepted exception:** immutable E-AI-109 still fails formatting and is
   byte-identical to its parent. Its explicit prior acceptance is retained; the
   separate earlier Markdown image exception does not waive new failures.
@@ -67,7 +86,7 @@ M12 retains its M11 dependency and cutover gate (E-PLAN-006).
 | M7.1 | Done | M7 | LD-MIG-002,LD-POP-001 | An isolated actual native WebView opens a related window with an accessible Window and Document, mounts an existing shared surface, and proves focus, resize, close and cleanup. Ordinary bundles retain denied popup creation and contain no proof instrumentation. | Complete; proof retained | E-POPOUT-001 |
 | M7.2 | Done | M7.1 | LD-MIG-002,LD-POP-002,LD-POP-003,LD-POP-004,LD-POP-006 | Browser acceptance moves a real note into a popup and back while preserving its draft and editor history. Multiple popups remain independent, overlays stay in their own document, and failed opening or closing leaves source content reachable. Top and stacked popup headers reserve native-control clearance after resize. | Complete; native ordinary integration remains M7.3 | E-POPOUT-002 |
 | M7.3 | Done | M7.2 | LD-MIG-002,LD-POP-001,LD-POP-002,LD-POP-003,LD-POP-004,LD-POP-005,LD-POP-006 | The ordinary packaged app opens, edits, saves, redocks and safely closes multiple native windows with no duplicate sessions or stale resources. | Complete; continue AI and backup | E-POPOUT-003,E-POPOUT-004,E-REPO-050,E-SHELL-003 |
-| M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002 |
+| M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002,E-VALIDATION-001 |
 | M9 | Done | M8 | LD-MIG-002 | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app. | Complete; continue to M10.1 native ACP adapter | E-PLUGINS-001,E-PLUGINS-003,E-INSTALL-001 |
 | M10 | In progress | M9 | LD-MIG-002 | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification. | Continue native AI and persistence qualification | E-PLUGINS-001,E-PLUGINS-002,E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
 | M11 | Deferred | M10 | LD-MIG-002 | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution. | Await explicit resumption; retain distribution and platform gates | E-PLAN-006 |
@@ -104,7 +123,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
 | M10.1 | Done | M9 | LD-MIG-002,LD-AI-001 | Reusable native ACP adapter preserves ordered correlated events, exact permission choices, cancellation, worker isolation and teardown with no automatic uncertain replay. | Complete; continue to M10.2 desktop-owned AI | E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
-| M10.2 | In progress | M10.1 | LD-MIG-002,LD-PLUG-001,LD-AI-002,LD-AI-004 | Desktop AI retains conversations, context, memory and current UI with complete migrated story coverage through direct ACP and no controller. | Qualify staged Core chat/history/trust; finish Lapis, avatar accessibility and provider recovery |E-PLUGINS-003,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-012,E-STRUCTURE-002,E-AI-013,E-AI-014,E-AI-015,E-AI-016,E-AI-017,E-AI-018,E-AI-019,E-AI-020,E-AI-021,E-STRUCTURE-003,E-AI-022,E-AI-023,E-AI-024,E-AI-025,E-AI-029,E-AI-030,E-REPO-016,E-AI-039,E-AI-040,E-AI-041,E-REPO-042,E-AI-042,E-AI-043,E-AI-044,E-AI-045,E-AI-046,E-AI-047,E-AI-048,E-AI-049,E-AI-050,E-AI-051,E-AI-052,E-AI-053,E-AI-054,E-AI-055,E-AI-056,E-AI-057,E-AI-058,E-AI-059,E-AI-060,E-AI-061,E-AI-062,E-AI-063,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-AI-064,E-CATALOG-014,E-AI-065,E-AI-066,E-AI-067,E-AI-069,E-AI-070,E-AI-071,E-AI-072,E-AI-073,E-AI-074,E-AI-075,E-AI-076,E-AI-077,E-AI-078,E-AI-079,E-AI-080,E-AI-081,E-AI-082,E-AI-083,E-AI-084,E-AI-085,E-AI-086,E-AI-088,E-AI-089,E-AI-090,E-AI-091,E-AI-092,E-AI-093,E-AI-094,E-AI-095,E-AI-096,E-AI-097,E-AI-098,E-AI-100,E-AI-101,E-AI-102,E-AI-103,E-AI-104,E-AI-105,E-AI-106,E-AI-107,E-AI-108,E-AI-109,E-AI-111,E-AI-112,E-AI-113,E-AI-115,E-AI-118,E-AI-119,E-AI-120,E-AI-121,E-AI-122,E-PLAN-004,E-CORE-020,E-CORE-021,E-CORE-022 |
+| M10.2 | In progress | M10.1 | LD-MIG-002,LD-PLUG-001,LD-AI-002,LD-AI-004 | Desktop AI retains conversations, context, memory and current UI with complete migrated story coverage through direct ACP and no controller. | Qualify staged Core chat/history/trust; finish Lapis, avatar accessibility and provider recovery |E-PLUGINS-003,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-012,E-STRUCTURE-002,E-AI-013,E-AI-014,E-AI-015,E-AI-016,E-AI-017,E-AI-018,E-AI-019,E-AI-020,E-AI-021,E-STRUCTURE-003,E-AI-022,E-AI-023,E-AI-024,E-AI-025,E-AI-029,E-AI-030,E-REPO-016,E-AI-039,E-AI-040,E-AI-041,E-REPO-042,E-AI-042,E-AI-043,E-AI-044,E-AI-045,E-AI-046,E-AI-047,E-AI-048,E-AI-049,E-AI-050,E-AI-051,E-AI-052,E-AI-053,E-AI-054,E-AI-055,E-AI-056,E-AI-057,E-AI-058,E-AI-059,E-AI-060,E-AI-061,E-AI-062,E-AI-063,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-AI-064,E-CATALOG-014,E-AI-065,E-AI-066,E-AI-067,E-AI-069,E-AI-070,E-AI-071,E-AI-072,E-AI-073,E-AI-074,E-AI-075,E-AI-076,E-AI-077,E-AI-078,E-AI-079,E-AI-080,E-AI-081,E-AI-082,E-AI-083,E-AI-084,E-AI-085,E-AI-086,E-AI-088,E-AI-089,E-AI-090,E-AI-091,E-AI-092,E-AI-093,E-AI-094,E-AI-095,E-AI-096,E-AI-097,E-AI-098,E-AI-100,E-AI-101,E-AI-102,E-AI-103,E-AI-104,E-AI-105,E-AI-106,E-AI-107,E-AI-108,E-AI-109,E-AI-111,E-AI-112,E-AI-113,E-AI-115,E-AI-118,E-AI-119,E-AI-120,E-AI-121,E-AI-122,E-PLAN-004,E-CORE-020,E-CORE-021,E-CORE-022,E-CORE-024 |
 | M10.3 | In progress | M10.2 | LD-MIG-002,LD-AI-001,LD-AI-003,LD-AI-004 | Packaged lapis-agent performs native chat, exact approvals, guarded tool reads/edits, cancellation, recovery and isolated cleanup over authenticated Rust app-tool IPC. | External native tools verified; bundled Lapis local app-tool turns fail the native grammar sampler | E-PLUGINS-003,E-AI-097,E-AI-098,E-AI-103,E-AI-104,E-AI-107,E-AI-108,E-PLAN-004,E-AI-123 |
 | M10.4 | In progress | M10.3 | LD-MIG-002,LD-COMP-001 | Optional compute downloads/imports, starts and stops explicitly; disabled startup, admitted pairing, failures and shutdown pass independently of ACP. | Downloaded library, progress and recovery added; qualify real local tool inference and two-device pairing | E-PLUGINS-003,E-AI-097,E-AI-098,E-AI-099,E-AI-104,E-AI-108,E-AI-109,E-AI-110,E-AI-111,E-AI-123,E-AI-124,E-AI-125 |
 

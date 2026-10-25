@@ -1,4 +1,5 @@
 import { spawn } from "node:child_process";
+import { catalogArguments } from "./validation/catalog.mjs";
 
 for (const { viewport, theme } of [
   { viewport: "desktop", theme: "light" },
@@ -16,7 +17,7 @@ for (const { viewport, theme } of [
         "run",
         "--config",
         "vitest.catalog.config.ts",
-        ...process.argv.slice(2),
+        ...catalogArguments(process.argv.slice(2), viewport, theme),
       ],
       {
         stdio: "inherit",

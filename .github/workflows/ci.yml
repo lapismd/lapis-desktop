@@ -8,6 +8,8 @@ jobs:
   foundation:
     runs-on: macos-15
     timeout-minutes: 35
+    env:
+      LAPIS_DESKTOP_VALIDATION_RUNTIME: native
     steps:
       - uses: actions/checkout@v4
         with:

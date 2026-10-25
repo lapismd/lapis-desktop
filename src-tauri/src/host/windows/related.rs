@@ -47,10 +47,10 @@ pub fn open(
             )
             .on_navigation(move |url| url.as_str() == admitted_url)
             .on_new_window(|_, _| NewWindowResponse::Deny)
-            .on_page_load(move |window, payload| {
+            .on_page_load(move |_window, payload| {
                 if payload.event() == tauri::webview::PageLoadEvent::Finished {
                     #[cfg(target_os = "macos")]
-                    super::macos_chrome::align(&window);
+                    super::macos_chrome::align(&_window);
                 }
             })
             .on_web_resource_request(move |request, response| {

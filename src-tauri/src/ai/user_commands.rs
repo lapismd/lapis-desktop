@@ -153,7 +153,9 @@ impl UserCommands {
         } else {
             staged.replace(OsStr::new(&filename))?;
         }
-        directory.into_std_file().sync_all()?;
+        // Linux directory capabilities may be search-only (O_PATH).
+        // Reopen within the capability before syncing the published entry.
+        directory.open(".")?.sync_all()?;
         Ok(true)
     }
 }
