@@ -239,3 +239,6 @@ agent handoff and delivery states retain native and persistence boundaries.
 saved-file undo under LD-REPO-005/LD-AI-002, preserving ordinary ACP and
 deferred M13. Native service, catalog and visible provider qualification remain
 separate.
+
+[E-CORE-020](../history/E-CORE-020.md) tracks immutable per-vault launch policy
+under LD-AI-001/002 separately from selected service/chat/provider acceptance.

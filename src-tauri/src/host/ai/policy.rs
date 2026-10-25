@@ -10,6 +10,7 @@ use tauri_plugin_lapis_ai::{
     AcpHost, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
     runtime::SessionProcessor,
 };
+mod native_turns;
 mod tool_launch;
 
 #[derive(Clone, Default)]
@@ -69,21 +70,26 @@ impl DesktopAiPolicy {
         self.prepare_for_vault(None)
     }
     pub fn prepare_for_vault(&self, vault: Option<&str>) -> io::Result<()> {
+        self.0
+            .files
+            .prepare_profiles(vault, self.compute_environments())
+    }
+    fn compute_environments(
+        &self,
+    ) -> std::collections::BTreeMap<String, Option<std::collections::BTreeMap<String, String>>>
+    {
         let compute = self.compute().ok();
-        self.0.files.prepare_profiles(
-            vault,
-            ["local", "paired"]
-                .into_iter()
-                .map(|id| {
-                    (
-                        id.to_owned(),
-                        compute
-                            .as_ref()
-                            .and_then(|c| c.environment(id == "paired").ok()),
-                    )
-                })
-                .collect(),
-        )
+        ["local", "paired"]
+            .into_iter()
+            .map(|id| {
+                (
+                    id.to_owned(),
+                    compute
+                        .as_ref()
+                        .and_then(|c| c.environment(id == "paired").ok()),
+                )
+            })
+            .collect()
     }
     pub fn providers(&self) -> io::Result<lapis_desktop::ai::configuration::ProviderStore> {
         self.0.files.providers()

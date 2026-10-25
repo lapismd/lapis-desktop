@@ -1,4 +1,4 @@
-//! Independent device-local ACP admission; transcript files remain renderer-owned.
+//! Immutable launch preparation shared by legacy ACP and native turn policy.
 use serde::Deserialize;
 use std::io::Read;
 use std::{
@@ -9,7 +9,7 @@ use std::{
 };
 use tauri_plugin_lapis_ai::{
     Launch, Target,
-    runtime::{Config, Environment, PreparedLaunch, ResourceBundle},
+    runtime::{Config, PreparedLaunch, ResourceBundle},
 };
 
 #[derive(Deserialize)]
@@ -24,7 +24,7 @@ struct Source {
     home: PathBuf,
     providers: lapis_desktop::ai::configuration::ProviderStore,
 }
-struct Ready {
+pub(super) struct Ready {
     executable: PathBuf,
     environment: BTreeMap<String, String>,
     targets: BTreeMap<String, String>,
@@ -100,31 +100,39 @@ impl FileProfile {
         compute: BTreeMap<String, Option<BTreeMap<String, String>>>,
     ) -> io::Result<()> {
         let _guard = self.preparing.lock().map_err(|_| invalid())?;
-        let prepared = self
-            .source
+        let prepared = self.load_snapshot(vault, compute)?;
+        *self.ready.lock().map_err(|_| invalid())? = prepared;
+        Ok(())
+    }
+    /// Owned preparation: subsequent vault refreshes cannot change this launch.
+    pub fn snapshot(
+        &self,
+        vault: Option<&str>,
+        compute: BTreeMap<String, Option<BTreeMap<String, String>>>,
+    ) -> io::Result<Option<Ready>> {
+        let _guard = self.preparing.lock().map_err(|_| invalid())?;
+        self.load_snapshot(vault, compute)
+    }
+    fn load_snapshot(
+        &self,
+        vault: Option<&str>,
+        compute: BTreeMap<String, Option<BTreeMap<String, String>>>,
+    ) -> io::Result<Option<Ready>> {
+        self.source
             .get()
             .map(|source| {
                 configuration::load(source, self.bundle.get(), &self.verified, vault, compute)
             })
-            .transpose()?
-            .flatten();
-        *self.ready.lock().map_err(|_| invalid())? = prepared;
-        Ok(())
+            .transpose()
+            .map(Option::flatten)
     }
     pub fn compute_plan(&self) -> io::Result<PreparedLaunch> {
         compute_profile::plan(self)
     }
     pub fn contains(&self, target: &str) -> bool {
-        let target = if target == "local:restricted" {
-            "local"
-        } else {
-            target
-        };
-        self.ready.lock().is_ok_and(|ready| {
-            ready
-                .as_ref()
-                .is_some_and(|ready| ready.targets.contains_key(target))
-        })
+        self.ready
+            .lock()
+            .is_ok_and(|ready| ready.as_ref().is_some_and(|ready| ready.contains(target)))
     }
     pub fn retains(&self, target: &str) -> bool {
         matches!(
@@ -136,57 +144,14 @@ impl FileProfile {
         self.ready
             .lock()
             .ok()
-            .and_then(|ready| {
-                ready.as_ref().map(|ready| {
-                    ready
-                        .targets
-                        .iter()
-                        .map(|(id, label)| Target {
-                            id: id.clone(),
-                            label: label.clone(),
-                        })
-                        .collect()
-                })
-            })
+            .and_then(|ready| ready.as_ref().map(Ready::targets))
             .unwrap_or_default()
     }
     pub fn launch(&self, target: &str, root: &Path) -> io::Result<Option<Launch>> {
-        if !self.contains(target) {
-            return Ok(None);
-        }
-        let guard = self.ready.lock().map_err(|_| invalid())?;
-        let ready = guard.as_ref().ok_or_else(invalid)?;
-        let target = if target == "local:restricted" {
-            "local"
-        } else {
-            target
-        };
-        let mut environment = ready.environment.clone();
-        let runner = if target == "local" || local_profile_id(target).is_some() {
-            "local"
-        } else {
-            target
-        };
-        environment.insert("JJ_ACP_RUNNER".into(), runner.into());
-        if runner == "local" {
-            environment.extend(
-                ready
-                    .local_environments
-                    .get(target)
-                    .cloned()
-                    .ok_or_else(invalid)?,
-            );
-        }
-        Ok(Some(Launch {
-            prepared: PreparedLaunch {
-                executable: ready.executable.clone(),
-                arguments: vec![],
-                directory: root.into(),
-                environment: Environment(environment),
-            },
-            directory: root.into(),
-            resume: None,
-        }))
+        let ready = self.ready.lock().map_err(|_| invalid())?;
+        ready
+            .as_ref()
+            .map_or(Ok(None), |ready| ready.launch(target, root))
     }
     pub fn providers(&self) -> io::Result<lapis_desktop::ai::configuration::ProviderStore> {
         self.source
@@ -217,6 +182,7 @@ mod configuration;
 #[cfg(test)]
 mod external_tests;
 mod local_profile;
+mod prepared;
 #[cfg(test)]
 pub(super) mod tests;
 

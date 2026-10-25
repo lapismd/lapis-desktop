@@ -45,3 +45,14 @@ Current JJ handles and private native IDs own preparation; the repository topic
 governs its single ThreadStore publication/receipt recovery. Unknown outcomes
 cannot enable execution. Cold API preparation/restart and managed chat/capture
 retain separate gates; [tags and queues](ai-addressing.md) confer no authority.
+
+## Shared Rust turn profile intake
+
+R2.2.3 prepares native launch policy for the Notes-owned turn service. Each
+resolution retains an immutable per-vault profile, target catalogue and sealed
+environment before acceptance. Preparing another vault or refreshing settings
+cannot replace that snapshot. Unknown scoped targets never fall back to another
+vault's or the default provider. The native policy uses the admitted physical
+scope and profile identity without acquiring the window's NativeHost mutex. This
+preparation does not select the new chat owner; Tauri transport, retained Agent
+screen adoption and real-provider/cold-application gates remain required.
