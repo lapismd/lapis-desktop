@@ -326,3 +326,5 @@
 - [Master migration tracker routing and checkpoint refresh](history/E-PROGRESS-002.md)
 - [Native Search provider and retained SQL intake](history/E-CORE-014.md)
 - [Native model-cache dependency intake](history/E-CORE-015.md)
+
+- [Desktop and master migration checkpoint alignment](history/E-PROGRESS-003.md)

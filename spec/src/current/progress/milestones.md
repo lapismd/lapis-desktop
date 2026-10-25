@@ -1,30 +1,30 @@
 # Milestones and gates
 
-Last updated **2026-10-24 22:48:00 UTC**.
+Last updated **2026-10-25 00:02:53 UTC**.
 
 <!-- migration-activity:start -->
 
 ## Current work — shared Rust migration
 
 - Master tracker: `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md`, in
-  the main Notes Jujutsu `default` workspace. This file owns Desktop M-series
-  gates; Notes owns current R0–R7 delivery.
-- Verified: five Notes archives at `e6de56ef`; four hidden API cases; 230 native
-  service, 411 renderer/governance and 744 AI cases; renderer/static builds; all
-  2000 catalog cases. Source semantic retrieval is qualified at `8fd7b926`, with
-  Desktop file-service and strict normal/e2e dependency checks passing.
-- Verified source: complete native database conformance at Notes `77ae786b`,
-  with Desktop compatibility recorded in Notes `7180b24c`. The audit is
-  finished; this does not select the database in either host.
-- Verified source: Notes `a18c84bb` qualifies native runtime/model installation,
-  eleven cache cases, 216 ordinary Rust cases, four live/four offline model
-  targets and ten specification lanes / 49 regressions. No host selects it yet.
-- Verified here: native model/cache dependency compatibility; both file-service
-  cases and strict normal/e2e checks pass. Only two required lock edges change;
-  all nineteen archives stay intact. All four specification lanes pass. E-AI-109
-  keeps its accepted historical format exception.
-- Waiting: both database adapters, unattended indexing and remaining R1.3/R2–R7
-  gates. Hosted access remains Node. M11 is Deferred.
+  the main Notes Jujutsu `default` workspace. It owns the latest shared R0–R7
+  source and HTTP status. This file reports Desktop M-series gates and intake;
+  regeneration does not import a sibling repository's ledger.
+- Verified Desktop baseline: `df16e136` qualifies native model/cache dependency
+  compatibility. Both file-service cases, strict normal/e2e checks and all four
+  specification lanes pass. All nineteen existing archives are retained;
+  E-AI-109 keeps its accepted historical format exception.
+- Earlier Desktop intake: five Notes archives at `e6de56ef`; four hidden API
+  cases; 230 native service, 411 renderer/governance and 744 AI cases; renderer
+  and static builds; all 2000 catalog cases. These remain evidence for that
+  implementation, not adoption of later shared services.
+- Current Desktop work: R1.3.8 Tauri high-level database intake. Desktop still
+  uses its renderer SQL adapter; the shared HTTP adapter is already qualified at
+  Notes `d1a6ddec`. Source prerequisites and their live qualification are
+  tracked in the Notes master rather than duplicated here.
+- Waiting: Tauri database selection/native acceptance, unattended indexing and
+  the remaining R1.3/R2–R7 gates. The retained hosted Web application remains on
+  Node until its replacement acceptance passes. M11 is Deferred.
 
 <!-- migration-activity:end -->
 
@@ -106,7 +106,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-PROGRESS-001,E-PROGRESS-002 |
+| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-PROGRESS-001,E-PROGRESS-002,E-PROGRESS-003 |
 | M8.4 | Done | M8.0 | LD-GOV-002,LD-GOV-003,LD-CAT-003 | Every implemented desktop-specific UI state and desktop-only plugin maps to a discoverable production-component scenario in a minimal real shell, with both-theme and both-viewport interaction/accessibility checks. | Complete; extend inventory with new desktop UI | E-CATALOG-002 |
 | M8.5 | Done | M8.4 | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes. | Complete; continue AI and backup | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014,E-CATALOG-015,E-CATALOG-016 |
 
