@@ -5,9 +5,10 @@
 policy. [Local validation](../../../docs/validation.md) defines Docker/native
 commands, isolated archive prerequisites, reports and owned cleanup.
 E-VALIDATION-001 preserves Docker/native/release boundaries. E-CORE-025/026 pin
-Core/Tasks and DTOs; E-CORE-028 adopts History. E-CORE-029 stages metadata with
-eight frozen native inputs; product and default-cutover gates stay separate.
-Path-crate lock updates MUST remain bounded.
+Core/Tasks and DTOs; E-CORE-028 adopts History. E-CORE-029/030 stage
+metadata/Search with eight frozen inputs and existing native tests. Source
+repairs, archives and failed/final cohorts retain separate evidence. Original
+host/default-cutover gates remain; locks stay bounded and AI helpers frozen.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.

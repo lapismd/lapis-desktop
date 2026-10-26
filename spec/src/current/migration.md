@@ -1,11 +1,12 @@
 # Migration inventory and progress — [native turns](ai-adapter.md)
 
-Notes owns shared Rust master progress; Desktop owns its native host gates.
-[E-CORE-022](../history/E-CORE-022.md) qualifies public archives/chat/History;
-E-CORE-028 qualifies vault-owned History indexing. E-CORE-029 qualifies explicit
-Core metadata intake under M16.4; renderer metadata and Search stay default.
-E-CORE-025/026 select qualified native target defaults. M10.2, R3–R7, AI/default
-cutover, product gates and Deferred M11 remain separate from these intakes.
+Notes owns Rust master progress; Desktop owns native gates. E-CORE-022 qualifies
+archives/chat/History; E-CORE-028 adopts its vault-owned scheduler.
+E-CORE-029/M16.4 and E-CORE-030/M16.5 stage metadata/Search through the existing
+App observer and database admission; renderer stays default. Search recovery
+uses verified Plugins archives; E-CORE-025/026 retain qualified target defaults.
+M10.2, R3–R7, AI/default cutover, product and Deferred M11 gates stay separate.
+M16.5 retains original native, catalog and portable/governance acceptance.
 
 Evidence for Docker-first portable validation, governed story composition and
 public archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux

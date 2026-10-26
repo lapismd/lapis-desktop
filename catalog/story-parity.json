@@ -434,5 +434,9 @@
   },
   "catalog/plugins/terminal/Terminal.stories.ts": {
     "kind": "application"
+  },
+  "catalog/plugins/desktop/SearchOwner.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
   }
 }

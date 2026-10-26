@@ -18,10 +18,6 @@
   let finished = false;
   const backgroundIndexing: NativeBackgroundIndexing = {
     async call(command) {
-      if (command.kind === "select_search" || command.kind === "disable_search")
-        throw new Error(
-          "Native Search selection is not available in the metadata intake",
-        );
       if (command.kind === "refresh") {
         if (mode === "failed")
           throw new Error("Native metadata service unavailable");
@@ -41,13 +37,19 @@
           phase: finished ? "idle" : "metadata",
         },
         contribution:
-          command.kind === "register_processor"
+          command.kind === "select_search"
             ? {
-                projection_id: `processor:${command.owner_plugin_id}/${command.extension}`,
+                projection_id: "search",
                 placement: "native",
                 message: null,
               }
-            : null,
+            : command.kind === "register_processor"
+              ? {
+                  projection_id: `processor:${command.owner_plugin_id}/${command.extension}`,
+                  placement: "native",
+                  message: null,
+                }
+              : null,
       };
     },
   };

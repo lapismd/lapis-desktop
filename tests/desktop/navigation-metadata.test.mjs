@@ -197,8 +197,14 @@ test("metadata Search actions remain recoverable while Search is disabled", asyn
       '[data-settings-plugin-id="search"] [role="switch"]',
     );
     await toggle.waitForDisplayed();
+    const previous = await toggle.getAttribute("aria-checked");
     await toggle.click();
-    await browser.keys(Key.Escape);
+    await browser.waitUntil(
+      async () => (await toggle.getAttribute("aria-checked")) !== previous,
+    );
+    const close = browser.$('button[aria-label="Close settings"]');
+    await close.click();
+    await close.waitForExist({ reverse: true });
   }
   await toggleSearch();
   await command(browser, "Open Tags");

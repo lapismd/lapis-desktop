@@ -39,18 +39,6 @@ impl MetadataOwner {
         }
         Ok(())
     }
-    pub fn authorize_command(self, command: &IndexingCommand) -> io::Result<()> {
-        if matches!(
-            command,
-            IndexingCommand::SelectSearch { .. } | IndexingCommand::DisableSearch {}
-        ) {
-            return Err(io::Error::new(
-                io::ErrorKind::Unsupported,
-                "Native Search selection is not available in the metadata intake",
-            ));
-        }
-        Ok(())
-    }
 }
 
 #[derive(Deserialize)]

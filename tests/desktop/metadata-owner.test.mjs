@@ -91,6 +91,20 @@ test("renderer metadata remains the default and forged DOM selection cannot gran
     f.provider.backgroundIndexing.call({ kind: "select_metadata" }),
     /not selected/u,
   );
+  await assert.rejects(
+    f.provider.backgroundIndexing.call({
+      kind: "select_search",
+      selection: {
+        providers: [],
+        chunking: {
+          targetChars: 1000,
+          breakpointWindowChars: 100,
+          breakpointDecay: 0.5,
+        },
+      },
+    }),
+    /not selected/u,
+  );
   await f.session.browser.execute(() => {
     document.documentElement.dataset.metadataOwner = "core";
   });
@@ -133,24 +147,6 @@ test("selected native metadata preserves typed admission, detached reconciliatio
   await assert.rejects(
     f.database.deleteIndexedFile("Note.md"),
     /native|owner/u,
-  );
-  await assert.rejects(
-    port.call({ kind: "disable_search" }),
-    /Native Search selection is not available/u,
-  );
-  await assert.rejects(
-    port.call({
-      kind: "select_search",
-      selection: {
-        providers: [],
-        chunking: {
-          targetChars: 1000,
-          breakpointWindowChars: 100,
-          breakpointDecay: 0.5,
-        },
-      },
-    }),
-    /Native Search selection is not available/u,
   );
   const admission = await f.call("vault_db_open", {
     sessionId: f.selected.sessionId,

@@ -18,19 +18,8 @@ fn metadata_selection_is_explicit_and_indexing_frames_have_no_extra_authority() 
     let owner = MetadataOwner::parse(Some("core")).unwrap();
     assert!(owner.is_core());
     owner.authorize("main").unwrap();
-    owner
-        .authorize_command(&IndexingCommand::Status {})
-        .unwrap();
-    owner
-        .authorize_command(&IndexingCommand::SelectMetadata {})
-        .unwrap();
-    assert!(
-        owner
-            .authorize_command(&IndexingCommand::DisableSearch {})
-            .is_err()
-    );
-    let search = serde_json::from_value(json!({"kind":"select_search","selection":{"providers":[],"chunking":{"targetChars":1000,"breakpointWindowChars":100,"breakpointDecay":0.5}}})).unwrap();
-    assert!(owner.authorize_command(&search).is_err());
+    let search: IndexingCommand = serde_json::from_value(json!({"kind":"select_search","selection":{"providers":[],"chunking":{"targetChars":1000,"breakpointWindowChars":100,"breakpointDecay":0.5}}})).unwrap();
+    assert!(matches!(search, IndexingCommand::SelectSearch { .. }));
     for window in ["popup", "", "remote"] {
         assert!(owner.authorize(window).is_err());
     }

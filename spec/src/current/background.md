@@ -62,14 +62,40 @@ The API-owned MetadataCache observer selects compiled Markdown and compatible
 declared projections, publishes existing status progress and suppresses renderer
 metadata/projection writes. Unsupported custom contributions MUST remain visibly
 unavailable. Failures MUST remain observable without a renderer fallback. Search
-selection remains separate: this intake retains renderer Search and MUST NOT
-claim native Search, Tasks ordered writes/recovery or either host default
-cutover. Its metadata-only IPC MUST reject `select_search` and `disable_search`
-as unsupported until the separately qualified Search adapter explicitly admits
-them. Other compiled projection controls remain available through MetadataCache.
+selection remains separate in the M16.4 metadata-only cohort. The M16.5 Search
+intake MAY admit `select_search` and `disable_search` only on this same
+explicitly selected Core authority with the source-qualified native Search
+adapter. Missing or renderer selection MUST expose no native indexing port.
+Neither intake completes Tasks ordered writes/recovery or either host default
+cutover. Other compiled projection controls remain available through
+MetadataCache.
 
 Qualification MUST cover exact default/admission failures, one shared transport,
 passive refresh/disposal, external create/edit/rename/delete after client
 detach, cold reopen/rebuild/idempotence and the retained Metadata/Search/Graph
 views in the actual native workspace. Browser mocks cannot qualify native view
 behavior.
+
+## Staged native Search adoption
+
+Under LD-NAV-001/002/003/005/007/008, the qualified public Search plugin MUST
+reuse the App-owned observer and native database admission. Provider/chunking
+declarations, refresh, rebuild and explicit disable MUST use typed Core
+controls. Passive manager/view disposal MUST NOT stop the vault-owned service.
+Unsupported providers MUST remain observable without a renderer writer or
+scheduler fallback. Native embedding controls MAY continue through the existing
+database actor; client document upsert/delete MUST remain denied under native
+Search ownership.
+
+The existing Search UI, progress, settings persistence, query restoration and
+metadata handoffs MUST remain authoritative. Native-selected recovery actions
+MUST use the same native rebuild control and reject an unavailable observer;
+they MUST NOT write generated Search state through a client database fallback.
+
+Qualification MUST independently cover default/admission, lexical and semantic
+queries, provider replacement, retained native indexing after detach, disable
+and re-enable, external create/edit/rename/delete, cold reopen/rebuild, the
+original Metadata/Search/Graph journeys and visible recovery. Catalog evidence
+MUST retain real production components and cannot qualify native ownership. The
+hidden native API suite MUST include Search ownership; the headed suite MUST
+also include the fresh-App safe-mode drain and re-enable journey.

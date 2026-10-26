@@ -8,7 +8,9 @@ replacement Search, metadata panel, graph or navigation implementation.
 M16.4 stages Core metadata behind explicit startup selection under the
 [background contract](background.md). Existing Metadata/Search/Graph views MUST
 retain their native acceptance with this selected owner. Renderer metadata
-remains default; renderer Search stays selected in either metadata mode.
+remains default. M16.5 separately admits the qualified native Search adapter on
+the explicit Core port; absent selection retains renderer Search. Native Search
+provider, semantic, lifecycle and cold UI gates remain independently required.
 
 E-AI-022 revalidates the two E-AI-020 native Search regressions with the
 corrected public source archive: disk recovery updates live settings before
@@ -35,6 +37,12 @@ First qualify Search registration, native lexical indexing and existing metadata
 navigation. Then qualify global/local Graph, its settings writer and native
 refresh/navigation. Retain every functionality item and the original M6 gate; an
 earlier component slice cannot mark the whole milestone Done.
+
+Search settings recovery acceptance MUST follow the current Problems action into
+the production merge view, select the intended side and save its result. It MUST
+retain blocked-close, exact disk bytes, refreshed controls and
+unrelated-settings assertions. Settle the separate layout writer before a
+Search-only write fault.
 
 Use source-owned public builds and verified local archives. Keep tracked npm
 ranges and lockfiles portable, sharing API, Svelte and editor class identities.

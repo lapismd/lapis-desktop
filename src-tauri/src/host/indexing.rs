@@ -13,7 +13,6 @@ pub async fn vault_indexing(
 ) -> Result<IndexingValue, NativeError> {
     let owner = *window.app_handle().state::<MetadataOwner>();
     owner.authorize(window.label())?;
-    owner.authorize_command(&request.command)?;
     let url = window.url().map_err(io::Error::other)?;
     if !super::windows::navigation::allowed(&url, cfg!(debug_assertions)) {
         return Err(io::Error::new(

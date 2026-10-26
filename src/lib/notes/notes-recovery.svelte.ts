@@ -118,7 +118,14 @@ export class NotesRecovery {
     try {
       await this.run(async () => {
         if (kind === "metadata") await this.app.metadataCache.rebuild();
-        else await this.app.appDatabase.rebuildSearchIndex();
+        else if (this.app.session?.backgroundIndexing) {
+          const observer = this.app.backgroundIndexing;
+          if (!observer)
+            throw new Error(
+              "The selected native Search observer is unavailable",
+            );
+          await observer.refresh(true);
+        } else await this.app.appDatabase.rebuildSearchIndex();
         this.message =
           kind === "metadata" ? "Metadata rebuilt" : "Search index rebuilt";
       });

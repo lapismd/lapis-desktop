@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
+  existsSync,
   mkdtempSync,
   mkdirSync,
   writeFileSync,
@@ -10,6 +11,14 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  acceptConflictSide,
+  conflictReview,
+  nativeFailure,
+  openConflictReview,
+  reviewedText,
+  saveConflictResult,
+} from "./conflict-review.mjs";
 
 const panel = '[data-ui-component="search-panel"]';
 const control = (browser, name) =>
@@ -49,6 +58,15 @@ async function fixture(context, name) {
       readFileSync(path, "utf8"),
     ).pluginData?.search?.view?.recentSearches?.includes("tangerine"),
   );
+  // Settle the separate layout writer before a Search-only permission fault.
+  const layout = join(vault, ".lapis/workspace.json");
+  await browser.waitUntil(
+    () =>
+      existsSync(layout) &&
+      JSON.stringify(JSON.parse(readFileSync(layout, "utf8"))).includes(
+        '"type":"search"',
+      ),
+  );
   await filters(browser);
   return { root, vault, path, browser, session };
 }
@@ -85,18 +103,19 @@ test("Search settings preserve failed drafts and block native close until explic
   context.after(() => chmodSync(directory, 0o700));
   chmodSync(directory, 0o500);
   await control(browser, "Match case").click();
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, ".lapis/app.json");
   assert.equal(
     JSON.parse(readFileSync(path, "utf8")).pluginData.search.view.matchCase,
     false,
   );
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   chmodSync(directory, 0o700);
-  await browser.$("button=Keep my version").click();
+  await acceptConflictSide(browser, ".lapis/app.json", "Left");
+  await saveConflictResult(browser, ".lapis/app.json");
   await browser
-    .$('[aria-label="File conflicts"]')
+    .$(conflictReview(".lapis/app.json"))
     .waitForExist({ reverse: true });
   await session.close();
   assert.equal(
@@ -119,23 +138,26 @@ test("Search disk recovery refreshes live controls before another settings write
   context.after(() => chmodSync(directory, 0o700));
   chmodSync(directory, 0o500);
   await control(browser, "Match case").click();
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, ".lapis/app.json");
   writeFileSync(path, bytes);
   assert.equal(readFileSync(path, "utf8"), bytes);
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   chmodSync(directory, 0o700);
   await browser.$("button=Check disk again").click();
-  await browser.waitUntil(
-    async () =>
-      (await browser
-        .$('textarea[aria-label="Disk version of .lapis/app.json"]')
-        .getValue()) === bytes,
+  await reviewedText(
+    browser,
+    ".lapis/app.json",
+    "Disk version",
+    '"showMoreContext": true',
   );
-  await browser.$("button=Use disk version").click();
+  assert.equal(readFileSync(path, "utf8"), bytes);
+  await acceptConflictSide(browser, ".lapis/app.json", "Right");
+  await saveConflictResult(browser, ".lapis/app.json");
+  await browser.waitUntil(() => readFileSync(path, "utf8") === bytes);
   await browser
-    .$('[aria-label="File conflicts"]')
+    .$(conflictReview(".lapis/app.json"))
     .waitForExist({ reverse: true });
   await browser.waitUntil(
     async () =>

@@ -6,6 +6,7 @@
     MemoryVaultAdapter,
     type VaultSession,
     type NativeBackgroundIndexing,
+    type AppDatabase,
   } from "@lapis-notes/api";
   import NotesWorkspace from "../../src/components/views/NotesWorkspace.svelte";
   import { DesktopUrlDelivery } from "../../src/lib/native/integration-urls";
@@ -29,6 +30,7 @@
     files = {},
     safeMode,
     backgroundIndexing,
+    appDatabase,
   }: {
     class?: string;
     createTerminal?: TerminalFactory;
@@ -38,6 +40,7 @@
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
     backgroundIndexing?: NativeBackgroundIndexing;
+    appDatabase?: AppDatabase;
   } = $props();
 
   let session = $state<VaultSession>();
@@ -69,7 +72,7 @@
       }),
       {
         runtime: "tauri-desktop",
-        appDatabase: new MemoryAppDatabase(crypto.randomUUID()),
+        appDatabase: appDatabase ?? new MemoryAppDatabase(crypto.randomUUID()),
         profile: {
           id: crypto.randomUUID(),
           name: "Catalog vault",

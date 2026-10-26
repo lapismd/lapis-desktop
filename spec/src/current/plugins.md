@@ -393,8 +393,8 @@ Native conversations augment normal ACP; no replacement plugin is introduced.
 E-AI-095 extends the existing Native Notes binding and workspace-lifecycle
 review stories with provider-discovery counters and bottom-panel/draft
 assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
-catalog fixture enters production. Cached metadata and status work retain
-App/vault ownership.
+catalog fixture enters production. Native Search review adds admitted rebuild
+and lifecycle states (E-CORE-030); App/vault own metadata and status.
 
 E-AI-106/107/110 review header actions, required provider models and shared
 Compute quantity/file inputs through production stories; native gates remain.

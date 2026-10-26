@@ -1190,3 +1190,11 @@ The labelled fixture action only completes a delayed native response; no
 metadata writer, filesystem or service scheduler is simulated in the UI.
 Renderer Search remains selected. Stories remain visual-pending; actual native
 metadata/Search/Graph and unattended indexing qualify separately.
+
+### Staged native Search intake — E-CORE-030
+
+`desktop/SearchOwner.stories.ts` mounts production NotesWorkspace and its public
+Search view with the existing recovery banner. The disposable database denies
+client rebuilds so Native Recovery proves selection of the App-owned native
+control. Native lexical/semantic, lifetime and cold persistence remain separate
+actual-WebView gates. Review remains visual-pending.
