@@ -397,3 +397,4 @@ by the task ledger, not inferred from this list.
 - [Native turn selection and existing chat observer](E-CORE-021.md)
 
 - [Plugin file artwork through public packages](E-ICONS-001.md)
+- [Main workspace file icon intake and SSH validation](E-ICONS-002.md)

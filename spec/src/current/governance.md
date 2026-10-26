@@ -9,10 +9,10 @@ Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 stage metadata/Search with eight frozen inputs/native tests.
 Source repairs, archives and failed/final cohorts retain separate evidence.
 Original host/default-cutover gates, bounded locks and frozen AI helpers remain.
+Private SSH options retain authentication, endpoint and literal argument checks.
 
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
-
 The [local dependency intake](local-dependencies.md) contract governs complete
 review refreshes from committed default-checkout source under LD-GOV-006/008.
 

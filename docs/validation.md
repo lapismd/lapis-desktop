@@ -94,6 +94,14 @@ including when cache ownership keeps the worker UID at root. One lease per
 checkout keeps its aggregate runs sequential; independent repositories can run
 separately.
 
+For an agent that requires an owned foreground connection, set the private
+`sshMultiplexing` option to `false`. An optional absolute `sshControlPath` can
+reuse that already authenticated connection; without it, direct mode disables
+connection sharing. Default multiplexing is unchanged. These options retain
+agent authentication, endpoint/port validation, literal arguments and bounded
+connection attempts. They do not select host execution or change Docker source,
+archive, resource or lease checks.
+
 ## Reports and cleanup
 
 Reports and source/tool identities return to `.local/validation/runs/<run>/`.

@@ -357,3 +357,4 @@
 - [Shared Desktop History controls](history/E-CORE-032.md)
 
 - [Plugin file artwork through public packages](history/E-ICONS-001.md)
+- [Main workspace file icon intake and SSH validation](history/E-ICONS-002.md)
