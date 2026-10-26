@@ -13,10 +13,9 @@ source/pin/request controls and pointer release after portalled menus. Owned
 Notes/AI boot promises bound catalog startup. Public roles/names govern
 selectors; controls MUST await readiness and the absence of their named
 accessible loading status, including `Loading catalog`. Collapse checks await
-closed state/unmount before unchanged absence assertions.
-
-E-AI-103 reviews independent footer approvals and agent overrides. E-AI-102
-covers a single composer action through submission in both chat layouts.
+closed state/unmount before unchanged absence assertions. E-AI-103 reviews
+independent footer approvals and agent overrides. E-AI-102 covers a single
+composer action through submission in both chat layouts.
 
 The active chat/settings profile is [local ACP](ai-local-history.md). Native
 conversation storage controls and catalog fixtures are retired; grouped AI
@@ -191,11 +190,12 @@ cannot authorize another start; they remain explicitly stoppable.
 
 ## Qualification and handover
 
-M8.0 catalogs the production VaultLauncher and NotesWorkspace, with injected
-picker clients and a disposable in-memory vault/database session. The real
-workspace owns its App, plugin loading, note editing and teardown. Both themes
-run at desktop and narrow viewport sizes. Native test entrypoints and production
-Vite startup are not loaded by the catalog host.
+M8.0 catalogs production VaultLauncher and NotesWorkspace with injected picker
+clients and disposable in-memory vault/database sessions. The real workspace
+owns App, plugins, note editing and teardown. Stories run both themes at desktop
+and narrow sizes. The catalog MUST show public Bases artwork and open `.base`
+files through its contributed view. Native test entrypoints and production Vite
+startup remain excluded from the catalog host.
 
 Each stage records source revisions, public import boundaries, exact tests,
 failures, source-to-destination story coverage and native evidence separately.

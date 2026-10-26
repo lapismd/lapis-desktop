@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, within, userEvent, waitFor } from "storybook/test";
 import NotesWorkspace from "../../src/components/views/NotesWorkspace.svelte";
 import NotesDemo from "../support/NotesDemo.svelte";
+import PluginFileIconsDemo from "../support/desktop/PluginFileIconsDemo.svelte";
 import { cleanupCatalog } from "../support/lifecycle";
 
 const meta: Meta = {
@@ -75,4 +76,33 @@ export const ReadingNote: Story = {
 export const ReadingNoteDark: Story = {
   ...ReadingNote,
   globals: { colorMode: "dark" },
+};
+
+export const PluginFileIcon: StoryObj<typeof PluginFileIconsDemo> = {
+  render: () => ({ Component: PluginFileIconsDemo }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    await waitFor(
+      () =>
+        expect(
+          canvasElement.querySelector('[data-file-icons-ready="true"]'),
+        ).not.toBeNull(),
+      { timeout: 30_000 },
+    );
+    const file = await canvas.findByRole("button", {
+      name: "Projects.base",
+    });
+    await waitFor(() =>
+      expect(
+        file.querySelector('path[d="M3 7h18v13H3zM6 4h12M8 1h8"]'),
+      ).not.toBeNull(),
+    );
+    expect(file).toHaveAccessibleName("Projects.base");
+    await userEvent.click(file);
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector('[data-ui-component="bases-view"]'),
+      ).not.toBeNull(),
+    );
+  },
 };

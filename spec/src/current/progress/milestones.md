@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-26 12:27:20 UTC**.
+Last updated **2026-10-26 19:14:00 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -21,6 +21,7 @@ Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
 | Desktop metadata owner intake                  | Complete: Core14, hidden14 and final88catalog pass                                               | No remaining work in this intake; renderer default and native Search stay separate            |
 | Desktop native Search intake                   | Complete: 3 service, 37 native, 148 final affected catalog and 1,495 portable cases pass         | None for this Search intake; continue native Tasks and shared History                         |
 | Desktop shared History controls                | Complete: shared Core/public observer; 2 native unit, 2 WebView and 2,056 catalog cases pass     | None for this intake; native Tasks/shared reader adoption and default cutover remain separate |
+| Plugin file artwork                            | Complete: public API/Explorer/Bases and scoped Design Core; 2,060 final catalog cases pass       | Publication and existing native/distribution gates remain separate                            |
 | Next shared application work                   | Scheduler/metadata/Search/History control intake complete; Tasks and shared reader work continue | Complete Notes R3–R7 and each required Desktop service intake                                 |
 
 The final intake uses one frozen source and 26 verified archives, with Svelte
@@ -106,7 +107,7 @@ M12 retains its M11 dependency and cutover gate (E-PLAN-006).
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M8.0 | Done | M7.2 | LD-MIG-002,LD-CAT-001,LD-CAT-002 | Desktop catalog renders real production composition, builds statically and passes both-theme interaction/accessibility cases without native services. | Complete; continue to M8.1 Terminal | E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008 |
+| M8.0 | Done | M7.2 | LD-MIG-002,LD-CAT-001,LD-CAT-002 | Desktop catalog renders real production composition, builds statically and passes both-theme interaction/accessibility cases without native services. | Complete; continue to M8.1 Terminal | E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-ICONS-001 |
 | M8.1 | Done | M8.0 | LD-MIG-002,LD-PLUG-001,LD-TERM-001,LD-TERM-002,LD-TERM-003 | Bundled Terminal stories and cold native input, retention, reload, close, disable, vault isolation and restart-Start acceptance pass. | Complete; continue to M8.2 Web retirement | E-PLUGINS-003,E-TERMINAL-001 |
 | M8.2 | Done | M8.1 | LD-MIG-002,LD-PLUG-002 | Web exposes no AI/Terminal connection or activation paths, skips existing installations and preserves saved data and unrelated behavior. | Complete; continue to M8.3 portable plugins | E-PLUGINS-003,E-WEB-001 |
 | M8.3 | Done | M8.2 | LD-MIG-002,LD-PLUG-003,LD-PLUG-004 | Portable plugins preserve native writes, freshness and vault isolation; packaged Markdown Lint and Spellcheck workers/WASM start and terminate correctly. | Complete; continue to M9.1 | E-PLUGINS-003,E-PORTABLE-001,E-PORTABLE-002,E-DEPENDENCY-003 |

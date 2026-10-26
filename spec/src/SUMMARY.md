@@ -355,3 +355,5 @@
 - [Staged native Desktop Search owner](history/E-CORE-030.md)
 - [Desktop Search activity closure](history/E-CORE-031.md)
 - [Shared Desktop History controls](history/E-CORE-032.md)
+
+- [Plugin file artwork through public packages](history/E-ICONS-001.md)
