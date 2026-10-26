@@ -1,3 +1,4 @@
+pub(crate) mod editing;
 pub(crate) mod files;
 pub(crate) mod watch;
 

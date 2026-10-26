@@ -12,6 +12,10 @@ export class MemoryNoteMutation implements FileEditingSession {
   private persistence?: FileTextPersistence;
   private draft = "";
   private path: string;
+  readonly native = {
+    hold: () => () => {},
+    savedText: () => this.persistence?.baseline,
+  };
   constructor(
     readonly app: App,
     readonly file: TFile,

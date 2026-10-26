@@ -6,6 +6,7 @@ export interface ShellInfo {
   runtime: "tauri-desktop";
   aiOwner?: "renderer" | "core";
   metadataOwner?: "renderer" | "core";
+  editingOwner?: "renderer" | "core";
   os: string;
   version: string;
   ready: boolean;
@@ -29,6 +30,9 @@ export async function startShell({
   const metadataOwner = info.metadataOwner ?? "renderer";
   if (metadataOwner !== "renderer" && metadataOwner !== "core")
     throw new Error("The native host reported an invalid metadata owner");
+  const editingOwner = info.editingOwner ?? "renderer";
+  if (editingOwner !== "renderer" && editingOwner !== "core")
+    throw new Error("The native host reported an invalid editing owner");
   document.documentElement.dataset.appStateDirectory =
     DEFAULT_APP_STATE_DIRECTORY;
   document.documentElement.dataset.lapisRuntime = info.runtime;
@@ -36,6 +40,7 @@ export async function startShell({
   document.documentElement.dataset.lapisPlatform = info.os;
   document.documentElement.dataset.aiOwner = info.aiOwner ?? "renderer";
   document.documentElement.dataset.metadataOwner = metadataOwner;
+  document.documentElement.dataset.editingOwner = editingOwner;
   mount();
   await call("shell_ready");
   document.getElementById("boot")?.setAttribute("hidden", "");

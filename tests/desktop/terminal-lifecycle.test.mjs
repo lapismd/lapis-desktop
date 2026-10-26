@@ -13,6 +13,7 @@ import { join } from "node:path";
 import { TERMINAL_CELL_METRICS } from "@lapismd/terminal";
 import { nativeSession } from "./native-session.mjs";
 import { reloadNotes, returnToVaults } from "./workspace-navigation.mjs";
+import { nativeFailure } from "./conflict-review.mjs";
 
 function fixture(name, settings = { shell: "/bin/sh", cwd: "" }) {
   const root = mkdtempSync(
@@ -338,7 +339,7 @@ test("cancelled close retains the shell until guarded note persistence succeeds"
   await editor.click();
   await editor.addValue("unsaved-terminal-close");
   await session.requestClose();
-  await session.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await session.browser.$(nativeFailure).waitForDisplayed();
   assert.equal((await list(session))[0].id, info.id);
   assert.equal(session.isRunning(), true);
   chmodSync(vault, 0o755);
@@ -443,6 +444,6 @@ test("revoked physical vault admission stops its shell and permits a guarded cle
     renameSync(original, vault);
   }
   await session.requestClose();
-  await session.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await session.browser.$(nativeFailure).waitForDisplayed();
   await session.close();
 });

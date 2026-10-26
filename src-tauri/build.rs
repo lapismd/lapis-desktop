@@ -57,6 +57,8 @@ fn main() {
         "vault_close",
         "vault_prepare_leave",
         "vault_fs",
+        "vault_editing_intents",
+        "vault_editing_snapshot",
         "vault_watch_start",
         "vault_watch_stop",
         "vault_db_open",

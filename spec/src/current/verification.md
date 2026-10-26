@@ -59,6 +59,8 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-LIFE-005 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-LIFE-006 | Implemented | [E-WRITE-001](../history/E-WRITE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-LIFE-007 | Implemented | [E-PREVIEW-001](../history/E-PREVIEW-001.md); [E-MUTATION-001](../history/E-MUTATION-001.md); [E-STATE-001](../history/E-STATE-001.md); [E-WRITERS-001](../history/E-WRITERS-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
+| LD-LIFE-008 | Implemented | [E-CORE-034](../history/E-CORE-034.md): Source/public admission,2068 catalog and 58 actual native writer cases plus both native configurations pass; renderer default remains. |
+| LD-LIFE-009 | Implemented | [E-CORE-034](../history/E-CORE-034.md): Original preflight failures repair; retained Problems recovery, refused leave,58 native cases and cold restoration pass. |
 | LD-MIG-003 | Implemented | [E-REVIEW-001](../history/E-REVIEW-001.md): Deno desktop is frozen; new desktop work targets Tauri. |
 | LD-VAULT-007 | Implemented | [E-REVIEW-001](../history/E-REVIEW-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-SESSION-004 | Implemented | [E-STATE-001](../history/E-STATE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |

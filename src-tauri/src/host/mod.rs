@@ -35,9 +35,14 @@ pub fn run() -> tauri::Result<()> {
             .as_deref(),
     )
     .map_err(tauri::Error::Io)?;
+    let editing_owner = lapis_desktop::vault::editing::EditingOwner::parse(
+        std::env::var("LAPIS_DESKTOP_EDITING_OWNER").ok().as_deref(),
+    )
+    .map_err(tauri::Error::Io)?;
     let builder = tauri::Builder::default()
         .manage(turn_owner)
         .manage(metadata_owner)
+        .manage(editing_owner)
         .manage(ai.clone())
         .manage(terminal.clone())
         .plugin(tauri_plugin_lapis_terminal::Builder::new(terminal).build())
@@ -157,6 +162,8 @@ pub fn run() -> tauri::Result<()> {
             crate::host::vault::vault_close,
             crate::host::vault::vault_prepare_leave,
             crate::host::vault::files::vault_fs,
+            crate::host::vault::editing::vault_editing_intents,
+            crate::host::vault::editing::vault_editing_snapshot,
             crate::host::vault::watch::vault_watch_start,
             crate::host::vault::watch::vault_watch_stop,
             crate::host::database::vault_db_open,

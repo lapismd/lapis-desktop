@@ -10,6 +10,14 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  acceptConflictSide,
+  saveConflictResult,
+  conflictReview,
+  nativeFailure,
+  openConflictReview,
+  reviewedText,
+} from "./conflict-review.mjs";
 
 const key = "workspace.mobile.showBottomNav";
 const toggle = (browser) =>
@@ -82,20 +90,23 @@ test("failed Settings persistence retains its draft and blocks native close unti
   chmodSync(directory, 0o500);
   await toggle(browser).click();
   await browser.keys(Key.Escape);
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
-  const draft = await browser
-    .$('textarea[aria-label="Your version of .lapis/app.json"]')
-    .getValue();
-  assert.equal(JSON.parse(draft)[key], false);
+  await openConflictReview(browser, ".lapis/app.json");
+  await reviewedText(
+    browser,
+    ".lapis/app.json",
+    "Your version",
+    '"workspace.mobile.showBottomNav": false',
+  );
   assert.equal(JSON.parse(readFileSync(path, "utf8"))[key], true);
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   chmodSync(directory, 0o700);
-  await browser.$("button=Keep my version").click();
+  await acceptConflictSide(browser, ".lapis/app.json", "Left");
+  await saveConflictResult(browser, ".lapis/app.json");
   await browser.waitUntil(
     async () =>
-      !(await browser.$('[aria-label="File conflicts"]').isExisting()),
+      !(await browser.$(conflictReview(".lapis/app.json")).isExisting()),
   );
   await session.close();
   assert.equal(JSON.parse(readFileSync(path, "utf8"))[key], false);
@@ -114,12 +125,12 @@ test("stale Settings writes preserve external keys and explicit recovery restore
   writeFileSync(path, bytes);
   await toggle(browser).click();
   await browser.keys(Key.Escape);
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, ".lapis/app.json");
   assert.equal(readFileSync(path, "utf8"), bytes);
   await browser.$("button=Use disk version").click();
   await browser.waitUntil(
     async () =>
-      !(await browser.$('[aria-label="File conflicts"]').isExisting()),
+      !(await browser.$(conflictReview(".lapis/app.json")).isExisting()),
   );
   await settings(browser);
   assert.equal(await toggle(browser).getAttribute("aria-checked"), "false");

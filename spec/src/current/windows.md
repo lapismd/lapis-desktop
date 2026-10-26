@@ -4,6 +4,11 @@ After successful leave preflight, the workspace host MUST capture live view
 state before shell unmount. Existing related-window admission and
 failure-preservation gates remain required.
 
+M16.7/E-CORE-033 runs the public native-recovery preflight before the existing
+global writer guard. A retained claim or unresolved admission preserves the same
+main/related views and Problems actions; ordinary protected flush and final
+layout persistence still precede view teardown.
+
 E-REPO-050 retains LD-POP-004's original final-persistence-before-teardown gate;
 failed backup preparation must preserve the same related editors and drafts.
 

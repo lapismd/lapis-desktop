@@ -33,6 +33,12 @@ The shared Explorer MUST present failed pointer opens without unhandled
 rejections and allow retry. Its programmatic controller continues rejecting so
 host callers can preserve failure acknowledgement.
 
+M16.7/E-CORE-033 binds opt-in native editor intents and authoritative snapshots
+to that same admitted file client. Existing conditional saves retain their own
+caller exemption; foreign active/dirty/retained writers remain fenced. Desktop
+adds no alternate save or recovery path. Refused preflight preserves watching
+and mounted Problems actions before protected teardown.
+
 E-AI-093 keeps LD-FILE-002/003 ordinary watch, picker and containment contracts
 unchanged. Backup-only watches use the shared native transcript allowlist;
 private runtime/JJ writes remain excluded and cannot trigger backup loops.
@@ -124,10 +130,12 @@ Core component styles remain unchanged.
 
 ## Conflict review presentation
 
-E-CATALOG-016 covers actual native Problems/merge acceptance. The review
-declares the shared API layout-only close policy because staged results belong
-to its App-owned model; editor tabs and application leave retain full writer
-protection.
+E-CATALOG-016 covers actual native Problems/merge acceptance. Explicit disk
+acceptance uses the writer-owned decision and preserves absence when the
+reviewed file was deleted; saving a merged text result remains separate. The
+review declares the shared API layout-only close policy because staged results
+belong to its App-owned model; editor tabs and application leave retain full
+writer protection.
 
 Conflicts publish an App-owned diagnostic collection and reveal Problems.
 Opening a diagnostic reveals or reuses the file's conflict review leaf. The

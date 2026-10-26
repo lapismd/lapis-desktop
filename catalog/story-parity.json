@@ -438,5 +438,9 @@
   "catalog/plugins/desktop/SearchOwner.stories.ts": {
     "kind": "component",
     "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/desktop/EditingRecovery.stories.ts": {
+    "kind": "component",
+    "subject": "@lapis-notes/workspace#WorkspaceShell"
   }
 }

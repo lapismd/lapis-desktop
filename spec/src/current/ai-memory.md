@@ -72,6 +72,12 @@ dirty editor drafts and coordinate document mutations across windows. Changed
 preimages cannot be overwritten. Appends may retry only after re-reading and
 deduplicating stable identities. Failed writes remain retryable.
 
+E-CORE-033 binds the existing one-shot memory mutation to the public native
+editing producer contract. Its captured transform admits no later user input,
+and its saved snapshot comes from the same FileTextPersistence baseline.
+Selecting Core editing must preserve normal AI startup and memory activation; no
+second persistence path, content format or memory authority is introduced.
+
 Changing the folder pauses memory writers and moves it through the normal file
 manager. The setting publishes only after movement succeeds. Destination
 collisions never merge or overwrite. A durable relocation receipt supports

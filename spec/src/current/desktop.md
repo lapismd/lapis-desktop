@@ -51,6 +51,8 @@ platform resources retain the ordinary app-build acceptance gate.
 | LD-LIFE-005    | Repeated vault switching MUST release the old workspace, plugins, metadata, editing sessions, compatibility lease, database and subscriptions before admitting another Notes owner.                                                                                                                                                                                                                                                             |
 | LD-LIFE-006    | Native conditional text writes MUST compare exact expected bytes or expected absence before replacement and recheck after staging. An observed regular-file mismatch MUST preserve the current destination and return ECONFLICT. Conditional operations MUST retain admitted-root containment, size limits, metadata handling and staged atomic replacement.                                                                                    |
 | LD-LIFE-007    | Every enabled Notes file writer MUST participate in the owning App's flush, protection and conflict lifecycle, including pending, failed and retired writes. Qualification MUST cover both API text editors and editable Markdown previews in the initial profile.                                                                                                                                                                              |
+| LD-LIFE-008    | Explicit Core editing selection MUST bind the owning App to native editing intents on its existing admitted vault client. Interactive editors and editable previews MUST acquire before input; noninteractive state MUST use operation-scoped ownership. Existing conditional persistence and native foreign-writer fences MUST remain authoritative. Renderer editing remains the default until its cutover gate.                              |
+| LD-LIFE-009    | Before entering protected workspace teardown, the host MUST run the public native-recovery preflight outside the writer guard. Unresolved retained claims or local admission issues MUST refuse leave while preserving the same App, Problems actions, mounted views and recoverable buffers. Observation MUST NOT discard claims or retry content mutations.                                                                                   |
 | LD-SESSION-003 | Native Notes startup MUST reuse the Deno branded DesktopWorkspaceStartup from the public Workspace package with accessible progress, real phase statuses and current plugin detail. Restoration and storage opening MUST expose progress before the session mounts. Failure MUST retain its failed phase and a route back to vaults. Successful startup MUST remove the progress surface without adding content above workspace tabs.           |
 | LD-SESSION-004 | Notes startup MUST load existing hotkey overrides through the public owned CommandManager before presenting workspace commands. Cold restoration MUST preserve those bindings.                                                                                                                                                                                                                                                                  |
 | LD-REC-001     | Startup failure MUST retain the failed phase, complete message and stack, copyable diagnostic, Retry, vault management, optional-plugin disablement, layout skip and explicit saved-layout reset actions. Retry MUST finish owned teardown before creating a fresh App for the admitted vault.                                                                                                                                                  |
@@ -252,6 +254,17 @@ layout writer. It never writes a second copy of workspace layout. Failed saves
 must complete before any controller/plugin/database teardown begins. A completed
 guard is followed by editing-registry disposal before releasing the session.
 
+M16.7 selects native editing with `LAPIS_DESKTOP_EDITING_OWNER=core`. Only the
+main local window receives typed intents/snapshots for its admitted vault
+client. App construction injects that port; the shared registry owns
+editing/recovery.
+
+The public `preflightNativeRecovery()` call precedes the existing protected
+writer handoff and final layout saves, avoiding registry-queue reentry. Refusal
+preserves mounted recovery actions and resumes watching; explicit successful
+recovery permits the original leave path. Native host acceptance remains
+separate.
+
 Before entering that guard, the host finishes the focused existing form control
 and awaits its blur callbacks. This admits Properties and Settings changes that
 commit on blur while their component is still mounted. Teardown must not remove
@@ -260,9 +273,9 @@ an active input before its normal commit can join the owned writer queue.
 Last-Notes intent uses a known native profile, never a renderer-selected path.
 Restoration revalidates its physical root through recent-vault admission.
 Missing folders, changed roots, corrupt state and startup failures retain
-launcher recovery, fresh selection and intentional return. No legacy `.obsidian`
-import is required. Shell failures MUST render once as a destructive body alert
-with an error icon, without a corner duplicate.
+launcher recovery, fresh selection and intentional return. Shell failures MUST
+render once as a destructive body alert with an error icon, without a corner
+duplicate.
 
 M4 remains incomplete until external-edit protection and the entire original
 aggregate gate are qualified. Native watching remains M5; delaying watching does
@@ -276,29 +289,8 @@ race OS operations; this is not a cross-process filesystem transaction. Editor
 document baselines, visible conflicts and explicit recovery remain required
 before the original M4 gate can complete.
 
-The Notes host consumes the App-owned conflict registry, including retired
-writers. Problems opens the shared editable three-way review; its settings use
-compact, theme-aware Toggles. Saving uses the captured guarded writer;
-whole-version decisions remain conditional and revalidate disk bytes before
-discarding drafts. Check disk again refreshes snapshots without resolving.
-Failed/stale decisions retain conflicts and block shutdown. Desktop adds no
-parallel save path.
-
-Editable Markdown previews bind their captured Mira session to the original
-App's editing registry and the public API FileTextPersistence contract. Each
-source keeps its own acknowledged baseline and operation-owned recovery lease;
-equivalent internal-link resolution must not replace the visible writer. Failed
-and retired previews remain visible to shutdown and recovery. Accepting disk
-text must update the visible editor and permit later saves, including after an
-empty save. Unbound writes on conditional-capable hosts reject.
-
-API editors and editable previews are separate qualified components. Properties
-and metadata text mutations must join the App-owned writer lifecycle, protect
-existing documents before transformation and retain failed drafts for recovery.
-Properties must compare the displayed record with authoritative frontmatter;
-unrelated body edits remain compatible. Metadata types must join shutdown before
-any debounce can omit an edit, including initial creation and external deletion.
-The complete enabled-writer audit and cold native acceptance remain M4 gates.
+The [enabled-writer contract](writer-audit.md#editing-and-recovery-boundaries)
+retains note, preview, Properties and metadata recovery requirements.
 
 Configuration changes use the existing shared Settings controls. Logical updates
 serialize against acknowledged values, and pending/failed drafts join the App

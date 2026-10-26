@@ -52,6 +52,10 @@
     document.documentElement.dataset.metadataOwner === "core"
       ? "core"
       : "renderer";
+  const editingOwner =
+    document.documentElement.dataset.editingOwner === "core"
+      ? "core"
+      : "renderer";
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
@@ -97,7 +101,7 @@
     openingNotes = true;
     const operation = (async () => {
       try {
-        session = await openNotesSession(target, metadataOwner);
+        session = await openNotesSession(target, metadataOwner, editingOwner);
       } catch (error) {
         await client.close(target);
         selected = null;

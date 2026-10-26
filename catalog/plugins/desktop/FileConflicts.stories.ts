@@ -95,6 +95,25 @@ export const DeletedOnDisk: Story = {
     ).toBeVisible();
   },
 };
+export const AcceptDiskDeletion: Story = {
+  parameters: { scenario: "deleted" },
+  play: async ({ canvasElement }) => {
+    const { canvas } = await retained(canvasElement);
+    const fixture = conflictFixture(canvasElement);
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Use disk version" }),
+    );
+    await waitFor(() =>
+      expect(
+        fixture.app.fileEditingSessions.textConflicts.entries,
+      ).toHaveLength(0),
+    );
+    await expect(await fixture.adapter.exists("Note.md")).toBe(false);
+    await expect(
+      canvas.queryByRole("region", { name: "File conflict: Note.md" }),
+    ).toBeNull();
+  },
+};
 export const UnreadableDisk: Story = {
   parameters: { scenario: "unreadable" },
   play: async ({ canvasElement }) => {
@@ -108,6 +127,9 @@ export const UnreadableDisk: Story = {
     await expect(
       canvas.getByRole("button", { name: "Check disk again" }),
     ).toBeEnabled();
+    await expect(
+      canvas.getByRole("button", { name: "Use disk version" }),
+    ).toBeDisabled();
   },
 };
 export const FailedRecovery: Story = {
@@ -142,7 +164,11 @@ export const RecoveryInProgress: Story = {
         canvas.getByRole("region", { name: "File conflict: Note.md" }),
       ).toHaveAttribute("aria-busy", "true"),
     );
-    for (const name of ["Save merged version", "Check disk again"])
+    for (const name of [
+      "Save merged version",
+      "Check disk again",
+      "Use disk version",
+    ])
       await expect(canvas.getByRole("button", { name })).toBeDisabled();
   },
 };
@@ -236,7 +262,11 @@ export const LeavingWorkspace: Story = {
   parameters: { leaving: true },
   play: async ({ canvasElement }) => {
     const { canvas } = await retained(canvasElement);
-    for (const name of ["Save merged version", "Check disk again"])
+    for (const name of [
+      "Save merged version",
+      "Check disk again",
+      "Use disk version",
+    ])
       await expect(
         canvas.getByRole("button", { name, hidden: true }),
       ).toBeDisabled();

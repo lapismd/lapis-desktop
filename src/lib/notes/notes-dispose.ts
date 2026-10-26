@@ -26,6 +26,7 @@ export function disposeNotesWorkspace(
       await app.workspace.flushPluginChanges();
       await app.plugins.flushPendingConfigWrites();
       await app.fileEditingSessions.settleOperations();
+      await app.fileEditingSessions.preflightNativeRecovery();
       await app.fileEditingSessions.guard(undefined, async () => {
         await app.workspace.flushLayout();
         try {

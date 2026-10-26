@@ -10,6 +10,11 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  conflictReview,
+  openConflictReview,
+  reviewedText,
+} from "./conflict-review.mjs";
 
 async function fixture(context, name) {
   const root = mkdtempSync(
@@ -168,24 +173,17 @@ for (const operation of ["rename", "move"]) {
       draft = "# Retained local draft\n";
     writeFileSync(join(vault, "Note.md"), external);
     await edit(browser, editor, draft);
-    await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+    await openConflictReview(browser, "Note.md");
     if (operation === "rename") await rename(browser, "Note.md", "Renamed.md");
     else await move(browser, "Note.md", "Moved");
     await notice(browser, "File changed on disk: Note.md");
     assert.equal(readFileSync(join(vault, "Note.md"), "utf8"), external);
     assert.equal(existsSync(join(vault, "Renamed.md")), false);
     assert.equal(existsSync(join(vault, "Moved", "Note.md")), false);
-    assert.equal(
-      await browser
-        .$('textarea[aria-label="Your version of Note.md"]')
-        .getValue(),
-      draft,
-    );
+    await reviewedText(browser, "Note.md", "Your version", draft);
     await browser.$("button=Use disk version").waitForEnabled();
     await browser.$("button=Use disk version").click();
-    await browser
-      .$('[aria-label="File conflicts"]')
-      .waitForExist({ reverse: true });
+    await browser.$(conflictReview("Note.md")).waitForExist({ reverse: true });
     if (operation === "rename") await rename(browser, "Note.md", "Renamed.md");
     else await move(browser, "Note.md", "Moved");
     const destination = operation === "rename" ? "Renamed.md" : "Moved/Note.md";

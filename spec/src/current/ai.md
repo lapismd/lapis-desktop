@@ -188,7 +188,7 @@ kind, never an ID prefix. Unadvertised live choices reject; historical unknown
 choices remain visible with neutral answered status. This display projection
 cannot dispatch a permission or infer approval from an unknown option.
 
-[Markdown-first memory](ai-memory.md) is Desktop-owned. Scoped ingestion,
+[Memory](ai-memory.md) is Desktop-owned (E-CORE-033). Scoped ingestion,
 deterministic promotion, evidence verification, bounded owner-only recall,
 durable forget exclusions and leased maintenance use public AppDatabase/Vault
 contracts. Portable capture sanitizes derived IO and fails closed on omission or
@@ -361,11 +361,11 @@ or resume ACP; native admission and recovery stay separately gated.
 Retained shell checks cover model preparation with a disabled, stable composer,
 conversation menus and offline recovery, provider attribution and scope follow.
 Catalog controls retain expand/collapse and command/skill source navigation. The
-Notes copy keeps extra assertions even when plugin case names match.
-Catalog-owned clients await closed/unmounted attachments before the unchanged
-absence check, without fixed delays or longer timeouts. Fixture heights retain
-full-window checks on unnamed canvases. Native dependency intake and ordinary
-execution retain separate admission gates.
+Notes copy keeps extra assertions even when plugin case names match. E-CORE-034:
+catalog clients await closed/unmounted attachments before unchanged
+absence/height checks, without fixed delays or longer timeouts. Fixture heights
+retain full-window checks on unnamed canvases. Native dependency intake and
+ordinary execution retain separate admission gates.
 
 User-wide command files use the native `~/.lapis/agents/commands` directory. An
 admitted local main window may list, check, create missing files or replace one

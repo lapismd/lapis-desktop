@@ -5666,12 +5666,15 @@ dependencies = [
 name = "lapis-app-core"
 version = "0.1.0"
 dependencies = [
+ "async-trait",
  "base64 0.22.1",
  "cap-std",
  "cap-tempfile",
  "chrono",
  "icu_collator",
+ "jj-history-service",
  "jj-store-jj",
+ "jj-store-model",
  "jj-vault",
  "lapis-ai-service",
  "lapis-app-protocol",

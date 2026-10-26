@@ -10,6 +10,13 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  acceptConflictSide,
+  saveConflictResult,
+  nativeFailure,
+  openConflictReview,
+  reviewedText,
+} from "./conflict-review.mjs";
 
 const original = "---\nstatus: ready\n---\n# Properties note\n";
 async function fixture(context, name) {
@@ -21,7 +28,17 @@ async function fixture(context, name) {
   const file = join(vault, "Note.md");
   writeFileSync(file, original);
   const session = await nativeSession(name, root);
-  context.after(session.cleanup);
+  context.after(async () => {
+    try {
+      if (session.isRunning())
+        writeFileSync(
+          join(root, "properties-body.txt"),
+          await session.browser.execute(() => document.body.innerText),
+        );
+    } finally {
+      await session.cleanup();
+    }
+  });
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
   const { browser } = session;
   await browser.$("button*=Open Vault").click();
@@ -81,18 +98,22 @@ test("a stale Properties record preserves external text and requires explicit re
     "status: ready",
     "status: external\nowner: outside",
   );
+  await setStatus(browser, status, "local", false);
   writeFileSync(file, external);
-  await setStatus(browser, status, "local");
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
-  assert.equal(readFileSync(file, "utf8"), external);
-  assert.match(
-    await browser
-      .$('textarea[aria-label="Your version of Note.md"]')
-      .getValue(),
-    /status: local/u,
+  await browser
+    .$('[data-testid="file-properties-panel"] [aria-label="owner value"]')
+    .waitForDisplayed();
+  assert.equal(
+    await status().getText(),
+    "local",
+    "Metadata refresh must preserve the focused property draft",
   );
+  await browser.keys(Key.Enter);
+  await openConflictReview(browser, "Note.md");
+  assert.equal(readFileSync(file, "utf8"), external);
+  await reviewedText(browser, "Note.md", "Your version", "status: local");
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   await browser.$("button=Use disk version").click();
   await browser.waitUntil(
@@ -115,12 +136,13 @@ test("failed Properties writes prevent native close and retry after permissions 
   chmodSync(vault, 0o555);
   await setStatus(browser, status, "retained");
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   assert.equal(readFileSync(file, "utf8"), original);
   chmodSync(vault, 0o755);
-  await browser.$("button=Keep my version").waitForEnabled();
-  await browser.$("button=Keep my version").click();
+  await openConflictReview(browser, "Note.md");
+  await acceptConflictSide(browser, "Note.md", "Left");
+  await saveConflictResult(browser, "Note.md");
   await browser.waitUntil(() =>
     /status: retained/u.test(readFileSync(file, "utf8")),
   );

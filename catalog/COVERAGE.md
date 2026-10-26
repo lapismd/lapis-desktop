@@ -1198,3 +1198,15 @@ Search view with the existing recovery banner. The disposable database denies
 client rebuilds so Native Recovery proves selection of the App-owned native
 control. Native lexical/semantic, lifetime and cold persistence remain separate
 actual-WebView gates. Review remains visual-pending.
+
+### Staged native editing ownership — E-CORE-033
+
+`desktop/EditingRecovery.stories.ts` adapts Notes CORE027's real WorkspaceShell
+and disposable port from `stories/workspace/EditingRecovery.stories.ts` and
+`stories/workspace/editing-recovery/` at qualified source `fa77eb1a`. The shared
+App and public Problems panel show retained-claim saved-file review, explicit
+recover/discard and failed-admission retry; no replacement screen or debug data
+is rendered. Desktop owns awaitable catalog teardown. These are source review
+stories; native Tauri admission, writer lifetimes and leave remain separate
+acceptance gates. The source files carry no additional license header; package
+license attribution remains with their public Lapis Notes components.

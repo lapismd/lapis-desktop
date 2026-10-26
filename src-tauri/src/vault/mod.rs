@@ -1,4 +1,5 @@
 pub mod admission;
+pub mod editing;
 pub mod resources;
 pub mod services;
 pub mod system_actions;

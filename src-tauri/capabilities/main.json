@@ -27,6 +27,8 @@
     "allow-vault-close",
     "allow-vault-prepare-leave",
     "allow-vault-fs",
+    "allow-vault-editing-intents",
+    "allow-vault-editing-snapshot",
     "allow-vault-watch-start",
     "allow-vault-watch-stop",
     "allow-vault-db-open",

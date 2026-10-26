@@ -13,6 +13,12 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  conflictReview,
+  nativeFailure,
+  openConflictReview,
+  reviewedText,
+} from "./conflict-review.mjs";
 
 test("external file changes reconcile the real Explorer and clean editor through rename and deletion", async (context) => {
   const root = mkdtempSync(
@@ -94,7 +100,7 @@ for (const operation of ["rename", "delete"]) {
     await browser.keys(Key.NULL);
     await editor.addValue("# Retained local draft\n");
     await session.requestClose();
-    await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+    await browser.$(nativeFailure).waitForDisplayed();
     assert.equal(readFileSync(original, "utf8"), "# Original disk version\n");
     chmodSync(vault, 0o755);
     if (operation === "rename") {
@@ -120,22 +126,20 @@ for (const operation of ["rename", "delete"]) {
     assert.ok((await editor.getText()).includes("Retained local draft"));
     assert.equal(existsSync(original), false);
     await session.requestClose();
-    const conflict = browser.$('[aria-label="File conflict: Note.md"]');
-    await conflict.waitForDisplayed();
+    const conflict = await openConflictReview(browser, "Note.md");
     await conflict.$("button=Check disk again").click();
     await browser.waitUntil(async () =>
       (await conflict.getText()).includes("The file was deleted from disk."),
     );
-    assert.equal(
-      await conflict
-        .$('textarea[aria-label="Your version of Note.md"]')
-        .getValue(),
+    await reviewedText(
+      browser,
+      "Note.md",
+      "Your version",
       "# Retained local draft\n",
     );
     await conflict.$("button=Use disk version").click();
     await browser.waitUntil(
-      async () =>
-        !(await browser.$('[aria-label="File conflicts"]').isExisting()),
+      async () => !(await browser.$(conflictReview("Note.md")).isExisting()),
     );
     await session.close();
     assert.equal(existsSync(original), false);

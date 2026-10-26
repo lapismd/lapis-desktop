@@ -66,9 +66,17 @@ export const Classic: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Collapse Attachments" }),
     );
-    expect(
-      body.getBoundingClientRect().top - drawer.getBoundingClientRect().top,
-    ).toBeLessThanOrEqual(36);
+    await waitFor(() => {
+      expect(
+        canvas.getByRole("button", { name: "Expand Attachments" }),
+      ).toHaveAttribute("aria-expanded", "false");
+      expect(
+        canvas.queryByRole("button", { name: "Remove Welcome" }),
+      ).toBeNull();
+      expect(
+        body.getBoundingClientRect().top - drawer.getBoundingClientRect().top,
+      ).toBeLessThanOrEqual(36);
+    });
     await userEvent.click(
       canvas.getByRole("button", { name: "Expand Attachments" }),
     );

@@ -23,7 +23,11 @@ function fixture() {
     },
     fileEditingSessions: {
       settleOperations: async () => events.push("settle"),
-      guard: async (_, dispose) => dispose(),
+      preflightNativeRecovery: async () => events.push("native-preflight"),
+      guard: async (_, dispose) => {
+        events.push("guard");
+        return dispose();
+      },
     },
     metadataCache: { dispose: async () => events.push("metadata-dispose") },
   };
@@ -42,6 +46,43 @@ function fixture() {
   };
   return { app, options, events };
 }
+
+test("native recovery preflight refusal preserves the same workspace and resumes watching", async () => {
+  const f = fixture();
+  const refusal = new Error(
+    "Retained native editing requires review in Problems",
+  );
+  f.app.fileEditingSessions.preflightNativeRecovery = async () => {
+    throw refusal;
+  };
+  await assert.rejects(
+    disposeNotesWorkspace(f.app, f.options),
+    (error) => error === refusal,
+  );
+  assert.equal(f.events.includes("workspace-dispose"), false);
+  assert.equal(f.events.includes("popup-dispose"), false);
+  assert.equal(f.events.includes("plugin-disable"), false);
+  assert.equal(f.events.includes("metadata-dispose"), false);
+  assert.equal(f.events.includes("complete"), false);
+  assert.equal(f.events.at(-1), "watch-resume");
+});
+
+test("native recovery preflight precedes the guarded layout and destructive leave", async () => {
+  const f = fixture();
+  await disposeNotesWorkspace(f.app, f.options);
+  assert.deepEqual(
+    f.events.filter((event) =>
+      [
+        "guard",
+        "layout",
+        "native-preflight",
+        "prepare",
+        "workspace-dispose",
+      ].includes(event),
+    ),
+    ["native-preflight", "guard", "layout", "prepare", "workspace-dispose"],
+  );
+});
 
 test("workspace teardown captures live view state before shell unmount", async () => {
   const f = fixture();

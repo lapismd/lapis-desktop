@@ -39,6 +39,33 @@ test("ready content is exposed only after the native readiness acknowledgement",
   assert.equal(document.documentElement.dataset.lapisRuntime, "tauri-desktop");
   assert.equal(document.documentElement.dataset.runtimeClass, "desktop");
   assert.equal(document.documentElement.dataset.metadataOwner, "renderer");
+  assert.equal(document.documentElement.dataset.editingOwner, "renderer");
+});
+test("native editing selection is validated before session and plugin construction", async () => {
+  const f = fixture();
+  await startShell({
+    document: f.document,
+    mount: () =>
+      assert.equal(f.document.documentElement.dataset.editingOwner, "core"),
+    call: async (command) =>
+      command === "shell_info"
+        ? { runtime: "tauri-desktop", os: "macos", editingOwner: "core" }
+        : undefined,
+  });
+  const invalid = fixture();
+  await assert.rejects(
+    startShell({
+      document: invalid.document,
+      mount: () => invalid.events.push("mount"),
+      call: async () => ({
+        runtime: "tauri-desktop",
+        os: "macos",
+        editingOwner: "auto",
+      }),
+    }),
+    /invalid editing owner/,
+  );
+  assert.deepEqual(invalid.events, []);
 });
 test("native metadata selection reaches session construction before plugins mount", async () => {
   const { document } = fixture();

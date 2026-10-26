@@ -8,11 +8,18 @@ import {
   type MetadataOwner,
 } from "../native/database/native-database-provider.ts";
 import type { VaultDescriptor } from "../native/vault-client.ts";
+import {
+  createNativeEditingIntents,
+  type EditingOwner,
+} from "../native/editing/intents.ts";
 
 export async function openNotesSession(
   selected: VaultDescriptor,
   metadataOwner: MetadataOwner = "renderer",
+  editingOwner: EditingOwner = "renderer",
 ): Promise<VaultSession> {
+  if (editingOwner !== "renderer" && editingOwner !== "core")
+    throw new Error("Invalid editing owner selection");
   const now = Date.now();
   const adapter = new NativeDesktopVaultAdapter(
     selected.path,
@@ -39,5 +46,7 @@ export async function openNotesSession(
   });
   if (provider.backgroundIndexing)
     session.backgroundIndexing = provider.backgroundIndexing;
+  if (editingOwner === "core")
+    session.nativeEditingIntents = createNativeEditingIntents(selected);
   return session;
 }

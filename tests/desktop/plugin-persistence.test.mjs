@@ -10,6 +10,11 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  conflictReview,
+  nativeFailure,
+  openConflictReview,
+} from "./conflict-review.mjs";
 
 async function fixture(context, name) {
   const root = mkdtempSync(
@@ -74,14 +79,16 @@ test("App Shell plugin conflicts preserve external bytes and recover through the
   await control.click();
   await browser.keys(Key.Escape);
   assert.equal(readFileSync(path, "utf8"), external);
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, ".lapis/app-shell-plugins.json");
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   await browser.$("button=Use disk version").click();
   await browser.waitUntil(
     async () =>
-      !(await browser.$('[aria-label="File conflicts"]').isExisting()),
+      !(await browser
+        .$(conflictReview(".lapis/app-shell-plugins.json"))
+        .isExisting()),
   );
   const recovered = await pluginSwitch(browser, "fmode");
   assert.equal(await recovered.getAttribute("aria-checked"), "false");

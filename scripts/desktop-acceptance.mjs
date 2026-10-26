@@ -93,6 +93,7 @@ async function acceptance() {
       "tests/desktop/portable-workers.test.mjs",
       "tests/desktop/portable-database.test.mjs",
       "tests/desktop/notes-conflicts.test.mjs",
+      "tests/desktop/editing-recovery.test.mjs",
       "tests/desktop/preview-conflicts.test.mjs",
       "tests/desktop/window-chrome.test.mjs",
       "tests/desktop/popout-host.test.mjs",

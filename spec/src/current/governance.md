@@ -8,8 +8,7 @@ E-VALIDATION-001 preserves Docker/native/release boundaries. E-CORE-025/026 pin
 Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 stage metadata/Search with eight frozen inputs/native tests.
 Source repairs, archives and failed/final cohorts retain separate evidence.
-Original host/default-cutover gates, bounded locks and frozen AI helpers remain.
-
+E-CORE-033/034 qualify opt-in native editing; default cutover remains separate.
 Archive rewriting is idempotent only for an exact path redirected to a verified
 tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
 

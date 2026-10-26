@@ -10,6 +10,11 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import {
+  conflictReview,
+  openConflictReview,
+  reviewedText,
+} from "./conflict-review.mjs";
 
 test("Explorer local-trash fallback preserves failed note writers and succeeds after explicit recovery", async (context) => {
   const root = mkdtempSync(
@@ -38,7 +43,7 @@ test("Explorer local-trash fallback preserves failed note writers and succeeds a
   await browser.keys([Key.Command, "a"]);
   await browser.keys(Key.NULL);
   await editor.addValue(draft);
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, "Note.md");
   await browser.execute(() => {
     const row = document.querySelector('[data-path="Note.md"]');
     const rect = row.getBoundingClientRect();
@@ -75,17 +80,11 @@ test("Explorer local-trash fallback preserves failed note writers and succeeds a
     "failed writer must prevent physical removal",
   );
   assert.equal(readFileSync(file, "utf8"), external);
-  assert.equal(
-    await browser
-      .$('textarea[aria-label="Your version of Note.md"]')
-      .getValue(),
-    draft,
-  );
+  await reviewedText(browser, "Note.md", "Your version", draft);
   await browser.$("button=Use disk version").waitForEnabled();
   await browser.$("button=Use disk version").click();
   await browser.waitUntil(
-    async () =>
-      !(await browser.$('[aria-label="File conflicts"]').isExisting()),
+    async () => !(await browser.$(conflictReview("Note.md")).isExisting()),
   );
   await browser.execute(() => {
     const row = document.querySelector('[data-path="Note.md"]');
