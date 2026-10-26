@@ -292,6 +292,10 @@
     "kind": "component",
     "subject": "src/components/files/FileConflicts.svelte#default"
   },
+  "catalog/plugins/desktop/MetadataOwner.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
   "catalog/plugins/desktop/Shell.stories.ts": {
     "kind": "component",
     "subject": "src/components/views/Shell.svelte#default"

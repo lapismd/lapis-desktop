@@ -38,6 +38,7 @@ await run(
     "--test",
     "--test-concurrency=1",
     "tests/desktop/core-file-service.test.mjs",
+    "tests/desktop/metadata-owner.test.mjs",
     "tests/desktop/search-provider.test.mjs",
     "tests/desktop/ai-admission.test.mjs",
     "tests/desktop/ai-turn-owner.test.mjs",

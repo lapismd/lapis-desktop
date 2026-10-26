@@ -3,6 +3,7 @@ use lapis_app_protocol::database::{
     call::{DatabaseCall, DatabaseValue},
     changes::ChangeSet,
 };
+use lapis_app_protocol::indexing::{IndexingCommand, IndexingValue};
 use std::{
     io,
     sync::{
@@ -58,6 +59,14 @@ impl DatabaseConnection {
         // would let an unpolled reply prevent explicit vault close.
         self.client
             .call_database(request)
+            .await
+            .map_err(io::Error::other)
+    }
+
+    pub async fn indexing(&self, command: IndexingCommand) -> io::Result<IndexingValue> {
+        self.require_open()?;
+        self.client
+            .control_indexing(command)
             .await
             .map_err(io::Error::other)
     }

@@ -19,3 +19,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Native Search provider and retained SQL intake](../E-CORE-014.md)
 
 - [Vault-owned Desktop History indexing](../E-CORE-028.md)
+
+- [Staged native Desktop metadata owner](../E-CORE-029.md)

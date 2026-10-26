@@ -1180,3 +1180,13 @@ R2.2.3 retained History navigation is covered by
 and public Agent History screen stay in the right sidebar, reuse an exact main
 conversation, preserve other drafts and never dispatch on selection. The source
 is Notes native-chat navigation; this catalog adds no replacement screen.
+
+## Native metadata service observer
+
+`Desktop/Native metadata` mounts the production NotesWorkspace with the public
+VaultSession indexing port. Ready, Loading, RefreshCompletes and Failed retain
+startup progress, a usable editor and the existing retry/vault recovery screen.
+The labelled fixture action only completes a delayed native response; no
+metadata writer, filesystem or service scheduler is simulated in the UI.
+Renderer Search remains selected. Stories remain visual-pending; actual native
+metadata/Search/Graph and unattended indexing qualify separately.

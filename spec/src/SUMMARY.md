@@ -351,3 +351,4 @@
 - [Repaired signed Bases native adoption](history/E-DEPENDENCY-003.md)
 
 - [Vault-owned Desktop History indexing](history/E-CORE-028.md)
+- [Staged native Desktop metadata owner](history/E-CORE-029.md)

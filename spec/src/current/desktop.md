@@ -1,9 +1,9 @@
 # Desktop shell
 
-Retained Core chat acceptance uses the actual Tauri composer, sidebar History
-and cold isolated restart ([E-CORE-022](../history/E-CORE-022.md)). The native
-Markdown parser is pinned; metadata/Search startup stays unchanged. History
-indexing uses [vault-owned work](vault-backup.md) and passive cached progress.
+Retained Core chat uses the Tauri composer, sidebar History and cold restart
+([E-CORE-022](../history/E-CORE-022.md)). History uses vault-owned indexing.
+[Metadata](background.md) stages explicit Core selection on the same admitted
+database; renderer metadata and Search remain default. The parser is pinned.
 
 [Adapters](ai-adapter.md): defaults E-CORE-025; actual-provider screen recovery
 E-CORE-027.

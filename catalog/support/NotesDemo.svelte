@@ -5,6 +5,7 @@
     MemoryAppDatabase,
     MemoryVaultAdapter,
     type VaultSession,
+    type NativeBackgroundIndexing,
   } from "@lapis-notes/api";
   import NotesWorkspace from "../../src/components/views/NotesWorkspace.svelte";
   import { DesktopUrlDelivery } from "../../src/lib/native/integration-urls";
@@ -27,6 +28,7 @@
     createRepository,
     files = {},
     safeMode,
+    backgroundIndexing,
   }: {
     class?: string;
     createTerminal?: TerminalFactory;
@@ -35,6 +37,7 @@
     createRepository?: RepositoryFactory;
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
+    backgroundIndexing?: NativeBackgroundIndexing;
   } = $props();
 
   let session = $state<VaultSession>();
@@ -79,6 +82,7 @@
     );
     void boot
       .then(async (value) => {
+        if (backgroundIndexing) value.backgroundIndexing = backgroundIndexing;
         if (disposed) await value.close();
         else session = value;
       })

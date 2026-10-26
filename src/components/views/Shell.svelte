@@ -48,6 +48,10 @@
     ) => AiServices;
   } = $props();
   const coreChat = document.documentElement.dataset.aiOwner === "core";
+  const metadataOwner =
+    document.documentElement.dataset.metadataOwner === "core"
+      ? "core"
+      : "renderer";
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
   let selected = $state<VaultDescriptor | null>(null);
@@ -93,7 +97,7 @@
     openingNotes = true;
     const operation = (async () => {
       try {
-        session = await openNotesSession(target);
+        session = await openNotesSession(target, metadataOwner);
       } catch (error) {
         await client.close(target);
         selected = null;

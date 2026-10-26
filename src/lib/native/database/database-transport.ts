@@ -9,8 +9,12 @@ import {
   type RemoteAppDatabaseMethod,
 } from "@lapis-notes/api/app-database";
 import { Channel, invoke } from "@tauri-apps/api/core";
+import type { NativeBackgroundIndexing } from "@lapis-notes/api";
 import { nativeError } from "../native-error.ts";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
+
+type IndexingCommand = Parameters<NativeBackgroundIndexing["call"]>[0];
+type IndexingValue = Awaited<ReturnType<NativeBackgroundIndexing["call"]>>;
 
 export type DatabaseChannelFactory = (
   listener: (change: ChangeSet) => void,
@@ -28,6 +32,7 @@ export class NativeDatabaseTransport {
   #closed = false;
   #closePromise?: Promise<void>;
   #listeners = new Set<AppDatabaseChangeListener>();
+  #indexing = new Set<Promise<IndexingValue>>();
 
   private constructor(call: NativeCall, session: string) {
     this.#call = call;
@@ -126,10 +131,54 @@ export class NativeDatabaseTransport {
     return result;
   }
 
+  indexing(command: IndexingCommand): Promise<IndexingValue> {
+    let accepted: IndexingCommand;
+    try {
+      this.requireOpen();
+      const encoded = JSON.stringify(command);
+      if (
+        new TextEncoder().encode(encoded).byteLength >
+        REMOTE_APP_DATABASE_MAX_MESSAGE_BYTES
+      )
+        throw new Error("Native indexing request exceeds the message limit");
+      accepted = JSON.parse(encoded) as IndexingCommand;
+    } catch (error) {
+      return Promise.reject(nativeError(error));
+    }
+    // Status must remain observable while a native refresh is awaiting its pass.
+    // Both use the same admission and are drained before this view is closed.
+    const operation = Promise.resolve()
+      .then(async () => {
+        const reply = await this.#call<IndexingValue>("vault_indexing", {
+          request: {
+            sessionId: this.#sessionId,
+            connectionId: this.#connectionId,
+            command: accepted,
+          },
+        });
+        if (
+          !reply ||
+          typeof reply !== "object" ||
+          !Object.hasOwn(reply, "status") ||
+          !Object.hasOwn(reply, "contribution")
+        )
+          throw new Error("Invalid native indexing response");
+        return reply;
+      })
+      .catch((error) => {
+        throw nativeError(error);
+      });
+    this.#indexing.add(operation);
+    void operation
+      .finally(() => this.#indexing.delete(operation))
+      .catch(() => {});
+    return operation;
+  }
+
   close(): Promise<void> {
     if (this.#closePromise) return this.#closePromise;
     this.#closing = true;
-    this.#closePromise = this.#queue
+    this.#closePromise = Promise.allSettled([this.#queue, ...this.#indexing])
       .then(() =>
         this.#call<void>("vault_db_close", {
           sessionId: this.#sessionId,

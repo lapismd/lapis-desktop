@@ -25,7 +25,7 @@ pnpm test:storybook -- catalog/plugins/ai/NativeTurns.stories.ts
 
 The UI image owns TypeScript, renderer/AI tests, Storybook and renderer builds.
 The full image additionally contains pinned Rust and Linux Tauri development
-libraries for native service tests, strict Clippy and Rust formatting. Its seven
+libraries for native service tests, strict Clippy and Rust formatting. Its eight
 committed sibling inputs are pinned in `scripts/validation/native-sources.json`;
 dirty sibling work is never included. Linux service qualification cannot qualify
 a macOS application or native window. Use the existing `pnpm desktop:bundle`,

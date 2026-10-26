@@ -5,18 +5,39 @@ import {
   type AppDatabaseProvider,
 } from "@lapis-notes/api/app-database";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
+import type { NativeBackgroundIndexing } from "@lapis-notes/api";
 import {
   NativeDatabaseTransport,
   type DatabaseChannelFactory,
 } from "./database-transport.ts";
 
+export type MetadataOwner = "renderer" | "core";
+export interface NativeDatabaseProvider extends AppDatabaseProvider {
+  readonly backgroundIndexing?: NativeBackgroundIndexing;
+}
+
 export function createNativeDatabaseProvider(
   selected: VaultDescriptor,
   call?: NativeCall,
   channel?: DatabaseChannelFactory,
-): AppDatabaseProvider {
+  metadataOwner: MetadataOwner = "renderer",
+): NativeDatabaseProvider {
+  if (metadataOwner !== "renderer" && metadataOwner !== "core")
+    throw new Error("Invalid metadata owner selection");
+  let transport: NativeDatabaseTransport | undefined;
+  let opening = false;
   return {
     id: "turso-native-desktop",
+    backgroundIndexing:
+      metadataOwner === "core"
+        ? {
+            async call(command) {
+              if (!transport)
+                throw new Error("The native database admission is not open");
+              return transport.indexing(command);
+            },
+          }
+        : undefined,
     canOpen(context: AppDatabaseOpenContext): boolean {
       return (
         context.runtime === "tauri-desktop" &&
@@ -29,11 +50,18 @@ export function createNativeDatabaseProvider(
         throw new Error(
           "The native database provider requires its admitted Tauri vault and direct role",
         );
-      const transport = await NativeDatabaseTransport.open(
-        selected,
-        call,
-        channel,
-      );
+      if (metadataOwner === "core" && (transport || opening))
+        throw new Error(
+          "The native indexing database admission is already open",
+        );
+      opening = true;
+      let opened: NativeDatabaseTransport;
+      try {
+        opened = await NativeDatabaseTransport.open(selected, call, channel);
+        transport = opened;
+      } finally {
+        opening = false;
+      }
       const database: Record<string, unknown> = {
         kind: "turso-native",
         vaultId: context.vaultId,
@@ -53,15 +81,15 @@ export function createNativeDatabaseProvider(
           },
         },
         async open() {
-          transport.requireOpen();
+          opened.requireOpen();
         },
-        close: () => transport.close(),
+        close: () => opened.close(),
         subscribeToChanges: (
           listener: Parameters<AppDatabase["subscribeToChanges"]>[0],
-        ) => transport.subscribe(listener),
+        ) => opened.subscribe(listener),
       };
       for (const method of REMOTE_APP_DATABASE_METHODS)
-        database[method] = (...args: unknown[]) => transport.call(method, args);
+        database[method] = (...args: unknown[]) => opened.call(method, args);
       return database as unknown as AppDatabase;
     },
   };

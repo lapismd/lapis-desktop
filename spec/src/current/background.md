@@ -40,3 +40,36 @@ progress is passive cached-status observation: no capture subscription, native
 batch stepping or browser retry loop owns derived work. Closing an observer
 drains its current request without stopping the native service. Backup pause,
 renderer reload and zero clients preserve the owner until explicit vault close.
+
+## Staged native metadata adoption
+
+Under LD-DB-001/002/003/004, LD-SESSION-001 and LD-NAV-004/006,
+`LAPIS_DESKTOP_METADATA_OWNER=core` MAY explicitly attach the public native
+indexing port to the admitted Notes session before App construction. Missing or
+`renderer` selection MUST retain the existing renderer default; any other value
+MUST reject startup. The native selection is fixed at process startup and MUST
+independently reject renderer-mode controls, foreign windows and changed roots.
+
+The port MUST share the existing opaque database session/connection admission
+and passive change channel. Its typed command admits no filesystem path, SQL,
+callback or independent database authority. Native operations MUST await the
+existing core service outside the host resource mutex. Status observation MAY
+run while an accepted refresh is pending. View close fences and drains accepted
+transport calls and releases only observation; it MUST NOT stop the native owner
+or release its writer authority. Vault close and Quit own service drain.
+
+The API-owned MetadataCache observer selects compiled Markdown and compatible
+declared projections, publishes existing status progress and suppresses renderer
+metadata/projection writes. Unsupported custom contributions MUST remain visibly
+unavailable. Failures MUST remain observable without a renderer fallback. Search
+selection remains separate: this intake retains renderer Search and MUST NOT
+claim native Search, Tasks ordered writes/recovery or either host default
+cutover. Its metadata-only IPC MUST reject `select_search` and `disable_search`
+as unsupported until the separately qualified Search adapter explicitly admits
+them. Other compiled projection controls remain available through MetadataCache.
+
+Qualification MUST cover exact default/admission failures, one shared transport,
+passive refresh/disposal, external create/edit/rename/delete after client
+detach, cold reopen/rebuild/idempotence and the retained Metadata/Search/Graph
+views in the actual native workspace. Browser mocks cannot qualify native view
+behavior.

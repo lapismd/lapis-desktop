@@ -5,6 +5,11 @@ Their public views, controls, settings and command openers remain authoritative;
 the host adds the plugin profile and native qualification. Do not create a
 replacement Search, metadata panel, graph or navigation implementation.
 
+M16.4 stages Core metadata behind explicit startup selection under the
+[background contract](background.md). Existing Metadata/Search/Graph views MUST
+retain their native acceptance with this selected owner. Renderer metadata
+remains default; renderer Search stays selected in either metadata mode.
+
 E-AI-022 revalidates the two E-AI-020 native Search regressions with the
 corrected public source archive: disk recovery updates live settings before
 another write, and indexing/navigation retains the query after cold restart.

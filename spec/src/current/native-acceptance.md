@@ -48,3 +48,12 @@ The quiet native API catalog retains History owner selection/status, paused and
 cold cache rebuild, storage relocation, capture recovery and detached lifetime
 regressions. These use hidden isolated WebViews; no foreground/window/OS or
 provider acceptance is inferred.
+
+Metadata adoption adds hidden typed-admission, renderer-default and foreign
+caller denial, changed-root, closed-client, unsupported-contribution, detached
+reconciliation and cold rebuild checks. The existing e2e-only hidden, unfocused
+foreign-window fixture remains available in background mode; AI
+enable/disable/revoke controls remain denied there. Actual Metadata/Search/Graph
+view families also run with explicit native metadata selection; hidden reads
+cannot replace their visible workspace gate. Native Search selection stays
+unavailable in this metadata-only intake.

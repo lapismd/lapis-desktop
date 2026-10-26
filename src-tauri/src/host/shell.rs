@@ -12,6 +12,7 @@ pub struct ShellState {
 pub struct ShellInfo {
     runtime: &'static str,
     ai_owner: super::ai::turns::TurnOwner,
+    metadata_owner: lapis_desktop::database::MetadataOwner,
     os: &'static str,
     version: String,
     process_id: u32,
@@ -51,6 +52,7 @@ pub async fn shell_info(app: tauri::AppHandle) -> ShellInfo {
     ShellInfo {
         runtime: "tauri-desktop",
         ai_owner: *app.state::<super::ai::turns::TurnOwner>(),
+        metadata_owner: *app.state::<lapis_desktop::database::MetadataOwner>(),
         os: std::env::consts::OS,
         version: app.package_info().version.to_string(),
         process_id: std::process::id(),

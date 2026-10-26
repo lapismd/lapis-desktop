@@ -15,6 +15,14 @@ import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
 import { focusNativeWindow } from "./native-visibility.mjs";
+import {
+  acceptConflictSide,
+  conflictReview,
+  nativeFailure,
+  openConflictReview,
+  reviewedText,
+  saveConflictResult,
+} from "./conflict-review.mjs";
 
 const graph = '[data-ui-component="graph"][data-ui-part="global-view"]';
 const local = '[data-ui-component="graph"][data-ui-part="local-view"]';
@@ -149,6 +157,19 @@ async function hoverNodes(browser, mode = "global-view") {
       return true;
     });
   }
+  await browser.execute((mode) => {
+    document
+      .querySelector(
+        `[data-ui-component="graph"][data-ui-part="${mode}"] [data-ui-component="graph-canvas"]`,
+      )
+      .dispatchEvent(
+        new PointerEvent("pointerleave", {
+          pointerId: 1,
+          pointerType: "mouse",
+          isPrimary: true,
+        }),
+      );
+  }, mode);
   return nodes;
 }
 async function openNodeMenuAction(browser, label) {
@@ -223,7 +244,25 @@ async function fixture(context, name) {
   writeFileSync(join(vault, "Gamma.md"), "# Gamma\n");
   copyFileSync("src-tauri/icons/icon.png", join(vault, "image.png"));
   const session = await nativeSession(name, root);
-  context.after(session.cleanup);
+  context.after(async () => {
+    try {
+      if (session.isRunning())
+        writeFileSync(
+          join(root, "graph-state.json"),
+          JSON.stringify(
+            await session.browser.execute(() => ({
+              text: document.body.innerText,
+              frames: globalThis.__nativeGraphFrames,
+              focused: document.hasFocus(),
+            })),
+            null,
+            2,
+          ),
+        );
+    } finally {
+      await session.cleanup();
+    }
+  });
   const { browser } = session;
   await observeCanvas(browser);
   writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
@@ -304,7 +343,15 @@ test("native global/local Graph renders indexed semantics, follows files, naviga
     ["Gamma"],
   );
   await browser.$('[data-path="Alfa.md"]').click();
+  await browser.waitUntil(async () =>
+    (
+      await browser
+        .$('[data-ui-component="editor"] .cm-content[contenteditable="true"]')
+        .getText()
+    ).includes("# Alfa"),
+  );
   await browser.keys(Key.F7);
+  await browser.$(graph).waitForDisplayed();
   writeFileSync(join(vault, "Delta.md"), "# Delta\n\n[[Alfa]]\n");
   await browser.waitUntil(async () =>
     (await labels(browser)).includes("Delta"),
@@ -328,6 +375,7 @@ test("native global/local Graph renders indexed semantics, follows files, naviga
     ).includes("# Beta"),
   );
   await browser.keys(Key.F7);
+  await browser.$(graph).waitForDisplayed();
   await openNodeMenuAction(browser, "#orchard");
   await browser.$('[data-ui-component="search-panel"]').waitForDisplayed();
   assert.equal(
@@ -398,7 +446,7 @@ test("Graph failed writes block Close and disk recovery refreshes controls befor
   context.after(() => chmodSync(directory, 0o700));
   chmodSync(directory, 0o500);
   await browser.$(`${graph} [aria-label="Show tags"]`).click();
-  await browser.$('[aria-label="File conflicts"]').waitForDisplayed();
+  await openConflictReview(browser, ".lapis/app.json");
   external.pluginData[pluginId].filters = {
     showTags: false,
     showAttachments: true,
@@ -407,19 +455,22 @@ test("Graph failed writes block Close and disk recovery refreshes controls befor
   const bytes = JSON.stringify(external, null, 2);
   writeFileSync(path, bytes);
   await session.requestClose();
-  await browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   chmodSync(directory, 0o700);
   await browser.$("button=Check disk again").click();
-  await browser.waitUntil(
-    async () =>
-      (await browser
-        .$('textarea[aria-label="Disk version of .lapis/app.json"]')
-        .getValue()) === bytes,
+  await reviewedText(
+    browser,
+    ".lapis/app.json",
+    "Disk version",
+    '"showAttachments": true',
   );
-  await browser.$("button=Use disk version").click();
+  assert.equal(readFileSync(path, "utf8"), bytes);
+  await acceptConflictSide(browser, ".lapis/app.json", "Right");
+  await saveConflictResult(browser, ".lapis/app.json");
+  await browser.waitUntil(() => readFileSync(path, "utf8") === bytes);
   await browser
-    .$('[aria-label="File conflicts"]')
+    .$(conflictReview(".lapis/app.json"))
     .waitForExist({ reverse: true });
   assert.equal(
     await browser

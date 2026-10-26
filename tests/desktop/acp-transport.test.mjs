@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 import { nativeSession } from "./native-session.mjs";
+import { nativeFailure } from "./conflict-review.mjs";
 
 function root(name) {
   return mkdtempSync(
@@ -386,7 +387,7 @@ test("cancelled application close retains ACP until guarded persistence permits 
   await editor.click();
   await editor.addValue("ACP close must wait for persistence");
   await session.requestClose();
-  await session.browser.$('.shell-failure[role="alert"]').waitForDisplayed();
+  await session.browser.$(nativeFailure).waitForDisplayed();
   assert.equal(session.isRunning(), true);
   const listed = await session.browser.execute(() =>
     globalThis.__lapisAcpAcceptance.list(),

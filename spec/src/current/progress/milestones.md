@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-26 01:20:47 UTC**.
+Last updated **2026-10-26 03:02:01 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -18,6 +18,7 @@ Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
 | Signed Bases bundle                            | E-DEPENDENCY-003 native case passes                             | Metadata, write/watch and cold restart verified; distribution remains separate               |
 | Retained native chat and History               | E-CORE-027 actual-provider case and retained fixture pass       | Complete for this intake; broader M10 and default cutover remain separate                    |
 | Desktop History scheduler intake               | Complete: E-CORE-028 source, catalog and cold native acceptance | No remaining work in this intake; broader provider and default cutover gates remain separate |
+| Desktop metadata owner intake                  | Complete: Core14, hidden14 and final88catalog pass              | No remaining work in this intake; renderer default and native Search stay separate           |
 | Next shared application work                   | History intake complete; indexing and Search lanes continue     | Complete Notes R3–R7 and each required Desktop service intake                                |
 
 The final intake uses one frozen source and 26 verified archives, with Svelte
@@ -138,6 +139,7 @@ E-CATALOG-010/016: footer/native qualified.
 | M16.1 | Done | M2 | LD-GOV-006,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Desktop directly consumes the extracted Notes-owned vault engine; original native file/admission/watch/resource regressions and normal/e2e native configurations pass, with no duplicate engine or old-path exports. | Core R1.2 source qualified; Desktop/HTTP service intake remains R1.3 | E-CORE-001,E-CORE-002 |
 | M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014,E-CORE-015 |
 | M16.3 | Done | M16.2 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004 | R1.3.8 Tauri intake uses the shared high-level database owner through the existing packed provider. Native admission, commit observation, rollback, view/vault closure, cold persistence and existing Notes/Search UI acceptance pass without a renderer SQL engine. | Qualified with explicitly accepted pre-existing Markdown exception; continue R2 | E-CORE-016,E-CORE-018,E-CORE-019 |
+| M16.4 | Done | M16.3 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004,LD-SESSION-001,LD-NAV-004,LD-NAV-006,LD-CAT-003 | Explicit Core metadata selection shares the existing native database admission and observer; default/admission/lifetime regressions, full affected catalog and cold native Metadata/Search/Graph views pass while renderer metadata remains default. | Complete; native Search, Tasks ordered writes/recovery and metadata default cutover retain separate gates | E-CORE-029 |
 
 ## Markdown document review
 

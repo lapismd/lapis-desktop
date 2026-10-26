@@ -61,6 +61,7 @@ fn main() {
         "vault_watch_stop",
         "vault_db_open",
         "vault_db_call",
+        "vault_indexing",
         "vault_db_close",
     ];
     tauri_build::try_build(

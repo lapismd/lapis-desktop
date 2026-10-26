@@ -20,7 +20,9 @@ async function command(browser, name) {
   const input = browser.$('[role="dialog"] input');
   await input.waitForDisplayed();
   await input.setValue(name);
-  await browser.$(`[role="option"]*=${name}`).click();
+  const option = browser.$(`[role="option"]*=${name}`);
+  await option.waitForDisplayed();
+  await option.click();
 }
 async function fixture(context, name) {
   const root = mkdtempSync(
@@ -167,7 +169,7 @@ test("existing Tags and All Properties hand off their exact query to Search", as
   await searchQuery(browser, "tag:#orchard");
   await browser
     .$(
-      `${view("search-panel")} [role="treeitem"][aria-level="1"][aria-label^="Alfa.md,"]`,
+      `${view("search-panel")} [role="treeitem"][aria-level="1"][aria-label*=" · Alfa.md,"]`,
     )
     .waitForDisplayed();
   await command(browser, "Open All Properties");
@@ -177,7 +179,7 @@ test("existing Tags and All Properties hand off their exact query to Search", as
   await searchQuery(browser, '["status"]');
   await browser
     .$(
-      `${view("search-panel")} [role="treeitem"][aria-level="1"][aria-label^="Alfa.md,"]`,
+      `${view("search-panel")} [role="treeitem"][aria-level="1"][aria-label*=" · Alfa.md,"]`,
     )
     .waitForDisplayed();
   await session.close();

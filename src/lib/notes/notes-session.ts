@@ -3,11 +3,15 @@ import {
   NativeDesktopVaultAdapter,
   type VaultSession,
 } from "@lapis-notes/api";
-import { createNativeDatabaseProvider } from "../native/database/native-database-provider.ts";
+import {
+  createNativeDatabaseProvider,
+  type MetadataOwner,
+} from "../native/database/native-database-provider.ts";
 import type { VaultDescriptor } from "../native/vault-client.ts";
 
-export function openNotesSession(
+export async function openNotesSession(
   selected: VaultDescriptor,
+  metadataOwner: MetadataOwner = "renderer",
 ): Promise<VaultSession> {
   const now = Date.now();
   const adapter = new NativeDesktopVaultAdapter(
@@ -15,7 +19,13 @@ export function openNotesSession(
     { vaultId: selected.profileId, name: selected.name },
     "tauri-desktop",
   );
-  return createVaultSession(adapter, {
+  const provider = createNativeDatabaseProvider(
+    selected,
+    undefined,
+    undefined,
+    metadataOwner,
+  );
+  const session = await createVaultSession(adapter, {
     runtime: "tauri-desktop",
     profile: {
       id: selected.profileId,
@@ -25,6 +35,9 @@ export function openNotesSession(
       createdAt: now,
       updatedAt: now,
     },
-    appDatabaseProvider: createNativeDatabaseProvider(selected),
+    appDatabaseProvider: provider,
   });
+  if (provider.backgroundIndexing)
+    session.backgroundIndexing = provider.backgroundIndexing;
+  return session;
 }

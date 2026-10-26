@@ -113,6 +113,7 @@ async function acceptance() {
       "tests/desktop/navigation-search.test.mjs",
       "tests/desktop/navigation-search-settings.test.mjs",
       "tests/desktop/navigation-metadata.test.mjs",
+      "tests/desktop/metadata-owner.test.mjs",
       "tests/desktop/navigation-graph.test.mjs",
       "tests/desktop/integration-ports.test.mjs",
       "tests/desktop/integration-urls.test.mjs",

@@ -94,6 +94,20 @@ pub async fn acp_acceptance_control(
     if window.label() != "main" {
         return Err("denied".into());
     }
+    // This hidden caller-isolation fixture grants no AI control or activation.
+    if operation == "other-window" {
+        return tauri::WebviewWindowBuilder::new(
+            &app,
+            "acp-other",
+            tauri::WebviewUrl::App("index.html".into()),
+        )
+        .title("ACP isolation acceptance")
+        .visible(false)
+        .focused(false)
+        .build()
+        .map(|_| ())
+        .map_err(|_| Error("window_unavailable").to_string());
+    }
     if crate::acceptance::background::native_ai_policy() {
         return Err("Native AI policy checks do not admit fixture control".into());
     }
@@ -101,16 +115,6 @@ pub async fn acp_acceptance_control(
     match operation.as_str() {
         "disable" => host.disable().await,
         "enable" => host.enable(),
-        "other-window" => tauri::WebviewWindowBuilder::new(
-            &app,
-            "acp-other",
-            tauri::WebviewUrl::App("index.html".into()),
-        )
-        .title("ACP isolation acceptance")
-        .visible(false)
-        .build()
-        .map(|_| ())
-        .map_err(|_| Error("window_unavailable")),
         "revoke" => {
             app.state::<Policy>().0.fetch_add(1, Ordering::AcqRel);
             host.revoke("main", None).await

@@ -3,9 +3,10 @@
 The native-turn catalog retains real App/workspace/Agent screens, saved titles,
 sidebar retention, exact chat reuse and scoped drafts. Targets MUST declare safe
 `default_mode`; sends MUST assert the submitted mode. History fixtures model
-native publication through start/status observation, never client batch
-scheduling. Stories remain `visual-pending`; browser proof is separate from
-[actual native acceptance](../history/E-CORE-022.md).
+native publication through start/status, never client batch scheduling. Metadata
+stories MUST inject the public session port into the real shell and show startup
+progress/recovery. Stories remain `visual-pending`; browser proof is separate
+from [native acceptance](../history/E-CORE-022.md).
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned

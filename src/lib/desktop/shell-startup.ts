@@ -5,6 +5,7 @@ import { invoke } from "@tauri-apps/api/core";
 export interface ShellInfo {
   runtime: "tauri-desktop";
   aiOwner?: "renderer" | "core";
+  metadataOwner?: "renderer" | "core";
   os: string;
   version: string;
   ready: boolean;
@@ -25,12 +26,16 @@ export async function startShell({
       "The native host did not report a supported desktop runtime",
     );
   }
+  const metadataOwner = info.metadataOwner ?? "renderer";
+  if (metadataOwner !== "renderer" && metadataOwner !== "core")
+    throw new Error("The native host reported an invalid metadata owner");
   document.documentElement.dataset.appStateDirectory =
     DEFAULT_APP_STATE_DIRECTORY;
   document.documentElement.dataset.lapisRuntime = info.runtime;
   document.documentElement.dataset.runtimeClass = "desktop";
   document.documentElement.dataset.lapisPlatform = info.os;
   document.documentElement.dataset.aiOwner = info.aiOwner ?? "renderer";
+  document.documentElement.dataset.metadataOwner = metadataOwner;
   mount();
   await call("shell_ready");
   document.getElementById("boot")?.setAttribute("hidden", "");

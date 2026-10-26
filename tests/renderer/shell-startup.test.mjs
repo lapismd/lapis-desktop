@@ -38,6 +38,33 @@ test("ready content is exposed only after the native readiness acknowledgement",
   assert.equal(document.documentElement.dataset.appStateDirectory, ".lapis");
   assert.equal(document.documentElement.dataset.lapisRuntime, "tauri-desktop");
   assert.equal(document.documentElement.dataset.runtimeClass, "desktop");
+  assert.equal(document.documentElement.dataset.metadataOwner, "renderer");
+});
+test("native metadata selection reaches session construction before plugins mount", async () => {
+  const { document } = fixture();
+  await startShell({
+    document,
+    mount: () =>
+      assert.equal(document.documentElement.dataset.metadataOwner, "core"),
+    call: async (command) =>
+      command === "shell_info"
+        ? { runtime: "tauri-desktop", os: "macos", metadataOwner: "core" }
+        : undefined,
+  });
+  const invalid = fixture();
+  await assert.rejects(
+    startShell({
+      document: invalid.document,
+      mount: () => invalid.events.push("mount"),
+      call: async () => ({
+        runtime: "tauri-desktop",
+        os: "macos",
+        metadataOwner: "auto",
+      }),
+    }),
+    /invalid metadata owner/u,
+  );
+  assert.deepEqual(invalid.events, []);
 });
 test("native startup failure preserves loading presentation for the error handler", async () => {
   const { events, document } = fixture();

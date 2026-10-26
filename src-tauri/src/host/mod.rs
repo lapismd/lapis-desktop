@@ -1,5 +1,6 @@
 pub(crate) mod ai;
 pub(crate) mod database;
+pub(crate) mod indexing;
 pub(crate) mod integration;
 pub(crate) mod lifecycle;
 pub(crate) mod repository;
@@ -28,8 +29,15 @@ pub fn run() -> tauri::Result<()> {
     )
     .map_err(tauri::Error::Io)?;
     ai.select_turn_owner(turn_owner).map_err(tauri::Error::Io)?;
+    let metadata_owner = lapis_desktop::database::MetadataOwner::parse(
+        std::env::var("LAPIS_DESKTOP_METADATA_OWNER")
+            .ok()
+            .as_deref(),
+    )
+    .map_err(tauri::Error::Io)?;
     let builder = tauri::Builder::default()
         .manage(turn_owner)
+        .manage(metadata_owner)
         .manage(ai.clone())
         .manage(terminal.clone())
         .plugin(tauri_plugin_lapis_terminal::Builder::new(terminal).build())
@@ -153,6 +161,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::vault::watch::vault_watch_stop,
             crate::host::database::vault_db_open,
             crate::host::database::vault_db_call,
+            crate::host::indexing::vault_indexing,
             crate::host::database::vault_db_close
         ])
         .setup(move |app| {
