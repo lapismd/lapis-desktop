@@ -22,3 +22,4 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 
 - [Staged native Desktop metadata owner](../E-CORE-029.md)
 - [Staged native Desktop Search owner](../E-CORE-030.md)
+- [Desktop Search activity closure](../E-CORE-031.md)

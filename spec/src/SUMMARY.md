@@ -353,3 +353,4 @@
 - [Vault-owned Desktop History indexing](history/E-CORE-028.md)
 - [Staged native Desktop metadata owner](history/E-CORE-029.md)
 - [Staged native Desktop Search owner](history/E-CORE-030.md)
+- [Desktop Search activity closure](history/E-CORE-031.md)

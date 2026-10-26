@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-26 09:32:28 UTC**.
+Last updated **2026-10-26 09:49:16 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -29,10 +29,11 @@ Evidence `E-VALIDATION-003` preserves that completed dependency intake. The
 current native Search intake selects API `a1b0dfde`, Design Core `0d7a9289` and
 Search `e0144c6a`, each through its qualified public archive. Search settings
 recovery is repaired in its owning Plugins repository. Public artifacts and
-final native/affected catalog checks pass in `E-CORE-030`. The shared source
-lane is recording its reproduced inherited baseline findings and committing the
-qualified repair. Desktop commit and clean-default intake follow that
-prerequisite; no product acceptance needs to be repeated.
+final native/affected catalog checks pass in `E-CORE-030`. Source repair
+`e0144c6a` and Desktop intake `a052be6b` are committed. Desktop `default` is
+clean on that intake with all 26 selected archives / 9,018 public files and
+1,550 native-qualified source inputs verified. M16.5 is complete; shared R3 and
+default cutover remain separate.
 
 Original M10.2/M10.3 feature gates remain open. Renderer AI and Node serving
 remain defaults until their replacement gates pass. Signing/distribution M11,
@@ -147,7 +148,7 @@ E-CATALOG-010/016: footer/native qualified.
 | M16.2 | Done | M16.1 | LD-VAULT-002,LD-VAULT-003,LD-FILE-001,LD-FILE-003 | Existing native file IPC delegates portable actions to the shared owner; admission, close, file errors and real native read/edit/mutation acceptance pass with original renderer frames. | Desktop intake qualified; HTTP shell and backup lifetime remain R1.3 | E-CORE-003,E-CORE-004,E-CORE-005,E-CORE-006,E-CORE-007,E-CORE-008,E-CORE-009,E-CORE-010,E-CORE-011,E-CORE-012,E-CORE-013,E-CORE-014,E-CORE-015 |
 | M16.3 | Done | M16.2 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004 | R1.3.8 Tauri intake uses the shared high-level database owner through the existing packed provider. Native admission, commit observation, rollback, view/vault closure, cold persistence and existing Notes/Search UI acceptance pass without a renderer SQL engine. | Qualified with explicitly accepted pre-existing Markdown exception; continue R2 | E-CORE-016,E-CORE-018,E-CORE-019 |
 | M16.4 | Done | M16.3 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004,LD-SESSION-001,LD-NAV-004,LD-NAV-006,LD-CAT-003 | Explicit Core metadata selection shares the existing native database admission and observer; default/admission/lifetime regressions, full affected catalog and cold native Metadata/Search/Graph views pass while renderer metadata remains default. | Complete; native Search, Tasks ordered writes/recovery and metadata default cutover retain separate gates | E-CORE-029 |
-| M16.5 | Done | M16.4 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004,LD-SESSION-001,LD-NAV-001,LD-NAV-002,LD-NAV-003,LD-NAV-005,LD-NAV-007,LD-NAV-008,LD-CAT-003 | Explicit Core Search reuses the shared App observer and database admission; default/admission, lexical/semantic/provider, detached owner/disable/re-enable, cold Metadata/Search/Graph and recovery regressions plus all affected catalog cases pass without client writers or a new scheduler. | Complete; native Tasks adoption, full R3 and default cutover retain separate gates | E-CORE-030 |
+| M16.5 | Done | M16.4 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004,LD-SESSION-001,LD-NAV-001,LD-NAV-002,LD-NAV-003,LD-NAV-005,LD-NAV-007,LD-NAV-008,LD-CAT-003 | Explicit Core Search reuses the shared App observer and database admission; default/admission, lexical/semantic/provider, detached owner/disable/re-enable, cold Metadata/Search/Graph and recovery regressions plus all affected catalog cases pass without client writers or a new scheduler. | Complete; native Tasks adoption, full R3 and default cutover retain separate gates | E-CORE-030,E-CORE-031 |
 
 ## Markdown document review
 
