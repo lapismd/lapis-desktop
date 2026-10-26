@@ -320,6 +320,14 @@ selects vault/index identity and bounded workers; frames supply no paths or
 caller authority. Storage relocation drains that search permit. Saved targets
 retain the operation, commit and file (LD-REPO-002/005).
 
+The Desktop command MUST delegate start/status/query/context to the public
+Notes-owned History protocol and admitted Core client. Core owns bounded request
+validation, immutable-source selection, neutral missing-history responses and
+saved-context projection. Tauri retains current caller/session/root admission,
+the existing search permit and bound-response checks. An accepted call MUST keep
+that permit through Core completion and response validation even when its caller
+disappears; storage relocation cannot overtake accepted immutable reads.
+
 Storage relocation explicitly stops and drains the shared History owner before
 change/recovery/rollback, then reselects only stable existing immutable history.
 Reselection cannot start capture or recover a move. If both mutation and

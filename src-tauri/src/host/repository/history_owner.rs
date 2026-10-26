@@ -1,25 +1,7 @@
-//! Shared owner projection and explicit storage-mutation drain.
-use jj_vault::{Storage, search::indexed};
+//! Explicit storage-mutation drain and immutable History reselection.
+use jj_vault::Storage;
 use lapis_app_core::services::VaultService;
 use std::{io, sync::Arc};
-
-pub(super) fn status(service: Arc<VaultService>, start: bool) -> Result<indexed::Status, String> {
-    let state = if start {
-        service.start_history_indexing()
-    } else {
-        service.history_indexing_status()
-    }
-    .map_err(|error| error.to_string())?;
-    if let Some(error) = state.error {
-        return Err(error);
-    }
-    Ok(state.source.unwrap_or(indexed::Status {
-        generation: 0,
-        indexed: 0,
-        omitted: 0,
-        complete: false,
-    }))
-}
 
 fn reselect(service: &Arc<VaultService>, storage: &Storage) -> io::Result<()> {
     if storage

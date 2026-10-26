@@ -3,10 +3,11 @@
 [Shared-screen integration](shared-screen-integration.md) governs source/pin
 selection, history cards and host-owned Blame wrapping; Core intake is
 E-CORE-001/003/014/016. [Automatic backup](vault-backup.md) owns shared native
-History scheduling, cached renderer observation (E-CORE-028) and E-REPO-043
-upstream/reveal actions. Admission and operation pins remain unchanged.
-E-REPO-024/025 and E-CATALOG-009/010/012 retain footer status/clearance
-([navigation](repository-navigation.md)); read authority is unchanged.
+History scheduling, shared controls, cached observation (E-CORE-028) and
+E-REPO-043 upstream/reveal actions. Admission and operation pins remain
+unchanged. E-REPO-024/025 and E-CATALOG-009/010/012 retain footer
+status/clearance ([navigation](repository-navigation.md)); read authority is
+unchanged.
 
 ## Requirements
 

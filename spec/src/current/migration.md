@@ -6,7 +6,7 @@ E-CORE-029/M16.4 and E-CORE-030/M16.5 stage metadata/Search through the existing
 App observer and database admission; renderer stays default. Search recovery
 uses verified Plugins archives; E-CORE-025/026 retain qualified target defaults.
 M10.2, R3–R7, AI/default cutover, product and Deferred M11 gates stay separate.
-M16.5 retains original native, catalog and portable/governance acceptance.
+M16.5/6 retain native, catalog and portable/governance acceptance gates.
 
 Evidence for Docker-first portable validation, governed story composition and
 public archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux

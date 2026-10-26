@@ -1,5 +1,5 @@
 import type { SearchQueryExpression } from "@lapis-notes/api";
-import type { HistoryExpression } from "./indexed-search.ts";
+import type { HistoryExpression } from "@lapis-notes/history/repository/controllers/indexed-search";
 
 /** Lower the shared parser AST; never interpret unsupported syntax as plain text. */
 export function historyExpression(

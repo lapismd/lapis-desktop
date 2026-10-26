@@ -5,7 +5,7 @@ import {
   type SearchProviderMatch,
 } from "@lapis-notes/api";
 import { BackgroundWork } from "../../../lib/desktop/background-work.ts";
-import { HistoryIndexController } from "../../../lib/repository/history-index-controller.ts";
+import { HistoryIndexController } from "@lapis-notes/history/repository/controllers/history-index-controller";
 import {
   historyExpression,
   historyRanges,
@@ -14,7 +14,7 @@ import {
 import type {
   IndexedHistoryService,
   IndexedHistoryHit,
-} from "../../../lib/repository/indexed-search.ts";
+} from "@lapis-notes/history/repository/controllers/indexed-search";
 import type { RepositoryPlugin } from "../repository-plugin.ts";
 
 function hitModel(hit: IndexedHistoryHit, query: string): SearchProviderHit {

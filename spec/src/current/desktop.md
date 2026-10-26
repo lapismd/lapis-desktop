@@ -348,4 +348,4 @@ E-AI-109/110: tabbed Compute and native GGUF selection; see
 
 Verified Lapis AI helpers ship as application resources; device adapters remain
 installation-owned. See [client delivery](ai-clients.md).
-[Native turn adoption](ai-adapter.md).
+[Native turn adoption](ai-adapter.md). [History controls](vault-backup.md).

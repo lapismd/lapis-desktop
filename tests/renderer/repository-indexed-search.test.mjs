@@ -1,10 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HistoryIndexController } from "../../src/lib/repository/history-index-controller.ts";
-import {
-  nativeIndexedSearch,
-  indexedPage,
-} from "../../src/lib/native/repository/indexed-search.ts";
+import { HistoryIndexController } from "@lapis-notes/history/repository/controllers/history-index-controller";
+import { indexedPage } from "@lapis-notes/history/repository/controllers/indexed-search-validation";
+import { nativeIndexedSearch } from "../../src/lib/native/repository/indexed-search.ts";
 import { historyExpression } from "../../src/lib/repository/history-search-expression.ts";
 const status = (complete, generation = 1) => ({
   complete,
@@ -114,6 +112,8 @@ test("index query transport is vault-scoped and validates immutable identities",
   const requests = [];
   const service = nativeIndexedSearch("admitted", async (command, args) => {
     requests.push({ command, args });
+    if (args.request.action.kind === "context")
+      return { text: "saved", start: 0, end: 1, before: false, after: false };
     return ["start", "status"].includes(args.request.action.kind)
       ? status(true)
       : { status: status(false), hits: [], next: null, reset: false };
@@ -126,13 +126,31 @@ test("index query transport is vault-scoped and validates immutable identities",
     cursor: null,
     limit: 100,
   });
+  assert.equal(
+    (
+      await service.context({
+        commit: "a".repeat(40),
+        path: "note.md",
+        start: 0,
+        end: 1,
+      })
+    ).text,
+    "saved",
+  );
   assert.equal(requests[0].command, "desktop_backup_history_search");
   assert.deepEqual(
     requests.map((request) => request.args.request.action.kind),
-    ["start", "status", "query"],
+    ["start", "status", "query", "context"],
   );
   assert.equal(requests[2].args.request.sessionId, "admitted");
   assert.equal("root" in requests[1].args.request, false);
+  assert.deepEqual(requests[3].args.request.action, {
+    kind: "context",
+    commit: "a".repeat(40),
+    path: "note.md",
+    start: 0,
+    end: 1,
+  });
   assert.throws(
     () =>
       indexedPage({
@@ -143,6 +161,19 @@ test("index query transport is vault-scoped and validates immutable identities",
       }),
     /Invalid/,
   );
+});
+
+test("the shared History adapter preserves native admission errors without retry", async () => {
+  let calls = 0;
+  const service = nativeIndexedSearch("retired", async () => {
+    calls++;
+    throw { code: "EACCES", message: "Vault source changed" };
+  });
+  await assert.rejects(service.status(), {
+    code: "EACCES",
+    message: "Vault source changed",
+  });
+  assert.equal(calls, 1);
 });
 
 test("history lowering retains Boolean structure and UTC dates and rejects unsupported predicates", () => {

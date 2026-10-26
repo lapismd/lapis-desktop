@@ -40,6 +40,8 @@ progress is passive cached-status observation: no capture subscription, native
 batch stepping or browser retry loop owns derived work. Closing an observer
 drains its current request without stopping the native service. Backup pause,
 renderer reload and zero clients preserve the owner until explicit vault close.
+Shared public History observation and response validation MUST retain those
+semantics; the Desktop adapter owns transport/admission, not a second scheduler.
 
 ## Staged native metadata adoption
 
