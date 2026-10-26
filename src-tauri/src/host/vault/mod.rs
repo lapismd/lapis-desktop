@@ -1,5 +1,6 @@
 pub(crate) mod editing;
 pub(crate) mod files;
+pub(crate) mod tasks;
 pub(crate) mod watch;
 
 use crate::host::state::{NativeError, NativeHost as VaultHost, access};

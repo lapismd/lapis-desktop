@@ -26,3 +26,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Shared Desktop History controls](../E-CORE-032.md)
 
 - [Native editor qualification closure](../E-CORE-034.md)
+
+- [Staged native Desktop Tasks intake](../E-CORE-036.md)

@@ -157,6 +157,14 @@ pub fn initialize(
         &history_root(app)?,
         fs_gate.clone(),
     )?;
+    let core_vaults = if app
+        .state::<lapis_desktop::vault::tasks::TasksOwner>()
+        .is_core()
+    {
+        core_vaults.with_tasks(&profile)?
+    } else {
+        core_vaults
+    };
     let core_vaults = if app.state::<crate::host::ai::turns::TurnOwner>().is_core() {
         core_vaults.with_turns(
             &profile,

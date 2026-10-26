@@ -53,6 +53,11 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^(?:src/lib/native/tasks/|src-tauri/src/(?:vault/tasks\\.rs$|host/vault/tasks\\.rs$)|src-tauri/tests/core_tasks_service\\.rs$|tests/(?:renderer/native-tasks|desktop/tasks-owner)\\.test\\.mjs$)",
+            chapters: ["spec/src/current/tasks.md"],
+          },
+          {
+            pattern:
               "^(?:src/lib/desktop/background-work\\.ts$|tests/(?:workers/|renderer/background-work\\.test\\.mjs$)|vitest\\.workers\\.config\\.ts$|catalog/(?:plugins|support)/background/)",
             chapters: ["spec/src/current/background.md"],
           },

@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-26 22:07:42 UTC**.
+Last updated **2026-10-26 23:55:26 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -73,6 +73,13 @@ functional, accessibility or runtime diagnostic failure is waived. Tool-image,
 JavaScript and native cache identities are already separated and qualified in
 E-VALIDATION-001. Further cache optimization remains Deferred; current cache
 boundaries are documented in `docs/validation.md`.
+
+M16.9 is staging native Tasks on immutable Notes `0ff929b1`, with explicit
+metadata/editing prerequisites and no bundled-plugin/default change. Focused
+transport/observer/startup checks pass11/11; Rust awaits Docker SSH recovery.
+Source aggregate `823317ad`, compatible public archives and composed
+installed-plugin/native/catalog acceptance remain pending. E-CORE-036 records
+the separate gate.
 
 <!-- migration-activity:end -->
 
@@ -179,6 +186,7 @@ E-CATALOG-010/016: footer/native qualified.
 | M16.5 | Done | M16.4 | LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004,LD-SESSION-001,LD-NAV-001,LD-NAV-002,LD-NAV-003,LD-NAV-005,LD-NAV-007,LD-NAV-008,LD-CAT-003 | Explicit Core Search reuses the shared App observer and database admission; default/admission, lexical/semantic/provider, detached owner/disable/re-enable, cold Metadata/Search/Graph and recovery regressions plus all affected catalog cases pass without client writers or a new scheduler. | Complete; native Tasks adoption, full R3 and default cutover retain separate gates | E-CORE-030,E-CORE-031 |
 | M16.6 | Done | M16.5 | LD-REPO-001,LD-REPO-002,LD-REPO-005,LD-CAT-003 | Desktop consumes the public shared History controls, observer and validators without duplicate policy; original cold native saved-search/context, missing source, paused capture, cache rebuild and storage relocation plus all affected service, renderer and catalog checks pass while native admission and accepted-call drain remain intact. | Complete; native Tasks/shared reader adoption, full R3 and default cutover retain separate gates | E-CORE-032 |
 | M16.7 | Done | M16.6 | LD-LIFE-001,LD-LIFE-004,LD-LIFE-007,LD-LIFE-008,LD-LIFE-009,LD-CAT-003 | Explicit Core editing selection binds real API/Markdown writers to admitted native intents; original conditional-save, conflict, leave/refused-leave and cold-recovery acceptance plus all affected catalog and portable/native checks pass without another save or recovery engine. | Complete; native Tasks/shared reader adoption, broader R3 and default cutover retain separate gates | E-CORE-033,E-CORE-034 |
+| M16.9 | In progress | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | Finish immutable source qualification and composed Desktop installed-plugin/native/catalog acceptance; renderer remains default | E-CORE-036 |
 
 ## Markdown document review
 

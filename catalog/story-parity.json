@@ -442,5 +442,9 @@
   "catalog/plugins/desktop/EditingRecovery.stories.ts": {
     "kind": "component",
     "subject": "@lapis-notes/workspace#WorkspaceShell"
+  },
+  "catalog/plugins/desktop/NativeTasks.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
   }
 }

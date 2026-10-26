@@ -7,6 +7,7 @@ gates.
 - [Governance](governance.md)
 - [Local dependency intake](local-dependencies.md)
 - [Desktop shell](desktop.md)
+- [Native Tasks](tasks.md)
 - [Background activity and responsiveness](background.md)
 - [File management](files.md)
 - [Find and navigate](navigation.md)

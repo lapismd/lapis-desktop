@@ -8,9 +8,10 @@ E-VALIDATION-001 preserves Docker/native/release boundaries. E-CORE-025/026 pin
 Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 stage metadata/Search with eight frozen inputs/native tests.
 Source repairs, archives and failed/final cohorts retain separate evidence.
-E-CORE-033/034 qualify opt-in native editing; default cutover remains separate.
-Archive rewriting is idempotent only for an exact path redirected to a verified
-tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
+E-CORE-033/034 qualify editing. Tasks E-CORE-036 pins Notes 0ff929b1;
+aggregate823317ad, consumer gates and default cutover remain pending. Archive
+rewriting is idempotent only for an exact path redirected to a verified tarball.
+Repeated hooks preserve it; unverified paths/file peer ranges reject.
 
 The [local dependency intake](local-dependencies.md) contract governs complete
 review refreshes from committed default-checkout source under LD-GOV-006/008.

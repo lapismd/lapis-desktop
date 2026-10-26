@@ -3,6 +3,7 @@ pub mod editing;
 pub mod resources;
 pub mod services;
 pub mod system_actions;
+pub mod tasks;
 
 mod profiles;
 mod registry;
