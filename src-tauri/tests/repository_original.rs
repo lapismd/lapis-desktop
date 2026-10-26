@@ -1,144 +1,238 @@
-use jj_store_jj::vault_workspace::Session;
-use jj_vault::Binding;
-use lapis_desktop::{repository::RepositoryAdmissions, vault::VaultManager};
-use std::{fs, path::Path, process::Command};
-fn stock(root: &Path, args: &[&str]) {
-    let executable = std::env::var_os("JJ_STORE_TEST_STOCK_JJ").unwrap_or_else(|| "jj".into());
-    let result = Command::new(executable)
-        .current_dir(root)
-        .args([
-            "--no-pager",
-            "--config",
-            "user.name='History fixture'",
-            "--config",
-            "user.email='fixture@invalid'",
-        ])
-        .args(args)
-        .env("JJ_CONFIG", "/dev/null")
-        .env("GIT_CONFIG_NOSYSTEM", "1")
-        .env("GIT_CONFIG_GLOBAL", "/dev/null")
-        .output()
-        .unwrap();
-    assert!(
-        result.status.success(),
-        "{}",
-        String::from_utf8_lossy(&result.stderr)
-    );
+mod repository_original {
+    pub mod fixture;
 }
-#[test]
-fn original_read_tokens_coexist_with_managed_backup_and_never_authorize_file_writers() {
-    tokio::runtime::Builder::new_current_thread()
-        .enable_all()
-        .build()
-        .unwrap()
-        .block_on(async {
-            let temp = tempfile::tempdir().unwrap();
-            let root = temp.path().canonicalize().unwrap();
-            let notes = root.join("notes");
-            fs::create_dir(&notes).unwrap();
-            stock(&notes, &["git", "init", "--no-colocate", "."]);
-            fs::write(notes.join("Note.md"), "Original recorded note\n").unwrap();
-            stock(&notes, &["describe", "-m", "Original history"]);
-            let mut vaults = VaultManager::new(&root.join("profile")).unwrap();
-            let vault = vaults.select(Some(notes.clone()), None).unwrap().unwrap();
-            let mut admissions = RepositoryAdmissions::default();
-            let plan = admissions
-                .prepare_original(&vaults, "main", &vault.session_id)
-                .unwrap();
-            let token = plan.read_token().unwrap().to_owned();
-            let original = admissions.complete(&vaults, &plan).unwrap();
-            assert!(
-                vaults.get(&token).is_err(),
-                "read token cannot select a vault for a writer"
-            );
-            assert!(admissions.authorize(&vaults, "other", &token).is_err());
-            assert_eq!(
-                admissions.authorize(&vaults, "main", &token).unwrap(),
-                original
-            );
-            let binding = Binding {
-                vault_id: vault.profile_id,
-                root: notes.clone(),
-                state: root.join("private/history"),
-            };
-            let mut native = Session::open(binding.clone()).await.unwrap();
-            native.capture(&[], "Managed backup").await.unwrap();
-            drop(native);
-            admissions
-                .bind_backup(&vaults, &vault.session_id, &binding.state)
-                .unwrap();
-            let plan = admissions
-                .prepare(&vaults, "main", &vault.session_id)
-                .unwrap();
-            assert!(plan.preserves_vault());
-            assert!(
-                !plan.had_prior_scope(),
-                "first backup admission must not revoke the original scope"
-            );
-            let backup = admissions.complete(&vaults, &plan).unwrap();
-            assert_ne!(backup.repository(), original.repository());
-            assert_ne!(backup.metadata_path(), original.metadata_path());
-            admissions.check(&vaults, &original).unwrap();
-            admissions.check(&vaults, &backup).unwrap();
-            fs::write(notes.join("Note.md"), "Later disk edit\n").unwrap();
-            admissions.check(&vaults, &original).unwrap();
-            assert_eq!(
-                fs::read_to_string(notes.join("Note.md")).unwrap(),
-                "Later disk edit\n"
-            );
-            // Reject a replaced original before changing the shared vault
-            // lease; independent managed reads must remain admitted.
-            fs::rename(notes.join(".jj"), root.join("previous-original")).unwrap();
-            stock(&notes, &["git", "init", "--no-colocate", "."]);
-            assert!(
-                admissions
-                    .prepare_original(&vaults, "main", &vault.session_id)
-                    .is_err()
-            );
-            admissions.check(&vaults, &backup).unwrap();
-            assert!(admissions.check(&vaults, &original).is_err());
-            admissions.begin_close_vault(&vault.session_id);
-            assert!(admissions.check(&vaults, &original).is_err());
-            assert!(admissions.authorize(&vaults, "main", &token).is_err());
-        });
-}
-#[test]
-fn reload_rotates_original_tokens_and_metadata_replacement_requires_a_new_scope() {
+use lapis_app_core::services::HistoryMethod;
+use lapis_app_protocol::{ExpectedVersion, repository_sources::RepositorySourcesCommand};
+use lapis_desktop::{database::NativeDatabases, repository::readers::Readers, vault::VaultManager};
+use repository_original::fixture::{bytes, heads, services, source, stock};
+use serde_json::json;
+use std::fs;
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn original_and_managed_reads_share_one_client_without_initializing_original_history() {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().canonicalize().unwrap();
-    let notes = root.join("notes");
-    fs::create_dir(&notes).unwrap();
-    stock(&notes, &["git", "init", "--no-colocate", "."]);
+    let notes = source(&root, "notes");
+    fs::write(notes.join("Note.md"), "Unsnapshotted disk edit\n").unwrap();
+    let before = bytes(&notes.join(".jj"));
     let mut vaults = VaultManager::new(&root.join("profile")).unwrap();
-    let vault = vaults.select(Some(notes.clone()), None).unwrap().unwrap();
-    let mut admissions = RepositoryAdmissions::default();
-    let plan = admissions
-        .prepare_original(&vaults, "main", &vault.session_id)
+    let selected = vaults.select(Some(notes.clone()), None).unwrap().unwrap();
+    let mut native = services(&root);
+    let app = native.client(&vaults, &selected.session_id).unwrap();
+    let service = native.service(&vaults, &selected.session_id).unwrap();
+    let discovered = app
+        .repository_sources(RepositorySourcesCommand::Discover {})
+        .await
         .unwrap();
-    let old_token = plan.read_token().unwrap().to_owned();
-    let original = admissions.complete(&vaults, &plan).unwrap();
-    admissions.leave("main", true);
-    assert!(admissions.authorize(&vaults, "main", &old_token).is_err());
-    let plan = admissions
-        .prepare_original(&vaults, "main", &vault.session_id)
+    assert!(discovered.original);
+    assert!(discovered.token.is_none());
+    assert!(!root.join("history").join(&selected.profile_id).exists());
+    let readers = Readers::default();
+    let reader = readers
+        .attach("main", &selected.session_id, &service)
         .unwrap();
-    assert_ne!(plan.read_token(), Some(old_token.as_str()));
-    let next = admissions.complete(&vaults, &plan).unwrap();
-    assert_ne!(original.generation(), next.generation());
-    let saved = root.join("old-metadata");
-    fs::rename(notes.join(".jj"), &saved).unwrap();
-    stock(&notes, &["git", "init", "--no-colocate", "."]);
-    assert!(admissions.check(&vaults, &next).is_err());
+    let original = reader
+        .client()
+        .repository_sources(RepositorySourcesCommand::OpenOriginal {})
+        .await
+        .unwrap();
+    let token = original.token.unwrap();
     assert!(
-        admissions
-            .prepare_original(&vaults, "main", &vault.session_id)
+        vaults.get(&token).is_err(),
+        "read token is not file-write authority"
+    );
+    let original_heads = heads(reader.client(), &token).await;
+    assert!(
+        !original_heads["data"]["heads"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    app.start_backup().await.unwrap();
+    let managed_heads = heads(reader.client(), &selected.profile_id).await;
+    assert_ne!(
+        managed_heads["data"]["repository"],
+        original_heads["data"]["repository"]
+    );
+    assert_eq!(bytes(&notes.join(".jj")), before);
+    assert_eq!(
+        fs::read_to_string(notes.join("Note.md")).unwrap(),
+        "Unsnapshotted disk edit\n"
+    );
+    assert!(readers.require("other", &selected.session_id).is_err());
+    assert!(readers.require("main", "foreign-session").is_err());
+    readers.retire(&reader).unwrap();
+    assert!(
+        reader
+            .client()
+            .repository_sources(RepositorySourcesCommand::OpenOriginal {})
+            .await
             .is_err()
     );
-    admissions.leave("main", true);
-    let plan = admissions
-        .prepare_original(&vaults, "main", &vault.session_id)
+    app.stop_backup().await.unwrap();
+    tokio::task::spawn_blocking(move || native.close(&vaults, &selected.session_id))
+        .await
+        .unwrap()
         .unwrap();
-    let replacement = admissions.complete(&vaults, &plan).unwrap();
-    assert!(admissions.check(&vaults, &next).is_err());
-    admissions.check(&vaults, &replacement).unwrap();
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn reader_retirement_preserves_the_app_editing_and_database_client() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().canonicalize().unwrap();
+    let notes = source(&root, "notes");
+    let mut vaults = VaultManager::new(&root.join("profile")).unwrap();
+    let selected = vaults.select(Some(notes), None).unwrap().unwrap();
+    let mut native = services(&root);
+    let app = native.client(&vaults, &selected.session_id).unwrap();
+    let service = native.service(&vaults, &selected.session_id).unwrap();
+    let mut views = NativeDatabases::default();
+    let (id, view) = views.open(&selected.session_id, app.clone()).unwrap();
+    let set = serde_json::from_value(json!({"method":"setMeta","args":[{"kind":"value","value":"reader-proof"},{"kind":"value","value":"retained"}]})).unwrap();
+    view.call(set).await.unwrap();
+    let readers = Readers::default();
+    let reader = readers
+        .attach("main", &selected.session_id, &service)
+        .unwrap();
+    let retained = reader.clone();
+    assert_ne!(
+        reader.client().descriptor().client_id,
+        app.descriptor().client_id
+    );
+    assert_eq!(service.status().unwrap().clients, 2);
+    readers.retire(&reader).unwrap();
+    assert!(retained.client().read_text("Note.md").is_err());
+    let snapshot = app.read_text("Note.md").unwrap();
+    app.write_text(
+        "Note.md",
+        "App remains admitted\n",
+        &ExpectedVersion::Version {
+            version: snapshot.version,
+        },
+    )
+    .unwrap();
+    let get = serde_json::from_value(
+        json!({"method":"getMeta","args":[{"kind":"value","value":"reader-proof"}]}),
+    )
+    .unwrap();
+    assert!(view.call(get).await.is_ok());
+    assert_eq!(service.status().unwrap().clients, 1);
+    view.close().await;
+    views.remove(&selected.session_id, &id).unwrap();
+    tokio::task::spawn_blocking(move || native.close(&vaults, &selected.session_id))
+        .await
+        .unwrap()
+        .unwrap();
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn replaced_original_cannot_revive_its_grant_or_revoke_independent_managed_reads() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().canonicalize().unwrap();
+    let notes = source(&root, "notes");
+    let mut vaults = VaultManager::new(&root.join("profile")).unwrap();
+    let selected = vaults.select(Some(notes.clone()), None).unwrap().unwrap();
+    let mut native = services(&root);
+    let app = native.client(&vaults, &selected.session_id).unwrap();
+    app.start_backup().await.unwrap();
+    app.stop_backup().await.unwrap();
+    let service = native.service(&vaults, &selected.session_id).unwrap();
+    let readers = Readers::default();
+    let reader = readers
+        .attach("main", &selected.session_id, &service)
+        .unwrap();
+    let token = reader
+        .client()
+        .repository_sources(RepositorySourcesCommand::OpenOriginal {})
+        .await
+        .unwrap()
+        .token
+        .unwrap();
+    let before = heads(reader.client(), &token).await;
+    fs::rename(notes.join(".jj"), root.join("old-original")).unwrap();
+    stock(&notes, &["git", "init", "--no-colocate", "."]);
+    let request = json!({"version":1,"data":{"vault":token}}).to_string();
+    assert!(
+        reader
+            .client()
+            .read_history(HistoryMethod::Heads, request.clone())
+            .await
+            .is_err()
+    );
+    assert!(
+        !heads(reader.client(), &selected.profile_id).await["data"]["heads"]
+            .as_array()
+            .unwrap()
+            .is_empty()
+    );
+    fs::remove_dir_all(notes.join(".jj")).unwrap();
+    fs::rename(root.join("old-original"), notes.join(".jj")).unwrap();
+    assert!(
+        reader
+            .client()
+            .read_history(HistoryMethod::Heads, request)
+            .await
+            .is_err()
+    );
+    assert!(
+        reader
+            .client()
+            .repository_sources(RepositorySourcesCommand::OpenOriginal {})
+            .await
+            .is_err()
+    );
+    readers.retire(&reader).unwrap();
+    let fresh = readers
+        .attach("main", &selected.session_id, &service)
+        .unwrap();
+    let fresh_token = fresh
+        .client()
+        .repository_sources(RepositorySourcesCommand::OpenOriginal {})
+        .await
+        .unwrap()
+        .token
+        .unwrap();
+    assert_ne!(token, fresh_token);
+    assert_eq!(
+        heads(fresh.client(), &fresh_token).await["data"]["heads"],
+        before["data"]["heads"]
+    );
+    readers.retire(&fresh).unwrap();
+    tokio::task::spawn_blocking(move || native.close(&vaults, &selected.session_id))
+        .await
+        .unwrap()
+        .unwrap();
+}
+
+#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+async fn delayed_old_scope_cleanup_does_not_retire_a_replacement_reader() {
+    let temp = tempfile::tempdir().unwrap();
+    let root = temp.path().canonicalize().unwrap();
+    let mut vaults = VaultManager::new(&root.join("profile")).unwrap();
+    let a = vaults
+        .select(Some(source(&root, "first")), None)
+        .unwrap()
+        .unwrap();
+    let b = vaults
+        .select(Some(source(&root, "second")), None)
+        .unwrap()
+        .unwrap();
+    let mut native = services(&root);
+    let service_a = native.service(&vaults, &a.session_id).unwrap();
+    let service_b = native.service(&vaults, &b.session_id).unwrap();
+    let readers = Readers::default();
+    let old = readers.attach("main", &a.session_id, &service_a).unwrap();
+    readers.retire(&old).unwrap();
+    let current = readers.attach("main", &b.session_id, &service_b).unwrap();
+    readers.retire(&old).unwrap();
+    readers.check(&current).unwrap();
+    assert!(readers.for_session(&a.session_id).unwrap().is_empty());
+    assert_eq!(readers.for_session(&b.session_id).unwrap().len(), 1);
+    readers.retire(&current).unwrap();
+    tokio::task::spawn_blocking(move || {
+        native.close(&vaults, &a.session_id).unwrap();
+        native.close(&vaults, &b.session_id).unwrap();
+    })
+    .await
+    .unwrap();
 }

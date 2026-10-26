@@ -32,6 +32,7 @@ fn main() {
         "desktop_backup_storage",
         "desktop_backup_adoption",
         "desktop_repository_sources",
+        "desktop_repository_read",
         "desktop_ai_tools",
         "desktop_repository_admit",
         "desktop_repository_release",

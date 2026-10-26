@@ -63,9 +63,9 @@
     "allow-desktop-backup-storage",
     "allow-desktop-backup-adoption",
     "allow-desktop-repository-sources",
+    "allow-desktop-repository-read",
     "allow-desktop-repository-admit",
     "allow-desktop-repository-release",
-    "allow-desktop-repository-working-copy",
-    "jj-store:local-history"
+    "allow-desktop-repository-working-copy"
   ]
 }

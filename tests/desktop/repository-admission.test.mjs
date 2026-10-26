@@ -1,124 +1,26 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { createHash } from "node:crypto";
-import { execFileSync } from "node:child_process";
 import {
   mkdirSync,
   mkdtempSync,
   writeFileSync,
-  readFileSync,
-  readdirSync,
   renameSync,
   rmSync,
 } from "node:fs";
 import { join, resolve } from "node:path";
+import {
+  invoke,
+  success,
+  history,
+  historyResult,
+  admit,
+  select,
+  quiet,
+  jj,
+  digest,
+  ready,
+} from "./repository-driver.mjs";
 import { nativeSession } from "./native-session.mjs";
-async function invoke(session, command, args = {}) {
-  return session.browser.execute(
-    async (command, args) => {
-      try {
-        return {
-          value: await globalThis.__TAURI__.core.invoke(command, args),
-          failure: null,
-        };
-      } catch (error) {
-        return {
-          value: null,
-          failure: {
-            code: error?.code ?? null,
-            message:
-              typeof error === "string"
-                ? error
-                : String(error?.message ?? error),
-          },
-        };
-      }
-    },
-    command,
-    args,
-  );
-}
-async function success(session, command, args = {}) {
-  const result = await invoke(session, command, args);
-  assert.equal(
-    result.failure,
-    null,
-    `${command}: ${JSON.stringify(result.failure)}`,
-  );
-  return result.value;
-}
-const request = (data) => JSON.stringify({ version: 1, data });
-async function history(session, command, data) {
-  return JSON.parse(
-    await success(session, `plugin:jj-store|${command}`, {
-      request: request(data),
-    }),
-  ).data;
-}
-const admit = (session, id) =>
-  success(session, "desktop_repository_admit", { request: { sessionId: id } });
-async function select(session, root, path) {
-  writeFileSync(join(root, "picker.json"), JSON.stringify(path));
-  return success(session, "vault_select");
-}
-async function quiet(session) {
-  const state = await success(session, "shell_info");
-  assert.equal(state.backgroundApi, true);
-  assert.equal(state.nativeVisibility.Ok[0], false);
-  assert.equal(state.nativeVisibility.Ok[4], false);
-  assert.equal(await session.browser.execute(() => document.hasFocus()), false);
-}
-function jj(root, args) {
-  return execFileSync(
-    "/opt/homebrew/bin/jj",
-    [
-      "--no-pager",
-      "--config",
-      "user.name='Fixture'",
-      "--config",
-      "user.email='fixture@invalid'",
-      ...args,
-    ],
-    {
-      cwd: root,
-      env: {
-        ...process.env,
-        JJ_CONFIG: "/dev/null",
-        GIT_CONFIG_NOSYSTEM: "1",
-        GIT_CONFIG_GLOBAL: "/dev/null",
-      },
-      encoding: "utf8",
-    },
-  );
-}
-function digest(root) {
-  const files = [];
-  function walk(at) {
-    for (const entry of readdirSync(at, { withFileTypes: true })) {
-      const path = join(at, entry.name);
-      if (entry.isDirectory()) walk(path);
-      else
-        files.push([
-          path.slice(root.length),
-          createHash("sha256").update(readFileSync(path)).digest("hex"),
-        ]);
-    }
-  }
-  walk(root);
-  return files.sort((a, b) => a[0].localeCompare(b[0]));
-}
-async function ready(session, vault, handle) {
-  const deadline = Date.now() + 20000;
-  while (Date.now() < deadline) {
-    const status = await history(session, "status", { vault, handle });
-    if (status.state !== "preparing") {
-      assert.equal(status.state, "ready", JSON.stringify(status));
-      return status.data;
-    }
-    await new Promise((resolve) => setTimeout(resolve, 50));
-  }
-  assert.fail("Native history preparation did not complete");
-}
 
 test("hidden native history preserves source pins and independent admission through reload, blocked close and restart", async (context) => {
   assert.equal(process.platform, "darwin");
@@ -152,11 +54,8 @@ test("hidden native history preserves source pins and independent admission thro
   await quiet(session);
   const selected = await select(session, root, vault);
   assert.ok(
-    (
-      await invoke(session, "plugin:jj-store|heads", {
-        request: request({ vault: selected.sessionId }),
-      })
-    ).failure,
+    (await historyResult(session, "heads", { vault: selected.sessionId }))
+      .failure,
   );
   for (const extra of ["root", "generation", "window", "metadata", "cache"]) {
     assert.ok(
@@ -167,7 +66,7 @@ test("hidden native history preserves source pins and independent admission thro
       ).failure,
     );
   }
-  await admit(session, selected.sessionId);
+  const originalToken = await admit(session, selected.sessionId);
   assert.ok(
     (await invoke(session, "plugin:lapis-ai|targets")).failure,
     "History does not admit AI",
@@ -237,15 +136,22 @@ test("hidden native history preserves source pins and independent admission thro
     "History cannot snapshot or mutate dirty source files",
   );
   for (const bad of [
-    JSON.stringify({ version: 2, data: { vault: selected.sessionId } }),
+    JSON.stringify({ version: 2, data: { vault: originalToken } }),
     JSON.stringify({
       version: 1,
-      data: { vault: selected.sessionId, root: "/outside" },
+      data: { vault: originalToken, root: "/outside" },
     }),
   ])
     assert.ok(
-      (await invoke(session, "plugin:jj-store|heads", { request: bad }))
-        .failure,
+      (
+        await invoke(session, "desktop_repository_read", {
+          request: {
+            sessionId: selected.sessionId,
+            method: "heads",
+            frame: bad,
+          },
+        })
+      ).failure,
     );
   jj(vault, ["describe", "-m", "external advance"]);
   const advanced = await history(session, "heads", {
@@ -363,11 +269,8 @@ test("hidden native history preserves source pins and independent admission thro
     "Released admission cannot authorize a physical status scan",
   );
   assert.ok(
-    (
-      await invoke(session, "plugin:jj-store|heads", {
-        request: request({ vault: selected.sessionId }),
-      })
-    ).failure,
+    (await historyResult(session, "heads", { vault: selected.sessionId }))
+      .failure,
   );
   await admit(session, selected.sessionId);
   const reloaded = await history(session, "heads", {
@@ -376,8 +279,9 @@ test("hidden native history preserves source pins and independent admission thro
   assert.equal(reloaded.generation, heads.generation);
   assert.ok(
     (
-      await invoke(session, "plugin:jj-store|status", {
-        request: request({ vault: selected.sessionId, handle }),
+      await historyResult(session, "status", {
+        vault: selected.sessionId,
+        handle,
       })
     ).failure,
   );
@@ -388,26 +292,35 @@ test("hidden native history preserves source pins and independent admission thro
   await success(session, "vault_close", { sessionId: selected.sessionId });
   assert.ok(
     (
-      await invoke(session, "plugin:jj-store|status", {
-        request: request({ vault: selected.sessionId, handle: pending }),
+      await historyResult(session, "status", {
+        vault: selected.sessionId,
+        handle: pending,
       })
     ).failure,
   );
   const next = await select(session, root, vault);
   await admit(session, next.sessionId);
+  assert.notEqual(
+    (await history(session, "heads", { vault: next.sessionId })).generation,
+    heads.generation,
+    "Core source epochs are opaque hashes, not ordered counters",
+  );
   assert.ok(
-    (await history(session, "heads", { vault: next.sessionId })).generation >
-      heads.generation,
+    (
+      await historyResult(
+        session,
+        "heads",
+        { vault: originalToken },
+        next.sessionId,
+      )
+    ).failure,
+    "A retained Original token cannot use a newly admitted outer session",
   );
   const parked = join(root, "Replaced vault");
   renameSync(vault, parked);
   mkdirSync(vault);
   assert.ok(
-    (
-      await invoke(session, "plugin:jj-store|heads", {
-        request: request({ vault: next.sessionId }),
-      })
-    ).failure,
+    (await historyResult(session, "heads", { vault: next.sessionId })).failure,
   );
   await quiet(session);
   await session.close(true);
@@ -417,11 +330,7 @@ test("hidden native history preserves source pins and independent admission thro
   context.after(cold.cleanup);
   await quiet(cold);
   assert.ok(
-    (
-      await invoke(cold, "plugin:jj-store|heads", {
-        request: request({ vault: next.sessionId }),
-      })
-    ).failure,
+    (await historyResult(cold, "heads", { vault: next.sessionId })).failure,
     "No admission survives restart",
   );
   const restored = await select(cold, root, parked);
@@ -457,11 +366,8 @@ test("hidden native history preserves source pins and independent admission thro
       assert.equal(closed.failure, null);
       assert.equal(opened.failure.code, "EACCES");
       assert.ok(
-        (
-          await invoke(cold, "plugin:jj-store|heads", {
-            request: request({ vault: raceVault.sessionId }),
-          })
-        ).failure,
+        (await historyResult(cold, "heads", { vault: raceVault.sessionId }))
+          .failure,
       );
     }
   }

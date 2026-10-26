@@ -118,11 +118,15 @@ pub async fn desktop_backup_storage(
         Ok(())
     })
     .await?;
-    repository
-        .history
-        .revoke(&caller.window)
-        .await
-        .map_err(failure)?;
+    if let Some(lease) = repository
+        .readers
+        .current(&caller.window)
+        .map_err(failure)?
+    {
+        super::reader::retire(&repository, lease)
+            .await
+            .map_err(failure)?;
+    }
     let session = request.session_id.clone();
     let service = access(host.inner().clone(), move |services| {
         services.core_vaults.service(&services.vaults, &session)

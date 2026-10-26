@@ -1,4 +1,4 @@
-use super::{RepositoryHost, policy::caller};
+use super::{RepositoryHost, policy::caller, reader};
 use crate::host::state::{NativeError, NativeHost, NativeServices, access};
 use serde::Deserialize;
 use std::io;
@@ -48,6 +48,7 @@ pub async fn desktop_repository_admit(
         )
         .into());
     }
+    let reader_session = request.session_id.clone();
     let plan = access(host.inner().clone(), move |services| {
         // Existing backup history remains readable when capture is paused.
         // Discovery only verifies its saved binding; it never initializes JJ.
@@ -61,22 +62,14 @@ pub async fn desktop_repository_admit(
             .repository
             .prepare(&services.vaults, &owner, &request.session_id)
     })
-    .await;
-    let plan = match plan {
-        Ok(plan) => plan,
-        Err(error) => {
-            repository
-                .history
-                .revoke(&context.window)
-                .await
-                .map_err(|_| failure())?;
-            return Err(error);
-        }
-    };
-    if !plan.preserves_reads() && (plan.had_prior_scope() || !plan.preserves_vault()) {
-        repository
-            .history
-            .revoke(&context.window)
+    .await?;
+    if let Some(previous) = repository
+        .readers
+        .current(&context.window)
+        .map_err(|_| failure())?
+        && previous.session() != reader_session
+    {
+        reader::retire(&repository, previous)
             .await
             .map_err(|_| failure())?;
     }
@@ -87,14 +80,16 @@ pub async fn desktop_repository_admit(
             .map(|_| ())
     })
     .await;
-    if result.is_err() {
-        repository
-            .history
-            .revoke(&context.window)
-            .await
-            .map_err(|_| failure())?;
-    }
-    result
+    result?;
+    reader::admit(
+        &repository,
+        host.inner().clone(),
+        &context.window,
+        &reader_session,
+    )
+    .await
+    .map(|_| ())
+    .map_err(|_| failure().into())
 }
 #[tauri::command]
 pub async fn desktop_repository_release(
@@ -119,11 +114,15 @@ pub async fn desktop_repository_release(
     if request.reload {
         repository.backups.detach_window(&context.window).await;
     }
-    repository
-        .history
-        .revoke(&context.window)
-        .await
-        .map_err(|_| failure())?;
+    if let Some(lease) = repository
+        .readers
+        .current(&context.window)
+        .map_err(|_| failure())?
+    {
+        reader::retire(&repository, lease)
+            .await
+            .map_err(|_| failure())?;
+    }
     Ok(())
 }
 /// The caller holds the shared repository transition guard through vault release.
@@ -139,7 +138,8 @@ pub async fn close_vault(
         repository.backups.close(host.clone(), session).await?;
     }
     let session = session.to_owned();
-    let retired = access(host.clone(), move |services| {
+    let selected = session.clone();
+    access(host.clone(), move |services| {
         services.vaults.get(&session)?;
         if services.databases.has_session(&session) {
             return Err(io::Error::new(
@@ -147,22 +147,18 @@ pub async fn close_vault(
                 "Close the owned database before closing the vault",
             ));
         }
-        Ok(services.repository.begin_close_vault(&session))
+        services.repository.begin_close_vault(&session);
+        Ok(())
     })
     .await?;
-    for target in retired {
-        let window = target.window.clone();
-        let current = access(host.clone(), move |services| {
-            Ok(services.repository.retirement_is_current(&target))
-        })
-        .await?;
-        if current {
-            repository
-                .history
-                .revoke(&window)
-                .await
-                .map_err(|_| failure())?;
-        }
+    for lease in repository
+        .readers
+        .for_session(&selected)
+        .map_err(|_| failure())?
+    {
+        reader::retire(repository, lease)
+            .await
+            .map_err(|_| failure())?;
     }
     Ok(())
 }
@@ -170,9 +166,16 @@ pub fn window_destroyed(app: &AppHandle, window: &str) {
     if window != "main" {
         return;
     }
-    if let Some(repository) = app.try_state::<RepositoryHost>() {
+    let retiring = if let Some(repository) = app.try_state::<RepositoryHost>() {
         repository.backups.fence();
-    }
+        let lease = repository.readers.current(window).ok().flatten();
+        if let Some(lease) = &lease {
+            repository.readers.fence(lease);
+        }
+        lease
+    } else {
+        None
+    };
     if let Some(host) = app.try_state::<NativeHost>()
         && let Ok(mut services) = host.0.lock()
     {
@@ -189,6 +192,11 @@ pub fn window_destroyed(app: &AppHandle, window: &str) {
             return;
         };
         let _transition = repository.transitions.lock().await;
+        if let Some(lease) = retiring
+            && reader::retire(&repository, lease).await.is_err()
+        {
+            eprintln!("Repository reader shutdown needs recovery on the next open");
+        }
         if repository
             .backups
             .close_window(host.inner().clone(), &window)

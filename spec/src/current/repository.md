@@ -1,13 +1,10 @@
 # Repository history and conversations
 
 [Shared-screen integration](shared-screen-integration.md) governs source/pin
-selection, history cards and host-owned Blame wrapping; Core intake is
-E-CORE-001/003/014/016. [Automatic backup](vault-backup.md) owns shared native
-History scheduling, shared controls, cached observation (E-CORE-028) and
-E-REPO-043 upstream/reveal actions. Admission and operation pins remain
-unchanged. E-REPO-024/025 and E-CATALOG-009/010/012 retain footer
-status/clearance ([navigation](repository-navigation.md)); read authority is
-unchanged.
+selection and History/Blame presentation. [Automatic backup](vault-backup.md)
+owns History scheduling, controls, cached observation and upstream/reveal
+actions. [Navigation](repository-navigation.md) retains footer status/clearance.
+Admission and exact operation pins remain unchanged.
 
 ## Requirements
 
@@ -95,27 +92,29 @@ same historical operation.
 
 ## Native history transport
 
-The named main-window admit/release commands accept only a live vault session or
-explicit reload mode. Tauri supplies caller window and URL; the host checks the
-bundled origin or exact development origin. The history plugin receives only
-`jj-store:local-history`; default, wildcard, remote and mutation grants remain
-absent. History is available independently of AI admission or targets.
+M16.8 routes discovery and both immutable SDK sources through Notes Core
+`Client.repository_sources` / `Client.read_history`. A dedicated reader Client
+attaches to the admitted VaultService, separately from App editing/database.
+Managed frames use the vault UUID; Original uses native-minted tokens. Tauri
+retains the live session and local main-window caller. Successful bounded v1
+frames stay lossless text; structured query diagnostics survive the adapter.
+Core epochs are full-width opaque values: same-root reload may retain equality,
+while a new vault generation changes them without an ordering guarantee.
 
-Every retained reader checks its exact native repository grant at entry and
-completion. The host supplies bounded defaults and a private profile cache; e2e
-acceptance uses its isolated temporary cache. The public versioned JSON text
-transport preserves full-width values and strict request frames.
+Both sources share Core's existing worker and one renderer PreparationQueue.
+Release, replacement, reload, destroyed-window cleanup, storage relocation and
+vault close fence/drain this client outside NativeHost before vault release.
+Failed cleanup stays retryable; the App client remains usable. Delayed old-vault
+cleanup cannot retire a replacement. Working-copy admission, backup, adoption,
+restore, transfer and sync keep their separate native authority. Reads never
+initialize, capture, restore, reconcile or fall back to another source.
 
-A shared native transition guard serializes replacement, release and vault
-closure through actual read/preparation drain. A failed drain leaves admission
-unavailable and retryable. Database blockers are checked before any vault-close
-fence. Database opening shares this guard, so it cannot invalidate a successful
-close preflight during reader drain. A delayed old-vault close skips a newer
-admitted generation because the replacement already drained its predecessor.
-Destroyed windows invalidate pending tickets immediately; plugin
-destruction/exit drains the reader owner. Reload suspends native authority and
-drains handles; verified re-admission may retain its registration generation but
-must obtain new handles.
+The native transition guard serializes replacement, retirement, vault closure
+and database opening through reader drain. Database blockers are checked before
+fencing, preserving current authority. Destroyed windows immediately fence
+admission and pending tickets; supervised cleanup drains their reader. Reload
+suspends authority and drains handles. Re-admission verifies physical witnesses
+and obtains fresh handles; previously retired tokens cannot authorize reads.
 
 E-REPO-006 qualifies cold visible history on macOS ARM64 with real JJ source
 preservation and exact restored pins. Each cold launch received a physical

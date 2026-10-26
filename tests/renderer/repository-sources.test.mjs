@@ -16,10 +16,10 @@ function setup() {
         original: true,
         token: args.request.openOriginal ? "original:scope" : null,
       };
-    if (command.startsWith("plugin:jj-store|")) {
-      const request = JSON.parse(args.request).data;
+    if (command === "desktop_repository_read") {
+      const request = JSON.parse(args.request.frame).data;
       assert.equal(request.vault, "original:scope");
-      switch (command.split("|")[1]) {
+      switch (args.request.method) {
         case "heads":
           return frame({
             version: 1,
@@ -97,7 +97,10 @@ test("original history remains usable after backup startup fails and sources sha
     async (command, args) => {
       if (command === "desktop_backup_start")
         throw new Error("Backup requires recovery");
-      if (command === "plugin:jj-store|open")
+      if (
+        command === "desktop_repository_read" &&
+        args.request.method === "open"
+      )
         assert.equal(managedPreparing, false);
       return f.call(command, args);
     },
@@ -131,7 +134,7 @@ test("closing drains a late original admission and fences all later native reads
   await rejected;
   await closing;
   assert.equal(
-    f.calls.some(([command]) => command.startsWith("plugin:")),
+    f.calls.some(([command]) => command === "desktop_repository_read"),
     false,
   );
   assert.equal(f.calls.at(-1)[0], "desktop_repository_release");

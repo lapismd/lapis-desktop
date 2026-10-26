@@ -1,10 +1,8 @@
 use crate::host::state::{NativeHost, NativeServices};
 use lapis_desktop::repository::Grant;
-use std::{path::Path, sync::Arc};
+use std::path::Path;
 use tauri::WebviewWindow;
-use tauri_plugin_jj_store::{Admission, Context, Error, Result, local};
-#[derive(Clone)]
-pub struct Policy(pub NativeHost);
+use tauri_plugin_jj_store::{Context, Error, Result, local};
 pub fn local(caller: &Context) -> Result<()> {
     let url = url::Url::parse(&caller.url).map_err(|_| Error::Denied)?;
     if caller.window != "main"
@@ -21,30 +19,6 @@ pub fn caller(window: &WebviewWindow) -> Result<Context> {
     };
     local(&context)?;
     Ok(context)
-}
-#[async_trait::async_trait]
-impl Admission for Policy {
-    async fn admit(&self, caller: &Context, vault: &str) -> Result<Arc<dyn local::Access>> {
-        local(caller)?;
-        let host = self.0.clone();
-        let caller = caller.clone();
-        let vault = vault.to_owned();
-        let grant = tauri::async_runtime::spawn_blocking(move || {
-            let mut services = host.0.lock().map_err(|_| Error::Unavailable)?;
-            let NativeServices {
-                repository, vaults, ..
-            } = &mut *services;
-            repository
-                .authorize(vaults, &caller.window, &vault)
-                .map_err(|_| Error::Denied)
-        })
-        .await
-        .map_err(|_| Error::Unavailable)??;
-        Ok(Arc::new(Access {
-            host: self.0.clone(),
-            grant,
-        }))
-    }
 }
 pub(super) struct Access {
     pub(super) host: NativeHost,

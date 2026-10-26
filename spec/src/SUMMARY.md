@@ -357,3 +357,4 @@
 - [Shared Desktop History controls](history/E-CORE-032.md)
 - [Staged Desktop native editing intents](history/E-CORE-033.md)
 - [Native editor qualification closure](history/E-CORE-034.md)
+- [Shared Core Repository reader intake](history/E-CORE-035.md)

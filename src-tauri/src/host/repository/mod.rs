@@ -10,6 +10,7 @@ mod history_owner;
 pub(crate) mod indexed_search;
 mod policy;
 mod publication;
+pub(crate) mod reader;
 pub(crate) mod remote;
 mod remote_counts;
 mod remote_transfer;
@@ -18,13 +19,11 @@ pub(crate) mod sources;
 pub(crate) mod storage;
 pub(crate) mod sync;
 pub(crate) mod working_copy;
-use crate::host::state::NativeHost;
 use std::{io, sync::Arc};
 use tauri::Manager;
-use tauri_plugin_jj_store::{Config, History};
 pub struct RepositoryHost {
     pub backups: backup::Backups,
-    pub history: Arc<History>,
+    pub readers: Arc<lapis_desktop::repository::readers::Readers>,
     pub working_tree: jj_store_service::working_tree::Observer,
     pub transitions: tokio::sync::Mutex<()>,
     pub remote_mutations: tokio::sync::Mutex<()>,
@@ -33,22 +32,10 @@ pub struct RepositoryHost {
     pub remote_slots: Arc<tokio::sync::Semaphore>,
 }
 pub fn initialize(app: &tauri::AppHandle) -> Result<(), Box<dyn std::error::Error>> {
-    #[cfg(not(feature = "e2e"))]
-    let cache = app.path().app_cache_dir()?.join("jj-history");
-    #[cfg(feature = "e2e")]
-    let cache = std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?)
-        .join("jj-history-cache");
-    let history = History::new(
-        policy::Policy(app.state::<NativeHost>().inner().clone()),
-        cache,
-        Config::default(),
-    )
-    .map_err(|_| io::Error::other("Repository history is unavailable"))?;
-    app.plugin(tauri_plugin_jj_store::Builder::new(history.clone()).build())?;
     forges::initialize(app)?;
     if !app.manage(RepositoryHost {
         backups: backup::Backups::new(crate::host::state::history_root(app)?),
-        history,
+        readers: Arc::new(Default::default()),
         working_tree: jj_store_service::working_tree::Observer::new(
             tauri_plugin_jj_store::local::Executor::new(1)
                 .map_err(|_| io::Error::other("Working copy reader unavailable"))?,

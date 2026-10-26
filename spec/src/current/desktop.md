@@ -3,7 +3,7 @@
 Retained Core chat uses the Tauri composer, sidebar History and cold restart
 ([E-CORE-022](../history/E-CORE-022.md)). History uses vault-owned indexing.
 [Indexing](background.md) stages Core metadata/Search on one admitted database;
-renderer metadata and Search remain default. The parser is pinned.
+renderer metadata and Search remain default.
 
 [Adapters](ai-adapter.md): defaults E-CORE-025; actual-provider screen recovery
 E-CORE-027.
@@ -11,8 +11,8 @@ E-CORE-027.
 LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
 Search/Graph: `navigation.md`.
 
-AI: E-AI-059–061/066/069–071/090/091/094. LD-DESK-003 unchanged: native
-authority; renderer paths, actors, executables and environment denied.
+LD-DESK-003: Core History frames retain local native caller/session admission;
+renderer paths, generations, actors, executables and environment stay denied.
 
 [Plugins/Terminal](plugins.md); [background](background.md);
 [history](repository.md).

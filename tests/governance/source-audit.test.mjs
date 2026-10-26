@@ -309,11 +309,12 @@ test("repository history uses only its exact local main-window permission set", 
   const config = JSON.parse(readFileSync("src-tauri/tauri.conf.json", "utf8"));
   assert.deepEqual(
     capabilities.permissions.filter((p) => p.startsWith("jj-store:")),
-    ["jj-store:local-history"],
+    [],
   );
   assert.deepEqual(auditManifest(manifest, capabilities, config), []);
   for (const permission of [
     "jj-store:default",
+    "jj-store:local-history",
     "jj-store:allow-heads",
     "jj-store:allow-read",
     "jj-store:allow-checkout",

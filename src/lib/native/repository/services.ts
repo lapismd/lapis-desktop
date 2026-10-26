@@ -1,6 +1,6 @@
 import { nativeIndexedSearch } from "./indexed-search.ts";
 import type { HistoryClient } from "@lapismd/jj-history";
-import { tauriHistory } from "@lapismd/jj-history/tauri";
+import { coreHistory, historyFailure } from "./history-client.ts";
 import { invoke } from "@tauri-apps/api/core";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 import { nativeError } from "../native-error.ts";
@@ -23,14 +23,7 @@ export function createNativeRepository(
   call: NativeCall = invoke,
   client?: HistoryClient,
 ): RepositoryServices {
-  const transport = async (command: string, args: { request: string }) => {
-    try {
-      return await call<string>(command, args);
-    } catch (error) {
-      throw nativeError(error);
-    }
-  };
-  const reader = client ?? tauriHistory(vault.sessionId, transport);
+  const reader = client ?? coreHistory(vault.profileId, vault.sessionId, call);
   let original: HistoryClient | undefined;
   let originalActivation: Promise<void> | undefined;
   const preparation = new PreparationQueue(reader);
@@ -100,7 +93,7 @@ export function createNativeRepository(
         throw new Error("Invalid repository source state");
       return result;
     } catch (error) {
-      throw nativeError(error);
+      throw historyFailure(error);
     }
   }
   const originalRun = <T>(action: () => Promise<T>) =>
@@ -108,7 +101,7 @@ export function createNativeRepository(
       // Original history remains readable when backup startup fails or is paused.
       originalActivation ??= sources(true)
         .then(({ token }) => {
-          original = tauriHistory(token!, transport);
+          original = coreHistory(token!, vault.sessionId, call);
         })
         .catch((error) => {
           originalActivation = undefined;
