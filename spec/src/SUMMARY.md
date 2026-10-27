@@ -89,6 +89,7 @@
 - [M7 native integration qualification](history/E-INTEGRATION-001.md)
 - [End-of-M7 full qualification](history/E-QUALIFICATION-001.md)
   - [Final native and ordinary-bundle qualification](history/E-QUALIFICATION-002.md)
+  - [Approved historical formatting exception](history/E-QUALIFICATION-003.md)
 - [Related native window hosting](history/E-POPOUT-001.md)
 - [Shared popup workspace](history/E-POPOUT-002.md)
 - [Authorized plugin delivery](history/E-PLUGINS-003.md)
