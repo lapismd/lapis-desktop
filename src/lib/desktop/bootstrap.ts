@@ -14,7 +14,8 @@ import "../../styles/window-chrome.css";
 import Shell from "../../components/views/Shell.svelte";
 import { readLauncherAppearance } from "../launcher/launcher-appearance.ts";
 import { startShell } from "./shell-startup";
-import { VaultClient } from "../native/vault-client.ts";
+import { VaultClient, type NativeCall } from "../native/vault-client.ts";
+import { openNotesSession } from "../notes/notes-session.ts";
 import { createNativeBridge } from "../native/native-bridge.ts";
 import { installDesktopLifecycle } from "./desktop-lifecycle.ts";
 import { installWindowDragRegions } from "./window-drag.ts";
@@ -32,8 +33,9 @@ import {
 
 export async function bootstrapDesktop(
   pluginDistributionOptions?: AppPluginDistributionOptions,
+  call: NativeCall = invoke,
 ): Promise<void> {
-  const vaultClient = new VaultClient();
+  const vaultClient = new VaultClient(call);
   const openPopup = window.open.bind(window);
   let popouts: DesktopPopouts | undefined;
 
@@ -107,6 +109,8 @@ export async function bootstrapDesktop(
           client: vaultClient,
           urlDelivery,
           pluginDistributionOptions,
+          openSession: (selected, metadata, editing, tasks) =>
+            openNotesSession(selected, metadata, editing, tasks, call),
           createPopouts: async (app, selected) => {
             popouts = await createNativeWorkspaceWindows(
               selected.sessionId,

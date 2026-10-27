@@ -2,13 +2,11 @@
 
 - [Current compatible dependency and native intake](current-intake.md)
 - [Shared Rust application-services evidence](core/index.md)
-
 - [Compute model selection and fresh app qualification](E-AI-125.md)
 - [Compute run controls and workspace status](E-AI-124.md)
 - [Local compute library, progress and recovery](E-AI-123.md)
 
 - [Shared native history service intake](E-REPO-056.md)
-
 - [Saved AI tool expansion backlog](E-PLAN-004.md)
 - [Saved Markdown Review plan and contract](E-PLAN-005.md)
 - [Deferred desktop distribution milestone](E-PLAN-006.md)
@@ -397,3 +395,6 @@ by the task ledger, not inferred from this list.
 - [Native turn-core dependency compatibility](E-CORE-019.md)
 - [Immutable native turn launch profiles](E-CORE-020.md)
 - [Native turn selection and existing chat observer](E-CORE-021.md)
+
+- [Plugin file artwork through public packages](E-ICONS-001.md)
+- [Main workspace file icon intake and SSH validation](E-ICONS-002.md)

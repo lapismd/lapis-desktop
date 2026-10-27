@@ -14,10 +14,10 @@ const platformOpen = window.open.bind(window);
 const { installPopoutProof } = await import("./popout-entry.ts");
 installPopoutProof(platformOpen);
 const { installPluginAcceptance } = await import("./plugin-entry.ts");
-installPluginAcceptance();
+const call = installPluginAcceptance();
 const { distributionOptions } = await import("./distribution-entry.ts");
 const { bootstrapDesktop } = await import("../../src/lib/desktop/bootstrap.ts");
-await bootstrapDesktop(distributionOptions);
+await bootstrapDesktop(distributionOptions, call);
 await import("./watch-entry.ts");
 if (import.meta.env.VITE_LAPIS_MEMORY_PROOF === "1")
   await import("./ai-memory-entry.ts");

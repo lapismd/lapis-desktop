@@ -6,6 +6,7 @@
     installApplicationCompatibility,
     provideApplicationState,
     takeHostSyncService,
+    registerDefaultDailyDocumentProvider,
     type VaultSession,
     type AppSafeModeState,
     type AppPluginDistributionOptions,
@@ -105,6 +106,7 @@
   const sync = takeHostSyncService(app);
   const disposePluginSettings = registerPluginManagementSettings(app);
   const disposePluginBrowser = registerDesktopPluginBrowser(app);
+  const dailyDocumentProvider = registerDefaultDailyDocumentProvider(app);
   let ready = $state(false);
   let popouts = $state.raw<DesktopPopouts>();
   let busy = $state(true);
@@ -225,6 +227,7 @@
       await app.fileEditingSessions.dispose();
       await session.close();
       bundled.dispose();
+      dailyDocumentProvider.dispose();
       releaseCompatibility();
       disposed = true;
     })().catch(async (failure) => {

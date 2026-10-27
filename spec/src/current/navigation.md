@@ -12,6 +12,14 @@ remains default. M16.5 separately admits the qualified native Search adapter on
 the explicit Core port; absent selection retains renderer Search. Native Search
 provider, semantic, lifecycle and cold UI gates remain independently required.
 
+Full shared-Rust qualification also exercises the actual macOS ONNX provider
+through the admitted native database, using the source-owned retained model and
+runtime hashes. Preserve its vector and ranking tolerances, detached database
+reopen and cold offline cache reuse. Token-hash acceptance alone cannot qualify
+this semantic-model boundary. Models stay disabled until explicitly configured
+and their managed cache stays outside vault content. Run this opt-in native lane
+with `pnpm test:desktop:onnx`; ordinary API checks remain separate.
+
 E-AI-022 revalidates the two E-AI-020 native Search regressions with the
 corrected public source archive: disk recovery updates live settings before
 another write, and indexing/navigation retains the query after cold restart.

@@ -1,25 +1,20 @@
 # Desktop shell
 
-Retained Core chat uses the Tauri composer, sidebar History and cold restart
-([E-CORE-022](../history/E-CORE-022.md)). [Indexing](background.md) shares Core
-metadata/Search through one admitted database; renderer remains default. History
-indexing is vault-owned. [Tasks](tasks.md) stays opt-in.
+Core chat retains composer, sidebar History and cold restart
+([E-CORE-022](../history/E-CORE-022.md)). [Indexing](background.md) shares one
+admitted metadata/Search database; renderer remains default. History indexing is
+vault-owned. [Tasks](tasks.md) and immutable readers retain native lifetime,
+original writer guards and separate M16.8/M16.9 acceptance.
 
-[Adapters](ai-adapter.md): defaults E-CORE-025; actual-provider screen recovery
-E-CORE-027.
+[Adapters](ai-adapter.md): E-CORE-025 defaults; E-CORE-027 provider recovery.
+LD-FILE-002/003 requires watch after metadata/views, drain on leave and resume
+on failure. [Search/Graph](navigation.md), [plugins/Terminal](plugins.md) and
+[history](repository.md) retain their owning contracts.
 
-LD-FILE-002/003: watch after metadata/views; drain on leave, resume on failure.
-Search/Graph: `navigation.md`.
-
-LD-DESK-003: Core History frames retain local native caller/session admission;
-renderer paths, generations, actors, executables and environment stay denied.
-
-[Plugins/Terminal](plugins.md); [background](background.md);
-[history](repository.md).
-
-Portable Docker service checks use an explicit test-only bundle configuration
-and compatible registry dependencies. Actual helper delivery, native windows and
-platform resources retain the ordinary app-build acceptance gate.
+LD-DESK-003 keeps Core History caller/session admission native; renderer paths,
+generations, actors, executables and environment stay denied. Portable Docker
+checks use test-only bundles and compatible registry packages. Actual helpers,
+windows and platform resources require ordinary native app-build acceptance.
 
 ## Requirements
 

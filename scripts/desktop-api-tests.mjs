@@ -1,4 +1,7 @@
 import { run } from "./desktop-acceptance.mjs";
+const flags = process.argv.slice(2);
+if (flags.length > 1 || (flags.length === 1 && flags[0] !== "--onnx"))
+  throw new Error("Choose the ordinary API lane or --onnx for the real model.");
 if (process.platform !== "darwin" || process.arch !== "arm64")
   throw new Error("Background native API qualification requires macOS ARM64.");
 const environment = {
@@ -50,6 +53,7 @@ await run(
     "tests/desktop/repository-indexed-search.test.mjs",
     "tests/desktop/repository-backup-recovery.test.mjs",
     "tests/desktop/repository-backup-resume.test.mjs",
+    ...(flags[0] === "--onnx" ? ["tests/desktop/search-onnx.test.mjs"] : []),
   ],
   environment,
 );

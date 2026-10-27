@@ -4,7 +4,13 @@
     "subject": "src/components/vaults/VaultLauncher.svelte#default"
   },
   "catalog/plugins/Workspace.stories.ts": {
-    "kind": "application"
+    "kind": "application",
+    "stories": {
+      "PluginFileIcon": {
+        "kind": "component",
+        "subject": "@lapis-notes/workspace#WorkspaceShell"
+      }
+    }
   },
   "catalog/plugins/ai/Addressing.stories.ts": {
     "kind": "application"

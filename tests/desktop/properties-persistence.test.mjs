@@ -1,12 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import {
-  mkdtempSync,
-  mkdirSync,
-  readFileSync,
-  writeFileSync,
-  chmodSync,
-} from "node:fs";
+import { readFileSync, writeFileSync, chmodSync } from "node:fs";
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
@@ -18,57 +12,11 @@ import {
   reviewedText,
 } from "./conflict-review.mjs";
 
-const original = "---\nstatus: ready\n---\n# Properties note\n";
-async function fixture(context, name) {
-  const root = mkdtempSync(
-    join(process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT, `${name}-`),
-  );
-  const vault = join(root, "Properties café");
-  mkdirSync(vault);
-  const file = join(vault, "Note.md");
-  writeFileSync(file, original);
-  const session = await nativeSession(name, root);
-  context.after(async () => {
-    try {
-      if (session.isRunning())
-        writeFileSync(
-          join(root, "properties-body.txt"),
-          await session.browser.execute(() => document.body.innerText),
-        );
-    } finally {
-      await session.cleanup();
-    }
-  });
-  writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
-  const { browser } = session;
-  await browser.$("button*=Open Vault").click();
-  await browser.$('[data-notes-ready="true"]').waitForDisplayed();
-  await browser.$('[data-path="Note.md"]').click();
-  await browser.$('.cm-content[contenteditable="true"]').waitForDisplayed();
-  await browser.$('button[aria-label="Open command palette"]').click();
-  const input = browser.$('[role="dialog"] input');
-  await input.waitForDisplayed();
-  await input.setValue("Open File Properties");
-  await browser.$('[role="option"]*=Open File Properties').click();
-  const status = () =>
-    browser.$(
-      '[data-testid="file-properties-panel"] [aria-label="status value"]',
-    );
-  await status().waitForDisplayed();
-  return { root, vault, file, session, browser, status };
-}
-async function setStatus(browser, status, value, commit = true) {
-  await status().click();
-  await browser.keys([Key.Command, "a"]);
-  await browser.keys(Key.NULL);
-  await status().addValue(value);
-  assert.equal(
-    await status().getText(),
-    value,
-    "The native value editor must receive the full input",
-  );
-  if (commit) await browser.keys(Key.Enter);
-}
+import {
+  originalPropertyText as original,
+  propertiesFixture as fixture,
+  setPropertyStatus as setStatus,
+} from "./properties-driver.mjs";
 
 test("Properties edits save before native close and restore with the panel on cold launch", async (context) => {
   const { root, file, session, browser, status } = await fixture(
@@ -103,6 +51,22 @@ test("a stale Properties record preserves external text and requires explicit re
   await browser
     .$('[data-testid="file-properties-panel"] [aria-label="owner value"]')
     .waitForDisplayed();
+  // This case targets the captured-frontmatter conflict after the independent
+  // clean source editor has observed the external save. Earlier native Yield
+  // refusal has its own Problems/protection acceptance.
+  await browser.waitUntil(
+    async () =>
+      (await browser.execute(() =>
+        globalThis.__lapisPluginAcceptance.fileText("Note.md"),
+      )) === external,
+  );
+  assert.equal(
+    await browser.execute(() =>
+      document.activeElement?.getAttribute("aria-label"),
+    ),
+    "status value",
+    "External reconciliation must retain the focused property draft",
+  );
   assert.equal(
     await status().getText(),
     "local",

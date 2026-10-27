@@ -29,8 +29,8 @@ libraries for native service tests, strict Clippy and Rust formatting. Its eight
 committed sibling inputs are pinned in `scripts/validation/native-sources.json`;
 dirty sibling work is never included. Linux service qualification cannot qualify
 a macOS application or native window. Use the existing `pnpm desktop:bundle`,
-`pnpm test:desktop:headed` and `pnpm test:desktop:api` for their actual platform
-gates.
+`pnpm test:desktop:headed`, `pnpm test:desktop:api` and `pnpm test:desktop:onnx`
+for their actual platform gates.
 
 Intentional host execution requires an explicit runtime selection:
 
@@ -93,6 +93,14 @@ Linux capabilities; the smoke proves that a denied-directory write fails,
 including when cache ownership keeps the worker UID at root. One lease per
 checkout keeps its aggregate runs sequential; independent repositories can run
 separately.
+
+For an agent that requires an owned foreground connection, set the private
+`sshMultiplexing` option to `false`. An optional absolute `sshControlPath` can
+reuse that already authenticated connection; without it, direct mode disables
+connection sharing. Default multiplexing is unchanged. These options retain
+agent authentication, endpoint/port validation, literal arguments and bounded
+connection attempts. They do not select host execution or change Docker source,
+archive, resource or lease checks.
 
 ## Reports and cleanup
 

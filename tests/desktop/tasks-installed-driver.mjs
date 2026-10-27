@@ -48,8 +48,13 @@ export async function planner(browser, section = "Inbox") {
   const open = browser.$('button[aria-label="Open Tasks"]');
   await open.waitForDisplayed({ timeout: 10000 });
   await open.click();
-  await browser.$('[aria-label="Task planner"]').waitForDisplayed();
-  await browser.$(`button=${section}`).click();
+  const menu = browser.$('[aria-label="Task planner"]');
+  await menu.waitForDisplayed();
+  const bucket = menu.$(
+    `[aria-label="${section}"],button[aria-label^="${section} —"]`,
+  );
+  await bucket.waitForDisplayed();
+  await bucket.click();
 }
 export const complete = (browser, name = title) =>
   browser.$(`[aria-label="Mark ${name} complete"]`);
@@ -118,15 +123,12 @@ export async function taskFixture(
   });
   await browser.$("button*=Open Vault").click();
   await browser.$('[data-notes-ready="true"]').waitForDisplayed();
-  const fixture = JSON.parse(
-    readFileSync(".local/native-install/public.json", "utf8"),
-  );
-  const bundle = fixture.bundles["tasks@0.1.0"];
-  assert.ok(
-    bundle,
-    "Compose the verified real Tasks artifact into the signed distribution fixture",
-  );
-  const result = await distributionCall(browser, "bundle", bundle);
+  const catalog = await distributionCall(browser, "refresh");
+  assert.equal(catalog.ok, true, JSON.stringify(catalog));
+  assert.ok(catalog.value.includes("tasks"), JSON.stringify(catalog));
+  // The compiled signed registry fixture already owns these exact artifact
+  // bytes. Send its identity through WDIO, not a multi-megabyte base64 body.
+  const result = await distributionCall(browser, "install", "tasks");
   assert.equal(result.ok, true, JSON.stringify(result));
   await assertInstalled(browser);
   return { root, vault, session, browser };

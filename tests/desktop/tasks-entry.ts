@@ -1,13 +1,18 @@
 import type { App } from "@lapis-notes/api";
 import { nativeTaskDailyFormat } from "@lapis-notes/api/native-tasks";
+import { invoke } from "@tauri-apps/api/core";
 import { observeTaskTransport } from "./tasks-transport.ts";
 
 /** Compile only through plugin-entry.ts in the debug e2e renderer. */
-export function installTasksAcceptance(application: () => App): void {
-  const target = Reflect.get(window, "__TAURI_INTERNALS__");
-  if (!target?.invoke)
-    throw new Error("Native Task acceptance requires Tauri IPC");
-  const transport = observeTaskTransport(target);
+export function installTasksAcceptance(application: () => App): typeof invoke {
+  const transport = observeTaskTransport({
+    invoke: (name, args, options) =>
+      invoke(
+        name,
+        args as Parameters<typeof invoke>[1],
+        options as Parameters<typeof invoke>[2],
+      ),
+  });
   let provider: { dispose(): void } | undefined;
   let callbacks = 0;
   const disposeProvider = () => {
@@ -58,4 +63,5 @@ export function installTasksAcceptance(application: () => App): void {
       },
     },
   });
+  return transport.invoke as typeof invoke;
 }

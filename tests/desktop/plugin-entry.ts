@@ -1,10 +1,12 @@
-import { Plugin, type App } from "@lapis-notes/api";
+import { MarkdownView, Plugin, type App } from "@lapis-notes/api";
 import { installTasksAcceptance } from "./tasks-entry.ts";
 import { installDistributionAcceptance } from "./distribution-entry.ts";
 import { installWorkspacePopupAcceptance } from "./popout-session.ts";
 
 /** Passive ownership/worker observation confined to the compiled e2e entry. */
-export function installPluginAcceptance(): void {
+export function installPluginAcceptance(): ReturnType<
+  typeof installTasksAcceptance
+> {
   let current: WeakRef<App> | undefined;
   const enable = Plugin.prototype.enable;
   Plugin.prototype.enable = async function () {
@@ -50,13 +52,22 @@ export function installPluginAcceptance(): void {
     if (!owned) throw new Error("No live plugin-owned acceptance App");
     return owned;
   }
-  installTasksAcceptance(application);
+  const call = installTasksAcceptance(application);
   installDistributionAcceptance(application);
   installWorkspacePopupAcceptance(application);
   Object.assign(globalThis, {
     __lapisPluginAcceptance: {
       async open(path: string) {
         await application().workspace.openLinkText(path, "", false);
+      },
+      fileText(path: string) {
+        for (const leaf of application().workspace.getLeavesOfType("markdown"))
+          if (
+            leaf.view instanceof MarkdownView &&
+            leaf.view.file?.path === path
+          )
+            return leaf.view.editor.getValue();
+        return null;
       },
       async run(id: string) {
         const result = await application().commands.executeCommand(id);
@@ -85,4 +96,5 @@ export function installPluginAcceptance(): void {
       },
     },
   });
+  return call;
 }

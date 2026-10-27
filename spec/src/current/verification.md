@@ -29,9 +29,9 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-GOV-003 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
 | LD-GOV-004 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md)  [E-PROGRESS-001](../history/E-PROGRESS-001.md): live UTC/activity projection, grouped natural task order and source-spec links. [E-PROGRESS-002](../history/E-PROGRESS-002.md): main Notes master routing and refreshed activity; gates unchanged. [E-PROGRESS-003](../history/E-PROGRESS-003.md) refreshes the HTTP/Tauri split and avoids duplicate shared-source status. |
 | LD-GOV-005 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |
-| LD-GOV-006 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-SESSION-002](../history/E-SESSION-002.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md); [E-CORE-015](../history/E-CORE-015.md): native cache dependency intake; archives and host selection are unchanged. |
-| LD-GOV-007 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md) |
-| LD-GOV-008 | Implemented | [E-ARCHIVES-001](../history/E-ARCHIVES-001.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
+| LD-GOV-006 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-SESSION-002](../history/E-SESSION-002.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md); [E-CORE-015](../history/E-CORE-015.md): native cache dependency intake; archives and host selection are unchanged.; [E-ICONS-001](../history/E-ICONS-001.md), [E-ICONS-002](../history/E-ICONS-002.md): qualified file artwork and main intake. |
+| LD-GOV-007 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-STRUCTURE-001](../history/E-STRUCTURE-001.md); [E-ICONS-001](../history/E-ICONS-001.md), [E-ICONS-002](../history/E-ICONS-002.md): qualified file artwork and main intake. |
+| LD-GOV-008 | Implemented | [E-ARCHIVES-001](../history/E-ARCHIVES-001.md); [E-ARCHIVES-002](../history/E-ARCHIVES-002.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass.; [E-ICONS-001](../history/E-ICONS-001.md), [E-ICONS-002](../history/E-ICONS-002.md): qualified file artwork and main intake. |
 | LD-DESK-001 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md), [E-REPO-016](../history/E-REPO-016.md) |
 | LD-DESK-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-REVIEW-001](../history/E-REVIEW-001.md); [E-REVIEW-002](../history/E-REVIEW-002.md); [E-SHELL-003](../history/E-SHELL-003.md): native HTML drag routing. |
 | LD-DESK-003 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md) |
@@ -75,7 +75,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-FILE-007 | Implemented | [E-ACTIONS-001](../history/E-ACTIONS-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
 | LD-FILE-008 | Implemented | [E-CATALOG-003](../history/E-CATALOG-003.md); [E-CATALOG-004](../history/E-CATALOG-004.md); [E-CATALOG-005](../history/E-CATALOG-005.md); [E-CATALOG-006](../history/E-CATALOG-006.md); [E-REPO-003](../history/E-REPO-003.md) |
 | LD-NAV-001 | Implemented | [E-GRAPH-001](../history/E-GRAPH-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
-| LD-NAV-002 | Implemented | [E-SEARCH-001](../history/E-SEARCH-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
+| LD-NAV-002 | Implemented | [E-CORE-040](../history/E-CORE-040.md): opt-in actual macOS ONNX vectors, ranks and cold offline cache pass; final native cohort remains pending. [E-SEARCH-001](../history/E-SEARCH-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-003 | Implemented | [E-NAV-001](../history/E-NAV-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-004 | Implemented | [E-NAV-001](../history/E-NAV-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-005 | Implemented | [E-NAV-001](../history/E-NAV-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
@@ -97,8 +97,8 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-POP-004 | Planned | [E-POPOUT-002](../history/E-POPOUT-002.md): Shared admission and main-tab save retention pass; [E-POPOUT-003](../history/E-POPOUT-003.md) qualifies registry close receipts. Complete native popup teardown remains M7.3. |
 | LD-POP-005 | Planned | [E-POPOUT-001](../history/E-POPOUT-001.md): [E-POPOUT-003](../history/E-POPOUT-003.md): session/ticket ownership and fencing pass; ordinary native admission remains in progress. |
 | LD-POP-006 | Planned | [E-POPOUT-002](../history/E-POPOUT-002.md): Top/stacked browser clearance passes at three widths; measured native popup clearance remains M7.3. |
-| LD-CAT-001 | Implemented | [E-CATALOG-001](../history/E-CATALOG-001.md): 24 both-theme/viewport production-component interactions and axe checks, static build, owned cleanup and production exclusion.; [E-CATALOG-008](../history/E-CATALOG-008.md). |
-| LD-CAT-002 | Implemented | [E-CATALOG-001](../history/E-CATALOG-001.md): 24 both-theme/viewport production-component interactions and axe checks, static build, owned cleanup and production exclusion.; [E-CATALOG-008](../history/E-CATALOG-008.md). |
+| LD-CAT-001 | Implemented | [E-CATALOG-001](../history/E-CATALOG-001.md): 24 both-theme/viewport production-component interactions and axe checks, static build, owned cleanup and production exclusion.; [E-CATALOG-008](../history/E-CATALOG-008.md).; [E-ICONS-001](../history/E-ICONS-001.md), [E-ICONS-002](../history/E-ICONS-002.md): qualified file artwork and main intake. |
+| LD-CAT-002 | Implemented | [E-CATALOG-001](../history/E-CATALOG-001.md): 24 both-theme/viewport production-component interactions and axe checks, static build, owned cleanup and production exclusion.; [E-CATALOG-008](../history/E-CATALOG-008.md).; [E-ICONS-001](../history/E-ICONS-001.md), [E-ICONS-002](../history/E-ICONS-002.md): qualified file artwork and main intake. |
 | LD-PLUG-001 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-TERM-001 | Implemented | [E-TERMINAL-001](../history/E-TERMINAL-001.md): 84 catalog cases, 5 focused native cases and the 100-case cold desktop lane; retained processes, scoped admission, preferences and ordinary-bundle exclusion pass. |
 | LD-TERM-002 | Implemented | [E-TERMINAL-001](../history/E-TERMINAL-001.md): 84 catalog cases, 5 focused native cases and the 100-case cold desktop lane; retained processes, scoped admission, preferences and ordinary-bundle exclusion pass. |
@@ -113,7 +113,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-AI-003 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Planned | [E-PLUGINS-003](../history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](../history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](../history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | [E-TEST-001](../history/E-TEST-001.md): quiet default, fail-closed modes, complete retained headed runner and explicit native CI gate; all quiet lanes pass. |
-| LD-GOV-010 | Implemented | [E-VALIDATION-001](../history/E-VALIDATION-001.md): isolated Docker-first portable validation; native product qualification remains separate. |
+| LD-GOV-010 | Implemented | [E-VALIDATION-001](../history/E-VALIDATION-001.md): isolated Docker-first portable validation; native product qualification remains separate. E-ICONS-002 qualifies combined-main archives, SSH controls and 2,060 catalog cases. |
 | LD-TASK-001 | Planned | [E-CORE-036](../history/E-CORE-036.md): explicit native selection, profile storage and admitted transport intake; composed native proof pending. |
 | LD-TASK-002 | Planned | [E-CORE-036](../history/E-CORE-036.md): generated DTOs and existing App observation/journal; full source and installed-plugin acceptance pending. |
 | LD-TASK-003 | Planned | [E-CORE-036](../history/E-CORE-036.md): M16.9 retains provider, locale, recovery, public-archive and actual native gates. |
@@ -195,106 +195,73 @@ Conversation-scoped private drafts and cold reload:
 implementation and focused acceptance. Original full native/provider/model gates
 retain their current verification status; no completion is inferred.
 
-[E-AI-098](../history/E-AI-098.md) qualifies the provider/compute full-width
-settings layout under LD-AI-002/LD-CAT-003; original native gates are unchanged.
+AI presentation and setup records retain their original native/provider gates:
 
-[E-AI-099](../history/E-AI-099.md) records the copied compute model picker,
-advisory memory fit and cached native status under LD-COMP-001/LD-CAT-003.
+- [E-AI-098](../history/E-AI-098.md): provider/compute settings layout.
+- [E-AI-099](../history/E-AI-099.md): compute model picker, advisory fit and
+  cached status.
+- [E-AI-100](../history/E-AI-100.md): client discovery, advertised modes and
+  footer controls.
+- [E-AI-101](../history/E-AI-101.md): mode/default icons and Add Agent label.
+- [E-AI-102](../history/E-AI-102.md): one Stop/Queue action through pending
+  submission.
+- [E-AI-103](../history/E-AI-103.md): host approval policy and saved agent
+  overrides; exact one-time IDs, durable decisions and native tool scope remain
+  required.
+- [E-AI-104](../history/E-AI-104.md): actual service/Keychain and small-model
+  setup attempts.
+- [E-AI-105](../history/E-AI-105.md): filled approval marker.
+- [E-AI-106](../history/E-AI-106.md): collapsed conversation list and header
+  actions.
+- [E-AI-108](../history/E-AI-108.md): per-agent providers, selectors, avatars
+  and Compute settings.
+- [E-AI-109](../history/E-AI-109.md): responsive settings tabs, search reveal
+  and icons.
+- [E-AI-110](../history/E-AI-110.md): shared inputs, typed native selection and
+  focused Compute UI.
+- [E-AI-111](../history/E-AI-111.md): filled selection icons.
+- [E-AI-112](../history/E-AI-112.md): duplicate actions and legacy agent editor
+  removal.
+- [E-AI-113](../history/E-AI-113.md): exact sent-context inspection; startup,
+  agent handoff and delivery retain native/persistence boundaries.
 
-[E-AI-100](../history/E-AI-100.md) records LD-AI-001/002 client discovery,
-advertised startup modes and footer mode/pin controls; full native gates remain.
-
-[E-AI-101](../history/E-AI-101.md) records decorative mode/default icons and the
-Add Agent label under LD-AI-002/LD-CAT-003; original native gates are unchanged.
-
-[E-AI-102](../history/E-AI-102.md) records the single Stop/Queue action through
-pending submission in both chat layouts (LD-AI-002/LD-CAT-003); native gates
-remain.
-
-[E-AI-103](../history/E-AI-103.md) records explicit host approval policy in
-Document/Classic and saved agent overrides (LD-AI-002/003/004, LD-CAT-003).
-Exact one-time IDs, durable decisions and native tool scope are retained; native
-provider and release gates remain open.
-
-E-AI-104 records actual M10.2–M10.4 provider/compute qualification attempts
-without changing LD-AI-001–004, LD-COMP-001 or LD-DESK-005 completion status.
-Real service/Keychain and small-model setup passes remain distinct from full
-provider turns, cold mounted recovery and two-device acceptance.
-
-[E-AI-105](../history/E-AI-105.md): borderless filled approval marker;
-LD-AI-002/004 behavior and original native gates remain unchanged.
-
-[E-AI-106](../history/E-AI-106.md): collapsed initial conversation list, header
-pin/archive/menu actions and a 16px approval marker; native gates remain.
-
-[E-AI-108](../history/E-AI-108.md): per-agent providers, exact native selectors,
-shared header avatars and dedicated Compute settings. Original gates remain.
-
-[E-AI-109](../history/E-AI-109.md): responsive AI/Compute settings tabs, search
-reveal and icon actions. Native/provider gates remain unchanged.
-
-[E-AI-110](../history/E-AI-110.md) records shared numeric/file inputs,
-compile-checked native selection and focused Compute UI acceptance; M10.4
-product gates remain open.
-
-[E-AI-111](../history/E-AI-111.md) aligns filled selection icons under
-LD-AI-002, LD-COMP-001 and LD-REPO-004; original milestone gates remain.
-
-[E-AI-112](../history/E-AI-112.md) removes duplicate chat actions and the legacy
-agent editor under LD-AI-002/004 and LD-CAT-003; native gates are unchanged.
-
-[E-AI-113](../history/E-AI-113.md): exact live sent-context inspection; startup,
-agent handoff and delivery states retain native and persistence boundaries.
+These records do not complete M10.2–M10.4 or LD-AI-001–004/LD-COMP-001. Full
+provider turns, cold mounted recovery and two-device acceptance remain required;
+setup success does not replace them. Canonical AI/compute contracts and each
+linked record retain the requirement mappings and original evidence.
 
 [E-AI-114](../history/E-AI-114.md) adds AI turn observations and guarded
 saved-file undo under LD-REPO-005/LD-AI-002, preserving ordinary ACP and
 deferred M13. Native service, catalog and visible provider qualification remain
 separate.
 
-[E-CORE-020](../history/E-CORE-020.md) tracks immutable per-vault launch policy
-under LD-AI-001/002 separately from selected service/chat/provider acceptance.
+Later Core and dependency records retain their individual acceptance scopes:
 
-[E-CORE-021](../history/E-CORE-021.md) records staged native turn selection,
-typed Tauri commands and existing Agent screen observation under LD-AI-001/002,
-LD-AI-004 and LD-GOV-006. Source, catalog, native transport, both-host
-application and provider/cold gates remain distinct.
-
-E-CORE-022 tracks retained public History routing, scoped drafts and native
-chat/cold recovery under LD-AI-001/002/004 and LD-CAT-001/002. Original provider
-and M10 completion gates stay open.
-
-[E-CORE-023](../history/E-CORE-023.md) tracks released Mira and committed-source
-Design Core intake under LD-GOV-006/008. Temporary archive consumer checks
-remain distinct from complete freshness, registry-only installation and
-distribution qualification.
-
-[E-CORE-024](../history/E-CORE-024.md) qualifies actual Codex native Core
-transport detach, durable completion, reattachment and cold retention under
-LD-AI-001/002/004. It uses the existing native binary; existing
-application-screen and hosted-provider R2.3 acceptance remain required.
-
-[E-CORE-025](../history/E-CORE-025.md) records trusted native target defaults
-under LD-AI-001/002 and LD-GOV-006. Prepared native runner metadata owns
-defaults; explicit turn modes and the original native/application gates remain
-unchanged.
-
-[E-VALIDATION-003](../history/E-VALIDATION-003.md) tracks the source-qualified
-26-package compatible cohort, Svelte peer alignment and remaining cold Desktop
-consumer qualification. Its original failed and provisional attempts remain
-distinct; actual-provider/native, signed-plugin and distribution gates stay
-separate.
-
-[E-CORE-027](../history/E-CORE-027.md) tracks the opt-in actual-provider
-composer, normal reload teardown and retained History recovery under
-LD-AI-001/002/004 and LD-DESK-005. Its actual native case and retained fixture
-pass with one journal and unchanged transcript; final dependency/catalog intake
-and default cutover remain separate.
-
-[E-CATALOG-017](../history/E-CATALOG-017.md) qualifies the current public
-control roles and declared native fixture modes with 28 exact and 48 complete
-catalog cases. Original M10.2/M15.1 native and aggregate gates remain separate.
-
-[E-DEPENDENCY-003](../history/E-DEPENDENCY-003.md) qualifies repaired Bases
-installed-asset adoption under LD-GOV-006/008 and LD-PLUG-003: one existing
-native metadata/edit/watch/cold-restart case, unchanged document bytes and
-verified signed payloads. Aggregate UI intake and distribution remain separate.
+- [E-CORE-020](../history/E-CORE-020.md): immutable per-vault launch policy,
+  separate from service/chat/provider acceptance.
+- [E-CORE-021](../history/E-CORE-021.md): native turn selection, typed Tauri
+  commands and existing Agent screens; source, transport, both-host and
+  provider/cold gates stay distinct.
+- [E-CORE-022](../history/E-CORE-022.md): public History routing, scoped drafts
+  and native chat/cold recovery; original provider/M10 gates remain open.
+- [E-CORE-023](../history/E-CORE-023.md): released Mira/committed Design Core;
+  temporary archive checks do not qualify complete freshness, registry-only
+  installation or distribution.
+- [E-CORE-024](../history/E-CORE-024.md): actual Codex transport detach, durable
+  completion, reattachment and cold retention using the existing native binary;
+  application-screen and hosted R2.3 gates remain separate.
+- [E-CORE-025](../history/E-CORE-025.md): native metadata owns trusted target
+  defaults; explicit modes and native/application gates are unchanged.
+- [E-VALIDATION-003](../history/E-VALIDATION-003.md): source-qualified
+  26-package/Svelte-peer cohort; failed/provisional attempts remain distinct
+  from cold consumer, actual-provider/native, signed-plugin and distribution
+  acceptance.
+- [E-CORE-027](../history/E-CORE-027.md): actual-provider composer, reload and
+  retained History; native/fixture proof keeps one journal and unchanged
+  transcript; final dependency/catalog and default cutover remain separate.
+- [E-CATALOG-017](../history/E-CATALOG-017.md): control roles and declared
+  native modes pass 28 exact/48 complete catalog cases; M10.2/M15.1
+  native/aggregate gates remain separate.
+- [E-DEPENDENCY-003](../history/E-DEPENDENCY-003.md): signed Bases
+  metadata/edit/watch/cold-restart case, unchanged bytes and verified payloads;
+  aggregate UI and distribution remain separate.

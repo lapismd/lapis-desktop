@@ -27,8 +27,14 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
   let savePath: string | undefined;
   let held: string | null = null;
   let resume: (() => void) | undefined;
+  let reads:
+    | { path: string; pending: Promise<void>; release(): void }
+    | undefined;
+  const writes: { path?: string; operation?: string }[] = [];
   function release() {
     resume?.();
+    reads?.release();
+    reads = undefined;
     resume = undefined;
     held = null;
   }
@@ -39,7 +45,7 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
       resume = resolve;
     });
   }
-  target.invoke = async (name, args, options) => {
+  const invoke: Invoke = async (name, args, options) => {
     const input = args as
       | {
           sessionId?: string;
@@ -47,6 +53,17 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
           request?: { operation?: string; path?: string };
         }
       | undefined;
+    if (name === "vault_fs" && input?.request) {
+      const { operation, path } = input.request;
+      if (/^(write|append|rename|remove)/u.test(operation ?? "")) {
+        writes.push({ operation, path });
+        if (writes.length > 256) writes.shift();
+      }
+      if (operation === "read-text" && reads?.path === path) {
+        held = `read:${path}`;
+        await reads.pending;
+      }
+    }
     if (
       name === "vault_fs" &&
       savePath !== undefined &&
@@ -90,6 +107,7 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
     }
   };
   return {
+    invoke,
     holdNextSubmit() {
       nextSubmit = true;
     },
@@ -99,14 +117,23 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
     holdNextSave(path: string) {
       savePath = path;
     },
+    holdFileReads(path: string) {
+      if (reads || resume) throw new Error("Another transport gate is held");
+      let done!: () => void;
+      const pending = new Promise<void>((resolve) => (done = resolve));
+      reads = { path, pending, release: done };
+    },
     release,
-    snapshot: () => ({ held, records: structuredClone(records) }),
+    snapshot: () => ({
+      held,
+      records: structuredClone(records),
+      writes: structuredClone(writes),
+    }),
     dispose() {
       release();
       nextSubmit = false;
       loseReply = false;
       savePath = undefined;
-      target.invoke = original;
     },
   };
 }

@@ -46,6 +46,7 @@
     "test:desktop:headless": "node scripts/validation.mjs run test:desktop:headless",
     "test:desktop:headed": "node scripts/desktop-tests.mjs --headed",
     "test:desktop:api": "node scripts/desktop-api-tests.mjs",
+    "test:desktop:onnx": "node scripts/desktop-api-tests.mjs --onnx",
     "ai:prepare": "node scripts/prepare-ai.mjs",
     "check:all": "node scripts/validation.mjs run check:all",
     "test:rust": "node scripts/validation.mjs run test:rust",

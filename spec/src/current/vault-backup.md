@@ -112,6 +112,10 @@ Automatic history enablement is independent of status visibility. The status
 control reports saving, saved, paused or attention; background work uses the
 shared progress API and failures use App toasts. Read-only JJ Log, Op Log,
 file-history and blame queries retain operation pins and never initiate capture.
+The native profile uses this managed backup status even for vaults containing an
+independent Original repository. Its source picker selects Original explicitly;
+Original working-copy totals retain independent native read admission. Status
+visibility persists through cold reopen without changing either repository.
 
 File restore previews hold the editor writer guard, then pin current disk hashes
 and retained checkpoint bytes. Applying uses the same guard and stable request

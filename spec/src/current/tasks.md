@@ -25,6 +25,10 @@ observation before metadata teardown and distinguishes explicit plugin disable.
 Transport loss retains its original uncertain identity and never retries
 automatically.
 
+The Desktop App registers the public default daily-document provider before
+loading configuration, matching the hosted shell. It retains that registration
+through refused leave and disposes it after owned plugins and the session close.
+
 The local main capability registers only `vault_tasks`; startup validates and
 manages its declared owner before plugin construction. The quiet default stays
 unchanged; the hidden native API script includes the two typed Task cases.
@@ -47,14 +51,16 @@ confined to the debug e2e entry; ordinary bundles reject their markers.
 
 Headed acceptance MUST exercise the real planner and source editor, configured
 locale and daily provider, stale admission, uncertain replies, read-only journal
-inspection and a cold reopen of the same isolated profile. A transport probe may
-hold a conditional save or submission before admission and may discard a reply
-after native completion; it MUST forward all other commands unchanged and
-release held work during cleanup. It cannot add Task state, retries, provider
-callbacks or an alternate save path. Provider refusal MUST preserve file bytes
-and never execute the unsupported renderer provider callbacks. Recovery
-references MUST omit original and replacement document bytes. Prepared cases and
-fixture checks alone do not satisfy LD-TASK-003 or finish M16.9.
+inspection and a cold reopen of the same isolated profile. An e2e transport
+probe MUST leave protected Tauri IPC globals intact and observe only public
+owned Task and filesystem bridge ports. It may hold a conditional save or
+submission before admission and may discard a reply after native completion; it
+MUST forward all other commands unchanged and release held work during cleanup.
+It cannot add Task state, retries, provider callbacks or an alternate save path.
+Provider refusal MUST preserve file bytes and never execute the unsupported
+renderer provider callbacks. Recovery references MUST omit original and
+replacement document bytes. Prepared cases and fixture checks alone do not
+satisfy LD-TASK-003 or finish M16.9.
 
 [E-CORE-039](../history/E-CORE-039.md) records nine passing fixture/transport
 checks and four prepared native cases. E-CORE-038 composes their e2e entry,
@@ -62,3 +68,20 @@ signed fixture and ordinary-bundle rejection. The public artifact now passes its
 complete package fingerprint and all 16 host externals against the same 31
 archives. Actual native execution and the original completion gates remain
 pending.
+
+E-CORE-040 records the four actual installed macOS cases passing after the
+public default daily provider registration. Final shared History/Undo source
+repairs and their complete consumer/native/catalog gates keep M16.9 In progress.
+
+Complete shared-Rust qualification combines the actual installed plugin's
+operator-local day, locale and daily-file assertions with the same Core's
+unattended date-refresh and twelve Europe/London midnight/DST observations on
+macOS. The source fixture runs with a subprocess-scoped timezone and private
+test clock. Production retains its existing local clock construction; neither
+system time nor a production transport/configuration API changes for this proof.
+
+The same e2e transport may hold ordinary vault text reads for one fixture path
+to test native editing preflight independently of later Task or frontmatter
+conflicts. Native editing snapshots, policy and writes MUST remain unchanged.
+All held reads drain on cleanup; passive write observations never supply
+outcomes, versions, guards or mutation authority.

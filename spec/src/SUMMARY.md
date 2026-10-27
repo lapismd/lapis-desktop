@@ -368,3 +368,10 @@
 - [Composed Core reader and Tasks admission](history/E-CORE-038.md)
 
 - [Installed Tasks native acceptance preparation](history/E-CORE-039.md)
+
+- [Plugin file artwork through public packages](history/E-ICONS-001.md)
+- [Main workspace file icon intake and SSH validation](history/E-ICONS-002.md)
+
+- [Final main and shared Core Desktop qualification](history/E-CORE-040.md)
+
+- [Native handoff recovery and final Desktop acceptance](history/E-CORE-041.md)

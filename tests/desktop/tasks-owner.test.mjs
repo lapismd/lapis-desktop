@@ -45,7 +45,7 @@ async function fixture(context, core) {
           };
         } catch (error) {
           return {
-            error: {
+            failure: {
               message: String(error?.message ?? error),
               code: error?.code,
             },
@@ -55,9 +55,9 @@ async function fixture(context, core) {
       command,
       args,
     );
-    if (reply.error)
-      throw Object.assign(new Error(reply.error.message), {
-        code: reply.error.code,
+    if (reply.failure)
+      throw Object.assign(new Error(reply.failure.message), {
+        code: reply.failure.code,
       });
     return reply.value;
   };

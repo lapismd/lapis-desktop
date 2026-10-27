@@ -97,3 +97,16 @@ shared History lifetime and final closed-watch reconciliation, plus jj-store
 Other native pins and the final 26-package UI cohort remain fixed. Metadata
 writers, current-file Search and AI defaults are separate intakes; no
 corresponding default switch is inferred.
+
+E-ICONS-001 selects the qualified scoped Design Core resolver, Notes
+API/Explorer and Bases artwork through 28 checksummed public archives. Explorer
+displays the registered artwork and opens the same file through its contributed
+view; extension-to-icon maps and artwork remain owned by the contributing
+packages. All 2,060 catalog cases pass on that exact cohort. This selective
+renderer intake preserves the other native pins and does not claim a complete
+latest-source review refresh.
+
+E-ICONS-002 qualifies the combined-main Notes archive refresh and private SSH
+connection controls. The 28 selected archives match installed payloads across
+110 active import routes. All 2,060 combined catalog cases pass; original native
+pins, source ownership and distribution gates remain unchanged.

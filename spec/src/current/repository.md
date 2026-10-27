@@ -1,10 +1,10 @@
 # Repository history and conversations
 
-[Shared-screen integration](shared-screen-integration.md) governs source/pin
-selection and History/Blame presentation. [Automatic backup](vault-backup.md)
-owns History scheduling, controls, cached observation and upstream/reveal
-actions. [Navigation](repository-navigation.md) retains footer status/clearance.
-Admission and exact operation pins remain unchanged.
+[Shared screens](shared-screen-integration.md) govern History/Blame source pins.
+[Backup](vault-backup.md) owns scheduling, controls, cached status and actions;
+[navigation](repository-navigation.md) retains status/clearance. Dedicated Core
+read clients drain accepted work before retirement independently of App writers;
+existing admission, exact pins and backup authority remain unchanged.
 
 ## Requirements
 

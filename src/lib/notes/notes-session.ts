@@ -7,7 +7,7 @@ import {
   createNativeDatabaseProvider,
   type MetadataOwner,
 } from "../native/database/native-database-provider.ts";
-import type { VaultDescriptor } from "../native/vault-client.ts";
+import type { NativeCall, VaultDescriptor } from "../native/vault-client.ts";
 import {
   createNativeEditingIntents,
   type EditingOwner,
@@ -23,6 +23,7 @@ export async function openNotesSession(
   metadataOwner: MetadataOwner = "renderer",
   editingOwner: EditingOwner = "renderer",
   tasksOwner: TasksOwner = "renderer",
+  call?: NativeCall,
 ): Promise<VaultSession> {
   validateTasksSelection(tasksOwner, metadataOwner, editingOwner);
   if (editingOwner !== "renderer" && editingOwner !== "core")
@@ -55,6 +56,7 @@ export async function openNotesSession(
     session.backgroundIndexing = provider.backgroundIndexing;
   if (editingOwner === "core")
     session.nativeEditingIntents = createNativeEditingIntents(selected);
-  if (tasksOwner === "core") session.nativeTasks = createNativeTasks(selected);
+  if (tasksOwner === "core")
+    session.nativeTasks = createNativeTasks(selected, call);
   return session;
 }

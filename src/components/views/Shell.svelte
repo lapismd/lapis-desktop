@@ -32,11 +32,13 @@
     urlDelivery,
     pluginDistributionOptions,
     createPopouts,
+    openSession = openNotesSession,
     createAi = (app, vault, tools) => createNativeAi(app, vault, { tools }),
   }: {
     client: VaultClient;
     urlDelivery: DesktopUrlDelivery;
     pluginDistributionOptions?: AppPluginDistributionOptions;
+    openSession?: typeof openNotesSession;
     createPopouts?: (
       app: import("@lapis-notes/api").App,
       vault: VaultDescriptor,
@@ -105,7 +107,7 @@
     openingNotes = true;
     const operation = (async () => {
       try {
-        session = await openNotesSession(
+        session = await openSession(
           target,
           metadataOwner,
           editingOwner,

@@ -36,3 +36,7 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Composed Core reader and Tasks admission](../E-CORE-038.md)
 
 - [Installed Tasks native acceptance preparation](../E-CORE-039.md)
+
+- [Final main and shared Core Desktop qualification](../E-CORE-040.md)
+
+- [Native handoff recovery and final Desktop acceptance](../E-CORE-041.md)

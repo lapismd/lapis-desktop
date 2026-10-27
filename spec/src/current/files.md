@@ -11,8 +11,15 @@ inside Rust and never enter the Tauri request or response shape.
 Explicit native Tasks requires Core editing and metadata ownership. Its typed
 command uses the same admitted App client and guarded Task journal; renderer
 requests cannot replace expected file versions or bypass dirty editor claims.
-Reader retirement uses a separate Core client and preserves App file/database
-authority (M16.8/9).
+Reader retirement drains its separate Core client without releasing App
+file/database authority or a refused close (M16.8/9).
+
+Captured Properties conflict acceptance first reconciles the independent clean
+Markdown editor while preserving its focused local property draft. Separate
+native pre-Yield acceptance MUST retain the failed editing Problem and input
+protection, block close and preserve disk bytes. Only explicit retry after
+ordinary producer convergence may restore access; cleanup cannot clear a failed
+handoff through a no-op rearm or replay the unadmitted mutation.
 
 R1.3 file IPC delegates portable operations to the shared vault service while
 preserving existing renderer frames and portable file errors. Native retained

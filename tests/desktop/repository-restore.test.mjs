@@ -178,6 +178,15 @@ test(
     await previewFile(browser, initial);
     const intervening = "# External save after preview must survive\n";
     writeFileSync(file, intervening);
+    // Let the clean owned editor observe the external save, retaining the old
+    // restore preview. This exercises native preview staleness after the earlier
+    // editing fence is current, rather than racing those two independent guards.
+    await browser.waitUntil(
+      async () =>
+        (await browser.execute(() =>
+          globalThis.__lapisPluginAcceptance.fileText("Note.md"),
+        )) === intervening,
+    );
     await browser.$(dialog).$("button=Restore file").click();
     const failure = browser.$('[data-ui-part="toast"][role="alert"]');
     await failure.waitForDisplayed({ timeout: 30000 });
@@ -208,13 +217,20 @@ test(
       { timeout: 30000 },
     );
     await openHistory(browser);
-    const repository = join(
-      root,
-      "vault-history",
-      readdirSync(join(root, "vault-history"), { withFileTypes: true }).find(
-        (entry) => entry.isDirectory(),
-      ).name,
+    const historyRoot = join(root, "vault-history");
+    const repositories = readdirSync(historyRoot, {
+      withFileTypes: true,
+    }).filter(
+      (entry) =>
+        entry.isDirectory() &&
+        existsSync(join(historyRoot, entry.name, "vault.json")),
     );
+    assert.equal(
+      repositories.length,
+      1,
+      "One bound vault history, excluding control caches",
+    );
+    const repository = join(historyRoot, repositories[0].name);
     const receipts = join(repository, "restore-receipts");
     const receipt = JSON.parse(
       readFileSync(join(receipts, readdirSync(receipts)[0]), "utf8"),
