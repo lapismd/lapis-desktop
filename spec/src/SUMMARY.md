@@ -384,3 +384,5 @@
 - [Default-workspace native queue adoption](history/E-CORE-044.md)
 
 - [Actual installed-provider native queue acceptance](history/E-CORE-045.md)
+
+- [Pending coherent Desktop cutover intake](history/E-CORE-046.md)

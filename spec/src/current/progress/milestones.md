@@ -1,66 +1,42 @@
 # Milestones and gates
 
-Last updated **2026-10-27 10:55:18 UTC**.
+Last updated **2026-10-27 13:53:08 UTC**.
 
 <!-- migration-activity:start -->
 
-## Current work — explicit native AI queue
+## Current work — coherent cutover qualification
 
-M16.10 is complete and adopted into the default Desktop workspace from
-`151e4f12`. E-CORE-043/044 retain Core `0eec0811`, API `ef8170a6`, app-profile
-`fe45dedb`, Agent UI `58bd5870` and exact product/native/public-input equality.
-All 2,124 catalog, 544 Node, 744 AI, 258 Linux Rust and 55 macOS host cases
-pass; actual native queue/admission/screen checks pass five cases. Both
-complete-asset app configurations and the ordinary zero-automation-marker audit
-pass. The default's normal ignored overlay now resolves all 31 public archives
-across 117 import routes with portable tracked manifests and lockfiles
-preserved.
+The qualified Desktop baseline is `40b50d3e` / E-CORE-044, with Core `0eec0811`,
+API `ef8170a6` and AppProfile `fe45dedb`. Its M16.10 completion remains intact.
+Provider source `85d9b5e1` is now an ancestor of this default intake. Immutable
+E-CORE-045 retains its own Core `b2034168` provider proof; those results do not
+qualify the newer cohort.
 
-Notes R4.1.6 installed-provider acceptance passes on its qualified queue cohort.
-Hosted `dfdf57e6` qualifies three configured cases; native E-CORE-045 qualifies
-the complete final pair on Core `b2034168`: Stop/Unknown/cold no-replay and
-detached completion with explicit cold retained resume and default model/effort
-omitted. Four related native admission cases, 55 macOS host units, strict
-normal/e2e and 258 Rust cases pass with two existing helper ignores. Both
-complete-asset native builds and the ordinary zero-automation audit pass. Final
-canonical, progress, source/App audits, 113-family parity and book checks pass.
-Earlier runtime, driver and documentary failures remain recorded; the unchanged
-E-AI-109 formatting warning is the sole accepted baseline.
+Input preparation is complete: selected native Notes `cd997c2c`, new API
+`f368081f` and AppProfile `bf1324f7`. Five fresh internal Notes builds supply
+the pair from a content-identical snapshot. The explicit private installation
+verifies all 31 default-owned archives and 117 transitive import routes while
+preserving portable manifest/lock bytes. Quiet consumer checks pass 16/0 before
+and after; Svelte check reports zero errors or warnings. The owned Storybook was
+stopped before refresh. Installed apps, profiles and feature defaults are
+intact.
 
-Next is R7 cutover and deferred test repair; start no additional R4 features.
-Newer Notes `14172a21` changes shared API/AppProfile/participant and turn
-inputs; R7 must qualify that coherent Desktop cohort before adoption. R5/R6 stay
-Deferred. Broader M10, default activation, visual review and release stay open.
+[E-CORE-046](../../history/E-CORE-046.md) keeps current-cohort strict
+normal/e2e, native admission/provider, affected renderer/AI/catalog and
+complete-asset bundle gates pending. The consumer native lock adds only Core's
+new edge to the already pinned serde_yaml package; frozen validation is still
+required. Root coordinates the shared Mac compiler slot and 30 GiB guard before
+native work. No native build or window ran in this lane.
+
+All 31 baseline payloads and three source receipt JSONs are retained under
+Desktop-owned ignored storage, along with the new pair and its provenance.
+Preserve required native receipts/logs before temporary-workspace cleanup. Notes
+owns R7 cutover and final source validation. R5/R6 remain Deferred; broader M10,
+Desktop default activation, visual review, signing and publication keep their
+original gates. Immutable E-AI-109's accepted formatting baseline remains.
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
-
-M16.8 shared Repository readers and M16.9 native Tasks have completed their
-original gates on Core `03b8257d` and API archive `89e81a5f` (source commit
-`000aef52`). E-CORE-040/041 retain exact provenance and every failed attempt.
-
-| Qualified surface         | Final result                                                                                                                |
-| ------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| Actual native app         | 99/99: API/model 20, Repository 12, navigation 12, writers 51 and installed Tasks 4                                         |
-| Complete public catalog   | 2,088/2,088 across four theme/viewports: partitions 636 + 696 + 756                                                         |
-| Portable runtime          | Node 537/537, AI 744/744, types 0 errors/0 warnings, renderer/static builds and architecture/App/parity audits              |
-| Native Core and packaging | Rust 260, unattended-day/DST 2, strict normal/e2e, both complete-asset app configurations and 31 archives/116 import routes |
-| Shared API producer       | Source 13 exact/158 affected/1,716 API, full frontend 2,438, hosted 42, cold catalog 265 and canonical 78                   |
-
-The Notes master tracker schedules subsequent shared application work. Later AI,
-terminal, service-host replacement and default cutover keep their own original
-gates. M16 completion does not activate a new default. Publication, signing M11,
-remote AI M12.4–M12.6, native memory M13, application tools M17.1 and Review
-M17.2–M17.5 remain separate or Deferred.
-
-E-CORE-042 records default-workspace adoption of verified `cdf71da6` with
-identical runtime, dependency and native inputs. This adoption leaves default
-feature selection unchanged.
-
-Immutable E-AI-109 retains its explicit accepted formatting exception; all other
-format, progress and specification checks pass. Visual review remains separate;
-no baselines were changed. Compiler/cache guards preserve apps, vaults,
-profiles, models and receipts.
 
 <!-- migration-activity:end -->
 
@@ -173,7 +149,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041,E-CORE-042 |
 | M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041,E-CORE-042 |
-| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | None; supplemental installed-provider proof passes in E-CORE-045; R7 coherent intake, default and release gates remain separate. | E-CORE-043,E-CORE-044,E-CORE-045 |
+| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | R7 coherent Notes/public/native intake remains pending in E-CORE-046; E-CORE-045 retains its older provider proof. | E-CORE-043,E-CORE-044,E-CORE-045,E-CORE-046 |
 
 ## Markdown document review
 

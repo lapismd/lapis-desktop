@@ -48,3 +48,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Default-workspace native queue adoption](../E-CORE-044.md)
 
 - [Actual installed-provider native queue acceptance](../E-CORE-045.md)
+
+- [Pending coherent Desktop cutover intake](../E-CORE-046.md)

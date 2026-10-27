@@ -110,3 +110,10 @@ E-ICONS-002 qualifies the combined-main Notes archive refresh and private SSH
 connection controls. The 28 selected archives match installed payloads across
 110 active import routes. All 2,060 combined catalog cases pass; original native
 pins, source ownership and distribution gates remain unchanged.
+
+The R7 candidate selects landed Notes `cd997c2c` and its freshly packed
+API/AppProfile pair through the explicit 31-archive overlay. E-CORE-045 retains
+its older `b2034168` provider proof; E-CORE-046 keeps current-cohort
+strict/native/provider acceptance pending. Preserve verified archive payloads in
+default-owned ignored storage before retiring their source workspaces. No
+installed application or user profile changes as part of source preparation.
