@@ -40,3 +40,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Final main and shared Core Desktop qualification](../E-CORE-040.md)
 
 - [Native handoff recovery and final Desktop acceptance](../E-CORE-041.md)
+
+- [Default-workspace adoption of qualified Desktop Core intake](../E-CORE-042.md)

@@ -375,3 +375,5 @@
 - [Final main and shared Core Desktop qualification](history/E-CORE-040.md)
 
 - [Native handoff recovery and final Desktop acceptance](history/E-CORE-041.md)
+
+- [Default-workspace adoption of qualified Desktop Core intake](history/E-CORE-042.md)

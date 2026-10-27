@@ -2,17 +2,15 @@
 
 Notes owns Rust master progress; Desktop owns native gates. E-CORE-022 qualifies
 archives/chat/History; E-CORE-028 adopts its vault-owned scheduler.
-E-CORE-029/M16.4 and E-CORE-030/M16.5 stage metadata/Search through the existing
-App observer and database admission; renderer stays default. Search recovery
-uses verified Plugins archives; E-CORE-025/026 retain qualified target defaults.
-M10.2, R3–R7, AI/default cutover, product and Deferred M11 gates stay separate.
-M16.7 qualifies editing; M16.8/9 stage Core readers/Tasks. Source is qualified;
-E-CORE-039 prepares installed cases; native/default gates stay open. Evidence
-for Docker-first portable validation, governed story composition and public
-archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux service/compiler
-and headless browser evidence MUST NOT complete native macOS, actual-provider,
-distribution or original migration gates. The current task ledger retains their
-completion status and next actions.
+E-CORE-029/030 qualify metadata/Search and E-CORE-033/034 editing. M16.8/9 are
+Done in E-CORE-040/041, including real installed Tasks and native readers.
+E-CORE-042 adopts that verified slice into default with identical runtime,
+dependency and native-input selection. Metadata-only adoption MUST prove those
+inputs equal before reusing product evidence and qualify its changed documents.
+M10.2, R3–R7, AI/default cutover and Deferred M11 gates remain separate. Linux
+service/compiler and headless browser evidence MUST NOT complete native macOS,
+actual-provider, distribution or original migration gates. The current task
+ledger retains completion status and next actions.
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.

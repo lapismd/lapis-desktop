@@ -15,6 +15,10 @@ generated [migration checkpoint](MIGRATION.md) and E-CORE-040/041. Notes' master
 migration owns the later hosted/shared-runtime R0–R7 work; this Desktop roadmap
 does not imply default cutover.
 
+The verified slice is adopted into the default Desktop workspace from
+`cdf71da6`; E-CORE-042 records unchanged product/public/native inputs and the
+metadata-only main adoption.
+
 The [AI tool expansion backlog](spec/src/backlog/ai-tool-expansion.md) is saved
 for later implementation: six stages covering discovery, structured edits,
 memory, workspace context, historical recall and link-aware moves. It is

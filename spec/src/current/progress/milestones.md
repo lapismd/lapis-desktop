@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 05:00:40 UTC**.
+Last updated **2026-10-27 05:11:24 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -26,6 +26,10 @@ terminal, service-host replacement and default cutover keep their own original
 gates. M16 completion does not activate a new default. Publication, signing M11,
 remote AI M12.4–M12.6, native memory M13, application tools M17.1 and Review
 M17.2–M17.5 remain separate or Deferred.
+
+E-CORE-042 records default-workspace adoption of verified `cdf71da6` with
+identical runtime, dependency and native inputs. This adoption leaves default
+feature selection unchanged.
 
 Immutable E-AI-109 retains its explicit accepted formatting exception; all other
 format, progress and specification checks pass. Visual review remains separate;
@@ -141,8 +145,8 @@ E-CATALOG-010/016: footer/native qualified.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041 |
-| M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041 |
+| M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041,E-CORE-042 |
+| M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041,E-CORE-042 |
 
 ## Markdown document review
 
