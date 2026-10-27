@@ -48,6 +48,7 @@
     "test:desktop:api": "node scripts/desktop-api-tests.mjs",
     "test:desktop:onnx": "node scripts/desktop-api-tests.mjs --onnx",
     "test:provider:live": "node scripts/live-provider-tests.mjs",
+    "test:native:macos": "node scripts/macos-native-lanes.mjs",
     "ai:prepare": "node scripts/prepare-ai.mjs",
     "check:all": "node scripts/validation.mjs run check:all",
     "test:rust": "node scripts/validation.mjs run test:rust",

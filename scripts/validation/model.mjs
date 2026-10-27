@@ -85,6 +85,18 @@ const nativeLanes = new Set([
 ]);
 export const laneImage = (lane) => (nativeLanes.has(lane) ? "full" : "ui");
 
+/**
+ * The spec-first lane accepts an explicit range only with both ends. Injecting
+ * --head alone makes spec-validator exit on "--head requires --base" instead of
+ * evaluating the gate, so without a known base the container's own snapshot
+ * ancestry decides, exactly as the spec:check lane's internal gate does.
+ */
+export function specFirstArgs(lane, args, source) {
+  if (lane !== "spec:first" || args.includes("--head") || !source?.base)
+    return [...args];
+  return [...args, "--head", source.revision, "--base", source.base];
+}
+
 /** Bound full-suite browser lifetime; explicit targets and caller shards stay exact. */
 export function laneInvocations(lane, args) {
   return lane === "test:storybook" && args.length === 0

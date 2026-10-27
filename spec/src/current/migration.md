@@ -3,22 +3,21 @@
 Notes owns Rust master progress; Desktop owns native gates. E-CORE-022 qualifies
 archives/chat/History; E-CORE-028 adopts its vault-owned scheduler.
 E-CORE-029/030 qualify metadata/Search and E-CORE-033/034 editing. M16.8/9 are
-Done in E-CORE-040/041 with real installed Tasks and native readers.
-E-CORE-042/044 adopt qualified slices into default with identical runtime,
-dependency and native inputs. Metadata-only adoption MUST prove those inputs
-equal before reusing product evidence and qualify changed documents.
-[M16.10](ai-queue.md) retains E-CORE-045/Notes `dfdf57e6` provider proof.
-E-CORE-047 qualifies the landed R7 cohort; default unchanged. Continue R7
-cutover/test repair. Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6
-remain Deferred. Linux service/compiler and headless browser evidence MUST NOT
-complete native macOS, actual-provider, distribution or original migration
-gates. Live agent/provider specs run only on explicit request (E-TEST-002).
+Done in E-CORE-040/041 with installed Tasks and native readers. E-CORE-042/044
+adopt qualified slices into default with identical runtime, dependency and
+native inputs. Metadata-only adoption MUST prove those inputs equal before
+reusing product evidence and qualify changed documents. [M16.10](ai-queue.md)
+retains E-CORE-045/Notes `dfdf57e6` provider proof. E-CORE-047/048 qualify the
+landed R7 cohort and integrated main; continue R7 cutover/test repair.
+Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6 remain Deferred.
+Linux service/compiler and headless browser evidence MUST NOT complete native
+macOS, actual-provider, distribution or original migration gates. Live provider
+and macOS native lanes are opt-ins (E-TEST-002, E-VALIDATION-004).
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
-Generated tables group gates, sort IDs and link their spec ledger. Commits MUST
-refresh UTC date/time and activity. Notes main/default owns R0–R7; Desktop
-projects its own ledger and adoption (E-PROGRESS-002/003, E-CORE-014/015).
+Commits MUST refresh UTC date/time and activity. Notes main/default owns R0–R7;
+Desktop projects its ledger and adoption (E-PROGRESS-002/003, E-CORE-014/015).
 M16.3/E-CORE-016–019: R1.3 intake. E-CORE-020 prepares native turn profiles.
 
 E-AI-093 retains local ACP/vault transcripts and M13/M13.3 Deferred at

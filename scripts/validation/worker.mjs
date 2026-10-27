@@ -8,6 +8,7 @@ import {
   laneInvocations,
   workerEnvironment,
   bootstrapIgnore,
+  specFirstArgs,
 } from "./model.mjs";
 import { execute } from "./process.mjs";
 import { restoreNativeSources } from "./native-sources.mjs";
@@ -164,14 +165,8 @@ try {
       { cwd: root },
     );
   const { runNative } = await import(join(root, "scripts/validation.mjs"));
-  const args = [...request.args];
+  const args = specFirstArgs(request.lane, request.args, source);
   await mkdir(join(root, ".release/ci-results"), { recursive: true });
-  if (request.lane === "spec:first" && !args.includes("--head"))
-    args.push(
-      "--head",
-      source.revision,
-      ...(source.base ? ["--base", source.base] : []),
-    );
   result.tools = Object.fromEntries(
     [
       "node",

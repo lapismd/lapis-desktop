@@ -324,6 +324,28 @@ test("explicit archive configuration reaches the isolated install", () => {
   );
 });
 
+test("the worker pins an explicit spec-first range only with both ends", async () => {
+  const { specFirstArgs } = await import("../../scripts/validation/model.mjs");
+  const source = { revision: "head-revision", base: "base-revision" };
+  assert.deepEqual(specFirstArgs("spec:first", [], source), [
+    "--head",
+    "head-revision",
+    "--base",
+    "base-revision",
+  ]);
+  assert.deepEqual(
+    specFirstArgs("spec:first", [], { revision: "head-revision" }),
+    [],
+    "without a known base the container's snapshot ancestry decides",
+  );
+  assert.deepEqual(
+    specFirstArgs("spec:first", ["--head", "caller-revision"], source),
+    ["--head", "caller-revision"],
+    "an explicit caller range stays untouched",
+  );
+  assert.deepEqual(specFirstArgs("test", [], source), []);
+});
+
 test("every nonvisual test command uses the portable runner", async () => {
   const { scripts } = JSON.parse(
     await readFile(new URL("../../package.json", import.meta.url)),
@@ -333,6 +355,7 @@ test("every nonvisual test command uses the portable runner", async () => {
     "test:desktop:api",
     "test:desktop:onnx",
     "test:provider:live",
+    "test:native:macos",
   ]);
   for (const [name, command] of Object.entries(scripts))
     if (

@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 23:05:00 UTC**.
+Last updated **2026-10-27 23:41:00 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -87,6 +87,20 @@ of the twelve live specs or their three helpers (E-TEST-002). The
 portable-runner contract keeps its explicit native-lane allowlist and still
 asserts those lanes bypass the runner; the complete governance suite is 170/170.
 
+Standard lanes now run in Linux Docker containers by default — the CI-parity
+lane set — and macOS native/headed acceptance is an inventoried on-demand opt-in
+behind `LAPIS_DESKTOP_NATIVE_LANE=1 pnpm test:native:macos` (E-VALIDATION-004).
+A governance audit inside the default `pnpm test` lane fails if Docker stops
+being the code-level runtime, if a default lane or manifest script collects a
+native lane, or if a native runtime selector appears outside the runner
+mechanism, that dispatcher and hosted CI; the governance suite is now 175/175.
+Hosted CI keeps its provisioned native runtime because macOS runners have no
+Docker daemon and `check:bundle`/hidden-API are macOS-only by construction, so
+any native or on-demand run is labelled and never presented as Docker parity.
+The stale remote lease that blocked every Docker lane was released through the
+repository's own ownership-checked cleanup, and a persistent SSH ControlMaster
+in the ignored local config recovered the flaky host.
+
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
 
@@ -124,7 +138,7 @@ M12 retains its M11 dependency and cutover gate (E-PLAN-006).
 | M7.1 | Done | M7 | LD-MIG-002,LD-POP-001 | An isolated actual native WebView opens a related window with an accessible Window and Document, mounts an existing shared surface, and proves focus, resize, close and cleanup. Ordinary bundles retain denied popup creation and contain no proof instrumentation. | Complete; proof retained | E-POPOUT-001 |
 | M7.2 | Done | M7.1 | LD-MIG-002,LD-POP-002,LD-POP-003,LD-POP-004,LD-POP-006 | Browser acceptance moves a real note into a popup and back while preserving its draft and editor history. Multiple popups remain independent, overlays stay in their own document, and failed opening or closing leaves source content reachable. Top and stacked popup headers reserve native-control clearance after resize. | Complete; native ordinary integration remains M7.3 | E-POPOUT-002 |
 | M7.3 | Done | M7.2 | LD-MIG-002,LD-POP-001,LD-POP-002,LD-POP-003,LD-POP-004,LD-POP-005,LD-POP-006 | The ordinary packaged app opens, edits, saves, redocks and safely closes multiple native windows with no duplicate sessions or stale resources. | Complete; continue AI and backup | E-POPOUT-003,E-POPOUT-004,E-REPO-050,E-SHELL-003 |
-| M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002,E-VALIDATION-001,E-VALIDATION-003 |
+| M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002,E-VALIDATION-001,E-VALIDATION-003,E-VALIDATION-004 |
 | M9 | Done | M8 | LD-MIG-002 | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app. | Complete; continue to M10.1 native ACP adapter | E-PLUGINS-001,E-PLUGINS-003,E-INSTALL-001 |
 | M10 | In progress | M9 | LD-MIG-002 | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification. | Continue native AI and persistence qualification | E-PLUGINS-001,E-PLUGINS-002,E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
 | M11 | Deferred | M10 | LD-MIG-002 | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution. | Await explicit resumption; retain distribution and platform gates | E-PLAN-006 |

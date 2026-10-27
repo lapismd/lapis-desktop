@@ -5,6 +5,10 @@ milestone task before inspecting or changing implementation. Apply the parent
 workspace guidance too. `PLAN.md` is the roadmap; canonical requirements govern
 behavior and milestone tasks alone own completion status.
 
+Prefer `pnpm spec:search "<topic or ID>"` before any manual scan of spec/src;
+use --semantic for conceptual queries; rg is the fallback only when QMD is
+unavailable.
+
 ## Workflow
 
 1. Run `jj --no-pager st` and preserve unrelated work. Stop on overlapping
@@ -195,10 +199,22 @@ Live agent/provider specs are opt-in only: `pnpm test:provider:live -- <spec>`
 preserve receipts, record a failed attempt before any deliberate retry, never
 auto-replay an uncertain accepted turn and never print configuration or
 credential contents. Portable `check`, `test`, `build`, specification and
-catalog lanes default to isolated Docker snapshots. Use `pnpm validation:doctor`
-and `pnpm validation:images`; `LAPIS_DESKTOP_VALIDATION_RUNTIME=native`
-deliberately selects the host. Docker errors never trigger host fallback.
-Shared-package archives remain explicit private prerequisites; never transfer
-dirty sibling sources or user profiles. Use `pnpm check`, `pnpm test`, and
-`pnpm spec:check` for foundation qualification. Do not publish, replace
-installed applications, or reuse a user's profile for tests.
+catalog lanes default to isolated Docker snapshots, which is the CI-parity
+runtime for that lane set. Use `pnpm validation:doctor` and
+`pnpm validation:images`; `LAPIS_DESKTOP_VALIDATION_RUNTIME=native` deliberately
+selects the host. macOS native/headed acceptance is on-demand only (user
+decision 2026-10-27):
+`LAPIS_DESKTOP_NATIVE_LANE=1 pnpm test:native:macos -- headed|api|onnx|provider-live`
+is the inventoried entry point, it refuses without that opt-in or off macOS
+ARM64, and `tests/governance/native-lane-defaults.test.mjs` fails the default
+lane if Docker stops being the code-level runtime, if a default lane or manifest
+script collects a native lane, or if a native runtime selector appears outside
+the runner mechanism, that dispatcher and hosted CI. Hosted CI runs the same
+portable lane set plus headed acceptance on a macOS runner with its provisioned
+native runtime, because that platform provides no Docker daemon; a native or
+on-demand run is never Docker CI parity and must be labelled in evidence. Docker
+errors never trigger host fallback. Shared-package archives remain explicit
+private prerequisites; never transfer dirty sibling sources or user profiles.
+Use `pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation
+qualification. Do not publish, replace installed applications, or reuse a user's
+profile for tests.

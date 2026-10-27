@@ -386,12 +386,13 @@ registry patch or synthetic policy substitutes.
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-Local checks use quiet renderer/native-service/catalog lanes; CI uses headed
-acceptance. Hidden WebKit pauses frames; service success cannot qualify native
-UI. [Acceptance modes](native-acceptance.md) retain cold/hidden/headed/capture
-gates. The private `@lapismd/jj-conversations` link consumes verified exports;
-queues stay host-owned and registry-gated. Renderer tests preload tsx
-(E-CATALOG-009/010).
+Local checks use quiet renderer/native-service/catalog lanes; Docker is the
+default runtime, macOS native lanes are on-demand opt-ins (E-VALIDATION-004) and
+CI uses headed acceptance. Hidden WebKit pauses frames; service success cannot
+qualify native UI. [Acceptance modes](native-acceptance.md) retain
+cold/hidden/headed/capture gates. The private `@lapismd/jj-conversations` link
+consumes verified exports; queues stay host-owned and registry-gated. Renderer
+tests preload tsx (E-CATALOG-009/010).
 
 E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.
 
