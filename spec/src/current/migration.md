@@ -7,7 +7,7 @@ App observer and database admission; renderer stays default. Search recovery
 uses verified Plugins archives; E-CORE-025/026 retain qualified target defaults.
 M10.2, R3–R7, AI/default cutover, product and Deferred M11 gates stay separate.
 M16.7 qualifies in E-CORE-034. Tasks M16.9/E-CORE-036 stages its Core port;
-source and composed consumer gates stay pending, separately from R3 cutover.
+Source qualifies; composed consumer gates stay pending, separately from R3.
 Evidence for Docker-first portable validation, governed story composition and
 public archive intake belongs to E-VALIDATION-001/E-CORE-023. Linux
 service/compiler and headless browser evidence MUST NOT complete native macOS,

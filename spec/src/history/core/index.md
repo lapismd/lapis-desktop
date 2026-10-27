@@ -28,3 +28,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Native editor qualification closure](../E-CORE-034.md)
 
 - [Staged native Desktop Tasks intake](../E-CORE-036.md)
+
+- [Focused native Tasks qualification](../E-CORE-037.md)

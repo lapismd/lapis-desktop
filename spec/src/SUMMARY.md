@@ -360,3 +360,5 @@
 - [Native editor qualification closure](history/E-CORE-034.md)
 
 - [Staged native Tasks intake](history/E-CORE-036.md)
+
+- [Focused native Tasks qualification](history/E-CORE-037.md)

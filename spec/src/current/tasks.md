@@ -26,7 +26,9 @@ Transport loss retains its original uncertain identity and never retries
 automatically.
 
 M16.9 depends on M16.7 and remains In progress under
-[E-CORE-036](../history/E-CORE-036.md). Immutable Notes `0ff929b1` is the source
-candidate; its aggregate receipt `823317ad`, compatible public archives and
-composed Desktop installed-plugin/native/catalog gates remain pending. M16.7's
-58 native and 2,068 catalog cases do not qualify this Task selection.
+[E-CORE-037](../history/E-CORE-037.md), following immutable staged E-CORE-036.
+Immutable Notes `0ff929b1` is the source qualified by aggregate `823317ad`. API
+`419b47c5`, History `e714935f` and the 31-archive/116-route cohort pass the four
+exact Rust and eleven Node cases. Composed Desktop
+installed-plugin/native/catalog and strict host gates remain pending. M16.7's 58
+native and 2,068 catalog cases do not qualify this Task selection.
