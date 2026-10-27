@@ -4,8 +4,8 @@ Core chat retains History and exact scope/conversation reuse; restoration never
 submits. E-CORE-022 qualifies fixture/native adoption; E-CORE-025 seals runner
 defaults. R2.3 keeps actual-provider composer acceptance, teardown before reload
 completion and History recovery after reload/cold Quit without replay. A
-test-only hold may forward a delayed saved result after disposal; all policy and
-screens remain production. [Native queues](ai-queue.md) keep separate gates.
+test-only hold may forward a delayed saved result after disposal; policy and
+screens stay production. E-CORE-045 targets [queue](ai-queue.md) provider proof.
 
 Portable native checks retain unsupported credential ports outside macOS; only
 the supported Keychain backend constructs its device service identity.

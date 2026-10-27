@@ -1,10 +1,10 @@
 # Desktop shell
 
-Core chat retains composer, sidebar History and cold restart
-([E-CORE-022](../history/E-CORE-022.md)). [Indexing](background.md) shares one
-admitted metadata/Search database; renderer remains default. History indexing is
-vault-owned. [Tasks](tasks.md) and immutable readers retain native lifetime,
-original writer guards and separate M16.8/M16.9 acceptance.
+Core chat retains composer, sidebar History and cold restart (E-CORE-022/045).
+Queue proof uses these screens; window gates stay separate.
+[Indexing](background.md) shares admitted metadata/Search storage; renderer
+stays default. History indexing is vault-owned. [Tasks](tasks.md) and immutable
+readers retain native lifetime, original writer guards and M16.8/M16.9 gates.
 
 [Adapters](ai-adapter.md): E-CORE-025 defaults; E-CORE-027 provider recovery.
 LD-FILE-002/003 requires watch after metadata/views, drain on leave and resume

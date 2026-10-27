@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 09:32:04 UTC**.
+Last updated **2026-10-27 10:55:18 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -16,9 +16,21 @@ pass. The default's normal ignored overlay now resolves all 31 public archives
 across 117 import routes with portable tracked manifests and lockfiles
 preserved.
 
-Next is Notes R4.1.6 installed-provider acceptance, prepared in isolated native
-and hosted lanes. Broader M10, default activation, visual review and release
-stay open. The prior immutable E-AI-109 formatting exception remains explicit.
+Notes R4.1.6 installed-provider acceptance passes on its qualified queue cohort.
+Hosted `dfdf57e6` qualifies three configured cases; native E-CORE-045 qualifies
+the complete final pair on Core `b2034168`: Stop/Unknown/cold no-replay and
+detached completion with explicit cold retained resume and default model/effort
+omitted. Four related native admission cases, 55 macOS host units, strict
+normal/e2e and 258 Rust cases pass with two existing helper ignores. Both
+complete-asset native builds and the ordinary zero-automation audit pass. Final
+canonical, progress, source/App audits, 113-family parity and book checks pass.
+Earlier runtime, driver and documentary failures remain recorded; the unchanged
+E-AI-109 formatting warning is the sole accepted baseline.
+
+Next is R7 cutover and deferred test repair; start no additional R4 features.
+Newer Notes `14172a21` changes shared API/AppProfile/participant and turn
+inputs; R7 must qualify that coherent Desktop cohort before adoption. R5/R6 stay
+Deferred. Broader M10, default activation, visual review and release stay open.
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
@@ -161,7 +173,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041,E-CORE-042 |
 | M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041,E-CORE-042 |
-| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | None; Notes R4.1.6 installed-provider and broader default/release gates remain separate. | E-CORE-043,E-CORE-044 |
+| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | None; supplemental installed-provider proof passes in E-CORE-045; R7 coherent intake, default and release gates remain separate. | E-CORE-043,E-CORE-044,E-CORE-045 |
 
 ## Markdown document review
 

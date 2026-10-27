@@ -382,3 +382,5 @@
 - [Explicit Tauri shared queue intake](history/E-CORE-043.md)
 
 - [Default-workspace native queue adoption](history/E-CORE-044.md)
+
+- [Actual installed-provider native queue acceptance](history/E-CORE-045.md)

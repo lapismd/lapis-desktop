@@ -72,3 +72,12 @@ without replay. Native services, normal/e2e strict checks, both app
 configurations and packaged assets retain their original gates. No ordinary
 default, publication, signing or installed-application replacement is activated
 by this intake.
+
+Installed-provider acceptance remains Notes R4.1.6. It retains the real Agent
+screen, read-only declaration and provider-default model/effort omission. A
+dispatched Stop with an Unknown outcome stays unresumed through cold recovery.
+Known-head resume may use a labelled offline retained-state fixture copied from
+a real completed queue, preserving its private target guard and original data.
+Write that fixture only after the native process stops; prove no cold dispatch
+before the existing UI Resume, then exactly one provider completion. Fixture
+creation is not live admission, and no pause-only API is introduced.

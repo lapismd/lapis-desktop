@@ -7,7 +7,8 @@ Done in E-CORE-040/041, including real installed Tasks and native readers.
 E-CORE-042/044 adopt qualified slices into default with identical runtime,
 dependency and native-input selection. Metadata-only adoption MUST prove those
 inputs equal before reusing product evidence and qualify its changed documents.
-[M16.10 native queues](ai-queue.md) retain separate host/provider acceptance.
+[M16.10 queues](ai-queue.md): native E-CORE-045 and hosted Notes `dfdf57e6`.
+Continue R7 cutover/test repair; R5/R6 stay Deferred. Host gates stay separate.
 M10.2, R3–R7, AI/default cutover and Deferred M11 gates remain separate. Linux
 service/compiler and headless browser evidence MUST NOT complete native macOS,
 actual-provider, distribution or original migration gates. The current task

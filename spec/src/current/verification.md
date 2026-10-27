@@ -268,3 +268,6 @@ Later Core and dependency records retain their individual acceptance scopes:
 - [E-DEPENDENCY-003](../history/E-DEPENDENCY-003.md): signed Bases
   metadata/edit/watch/cold-restart case, unchanged bytes and verified payloads;
   aggregate UI and distribution remain separate.
+
+[E-CORE-045](../history/E-CORE-045.md): native provider queue/cold recovery
+pass.
