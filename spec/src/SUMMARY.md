@@ -8,6 +8,7 @@
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
+  - [Explicit shared native queue](current/ai-queue.md)
     - [Markdown-first memory](current/ai-memory.md)
     - [Local AI setup](current/ai-setup.md)
     - [Native adapter records](current/ai-adapter.md)
@@ -377,3 +378,5 @@
 - [Native handoff recovery and final Desktop acceptance](history/E-CORE-041.md)
 
 - [Default-workspace adoption of qualified Desktop Core intake](history/E-CORE-042.md)
+
+- [Explicit Tauri shared queue intake](history/E-CORE-043.md)

@@ -1,10 +1,26 @@
 # Milestones and gates
 
-Last updated **2026-10-27 05:11:24 UTC**.
+Last updated **2026-10-27 09:07:22 UTC**.
 
 <!-- migration-activity:start -->
 
-## Completed Desktop shared Core intake
+## Current work — explicit native AI queue
+
+M16.10 completes its original gate in isolated
+`lapis-desktop-native-queue-20261027` on Core `0eec0811`, API `ef8170a6`,
+app-profile `fe45dedb` and Agent UI `58bd5870` (source `2bee4ed6`). Full catalog
+2,124/2,124, Node 544, AI 744, Linux Rust 258 and macOS host units 55 pass.
+Actual native queue/admission 4 and expanded screen 1 pass, including explicit
+cold resume, pointer cancellation and work completing while observers detach.
+Both app configurations and complete packaged assets pass; the ordinary bundle
+has zero automation markers. E-CORE-043 retains all failed setups, exact source
+and archive inputs, the intentional catalog partition handoff and accepted
+immutable-history formatting exception.
+
+The following Notes R4.1.6 installed-provider acceptance is being prepared in
+separate isolated native and hosted lanes; no provider prompt has been submitted
+for it yet. Broader M10, default activation, visual review and release stay
+open.
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
@@ -147,6 +163,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041,E-CORE-042 |
 | M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041,E-CORE-042 |
+| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | None; Notes R4.1.6 installed-provider and broader default/release gates remain separate. | E-CORE-043 |
 
 ## Markdown document review
 

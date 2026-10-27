@@ -1,4 +1,5 @@
 import type { AgentRequest } from "../../core/runtime.ts";
+import { builtinRecipientLabel } from "../../conversations/builtin-recipients.ts";
 import {
   recipientFromOption,
   validateRecipients,
@@ -22,13 +23,7 @@ export function captureQueuedMessage(
     recipients.push(
       recipientFromOption({
         id: request.agent ?? "",
-        label:
-          {
-            codex: "Codex",
-            cursor: "Cursor",
-            opencode: "OpenCode",
-            local: "Lapis AI",
-          }[request.agent as AcpAgentId] ?? "",
+        label: builtinRecipientLabel(request.agent),
         agent: request.agent as AcpAgentId,
       }),
     );

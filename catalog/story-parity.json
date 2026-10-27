@@ -148,6 +148,9 @@
   "catalog/plugins/ai/NativeNotes.stories.ts": {
     "kind": "application"
   },
+  "catalog/plugins/ai/NativeQueue.stories.ts": {
+    "kind": "application"
+  },
   "catalog/plugins/ai/NativeTurns.stories.ts": {
     "kind": "application"
   },
@@ -294,11 +297,23 @@
   "catalog/plugins/background/Work.stories.ts": {
     "kind": "application"
   },
+  "catalog/plugins/desktop/EditingRecovery.stories.ts": {
+    "kind": "component",
+    "subject": "@lapis-notes/workspace#WorkspaceShell"
+  },
   "catalog/plugins/desktop/FileConflicts.stories.ts": {
     "kind": "component",
     "subject": "src/components/files/FileConflicts.svelte#default"
   },
   "catalog/plugins/desktop/MetadataOwner.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/desktop/NativeTasks.stories.ts": {
+    "kind": "component",
+    "subject": "src/components/views/NotesWorkspace.svelte#default"
+  },
+  "catalog/plugins/desktop/SearchOwner.stories.ts": {
     "kind": "component",
     "subject": "src/components/views/NotesWorkspace.svelte#default"
   },
@@ -440,17 +455,5 @@
   },
   "catalog/plugins/terminal/Terminal.stories.ts": {
     "kind": "application"
-  },
-  "catalog/plugins/desktop/SearchOwner.stories.ts": {
-    "kind": "component",
-    "subject": "src/components/views/NotesWorkspace.svelte#default"
-  },
-  "catalog/plugins/desktop/EditingRecovery.stories.ts": {
-    "kind": "component",
-    "subject": "@lapis-notes/workspace#WorkspaceShell"
-  },
-  "catalog/plugins/desktop/NativeTasks.stories.ts": {
-    "kind": "component",
-    "subject": "src/components/views/NotesWorkspace.svelte#default"
   }
 }

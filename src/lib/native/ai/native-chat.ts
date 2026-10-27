@@ -2,6 +2,7 @@ import type { App } from "@lapis-notes/api";
 import type { NativeChatHost } from "@lapis-notes/app-profile/native-chat";
 import { invoke } from "@tauri-apps/api/core";
 import { nativeError } from "../native-error.ts";
+import { createNativeQueue } from "./native-queue.ts";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 
 /** Transport only. Core accepts, owns and persists every turn. */
@@ -18,6 +19,7 @@ export function createNativeChatHost(
     }
   }
   return {
+    queue: createNativeQueue(vault.sessionId, native),
     allowed: () =>
       app.workspaceTrust.trusted && !app.safeMode.disableOptionalCorePlugins,
     activate: () => native("desktop_ai_admit", { sessionId: vault.sessionId }),

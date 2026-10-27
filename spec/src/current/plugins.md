@@ -1,6 +1,6 @@
-# Desktop plugins and catalog — [native turns](ai-adapter.md)
+# Desktop plugins and catalog — [native turns](ai-adapter.md), [queues](ai-queue.md)
 
-E-CORE-033/036 adds recovery/admission stories. Native-turn stories retain real
+Queue states extend E-CORE-033/036 recovery/admission, retaining real
 App/workspace/Agent screens, titles, sidebars, chat reuse and scoped drafts.
 Targets MUST declare safe `default_mode`; sends MUST assert the submitted mode.
 History fixtures model native publication through start/status, never client

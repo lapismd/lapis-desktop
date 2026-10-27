@@ -68,7 +68,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:src/(?:lib/ai/|components/ai/|lib/native/ai/)|src-tauri/(?:src/(?:ai/|host/ai/)|tests/ai_.*\\.rs$)|tests/(?:ai/|renderer/ai-|fixtures/ai/|desktop/(?:ai-|acp-))|catalog/(?:plugins/ai/|support/ai/)|vitest\\.ai\\.config\\.mjs$)",
+              "^(?:config/ai/|src/(?:lib/ai/|components/ai/|lib/native/ai/)|src-tauri/(?:src/(?:ai/|host/ai/)|tests/ai_.*\\.rs$)|tests/(?:ai/|renderer/ai-|fixtures/ai/|desktop/(?:ai-|acp-))|catalog/(?:plugins/ai/|support/ai/)|vitest\\.ai\\.config\\.mjs$)",
             chapters: ["spec/src/current/ai.md"],
           },
           {

@@ -45,6 +45,7 @@ impl AgentPolicy for DesktopAiPolicy {
                     .map_err(|_| Error("agent_not_admitted"))?
                     .ok_or(Error("agent_not_admitted"))?;
                 Ok(TurnTarget {
+                    queue_selection: super::native_queue::selection(&launch)?,
                     default_mode: default_mode(&launch)?.into(),
                     id: target.id,
                     label: target.label,

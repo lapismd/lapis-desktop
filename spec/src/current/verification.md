@@ -12,6 +12,9 @@ E-REPO-012/013 retain manual previews and visual gates.
 <!-- prettier-ignore -->
 | ID | Status | Evidence |
 | --- | --- | --- |
+| LD-AI-005 | Implemented | [E-CORE-043](../history/E-CORE-043.md): shared admitted transport, exact native refusals, all five queue controls and final strict/catalog/native gates pass. |
+| LD-AI-006 | Implemented | [E-CORE-043](../history/E-CORE-043.md): sealed recipient metadata, explicit declared mode and distinct capture/action/authored/native identities pass. |
+| LD-AI-007 | Implemented | [E-CORE-043](../history/E-CORE-043.md): production controls, detached completion, cold paused explicit resume and exact-once native outcomes pass. |
 | LD-REVIEW-001 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.4 mode and retained-state acceptance pending. |
 | LD-REVIEW-002 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.4 input, IME, keyboard and source immutability pending. |
 | LD-REVIEW-003 | Planned | [E-PLAN-005](../history/E-PLAN-005.md): planning only; M17.1/M17.4 shared reader and Markdown compatibility pending. |

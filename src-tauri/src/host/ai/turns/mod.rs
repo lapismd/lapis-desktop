@@ -1,10 +1,12 @@
 //! Tauri admission only; the Notes service retains journal, workers and writers.
-use super::{owner::NativeAiOwner, policy::caller};
 use crate::host::state::{NativeError, NativeHost};
 use lapis_app_protocol::turns::{TurnCommand, TurnValue};
 use serde::{Deserialize, Serialize};
 use std::{io, sync::Arc};
-use tauri::{Manager, WebviewWindow};
+use tauri::WebviewWindow;
+
+mod access;
+pub mod queue;
 
 #[derive(Clone, Copy, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
@@ -41,49 +43,10 @@ pub async fn desktop_ai_turn(
     host: tauri::State<'_, NativeHost>,
     request: Request,
 ) -> Result<TurnValue, NativeError> {
-    let context = caller(&window)
-        .map_err(|_| io::Error::new(io::ErrorKind::PermissionDenied, "Local caller required"))?;
-    if !window.app_handle().state::<TurnOwner>().is_core() {
-        return Err(
-            io::Error::new(io::ErrorKind::Unsupported, "Native chat is not selected").into(),
-        );
-    }
-    let owner = window
-        .app_handle()
-        .state::<Arc<NativeAiOwner>>()
-        .inner()
-        .clone();
-    let transition = owner.transitions.clone().lock_owned().await;
-    let native = host.inner().clone();
-    tauri::async_runtime::spawn_blocking(move || {
-        let _transition = transition;
-        let lease = owner.current(&native, &context.window)?;
-        if lease.session() != request.session_id {
-            return Err(io::Error::new(
-                io::ErrorKind::PermissionDenied,
-                "Native vault admission changed",
-            ));
-        }
-        let client = {
-            let mut services = native
-                .0
-                .lock()
-                .map_err(|_| io::Error::other("Native owner unavailable"))?;
-            let crate::host::state::NativeServices {
-                core_vaults,
-                vaults,
-                ..
-            } = &mut *services;
-            core_vaults.client(vaults, lease.session())?
-        };
-        owner
-            .turns
-            .retain(&context.window, lease.generation(), client.clone())?;
+    access::call(window, host, request.session_id, move |client| {
         client.call_turn(request.command).map_err(io::Error::other)
     })
     .await
-    .map_err(|_| io::Error::other("Native turn command interrupted"))?
-    .map_err(Into::into)
 }
 
 #[derive(Default)]

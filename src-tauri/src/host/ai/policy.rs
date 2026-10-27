@@ -10,6 +10,7 @@ use tauri_plugin_lapis_ai::{
     AcpHost, Error, HostContext, HostPolicy, Launch, Result, SessionBinding, Target,
     runtime::SessionProcessor,
 };
+mod native_queue;
 mod native_turns;
 mod tool_launch;
 

@@ -1218,3 +1218,12 @@ fixture does not register a replacement Task plugin, execute a Task writer or
 qualify installed-plugin/native IO. Source is Desktop E-CORE-036; inherited
 NotesDemo lifecycle and public API exports remain authoritative. All four
 stories are visual-pending; composed functional/a11y acceptance is pending.
+
+`Desktop/AI/Native queued messages` mounts the production NotesWorkspace and
+shared native Agent screen with disposable service replies. It covers loading,
+empty, running capture, paused recovery, explicit resume, cancellation of an
+exact unstarted acceptance, lost acknowledgements without replay, native refusal
+and missing host declarations preserving R2 busy refusal. Capture freezes the
+native default mode. Core FIFO/journal/cold lifetime remain actual native
+acceptance; fixture replies confer no host authority. Governing requirements:
+LD-AI-005–LD-AI-007 and LD-CAT-003. Visual review remains pending.

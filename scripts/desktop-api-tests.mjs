@@ -48,6 +48,8 @@ await run(
     "tests/desktop/search-provider.test.mjs",
     "tests/desktop/ai-admission.test.mjs",
     "tests/desktop/ai-turn-owner.test.mjs",
+    "tests/desktop/ai-native-queue-admission.test.mjs",
+    "tests/desktop/ai-native-queue-owner.test.mjs",
     "tests/desktop/repository-admission.test.mjs",
     "tests/desktop/repository-service-lifetime.test.mjs",
     "tests/desktop/repository-indexed-search.test.mjs",

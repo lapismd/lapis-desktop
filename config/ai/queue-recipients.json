@@ -1,0 +1,38 @@
+[
+  {
+    "runner": "codex",
+    "agent": "codex",
+    "recipient": {
+      "id": "codex",
+      "label": "Codex",
+      "token": "jj-store-agent:636f646578;"
+    }
+  },
+  {
+    "runner": "cursor",
+    "agent": "cursor",
+    "recipient": {
+      "id": "cursor",
+      "label": "Cursor",
+      "token": "jj-store-agent:637572736f72;"
+    }
+  },
+  {
+    "runner": "opencode",
+    "agent": "opencode",
+    "recipient": {
+      "id": "opencode",
+      "label": "OpenCode",
+      "token": "jj-store-agent:6f70656e636f6465;"
+    }
+  },
+  {
+    "runner": "local",
+    "agent": "local",
+    "recipient": {
+      "id": "local",
+      "label": "Lapis AI",
+      "token": "jj-store-agent:6c6f63616c;"
+    }
+  }
+]
