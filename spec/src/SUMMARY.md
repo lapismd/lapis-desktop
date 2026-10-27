@@ -389,3 +389,7 @@
 - [Pending coherent Desktop cutover intake](history/E-CORE-046.md)
 
 - [Phase 2 qualification of the coherent cutover intake](history/E-CORE-047.md)
+
+- [Approved Design Core publication](history/E-RELEASE-017.md)
+
+- [Release tracker integration into main](history/E-RELEASE-018.md)
