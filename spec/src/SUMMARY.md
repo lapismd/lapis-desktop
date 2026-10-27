@@ -390,6 +390,8 @@
 
 - [Phase 2 qualification of the coherent cutover intake](history/E-CORE-047.md)
 
+- [Integrated-main lineage audit and requalification](history/E-CORE-048.md)
+
 - [Approved Design Core publication](history/E-RELEASE-017.md)
 
 - [Release tracker integration into main](history/E-RELEASE-018.md)

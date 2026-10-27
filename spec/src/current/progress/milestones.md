@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 18:48:38 UTC**.
+Last updated **2026-10-27 22:51:10 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -49,6 +49,33 @@ receipts/logs before temporary-workspace cleanup. Notes owns R7 cutover and
 final source validation. R5/R6 remain Deferred; broader M10, Desktop default
 activation, visual review, signing and publication keep their original gates.
 Immutable E-AI-109's accepted formatting baseline remains.
+
+Every pinned preserved lineage is now resolved in one place. E-QUALIFICATION-003
+landed at `09fedef9`; the Design Core release record and tracker landed at
+`06b4e096` with E-RELEASE-017 byte-identical (sha256 `3f0d0b20…`), RELEASE.md
+reconciled to the existing `^0.6.0` range in its own non-immutable maintenance
+paragraph, and E-RELEASE-018 appended. The bases-native-adoption,
+Docker-catalog-candidate, provider-chat-qualification and catalog-validation-1/2
+bookmarks are superseded with byte-level proof in
+[E-CORE-048](../../history/E-CORE-048.md): their unique added files are already
+identical in main and every differing file is strictly newer here. Nothing was
+forced in and no immutable record was rewritten.
+
+The integrated tree's product surface is byte-identical to the qualified
+`3dfe624d` tree (0-line diff across src, src-tauri, catalog, tests, scripts,
+configs and lockfiles; the whole delta is five documentation paths), and its
+gates were re-executed rather than inherited: strict Clippy normal/e2e with zero
+warnings, Svelte check 0/0, 544 quiet Node, 744 AI and 262 locked native-service
+cases, hidden API 21/21, focused admission/queue 4/4, and both bundles with
+byte-identical `lapis-ai` resources and zero ordinary automation markers. Three
+integrated-main attempts left the visible headed suite at 106–107/109 with a
+moving set of exhausted default 5s waits while Spotlight `mds_stores` (28h) and
+`ApplicationsStorageExtension` (6h) saturated the host; the identical tree
+passed 109/109 at 16:53Z, so the headed and catalog re-runs stay open behind a
+quiet host window. Live agent/provider acceptance is user-optional by explicit
+decision (2026-10-27) and is deferred rather than failed: all five provider
+receipts are preserved and no uncertain turn was replayed. No assertion,
+timeout, threshold or baseline was altered.
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
@@ -164,7 +191,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041,E-CORE-042 |
 | M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041,E-CORE-042 |
-| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | E-CORE-047 qualifies the landed R7 cohort; E-CORE-045/046 stay immutable. | E-CORE-043,E-CORE-044,E-CORE-045,E-CORE-046,E-CORE-047 |
+| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | E-CORE-047/048 qualify the landed R7 cohort and integrated main; E-CORE-045/046 stay immutable. | E-CORE-043,E-CORE-044,E-CORE-045,E-CORE-046,E-CORE-047,E-CORE-048 |
 
 ## Markdown document review
 

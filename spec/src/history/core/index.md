@@ -52,3 +52,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Pending coherent Desktop cutover intake](../E-CORE-046.md)
 
 - [Phase 2 qualification of the coherent cutover intake](../E-CORE-047.md)
+
+- [Integrated-main lineage audit and requalification](../E-CORE-048.md)

@@ -3,16 +3,16 @@
 Notes owns Rust master progress; Desktop owns native gates. E-CORE-022 qualifies
 archives/chat/History; E-CORE-028 adopts its vault-owned scheduler.
 E-CORE-029/030 qualify metadata/Search and E-CORE-033/034 editing. M16.8/9 are
-Done in E-CORE-040/041, including real installed Tasks and native readers.
+Done in E-CORE-040/041 with real installed Tasks and native readers.
 E-CORE-042/044 adopt qualified slices into default with identical runtime,
-dependency and native-input selection. Metadata-only adoption MUST prove those
-inputs equal before reusing product evidence and qualify its changed documents.
+dependency and native inputs. Metadata-only adoption MUST prove those inputs
+equal before reusing product evidence and qualify changed documents.
 [M16.10](ai-queue.md) retains E-CORE-045/Notes `dfdf57e6` provider proof.
 E-CORE-047 qualifies the landed R7 cohort; default unchanged. Continue R7
 cutover/test repair. Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6
 remain Deferred. Linux service/compiler and headless browser evidence MUST NOT
 complete native macOS, actual-provider, distribution or original migration
-gates. The task ledger retains completion status and next actions.
+gates.
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
@@ -55,10 +55,10 @@ offline/conflict/unknown-outcome synchronization gates.
 
 E-REPO-042 reconciles the roadmap, plugin plan, task next actions and generated
 summary under unchanged LD-MIG-002/LD-GOV-004. The summary lists completed and
-open gates without inferring current activity from Partial/In progress or table
-order. Task pages alone own completion; no status, dependency, requirement or
-original gate is changed. The 2026-10-17 pause was followed by resumed delivery.
-This documentation refresh starts no implementation or acceptance runs.
+open gates without inferring activity from Partial/In progress or table order.
+Task pages alone own completion; no status, dependency, requirement or gate
+changes. The 2026-10-17 pause was followed by resumed delivery. This
+documentation refresh starts no implementation or acceptance runs.
 
 E-AI-042–061 adds local Codex execution, file-backed transcripts, comments,
 imports and reviewed chat/file UI. JJ persistence and the original native,
@@ -212,7 +212,7 @@ change its capability-coverage gate.
 
 M11 distribution, including signing/notarization, updates/rollback and platform
 qualification, is Deferred until explicitly resumed (E-PLAN-006). Its original
-gate and M10 dependency remain; M12 stays Planned and depends on M11.
+gate and M10 dependency remain; M12 stays Planned on M11 (RELEASE.md).
 
 ## Authorized plugin delivery
 
