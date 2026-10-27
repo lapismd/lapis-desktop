@@ -187,11 +187,18 @@ default script. Headless success cannot qualify a native product gate. Use
 `pnpm test:desktop:api` for opt-in macOS ARM64 IPC checks in a hidden native
 WebView. This e2e-only mode prohibits activation and tests no animation or OS
 UI; it is separate from the quiet default and refuses a running acceptance app.
-Portable `check`, `test`, `build`, specification and catalog lanes default to
-isolated Docker snapshots. Use `pnpm validation:doctor` and
-`pnpm validation:images`; `LAPIS_DESKTOP_VALIDATION_RUNTIME=native` deliberately
-selects the host. Docker errors never trigger host fallback. Shared-package
-archives remain explicit private prerequisites; never transfer dirty sibling
-sources or user profiles. Use `pnpm check`, `pnpm test`, and `pnpm spec:check`
-for foundation qualification. Do not publish, replace installed applications, or
-reuse a user's profile for tests.
+Live agent/provider specs are opt-in only: `pnpm test:provider:live -- <spec>`
+(or `--all`) is their sole entry point, it refuses without an explicit
+`LAPIS_AI_TEST_RUNTIME_CONFIG`, and
+`tests/governance/live-provider-exclusion.test.mjs` fails the default
+`pnpm test` lane if any lane, script or manifest collects one. When they do run,
+preserve receipts, record a failed attempt before any deliberate retry, never
+auto-replay an uncertain accepted turn and never print configuration or
+credential contents. Portable `check`, `test`, `build`, specification and
+catalog lanes default to isolated Docker snapshots. Use `pnpm validation:doctor`
+and `pnpm validation:images`; `LAPIS_DESKTOP_VALIDATION_RUNTIME=native`
+deliberately selects the host. Docker errors never trigger host fallback.
+Shared-package archives remain explicit private prerequisites; never transfer
+dirty sibling sources or user profiles. Use `pnpm check`, `pnpm test`, and
+`pnpm spec:check` for foundation qualification. Do not publish, replace
+installed applications, or reuse a user's profile for tests.

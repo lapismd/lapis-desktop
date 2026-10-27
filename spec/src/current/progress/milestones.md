@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 22:51:10 UTC**.
+Last updated **2026-10-27 23:05:00 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -76,6 +76,16 @@ quiet host window. Live agent/provider acceptance is user-optional by explicit
 decision (2026-10-27) and is deferred rather than failed: all five provider
 receipts are preserved and no uncertain turn was replayed. No assertion,
 timeout, threshold or baseline was altered.
+
+Live agent/provider acceptance is now structurally opt-in rather than a runtime
+convention: `pnpm test:provider:live` is its sole entry point, it refuses
+without an explicit qualified runtime configuration, an unlisted path or a
+non-macOS-ARM64 host, and a governance audit inside the default `pnpm test` lane
+fails if any lane definition, acceptance script, catalog or vitest
+configuration, Storybook file, manifest script or lane command ever collects one
+of the twelve live specs or their three helpers (E-TEST-002). The
+portable-runner contract keeps its explicit native-lane allowlist and still
+asserts those lanes bypass the runner; the complete governance suite is 170/170.
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
@@ -160,7 +170,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-PROGRESS-001,E-PROGRESS-002,E-PROGRESS-003 |
+| M0.2 | Done | M0.1 | LD-GOV-002,LD-GOV-003,LD-GOV-009 | Default and explicit headless runs execute renderer/catalog and native-service checks without native UI or session clipboard changes; explicit headed mode retains the complete native suite, with clear separate qualification. | Complete; native qualification remains explicit | E-TEST-001,E-TEST-002,E-PROGRESS-001,E-PROGRESS-002,E-PROGRESS-003 |
 | M8.4 | Done | M8.0 | LD-GOV-002,LD-GOV-003,LD-CAT-003 | Every implemented desktop-specific UI state and desktop-only plugin maps to a discoverable production-component scenario in a minimal real shell, with both-theme and both-viewport interaction/accessibility checks. | Complete; extend inventory with new desktop UI | E-CATALOG-002 |
 | M8.5 | Done | M8.4 | LD-CAT-001,LD-CAT-002,LD-CAT-003,LD-FILE-008 | Latest local Design Core, themed editor/recovery presentation, Problems-based conflict decisions and product-only Terminal previews pass their affected source/catalog and native acceptance lanes. | Complete; continue AI and backup | E-CATALOG-003,E-CATALOG-004,E-CATALOG-005,E-CATALOG-006,E-CATALOG-007,E-REPO-024,E-REPO-025,E-CATALOG-009,E-CATALOG-010,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-CATALOG-014,E-CATALOG-015,E-CATALOG-016 |
 

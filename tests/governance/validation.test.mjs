@@ -332,6 +332,7 @@ test("every nonvisual test command uses the portable runner", async () => {
     "test:desktop:headed",
     "test:desktop:api",
     "test:desktop:onnx",
+    "test:provider:live",
   ]);
   for (const [name, command] of Object.entries(scripts))
     if (

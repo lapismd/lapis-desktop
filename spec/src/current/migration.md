@@ -12,7 +12,7 @@ E-CORE-047 qualifies the landed R7 cohort; default unchanged. Continue R7
 cutover/test repair. Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6
 remain Deferred. Linux service/compiler and headless browser evidence MUST NOT
 complete native macOS, actual-provider, distribution or original migration
-gates.
+gates. Live agent/provider specs run only on explicit request (E-TEST-002).
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.

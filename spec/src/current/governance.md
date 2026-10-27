@@ -341,23 +341,22 @@ current feature-specific command list. Switching from acceptance to ordinary
 builds must not retain test permission metadata. Authored capabilities and
 permission sources remain separate from those generated outputs.
 
-The desktop AI foundation and retained transcript fixtures map explicitly to
-`plugins.md`; JSON fixtures remain protected by spec-first validation.
+The desktop AI foundation and retained transcript fixtures map to `plugins.md`;
+JSON fixtures stay spec-first protected.
 
 Retained AI metadata uses the declared registry YAML codec. Vault-backed, hidden
 API and complete headed Node acceptance all load public built API exports with
-the existing tsx dev loader; no loader or test state enters production. The
-verified archive cohort is retained.
-
-`pnpm test:ai` retains its Node policy lane in normal `pnpm test`.
-`vitest.workers.config.ts` and `tests/workers` map to
+the existing tsx dev loader; no loader or test state enters production. Live
+agent/provider specs run only through the explicit opt-in runner, never a
+default lane (E-TEST-002). `pnpm test:ai` retains its Node policy lane in normal
+`pnpm test`. `vitest.workers.config.ts` and `tests/workers` map to
 [background](background.md) for browser scheduling. E-REPO-016 retains
-dependency/source ownership and the original native/catalog qualification gates.
+dependency/source ownership and its native/catalog gates.
 
 The renderer source audit rejects controller/ai-host imports, Node execution
 modules and legacy ACP bridge/Node-user-store paths. Public lapis-ai clients
-remain admitted. This guard runs in ordinary and canonical specification checks.
-The isolated policy runner also transforms the public UI helper exports through
+remain admitted. It runs in ordinary and canonical specification checks. The
+isolated policy runner also transforms the public UI helper exports through
 Vite.
 
 Memory capture uses the registry `@lapismd/agent-redaction` portable root only.
@@ -367,7 +366,7 @@ Dependency installation retains the same 14 verified ignored archive routes.
 App-tool schema interpretation uses the registry @cfworker/json-schema public
 root and standard draft-7 meta-schema data with attribution. Tests run with
 string code generation disabled; no unsafe-eval CSP grant, JavaScript runtime
-service or legacy bridge is added. The same 14 verified archive routes remain.
+service or legacy bridge is added.
 
 Retained AI components and policy modules map to the plugins chapter. The
 isolated policy runner compiles normal Svelte runes with the Svelte Vite plugin;
@@ -377,12 +376,12 @@ Registry icon imports remain portable. Local archive refresh retains payload
 verification and records each source repair before consumer qualification.
 
 Native dependency refresh records the clean owning source revision and its
-qualification separately from consumer checks. The cd997c2c native pin awaits
-E-CORE-046. Update only required lock graph edges; locked checks and packaged
-ACP acceptance must retain existing gates. Native privacy uses the shared
-scanner policy and released transitive versions. E-AI-030 records the compatible
+qualification separately from consumer checks. E-CORE-047 qualifies the cd997c2c
+pin. Update only required lock graph edges; locked checks and packaged ACP
+acceptance must retain existing gates. Native privacy uses the shared scanner
+policy and released transitive versions. E-AI-030 records the compatible
 macro/TOML lock selection, both native profiles and the real-policy fixture; no
-registry patch or synthetic policy substitutes for that qualification.
+registry patch or synthetic policy substitutes.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
@@ -391,7 +390,7 @@ Local checks use quiet renderer/native-service/catalog lanes; CI uses headed
 acceptance. Hidden WebKit pauses frames; service success cannot qualify native
 UI. [Acceptance modes](native-acceptance.md) retain cold/hidden/headed/capture
 gates. The private `@lapismd/jj-conversations` link consumes verified exports;
-queues stay host-owned and registry intake gated. Renderer tests preload tsx
+queues stay host-owned and registry-gated. Renderer tests preload tsx
 (E-CATALOG-009/010).
 
 E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.
