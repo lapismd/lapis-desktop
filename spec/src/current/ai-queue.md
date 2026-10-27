@@ -85,8 +85,12 @@ creation is not live admission, and no pause-only API is introduced.
 ## Current-cohort intake
 
 Provider source `85d9b5e1` and immutable E-CORE-045 retain their qualified
-`b2034168` Core context. The cutover candidate now selects landed Notes
-`cd997c2c` with freshly packed API/AppProfile archives; its participant/protocol
-and saved-chat changes retain the original current-cohort host gates.
+`b2034168` Core context. The landed cutover cohort selects Notes `cd997c2c` with
+freshly packed API/AppProfile archives and now passes its original
+current-cohort host gates: strict normal/e2e Clippy on the refreshed lock, cold
+headed and hidden native acceptance, focused admission/queue ownership, both
+bundle configurations with equal packaged AI resources, the complete catalog
+lane and the actual installed-provider two cases on the first attempt.
 Applications, profiles and feature defaults remain unchanged.
-[E-CORE-046](../history/E-CORE-046.md) records the pending coherent intake.
+[E-CORE-046](../history/E-CORE-046.md) records the immutable preparation and
+[E-CORE-047](../history/E-CORE-047.md) the Phase 2 qualification.

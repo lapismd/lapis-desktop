@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 13:53:08 UTC**.
+Last updated **2026-10-27 18:48:38 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -21,19 +21,34 @@ and after; Svelte check reports zero errors or warnings. The owned Storybook was
 stopped before refresh. Installed apps, profiles and feature defaults are
 intact.
 
-[E-CORE-046](../../history/E-CORE-046.md) keeps current-cohort strict
-normal/e2e, native admission/provider, affected renderer/AI/catalog and
-complete-asset bundle gates pending. The consumer native lock adds only Core's
-new edge to the already pinned serde_yaml package; frozen validation is still
-required. Root coordinates the shared Mac compiler slot and 30 GiB guard before
-native work. No native build or window ran in this lane.
+[E-CORE-047](../../history/E-CORE-047.md) Phase 2 verification passes
+current-cohort strict normal/e2e Clippy on the refreshed lock, Svelte check, 544
+quiet Node cases, 744 AI cases, 262 locked native-service cases, cold headed
+acceptance (3 startup, 28 WebKit specs, 109 suite, 2 HTTP representation),
+focused admission/queue ownership 4/4, the complete hidden API suite 21/21, both
+bundle configurations with a byte-identical `lapis-ai` resource tree and zero
+ordinary automation markers, and the actual installed-provider two cases 2/2 on
+the first attempt. The complete four-shard catalog lane adds 2,124 executions
+with zero failures, so appended E-CORE-047 resolves immutable E-CORE-046's
+pending runs and M16.10 keeps its original Done gate.
 
-All 31 baseline payloads and three source receipt JSONs are retained under
-Desktop-owned ignored storage, along with the new pair and its provenance.
-Preserve required native receipts/logs before temporary-workspace cleanup. Notes
-owns R7 cutover and final source validation. R5/R6 remain Deferred; broader M10,
-Desktop default activation, visual review, signing and publication keep their
-original gates. Immutable E-AI-109's accepted formatting baseline remains.
+One Desktop-owned tooling defect was repaired: the complete headed suite loaded
+production TypeScript under bare Node, so three owner cases died resolving
+`@lapis-notes/api/dist/storage/app-database`. `scripts/desktop-acceptance.mjs`
+now preloads the governance-mandated tsx dev loader exactly as the hidden API
+lane does (before 104/108, after a cold 109/109). A fourth failure was
+compiler-slot contention from a sibling build rather than a product defect, so
+the shared Mac slot and 30 GiB guard are checked before every native lane.
+Published API dist still emits extensionless relative specifiers; that packaging
+repair stays with Notes.
+
+All 31 baseline payloads, three source receipt JSONs and the fresh Phase 2 lane
+logs, native/provider receipts and regenerated Tasks/distribution fixtures are
+retained under Desktop-owned ignored storage. Preserve required native
+receipts/logs before temporary-workspace cleanup. Notes owns R7 cutover and
+final source validation. R5/R6 remain Deferred; broader M10, Desktop default
+activation, visual review, signing and publication keep their original gates.
+Immutable E-AI-109's accepted formatting baseline remains.
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
@@ -149,7 +164,7 @@ E-CATALOG-010/016: footer/native qualified.
 | --- | --- | --- | --- | --- | --- | --- |
 | M16.8 | Done | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | None; later shared application work follows the Notes master tracker | E-CORE-035,E-CORE-038,E-CORE-040,E-CORE-041,E-CORE-042 |
 | M16.9 | Done | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | None; default cutover remains a separate gate | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039,E-CORE-040,E-CORE-041,E-CORE-042 |
-| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | R7 coherent Notes/public/native intake remains pending in E-CORE-046; E-CORE-045 retains its older provider proof. | E-CORE-043,E-CORE-044,E-CORE-045,E-CORE-046 |
+| M16.10 | Done | M16.9 | LD-AI-001,LD-AI-002,LD-AI-004,LD-AI-005,LD-AI-006,LD-AI-007,LD-CAT-003 | Explicit native queue selection routes generated accept/read/Stop/cancel/resume through the admitted Core owner; complete trusted recipient and mode capture, exact identities, uncertain observation, existing screen controls and cold no-replay recovery pass source/public, quiet/catalog and actual native gates without renderer scheduling or ordinary default activation. | E-CORE-047 qualifies the landed R7 cohort; E-CORE-045/046 stay immutable. | E-CORE-043,E-CORE-044,E-CORE-045,E-CORE-046,E-CORE-047 |
 
 ## Markdown document review
 

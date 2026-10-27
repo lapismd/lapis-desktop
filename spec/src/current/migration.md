@@ -8,11 +8,11 @@ E-CORE-042/044 adopt qualified slices into default with identical runtime,
 dependency and native-input selection. Metadata-only adoption MUST prove those
 inputs equal before reusing product evidence and qualify its changed documents.
 [M16.10](ai-queue.md) retains E-CORE-045/Notes `dfdf57e6` provider proof.
-E-CORE-046 intake is pending; default unchanged. Continue R7 cutover/test
-repair. Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6 remain
-Deferred. Linux service/compiler and headless browser evidence MUST NOT complete
-native macOS, actual-provider, distribution or original migration gates. The
-current task ledger retains completion status and next actions.
+E-CORE-047 qualifies the landed R7 cohort; default unchanged. Continue R7
+cutover/test repair. Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6
+remain Deferred. Linux service/compiler and headless browser evidence MUST NOT
+complete native macOS, actual-provider, distribution or original migration
+gates. The task ledger retains completion status and next actions.
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.

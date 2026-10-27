@@ -344,10 +344,10 @@ permission sources remain separate from those generated outputs.
 The desktop AI foundation and retained transcript fixtures map explicitly to
 `plugins.md`; JSON fixtures remain protected by spec-first validation.
 
-Retained AI metadata uses the declared registry YAML codec. Its Vault-backed
-Node acceptance loads public built API exports with the existing tsx dev loader;
-no loader or test state enters production. The verified archive cohort is
-retained.
+Retained AI metadata uses the declared registry YAML codec. Vault-backed, hidden
+API and complete headed Node acceptance all load public built API exports with
+the existing tsx dev loader; no loader or test state enters production. The
+verified archive cohort is retained.
 
 `pnpm test:ai` retains its Node policy lane in normal `pnpm test`.
 `vitest.workers.config.ts` and `tests/workers` map to

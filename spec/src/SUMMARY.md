@@ -386,3 +386,5 @@
 - [Actual installed-provider native queue acceptance](history/E-CORE-045.md)
 
 - [Pending coherent Desktop cutover intake](history/E-CORE-046.md)
+
+- [Phase 2 qualification of the coherent cutover intake](history/E-CORE-047.md)

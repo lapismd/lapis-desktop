@@ -76,6 +76,10 @@ async function acceptance() {
   await run(
     process.execPath,
     [
+      // Governance keeps the tsx dev loader for Node acceptance that imports
+      // production modules resolving public built API exports.
+      "--import",
+      "tsx",
       "--test",
       "--test-concurrency=1",
       "tests/desktop/lifecycle.test.mjs",

@@ -267,7 +267,7 @@ Later Core and dependency records retain their individual acceptance scopes:
   native/aggregate gates remain separate.
 - [E-DEPENDENCY-003](../history/E-DEPENDENCY-003.md): signed Bases
   metadata/edit/watch/cold-restart case, unchanged bytes and verified payloads;
-  aggregate UI and distribution remain separate.
+  aggregate UI/distribution remain separate.
 
-[E-CORE-045](../history/E-CORE-045.md): native provider queue/cold recovery
-pass.
+[E-CORE-045](../history/E-CORE-045.md): provider queue/cold recovery pass.
+[E-CORE-047](../history/E-CORE-047.md): R7 cohort pass.
