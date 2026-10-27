@@ -39,10 +39,24 @@ pub fn run() -> tauri::Result<()> {
         std::env::var("LAPIS_DESKTOP_EDITING_OWNER").ok().as_deref(),
     )
     .map_err(tauri::Error::Io)?;
+    let tasks_owner = lapis_desktop::vault::tasks::TasksOwner::parse(
+        std::env::var("LAPIS_DESKTOP_TASKS_OWNER").ok().as_deref(),
+    )
+    .map_err(tauri::Error::Io)?;
+    tasks_owner
+        .validate(
+            metadata_owner.is_core(),
+            matches!(
+                editing_owner,
+                lapis_desktop::vault::editing::EditingOwner::Core
+            ),
+        )
+        .map_err(tauri::Error::Io)?;
     let builder = tauri::Builder::default()
         .manage(turn_owner)
         .manage(metadata_owner)
         .manage(editing_owner)
+        .manage(tasks_owner)
         .manage(ai.clone())
         .manage(terminal.clone())
         .plugin(tauri_plugin_lapis_terminal::Builder::new(terminal).build())
@@ -165,6 +179,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::vault::files::vault_fs,
             crate::host::vault::editing::vault_editing_intents,
             crate::host::vault::editing::vault_editing_snapshot,
+            crate::host::vault::tasks::vault_tasks,
             crate::host::vault::watch::vault_watch_start,
             crate::host::vault::watch::vault_watch_stop,
             crate::host::database::vault_db_open,

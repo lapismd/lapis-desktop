@@ -1,6 +1,6 @@
 # Desktop plugins and catalog — [native turns](ai-adapter.md)
 
-E-CORE-033 adds WorkspaceShell recovery stories. Native-turn stories retain real
+E-CORE-033/036 adds recovery/admission stories. Native-turn stories retain real
 App/workspace/Agent screens, titles, sidebars, chat reuse and scoped drafts.
 Targets MUST declare safe `default_mode`; sends MUST assert the submitted mode.
 History fixtures model native publication through start/status, never client

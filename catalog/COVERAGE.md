@@ -1210,3 +1210,11 @@ is rendered. Desktop owns awaitable catalog teardown. These are source review
 stories; native Tauri admission, writer lifetimes and leave remain separate
 acceptance gates. The source files carry no additional license header; package
 license attribution remains with their public Lapis Notes components.
+
+`desktop/NativeTasks.stories.ts` uses production NotesWorkspace through the
+existing NotesDemo session fixture. It reviews absent declaration, held startup,
+completion and failure/recovery for the public App-owned native Tasks port. The
+fixture does not register a replacement Task plugin, execute a Task writer or
+qualify installed-plugin/native IO. Source is Desktop E-CORE-036; inherited
+NotesDemo lifecycle and public API exports remain authoritative. All four
+stories are visual-pending; composed functional/a11y acceptance is pending.

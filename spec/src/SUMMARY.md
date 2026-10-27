@@ -4,6 +4,7 @@
   - [Governance](current/governance.md)
     - [Native acceptance modes](current/native-acceptance.md)
   - [Desktop shell](current/desktop.md)
+  - [Native Tasks](current/tasks.md)
   - [Native workspace windows](current/windows.md)
   - [Desktop plugins and catalog](current/plugins.md)
   - [Desktop AI and optional compute](current/ai.md)
@@ -357,4 +358,13 @@
 - [Shared Desktop History controls](history/E-CORE-032.md)
 - [Staged Desktop native editing intents](history/E-CORE-033.md)
 - [Native editor qualification closure](history/E-CORE-034.md)
+
 - [Shared Core Repository reader intake](history/E-CORE-035.md)
+
+- [Staged native Tasks intake](history/E-CORE-036.md)
+
+- [Focused native Tasks qualification](history/E-CORE-037.md)
+
+- [Composed Core reader and Tasks admission](history/E-CORE-038.md)
+
+- [Installed Tasks native acceptance preparation](history/E-CORE-039.md)

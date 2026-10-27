@@ -1,9 +1,9 @@
 # Desktop shell
 
 Retained Core chat uses the Tauri composer, sidebar History and cold restart
-([E-CORE-022](../history/E-CORE-022.md)). History uses vault-owned indexing.
-[Indexing](background.md) stages Core metadata/Search on one admitted database;
-renderer metadata and Search remain default.
+([E-CORE-022](../history/E-CORE-022.md)). [Indexing](background.md) shares Core
+metadata/Search through one admitted database; renderer remains default. History
+indexing is vault-owned. [Tasks](tasks.md) stays opt-in.
 
 [Adapters](ai-adapter.md): defaults E-CORE-025; actual-provider screen recovery
 E-CORE-027.

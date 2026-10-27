@@ -60,6 +60,7 @@ fn main() {
         "vault_fs",
         "vault_editing_intents",
         "vault_editing_snapshot",
+        "vault_tasks",
         "vault_watch_start",
         "vault_watch_stop",
         "vault_db_open",

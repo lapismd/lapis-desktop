@@ -214,6 +214,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-vault-indexing",
     "allow-vault-editing-intents",
     "allow-vault-editing-snapshot",
+    "allow-vault-tasks",
     "allow-vault-db-close",
     "core:window:allow-start-dragging",
     "core:window:allow-internal-toggle-maximize",

@@ -118,6 +118,7 @@ for (const workspace of [false, true])
     const { snapshot, snapshotFile } = await import(
       "../../scripts/validation/source.mjs"
     );
+    const outerBase = process.env.LAPIS_DESKTOP_BASE;
     const directory = await mkdtemp(join(tmpdir(), "jj-validation-"));
     const primary = join(directory, "source"),
       repo = workspace ? join(directory, "workspace") : primary,
@@ -149,7 +150,12 @@ for (const workspace of [false, true])
       await writeFile(join(repo, "kept.txt"), "dirty");
       await rm(join(repo, "removed.txt"));
       await writeFile(join(repo, "new.txt"), "new\n");
+      // The worker's CI range belongs to its own repository. This disposable
+      // repository must supply an actual fixture revision, including in CI.
+      const base = jj(["log", "-r", "@-", "--no-graph", "-T", "commit_id"]);
+      process.env.LAPIS_DESKTOP_BASE = base;
       const manifest = await snapshot(repo, destination);
+      assert.equal(manifest.base, base);
       assert.equal(manifest.parents.length, 1);
       assert.equal(
         snapshotFile(repo, manifest.revision, "new.txt").toString(),
@@ -180,6 +186,8 @@ for (const workspace of [false, true])
       assert.equal(await readFile(join(restored, "new.txt"), "utf8"), "new\n");
       await assert.rejects(readFile(join(restored, "removed.txt")), /ENOENT/);
     } finally {
+      if (outerBase === undefined) delete process.env.LAPIS_DESKTOP_BASE;
+      else process.env.LAPIS_DESKTOP_BASE = outerBase;
       await rm(directory, { recursive: true, force: true });
     }
   });

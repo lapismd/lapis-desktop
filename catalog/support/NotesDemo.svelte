@@ -16,6 +16,7 @@
 
   import type { NativeChatHost } from "@lapis-notes/app-profile/native-chat";
   import type { App } from "@lapis-notes/api";
+  import type { NativeTasks } from "@lapis-notes/api/native-tasks";
   import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
   import type { AiFactory } from "../../src/lib/ai/plugin/services";
   import type { RepositoryFactory } from "../../src/lib/repository/services.ts";
@@ -30,6 +31,7 @@
     files = {},
     safeMode,
     backgroundIndexing,
+    nativeTasks,
     appDatabase,
   }: {
     class?: string;
@@ -40,6 +42,7 @@
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
     backgroundIndexing?: NativeBackgroundIndexing;
+    nativeTasks?: NativeTasks;
     appDatabase?: AppDatabase;
   } = $props();
 
@@ -86,6 +89,7 @@
     void boot
       .then(async (value) => {
         if (backgroundIndexing) value.backgroundIndexing = backgroundIndexing;
+        if (nativeTasks) value.nativeTasks = nativeTasks;
         if (disposed) await value.close();
         else session = value;
       })

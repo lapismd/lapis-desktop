@@ -18,20 +18,20 @@ Admission and exact operation pins remain unchanged.
 
 ## Native admission
 
-A separate service registry reuses the shared two-phase `VaultAdmissions`
-transition. Its pending tickets cannot authorize reads; its grants cannot enable
-AI, and AI grants cannot enable history. Native discovery observes the existing
-JJ metadata/Git paths. Admission pins the physical vault, JJ directory,
-working-copy directory, repository link, metadata/store and Git directory plus
-bounded store-type and Git-target file witnesses. Replaced directories, altered
-links and changed store bindings invalidate the grant. Ordinary external JJ
-operations may advance heads without changing this physical binding.
+Working-copy admission retains its separate two-phase `VaultAdmissions`
+registry; it grants no Core read or AI authority. Core history derives read
+scope from the admitted vault and dedicated Client described below. Native
+discovery observes existing JJ metadata/Git paths. Admission pins the physical
+vault, JJ directory, working-copy directory, repository link, metadata/store and
+Git directory plus bounded store-type and Git-target file witnesses. Replaced
+directories, altered links and changed store bindings invalidate the grant.
+Ordinary external JJ operations may advance heads without changing this physical
+binding.
 
-Native registration identities are installation-owned and do not initialize a
-companion identity in the source. A monotonic native registration generation
-fences retired grants. A same-root reload can retain its generation only after
-revalidating all source witnesses. Failed or stale completion cannot activate a
-replacement. Source proof failure and explicit retirement deny existing access.
+Installation-owned working-copy identities never initialize the source. Their
+monotonic generation fences retired grants. Same-root reload revalidates all
+witnesses before retaining a generation. Stale completion, failed source proof
+and explicit retirement cannot authorize access.
 
 Native product proof exceeds service tests; E-REPO-056 retains LD-REPO-001/002.
 

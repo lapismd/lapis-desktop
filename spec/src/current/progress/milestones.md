@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 00:19:39 UTC**.
+Last updated **2026-10-27 00:52:23 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -9,21 +9,22 @@ Last updated **2026-10-27 00:19:39 UTC**.
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
 
-| Work                                           | Current state                                                                                                                           | Remaining work                                                                                |
-| ---------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| Docker runner and Storybook guards             | Implemented and verified                                                                                                                | Final compatible package intake below; macOS acceptance stays separate                        |
-| Design Core, Mira, API and Agent/Repository UI | Compatible baseline qualified; selected picker contrast repair fully source-qualified                                                   | Publication and registry-only distribution remain deferred                                    |
-| Compatible Desktop dependency intake           | Complete: 2,016 catalog cases plus all scoped functional gates                                                                          | No remaining work in this intake; continue shared application work below                      |
-| Native target modes                            | E-CORE-025/026 verified                                                                                                                 | Complete for this intake; broader M10 qualification remains separate                          |
-| Signed Bases bundle                            | E-DEPENDENCY-003 native case passes                                                                                                     | Metadata, write/watch and cold restart verified; distribution remains separate                |
-| Retained native chat and History               | E-CORE-027 actual-provider case and retained fixture pass                                                                               | Complete for this intake; broader M10 and default cutover remain separate                     |
-| Desktop History scheduler intake               | Complete: E-CORE-028 source, catalog and cold native acceptance                                                                         | No remaining work in this intake; broader provider and default cutover gates remain separate  |
-| Desktop metadata owner intake                  | Complete: Core14, hidden14 and final88catalog pass                                                                                      | No remaining work in this intake; renderer default and native Search stay separate            |
-| Desktop native Search intake                   | Complete: 3 service, 37 native, 148 final affected catalog and 1,495 portable cases pass                                                | None for this Search intake; continue native Tasks and shared History                         |
-| Desktop shared History controls                | Complete: shared Core/public observer; 2 native unit, 2 WebView and 2,056 catalog cases pass                                            | None for this intake; native Tasks/shared reader adoption and default cutover remain separate |
-| Desktop native editor lifetimes                | Complete: source/public closures, 514 Node/744 AI/248 Rust, 2,068 catalog, 58 actual native and both app configurations pass            | None for M16.7; native Tasks/shared readers, broader R3 and default cutover remain separate   |
-| Shared Repository reader intake                | Working: bridge/lifetime implemented;2exact/161renderer/11governance/4service and both strict Rust hosts pass; source823317ad qualifies | Actual native UI/lifetime and composed Tasks/catalog acceptance                               |
-| Next shared application work                   | Scheduler/metadata/Search/History control intake complete; Tasks and shared reader work continue                                        | Complete Notes R3–R7 and each required Desktop service intake                                 |
+| Work                                           | Current state                                                                                                                | Remaining work                                                                                |
+| ---------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| Docker runner and Storybook guards             | Implemented and verified                                                                                                     | Final compatible package intake below; macOS acceptance stays separate                        |
+| Design Core, Mira, API and Agent/Repository UI | Compatible baseline qualified; selected picker contrast repair fully source-qualified                                        | Publication and registry-only distribution remain deferred                                    |
+| Compatible Desktop dependency intake           | Complete: 2,016 catalog cases plus all scoped functional gates                                                               | No remaining work in this intake; continue shared application work below                      |
+| Native target modes                            | E-CORE-025/026 verified                                                                                                      | Complete for this intake; broader M10 qualification remains separate                          |
+| Signed Bases bundle                            | E-DEPENDENCY-003 native case passes                                                                                          | Metadata, write/watch and cold restart verified; distribution remains separate                |
+| Retained native chat and History               | E-CORE-027 actual-provider case and retained fixture pass                                                                    | Complete for this intake; broader M10 and default cutover remain separate                     |
+| Desktop History scheduler intake               | Complete: E-CORE-028 source, catalog and cold native acceptance                                                              | No remaining work in this intake; broader provider and default cutover gates remain separate  |
+| Desktop metadata owner intake                  | Complete: Core14, hidden14 and final88catalog pass                                                                           | No remaining work in this intake; renderer default and native Search stay separate            |
+| Desktop native Search intake                   | Complete: 3 service, 37 native, 148 final affected catalog and 1,495 portable cases pass                                     | None for this Search intake; continue native Tasks and shared History                         |
+| Desktop shared History controls                | Complete: shared Core/public observer; 2 native unit, 2 WebView and 2,056 catalog cases pass                                 | None for this intake; native Tasks/shared reader adoption and default cutover remain separate |
+| Desktop native editor lifetimes                | Complete: source/public closures, 514 Node/744 AI/248 Rust, 2,068 catalog, 58 actual native and both app configurations pass | None for M16.7; native Tasks/shared readers, broader R3 and default cutover remain separate   |
+| Shared Repository reader intake                | Implemented; renderer, service and both strict Rust checks pass                                                              | Fresh macOS read/lifetime and full catalog acceptance                                         |
+| Native Tasks intake                            | Implemented; typed registration, startup and declaration stories pass                                                        | Installed Tasks, provider/locale/recovery and fresh macOS acceptance                          |
+| Next shared application work                   | Scheduler/metadata/Search/History control intake complete; Tasks and shared reader work continue                             | Complete Notes R3–R7 and each required Desktop service intake                                 |
 
 The final intake uses one frozen source and 26 verified archives, with Svelte
 5.56.10 matching the API peer. Design Core `b40f8c93` and Agent UI `0e549ebc`
@@ -74,6 +75,20 @@ functional, accessibility or runtime diagnostic failure is waived. Tool-image,
 JavaScript and native cache identities are already separated and qualified in
 E-VALIDATION-001. Further cache optimization remains Deferred; current cache
 boundaries are documented in `docs/validation.md`.
+
+M16.9 stages Tasks on qualified Notes `0ff929b1` / aggregate `823317ad`, with
+explicit Core metadata/editing prerequisites. API `419b47c5` / History
+`e714935f` retain all 31 archives and 116 public routes. The typed host command,
+4 service cases, 11 focused Node cases and 16 declaration catalog cases pass.
+Installed-plugin and full native/catalog gates keep M16.9 In progress.
+
+E-CORE-039 prepares four real installed Tasks native cases and passes nine
+fixture/transport checks. Shared wiring and the verified public artifact are
+ready. The older cohort passes 531 Node and 744 AI cases plus both static
+builds. Current work composes clean Desktop main `f276120b` and its file icons
+with the final shared Core source/packages. Older catalog work is stopped and
+retained; fresh complete catalog/Rust/macOS proof must use those combined
+inputs.
 
 <!-- migration-activity:end -->
 
@@ -184,7 +199,8 @@ E-CATALOG-010/016: footer/native qualified.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M16.8 | In progress | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | Bridge/lifetime implemented; exact2 and affected161 pass; finish focused Rust/native then composed Tasks/catalog gates | E-CORE-035 |
+| M16.8 | In progress | M16.7 | LD-REPO-001,LD-REPO-002,LD-REPO-004,LD-REPO-005,LD-CAT-003 | Desktop Repository discovery and both immutable source readers delegate to the shared Core Client on one existing worker/preparation queue; foreign/stale scopes, source replacement, retirement, blocked-close preservation and cold retained UI pass without duplicate read admission or new mutation authority. | Focused reader/service/strict checks pass; finish composed native and full catalog gate | E-CORE-035,E-CORE-038 |
+| M16.9 | In progress | M16.7 | LD-TASK-001,LD-TASK-002,LD-TASK-003,LD-CAT-003 | Explicit native Tasks selection uses the existing admitted App client, shared Task storage/journal and retained installed-plugin surfaces; full source/public archive, provider/locale, passive lifecycle, recovery and cold native/catalog acceptance pass without renderer fallback. | Composed26renderer/11governance/16catalog and strict hosts pass; qualify installed Tasks and full native/catalog | E-CORE-036,E-CORE-037,E-CORE-038,E-CORE-039 |
 
 ## Markdown document review
 

@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readTasksArtifact } from "./tasks-installed-assets.mjs";
 import { createHash, generateKeyPairSync, sign } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -276,6 +277,15 @@ export default class NativeLifecycle extends Plugin {
     wordcount.version,
     "official",
     "Word Count",
+  );
+  const tasks = readTasksArtifact(resolve(".local/native-tasks/artifact"));
+  const taskRelease = release("tasks", tasks.version, tasks.files);
+  addCatalog(
+    "tasks",
+    { [tasks.version]: taskRelease },
+    tasks.version,
+    "official",
+    "Tasks",
   );
   json(
     "index.json",

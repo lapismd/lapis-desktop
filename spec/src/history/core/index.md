@@ -26,4 +26,13 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Shared Desktop History controls](../E-CORE-032.md)
 
 - [Native editor qualification closure](../E-CORE-034.md)
+
 - [Shared Core Repository reader intake](../E-CORE-035.md)
+
+- [Staged native Desktop Tasks intake](../E-CORE-036.md)
+
+- [Focused native Tasks qualification](../E-CORE-037.md)
+
+- [Composed Core reader and Tasks admission](../E-CORE-038.md)
+
+- [Installed Tasks native acceptance preparation](../E-CORE-039.md)

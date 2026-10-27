@@ -2,7 +2,7 @@
 use super::VaultManager;
 use lapis_app_core::{
     embedding::host::NativeEmbeddingHost,
-    services::{BackupStorage, Client, DatabaseStorage, Runtime, VaultService},
+    services::{BackupStorage, Client, DatabaseStorage, Runtime, TaskStorage, VaultService},
     vault::VaultRoot,
 };
 use lapis_app_protocol::files::{FileCommand, FileValue};
@@ -76,6 +76,31 @@ impl VaultServices {
             .with_history_indexing(true);
         services.runtime = services.runtime.with_backup(storage);
         Ok(services)
+    }
+
+    pub fn with_tasks(mut self, profile: &Path) -> io::Result<Self> {
+        let root = VaultRoot::open(profile)?;
+        if let Err(error) = root.mkdir("tasks", false)
+            && error.kind() != io::ErrorKind::AlreadyExists
+        {
+            return Err(error);
+        }
+        let directory = root.open_directory("tasks")?;
+        #[cfg(unix)]
+        {
+            use std::os::unix::fs::PermissionsExt;
+            directory
+                .open(".")?
+                .into_std()
+                .set_permissions(std::fs::Permissions::from_mode(0o700))?;
+        }
+        #[cfg(not(unix))]
+        drop(directory);
+        root.verify_physical_root()?;
+        self.runtime = self
+            .runtime
+            .with_tasks(TaskStorage::new(&root.path().join("tasks")).map_err(io::Error::other)?);
+        Ok(self)
     }
 
     pub fn with_turns(

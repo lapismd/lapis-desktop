@@ -33,6 +33,7 @@ for (const marker of [
   "wdioTauri",
   "__wdio_mocks__",
   "__lapisPluginAcceptance",
+  "__lapisTasksAcceptance",
   "__lapisAcpAcceptance",
   "__lapisShellStartupAcceptance",
   "acp_acceptance_control",
@@ -92,7 +93,7 @@ assert.ok(rendererFiles.length > 0);
 for (const path of rendererFiles)
   assert.doesNotMatch(
     readFileSync(path, "utf8"),
-    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisAcpAcceptance|__lapisShellStartupAcceptance|__lapisNativeDatabaseAcceptance|__lapisNativeWatchAcceptance|__lapisConditionalWriteAcceptance|__lapisPopoutProof|__lapisDistributionAcceptance|__LAPIS_DISTRIBUTION_FIXTURE__|native-install-acceptance|native-install\.invalid/u,
+    /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisAcpAcceptance|__lapisShellStartupAcceptance|__lapisNativeDatabaseAcceptance|__lapisNativeWatchAcceptance|__lapisConditionalWriteAcceptance|__lapisPopoutProof|__lapisDistributionAcceptance|__lapisTasksAcceptance|__LAPIS_DISTRIBUTION_FIXTURE__|native-install-acceptance|native-install\.invalid/u,
   );
 const report = {
   result: "pass",

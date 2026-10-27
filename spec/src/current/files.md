@@ -8,6 +8,12 @@ preserves LD-VAULT-001–006 and LD-FILE-002/003; client-independent work and
 hosted use remain later shared-service gates. Native directory handles stay
 inside Rust and never enter the Tauri request or response shape.
 
+Explicit native Tasks requires Core editing and metadata ownership. Its typed
+command uses the same admitted App client and guarded Task journal; renderer
+requests cannot replace expected file versions or bypass dirty editor claims.
+Reader retirement uses a separate Core client and preserves App file/database
+authority (M16.8/9).
+
 R1.3 file IPC delegates portable operations to the shared vault service while
 preserving existing renderer frames and portable file errors. Native retained
 capabilities bind service admission; profiles, watches, resources and OS actions

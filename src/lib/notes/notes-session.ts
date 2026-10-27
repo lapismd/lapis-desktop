@@ -12,12 +12,19 @@ import {
   createNativeEditingIntents,
   type EditingOwner,
 } from "../native/editing/intents.ts";
+import {
+  createNativeTasks,
+  validateTasksSelection,
+  type TasksOwner,
+} from "../native/tasks/tasks.ts";
 
 export async function openNotesSession(
   selected: VaultDescriptor,
   metadataOwner: MetadataOwner = "renderer",
   editingOwner: EditingOwner = "renderer",
+  tasksOwner: TasksOwner = "renderer",
 ): Promise<VaultSession> {
+  validateTasksSelection(tasksOwner, metadataOwner, editingOwner);
   if (editingOwner !== "renderer" && editingOwner !== "core")
     throw new Error("Invalid editing owner selection");
   const now = Date.now();
@@ -48,5 +55,6 @@ export async function openNotesSession(
     session.backgroundIndexing = provider.backgroundIndexing;
   if (editingOwner === "core")
     session.nativeEditingIntents = createNativeEditingIntents(selected);
+  if (tasksOwner === "core") session.nativeTasks = createNativeTasks(selected);
   return session;
 }

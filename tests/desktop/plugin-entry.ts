@@ -1,4 +1,5 @@
 import { Plugin, type App } from "@lapis-notes/api";
+import { installTasksAcceptance } from "./tasks-entry.ts";
 import { installDistributionAcceptance } from "./distribution-entry.ts";
 import { installWorkspacePopupAcceptance } from "./popout-session.ts";
 
@@ -49,6 +50,7 @@ export function installPluginAcceptance(): void {
     if (!owned) throw new Error("No live plugin-owned acceptance App");
     return owned;
   }
+  installTasksAcceptance(application);
   installDistributionAcceptance(application);
   installWorkspacePopupAcceptance(application);
   Object.assign(globalThis, {

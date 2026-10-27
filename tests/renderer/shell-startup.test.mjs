@@ -40,6 +40,45 @@ test("ready content is exposed only after the native readiness acknowledgement",
   assert.equal(document.documentElement.dataset.runtimeClass, "desktop");
   assert.equal(document.documentElement.dataset.metadataOwner, "renderer");
   assert.equal(document.documentElement.dataset.editingOwner, "renderer");
+  assert.equal(document.documentElement.dataset.tasksOwner, "renderer");
+});
+test("native Tasks selection reaches session construction only with core metadata and editing", async () => {
+  const f = fixture();
+  await startShell({
+    document: f.document,
+    mount: () =>
+      assert.equal(f.document.documentElement.dataset.tasksOwner, "core"),
+    call: async (command) =>
+      command === "shell_info"
+        ? {
+            runtime: "tauri-desktop",
+            os: "macos",
+            tasksOwner: "core",
+            metadataOwner: "core",
+            editingOwner: "core",
+          }
+        : undefined,
+  });
+  for (const selection of [
+    { tasksOwner: "auto" },
+    { tasksOwner: "core", metadataOwner: "core" },
+    { tasksOwner: "core", editingOwner: "core" },
+  ]) {
+    const invalid = fixture();
+    await assert.rejects(
+      startShell({
+        document: invalid.document,
+        mount: () => invalid.events.push("mount"),
+        call: async () => ({
+          runtime: "tauri-desktop",
+          os: "macos",
+          ...selection,
+        }),
+      }),
+      /Tasks/,
+    );
+    assert.deepEqual(invalid.events, []);
+  }
 });
 test("native editing selection is validated before session and plugin construction", async () => {
   const f = fixture();
