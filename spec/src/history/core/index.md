@@ -44,3 +44,5 @@ Source, service, WebView and host-adoption evidence retain their separate gates.
 - [Default-workspace adoption of qualified Desktop Core intake](../E-CORE-042.md)
 
 - [Explicit Tauri shared queue intake](../E-CORE-043.md)
+
+- [Default-workspace native queue adoption](../E-CORE-044.md)

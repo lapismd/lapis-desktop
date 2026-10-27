@@ -4,7 +4,7 @@ Notes owns Rust master progress; Desktop owns native gates. E-CORE-022 qualifies
 archives/chat/History; E-CORE-028 adopts its vault-owned scheduler.
 E-CORE-029/030 qualify metadata/Search and E-CORE-033/034 editing. M16.8/9 are
 Done in E-CORE-040/041, including real installed Tasks and native readers.
-E-CORE-042 adopts that verified slice into default with identical runtime,
+E-CORE-042/044 adopt qualified slices into default with identical runtime,
 dependency and native-input selection. Metadata-only adoption MUST prove those
 inputs equal before reusing product evidence and qualify its changed documents.
 [M16.10 native queues](ai-queue.md) retain separate host/provider acceptance.

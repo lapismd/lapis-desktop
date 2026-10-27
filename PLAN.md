@@ -15,22 +15,27 @@ generated [migration checkpoint](MIGRATION.md) and E-CORE-040/041. Notes' master
 migration owns the later hosted/shared-runtime R0–R7 work; this Desktop roadmap
 does not imply default cutover.
 
-The verified slice is adopted into the default Desktop workspace from
-`cdf71da6`; E-CORE-042 records unchanged product/public/native inputs and the
-metadata-only main adoption.
+Native queue intake M16.10 is now qualified and adopted into the default
+workspace from `151e4f12` (E-CORE-043/044). All 2,124 catalog, 544 Node and 744
+AI cases pass; the new actual native queue/admission/screen checks pass five
+cases, alongside strict native checks and both complete-asset app
+configurations. The 31 public archives and native source inputs retain exact
+qualified bytes. Notes R4.1.6 actual installed-provider acceptance follows in
+separate native and hosted lanes; broader M10 and default/release gates remain
+open.
 
 The [AI tool expansion backlog](spec/src/backlog/ai-tool-expansion.md) is saved
 for later implementation: six stages covering discovery, structured edits,
 memory, workspace context, historical recall and link-aware moves. It is
 Deferred; current AI milestone gates and statuses remain unchanged (E-PLAN-004).
 
-| Workstream                            | Implemented and verified                                                                                                                                     | Remaining completion gates                                                                                                       |
-| ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| Foundation and plugins, M0–M9         | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                        | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                |
-| AI and conversations, M10/M13         | Local ACP UI/drafts/context, independent clients, native providers/tools and optional compute v0 implemented (E-AI-097); transcripts join Repository History | M13/M13.3 native chat Deferred; M10.2–M10.4 keep real-provider/model/recovery gates and documented secondary work                |
-| Automatic backup, M14                 | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded               | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain |
-| Shared Rust application services, M16 | Native metadata/Search/History/editing, shared Repository readers and installed native Tasks qualify against public Core/API boundaries                      | M16.1–M16.9 qualified; later shared application and cutover gates follow the Notes master tracker                                |
-| Distribution and cutover, M11/M12     | Roadmap retained; frozen Deno desktop remains a reference                                                                                                    | M11 Deferred until requested; M12 Planned with its M11 dependency and original gate retained                                     |
+| Workstream                            | Implemented and verified                                                                                                                                        | Remaining completion gates                                                                                                       |
+| ------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| Foundation and plugins, M0–M9         | Native vault/editor, save/reopen, watching, search/navigation, desktop integration, Terminal, catalog and installed plugins qualified                           | M7.3 ordinary pop-outs and M8.5 native presentation are qualified (E-CATALOG-016)                                                |
+| AI and conversations, M10/M13         | Local ACP UI/drafts/context, independent clients, native providers/tools and optional compute v0 implemented (E-AI-097); transcripts join Repository History    | M13/M13.3 native chat Deferred; M10.2–M10.4 keep real-provider/model/recovery gates and documented secondary work                |
+| Automatic backup, M14                 | All seven implementation stages integrated into main; focused native, renderer, catalog/accessibility, type and renderer-build checks recorded                  | M14.1 identity/storage, M14.2 capture/recovery, M14.3 restore/live history and M14.6 search are Done; real-provider gates remain |
+| Shared Rust application services, M16 | Native metadata/Search/History/editing, shared Repository readers, installed native Tasks and explicit native queues qualify against public Core/API boundaries | M16.1–M16.10 qualified; installed-provider and later shared/cutover gates follow the Notes master tracker                        |
+| Distribution and cutover, M11/M12     | Roadmap retained; frozen Deno desktop remains a reference                                                                                                       | M11 Deferred until requested; M12 Planned with its M11 dependency and original gate retained                                     |
 
 Repository History now includes automatic internal/external file capture,
 vault-ID-owned external JJ storage, history/blame/diffs and guarded restoration,

@@ -380,3 +380,5 @@
 - [Default-workspace adoption of qualified Desktop Core intake](history/E-CORE-042.md)
 
 - [Explicit Tauri shared queue intake](history/E-CORE-043.md)
+
+- [Default-workspace native queue adoption](history/E-CORE-044.md)
