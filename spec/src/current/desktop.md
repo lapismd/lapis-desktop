@@ -1,7 +1,8 @@
 # Desktop shell
 
 Core chat retains composer, sidebar History and cold restart (E-CORE-022/045).
-Queue proof uses these screens; window gates stay separate.
+Queue proof uses these screens; window gates stay separate. The cd997c2c pin
+adds only Core's serde_yaml lock edge (E-CORE-046 pending).
 [Indexing](background.md) shares admitted metadata/Search storage; renderer
 stays default. History indexing is vault-owned. [Tasks](tasks.md) and immutable
 readers retain native lifetime, original writer guards and M16.8/M16.9 gates.
@@ -80,8 +81,7 @@ Use public Tauri overlay configuration and native menus. Native-pointer access
 is limited to the macOS control-layout helper described below. Glass, other
 platform-pointer interop and user documents remain later work; see
 [windows](windows.md). Closing the only window exits this shell;
-unsaved-document coordination is introduced before document editing is
-considered qualified in M4.
+unsaved-document coordination precedes document-editing qualification in M4.
 
 The Notes workspace fills the native content area. Its existing 40px tab strips
 start at the top edge; no application title or session toolbar precedes them.
@@ -134,16 +134,16 @@ and persisted window positions must qualify that boundary separately; synthetic
 pointer results cannot waive it.
 
 Headed e2e readiness unhides the application and shows/focuses its window before
-the handshake; setting focus alone cannot unhide a background macOS process.
-This activation code is excluded from ordinary bundles. An e2e-only native probe
+the handshake; focus alone cannot unhide a background macOS process. This
+activation code is excluded from ordinary bundles. An e2e-only native probe
 distinguishes visibility, minimization, active-Space membership, occlusion and
 key-window state when foreground qualification fails. The original
-visible-document guard and its deadline remain mandatory. While its original
-15-second visibility deadline remains open, the acceptance driver may repeat
-Tauri's focus request for a hidden document. macOS can decline the first request
-while a preceding cold process is leaving its Space. The driver must observe
-actual visibility and a real animation frame before interacting. No Space,
-window-level or stacking override is applied.
+visible-document guard and its deadline remain mandatory. While that 15-second
+deadline stays open, the acceptance driver may repeat Tauri's focus request for
+a hidden document; macOS can decline the first request while a preceding cold
+process leaves its Space. The driver must observe actual visibility and a real
+animation frame before interacting. No Space, window-level or stacking override
+is applied.
 
 [Governance](governance.md#native-acceptance-modes) defines the separate hidden
 IPC acceptance mode and cold readiness policy.
@@ -165,9 +165,9 @@ append, and whole-file atomic write operations. Requests are serialized by the
 native vault owner. Files are limited to 64 MiB per whole-file operation, range
 reads to 256 KiB, and listings to 2,000 entries. The public Notes adapter is
 translated through an explicit command allowlist; unrelated service capabilities
-remain unavailable. M5 file-management operations and watching are governed
-separately in [File management](files.md). Streamed writes remain later intake
-and MUST fail explicitly until implemented.
+remain unavailable. M5 file management and watching are governed separately in
+[File management](files.md). Streamed writes remain later intake and MUST fail
+explicitly until implemented.
 
 Vault paths use forward slashes; the virtual root is the empty string. Reject
 dot/parent components, NUL, backslashes, drive prefixes, and paths over 4,096
@@ -193,7 +193,7 @@ receive usable filesystem failures, including EEXIST during state
 initialization.
 
 Directory listings return immediate child names at every depth, relative to the
-requested directory, as required by the public Notes vault adapter contract.
+requested directory, per the public Notes vault adapter contract.
 
 ## Native database and Notes intake (M3)
 
@@ -225,9 +225,9 @@ instead of silently opening another session.
 
 The desktop-owned initial plugin profile contains Source Editor, Markdown and
 File Explorer through public exports. Search and other plugin intake retain
-their later milestones. The retained WorkspaceShell owns presentation; desktop
-owns boot, profile resolution, native transport and teardown. M3's editing proof
-does not waive M4's close/save/conflict/session-restoration gate.
+later milestones. The retained WorkspaceShell owns presentation; desktop owns
+boot, profile resolution, native transport and teardown. M3's editing proof does
+not waive M4's close/save/conflict/session-restoration gate.
 
 ## Notes startup presentation
 

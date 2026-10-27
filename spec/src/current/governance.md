@@ -377,12 +377,12 @@ Registry icon imports remain portable. Local archive refresh retains payload
 verification and records each source repair before consumer qualification.
 
 Native dependency refresh records the clean owning source revision and its
-qualification separately from consumer checks. Update only required lock graph
-edges; locked checks and packaged ACP acceptance must retain existing gates.
-Native privacy uses the shared scanner policy and released transitive versions.
-E-AI-030 records the compatible macro/TOML lock selection, both native profiles
-and the real-policy fixture; no registry patch or synthetic policy substitutes
-for that qualification.
+qualification separately from consumer checks. The cd997c2c native pin awaits
+E-CORE-046. Update only required lock graph edges; locked checks and packaged
+ACP acceptance must retain existing gates. Native privacy uses the shared
+scanner policy and released transitive versions. E-AI-030 records the compatible
+macro/TOML lock selection, both native profiles and the real-policy fixture; no
+registry patch or synthetic policy substitutes for that qualification.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
