@@ -5,11 +5,12 @@
 import { createHash } from "node:crypto";
 import { execFileSync, spawnSync } from "node:child_process";
 import {
+  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
-  copyFileSync,
+  realpathSync,
   statSync,
   writeFileSync,
 } from "node:fs";
@@ -140,6 +141,8 @@ function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
 }
 
+const now = () => new Date().toISOString();
+
 // --- build the app (ad-hoc signed) ----------------------------------------
 function appPath() {
   return flags.debug ? debugApp : releaseApp;
@@ -168,14 +171,18 @@ function buildApp() {
 }
 
 // --- build + install plugins ----------------------------------------------
-function walkFiles(dir, base = dir) {
-  return readdirSync(dir, { withFileTypes: true })
-    .flatMap((entry) => {
-      const full = join(dir, entry.name);
-      if (entry.isDirectory()) return walkFiles(full, base);
-      return [full];
-    })
-    .map((full) => relative(base, full));
+function walkFiles(dir, base = realpathSync(dir)) {
+  const files = [];
+  const visit = (current) => {
+    for (const entry of readdirSync(current, { withFileTypes: true })) {
+      const full = join(current, entry.name);
+      const real = realpathSync(full);
+      if (statSync(real).isDirectory()) visit(real);
+      else files.push(real);
+    }
+  };
+  visit(realpathSync(dir));
+  return files.map((real) => relative(base, real));
 }
 
 function pluginRecord(id, version, srcDir) {
@@ -222,23 +229,37 @@ function installPlugins() {
     if (STATICALLY_BUNDLED.has(id)) continue;
     if (flags.only && !flags.only.has(id)) continue;
     const srcDir = join(releaseDir, entry.name, "files");
-    records.push({ id, version: release.version, srcDir });
+    records.push({ id, version: release.version, srcDir, files: release.files });
   }
 
-  // 3. Notebook (bundle-ready dist with its own runtime entry).
+  // 3. Notebook (bundle-ready dist with its own runtime entry). Its pnpm build
+  //    routes through the repo's Docker validation runner, so fall back to an
+  //    already-built dist/ when the heavy rebuild is unavailable locally.
   if (!flags.only || flags.only.has("lapis-notebook")) {
-    run("pnpm", ["build"], notebookRepo, {});
-    const manifest = JSON.parse(
-      readFileSync(join(notebookRepo, "dist", "manifest.json"), "utf8"),
-    );
-    const version = JSON.parse(
-      readFileSync(join(notebookRepo, "package.json"), "utf8"),
-    ).version;
-    records.push({
-      id: manifest.id ?? "lapis-notebook",
-      version,
-      srcDir: join(notebookRepo, "dist"),
-    });
+    const built = spawnSync("pnpm", ["build"], {
+      cwd: notebookRepo,
+      stdio: "inherit",
+      env: process.env,
+    }).status;
+    if (built !== 0)
+      process.stdout.write(
+        "Notebook validation build failed; using existing dist/ if present.\n",
+      );
+    const notebookManifest = join(notebookRepo, "dist", "manifest.json");
+    if (existsSync(notebookManifest)) {
+      const manifest = JSON.parse(readFileSync(notebookManifest, "utf8"));
+      const version = JSON.parse(
+        readFileSync(join(notebookRepo, "package.json"), "utf8"),
+      ).version;
+      records.push({
+        id: manifest.id ?? "lapis-notebook",
+        version,
+        srcDir: join(notebookRepo, "dist"),
+        files: null,
+      });
+    } else {
+      process.stdout.write("Skipping notebook: no dist/ bundle available.\n");
+    }
   }
 
   // 4. Materialize each plugin: copy into the throwaway stage (and into the
@@ -252,16 +273,22 @@ function installPlugins() {
     updatedAt: new Date().toISOString(),
     plugins: {},
   };
-  for (const { id, version, srcDir } of records) {
+  for (const { id, version, srcDir, files } of records) {
     const dest = join(pluginsDir, id);
     mkdirSync(dest, { recursive: true });
-    for (const file of walkFiles(srcDir)) {
-      const from = join(srcDir, file);
-      const to = join(dest, file);
-      mkdirSync(dirname(to), { recursive: true });
-      copyFileSync(from, to);
-    }
-    state.plugins[id] = pluginRecord(id, version, dest);
+    // Follow symlinks so deduplicated shared plugin assets are materialized as
+    // real bytes (the native asset route validates path/sha256/size of bytes).
+    cpSync(srcDir, dest, { recursive: true, dereference: true, force: true });
+    state.plugins[id] = files
+      ? {
+          pluginId: id,
+          installedVersion: version,
+          installedAt: now(),
+          updatedAt: now(),
+          provenance: "development",
+          files,
+        }
+      : pluginRecord(id, version, dest);
     process.stdout.write(
       `Installed ${id}@${version} (${state.plugins[id].files.length} files)\n`,
     );
