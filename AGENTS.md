@@ -209,12 +209,17 @@ is the inventoried entry point, it refuses without that opt-in or off macOS
 ARM64, and `tests/governance/native-lane-defaults.test.mjs` fails the default
 lane if Docker stops being the code-level runtime, if a default lane or manifest
 script collects a native lane, or if a native runtime selector appears outside
-the runner mechanism, that dispatcher and hosted CI. Hosted CI runs the same
-portable lane set plus headed acceptance on a macOS runner with its provisioned
-native runtime, because that platform provides no Docker daemon; a native or
-on-demand run is never Docker CI parity and must be labelled in evidence. Docker
-errors never trigger host fallback. Shared-package archives remain explicit
-private prerequisites; never transfer dirty sibling sources or user profiles.
-Use `pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation
-qualification. Do not publish, replace installed applications, or reuse a user's
-profile for tests.
+the runner mechanism, that dispatcher and hosted CI. `pnpm build:local:macos`
+builds an unsigned, ad-hoc signed macOS app for local testing and installs the
+dynamically distributable first-party plugins (development provenance) into a
+vault's `.lapis/` directory; it is macOS ARM64 only, refuses a real signing
+identity, is excluded from every default lane
+(`tests/governance/local-macos-build-exclusion.test.mjs`), and never replaces an
+installed app or a user profile. Hosted CI runs the same portable lane set plus
+headed acceptance on a macOS runner with its provisioned native runtime, because
+that platform provides no Docker daemon; a native or on-demand run is never
+Docker CI parity and must be labelled in evidence. Docker errors never trigger
+host fallback. Shared-package archives remain explicit private prerequisites;
+never transfer dirty sibling sources or user profiles. Use `pnpm check`,
+`pnpm test`, and `pnpm spec:check` for foundation qualification. Do not publish,
+replace installed applications, or reuse a user's profile for tests.

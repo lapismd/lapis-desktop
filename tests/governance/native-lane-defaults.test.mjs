@@ -207,6 +207,7 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
     selectors.sort(),
     [
       ".github/workflows/ci.yml",
+      "scripts/local-macos-build.mjs",
       "scripts/macos-native-lanes.mjs",
       "scripts/validation.mjs",
       // The worker re-selects the runtime for its nested in-container dispatch.

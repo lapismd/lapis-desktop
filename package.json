@@ -23,6 +23,7 @@
     "test": "node scripts/validation.mjs run test",
     "test:desktop": "node scripts/validation.mjs run test:desktop",
     "desktop:bundle": "tauri build --bundles app",
+    "build:local:macos": "node scripts/local-macos-build.mjs",
     "spec:validate": "node scripts/validation.mjs run spec:validate",
     "spec:first": "node scripts/validation.mjs run spec:first",
     "spec:check": "node scripts/validation.mjs run spec:check",
