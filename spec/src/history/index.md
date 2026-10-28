@@ -61,6 +61,7 @@ by the task ledger, not inferred from this list.
 - [E-LIFE-001: safe lifecycle and restoration](E-LIFE-001.md)
 - [E-LIFE-002: shell failure presentation](E-LIFE-002.md)
 - [E-LIFE-003: native shell failure requalification](E-LIFE-003.md)
+- [E-LIFE-004: SUMMARY line-limit repair](E-LIFE-004.md)
 
 - [E-WRITE-001: native conditional text storage](E-WRITE-001.md)
 
