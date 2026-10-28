@@ -378,7 +378,8 @@ commit or JJ change. Only recorded parents are selectable; merge choices remain
 explicit. Missing metadata uses at most four 50-node pinned operation graph
 pages for at most 64 missing cards. Known cards are reused; stale selection,
 comparison, pin and close responses are fenced. Metadata failure preserves the
-comparison and uses an App toast plus explicit retry.
+comparison and uses an App toast plus explicit retry. Failed final backup leave
+keeps the ready shell and surfaces through Problems with a toast, not chrome above it.
 
 The compact JJ Log and Op Log header selectors choose exact pinned operations,
 not workspaces. Both use public Command View/Popover with ID search, explicit

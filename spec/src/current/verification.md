@@ -44,20 +44,20 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-MIG-002 | Implemented | [E-SHELL-002](../history/E-SHELL-002.md); [E-PLAN-002](../history/E-PLAN-002.md); [E-PLAN-003](../history/E-PLAN-003.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass; [E-PLAN-006](../history/E-PLAN-006.md): M11 Deferred; original gate and M12 dependency retained. |
 | LD-HOST-001 | Implemented | [E-HOST-001](../history/E-HOST-001.md). |
 | LD-VAULT-001 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
-| LD-VAULT-002 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
+| LD-VAULT-002 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md); [E-LIFE-002](../history/E-LIFE-002.md): chooser in-body failure presentation. |
 | LD-VAULT-003 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md); [E-SESSION-002](../history/E-SESSION-002.md) |
 | LD-VAULT-004 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
 | LD-VAULT-005 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md) |
-| LD-VAULT-006 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md); [E-REVIEW-001](../history/E-REVIEW-001.md) |
+| LD-VAULT-006 | Implemented | [E-VAULT-001](../history/E-VAULT-001.md); [E-REVIEW-001](../history/E-REVIEW-001.md); [E-LIFE-002](../history/E-LIFE-002.md): chooser in-body failure alert. |
 | LD-DB-001 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-DB-002 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-DB-003 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-DB-004 | Implemented | Historical M3 receipts retain [E-DB-001](../history/E-DB-001.md). [E-CORE-016](../history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-SESSION-001 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md) |
 | LD-SESSION-002 | Implemented | [E-SESSION-002](../history/E-SESSION-002.md) |
-| LD-LIFE-001 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
+| LD-LIFE-001 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass; [E-LIFE-002](../history/E-LIFE-002.md): ready-session Problems/toast presentation. |
 | LD-LIFE-002 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
-| LD-LIFE-003 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
+| LD-LIFE-003 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass; [E-LIFE-002](../history/E-LIFE-002.md): restoration failure in chooser body. |
 | LD-LIFE-004 | Implemented | [E-CONFLICT-001](../history/E-CONFLICT-001.md); [E-PREVIEW-001](../history/E-PREVIEW-001.md); [E-MUTATION-001](../history/E-MUTATION-001.md); [E-WRITERS-001](../history/E-WRITERS-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source and writer audit pass. |
 | LD-LIFE-005 | Implemented | [E-LIFE-001](../history/E-LIFE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-LIFE-006 | Implemented | [E-WRITE-001](../history/E-WRITE-001.md); [E-QUALIFICATION-002](../history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |

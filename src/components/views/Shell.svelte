@@ -3,7 +3,6 @@
   import VaultLauncher from "../vaults/VaultLauncher.svelte";
   import { createNativePluginAssetServer } from "../../lib/native/plugin-assets.ts";
   import NotesWorkspace from "./NotesWorkspace.svelte";
-  import DesktopFailure from "./DesktopFailure.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
   import { createNativeChatHost } from "../../lib/native/ai/native-chat.ts";
@@ -190,7 +189,6 @@
   hidden={session !== null}
   inert={leaving}
 >
-  {#if failure && !session}<DesktopFailure message={failure} />{/if}
   <div class="shell-stage">
     {#if restoring || openingNotes}
       <DesktopWorkspaceStartup
@@ -211,6 +209,7 @@
       <VaultLauncher
         {client}
         {returnProfileId}
+        errorMessage={failure}
         onError={reportFailure}
         onOpenNotes={openNotes}
       />

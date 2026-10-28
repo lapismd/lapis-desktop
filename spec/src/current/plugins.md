@@ -397,4 +397,4 @@ catalog fixture enters production. Native Search review adds admitted rebuild
 and lifecycle states (E-CORE-030); App/vault own metadata and status.
 
 E-AI-106/107/110 review header actions, required provider models and shared
-Compute quantity/file inputs through production stories; native gates remain.
+Compute inputs through production stories. Shell lifecycle ReadySessionFailure covers host Problems/toast presentation; native gates remain.

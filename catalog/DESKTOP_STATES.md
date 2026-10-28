@@ -75,7 +75,7 @@ source-owned.
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Vault launcher           | Existing/recent vault, first launch with empty recents, create, cancelled picker, pending selection, failed open/missing recent, return to vault                                                                     | Desktop/Vault launcher: OpenVault, EmptyRecents, CreateVault, CancelledPicker, OpeningVault, FailedOpen, RecentVault, MissingRecentVault, ReturnToVault       |
 | Launcher overlays        | Recent search, no matching recents, appearance choices                                                                                                                                                               | Desktop/Vault launcher: RecentSearch, NoMatchingRecents, AppearanceSettings                                                                                   |
-| Shell lifecycle          | Restoring the saved profile, unavailable physical vault, failed Close with retained session                                                                                                                          | Desktop/Shell lifecycle: RestoringProfile, MissingSavedVault, BlockedClose                                                                                    |
+| Shell lifecycle          | Restoring the saved profile, unavailable physical vault, launcher in-body leave failure, ready-session host failure via Problems and toast                                                                           | Desktop/Shell lifecycle: RestoringProfile, MissingSavedVault, BlockedClose; HostLifecycle ReadySessionFailure                                                 |
 | Notes startup            | Opening storage, plugin loading with task progress, failed layout and every existing recovery action                                                                                                                 | Desktop/Startup and recovery: RestoringVault, LoadingNotes, FailedLayout                                                                                      |
 | Safe Mode                | Optional plugins disabled, saved layout skipped, rebuild completion, failed restart                                                                                                                                  | Desktop/Startup and recovery: OptionalPluginsDisabled, SavedLayoutSkipped, FailedRecoveryAction                                                               |
 | File conflict recovery   | Retained local draft and changed disk text, deleted file, unreadable disk, failed write, pending resolution, fresh snapshot, stale decision, leaving with controls disabled                                          | Desktop/File conflicts: ModifiedOnDisk, DeletedOnDisk, UnreadableDisk, FailedRecovery, RecoveryInProgress, FreshDiskSnapshot, StaleDecision, LeavingWorkspace |
@@ -92,9 +92,11 @@ visible for review; fixture cleanup releases work before closing its owned App.
 
 Initial shell loading/failure is reviewed in `Desktop/Initial shell loading`.
 The loading scenes retain the existing shared startup surface. Failed startup
-and Safe Mode scenes run the actual NotesWorkspace. The shell failure scenes run
-the actual Shell with injected failing native ports. No replacement screen or
-production fixture is introduced.
+and Safe Mode scenes run the actual NotesWorkspace. Launcher failure scenes run
+the actual Shell with injected failing native ports and the shared chooser
+in-body alert. Ready-session host failure mounts WorkspaceShell and the
+production host-lifecycle publisher into Problems and a toast. No replacement
+screen is introduced.
 
 Native traffic lights, dragging/focus, OS picker input, clipboard, default-app
 opening, system trash and process cleanup retain their actual headed checks.

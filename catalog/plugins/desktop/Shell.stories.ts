@@ -16,6 +16,18 @@ const meta: Meta = {
 };
 export default meta;
 type Story = StoryObj;
+
+async function launcherAlert(canvasElement: HTMLElement, text: string) {
+  const canvas = within(canvasElement);
+  const alert = await canvas.findByRole("alert");
+  expect(alert.closest("[data-desktop-vault-launcher]")).not.toBeNull();
+  expect(canvasElement.querySelector(".desktop-failure")).toBeNull();
+  await expect(alert).toHaveTextContent(text);
+  await expect(
+    canvas.getByRole("button", { name: /^Open Vault/ }),
+  ).toBeEnabled();
+}
+
 export const RestoringProfile: Story = {
   parameters: { scenario: "restoring" },
   play: async ({ canvasElement }) => {
@@ -29,28 +41,18 @@ export const RestoringProfile: Story = {
 };
 export const MissingSavedVault: Story = {
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const alerts = await canvas.findAllByRole("alert");
-    expect(alerts).toHaveLength(1);
-    expect(alerts[0]!.querySelector("svg")).not.toBeNull();
-    for (const alert of alerts)
-      await expect(alert).toHaveTextContent("The saved vault folder has moved");
-    await expect(
-      canvas.getByRole("button", { name: /^Open Vault/ }),
-    ).toBeEnabled();
+    await launcherAlert(
+      canvasElement,
+      "The saved vault folder has moved",
+    );
   },
 };
 export const BlockedClose: Story = {
   parameters: { scenario: "leave-failed" },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const alerts = await canvas.findAllByRole("alert");
-    expect(alerts).toHaveLength(1);
-    expect(alerts[0]!.querySelector("svg")).not.toBeNull();
-    for (const alert of alerts)
-      await expect(alert).toHaveTextContent("Your session remains available");
-    await expect(
-      canvas.getByRole("button", { name: /^Open Vault/ }),
-    ).toBeEnabled();
+    await launcherAlert(
+      canvasElement,
+      "Your session remains available",
+    );
   },
 };

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 
 export const nativeFailure =
-  'section[aria-label="Notes workspace"] .desktop-failure [role="alert"]';
+  'section[aria-label="Notes workspace"] [data-ui-component="workspace-notification-toasts"] [data-ui-part="toast"][role="alert"]';
 
 export const conflictReview = (path) =>
   `section[aria-label="File conflict: ${path}"]`;

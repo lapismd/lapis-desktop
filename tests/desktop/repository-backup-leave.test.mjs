@@ -93,7 +93,7 @@ test(
     chmodSync(protectedFile, 0o000);
     await first.requestClose(true);
     const failure = browser.$(
-      'section[aria-label="Notes workspace"] .desktop-failure [role="alert"]',
+      'section[aria-label="Notes workspace"] [data-ui-component="workspace-notification-toasts"] [data-ui-part="toast"][role="alert"]',
     );
     await failure.waitForDisplayed({ timeout: 30000 });
     assert.equal(first.isRunning(), true);

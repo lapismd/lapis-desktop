@@ -49,8 +49,8 @@ host callers can preserve failure acknowledgement.
 M16.7/E-CORE-033 binds opt-in native editor intents and authoritative snapshots
 to that same admitted file client. Existing conditional saves retain their own
 caller exemption; foreign active/dirty/retained writers remain fenced. Desktop
-adds no alternate save or recovery path. Refused preflight preserves watching
-and mounted Problems actions before protected teardown.
+adds no alternate save or recovery path. Refused leave and ready-session host
+failures preserve watching and surface through Problems with a toast, not chrome above WorkspaceShell.
 
 E-AI-093 keeps LD-FILE-002/003 ordinary watch, picker and containment contracts
 unchanged. Backup-only watches use the shared native transcript allowlist;

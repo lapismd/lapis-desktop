@@ -31,11 +31,11 @@
   import { registerDesktopPluginBrowser } from "../../lib/notes/notes-plugin-browser.ts";
   import { NotesRecovery } from "../../lib/notes/notes-recovery.svelte.ts";
   import FileConflicts from "../files/FileConflicts.svelte";
-  import DesktopFailure from "./DesktopFailure.svelte";
   import { disposeNotesWorkspace } from "../../lib/notes/notes-dispose.ts";
   import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
   import { attachNotesUrls } from "../../lib/notes/notes-integration.ts";
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
+  import { bindHostLifecycleFailure } from "../../lib/desktop/host-lifecycle-failure.ts";
 
   import type { TerminalFactory } from "../../lib/terminal/terminal-binding.ts";
   import type { NativeChatHost } from "@lapis-notes/app-profile/native-chat";
@@ -107,6 +107,7 @@
   const disposePluginSettings = registerPluginManagementSettings(app);
   const disposePluginBrowser = registerDesktopPluginBrowser(app);
   const dailyDocumentProvider = registerDefaultDailyDocumentProvider(app);
+  const lifecycle = bindHostLifecycleFailure(app);
   let ready = $state(false);
   let popouts = $state.raw<DesktopPopouts>();
   let busy = $state(true);
@@ -124,10 +125,6 @@
   const workspaceNavigation = $derived(
     notesNavigation(session.profile?.name ?? "Lapis Notes", back),
   );
-
-  function message(failure: unknown): string {
-    return failure instanceof Error ? failure.message : String(failure);
-  }
 
   function setTask(
     id: string,
@@ -178,9 +175,16 @@
     }
   }
 
+  $effect(() => {
+    const message = ready ? error || hostFailure : "";
+    if (message) lifecycle.publish(message);
+    else lifecycle.clear();
+  });
+
   onMount(() => {
     startup = initialize();
     return () => {
+      lifecycle.dispose();
       if (!disposed)
         void dispose().catch((failure) =>
           console.error("Notes teardown failed", failure),
@@ -232,7 +236,7 @@
       disposed = true;
     })().catch(async (failure) => {
       shutdown = undefined;
-      error = message(failure);
+      error = failure instanceof Error ? failure.message : String(failure);
       busy = false;
       if (ready && !coreDisposed) {
         await popouts?.resume();
@@ -250,7 +254,7 @@
       await dispose();
       await onBack();
     } catch (failure) {
-      error = message(failure);
+      error = failure instanceof Error ? failure.message : String(failure);
       busy = false;
     }
   }
@@ -273,9 +277,6 @@
   aria-label="Notes workspace"
   aria-busy={busy}
 >
-  {#if error || hostFailure}<DesktopFailure
-      message={error || hostFailure}
-    />{/if}
   {#if ready}
     <div class="notes-session-workspace" inert={busy}>
       <WorkspaceShell

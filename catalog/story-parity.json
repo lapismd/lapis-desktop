@@ -301,6 +301,10 @@
     "kind": "component",
     "subject": "@lapis-notes/workspace#WorkspaceShell"
   },
+  "catalog/plugins/desktop/HostLifecycle.stories.ts": {
+    "kind": "component",
+    "subject": "@lapis-notes/workspace#WorkspaceShell"
+  },
   "catalog/plugins/desktop/FileConflicts.stories.ts": {
     "kind": "component",
     "subject": "src/components/files/FileConflicts.svelte#default"

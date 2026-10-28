@@ -123,7 +123,9 @@ test("native retained claims refuse leave and recover through the mounted Proble
     );
   assert.equal((await retained()).detached, true);
   await returnToVaults(browser);
-  const failure = browser.$('.desktop-failure [role="alert"]');
+  const failure = browser.$(
+    '[data-ui-component="workspace-notification-toasts"] [data-ui-part="toast"][role="alert"]',
+  );
   await failure.waitForDisplayed();
   assert.match(await failure.getText(), /Unresolved editing claims/);
   assert.equal(await editor.isExisting(), true);
