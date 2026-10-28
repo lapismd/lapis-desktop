@@ -348,8 +348,8 @@
 
 - [Docker-first consumer qualification](history/E-VALIDATION-002.md)
 - [Compatible Docker consumer qualification](history/E-VALIDATION-003.md)
-
 - [Docker-default runtime and on-demand macOS lanes](history/E-VALIDATION-004.md)
+- [Dead-owner checkout lease adoption](history/E-VALIDATION-005.md)
 - [Actual provider reload-detach preflight](history/E-CORE-024.md)
 - [Trusted native target default modes](history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](history/E-CORE-026.md)

@@ -124,6 +124,13 @@ then rechecks active ownership before releasing a lease. Only an explicit
 `--caches` additionally removes unused owned volumes. The runner never uses
 global Docker prune.
 
+Lease acquisition records the creating process on the lease as `owner-pid` and
+`owner-host` labels, so an interrupted run cannot strand its checkout: the next
+run releases and recreates a conflicting lease whose recorded owner is provably
+absent on the same host (`ESRCH`), and only once every owned worker is settled.
+A live, foreign-host, missing or malformed owner record keeps blocking
+acquisition; explicit cleanup authority above is unchanged.
+
 ## Story composition
 
 `catalog/story-parity.json` classifies every executable story family under

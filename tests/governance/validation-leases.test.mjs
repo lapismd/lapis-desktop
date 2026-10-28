@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { hostname } from "node:os";
 import { test } from "node:test";
 import {
   completed,
@@ -9,7 +11,10 @@ import {
 import { label } from "../../scripts/validation/model.mjs";
 
 const runId = "a".repeat(64),
-  leaseId = "b".repeat(64);
+  leaseId = "b".repeat(64),
+  adoptedLeaseId = "c".repeat(64),
+  ownerPid = `${label}.owner-pid`,
+  ownerHost = `${label}.owner-host`;
 const terminal = {
   Status: "exited",
   Running: false,
@@ -226,4 +231,226 @@ test("a successful operation returns its result and releases a worker-free lease
   );
   assert.equal(result, "receipt");
   assert.equal(f.records.size, 0);
+});
+
+/** A child that already exited supplies a PID that is provably absent (ESRCH). */
+function absentPid() {
+  const exited = spawnSync(process.execPath, ["-e", "process.exit(0)"]);
+  assert.equal(exited.status, 0);
+  assert.throws(() => process.kill(exited.pid, 0), { code: "ESRCH" });
+  return exited.pid;
+}
+const ownerLabels = (pid, host = hostname()) => ({
+  [ownerPid]: String(pid),
+  [ownerHost]: host,
+});
+
+/**
+ * Models the atomic Docker name guard: create conflicts while the lease name
+ * exists, records the exact labels of a successful create and resolves
+ * inspect by immutable ID or by name, as the acquisition path requires.
+ */
+function acquisitionFixture({ owner, state = terminal, leased = true } = {}) {
+  const commands = [],
+    collected = [],
+    warns = [];
+  const records = new Map([
+    [
+      runId,
+      {
+        Id: runId,
+        Name: "/lapis-desktop-validation-test",
+        State: state,
+        Config: {
+          Labels: { [label]: "run", [`${label}.workspace`]: "workspace" },
+        },
+      },
+    ],
+  ]);
+  if (leased)
+    records.set(leaseId, {
+      Id: leaseId,
+      Name: "/lapis-desktop-validation-lease-workspace",
+      Config: {
+        Labels: {
+          [label]: "lease",
+          [`${label}.workspace`]: "workspace",
+          ...owner,
+        },
+      },
+    });
+  const io = {
+    output(_config, args) {
+      commands.push(args);
+      if (args[0] === "create") {
+        const name = args[args.indexOf("--name") + 1];
+        for (const record of records.values())
+          if (record.Name === `/${name}`)
+            throw Error(
+              `Conflict. The container name "/${name}" is already in use by container "${record.Id}"`,
+            );
+        const labels = {};
+        args.forEach((arg, index) => {
+          if (arg !== "--label") return;
+          const [key, ...rest] = args[index + 1].split("=");
+          labels[key] = rest.join("=");
+        });
+        records.set(adoptedLeaseId, {
+          Id: adoptedLeaseId,
+          Name: `/${name}`,
+          Config: { Labels: labels },
+        });
+        return adoptedLeaseId;
+      }
+      if (args[0] === "inspect") {
+        const record =
+          records.get(args[1]) ??
+          [...records.values()].find((entry) => entry.Name === `/${args[1]}`);
+        if (!record) throw Error("No such container");
+        return JSON.stringify(record);
+      }
+      if (args[0] === "volume") return "";
+      if (args[0] === "ps")
+        return [...records.values()]
+          .filter((record) =>
+            args.includes(`label=${label}=${record.Config.Labels[label]}`),
+          )
+          .map((record) => record.Id)
+          .join("\n");
+      throw Error("Unexpected Docker command");
+    },
+    async docker(_config, args) {
+      commands.push(args);
+      assert.equal(args[0], "rm");
+      assert.ok(
+        /^[a-f0-9]{64}$/.test(args[1]),
+        "delete by immutable container ID",
+      );
+      records.delete(args[1]);
+    },
+    async collect(_config, id) {
+      collected.push(id);
+    },
+    warn(message) {
+      warns.push(message);
+    },
+  };
+  return { io, commands, records, collected, warns };
+}
+
+test("an interrupted run's lease never blocks the next run once its owner is absent", async () => {
+  const f = acquisitionFixture({ owner: ownerLabels(absentPid()) });
+  const result = await withWorkspaceLease(
+    {},
+    "workspace",
+    "image",
+    async () => "receipt",
+    f.io,
+  );
+  assert.equal(result, "receipt");
+  assert.equal(f.records.has(leaseId), false, "stale lease removed by ID");
+  assert.equal(
+    f.records.has(adoptedLeaseId),
+    false,
+    "fresh lease released after the operation",
+  );
+  assert.equal(f.records.has(runId), true, "terminal worker remains");
+  const creates = f.commands.filter((args) => args[0] === "create");
+  assert.equal(creates.length, 2);
+  assert.ok(creates[1].includes(`${ownerPid}=${process.pid}`));
+  assert.ok(creates[1].includes(`${ownerHost}=${hostname()}`));
+  assert.equal(
+    f.warns.some((message) => message.includes("stale")),
+    true,
+    "adoption is reported",
+  );
+});
+
+test("a dead owner's lease is retained while any worker is still running", async () => {
+  const f = acquisitionFixture({
+    owner: ownerLabels(absentPid()),
+    state: { ...terminal, Status: "running", Running: true },
+  });
+  await assert.rejects(
+    withWorkspaceLease({}, "workspace", "image", async () => "receipt", f.io),
+    /retained/,
+  );
+  assert.equal(f.records.has(leaseId), true);
+  assert.equal(f.records.size, 2, "no second lease was created");
+});
+
+test("a live recorded owner keeps blocking a concurrent run", async () => {
+  const f = acquisitionFixture({ owner: ownerLabels(process.pid) });
+  let entered = false;
+  await assert.rejects(
+    withWorkspaceLease(
+      {},
+      "workspace",
+      "image",
+      async () => {
+        entered = true;
+      },
+      f.io,
+    ),
+    /live or unverifiable owner/,
+  );
+  assert.equal(entered, false);
+  assert.equal(f.records.size, 2);
+});
+
+test("missing, foreign or malformed owner records never grant adoption", async () => {
+  for (const owner of [
+    {},
+    ownerLabels(absentPid(), "elsewhere"),
+    { ...ownerLabels(absentPid()), [ownerPid]: "unknown" },
+  ]) {
+    const f = acquisitionFixture({ owner });
+    await assert.rejects(
+      withWorkspaceLease({}, "workspace", "image", async () => "receipt", f.io),
+      /live or unverifiable owner/,
+    );
+    assert.equal(f.records.has(leaseId), true);
+    assert.equal(f.records.size, 2);
+  }
+});
+
+test("an unowned name squatter is never adopted or removed", async () => {
+  const f = acquisitionFixture({ leased: false });
+  f.records.set(leaseId, {
+    Id: leaseId,
+    Name: "/lapis-desktop-validation-lease-workspace",
+    Config: { Labels: { [label]: "unowned" } },
+  });
+  await assert.rejects(
+    withWorkspaceLease({}, "workspace", "image", async () => "receipt", f.io),
+    /Conflict/,
+  );
+  assert.equal(f.records.has(leaseId), true);
+});
+
+test("a create failure without an owned lease conflict keeps its original error", async () => {
+  const f = acquisitionFixture({ leased: false });
+  const output = f.io.output;
+  f.io.output = (config, args) => {
+    if (args[0] === "create") throw Error("Unable to find image");
+    return output(config, args);
+  };
+  await assert.rejects(
+    withWorkspaceLease({}, "workspace", "image", async () => "receipt", f.io),
+    /Unable to find image/,
+  );
+  assert.equal(f.records.size, 1);
+});
+
+test("explicit cleanup authority is unchanged by owner recording", async () => {
+  const f = acquisitionFixture({ owner: ownerLabels(process.pid) });
+  const result = await cleanOwned({}, ["--apply"], f.io);
+  assert.deepEqual(result.stoppedContainers, [runId]);
+  assert.deepEqual(result.leaseContainers, [leaseId]);
+  assert.deepEqual(f.collected, [runId]);
+  assert.equal(
+    f.records.size,
+    0,
+    "a settled lease is released even with a live recorded owner",
+  );
 });

@@ -61,10 +61,10 @@ not qualify deferred native-store capture or application-tool integration.
 | LD-GOV-010 | Portable validation MUST default to isolated Docker execution of exact tracked Jujutsu snapshots and ancestry, with pinned tools, bounded resources and heap limits at build dispatch, checksummed explicit prerequisites, keyed caches and retained reports. Docker failures MUST NOT fall back to the host. Native macOS application/window and visual-approval gates MUST remain separate; CI MAY explicitly select its provisioned native runtime.   |
 
 Checkout leases MUST remain held for created, running, paused or uncertain
-workers. Release and cleanup MUST require known completed owned runs and
-immutable container identities; failed transport queries cannot prove
-completion. Workers MUST drop Linux capabilities so permission checks cannot
-bypass DAC.
+workers; only a proven-absent recorded owner permits adoption. Release, cleanup
+and adoption MUST require known completed owned runs and immutable container
+identities; failed transport queries prove nothing. Workers MUST drop Linux
+capabilities so permission checks cannot bypass DAC.
 
 The user authorized verified local pnpm archives until the publication gate. The
 ignored overlay verifies checksums/revisions, redirects matching ranges and

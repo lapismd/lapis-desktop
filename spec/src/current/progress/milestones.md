@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-27 23:41:00 UTC**.
+Last updated **2026-10-28 02:14:03 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -99,7 +99,12 @@ Docker daemon and `check:bundle`/hidden-API are macOS-only by construction, so
 any native or on-demand run is labelled and never presented as Docker parity.
 The stale remote lease that blocked every Docker lane was released through the
 repository's own ownership-checked cleanup, and a persistent SSH ControlMaster
-in the ignored local config recovered the flaky host.
+in the ignored local config recovered the flaky host. Lease acquisition now
+records its owner process on the lease and adopts a conflicting lease only after
+that recorded owner is proven absent and every owned worker is settled, so an
+interrupted Docker run can no longer strand later lanes; a live or unverifiable
+recorded owner still blocks, and explicit cleanup authority is unchanged
+(E-VALIDATION-005).
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
@@ -138,7 +143,7 @@ M12 retains its M11 dependency and cutover gate (E-PLAN-006).
 | M7.1 | Done | M7 | LD-MIG-002,LD-POP-001 | An isolated actual native WebView opens a related window with an accessible Window and Document, mounts an existing shared surface, and proves focus, resize, close and cleanup. Ordinary bundles retain denied popup creation and contain no proof instrumentation. | Complete; proof retained | E-POPOUT-001 |
 | M7.2 | Done | M7.1 | LD-MIG-002,LD-POP-002,LD-POP-003,LD-POP-004,LD-POP-006 | Browser acceptance moves a real note into a popup and back while preserving its draft and editor history. Multiple popups remain independent, overlays stay in their own document, and failed opening or closing leaves source content reachable. Top and stacked popup headers reserve native-control clearance after resize. | Complete; native ordinary integration remains M7.3 | E-POPOUT-002 |
 | M7.3 | Done | M7.2 | LD-MIG-002,LD-POP-001,LD-POP-002,LD-POP-003,LD-POP-004,LD-POP-005,LD-POP-006 | The ordinary packaged app opens, edits, saves, redocks and safely closes multiple native windows with no duplicate sessions or stale resources. | Complete; continue AI and backup | E-POPOUT-003,E-POPOUT-004,E-REPO-050,E-SHELL-003 |
-| M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002,E-VALIDATION-001,E-VALIDATION-003,E-VALIDATION-004 |
+| M8 | Done | M7 | LD-MIG-002 | Storybook build, interaction and accessibility checks pass; native Terminal lifecycle and portable-plugin persistence are qualified; web has no AI/Terminal activation or connection paths. | Complete; continue to M9.1 | E-PLUGINS-001,E-PLUGINS-003,E-CATALOG-001,E-CATALOG-008,E-TERMINAL-001,E-WEB-001,E-PORTABLE-001,E-PORTABLE-002,E-VALIDATION-001,E-VALIDATION-003,E-VALIDATION-004,E-VALIDATION-005 |
 | M9 | Done | M8 | LD-MIG-002 | Signed-package verification, shared API identity, restart, failed-load recovery, capability restrictions and bundled-ID collision checks pass in a packaged app. | Complete; continue to M10.1 native ACP adapter | E-PLUGINS-001,E-PLUGINS-003,E-INSTALL-001 |
 | M10 | In progress | M9 | LD-MIG-002 | Native chat, approvals, cancellation, tool edits, recovery, isolation and cleanup pass without ai-controller; compute receives separate model-lifecycle and peer-admission qualification. | Continue native AI and persistence qualification | E-PLUGINS-001,E-PLUGINS-002,E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
 | M11 | Deferred | M10 | LD-MIG-002 | Install, upgrade, rollback, clean-machine launch, and platform filesystem/WebView tests pass. Local `.app` success alone does not complete distribution. | Await explicit resumption; retain distribution and platform gates | E-PLAN-006 |

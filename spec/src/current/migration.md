@@ -12,7 +12,8 @@ landed R7 cohort and integrated main; continue R7 cutover/test repair.
 Host/M10.2/R3–R7/AI/default/M11 gates stay separate; R5/R6 remain Deferred.
 Linux service/compiler and headless browser evidence MUST NOT complete native
 macOS, actual-provider, distribution or original migration gates. Live provider
-and macOS native lanes are opt-ins (E-TEST-002, E-VALIDATION-004).
+and macOS native lanes are opt-ins (E-TEST-002, E-VALIDATION-004); interrupted
+Docker runs no longer strand checkout leases (E-VALIDATION-005).
 
 M15.1 MUST retain its original gates; [Review](markdown-review.md) is Deferred.
 [Shared-screen integration](shared-screen-integration.md) retains E-SHARED-006.
