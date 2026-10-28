@@ -55,6 +55,7 @@
   - [E-SESSION-002: complete native Notes qualification](history/E-SESSION-002.md)
   - [Safe lifecycle and restoration](history/E-LIFE-001.md)
   - [Shell failure presentation](history/E-LIFE-002.md)
+  - [Native shell failure requalification](history/E-LIFE-003.md)
   - [Native conditional text storage](history/E-WRITE-001.md)
   - [API editor conflict recovery](history/E-CONFLICT-001.md)
   - [Workspace peer archive verification](history/E-ARCHIVES-001.md)

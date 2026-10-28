@@ -397,4 +397,4 @@ restores tab drops; E-AI-095/096 cover model discovery and private drafts.
 E-AI-103/105–110: approval/header, tabbed settings and shared Compute inputs;
 full gates remain. E-AI-115 verifies shared context root indentation only.
 E-CORE-027 and E-DEPENDENCY-003 qualify provider recovery and signed Bases
-intake. E-LIFE-002 repairs shell failure presentation (chooser body / Problems+toast). Final dependency intake and native AI default selection remain separate.
+intake. E-LIFE-002/003 repair and natively requalify shell failure presentation. Final dependency intake and native AI default selection remain separate.
