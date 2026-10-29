@@ -38,10 +38,12 @@ Intentional host execution requires an explicit runtime selection:
 LAPIS_DESKTOP_VALIDATION_RUNTIME=native pnpm check:types
 ```
 
-Hosted CI selects its provisioned native runtime explicitly. Development
-servers, local archive preparation, preview maintenance, native bundles and
-visual baseline approval are outside the portable runner. Screenshots do not
-approve baselines.
+Hosted CI selects its provisioned native runtime explicitly. Portable lanes,
+specification checks, Storybook, the bundle gate and headed acceptance run as
+separate Turbo jobs when they do not share Cargo output or a dev-server port.
+Development servers, local archive preparation, preview maintenance, native
+bundles and visual baseline approval are outside the portable runner.
+Screenshots do not approve baselines.
 
 ## Exact sources and private prerequisites
 

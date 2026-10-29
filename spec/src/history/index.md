@@ -5,16 +5,13 @@
 - [Compute model selection and fresh app qualification](E-AI-125.md)
 - [Compute run controls and workspace status](E-AI-124.md)
 - [Local compute library, progress and recovery](E-AI-123.md)
-
 - [Shared native history service intake](E-REPO-056.md)
 - [Saved AI tool expansion backlog](E-PLAN-004.md)
 - [Saved Markdown Review plan and contract](E-PLAN-005.md)
 - [Deferred desktop distribution milestone](E-PLAN-006.md)
-
 - [Progressive import browser design review](E-AI-120.md)
 - [Indexed progressive local imports](E-AI-121.md)
 - [Searchable model settings and processor restrictions](E-AI-122.md)
-
 - [Markdown-first vault memory](E-AI-118.md)
 - [Processor model dropdowns and settings tabs](E-AI-119.md)
 

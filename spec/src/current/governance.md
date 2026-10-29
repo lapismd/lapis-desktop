@@ -387,14 +387,14 @@ AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 Local checks use quiet renderer/native-service/catalog lanes; Docker is the
-default runtime, macOS native lanes are on-demand opt-ins (E-VALIDATION-004) and
-CI uses headed acceptance. Hidden WebKit pauses frames; service success cannot
-qualify native UI. [Acceptance modes](native-acceptance.md) retain
+default runtime and macOS native lanes are on-demand opt-ins (E-VALIDATION-004).
+Hosted CI runs those lanes, spec:first, the bundle gate and headed acceptance as
+separate Turbo jobs. Hidden WebKit pauses frames; service success cannot qualify
+native UI. [Acceptance modes](native-acceptance.md) retain
 cold/hidden/headed/capture gates. Registry pins are Mira `~0.1.2` and
 `@lapismd/jj-history` `~0.1.0`. The private `@lapismd/jj-conversations` link
 stays; renderer tests preload tsx (E-CATALOG-009/010).
 
 E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.
-
 E-SHELL-003 retains LD-GOV-002/004/007 and debug acceptance gates; physical
 input remains distinct from synthetic DOM events.

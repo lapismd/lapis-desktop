@@ -8,6 +8,7 @@ spec/book/
 .qmd/
 .DS_Store
 storybook-static/
+.turbo/
 test-results/
 playwright-report/
 

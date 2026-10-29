@@ -1,52 +1,311 @@
-name: Foundation checks
+name: CI
+
 on:
-  push:
   pull_request:
+  push:
+    branches:
+      - main
+
 permissions:
   contents: read
+
+defaults:
+  run:
+    shell: bash
+
+concurrency:
+  group: lapis-desktop-ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+  TURBO_API: ${{ vars.TURBO_API }}
+  TURBO_TEAM: ${{ vars.TURBO_TEAM }}
+  TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+  TURBO_REMOTE_CACHE_SIGNATURE_KEY:
+    ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
+
 jobs:
-  foundation:
-    runs-on: macos-15
-    timeout-minutes: 35
-    env:
-      LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+  governance:
+    name: Governance
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v4
+      - name: Check out the repository
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10.34.5
-      - uses: actions/setup-node@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
         with:
           node-version-file: .node-version
           cache: pnpm
-      - uses: dtolnay/rust-toolchain@1.99.0
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Install mdBook
+        uses: taiki-e/install-action@v2
         with:
-          components: clippy,rustfmt
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: jj@0.45.1,mdbook@0.5.4
+          tool: mdbook@0.5.4
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
         run: node scripts/ci-revisions.mjs
-      - run: pnpm install --frozen-lockfile
-      - run: pnpm check
-      - run: pnpm test
-      - run: pnpm spec:check
-      - name: Check specification changes over the selected revision range
-        run:
-          pnpm spec:first --base "$LAPIS_DESKTOP_BASE" --head
-          "$LAPIS_DESKTOP_HEAD"
-      - run: pnpm build
-      - run: pnpm desktop:bundle --debug
-      - run: pnpm check:bundle
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run governance checks
+        run: node scripts/run-turbo.mjs ci:governance --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  quality:
+    name: Quality
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - name: Install mdBook
+        uses: taiki-e/install-action@v2
+        with:
+          tool: mdbook@0.5.4
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Initialize Jujutsu over the checked-out Git revision
+        run: jj git init --colocate .
+      - name: Select the actual pull-request or push revision range
+        run: node scripts/ci-revisions.mjs
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run formatting, type, and source checks
+        run: node scripts/run-turbo.mjs ci:quality --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  unit:
+    name: Unit tests
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Run unit tests
+        run: node scripts/run-turbo.mjs ci:unit --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  storybook-static:
+    name: Static Storybook
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build Storybook
+        run: node scripts/run-turbo.mjs ci:storybook-static --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  storybook-interaction:
+    name: Storybook interactions
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+      - name: Run Storybook interaction and accessibility tests
+        run: node scripts/run-turbo.mjs ci:storybook-interaction --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  bundle:
+    name: Native bundle
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Build, bundle, and audit the native app
+        run: node scripts/run-turbo.mjs ci:bundle --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
+
+  headed:
+    name: Native ARM64 acceptance
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
       - name: Native ARM64 acceptance
-        run: pnpm test:desktop:headed
+        run: node scripts/run-turbo.mjs ci:headed --summarize
+      - name: Report Turbo cache
+        run: node scripts/report-turbo-cache.mjs --github-summary
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: native-acceptance
           path: .local/native-test/
           if-no-files-found: ignore
+
+  audit:
+    name: Dependency audits
+    needs:
+      - governance
+      - quality
+      - unit
+      - storybook-static
+      - storybook-interaction
+      - bundle
+      - headed
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+      - name: Audit all dependencies
+        run: pnpm audit
+      - name: Audit production dependencies
+        run: pnpm audit --prod
+
+  validate:
+    name: Validate
+    if: always()
+    needs:
+      - governance
+      - quality
+      - unit
+      - storybook-static
+      - storybook-interaction
+      - bundle
+      - headed
+      - audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Aggregate blocking validation lanes
+        env:
+          GOVERNANCE: ${{ needs.governance.result }}
+          QUALITY: ${{ needs.quality.result }}
+          UNIT: ${{ needs.unit.result }}
+          STORYBOOK_STATIC: ${{ needs.storybook-static.result }}
+          STORYBOOK_INTERACTION: ${{ needs.storybook-interaction.result }}
+          BUNDLE: ${{ needs.bundle.result }}
+          HEADED: ${{ needs.headed.result }}
+          AUDIT: ${{ needs.audit.result }}
+        run: |
+          set -euo pipefail
+          results=(
+            "$GOVERNANCE"
+            "$QUALITY"
+            "$UNIT"
+            "$STORYBOOK_STATIC"
+            "$STORYBOOK_INTERACTION"
+            "$BUNDLE"
+            "$HEADED"
+            "$AUDIT"
+          )
+          for result in "${results[@]}"; do
+            if [ "$result" != "success" ]; then
+              echo "A required Lapis Desktop validation lane finished with: $result" >&2
+              exit 1
+            fi
+          done
+          echo "All blocking Lapis Desktop validation lanes passed."

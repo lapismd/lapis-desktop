@@ -59,7 +59,15 @@
     "validation": "node scripts/validation.mjs",
     "validation:doctor": "node scripts/validation.mjs doctor",
     "validation:images": "node scripts/validation.mjs images",
-    "check:rust:e2e": "node scripts/validation.mjs run check:rust:e2e"
+    "check:rust:e2e": "node scripts/validation.mjs run check:rust:e2e",
+    "ci:governance": "pnpm spec:check && pnpm spec:first --base \"${LAPIS_DESKTOP_BASE:?}\" --head \"${LAPIS_DESKTOP_HEAD:?}\"",
+    "ci:quality": "pnpm check",
+    "ci:unit": "pnpm test",
+    "ci:storybook-static": "pnpm build-storybook",
+    "ci:storybook-interaction": "pnpm test:storybook",
+    "ci:bundle": "pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle",
+    "ci:headed": "pnpm test:desktop:headed",
+    "checks": "node scripts/run-turbo.mjs ci:governance ci:storybook-static --summarize && node scripts/run-turbo.mjs ci:storybook-interaction --summarize && node scripts/run-turbo.mjs ci:quality --summarize && node scripts/run-turbo.mjs ci:unit --summarize && node scripts/run-turbo.mjs ci:bundle --summarize"
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.1.0",
@@ -131,6 +139,7 @@
     "storybook": "10.5.7",
     "svelte-check": "^4.3.1",
     "tsx": "^4.23.1",
+    "turbo": "^2.5.4",
     "typescript": "~5.9.3",
     "vite": "7.3.2",
     "vitest": "4.1.11",

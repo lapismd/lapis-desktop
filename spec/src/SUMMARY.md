@@ -347,12 +347,12 @@
 - [Retained native chat and History navigation](history/E-CORE-022.md)
 - [Docker-first dependency intake](history/E-CORE-023.md)
 - [Docker-first portable validation and story composition](history/E-VALIDATION-001.md)
-
 - [Docker-first consumer qualification](history/E-VALIDATION-002.md)
 - [Compatible Docker consumer qualification](history/E-VALIDATION-003.md)
 - [Docker-default runtime and on-demand macOS lanes](history/E-VALIDATION-004.md)
 - [Dead-owner checkout lease adoption](history/E-VALIDATION-005.md)
 - [Local-only macOS app build with bundled plugins](history/E-VALIDATION-006.md)
+  · [Parallel hosted CI](history/E-VALIDATION-007.md)
 - [Actual provider reload-detach preflight](history/E-CORE-024.md)
 - [Trusted native target default modes](history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](history/E-CORE-026.md)

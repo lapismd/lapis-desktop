@@ -5,10 +5,10 @@ import { runDesktopTests } from "../../scripts/desktop-tests.mjs";
 
 test("CI retains explicit headed native acceptance when the local default is quiet", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
-  assert.match(
-    workflow,
-    /name: Native ARM64 acceptance\s+run: pnpm test:desktop:headed\n/u,
-  );
+  const { scripts } = JSON.parse(readFileSync("package.json", "utf8"));
+  assert.equal(scripts["ci:headed"], "pnpm test:desktop:headed");
+  assert.match(workflow, /name: Native ARM64 acceptance\b/u);
+  assert.match(workflow, /run-turbo\.mjs ci:headed\b/u);
 });
 
 async function commands(args) {

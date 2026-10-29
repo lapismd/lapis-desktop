@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-29 11:04:09 UTC**.
+Last updated **2026-10-29 11:44:00 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -111,7 +111,8 @@ resolve from npm. `lapis-ai-capture`, `tauri-plugin-lapis-ai`, and
 `lapis-ai-app-tools` resolve from git tag `v0.2.0`. Unpublished sibling links
 and untagged crate paths stay.
 [E-DEPENDENCY-004](../../history/E-DEPENDENCY-004.md) records the lock and
-compile proof. This does not move M10 or M11.
+compile proof. This does not move M10 or M11. Hosted CI runs the same lanes as
+separate Turbo jobs (E-VALIDATION-007).
 
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
