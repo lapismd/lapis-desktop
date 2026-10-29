@@ -15,7 +15,7 @@ on failure. [Search/Graph](navigation.md), [plugins/Terminal](plugins.md) and
 LD-DESK-003 keeps Core AI/History caller/session admission native; renderer
 paths, generations, actors, executables and environment stay denied. Portable
 Docker checks use test-only bundles and compatible registry packages. Actual
-helpers, windows and platform resources require ordinary native app-build
+helpers, windows and platform resources require native app-build
 acceptance.
 
 ## Requirements

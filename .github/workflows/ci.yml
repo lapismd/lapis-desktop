@@ -124,6 +124,8 @@ jobs:
         uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy,rustfmt
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
       - name: Build unpublished path packages
         run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
@@ -249,6 +251,54 @@ jobs:
           path: .local/native-test/
           if-no-files-found: ignore
 
+  linux:
+    name: Native Linux (${{ matrix.target }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Check out path dependencies
+        run: node scripts/ci-siblings.mjs
+      - name: Install Linux WebKit build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev patchelf
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          targets: ${{ matrix.target }}
+          components: clippy,rustfmt
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
+      - name: Install dependencies
+        run: node scripts/ci-install.mjs
+      - name: Build the Linux release binary
+        env:
+          CARGO_BUILD_JOBS: "2"
+        run: pnpm exec tauri build --target "${{ matrix.target }}" --no-bundle
+      - uses: actions/upload-artifact@v7
+        if: success()
+        with:
+          name: native-linux-${{ matrix.target }}
+          path: src-tauri/target/${{ matrix.target }}/release/lapis-desktop
+          if-no-files-found: error
+
   audit:
     name: Dependency audits
     needs:
@@ -259,6 +309,7 @@ jobs:
       - storybook-interaction
       - bundle
       - headed
+      - linux
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -293,6 +344,7 @@ jobs:
       - storybook-interaction
       - bundle
       - headed
+      - linux
       - audit
     runs-on: ubuntu-latest
     steps:
@@ -305,6 +357,7 @@ jobs:
           STORYBOOK_INTERACTION: ${{ needs.storybook-interaction.result }}
           BUNDLE: ${{ needs.bundle.result }}
           HEADED: ${{ needs.headed.result }}
+          LINUX: ${{ needs.linux.result }}
           AUDIT: ${{ needs.audit.result }}
         run: |
           set -euo pipefail
@@ -316,6 +369,7 @@ jobs:
             "$STORYBOOK_INTERACTION"
             "$BUNDLE"
             "$HEADED"
+            "$LINUX"
             "$AUDIT"
           )
           for result in "${results[@]}"; do

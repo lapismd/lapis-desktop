@@ -352,7 +352,8 @@
 - [Dead-owner checkout lease adoption](history/E-VALIDATION-005.md)
 - [Local-only macOS app build with bundled plugins](history/E-VALIDATION-006.md)
   · [Parallel hosted CI](history/E-VALIDATION-007.md) ·
-  [Sibling install projection](history/E-VALIDATION-008.md)
+  [Sibling install projection](history/E-VALIDATION-008.md) ·
+  [Linux release binaries and Storybook Pages](history/E-VALIDATION-009.md)
 - [Actual provider reload-detach preflight](history/E-CORE-024.md)
 - [Trusted native target default modes](history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](history/E-CORE-026.md)
@@ -383,7 +384,6 @@
 - [Final main and shared Core Desktop qualification](history/E-CORE-040.md)
 
 - [Native handoff recovery and final Desktop acceptance](history/E-CORE-041.md)
-
 - [Default-workspace adoption of qualified Desktop Core intake](history/E-CORE-042.md)
 
 - [Explicit Tauri shared queue intake](history/E-CORE-043.md)

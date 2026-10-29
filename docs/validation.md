@@ -41,9 +41,11 @@ LAPIS_DESKTOP_VALIDATION_RUNTIME=native pnpm check:types
 Hosted CI selects its provisioned native runtime explicitly. Portable lanes,
 specification checks, Storybook, the bundle gate and headed acceptance run as
 separate Turbo jobs when they do not share Cargo output or a dev-server port.
-Development servers, local archive preparation, preview maintenance, native
-bundles and visual baseline approval are outside the portable runner.
-Screenshots do not approve baselines.
+Linux CI also builds `x86_64-unknown-linux-gnu` and `aarch64-unknown-linux-gnu`
+release binaries. Storybook Pages publishes
+<https://lapismd.github.io/lapis-desktop/>. Development servers, local archive
+preparation, preview maintenance, native bundles and visual baseline approval
+are outside the portable runner. Screenshots do not approve baselines.
 
 ## Exact sources and private prerequisites
 

@@ -68,6 +68,33 @@ test("hosted CI projects unpublished packages and restores the tracked lock", ()
   assert.match(install, /writeFileSync\(lockPath, originalLock\)/u);
 });
 
+test("hosted CI builds both Linux release targets and keeps the macOS jobs", () => {
+  const ci = readFileSync(".github/workflows/ci.yml", "utf8");
+  const pages = readFileSync(
+    ".github/workflows/publish-storybook-pages.yml",
+    "utf8",
+  );
+  for (const target of [
+    "x86_64-unknown-linux-gnu",
+    "aarch64-unknown-linux-gnu",
+  ])
+    assert.match(ci, new RegExp(target, "u"));
+  assert.match(ci, /name: Native bundle\b/u);
+  assert.match(ci, /name: Native ARM64 acceptance\b/u);
+  assert.match(
+    ci,
+    /tauri build --target "\$\{\{ matrix\.target \}\}" --no-bundle/u,
+  );
+  assert.match(pages, /actions\/checkout@v6/u);
+  assert.match(pages, /actions\/setup-node@v6/u);
+  assert.match(pages, /pnpm\/action-setup@v6/u);
+  assert.match(pages, /node-version: 24/u);
+  assert.match(
+    readFileSync("README.md", "utf8"),
+    /https:\/\/lapismd\.github\.io\/lapis-desktop\//u,
+  );
+});
+
 test("sibling preparation skips a build the checkout does not define", () => {
   const steps = [
     ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],

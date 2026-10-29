@@ -225,6 +225,7 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
   const selectors = [
     ...walk(resolve(root, "scripts")),
     ".github/workflows/ci.yml",
+    ".github/workflows/publish-storybook-pages.yml",
     "package.json",
   ].filter(
     (path) =>
@@ -235,6 +236,7 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
     selectors.sort(),
     [
       ".github/workflows/ci.yml",
+      ".github/workflows/publish-storybook-pages.yml",
       "scripts/local-macos-build.mjs",
       "scripts/macos-native-lanes.mjs",
       "scripts/validation.mjs",
