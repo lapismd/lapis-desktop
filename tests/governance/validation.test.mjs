@@ -4,7 +4,63 @@ import { readFile } from "node:fs/promises";
 import {
   archiveMember,
   ciToolDirectory,
+  toolPins,
 } from "../../scripts/validation/install-tools.mjs";
+
+test("hosted CI installs the pinned macOS Jujutsu archive", () => {
+  assert.equal(
+    toolPins("darwin", "arm64", true)[0][1],
+    "jj-v0.45.1-aarch64-apple-darwin.tar.gz",
+  );
+  assert.throws(() => toolPins("darwin", "arm64", false), /Unsupported/);
+  assert.equal(toolPins("linux", "arm64", true)[0][0], "jj");
+});
+
+test("hosted workflows pin Node 24 actions", async () => {
+  const { readdir } = await import("node:fs/promises");
+  const dir = new URL("../../.github/workflows/", import.meta.url);
+  for (const name of await readdir(dir)) {
+    if (!/\.ya?ml$/.test(name)) continue;
+    const source = await readFile(new URL(name, dir), "utf8");
+    assert.match(source, /node-version: 24/u);
+    assert.doesNotMatch(source, /node-version:\s*20/u);
+    assert.doesNotMatch(source, /node-version-file:/u);
+    assert.doesNotMatch(source, /actions\/checkout@v4/u);
+    assert.doesNotMatch(source, /actions\/setup-node@v4/u);
+    assert.doesNotMatch(source, /pnpm\/action-setup@v4/u);
+    assert.doesNotMatch(source, /actions\/upload-artifact@v4/u);
+  }
+});
+
+test("unpublished packages stay registry ranges until install projection", async () => {
+  const { projectUnpublished } = await import("../../scripts/ci-install.mjs");
+  const manifest = {
+    dependencies: {
+      "@lapismd/agent-ui": "^0.1.0",
+      "@lapismd/repository-ui": "^0.1.0",
+      "@lapis-notes/app-profile": "^0.0.0",
+    },
+  };
+  const projected = projectUnpublished(manifest, () => true);
+  assert.equal(
+    projected.dependencies["@lapismd/agent-ui"],
+    "link:../agent-ui/packages/agent-ui",
+  );
+  assert.equal(manifest.dependencies["@lapismd/agent-ui"], "^0.1.0");
+  assert.throws(
+    () =>
+      projectUnpublished(
+        {
+          dependencies: {
+            ...manifest.dependencies,
+            "@lapismd/agent-ui": "link:../agent-ui/packages/agent-ui",
+          },
+        },
+        () => true,
+      ),
+    /registry range/,
+  );
+});
 
 test("hosted CI installs Jujutsu only into runner-owned temporary paths", () => {
   assert.throws(() => ciToolDirectory({}), /runner-owned/);

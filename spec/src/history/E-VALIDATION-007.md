@@ -34,10 +34,25 @@
     "tests/governance/desktop-test-mode.test.mjs",
     "tests/governance/native-lane-defaults.test.mjs",
     "tests/governance/turbo-task-graph.test.mjs",
-    "turbo.json"
+    "turbo.json",
+    "tests/governance/validation.test.mjs",
+    ".github/workflows/publish-storybook-pages.yml",
+    "README.md",
+    "scripts/ci-install.mjs",
+    "scripts/ci-prepare-links.mjs",
+    "scripts/validation/install-tools.mjs",
+    "src-tauri/tests/fixtures/acp-provider.rs",
+    "spec/src/current/desktop.md"
   ],
   "remaining": [],
   "runs": [
+    {
+      "name": "Node 24 workflow pins",
+      "command": "node --test tests/governance/validation.test.mjs tests/governance/native-lane-defaults.test.mjs tests/governance/turbo-task-graph.test.mjs tests/governance/local-macos-build-exclusion.test.mjs",
+      "result": "pass",
+      "failures": 0,
+      "detail": "36/36. Workflows pin node-version 24 and v6 checkout, setup-node and pnpm actions. upload-artifact is v7. The macOS Jujutsu pin is the official arm64 archive. Unpublished packages stay registry ranges until the install projection."
+    },
     {
       "name": "Governance and Turbo task tests",
       "command": "node --test tests/governance/turbo-task-graph.test.mjs tests/governance/native-lane-defaults.test.mjs tests/governance/desktop-test-mode.test.mjs tests/governance/local-macos-build-exclusion.test.mjs",
@@ -70,7 +85,7 @@
 }
 ```
 
-The hosted workflow is the design-core job shape for the lanes this
-repository actually has. Pointer-browser suites that do not exist here are not
-added. Dependency installation on a clean runner still needs the unpublished
-path checkouts beside the workspace.
+The hosted workflow is the design-core job shape for the lanes this repository
+actually has. Pointer-browser suites that do not exist here are not added.
+Dependency installation on a clean runner still needs the unpublished path
+checkouts beside the workspace.

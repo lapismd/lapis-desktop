@@ -389,8 +389,8 @@ Seeding stays exclusive; ordinary AI execution remains unavailable.
 Local checks use quiet renderer/native-service/catalog lanes; Docker is the
 default runtime and macOS native lanes are on-demand opt-ins (E-VALIDATION-004).
 Hosted CI runs those lanes, spec:first, the bundle gate and headed acceptance as
-separate Turbo jobs. Hidden WebKit pauses frames; service success cannot qualify
-native UI. [Acceptance modes](native-acceptance.md) retain
+separate Node 24 Turbo jobs. Hidden WebKit pauses frames; service success cannot
+qualify native UI. [Acceptance modes](native-acceptance.md) retain
 cold/hidden/headed/capture gates. Registry pins are Mira `~0.1.2` and
 `@lapismd/jj-history` `~0.1.0`. The private `@lapismd/jj-conversations` link
 stays; renderer tests preload tsx (E-CATALOG-009/010).

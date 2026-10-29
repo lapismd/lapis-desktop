@@ -56,3 +56,13 @@ test("Cargo and catalog browser tasks stay in separate Turbo invocations", () =>
   assert.ok(!scripts.checks.includes("ci:headed"));
   assert.ok(!scripts.checks.includes("test:desktop:headed"));
 });
+
+test("hosted CI projects unpublished packages and restores the tracked lock", () => {
+  const ci = readFileSync(".github/workflows/ci.yml", "utf8");
+  assert.match(ci, /node scripts\/ci-prepare-links\.mjs/u);
+  assert.match(ci, /node scripts\/ci-install\.mjs/u);
+  assert.doesNotMatch(ci, /pnpm install --frozen-lockfile/u);
+  const install = readFileSync("scripts/ci-install.mjs", "utf8");
+  assert.match(install, /writeFileSync\(pkgPath, originalPkg\)/u);
+  assert.match(install, /writeFileSync\(lockPath, originalLock\)/u);
+});

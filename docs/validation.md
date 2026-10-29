@@ -67,6 +67,10 @@ including private linked packages. The runner checks package identity and
 digest, creates an isolated archive install projection and lock, installs that
 projection with `--frozen-lockfile`, then restores tracked source manifests and
 lock before validation. This is distinct from a frozen registry-only install.
+Hosted CI follows that restore rule for the three unpublished packages: it
+builds the sibling checkouts, projects Agent UI, Repository UI and App Profile
+onto those directories for one install, then writes the tracked manifest and
+lockfile back.
 
 `LAPIS_DESKTOP_VALIDATION_ARCHIVES` or the ignored configuration's `archives`
 field selects this explicit prerequisite inventory. Archive source revisions and

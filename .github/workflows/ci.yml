@@ -29,7 +29,7 @@ jobs:
   governance:
     name: Governance
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 40
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
@@ -40,7 +40,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
@@ -54,8 +54,10 @@ jobs:
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
         run: node scripts/ci-revisions.mjs
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Run governance checks
         run: node scripts/run-turbo.mjs ci:governance --summarize
       - name: Report Turbo cache
@@ -75,7 +77,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
@@ -93,8 +95,10 @@ jobs:
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
         run: node scripts/ci-revisions.mjs
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Run formatting, type, and source checks
         run: node scripts/run-turbo.mjs ci:quality --summarize
       - name: Report Turbo cache
@@ -112,7 +116,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
@@ -120,8 +124,10 @@ jobs:
         uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy,rustfmt
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Run unit tests
         run: node scripts/run-turbo.mjs ci:unit --summarize
       - name: Report Turbo cache
@@ -139,12 +145,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Build Storybook
         run: node scripts/run-turbo.mjs ci:storybook-static --summarize
       - name: Report Turbo cache
@@ -162,12 +170,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
       - name: Run Storybook interaction and accessibility tests
@@ -187,7 +197,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
@@ -195,8 +205,10 @@ jobs:
         uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy,rustfmt
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Build, bundle, and audit the native app
         run: node scripts/run-turbo.mjs ci:bundle --summarize
       - name: Report Turbo cache
@@ -214,7 +226,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
@@ -222,13 +234,15 @@ jobs:
         uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy,rustfmt
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Native ARM64 acceptance
         run: node scripts/run-turbo.mjs ci:headed --summarize
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: native-acceptance
@@ -246,7 +260,7 @@ jobs:
       - bundle
       - headed
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 40
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
@@ -255,12 +269,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version-file: .node-version
+          node-version: 24
           cache: pnpm
       - name: Check out path dependencies
         run: node scripts/ci-siblings.mjs
+      - name: Build unpublished path packages
+        run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: node scripts/ci-install.mjs
       - name: Audit all dependencies
         run: pnpm audit
       - name: Audit production dependencies
