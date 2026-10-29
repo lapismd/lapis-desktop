@@ -390,9 +390,9 @@ Local checks use quiet renderer/native-service/catalog lanes; Docker is the
 default runtime, macOS native lanes are on-demand opt-ins (E-VALIDATION-004) and
 CI uses headed acceptance. Hidden WebKit pauses frames; service success cannot
 qualify native UI. [Acceptance modes](native-acceptance.md) retain
-cold/hidden/headed/capture gates. The private `@lapismd/jj-conversations` link
-consumes verified exports; queues stay host-owned and registry-gated. Renderer
-tests preload tsx (E-CATALOG-009/010).
+cold/hidden/headed/capture gates. Registry pins are Mira `~0.1.2` and
+`@lapismd/jj-history` `~0.1.0`. The private `@lapismd/jj-conversations` link
+stays; renderer tests preload tsx (E-CATALOG-009/010).
 
 E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.
 

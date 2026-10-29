@@ -240,9 +240,7 @@ test("only authorized private native-client public-build links are admitted duri
   assert.deepEqual(auditManifest(ai, capabilities, configuration), []);
   const history = {
     private: true,
-    dependencies: {
-      "@lapismd/jj-history": "link:../jj-store/packages/jj-history",
-    },
+    dependencies: { "@lapismd/jj-history": "~0.1.0" },
   };
   assert.deepEqual(auditManifest(history, capabilities, configuration), []);
   const conversations = {
@@ -260,8 +258,13 @@ test("only authorized private native-client public-build links are admitted duri
     { private: true, dependencies: { "@lapismd/terminal": "link:../other" } },
     { private: true, dependencies: { other: "link:../other" } },
     { ...ai, private: false },
-    { ...history, private: false },
     { ...conversations, private: false },
+    {
+      private: true,
+      dependencies: {
+        "@lapismd/jj-history": "link:../jj-store/packages/jj-history",
+      },
+    },
     {
       private: true,
       dependencies: { "@lapismd/jj-conversations": "link:../other" },

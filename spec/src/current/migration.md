@@ -226,12 +226,12 @@ Stages 0–3, M9 covers Stage 4 and M10 covers Stages 5–6. The detailed M8.0�
 tasks and [plugin contract](plugins.md) govern implementation. Completed M0–M7
 and M7.2 gate strings and immutable evidence remain intact.
 
-Prefer local source checkouts through public exports and verified built output,
-using ignored JavaScript install overlays and explicit Rust path dependencies.
-Do not create package releases for this work. Verified archives remain supported
-for reproducible acceptance. Every source change receives its owner's checks,
-source revision and consumer evidence. If signing fails, use unsigned local
-commits as the user authorized; this does not alter artifact signature checks.
+Prefer a published range or existing git tag. Unpublished siblings keep path
+dependencies. Do not create package releases for this work. Verified archives
+remain supported for reproducible acceptance. Every source change receives its
+owner's checks, source revision and consumer evidence. If signing fails, use
+unsigned local commits as the user authorized; this does not alter artifact
+signature checks.
 
 Desktop owns bundled AI/Terminal policy and migrated application stories;
 `lapis-ai` and `lapis-terminal` own reusable native runtimes/adapters. Preserve
@@ -396,5 +396,5 @@ E-AI-065 adds helper/client setup; E-REPO-045 adds indexed Search. E-SHELL-003
 restores tab drops; E-AI-095/096 cover model discovery and private drafts.
 E-AI-103/105–110: approval/header, tabbed settings and shared Compute inputs;
 full gates remain. E-AI-115 verifies shared context root indentation only.
-E-CORE-027 and E-DEPENDENCY-003 qualify provider recovery and signed Bases
-intake. E-LIFE-002/003 repair and natively requalify shell failure presentation. Final dependency intake and native AI default selection remain separate.
+E-CORE-027 and E-DEPENDENCY-003 qualify provider recovery and signed Bases.
+E-LIFE-002/003 repair shell failure presentation; final intake stays separate.

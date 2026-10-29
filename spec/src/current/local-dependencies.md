@@ -117,3 +117,11 @@ its older `b2034168` provider proof; E-CORE-046 keeps current-cohort
 strict/native/provider acceptance pending. Preserve verified archive payloads in
 default-owned ignored storage before retiring their source workspaces. No
 installed application or user profile changes as part of source preparation.
+
+Published intake now requires `@lapismd/mira` `~0.1.2`. Its three companion
+packages stay at released `0.0.3`. `@lapismd/jj-history` is registry `~0.1.0`.
+`lapis-ai-capture`, `tauri-plugin-lapis-ai`, and `lapis-ai-app-tools` use git
+tag `v0.2.0` at version `0.2.0`. These stay, because they have no npm release
+and no crate tag: `@lapismd/ai`, `@lapismd/jj-conversations`,
+`@lapismd/terminal`, `tauri-plugin-lapis-terminal`, and the jj-store crate
+paths.

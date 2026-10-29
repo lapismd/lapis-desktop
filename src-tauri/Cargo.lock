@@ -5599,6 +5599,7 @@ dependencies = [
 [[package]]
 name = "lapis-agent-redaction"
 version = "0.1.0"
+source = "git+https://github.com/lapismd/agent-redaction?tag=lapis-agent-redaction%400.1.0#02a6b4926de335bee147017b56fcdac7cac314bd"
 dependencies = [
  "kingfisher-core",
  "kingfisher-rules",
@@ -5609,7 +5610,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-ai-app-tools"
-version = "0.1.1"
+version = "0.2.0"
+source = "git+https://github.com/lapismd/lapis-ai?tag=v0.2.0#9a98293c26524c9320acdd9767e34e8ffdd7170c"
 dependencies = [
  "serde",
  "serde_json",
@@ -5619,7 +5621,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-ai-capture"
-version = "0.1.1"
+version = "0.2.0"
+source = "git+https://github.com/lapismd/lapis-ai?tag=v0.2.0#9a98293c26524c9320acdd9767e34e8ffdd7170c"
 dependencies = [
  "rusqlite",
  "serde",
@@ -5629,7 +5632,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-ai-config"
-version = "0.1.1"
+version = "0.2.0"
+source = "git+https://github.com/lapismd/lapis-ai?tag=v0.2.0#9a98293c26524c9320acdd9767e34e8ffdd7170c"
 dependencies = [
  "serde",
  "serde_json",
@@ -5638,7 +5642,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-ai-runtime"
-version = "0.1.1"
+version = "0.2.0"
+source = "git+https://github.com/lapismd/lapis-ai?tag=v0.2.0#9a98293c26524c9320acdd9767e34e8ffdd7170c"
 dependencies = [
  "lapis-ai-config",
  "nix 0.31.3",
@@ -5653,7 +5658,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-ai-service"
-version = "0.1.1"
+version = "0.2.0"
+source = "git+https://github.com/lapismd/lapis-ai?tag=v0.2.0#9a98293c26524c9320acdd9767e34e8ffdd7170c"
 dependencies = [
  "lapis-ai-runtime",
  "serde",
@@ -9722,7 +9728,8 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-lapis-ai"
-version = "0.1.1"
+version = "0.2.0"
+source = "git+https://github.com/lapismd/lapis-ai?tag=v0.2.0#9a98293c26524c9320acdd9767e34e8ffdd7170c"
 dependencies = [
  "lapis-ai-runtime",
  "lapis-ai-service",

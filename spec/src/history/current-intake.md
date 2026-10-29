@@ -9,3 +9,4 @@ actual native/provider acceptance. The task ledger alone owns completion.
 - [Qualified Notes target-mode inputs](E-CORE-026.md)
 - [Actual provider retained Desktop screen](E-CORE-027.md)
 - [Repaired signed Bases native adoption](E-DEPENDENCY-003.md)
+- [Published Mira, jj-history, and lapis-ai git pins](E-DEPENDENCY-004.md)

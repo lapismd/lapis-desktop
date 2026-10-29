@@ -91,8 +91,7 @@ helper retains native button geometry and hover tracking after AppKit relayout.
 It borrows the live NSWindow only inside Tauri's main-thread callback or the
 window's own update notification. Each window's observer retires on destruction,
 with a reentrancy guard and no polling or stored raw pointers. Native interop,
-including related script isolation, stays there. Other binary code denies unsafe
-code; the service library forbids it. No HTML traffic lights or tab transforms
+including related script isolation, stays there. No HTML traffic lights or tab transforms
 are added. Host CSS maps the Deno shell's 65px main-pane and 80px sidebar
 clearances through public Design Core window-control tokens, subtracting the
 ribbon width where appropriate. Expanded and collapsed sidebar states keep their
@@ -126,7 +125,7 @@ artifact is never the ordinary application bundle. Browser and Rust tests are
 supporting evidence; neither can replace the actual WebView gate. Builds reject
 catalog imports; shell grouping preserves one main landmark.
 
-Application signing and notarization are deferred to M11 at the user's request.
+Application signing and notarization are deferred to M11.
 The local bundle gate checks identity, architecture and runtime contents without
 requiring a signature. WebDriver's embedded pointer actions dispatch DOM
 MouseEvents and cannot establish AppKit titlebar dragging. Physical native input
@@ -334,6 +333,7 @@ or replacement action surface.
 E-AI-109/110: tabbed Compute and native GGUF selection; see
 [setup](ai-setup.md).
 
-Verified Lapis AI helpers ship as application resources; device adapters remain
-installation-owned. See [client delivery](ai-clients.md).
-[Native turn adoption](ai-adapter.md). [History controls](vault-backup.md).
+Verified Lapis AI helpers ship as application resources. See
+[client delivery](ai-clients.md), [turn adoption](ai-adapter.md), and
+[history controls](vault-backup.md). `lapis-ai-capture`, `tauri-plugin-lapis-ai`,
+and `lapis-ai-app-tools` use git tag `v0.2.0`. Other sibling crates stay paths.

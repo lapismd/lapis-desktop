@@ -1,6 +1,6 @@
 # Milestones and gates
 
-Last updated **2026-10-28 15:04:39 UTC**.
+Last updated **2026-10-29 11:04:09 UTC**.
 
 <!-- migration-activity:start -->
 
@@ -106,6 +106,13 @@ interrupted Docker run can no longer strand later lanes; a live or unverifiable
 recorded owner still blocks, and explicit cleanup authority is unchanged
 (E-VALIDATION-005).
 
+Published pins: `@lapismd/mira` `~0.1.2` and `@lapismd/jj-history` `~0.1.0`
+resolve from npm. `lapis-ai-capture`, `tauri-plugin-lapis-ai`, and
+`lapis-ai-app-tools` resolve from git tag `v0.2.0`. Unpublished sibling links
+and untagged crate paths stay.
+[E-DEPENDENCY-004](../../history/E-DEPENDENCY-004.md) records the lock and
+compile proof. This does not move M10 or M11.
+
 **Master tracker:** `/Users/stevejuma/code/lapismd/lapis-notes/MIGRATION.md` in
 Notes `default` owns R0–R7. This file owns Desktop M-series acceptance gates.
 
@@ -133,7 +140,7 @@ M12 retains its M11 dependency and cutover gate (E-PLAN-006).
 | --- | --- | --- | --- | --- | --- | --- |
 | M0.0 | Done | - | LD-GOV-006,LD-MIG-002 | The saved document contains the complete architecture, delivery sequence, tracking rules, acceptance gates, and deferred work. Include it in the initial repository commit. | Complete | E-PLAN-001 |
 | M0.1 | Done | M0.0 | LD-GOV-001,LD-GOV-002,LD-GOV-003,LD-GOV-004,LD-GOV-005,LD-GOV-006,LD-GOV-007,LD-DESK-001,LD-DESK-002,LD-DESK-003,LD-DESK-004,LD-DESK-005,LD-MIG-001,LD-MIG-002 | Cold launch, resize, drag, close, and relaunch work; a local `.app` launches without Deno; governance checks pass. | Complete | E-SHELL-002,E-REVIEW-001,E-REVIEW-002,E-STARTUP-002,E-SHELL-003 |
-| M1 | Done | M0.1 | LD-MIG-002,LD-GOV-006,LD-HOST-001 | Upstream regressions prove the shared `.lapis` default across every affected package and host. Build and pack verified shared-package changes locally, then validate their public archives in the Tauri app and affected consumers. | Complete; proceed to M2 native vault access | E-HOST-001,E-ARCHIVES-002 |
+| M1 | Done | M0.1 | LD-MIG-002,LD-GOV-006,LD-HOST-001 | Upstream regressions prove the shared `.lapis` default across every affected package and host. Build and pack verified shared-package changes locally, then validate their public archives in the Tauri app and affected consumers. | Complete; proceed to M2 native vault access | E-HOST-001,E-ARCHIVES-002,E-DEPENDENCY-004 |
 | M2 | Done | M1 | LD-MIG-002,LD-VAULT-001,LD-VAULT-002,LD-VAULT-003,LD-VAULT-004,LD-VAULT-005,LD-VAULT-006 | Real temporary-folder tests cover cancellation, Unicode paths, binary data, permission failures, traversal/symlink escape, and interrupted writes. | Complete; proceed to the M3 native database gate | E-VAULT-001,E-ONBOARD-001 |
 | M3 | Done | M2 | LD-MIG-002,LD-DB-001,LD-DB-002,LD-DB-003,LD-DB-004,LD-SESSION-001,LD-SESSION-002 | In the actual WebView, open a seeded vault, edit a note, verify disk content, display a local attachment, close the database, and reopen successfully. Database rollback and restart tests pass. | Complete; proceed to M4 safe everyday-use qualification | E-DB-001,E-SESSION-001,E-SESSION-002 |
 | M4 | Done | M3 | LD-MIG-002,LD-GOV-008,LD-LIFE-001,LD-LIFE-002,LD-LIFE-003,LD-LIFE-004,LD-LIFE-005,LD-LIFE-006,LD-LIFE-007,LD-SESSION-003,LD-VAULT-007,LD-SESSION-004,LD-REC-001,LD-REC-002 | Cold edit → save → quit → relaunch restores content and session. Failed saves prevent silent close; external edits never silently overwrite dirty buffers; repeated switching leaves no stale sessions or subscriptions. | Complete | E-LIFE-001,E-LIFE-002,E-LIFE-003,E-WRITE-001,E-CONFLICT-001,E-ARCHIVES-001,E-PREVIEW-001,E-CHROME-001,E-STARTUP-001,E-ONBOARD-001,E-REVIEW-001,E-REVIEW-002,E-MUTATION-001,E-STATE-001,E-STRUCTURE-001,E-WRITERS-001,E-RECOVERY-001,E-QUALIFICATION-001,E-QUALIFICATION-002,E-STARTUP-002 |
@@ -179,7 +186,7 @@ original gates are unchanged. Plan approval is not product acceptance.
 <!-- prettier-ignore -->
 | ID | Status | Depends | Requirements | Gate | Next | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| M10.1 | Done | M9 | LD-MIG-002,LD-AI-001 | Reusable native ACP adapter preserves ordered correlated events, exact permission choices, cancellation, worker isolation and teardown with no automatic uncertain replay. | Complete; continue to M10.2 desktop-owned AI | E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030 |
+| M10.1 | Done | M9 | LD-MIG-002,LD-AI-001 | Reusable native ACP adapter preserves ordered correlated events, exact permission choices, cancellation, worker isolation and teardown with no automatic uncertain replay. | Complete; continue to M10.2 desktop-owned AI | E-PLUGINS-003,E-AI-001,E-AI-002,E-AI-026,E-AI-027,E-AI-028,E-AI-029,E-AI-030,E-DEPENDENCY-004 |
 | M10.2 | In progress | M10.1 | LD-MIG-002,LD-PLUG-001,LD-AI-002,LD-AI-004 | Desktop AI retains conversations, context, memory and current UI with complete migrated story coverage through direct ACP and no controller. | Qualify staged Core chat/history/trust; finish Lapis, avatar accessibility and provider recovery |E-PLUGINS-003,E-AI-003,E-AI-004,E-AI-005,E-AI-006,E-AI-007,E-AI-008,E-AI-009,E-AI-010,E-AI-011,E-AI-012,E-STRUCTURE-002,E-AI-013,E-AI-014,E-AI-015,E-AI-016,E-AI-017,E-AI-018,E-AI-019,E-AI-020,E-AI-021,E-STRUCTURE-003,E-AI-022,E-AI-023,E-AI-024,E-AI-025,E-AI-029,E-AI-030,E-REPO-016,E-AI-039,E-AI-040,E-AI-041,E-REPO-042,E-AI-042,E-AI-043,E-AI-044,E-AI-045,E-AI-046,E-AI-047,E-AI-048,E-AI-049,E-AI-050,E-AI-051,E-AI-052,E-AI-053,E-AI-054,E-AI-055,E-AI-056,E-AI-057,E-AI-058,E-AI-059,E-AI-060,E-AI-061,E-AI-062,E-AI-063,E-CATALOG-011,E-CATALOG-012,E-CATALOG-013,E-AI-064,E-CATALOG-014,E-AI-065,E-AI-066,E-AI-067,E-AI-069,E-AI-070,E-AI-071,E-AI-072,E-AI-073,E-AI-074,E-AI-075,E-AI-076,E-AI-077,E-AI-078,E-AI-079,E-AI-080,E-AI-081,E-AI-082,E-AI-083,E-AI-084,E-AI-085,E-AI-086,E-AI-088,E-AI-089,E-AI-090,E-AI-091,E-AI-092,E-AI-093,E-AI-094,E-AI-095,E-AI-096,E-AI-097,E-AI-098,E-AI-100,E-AI-101,E-AI-102,E-AI-103,E-AI-104,E-AI-105,E-AI-106,E-AI-107,E-AI-108,E-AI-109,E-AI-111,E-AI-112,E-AI-113,E-AI-115,E-AI-118,E-AI-119,E-AI-120,E-AI-121,E-AI-122,E-PLAN-004,E-CORE-020,E-CORE-021,E-CORE-022,E-CORE-024,E-CORE-025,E-CORE-026,E-CORE-027,E-CATALOG-017 |
 | M10.3 | In progress | M10.2 | LD-MIG-002,LD-AI-001,LD-AI-003,LD-AI-004 | Packaged lapis-agent performs native chat, exact approvals, guarded tool reads/edits, cancellation, recovery and isolated cleanup over authenticated Rust app-tool IPC. | External native tools verified; bundled Lapis local app-tool turns fail the native grammar sampler | E-PLUGINS-003,E-AI-097,E-AI-098,E-AI-103,E-AI-104,E-AI-107,E-AI-108,E-PLAN-004,E-AI-123 |
 | M10.4 | In progress | M10.3 | LD-MIG-002,LD-COMP-001 | Optional compute downloads/imports, starts and stops explicitly; disabled startup, admitted pairing, failures and shutdown pass independently of ACP. | Downloaded library, progress and recovery added; qualify real local tool inference and two-device pairing | E-PLUGINS-003,E-AI-097,E-AI-098,E-AI-099,E-AI-104,E-AI-108,E-AI-109,E-AI-110,E-AI-111,E-AI-123,E-AI-124,E-AI-125 |
