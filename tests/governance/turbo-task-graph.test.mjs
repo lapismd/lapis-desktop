@@ -3,6 +3,7 @@ import test from "node:test";
 import { readFileSync } from "node:fs";
 
 import { resolveTurboConcurrency } from "../../scripts/lib/concurrency.mjs";
+import { stepsToRun } from "../../scripts/ci-prepare-links.mjs";
 import { summarizeTurboCache } from "../../scripts/report-turbo-cache.mjs";
 
 test("Turbo defaults to half the processors capped at four", () => {
@@ -65,4 +66,19 @@ test("hosted CI projects unpublished packages and restores the tracked lock", ()
   const install = readFileSync("scripts/ci-install.mjs", "utf8");
   assert.match(install, /writeFileSync\(pkgPath, originalPkg\)/u);
   assert.match(install, /writeFileSync\(lockPath, originalLock\)/u);
+});
+
+test("sibling preparation skips a build the checkout does not define", () => {
+  const steps = [
+    ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],
+    ["../lapis-notes/packages/app-profile", "pnpm", ["build:native-chat"]],
+  ];
+  assert.deepEqual(
+    stepsToRun(steps, () => false),
+    [],
+  );
+  assert.equal(
+    stepsToRun(steps, (_cwd, script) => script === "build:native-chat").length,
+    2,
+  );
 });
