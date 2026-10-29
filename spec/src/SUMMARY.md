@@ -334,7 +334,6 @@
 - [Master migration tracker routing and checkpoint refresh](history/E-PROGRESS-002.md)
 - [Native Search provider and retained SQL intake](history/E-CORE-014.md)
 - [Native model-cache dependency intake](history/E-CORE-015.md)
-
 - [Desktop and master migration checkpoint alignment](history/E-PROGRESS-003.md)
 
 - [Shared native AppDatabase intake](history/E-CORE-016.md)
@@ -352,8 +351,8 @@
 - [Docker-default runtime and on-demand macOS lanes](history/E-VALIDATION-004.md)
 - [Dead-owner checkout lease adoption](history/E-VALIDATION-005.md)
 - [Local-only macOS app build with bundled plugins](history/E-VALIDATION-006.md)
-  · [Parallel hosted CI](history/E-VALIDATION-007.md)
-  · [Sibling install projection](history/E-VALIDATION-008.md)
+  · [Parallel hosted CI](history/E-VALIDATION-007.md) ·
+  [Sibling install projection](history/E-VALIDATION-008.md)
 - [Actual provider reload-detach preflight](history/E-CORE-024.md)
 - [Trusted native target default modes](history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](history/E-CORE-026.md)

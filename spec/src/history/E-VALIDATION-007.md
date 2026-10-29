@@ -36,13 +36,9 @@
     "tests/governance/turbo-task-graph.test.mjs",
     "turbo.json",
     "tests/governance/validation.test.mjs",
-    ".github/workflows/publish-storybook-pages.yml",
-    "README.md",
     "scripts/ci-install.mjs",
     "scripts/ci-prepare-links.mjs",
-    "scripts/validation/install-tools.mjs",
-    "src-tauri/tests/fixtures/acp-provider.rs",
-    "spec/src/current/desktop.md"
+    "scripts/validation/install-tools.mjs"
   ],
   "remaining": [],
   "runs": [

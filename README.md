@@ -1,8 +1,5 @@
 # Lapis Desktop
 
-[![Storybook Pages](https://github.com/lapismd/lapis-desktop/actions/workflows/publish-storybook-pages.yml/badge.svg)](https://github.com/lapismd/lapis-desktop/actions/workflows/publish-storybook-pages.yml)
-[![Storybook](https://img.shields.io/badge/storybook-live-ff4785?logo=storybook&logoColor=white)](https://lapismd.github.io/lapis-desktop/)
-
 A Tauri desktop preview for Lapis Notes with a native vault launcher and the
 existing Notes workspace, editor, Markdown reader, Search, metadata and Graph
 views. Native menus and services use the same owned application lifecycle. The
@@ -11,8 +8,7 @@ views. Native menus and services use the same owned application lifecycle. The
 Start with [MIGRATION.md](MIGRATION.md) for current status, original gates and
 next work. Canonical behavior lives in the
 [specification](spec/src/current/index.md). See [AGENTS.md](AGENTS.md) before
-changing implementation. Live catalog:
-<https://lapismd.github.io/lapis-desktop/>.
+changing implementation.
 
 ## Development
 
