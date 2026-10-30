@@ -16,8 +16,6 @@
     "check:rust": "node scripts/validation.mjs run check:rust",
     "check:architecture": "node scripts/validation.mjs run check:architecture",
     "check:app-ownership": "node scripts/validation.mjs run check:app-ownership",
-    "check:progress": "node scripts/validation.mjs run check:progress",
-    "progress:generate": "node scripts/progress.mjs --write",
     "format:check": "node scripts/validation.mjs run format:check",
     "format": "prettier --write . && cargo fmt --manifest-path src-tauri/Cargo.toml",
     "test": "node scripts/validation.mjs run test",
@@ -59,7 +57,9 @@
     "validation": "node scripts/validation.mjs",
     "validation:doctor": "node scripts/validation.mjs doctor",
     "validation:images": "node scripts/validation.mjs images",
-    "check:rust:e2e": "node scripts/validation.mjs run check:rust:e2e"
+    "check:rust:e2e": "node scripts/validation.mjs run check:rust:e2e",
+    "check:evidence": "node scripts/validation.mjs run check:evidence",
+    "spec:index": "spec-validator index"
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.1.0",
@@ -104,7 +104,7 @@
     "@lapis-notes/app-profile": "^0.0.0"
   },
   "devDependencies": {
-    "@lapismd/spec-validator": "^0.1.4",
+    "@lapismd/spec-validator": "^0.2.0",
     "@playwright/test": "1.61.1",
     "@storybook/addon-a11y": "10.5.7",
     "@storybook/addon-docs": "10.5.7",

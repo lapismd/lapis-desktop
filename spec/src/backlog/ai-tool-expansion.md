@@ -3,9 +3,9 @@
 Status: **Deferred — saved for later implementation on 2026-10-21.**
 
 This is the agreed implementation backlog, not an active requirement or a claim
-of delivered functionality. Resume only when implementation is requested. The
-[task ledger](../current/progress/milestones.md) retains completion authority;
-M10.2/M10.3 gates and statuses are unchanged by this plan.
+of delivered functionality. Resume only when implementation is requested. This
+canonical backlog owns the remaining delivery;
+[AI qualification](ai-qualification.md) retains existing native acceptance gaps.
 
 ## Summary and confirmed decisions
 
@@ -149,9 +149,10 @@ Implement generic service extensions in their owning repositories, then consume
 verified public package builds in Desktop. Keep returned data bounded, scoped
 and source-linked. Plugin disablement or vault changes invalidate access.
 
-Update canonical specifications and milestone evidence per completed slice. The
-saved backlog does not activate new runtime requirements, close outstanding M10
-qualification gates, or resume deferred JJ conversation persistence.
+Update canonical specifications, verification and acceptance evidence per
+completed slice. The saved backlog does not activate new runtime requirements,
+close outstanding M10 qualification gates, or resume deferred JJ conversation
+persistence.
 
 ## Verification when implementation resumes
 

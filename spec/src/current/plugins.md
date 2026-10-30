@@ -135,16 +135,10 @@ native gates stay separate.
 E-CATALOG-008 qualifies scoped preview commands, live identity/index checks,
 cache safeguards and actual cold/HMR proof; all 804 catalog checks pass.
 
-E-REPO-010 maps stacked operation/file cards and unloaded-parent recovery to
-production repository stories. No native plugin capability changes.
-
-E-REPO-009 maps compact history/Op Log headers to production Column Canvas
-composition. Header review covers narrow panes and both themes; the complete
-repository family retains pin, refresh, loading and recovery coverage.
-
-`PLUGIN_MIGRATION.md` authorizes M8–M10 under the original ledger gates.
-Ordinary popup admission remains M7.3. Local links retain public package
-boundaries and owning-repository validation.
+Current contracts govern plugin integration and catalog behavior.
+[AI backlog](../backlog/ai-qualification.md) retains native gaps;
+[windows](windows.md) governs ordinary popup admission. Local links retain
+public exports and owning-repository validation.
 
 ## Requirements
 
@@ -397,4 +391,5 @@ catalog fixture enters production. Native Search review adds admitted rebuild
 and lifecycle states (E-CORE-030); App/vault own metadata and status.
 
 E-AI-106/107/110 review header actions, required provider models and shared
-Compute inputs through production stories. Shell lifecycle ReadySessionFailure covers host Problems/toast presentation; native gates remain.
+Compute inputs through production stories. Shell lifecycle ReadySessionFailure
+covers host Problems/toast presentation; native gates remain.

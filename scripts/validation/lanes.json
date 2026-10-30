@@ -5,7 +5,6 @@
   "check:rust": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --locked -- -D warnings",
   "check:architecture": "node scripts/source-audit.mjs",
   "check:app-ownership": "node scripts/source-audit.mjs --app-only",
-  "check:progress": "node scripts/progress.mjs",
   "format:check": "prettier --check . && cargo fmt --manifest-path src-tauri/Cargo.toml -- --check",
   "test": "node --import tsx --test tests/governance/*.test.mjs tests/renderer/*.test.mjs && pnpm test:ai && cargo test --manifest-path src-tauri/Cargo.toml --locked",
   "test:ai": "vitest run --config vitest.ai.config.mjs",
@@ -22,5 +21,6 @@
   "validation:check": "node --test tests/governance/validation.test.mjs tests/governance/validation-native.test.mjs tests/governance/validation-leases.test.mjs tests/governance/validation-dispatch.test.mjs tests/governance/storybook-parity.test.mjs tests/governance/catalog-reports.test.mjs tests/governance/storybook-runtime-warnings.test.mjs",
   "validation:smoke": "node scripts/validation/smoke.mjs",
   "check:storybook-parity": "node scripts/spec-validation/check-storybook-parity.mjs",
-  "check:rust:e2e": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --features e2e --locked -- -D warnings"
+  "check:rust:e2e": "cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --features e2e --locked -- -D warnings",
+  "check:evidence": "node scripts/evidence.mjs"
 }

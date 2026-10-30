@@ -24,21 +24,25 @@
   - [Addressed local messages](current/ai-addressing.md)
   - [Explicit local transcript imports](current/ai-imports.md)
   - [Automatic vault backup](current/vault-backup.md)
-  - [Vault backup delivery](current/progress/vault-backup.md)
   - [Repository history and conversations](current/repository.md)
     - [Repository row selection and file history](current/repository-navigation.md)
     - [Repository Storybook parity review](current/repository-review.md)
-  - [Planned: Markdown document Review mode](current/markdown-review.md)
   - [File management](current/files.md)
   - [Find and navigate](current/navigation.md)
   - [Enabled writer audit](current/writer-audit.md)
   - [Shared-screen integration](current/shared-screen-integration.md)
-  - [Migration inventory](current/migration.md)
-  - [Milestones](current/progress/milestones.md)
-  - [Verification](current/verification.md)
-- [Deferred backlog: AI tool expansion](backlog/ai-tool-expansion.md)
-- [Deferred backlog: Markdown Review mode](backlog/markdown-review-mode.md)
+  - [Source provenance and acceptance](current/migration.md)
+  - [Verification](verification.md)
+- [Backlog](backlog.md)
+  - [AI and shared-screen qualification](backlog/ai-qualification.md)
+  - [Vault synchronization and turn history](backlog/vault-synchronization.md)
+  - [Native canonical conversations](backlog/native-conversations.md)
+  - [Distribution and frozen-host retirement](backlog/distribution.md)
+  - [AI tool expansion](backlog/ai-tool-expansion.md)
+  - [Markdown document Review mode](backlog/markdown-review-mode.md)
+    - [Planned Review contract](backlog/markdown-review-contract.md)
 - [Evidence](history/index.md)
+  - [Specification and backlog consolidation](history/E-SPEC-001.md)
 - [Current compatible dependency and native intake](history/current-intake.md)
   - [Stored migration plan](history/E-PLAN-001.md)
   - [Native shell foundation](history/E-SHELL-001.md)
@@ -334,11 +338,8 @@
 - [Master migration tracker routing and checkpoint refresh](history/E-PROGRESS-002.md)
 - [Native Search provider and retained SQL intake](history/E-CORE-014.md)
 - [Native model-cache dependency intake](history/E-CORE-015.md)
-
 - [Desktop and master migration checkpoint alignment](history/E-PROGRESS-003.md)
-
 - [Shared native AppDatabase intake](history/E-CORE-016.md)
-
 - [Shared vault-owned backup intake](history/E-CORE-017.md)
 - [Shared asset reader and native file-action compatibility](history/E-CORE-018.md)
 - [Native turn-core dependency compatibility](history/E-CORE-019.md)
@@ -347,7 +348,6 @@
 - [Retained native chat and History navigation](history/E-CORE-022.md)
 - [Docker-first dependency intake](history/E-CORE-023.md)
 - [Docker-first portable validation and story composition](history/E-VALIDATION-001.md)
-
 - [Docker-first consumer qualification](history/E-VALIDATION-002.md)
 - [Compatible Docker consumer qualification](history/E-VALIDATION-003.md)
 - [Docker-default runtime and on-demand macOS lanes](history/E-VALIDATION-004.md)
@@ -366,32 +366,19 @@
 - [Shared Desktop History controls](history/E-CORE-032.md)
 - [Staged Desktop native editing intents](history/E-CORE-033.md)
 - [Native editor qualification closure](history/E-CORE-034.md)
-
 - [Shared Core Repository reader intake](history/E-CORE-035.md)
-
 - [Staged native Tasks intake](history/E-CORE-036.md)
-
 - [Focused native Tasks qualification](history/E-CORE-037.md)
-
 - [Composed Core reader and Tasks admission](history/E-CORE-038.md)
-
 - [Installed Tasks native acceptance preparation](history/E-CORE-039.md)
-
 - [Plugin file artwork through public packages](history/E-ICONS-001.md)
 - [Main workspace file icon intake and SSH validation](history/E-ICONS-002.md)
-
 - [Final main and shared Core Desktop qualification](history/E-CORE-040.md)
-
 - [Native handoff recovery and final Desktop acceptance](history/E-CORE-041.md)
-
 - [Default-workspace adoption of qualified Desktop Core intake](history/E-CORE-042.md)
-
 - [Explicit Tauri shared queue intake](history/E-CORE-043.md)
-
 - [Default-workspace native queue adoption](history/E-CORE-044.md)
-
 - [Actual installed-provider native queue acceptance](history/E-CORE-045.md)
-
 - [Pending coherent Desktop cutover intake](history/E-CORE-046.md)
 - [Phase 2 qualification of the coherent cutover intake](history/E-CORE-047.md)
 - [Integrated-main lineage audit and requalification](history/E-CORE-048.md)

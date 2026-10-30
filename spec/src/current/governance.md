@@ -1,16 +1,16 @@
 # Governance — [native turns](ai-adapter.md)
 
 [Shared screens](shared-screen-integration.md) own integration; retained
-[checkpoint notes](../../../docs/governance-checkpoints.md) preserve prior
-policy. [Local validation](../../../docs/validation.md) defines Docker/native
-commands, isolated archive prerequisites, reports and owned cleanup.
-E-VALIDATION-001 preserves Docker/native/release boundaries. E-CORE-025/026/045
-pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
-E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
-use exact local IPC; generic plugin grants deny. Tasks/default gates remain
-separate. SSH options preserve authentication, endpoints and literal arguments.
-Archive rewriting is idempotent only for an exact path redirected to a verified
-tarball. Repeated hooks preserve it; unverified paths/file peer ranges reject.
+[backlog](../backlog.md) retains outstanding acceptance.
+[Local validation](../../../docs/validation.md) defines Docker/native commands,
+isolated archive prerequisites, reports and owned cleanup. E-VALIDATION-001
+preserves Docker/native/release boundaries. E-CORE-025/026/045 pin Core/Tasks
+and DTOs; E-CORE-028/M16.6 share History ownership/controls. E-CORE-029/030
+qualify metadata/Search; 033/034 qualify editing. Core readers use exact local
+IPC; generic plugin grants deny. Tasks/default gates remain separate. SSH
+options preserve authentication, endpoints and literal arguments. Archive
+rewriting is idempotent only for an exact path redirected to a verified tarball.
+Repeated hooks preserve it; unverified paths/file peer ranges reject.
 
 The [local dependency intake](local-dependencies.md) contract governs complete
 review refreshes from committed default-checkout source under LD-GOV-006/008.
@@ -19,7 +19,8 @@ Native readiness covers split/log-batched receipts without longer deadlines. The
 e2e entry shares early progress, then imports runtime instrumentation; ordinary
 bundle audits reject its startup capture marker.
 
-Canonical owners include planned [Review](markdown-review.md) and staged
+Canonical owners include planned
+[Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
@@ -51,8 +52,8 @@ not qualify deferred native-store capture or application-tool integration.
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                                                                                                                                                                                                                                  |
 | LD-GOV-002 | Protected behavior and tooling changes MUST update their mapped canonical chapters in the same Jujutsu change. Unmapped protected paths MUST fail closed.                                                                                                                                                                                                                                                                                                |
-| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit milestone review. Committed evidence MUST remain immutable.                                                                                                                                                                                                                                   |
-| LD-GOV-004 | Task pages MUST be the sole completion authority. Done MUST require completed dependencies and passing evidence selected for the original task gate; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                                                                                                                                                |
+| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit acceptance review. Committed evidence MUST remain immutable.                                                                                                                                                                                                                                  |
+| LD-GOV-004 | Current feature chapters and verification MUST own behavior and requirement status. Canonical backlog topics MUST own outstanding implementation and qualification, retaining dependencies and original acceptance boundaries. Passing evidence MUST match the claimed boundary; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                    |
 | LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                                                                       |
 | LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, except the authorized unpublished Terminal and AI public-build links in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                 |
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                            |
@@ -75,12 +76,6 @@ source revisions and Apache-2.0 / CC0-1.0 provenance remain local.
 Counted lines exclude blank lines and comments. Inline tests count toward their
 containing production file. Generated lockfiles, icons and build output are not
 authored source. No initial file-size exceptions exist.
-
-For the historical M4–M7 delivery session only, the user requested targeted
-tests per slice and deferred full repository and consumer suites until M7
-implementation is complete. Record deferred lanes and run them before aggregate
-qualification. This does not change original milestone gates or the standing
-test policy for later sessions.
 
 The preferred source layouts are documented in `AGENTS.md` and `desktop.md`:
 bootstrap at the source root, feature-grouped `components` and `lib`, and
@@ -111,16 +106,16 @@ evidence.
 | ------------------------------------------------------------------------------------------------------------------------------ | ---------------- |
 | `src/`, `src-tauri/`, `tests/desktop/`, `index.html`, Vite and Svelte configuration                                            | `desktop.md`     |
 | `scripts/`, `tests/governance/`, toolchain, formatting, CI, manifests and lockfiles, `AGENTS.md`, spec-validator configuration | `governance.md`  |
-| `PLAN.md`, `MIGRATION.md`, migration inventory and milestone task pages                                                        | `migration.md`   |
+| Historical source provenance under `spec/evidence/`                                                                            | `migration.md`   |
 
-The native-window workstream maps `POPOUT_PLAN.md`, the native window/chrome
-modules and popup proof acceptance to `windows.md`. M7.1 admits related blank
-windows only behind the debug acceptance feature and explicit fixture opt-in;
-ordinary permissions remain exact. Bundle audits reject native and renderer
-proof markers. Native tests retain isolated profiles and no Node/Deno app PATH.
+The native-window workstream maps the native window/chrome modules and popup
+proof acceptance to `windows.md`. M7.1 admits related blank windows only behind
+the debug acceptance feature and explicit fixture opt-in; ordinary permissions
+remain exact. Bundle audits reject native and renderer proof markers. Native
+tests retain isolated profiles and no Node/Deno app PATH.
 
 The executable configuration is `spec-validator.config.mjs`. Its source and
-progress plugins are also normal check entry points. `spec:first` compares the
+evidence plugins are also normal check entry points. `spec:first` compares the
 actual Jujutsu change; CI checks the complete pull-request revision range.
 
 The local archive installer validates each checksum, packed package identity,
@@ -275,9 +270,11 @@ Plugin-profile intake and native find/navigation acceptance map explicitly to
 that owner, while shell composition, writer audit and milestone gates keep their
 existing contracts.
 
-The generated migration summary distinguishes the latest started milestone from
-the oldest unfinished gate. Both statuses and next actions derive from the task
-ledger; advancing implementation cannot silently complete deferred gates.
+The specification owns current state. Evidence checks retain immutable receipts,
+actual run results, valid requirements, historical file resolution and fresh
+coverage for protected changes. New evidence uses contract and acceptance
+review; historical milestone metadata remains tied to its original source
+revision.
 
 Native Search settings acceptance joins the existing sequential runner. Failed
 locator fixtures remain distinct from reproduced stale recovery; qualification
