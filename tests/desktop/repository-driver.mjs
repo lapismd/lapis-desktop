@@ -1,3 +1,4 @@
+import { fixtureJjBinary } from "./native-tools.mjs";
 import assert from "node:assert/strict";
 import { HistoryClient } from "@lapismd/jj-history";
 import { createHash } from "node:crypto";
@@ -96,7 +97,7 @@ export async function quiet(session) {
 }
 export function jj(root, args) {
   return execFileSync(
-    "/opt/homebrew/bin/jj",
+    fixtureJjBinary(),
     [
       "--no-pager",
       "--config",

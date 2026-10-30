@@ -1,3 +1,4 @@
+import { fixtureJjBinary } from "./native-tools.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -16,7 +17,7 @@ import { returnToVaults } from "./workspace-navigation.mjs";
 
 function jj(root, ...args) {
   return execFileSync(
-    "/opt/homebrew/bin/jj",
+    fixtureJjBinary(),
     [
       "--no-pager",
       "--config",

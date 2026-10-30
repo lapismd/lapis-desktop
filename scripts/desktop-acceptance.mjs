@@ -10,6 +10,7 @@ import {
 import { resolve, join } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { fixtureJjBinary } from "../tests/desktop/native-tools.mjs";
 import { prepareDistributionFixtures } from "../tests/desktop/distribution-fixtures.mjs";
 import { nativeBuildEnvironment } from "./validation/model.mjs";
 
@@ -64,6 +65,7 @@ async function acceptance() {
   const environment = {
     ...process.env,
     PATH: `${bin}:/usr/bin:/bin`,
+    LAPIS_DESKTOP_FIXTURE_JJ: fixtureJjBinary(),
     LAPIS_DESKTOP_ACCEPTANCE_STATE: join(directory, "window-state.json"),
     LAPIS_DESKTOP_ACCEPTANCE_ROOT: directory,
   };

@@ -57,3 +57,12 @@ enable/disable/revoke controls remain denied there. Actual Metadata/Search/Graph
 view families also run with explicit native metadata selection; hidden reads
 cannot replace their visible workspace gate. Native Search selection stays
 unavailable in this metadata-only intake.
+
+Native fixture tools MUST resolve from the selected runner installation before
+hardening the application PATH. Repository fixtures retain that absolute JJ
+identity instead of assuming Homebrew. The actual native process keeps only
+`/usr/bin:/bin`; fixture tool discovery does not broaden application admission.
+Shared native turn/queue peers MUST come from lapis-server at the same full Git
+commit selected by the compiled app core, with an explicit hosted source
+prerequisite. Retired Notes source paths do not supply those peers. E-CI-006
+retains the original 97-pass/12-failure hosted result and separate repair proof.

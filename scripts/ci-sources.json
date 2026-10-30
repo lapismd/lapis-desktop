@@ -33,5 +33,10 @@
     "name": "lapis-plugin-tasks",
     "repository": "lapismd/lapis-plugin-tasks",
     "revision": "52270c2aa7838811604a20be0861cdbd04027b42"
+  },
+  {
+    "name": "lapis-server",
+    "repository": "lapismd/lapis-server",
+    "revision": "4150cac6f2fef28b128421e4e3a851b848acdcf3"
   }
 ]

@@ -19,7 +19,7 @@ export function nativeTurnFixture() {
   const log = join(root, "worker.jsonl");
   const peer = readFileSync(
     resolve(
-      "../lapis-notes/crates/lapis-app-core/tests/support/native_turn/peer.py",
+      "../lapis-server/crates/lapis-app-core/tests/support/native_turn/peer.py",
     ),
     "utf8",
   ).replace("os.environ['LOG']", JSON.stringify(log));

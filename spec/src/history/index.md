@@ -1,5 +1,6 @@
 # Evidence
 
+- [Portable native fixture prerequisites](E-CI-006.md)
 - [Released Design Core registry intake](E-CI-005.md)
 - [Current compatible dependency and native intake](current-intake.md)
 - [Shared Rust application-services evidence](core/index.md)

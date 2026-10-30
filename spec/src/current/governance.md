@@ -10,7 +10,7 @@ qualify metadata/Search; 033/034 qualify editing. Core readers use exact local
 IPC; generic plugin grants deny. Tasks/default gates remain separate. SSH
 options preserve authentication, endpoints and literal arguments. Archive
 rewriting is idempotent only for an exact path redirected to a verified tarball.
-Repeated hooks preserve it; unverified paths/file peer ranges reject.
+Fixtures pin tools and Server peers; unverified paths/file peers reject.
 
 [Local intake](local-dependencies.md) governs registry 0.7.1 (E-CI-005) and
 complete review refreshes from committed default sources under LD-GOV-006/008.
