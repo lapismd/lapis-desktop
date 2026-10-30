@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import {
   existsSync,
+  copyFileSync,
   mkdirSync,
   readFileSync,
   readdirSync,
@@ -16,6 +17,7 @@ import { runAudit } from "./ci-audit.mjs";
 
 /** Unpublished packages stay registry ranges in the tracked manifest. */
 export const unpublishedRanges = {
+  "@lapismd/design-core": "../design-core",
   "@lapis-notes/workspace": "../lapis-notes/packages/workspace",
   "@lapis-notes/bases": "../lapis-plugins/packages/bases",
   "@lapis-notes/history": "../lapis-plugins/packages/history",
@@ -65,16 +67,29 @@ function installProjected() {
       );
       rmSync(directory, { recursive: true, force: true });
       mkdirSync(directory, { recursive: true });
-      execFileSync(
-        "pnpm",
-        [
-          "--config.ignore-scripts=true",
-          "pack",
-          "--pack-destination",
-          directory,
-        ],
-        { cwd: resolve(relative), stdio: "pipe" },
-      );
+      if (name === "@lapismd/design-core") {
+        const version = JSON.parse(
+          readFileSync(resolve(relative, "package.json"), "utf8"),
+        ).version;
+        copyFileSync(
+          resolve(
+            relative,
+            ".local/packages",
+            `lapismd-design-core-${version}-built.tgz`,
+          ),
+          resolve(directory, "package.tgz"),
+        );
+      } else
+        execFileSync(
+          "pnpm",
+          [
+            "--config.ignore-scripts=true",
+            "pack",
+            "--pack-destination",
+            directory,
+          ],
+          { cwd: resolve(relative), stdio: "pipe" },
+        );
       const tarballs = readdirSync(directory).filter((file) =>
         file.endsWith(".tgz"),
       );

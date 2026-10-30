@@ -2,6 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { runDesktopTests } from "../../scripts/desktop-tests.mjs";
+import { buildAcceptanceApp } from "../../scripts/desktop-acceptance.mjs";
 
 test("CI retains explicit headed native acceptance when the local default is quiet", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
@@ -53,6 +54,32 @@ test("invalid or conflicting desktop flags fail before any child starts", async 
       /--headless.*--headed/,
     );
     assert.equal(started, false);
+  }
+});
+
+test("headed acceptance budgets its renderer build without altering the suite", async () => {
+  const memory = process.constrainedMemory;
+  try {
+    process.constrainedMemory = () => 8 * 1024 ** 3;
+    const calls = [];
+    await buildAcceptanceApp(async (...values) => calls.push(values));
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0][0], "pnpm");
+    assert.deepEqual(calls[0][1], [
+      "exec",
+      "tauri",
+      "build",
+      "--debug",
+      "--bundles",
+      "app",
+      "--features",
+      "e2e",
+      "--config",
+      "src-tauri/tauri.e2e.conf.json",
+    ]);
+    assert.equal(calls[0][2].NODE_OPTIONS, "--max-old-space-size=4096");
+  } finally {
+    process.constrainedMemory = memory;
   }
 });
 

@@ -165,3 +165,11 @@ its patch release, CI builds its public archive from Notes
 The tracked range stays portable. Desktop uses its shared presentation lease and
 removes its duplicate screen; guarded deletion and leave assertions remain
 unchanged. Registry-only distribution still requires the released patch.
+
+Design Core 0.7.0's composer can read retired reactive state after editor
+teardown. Until its patch release, CI prepares the owning public built archive
+with `pnpm package:local` from source
+`e03b6776d20e7506eacb6e048c9726a0bc77d64c`. This retains its declaration,
+stylesheet and font preparation, portable tracked range and payload
+verification. The canonical distribution backlog retains replacement with a
+registry release.

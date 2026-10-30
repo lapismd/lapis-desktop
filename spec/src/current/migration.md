@@ -45,3 +45,5 @@ clean-machine, upgrade/rollback and frozen-host retirement acceptance.
 Parallel-branch CI receipts retain their original bytes and legacy review
 metadata. Their original revisions and hashes are pinned in historical evidence
 provenance; this grants no current completion authority or new schema exception.
+Rejected receipts retain their exact bytes under `spec/evidence/rejected`;
+replacement records preserve the failed governance result and original hash.

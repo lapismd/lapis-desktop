@@ -1,13 +1,14 @@
 # Desktop plugins and catalog — [native turns](ai-adapter.md), [queues](ai-queue.md)
 
-Hosted dependency intake preserves existing story presentation and assertions.
-Queue states extend E-CORE-033/036 recovery/admission, retaining real
-App/workspace/Agent screens, titles, sidebars, chat reuse and scoped drafts.
-Targets MUST declare safe `default_mode`; sends MUST assert the submitted mode.
-History fixtures model native publication through start/status, never client
-batch scheduling. Metadata stories MUST inject the public session port into the
-real shell and show startup progress/recovery. Stories remain `visual-pending`;
-browser proof is separate from [native acceptance](../history/E-CORE-022.md).
+Catalog draft clearing MUST be platform-neutral; cancellation retains its
+original outcome assertions. Queue states extend E-CORE-033/036
+recovery/admission, retaining real App/workspace/Agent screens, titles,
+sidebars, chat reuse and scoped drafts. Targets MUST declare safe
+`default_mode`; sends MUST assert the submitted mode. History fixtures model
+native publication through start/status, never client batch scheduling. Metadata
+stories MUST inject the public session port into the real shell and show startup
+progress/recovery. Stories remain `visual-pending`; browser proof is separate
+from [native acceptance](../history/E-CORE-022.md).
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned

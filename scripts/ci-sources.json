@@ -1,5 +1,10 @@
 [
   {
+    "name": "design-core",
+    "repository": "lapismd/design-core",
+    "revision": "e03b6776d20e7506eacb6e048c9726a0bc77d64c"
+  },
+  {
     "name": "lapis-notes",
     "repository": "lapismd/lapis-notes",
     "revision": "6f315baef2bd2f0bb4942927d4e19b9e0eb2a15d"

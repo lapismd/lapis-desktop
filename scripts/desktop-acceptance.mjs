@@ -11,6 +11,7 @@ import { resolve, join } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { prepareDistributionFixtures } from "../tests/desktop/distribution-fixtures.mjs";
+import { nativeBuildEnvironment } from "./validation/model.mjs";
 
 export async function run(command, args, env = process.env) {
   return new Promise((resolveRun, reject) => {
@@ -27,6 +28,24 @@ export async function run(command, args, env = process.env) {
     });
   });
 }
+export async function buildAcceptanceApp(execute = run) {
+  await execute(
+    "pnpm",
+    [
+      "exec",
+      "tauri",
+      "build",
+      "--debug",
+      "--bundles",
+      "app",
+      "--features",
+      "e2e",
+      "--config",
+      "src-tauri/tauri.e2e.conf.json",
+    ],
+    { ...process.env, ...nativeBuildEnvironment("build") },
+  );
+}
 async function acceptance() {
   if (process.platform !== "darwin" || process.arch !== "arm64")
     throw new Error("M0.1 native acceptance requires macOS ARM64.");
@@ -38,18 +57,7 @@ async function acceptance() {
   writeFileSync(join(vault, "Welcome.md"), "# A native vault\n");
   copyFileSync("src-tauri/icons/icon.png", join(vault, "café.png"));
   await run(process.execPath, ["scripts/prepare-acp-acceptance.mjs"]);
-  await run("pnpm", [
-    "exec",
-    "tauri",
-    "build",
-    "--debug",
-    "--bundles",
-    "app",
-    "--features",
-    "e2e",
-    "--config",
-    "src-tauri/tauri.e2e.conf.json",
-  ]);
+  await buildAcceptanceApp();
   const bin = join(directory, "bin");
   mkdirSync(bin);
   symlinkSync(process.execPath, join(bin, "node"));
