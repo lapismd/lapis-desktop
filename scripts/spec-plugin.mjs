@@ -1,5 +1,5 @@
 import { sourceFindings } from "./source-audit.mjs";
-import { progressFindings } from "./progress.mjs";
+import { evidenceFindings } from "./evidence.mjs";
 import { validate as storybookParity } from "./spec-validation/storybook-parity.mjs";
 
 export const name = "desktop-governance";
@@ -9,10 +9,10 @@ export function validate(context) {
     return [
       ...sourceFindings(root),
       ...storybookParity(context),
-      ...progressFindings(root).errors.map((message) => ({
-        code: "LD-PROGRESS",
+      ...evidenceFindings(root).errors.map((message) => ({
+        code: "LD-EVIDENCE",
         rule: "LD-GOV-004",
-        file: "spec/src/current/progress/milestones.md",
+        file: "spec/src/current/governance.md",
         line: 1,
         message,
       })),

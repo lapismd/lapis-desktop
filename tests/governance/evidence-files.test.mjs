@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { evidenceFileErrors } from "../../scripts/progress.mjs";
+import { evidenceFileErrors } from "../../scripts/evidence-model.mjs";
 
 test("immutable evidence resolves a removed file at its original snapshot", () => {
   assert.deepEqual(

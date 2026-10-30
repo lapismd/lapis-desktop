@@ -1,13 +1,13 @@
 # Lapis Desktop agent guide
 
 Read this guide, `spec/src/current/index.md`, the owning contract and the
-milestone task before inspecting or changing implementation. Apply the parent
-workspace guidance too. `PLAN.md` is the roadmap; canonical requirements govern
-behavior and milestone tasks alone own completion status.
+relevant backlog topic before inspecting or changing implementation. Apply the
+parent workspace guidance too. Canonical feature chapters and verification own
+current behavior/status; `spec/src/backlog.md` owns outstanding work.
 
 Prefer `pnpm spec:search "<topic or ID>"` before any manual scan of spec/src;
 use --semantic for conceptual queries; rg is the fallback only when QMD is
-unavailable.
+unavailable. Search future work with `pnpm spec:search --scope backlog`.
 
 ## Workflow
 
@@ -18,29 +18,31 @@ unavailable.
 4. Run the exact target, then checks for the complete affected surface. Follow
    the workspace escalation ladder; document-only work runs document checks.
 5. Add fresh Markdown evidence under `spec/src/history`, including commands,
-   counts, failures, versions, gaps and an explicit milestone review.
-6. Update the task's selected evidence and run `pnpm progress:generate`,
-   `pnpm check:progress` and the applicable specification checks.
-7. Refresh the task ledger UTC date/time and regenerate `MIGRATION.md` with
-   every slice commit; refresh the Notes master tracker after consumer commits.
-   Refresh current activity when validation or remaining work changes too; do
-   not leave the generated summary unchanged until the next commit. Commit each
-   verified slice with Jujutsu and a descriptive message.
+   counts, failures, versions, gaps, contract and acceptance review. Keep failed
+   attempts and committed receipts immutable. Legacy milestone metadata is
+   historical; new receipts reference requirements without an active task
+   ledger.
+6. Update affected verification and backlog entries and run
+   `pnpm check:evidence` plus the applicable specification checks. No per-commit
+   activity timestamp or generated migration summary is required.
+7. Commit verified slices unsigned with Jujutsu and a descriptive message.
+   Preserve unrelated changes and never manually move the main bookmark.
 
-Keep failed attempts in evidence. Done requires the original completion gate;
-compilation, browser mocks, bookkeeping and screenshots cannot replace native
-acceptance. A lifecycle change requires a cold process. Visual review remains
-non-blocking and baselines require explicit approval.
+Keep failed attempts in evidence. Qualification requires the original acceptance
+boundary; compilation, browser mocks, bookkeeping and screenshots cannot replace
+native acceptance. A lifecycle change requires a cold process. Visual review
+remains non-blocking and baselines require explicit approval.
 
 ## Ownership and structure
 
 - `src` owns desktop presentation and the renderer transport adapter;
   `src-tauri` owns native windows, admission, services and resource lifetime.
-- Shared native application policy belongs to Notes-owned `lapis-app-core`.
-  Consume its public Rust modules directly; keep Tauri/window/OS policy here.
-  Extract implementations instead of copying them or retaining old-path exports.
-  Existing public Agent/Repository screens observe those services. Do not add
-  authoritative renderer background schedulers while moving work into the core.
+- Shared native application policy belongs to lapis-server-owned
+  `lapis-app-core`. Consume its public Rust modules directly; keep
+  Tauri/window/OS policy here. Extract implementations instead of copying them
+  or retaining old-path exports. Existing public Agent/Repository screens
+  observe those services. Do not add authoritative renderer background
+  schedulers while moving work into the core.
 - Keep published dependency ranges portable. The private migration app may link
   an unpublished sibling through its built public exports; record its revision
   and remove that temporary prerequisite at the distribution gate. During this

@@ -3,10 +3,8 @@
 **Planned contract; implementation deferred.** This chapter specifies future
 Desktop behavior and public integration boundaries. No Review mode or native
 comment-write capability is claimed as delivered. The
-[implementation plan](../backlog/markdown-review-mode.md) describes source
-owners and slices;
-[M17.1–M17.5](progress/milestones.md#markdown-document-review) alone own
-completion. E-PLAN-005 records planning checks only.
+[design and acceptance](markdown-review-mode.md) describes source owners and
+slices; The backlog owns future work; E-PLAN-005 records planning checks only.
 
 ## Requirements
 

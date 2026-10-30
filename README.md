@@ -3,12 +3,12 @@
 A Tauri desktop preview for Lapis Notes with a native vault launcher and the
 existing Notes workspace, editor, Markdown reader, Search, metadata and Graph
 views. Native menus and services use the same owned application lifecycle. The
-[migration plan](PLAN.md) defines qualification and deferred distribution.
+[backlog](spec/src/backlog.md) defines outstanding qualification and deferred
+distribution.
 
-Start with [MIGRATION.md](MIGRATION.md) for current status, original gates and
-next work. Canonical behavior lives in the
-[specification](spec/src/current/index.md). See [AGENTS.md](AGENTS.md) before
-changing implementation.
+Start with the [canonical specification](spec/src/current/index.md) for current
+behavior and its [backlog](spec/src/backlog.md) for next work. See
+[AGENTS.md](AGENTS.md) before changing implementation.
 
 ## Development
 
@@ -147,12 +147,12 @@ The local debug application is emitted under
 `src-tauri/target/debug/bundle/macos/Lapis Notes Preview.app`. Signed public
 distribution and platform expansion are separate M11 gates.
 
-## Specification and progress
+## Specification and outstanding work
 
 Use `pnpm spec:validate`, `pnpm spec:first` and `pnpm spec:check` for the
-published Node spec-validator. `pnpm progress:generate` refreshes the root
-status summary from the task ledger; `pnpm check:progress` checks evidence and
-gates. See the [asset and reference provenance](docs/provenance.json).
+published Node spec-validator. `pnpm check:evidence` validates immutable
+receipts, fresh coverage and gates. See the
+[asset and reference provenance](docs/provenance.json).
 
 The M10.1 native ACP acceptance lane also requires a clean, verified `lapis-ai`
 checkout. Build its public outputs first with `pnpm -C ../lapis-ai build`.

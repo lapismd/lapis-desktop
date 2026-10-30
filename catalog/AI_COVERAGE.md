@@ -1,8 +1,9 @@
-# AI story migration coverage
+# AI story source coverage
 
-This source-family inventory does not own milestone completion. M10.2 remains
-open in the canonical task ledger until native acceptance and every applicable
-retained scenario pass. Do not retire source registrations yet.
+This inventory records source-family provenance and destination stories. It does
+not own implementation status;
+[AI qualification](../spec/src/backlog/ai-qualification.md) retains
+native/provider gaps. Matching names alone cannot prove equal coverage.
 
 Compared sources:
 
