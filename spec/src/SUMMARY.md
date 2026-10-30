@@ -393,3 +393,4 @@
 
 - [Shared conflict presentation intake](history/E-CI-003.md)
 - [Combined source repair intake](history/E-CI-004.md)
+- [Released Design Core registry intake](history/E-CI-005.md)

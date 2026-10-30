@@ -64,10 +64,36 @@ supported public consumption or an explicit private archive prerequisite.
 Preserve portable tracked ranges and validate the resulting consumer; do not
 conceal the missing package through a source alias or copied implementation.
 
-Release the Workspace disk-acceptance, Design Core lifetime/contrast and Agent
-UI send-capability repairs, then replace their temporary public archives with
-registry versions and repeat frozen registry-install acceptance. Reconcile
-Bases' current peer cohort and publication of Tasks, AI, Terminal and JJ
-conversations alongside App Profile and History. The pinned CI projection
-qualifies source intake; registry-only distribution remains deferred until these
-prerequisites close.
+Release the Workspace disk-acceptance and Agent UI send-capability repairs, then
+replace their temporary public archives with registry versions and repeat frozen
+registry-install acceptance. Reconcile Bases' current peer cohort and
+publication of Tasks, AI, Terminal and JJ conversations alongside App Profile
+and History. The pinned CI projection qualifies source intake; registry-only
+distribution remains deferred until these prerequisites close. Design Core
+lifetime/contrast repairs are released in 0.7.1; E-CI-005 qualifies their
+registry intake separately.
+
+### Remaining npm archive prerequisites
+
+CI prepares these nine packages from the full commits in
+`scripts/ci-sources.json`; `scripts/ci-install.mjs` selects their package
+boundaries. Remove each temporary projection after its released replacement or
+explicit private distribution contract is qualified in Desktop.
+
+| Package                           | Remaining transition                                                            |
+| --------------------------------- | ------------------------------------------------------------------------------- |
+| `@lapismd/agent-ui`               | Release the merged host-owned draft/send repair.                                |
+| `@lapis-notes/workspace`          | Release the shared disk-acceptance repair.                                      |
+| `@lapis-notes/bases`              | Reconcile the qualified bundle and current peer cohort for registry intake.     |
+| `@lapis-notes/history`            | Release the repository-controller exports used by Desktop.                      |
+| `@lapis-notes/app-profile`        | Resolve its unpublished application-profile distribution boundary.              |
+| `@lapis-notes/lapis-plugin-tasks` | Release the qualified npm plugin boundary or document its private distribution. |
+| `@lapismd/ai`                     | Resolve the unpublished built client distribution.                              |
+| `@lapismd/terminal`               | Resolve the unpublished built client distribution.                              |
+| `@lapismd/jj-conversations`       | Resolve the unpublished built client distribution.                              |
+
+The first four have npm publications; their selected source changes remain
+separate from registry qualification. npm returns E404 for the last five at the
+E-CI-005 audit. These prerequisites permit private CI validation; registry-only
+distribution remains outstanding. Design Core is released and consumed through
+its normal npm range at 0.7.1.

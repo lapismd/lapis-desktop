@@ -1,5 +1,6 @@
 # Evidence
 
+- [Released Design Core registry intake](E-CI-005.md)
 - [Current compatible dependency and native intake](current-intake.md)
 - [Shared Rust application-services evidence](core/index.md)
 - [Compute model selection and fresh app qualification](E-AI-125.md)

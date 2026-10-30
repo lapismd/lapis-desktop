@@ -129,8 +129,8 @@ the History repository controllers absent from its published 0.1.4 archive.
 Agent UI and Repository UI have published npm packages; the send-capability
 repair below temporarily selects an owning Agent UI archive. The published Notes
 cohort is API 0.2.0, UI 0.1.4, Workspace 0.3.0 and File Explorer 0.2.0; Markdown
-is 0.2.0 and Design Core is 0.7.0. This private validation projection does not
-qualify a registry-only distribution.
+is 0.2.0 and Design Core is registry 0.7.1. This private validation projection
+does not qualify a registry-only distribution.
 
 All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
 Native application crates use lapis-server
@@ -167,14 +167,12 @@ The tracked range stays portable. Desktop uses its shared presentation lease and
 removes its duplicate screen; guarded deletion and leave assertions remain
 unchanged. Registry-only distribution still requires the released patch.
 
-Design Core 0.7.0's composer and SurfaceLayer can read retired reactive state
-after owner teardown, selected filter labels fail Lapis dark contrast, and
-delayed scroll delivery can release the transcript's bottom lock after growth.
-Until its patch release, CI prepares the owning public built archive with
-`pnpm package:local` from source `3b0392ca4a15a2e88cc7ce43a3bf4f0ea58e99fa`.
-This retains its declaration, stylesheet and font preparation, portable tracked
-range and payload verification. The canonical distribution backlog retains
-replacement with a registry release.
+Design Core's released 0.7.1 contains the qualified composer/SurfaceLayer
+lifetime, filter contrast and transcript bottom-lock repairs. Hosted and local
+CI intake MUST consume its published `^0.7.1` range and registry lock entry,
+without the former Design Core source download, local build or archive
+projection. Other explicitly pinned private source prerequisites remain.
+E-CI-005 records registry intake and its separate consumer qualification.
 
 Agent UI's existing transcript send callback and footer must honour the host's
 advertised send capability. Until that patch is released, reviewed CI validation

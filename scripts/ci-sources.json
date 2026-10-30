@@ -1,10 +1,5 @@
 [
   {
-    "name": "design-core",
-    "repository": "lapismd/design-core",
-    "revision": "3b0392ca4a15a2e88cc7ce43a3bf4f0ea58e99fa"
-  },
-  {
     "name": "agent-ui",
     "repository": "lapismd/agent-ui",
     "revision": "78a03b6d56cd61c965c70163855bbf503ed349eb"

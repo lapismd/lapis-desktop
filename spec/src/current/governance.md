@@ -12,8 +12,8 @@ options preserve authentication, endpoints and literal arguments. Archive
 rewriting is idempotent only for an exact path redirected to a verified tarball.
 Repeated hooks preserve it; unverified paths/file peer ranges reject.
 
-The [local dependency intake](local-dependencies.md) contract governs complete
-review refreshes from committed default-checkout source under LD-GOV-006/008.
+[Local intake](local-dependencies.md) governs registry 0.7.1 (E-CI-005) and
+complete review refreshes from committed default sources under LD-GOV-006/008.
 
 Native readiness covers split/log-batched receipts without longer deadlines. The
 e2e entry shares early progress, then imports runtime instrumentation; ordinary

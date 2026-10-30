@@ -14,14 +14,6 @@ const jobs = [
     ],
   },
   {
-    marker:
-      "../design-core/.local/packages/lapismd-design-core-0.7.0-built.tgz",
-    steps: [
-      ["../design-core", "pnpm", ["install", "--frozen-lockfile"]],
-      ["../design-core", "pnpm", ["package:local"]],
-    ],
-  },
-  {
     marker: "../lapis-plugin-tasks/dist/index.js",
     steps: [
       [
