@@ -42,14 +42,14 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Install mdBook
         uses: taiki-e/install-action@v2
         with:
           tool: mdbook@0.5.4
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
@@ -79,7 +79,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@1.99.0
@@ -89,8 +91,6 @@ jobs:
         uses: taiki-e/install-action@v2
         with:
           tool: mdbook@0.5.4
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
@@ -99,6 +99,8 @@ jobs:
         run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
         run: node scripts/ci-install.mjs
+      - name: Prepare the pinned native AI runtime
+        run: pnpm ai:prepare -- --reuse
       - name: Run formatting, type, and source checks
         run: node scripts/run-turbo.mjs ci:quality --summarize
       - name: Report Turbo cache
@@ -118,18 +120,22 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@1.99.0
         with:
           components: clippy,rustfmt
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
       - name: Build unpublished path packages
         run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
         run: node scripts/ci-install.mjs
+      - name: Initialize Jujutsu over the checked-out Git revision
+        run: jj git init --colocate .
+      - name: Prepare the pinned native AI runtime
+        run: pnpm ai:prepare -- --reuse
       - name: Run unit tests
         run: node scripts/run-turbo.mjs ci:unit --summarize
       - name: Report Turbo cache
@@ -149,7 +155,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Build unpublished path packages
         run: node scripts/ci-prepare-links.mjs
@@ -174,7 +182,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Build unpublished path packages
         run: node scripts/ci-prepare-links.mjs
@@ -201,7 +211,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@1.99.0
@@ -230,7 +242,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
         uses: dtolnay/rust-toolchain@1.99.0
@@ -240,7 +254,13 @@ jobs:
         run: node scripts/ci-prepare-links.mjs
       - name: Install dependencies
         run: node scripts/ci-install.mjs
+      - name: Prepare the pinned native AI runtime
+        run: pnpm ai:prepare -- --reuse
+      - name: Prepare verified native plugin fixtures
+        run: node --import tsx scripts/ci-native-fixtures.mjs
       - name: Native ARM64 acceptance
+        env:
+          LAPIS_DESKTOP_PORTABLE_FIXTURES: .local/ci-native-plugins/manifest.json
         run: node scripts/run-turbo.mjs ci:headed --summarize
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
@@ -273,7 +293,9 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Install Linux WebKit build dependencies
         run: |
@@ -322,16 +344,14 @@ jobs:
         with:
           node-version: 24
           cache: pnpm
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Build unpublished path packages
         run: node scripts/ci-prepare-links.mjs
-      - name: Install dependencies
-        run: node scripts/ci-install.mjs
-      - name: Audit all dependencies
-        run: pnpm audit
-      - name: Audit production dependencies
-        run: pnpm audit --prod
+      - name: Install and audit the actual dependency projection
+        run: node scripts/ci-install.mjs --audit
 
   validate:
     name: Validate

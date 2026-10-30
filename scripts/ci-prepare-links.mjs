@@ -7,17 +7,44 @@ import { pathToFileURL } from "node:url";
 const root = process.cwd();
 const jobs = [
   {
-    marker: "../agent-ui/packages/repository-ui/dist/index.js",
+    marker: "../lapis-plugin-tasks/dist/index.js",
     steps: [
-      ["../agent-ui", "pnpm", ["install", "--frozen-lockfile"]],
-      ["../agent-ui/packages/agent-ui", "pnpm", ["build"]],
-      ["../agent-ui/packages/repository-ui", "pnpm", ["build"]],
+      [
+        "../lapis-plugin-tasks",
+        "pnpm",
+        ["install", "--ignore-pnpmfile", "--frozen-lockfile"],
+      ],
+      [
+        "../lapis-plugin-tasks",
+        "pnpm",
+        ["exec", "svelte-package", "--tsconfig", "./tsconfig.pack.json"],
+      ],
+    ],
+  },
+  {
+    marker:
+      "../lapis-plugins/packages/history/dist/repository/controllers/native-indexed-search.js",
+    steps: [
+      ["../lapis-plugins", "pnpm", ["install", "--frozen-lockfile"]],
+      ["../lapis-plugins/packages/history", "pnpm", ["build"]],
+    ],
+  },
+  {
+    marker: "../lapis-plugins/packages/bases/dist/index.js",
+    steps: [
+      ["../lapis-plugins", "pnpm", ["install", "--frozen-lockfile"]],
+      ["../lapis-plugins/packages/bases", "pnpm", ["build"]],
     ],
   },
   {
     marker: "../lapis-notes/packages/app-profile/dist/native-chat/index.js",
     steps: [
       ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],
+      [
+        "../lapis-notes",
+        "pnpm",
+        ["--filter", "@lapis-notes/app-profile^...", "build"],
+      ],
       ["../lapis-notes/packages/app-profile", "pnpm", ["build:native-chat"]],
     ],
   },
@@ -65,7 +92,11 @@ export function missingPathPackages() {
 export function stepsToRun(steps, hasScript) {
   const kept = steps.filter(([cwd, command, args]) => {
     const script = args[0];
-    if (command !== "pnpm" || script === "install" || script.startsWith("-"))
+    if (
+      command !== "pnpm" ||
+      ["install", "exec"].includes(script) ||
+      script.startsWith("-")
+    )
       return true;
     return hasScript(cwd, script);
   });

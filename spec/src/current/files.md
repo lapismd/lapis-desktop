@@ -50,7 +50,8 @@ M16.7/E-CORE-033 binds opt-in native editor intents and authoritative snapshots
 to that same admitted file client. Existing conditional saves retain their own
 caller exemption; foreign active/dirty/retained writers remain fenced. Desktop
 adds no alternate save or recovery path. Refused leave and ready-session host
-failures preserve watching and surface through Problems with a toast, not chrome above WorkspaceShell.
+failures preserve watching and surface through Problems with a toast, not chrome
+above WorkspaceShell.
 
 E-AI-093 keeps LD-FILE-002/003 ordinary watch, picker and containment contracts
 unchanged. Backup-only watches use the shared native transcript allowlist;
@@ -120,8 +121,9 @@ retired writers keep their original views and recovery owner, with existing
 notifications explaining external moves/removals. This integration remains
 subject to actual native and original aggregate qualification.
 
-M5 preserves its original PLAN.md gate. Targeted slices do not complete the
-aggregate milestone while end-of-M7 full qualification remains deferred.
+The original file-management boundary includes actual native operations and cold
+recovery. E-QUALIFICATION-002 records the completed aggregate; later changes
+retain their affected acceptance and any explicit backlog qualification.
 
 ## Requirements
 

@@ -15,6 +15,7 @@ export default defineConfig(
       bookIgnore: "LD-GOV-001",
       specFirst: "LD-GOV-002",
       internal: "LD-GOV-001",
+      qmd: "LD-GOV-001",
     },
     validators: {
       governance: {
@@ -26,8 +27,23 @@ export default defineConfig(
       summary: true,
       fileLimits: { maxLines: 400, maxBytes: 32768 },
       book: true,
+      qmd: {
+        collection: "lapis-desktop-current",
+        configPath: ".qmd/index.yml",
+        defaultScope: "current",
+        scopes: {
+          current: {
+            collection: "lapis-desktop-current",
+            path: "spec/src/current",
+          },
+          backlog: {
+            collection: "lapis-desktop-backlog",
+            path: "spec/src/backlog",
+          },
+        },
+      },
       verification: {
-        file: "current/verification.md",
+        file: "verification.md",
         mode: "table",
         idMode: "single",
         headers: {
@@ -36,7 +52,7 @@ export default defineConfig(
           evidence: ["Evidence"],
           required: [],
         },
-        statuses: ["Implemented", "Planned"],
+        statuses: ["Implemented", "Planned", "Partial"],
         statusMatch: "exact",
         rowMultiplicity: "exactly-one",
         rejectOrphans: true,
@@ -47,7 +63,7 @@ export default defineConfig(
         canonicalPattern: canonicalContractPattern("spec/src/"),
         protected: [
           "^(?:\\.storybook/|catalog/(?!plugins/ai/|support/ai/)|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
-          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|PLAN\\.md$|POPOUT_PLAN\\.md$|MIGRATION\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$|spec/src/current/progress/)",
+          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
         ],
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
@@ -78,7 +94,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:POPOUT_PLAN\\.md$|src-tauri/tests/workspace_windows\\.rs$|src-tauri/src/(?:windows/|host/windows/|acceptance/popouts\\.rs$)|src/lib/(?:desktop/(?:popup-|workspace-popouts)|native/workspace-windows)|tests/renderer/(?:popout-|notes-dispose)|tests/desktop/(?:popout-|PopoutProof))",
+              "^(?:src-tauri/tests/workspace_windows\\.rs$|src-tauri/src/(?:windows/|host/windows/|acceptance/popouts\\.rs$)|src/lib/(?:desktop/(?:popup-|workspace-popouts)|native/workspace-windows)|tests/renderer/(?:popout-|notes-dispose)|tests/desktop/(?:popout-|PopoutProof))",
             chapters: ["spec/src/current/windows.md"],
           },
           {
@@ -102,13 +118,12 @@ export default defineConfig(
             chapters: ["spec/src/current/desktop.md"],
           },
           {
-            pattern:
-              "^(?:PLAN\\.md$|MIGRATION\\.md$|spec/migration-inventory\\.json$|spec/src/current/progress/)",
+            pattern: "^spec/(?:evidence/|migration-inventory\\.json$)",
             chapters: ["spec/src/current/migration.md"],
           },
           {
             pattern:
-              "^(?:scripts/|docs/|spec/book\\.toml$|tests/governance/|\\.github/|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|[^/]+\\.(?:json|toml|yaml|mjs)$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
+              "^(?:config/dependency-audit\\.json$|scripts/|docs/|spec/book\\.toml$|tests/governance/|\\.github/|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|[^/]+\\.(?:json|toml|yaml|mjs)$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
             chapters: ["spec/src/current/governance.md"],
           },
         ],
@@ -120,8 +135,7 @@ export default defineConfig(
         pattern: canonicalContractPattern(),
         role: "contract",
       },
-      { pattern: "^current/verification\\.md$", role: "verification" },
-      { pattern: "^current/progress/", role: "progress" },
+      { pattern: "^verification\\.md$", role: "verification" },
       { pattern: "^history/(?!index)", role: "history" },
       { pattern: "(?:index|SUMMARY)\\.md$", role: "navigation" },
     ],

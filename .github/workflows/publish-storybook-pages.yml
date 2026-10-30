@@ -39,7 +39,10 @@ jobs:
           node-version: 24
           cache: pnpm
 
-      - name: Check out path dependencies
+      - name: Install Jujutsu into the runner temp directory
+        run: node scripts/validation/install-tools.mjs --ci
+
+      - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
 
       - name: Build unpublished path packages

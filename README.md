@@ -8,12 +8,12 @@ A Tauri desktop preview for Lapis Notes with a native vault launcher and the
 existing Notes workspace, editor, Markdown reader, Search, metadata and Graph
 views. Native menus and services use the same owned application lifecycle. The
 live catalog is <https://lapismd.github.io/lapis-desktop/>. The
-[migration plan](PLAN.md) defines qualification and deferred distribution.
+[backlog](spec/src/backlog.md) defines outstanding qualification and deferred
+distribution.
 
-Start with [MIGRATION.md](MIGRATION.md) for current status, original gates and
-next work. Canonical behavior lives in the
-[specification](spec/src/current/index.md). See [AGENTS.md](AGENTS.md) before
-changing implementation.
+Start with the [canonical specification](spec/src/current/index.md) for current
+behavior and its [backlog](spec/src/backlog.md) for next work. See
+[AGENTS.md](AGENTS.md) before changing implementation.
 
 ## Development
 
@@ -25,12 +25,14 @@ Terminal library through its public package first:
 pnpm --dir ../lapis-terminal build:js
 ```
 
-The private preview links `../lapis-terminal/packages/terminal`; Rust links its
-Tauri plugin from the same sibling. This temporary prerequisite is recorded in
-the migration evidence and is resolved at the distribution gate.
+The private preview consumes Terminal through its built public package; Rust
+consumes its Tauri plugin from a pinned git commit. This temporary JavaScript
+prerequisite is recorded in the migration evidence and is resolved at the
+distribution gate.
 
 ```sh
-pnpm install --frozen-lockfile
+pnpm local:refresh
+pnpm local:install
 pnpm dev
 ```
 
@@ -76,6 +78,13 @@ For a deliberately scoped source experiment, the older
 `pnpm local:pack <source-workspace> --already-built` helper remains available;
 it replaces the candidate manifest and does not establish complete freshness.
 Local source changes remain unpublished until the release gate.
+
+## Specification search
+
+`pnpm spec:search "<topic or ID>"` uses QMD semantic search. Select
+`--scope backlog` for planned work. Use Node 24 for the QMD native modules;
+`pnpm exec spec-validator doctor` verifies search setup. Search is an authoring
+tool and is excluded from CI validation.
 
 ## Verification
 
@@ -152,12 +161,12 @@ The local debug application is emitted under
 `src-tauri/target/debug/bundle/macos/Lapis Notes Preview.app`. Signed public
 distribution and platform expansion are separate M11 gates.
 
-## Specification and progress
+## Specification and outstanding work
 
 Use `pnpm spec:validate`, `pnpm spec:first` and `pnpm spec:check` for the
-published Node spec-validator. `pnpm progress:generate` refreshes the root
-status summary from the task ledger; `pnpm check:progress` checks evidence and
-gates. See the [asset and reference provenance](docs/provenance.json).
+published Node spec-validator. `pnpm check:evidence` validates immutable
+receipts, fresh coverage and gates. See the
+[asset and reference provenance](docs/provenance.json).
 
 The M10.1 native ACP acceptance lane also requires a clean, verified `lapis-ai`
 checkout. Build its public outputs first with `pnpm -C ../lapis-ai build`.

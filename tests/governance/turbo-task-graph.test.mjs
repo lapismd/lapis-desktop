@@ -109,3 +109,14 @@ test("sibling preparation skips a build the checkout does not define", () => {
     2,
   );
 });
+
+test("sibling preparation retains explicit public-package compiler commands", () => {
+  const steps = [
+    ["../plugin", "pnpm", ["install", "--frozen-lockfile"]],
+    ["../plugin", "pnpm", ["exec", "svelte-package"]],
+  ];
+  assert.deepEqual(
+    stepsToRun(steps, () => false),
+    steps,
+  );
+});

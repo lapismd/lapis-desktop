@@ -33,32 +33,33 @@ test("hosted workflows pin Node 24 actions", async () => {
 });
 
 test("unpublished packages stay registry ranges until install projection", async () => {
-  const { projectUnpublished } = await import("../../scripts/ci-install.mjs");
+  const { projectUnpublished, unpublishedRanges } = await import(
+    "../../scripts/ci-install.mjs"
+  );
   const manifest = {
-    dependencies: {
-      "@lapismd/agent-ui": "^0.1.0",
-      "@lapismd/repository-ui": "^0.1.0",
-      "@lapis-notes/app-profile": "^0.0.0",
-    },
+    dependencies: Object.fromEntries(
+      Object.keys(unpublishedRanges).map((name) => [name, "^0.1.0"]),
+    ),
   };
   const projected = projectUnpublished(manifest, () => true);
   assert.equal(
-    projected.dependencies["@lapismd/agent-ui"],
-    "link:../agent-ui/packages/agent-ui",
+    projected.dependencies["@lapis-notes/app-profile"],
+    "file:.local/ci-packages/-lapis-notes-app-profile/package.tgz",
   );
-  assert.equal(manifest.dependencies["@lapismd/agent-ui"], "^0.1.0");
+  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.1.0");
   assert.throws(
     () =>
-      projectUnpublished(
-        {
-          dependencies: {
-            ...manifest.dependencies,
-            "@lapismd/agent-ui": "link:../agent-ui/packages/agent-ui",
-          },
+      projectUnpublished({
+        dependencies: {
+          ...manifest.dependencies,
+          "@lapis-notes/app-profile": "link:../app-profile",
         },
-        () => true,
-      ),
+      }),
     /registry range/,
+  );
+  assert.throws(
+    () => projectUnpublished(manifest, () => false),
+    /Missing unpublished/,
   );
 });
 

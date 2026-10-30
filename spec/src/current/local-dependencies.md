@@ -123,5 +123,38 @@ packages stay at released `0.0.3`. `@lapismd/jj-history` is registry `~0.1.0`.
 `lapis-ai-capture`, `tauri-plugin-lapis-ai`, and `lapis-ai-app-tools` use git
 tag `v0.2.0` at version `0.2.0`. These stay, because they have no npm release
 and no crate tag: `@lapismd/ai`, `@lapismd/jj-conversations`,
-`@lapismd/terminal`, `tauri-plugin-lapis-terminal`, and the jj-store crate
-paths.
+`@lapismd/terminal`, and App Profile. Hosted CI uses committed
+`scripts/ci-sources.json` identities for these private public-build inputs and
+the History repository controllers absent from its published 0.1.4 archive.
+Agent UI and Repository UI now resolve published npm packages. The published
+Notes cohort is API 0.2.0, UI 0.1.4, Workspace 0.3.0 and File Explorer 0.2.0;
+Markdown is 0.2.0 and Design Core is 0.7.0. This private validation projection
+does not qualify a registry-only distribution.
+
+All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
+Native application crates use lapis-server
+`4150cac6f2fef28b128421e4e3a851b848acdcf3`, restoring retained projection
+engines through exact owning Plugins, Tasks and Docs Git commits. Terminal uses
+`d7e0a7cd710fef626e1350c116ca6e4b18986972`. No native dependency requires an
+ambient sibling crate path or an invented release tag.
+
+Hosted audit runs against the actual private install projection before restoring
+tracked files. The tracked lock records the published registry graph; private
+inputs are added from the pinned public archives. Both complete and production
+audits remain blocking. Test tooling consumes the released security repairs in
+Vite 7.3.7, Storybook 10.6.5, Vitest 4.1.12 and WebdriverIO 9.32; the pinned
+Puppeteer browser-download and Mocha serializer overrides use upstream packages.
+
+The user approved only development advisory GHSA-gcqx-w48m-w2h4 for deepmerge
+4.3.1 under the Svelte Vite plugin through 2026-11-30. The exact path, version
+and expiry are enforced; full audit reports remain visible, production findings
+and any changed/new advisory remain blocking. Stale exceptions require removal.
+
+Notes private App Profile uses Markdown 0.2.0 at source revision
+`c5891836d1633e66a75da683eb7ae5676ef7af47`, removing the former transitive
+Mira/KaTeX cohort instead of overriding a public plugin requirement in Desktop.
+
+The language-service Markdownlint chain also consumes published KaTeX 0.18.10
+through the same bounded security override used by Notes; its upstream 0.16
+range otherwise retains GHSA-238p-pmpm-9mq7. CI verifies installed private
+archive payloads across every active import route before testing or auditing.

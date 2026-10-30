@@ -67,8 +67,10 @@ fn main() {
                     let split = root.char_indices().nth(root.chars().count() / 2).unwrap().0;
                     message(&format!("See {}", &root[..split]));
                     message(&format!("{}/note.md fixture-", &root[split..]));
-                    #[rustfmt::skip]
-                    message(&format!("native-secret {}", format!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K")));
+                    message(&format!(
+                        "native-secret {}",
+                        format_args!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K")
+                    ));
                     reply(id, json!({"stopReason":"end_turn"}));
                 } else if text.starts_with("batch:") {
                     message("A fixture-native-");

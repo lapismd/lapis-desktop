@@ -1,8 +1,8 @@
 # Current specification
 
-Read the owning contract, its verification row and the milestone task. Product
-requirements live here; evidence records actual results and cannot redefine
-gates.
+Read the owning contract, its verification row and the relevant backlog topic.
+Product requirements live here; evidence records actual results and cannot
+redefine gates.
 
 - [Governance](governance.md)
 - [Local dependency intake](local-dependencies.md)
@@ -31,13 +31,13 @@ gates.
   - [Addressed local messages](ai-addressing.md)
   - [Explicit local transcript imports](ai-imports.md)
 - [Repository history and conversations](repository.md)
-- [Planned: Markdown document Review mode](markdown-review.md)
 - [Enabled writer audit](writer-audit.md)
 - [Shared-screen integration](shared-screen-integration.md)
 - [Migration inventory](migration.md)
-- [Milestones and next actions](progress/milestones.md)
-- [Requirement verification](verification.md)
+- [Requirement verification](../verification.md)
 
 - [Automatic vault backup](vault-backup.md)
 
 - [Local ACP conversation storage](ai-local-history.md)
+
+- [Outstanding work and planned features](../backlog.md)

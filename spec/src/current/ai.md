@@ -37,8 +37,8 @@ gates remain; E-AI-079–084 attribution/storage/dispatch drafts are unqualified
 
 E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 E-CATALOG-009–012 retain shell clearance, inert XML and constrained chat
-wrapping. `PLUGIN_MIGRATION.md` and the original M10 task gates remain
-authoritative. Shared plugin identity and catalog requirements live in
+wrapping. The [AI backlog](../backlog/ai-qualification.md) retains outstanding
+native acceptance. Shared plugin identity and catalog requirements live in
 [plugins.md](plugins.md).
 
 Native AI admission uses a two-phase, window-owned transition over an existing
@@ -356,7 +356,7 @@ Pending view loads and component teardown belong to the AI scope; closing or
 disabling cancels publication and drains owned work. Stored previews never start
 or resume ACP; native admission and recovery stay separately gated.
 
-`catalog/AI_MIGRATION.md` maps source differences and pending native cases.
+`catalog/AI_COVERAGE.md` maps source differences and pending native cases.
 
 Retained shell checks cover model preparation with a disabled, stable composer,
 conversation menus and offline recovery, provider attribution and scope follow.
@@ -391,9 +391,8 @@ gate; actual managed capture and AgentStore/ThreadStore adoption remain M13.3.
 [Native adapter records](ai-adapter.md) retain frame provenance, capture privacy
 and deferred managed-store receipt requirements.
 
-E-AI-105 refines the approval selection marker; LD-AI-002/004 remain unchanged.
-
-E-AI-106/112: collapsed chat navigation and header menu; execution is unchanged.
+E-AI-105/106/112 refine approvals, chat navigation and menus. LD-AI-002/004,
+execution and import/ACP fixture redaction semantics remain unchanged.
 
 E-AI-110 adds shared unit-aware Max VRAM input and host-owned GGUF browsing;
 selection remains separate from explicit import and preserves the existing

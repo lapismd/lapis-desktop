@@ -12,9 +12,9 @@ layout persistence still precede view teardown.
 E-REPO-050 retains LD-POP-004's original final-persistence-before-teardown gate;
 failed backup preparation must preserve the same related editors and drafts.
 
-This post-M7 workstream follows [POPOUT_PLAN.md](../../../POPOUT_PLAN.md). M7.1
-proves the native hosting boundary before shared workspace changes or
-ordinary-app popup admission. M7.2 and M7.3 remain separate review slices.
+The original native-hosting and shared-workspace proofs retain their separate
+receipts. E-POPOUT-004 qualifies ordinary application popup admission; later
+changes retain the native lifetime and persistence boundaries below.
 
 ## Requirements
 
