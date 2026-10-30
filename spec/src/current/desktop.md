@@ -246,8 +246,8 @@ guard is followed by editing-registry disposal before releasing the session.
 
 M16.7 selects native editing with `LAPIS_DESKTOP_EDITING_OWNER=core`. Only the
 main local window receives typed intents/snapshots for its admitted vault
-client. App construction injects that port; the shared registry owns
-editing/recovery.
+client. App construction uses its injected call for both editing and Tasks
+ports; the shared registry owns editing/recovery.
 
 The public `preflightNativeRecovery()` call precedes the existing protected
 writer handoff and final layout saves, avoiding registry-queue reentry. Refusal

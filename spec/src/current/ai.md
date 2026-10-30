@@ -7,8 +7,8 @@ completion and History recovery after reload/cold Quit without replay. A
 test-only hold may forward a delayed saved result after disposal; policy and
 screens stay production. E-CORE-045 targets [queue](ai-queue.md) provider proof.
 
-Portable native checks retain unsupported credential ports outside macOS; only
-the supported Keychain backend constructs its device service identity.
+[Native fixtures](native-acceptance.md) retain platform credential restrictions
+and share an injected call across editing and Tasks ports (E-CI-010).
 
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI

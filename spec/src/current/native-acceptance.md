@@ -1,5 +1,8 @@
 # Native acceptance modes
 
+Portable native checks retain unsupported credential ports outside macOS; only
+the supported Keychain backend constructs its device service identity.
+
 Cold-process acceptance matches the complete Rust readiness output before
 retaining a bounded tail. A listening driver socket alone cannot prove IPC
 readiness; early evaluation can lose replies during navigation. Keep the bounded
