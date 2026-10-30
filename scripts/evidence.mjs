@@ -20,7 +20,61 @@ function vcs(root, args) {
   });
 }
 
-export function evidenceFindings(root, { checkRevision = true } = {}) {
+function latestFileChange(root, anchor, path) {
+  return vcs(root, [
+    "log",
+    "--no-graph",
+    "--limit",
+    "1",
+    "-r",
+    `::(${anchor}) & files(${JSON.stringify(path)})`,
+    "-T",
+    "commit_id",
+  ]).trim();
+}
+
+function snapshotFiles(root, revision, file) {
+  const parents = vcs(root, [
+    "log",
+    "--no-graph",
+    "-r",
+    `parents(${revision})`,
+    "-T",
+    'commit_id ++ "\\n"',
+  ])
+    .trim()
+    .split("\n")
+    .filter(Boolean);
+  return new Set(
+    [revision, ...parents].flatMap((snapshot) =>
+      vcs(root, ["file", "list", "-r", snapshot, ...(file ? ["--", file] : [])])
+        .trim()
+        .split("\n")
+        .filter(Boolean),
+    ),
+  );
+}
+
+function historicalFiles(root, base, path) {
+  const enclosing = latestFileChange(root, base, path);
+  if (!enclosing) return new Set();
+  const recorded = snapshotFiles(root, enclosing);
+  return {
+    has(file) {
+      if (recorded.has(file)) return true;
+      const earlier = latestFileChange(root, enclosing, file);
+      if (!earlier || !snapshotFiles(root, earlier, file).has(file))
+        return false;
+      recorded.add(file);
+      return true;
+    },
+  };
+}
+
+export function evidenceFindings(
+  root,
+  { checkRevision = true, base = process.env.LAPIS_DESKTOP_BASE ?? "@-" } = {},
+) {
   if (!existsSync(resolve(root, ".jj")))
     throw new Error("Evidence validation requires Jujutsu metadata.");
   const files = repositoryFiles(root);
@@ -41,7 +95,6 @@ export function evidenceFindings(root, { checkRevision = true } = {}) {
         ),
       ),
   );
-  const base = process.env.LAPIS_DESKTOP_BASE ?? "@-";
   const head = process.env.LAPIS_DESKTOP_HEAD ?? "@";
   const previousFiles = new Set(
     vcs(root, ["file", "list", "-r", base]).trim().split("\n"),
@@ -57,33 +110,9 @@ export function evidenceFindings(root, { checkRevision = true } = {}) {
     new Set([...previousFiles, ...legacy]),
   );
   errors.push(
-    ...evidenceFileErrors(evidence, new Set(files), previousFiles, (path) => {
-      const revision = vcs(root, [
-        "log",
-        "--no-graph",
-        "-r",
-        `latest(::(${base}) & files(${JSON.stringify(path)}))`,
-        "-T",
-        "commit_id",
-      ]).trim();
-      if (!revision) return new Set();
-      const parents = vcs(root, [
-        "log",
-        "--no-graph",
-        "-r",
-        `parents(${revision})`,
-        "-T",
-        'commit_id ++ "\\n"',
-      ])
-        .trim()
-        .split("\n")
-        .filter(Boolean);
-      return new Set(
-        [revision, ...parents].flatMap((snapshot) =>
-          vcs(root, ["file", "list", "-r", snapshot]).trim().split("\n"),
-        ),
-      );
-    }),
+    ...evidenceFileErrors(evidence, new Set(files), previousFiles, (path) =>
+      historicalFiles(root, base, path),
+    ),
   );
   if (checkRevision) {
     const changed = vcs(root, [

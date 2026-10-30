@@ -95,10 +95,10 @@ it cannot rewrite that result. Use `enclosing-change` for evidence in the change
 being verified rather than inventing a future commit hash.
 
 Evidence paths resolve against current files, actual base-revision deletions, or
-the immutable record's enclosing snapshot and its deletion parents. Fresh
-evidence cannot claim an unrelated historical path. Missing references still
-fail closed; removing an obsolete component does not authorize rewriting its old
-evidence.
+an immutable record's enclosing ancestry, including earlier deletion parents.
+Fresh evidence cannot claim an unrelated historical path. Historical lookup
+rejects later-only or missing paths; removing an obsolete component does not
+authorize rewriting its old evidence.
 
 ## Change map
 
