@@ -158,3 +158,10 @@ The language-service Markdownlint chain also consumes published KaTeX 0.18.10
 through the same bounded security override used by Notes; its upstream 0.16
 range otherwise retains GHSA-238p-pmpm-9mq7. CI verifies installed private
 archive payloads across every active import route before testing or auditing.
+
+Workspace 0.3.0's shared conflict screen omits explicit disk acceptance. Until
+its patch release, CI builds its public archive from Notes
+`6f315baef2bd2f0bb4942927d4e19b9e0eb2a15d` and verifies that installed payload.
+The tracked range stays portable. Desktop uses its shared presentation lease and
+removes its duplicate screen; guarded deletion and leave assertions remain
+unchanged. Registry-only distribution still requires the released patch.

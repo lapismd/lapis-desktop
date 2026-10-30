@@ -145,6 +145,11 @@ Core component styles remain unchanged.
 
 ## Conflict review presentation
 
+The published Workspace package owns conflict presentation and its App-scoped
+diagnostics. Desktop holds its public `bindFileConflictReviews` lease with the
+host's leave/startup inhibition; the mounted shell shares that registration.
+Desktop MUST NOT register a second collection or retain a copied review screen.
+
 E-CATALOG-016 covers actual native Problems/merge acceptance. Explicit disk
 acceptance uses the writer-owned decision and preserves absence when the
 reviewed file was deleted; saving a merged text result remains separate. The

@@ -256,3 +256,5 @@ this list.
 - [Specification and backlog consolidation](E-SPEC-001.md)
 
 - [Combined hosted CI and pinned public dependencies](E-CI-001.md)
+
+- [Shared conflict presentation intake](E-CI-002.md)
