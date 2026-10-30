@@ -19,7 +19,11 @@ Markdown editor while preserving its focused local property draft. Separate
 native pre-Yield acceptance MUST retain the failed editing Problem and input
 protection, block close and preserve disk bytes. Only explicit retry after
 ordinary producer convergence may restore access; cleanup cannot clear a failed
-handoff through a no-op rearm or replay the unadmitted mutation.
+handoff through a no-op rearm or replay the unadmitted mutation. The debug-only
+refusal fixture MUST fail one selected protected saved-text observation
+explicitly. Holding ordinary file reads alone no longer creates a refusal,
+because the API reconciles clean text in-guard. Later observations and intent
+calls stay real; the fixture cannot fabricate native state or outcomes.
 
 R1.3 file IPC delegates portable operations to the shared vault service while
 preserving existing renderer frames and portable file errors. Native retained

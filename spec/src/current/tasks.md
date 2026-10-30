@@ -55,12 +55,12 @@ inspection and a cold reopen of the same isolated profile. An e2e transport
 probe MUST leave protected Tauri IPC globals intact and observe only public
 owned Task and filesystem bridge ports. It may hold a conditional save or
 submission before admission and may discard a reply after native completion; it
-MUST forward all other commands unchanged and release held work during cleanup.
-It cannot add Task state, retries, provider callbacks or an alternate save path.
-Provider refusal MUST preserve file bytes and never execute the unsupported
-renderer provider callbacks. Recovery references MUST omit original and
-replacement document bytes. Prepared cases and fixture checks alone do not
-satisfy LD-TASK-003 or finish M16.9.
+MUST forward commands outside the exact faults below unchanged and release held
+work during cleanup. It cannot add Task state, retries, provider callbacks or an
+alternate save path. Provider refusal MUST preserve file bytes and never execute
+the unsupported renderer provider callbacks. Recovery references MUST omit
+original and replacement document bytes. Prepared cases and fixture checks alone
+do not satisfy LD-TASK-003 or finish M16.9.
 
 [E-CORE-039](../history/E-CORE-039.md) records nine passing fixture/transport
 checks and four prepared native cases. E-CORE-038 composes their e2e entry,
@@ -81,7 +81,9 @@ test clock. Production retains its existing local clock construction; neither
 system time nor a production transport/configuration API changes for this proof.
 
 The same e2e transport may hold ordinary vault text reads for one fixture path
-to test native editing preflight independently of later Task or frontmatter
-conflicts. Native editing snapshots, policy and writes MUST remain unchanged.
-All held reads drain on cleanup; passive write observations never supply
-outcomes, versions, guards or mutation authority.
+and reject one selected protected saved-text observation before its native call.
+This exercises pre-Yield refusal despite clean-editor in-guard reconciliation.
+Subsequent snapshots, every intent call, native policy and writes MUST remain
+real and unchanged. Cleanup clears an unconsumed fault and drains held reads;
+passive observations never supply outcomes, versions, guards or mutation
+authority. E-CI-007 retains the separate native acceptance gate.

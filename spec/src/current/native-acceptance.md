@@ -66,3 +66,7 @@ Shared native turn/queue peers MUST come from lapis-server at the same full Git
 commit selected by the compiled app core, with an explicit hosted source
 prerequisite. Retired Notes source paths do not supply those peers. E-CI-006
 retains the original 97-pass/12-failure hosted result and separate repair proof.
+
+Before terminating a still-running isolated acceptance process, cleanup retains
+a bounded DOM/probe diagnostic when the driver responds. Diagnostic collection
+cannot change assertions, native close deadlines or the original test outcome.

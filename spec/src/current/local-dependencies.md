@@ -136,8 +136,10 @@ All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
 Native application crates use lapis-server
 `4150cac6f2fef28b128421e4e3a851b848acdcf3`, restoring retained projection
 engines through exact owning Plugins, Tasks and Docs Git commits. Terminal uses
-`d7e0a7cd710fef626e1350c116ca6e4b18986972`. No native dependency requires an
-ambient sibling crate path or an invented release tag.
+`e5bb735c1225ba2e6a83754170e66c5789418885`, including the source-owned atomic
+attachment repair from Terminal PR #4. E-CI-007 records the separate native
+consumer gate; prompt assertions and shell admission remain unchanged. No native
+dependency requires an ambient sibling crate path or an invented release tag.
 
 Hosted audit runs against the actual private install projection before restoring
 tracked files. The tracked lock records the published registry graph; private

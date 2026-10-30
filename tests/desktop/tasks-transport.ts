@@ -25,6 +25,8 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
   let nextSubmit = false;
   let loseReply = false;
   let savePath: string | undefined;
+  let editingSnapshotPath: string | undefined;
+  const failedEditingSnapshots: string[] = [];
   let held: string | null = null;
   let resume: (() => void) | undefined;
   let reads:
@@ -49,10 +51,22 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
     const input = args as
       | {
           sessionId?: string;
+          path?: string;
           command?: NativeTaskCommand;
           request?: { operation?: string; path?: string };
         }
       | undefined;
+    if (
+      name === "vault_editing_snapshot" &&
+      editingSnapshotPath !== undefined &&
+      input?.path === editingSnapshotPath
+    ) {
+      const path = editingSnapshotPath;
+      editingSnapshotPath = undefined;
+      failedEditingSnapshots.push(path);
+      if (failedEditingSnapshots.length > 256) failedEditingSnapshots.shift();
+      throw new Error(`Protected saved-text observation failed: ${path}`);
+    }
     if (name === "vault_fs" && input?.request) {
       const { operation, path } = input.request;
       if (/^(write|append|rename|remove)/u.test(operation ?? "")) {
@@ -117,6 +131,9 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
     holdNextSave(path: string) {
       savePath = path;
     },
+    failNextEditingSnapshot(path: string) {
+      editingSnapshotPath = path;
+    },
     holdFileReads(path: string) {
       if (reads || resume) throw new Error("Another transport gate is held");
       let done!: () => void;
@@ -128,12 +145,14 @@ export function observeTaskTransport(target: { invoke: Invoke }) {
       held,
       records: structuredClone(records),
       writes: structuredClone(writes),
+      failedEditingSnapshots: [...failedEditingSnapshots],
     }),
     dispose() {
       release();
       nextSubmit = false;
       loseReply = false;
       savePath = undefined;
+      editingSnapshotPath = undefined;
     },
   };
 }

@@ -395,3 +395,4 @@
 - [Combined source repair intake](history/E-CI-004.md)
 - [Released Design Core registry intake](history/E-CI-005.md)
 - [Portable native fixture prerequisites](history/E-CI-006.md)
+- [Terminal attachment and Properties refusal intake](history/E-CI-007.md)
