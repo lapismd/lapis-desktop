@@ -17,6 +17,7 @@ import { runAudit } from "./ci-audit.mjs";
 
 /** Unpublished packages stay registry ranges in the tracked manifest. */
 export const unpublishedRanges = {
+  "@lapismd/agent-ui": "../agent-ui/packages/agent-ui",
   "@lapismd/design-core": "../design-core",
   "@lapis-notes/workspace": "../lapis-notes/packages/workspace",
   "@lapis-notes/bases": "../lapis-plugins/packages/bases",

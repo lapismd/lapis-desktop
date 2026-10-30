@@ -126,10 +126,11 @@ and no crate tag: `@lapismd/ai`, `@lapismd/jj-conversations`,
 `@lapismd/terminal`, and App Profile. Hosted CI uses committed
 `scripts/ci-sources.json` identities for these private public-build inputs and
 the History repository controllers absent from its published 0.1.4 archive.
-Agent UI and Repository UI now resolve published npm packages. The published
-Notes cohort is API 0.2.0, UI 0.1.4, Workspace 0.3.0 and File Explorer 0.2.0;
-Markdown is 0.2.0 and Design Core is 0.7.0. This private validation projection
-does not qualify a registry-only distribution.
+Agent UI and Repository UI have published npm packages; the send-capability
+repair below temporarily selects an owning Agent UI archive. The published Notes
+cohort is API 0.2.0, UI 0.1.4, Workspace 0.3.0 and File Explorer 0.2.0; Markdown
+is 0.2.0 and Design Core is 0.7.0. This private validation projection does not
+qualify a registry-only distribution.
 
 All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
 Native application crates use lapis-server
@@ -166,10 +167,20 @@ The tracked range stays portable. Desktop uses its shared presentation lease and
 removes its duplicate screen; guarded deletion and leave assertions remain
 unchanged. Registry-only distribution still requires the released patch.
 
-Design Core 0.7.0's composer can read retired reactive state after editor
-teardown. Until its patch release, CI prepares the owning public built archive
-with `pnpm package:local` from source
-`e03b6776d20e7506eacb6e048c9726a0bc77d64c`. This retains its declaration,
-stylesheet and font preparation, portable tracked range and payload
-verification. The canonical distribution backlog retains replacement with a
-registry release.
+Design Core 0.7.0's composer and SurfaceLayer can read retired reactive state
+after owner teardown, selected filter labels fail Lapis dark contrast, and
+delayed scroll delivery can release the transcript's bottom lock after growth.
+Until its patch release, CI prepares the owning public built archive with
+`pnpm package:local` from source `3b0392ca4a15a2e88cc7ce43a3bf4f0ea58e99fa`.
+This retains its declaration, stylesheet and font preparation, portable tracked
+range and payload verification. The canonical distribution backlog retains
+replacement with a registry release.
+
+Agent UI's existing transcript send callback and footer must honour the host's
+advertised send capability. Until that patch is released, reviewed CI validation
+may use its owning built public archive at committed source
+`78a03b6d56cd61c965c70163855bbf503ed349eb` from `scripts/ci-sources.json`,
+retaining the portable `^0.1.0` range. Native queue authority remains in the
+host and an unsupported draft retains Stop. Capability MUST remain independent
+of the transcript's own draft when the host owns its composer content
+separately.

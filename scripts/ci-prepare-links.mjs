@@ -7,6 +7,13 @@ import { pathToFileURL } from "node:url";
 const root = process.cwd();
 const jobs = [
   {
+    marker: "../agent-ui/packages/agent-ui/dist/index.js",
+    steps: [
+      ["../agent-ui", "pnpm", ["install", "--frozen-lockfile"]],
+      ["../agent-ui", "pnpm", ["--filter", "@lapismd/agent-ui", "build"]],
+    ],
+  },
+  {
     marker:
       "../design-core/.local/packages/lapismd-design-core-0.7.0-built.tgz",
     steps: [

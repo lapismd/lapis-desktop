@@ -17,7 +17,10 @@ selectors; controls MUST await readiness and the absence of their named
 accessible loading status, including `Loading catalog`. Collapse checks await
 closed state/unmount before unchanged absence assertions. E-AI-103 reviews
 independent footer approvals and agent overrides. E-AI-102 covers a single
-composer action through submission in both chat layouts.
+composer action through submission in both chat layouts. Reader acceptance MUST
+reveal a fold control in its viewport before activating it and await its
+resulting state. Fade acceptance MUST scroll away from the bottom before
+asserting below-viewport content.
 
 The active chat/settings profile is [local ACP](ai-local-history.md). Native
 conversation storage controls and catalog fixtures are retired; grouped AI

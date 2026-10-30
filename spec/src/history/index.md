@@ -258,3 +258,4 @@ this list.
 - [Combined hosted CI and pinned public dependencies](E-CI-001.md)
 
 - [Shared conflict presentation intake](E-CI-003.md)
+- [Combined source repair intake](E-CI-004.md)

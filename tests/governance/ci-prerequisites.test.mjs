@@ -25,7 +25,7 @@ test("CI source downloads require full immutable commits and safe repository nam
     assert.throws(() => sourceUrl({ ...source, ...change }), /full commit/);
 });
 
-test("private public archives share the consumer graph and preserve published registry packages", () => {
+test("source-fix archives share the graph while tracked ranges and unaffected registry packages remain portable", () => {
   const manifest = {
     dependencies: {
       "@lapismd/agent-ui": "^0.1.0",
@@ -34,16 +34,26 @@ test("private public archives share the consumer graph and preserve published re
     devDependencies: {},
   };
   for (const name of Object.keys(unpublishedRanges))
-    manifest.devDependencies[name] = "^0.1.0";
+    if (!Object.hasOwn(manifest.dependencies, name))
+      manifest.devDependencies[name] = "^0.1.0";
+  const original = structuredClone(manifest);
   const projected = projectUnpublished(
     manifest,
     () => true,
     (name) => `/archives/${name}.tgz`,
   );
-  assert.deepEqual(projected.dependencies, manifest.dependencies);
+  assert.deepEqual(manifest, original);
+  assert.equal(projected.dependencies["@lapismd/repository-ui"], "^0.1.0");
+  assert.equal(
+    projected.dependencies["@lapismd/agent-ui"],
+    "file:/archives/@lapismd/agent-ui.tgz",
+  );
   for (const name of Object.keys(unpublishedRanges)) {
-    assert.equal(projected.devDependencies[name], `file:/archives/${name}.tgz`);
-    assert.equal(manifest.devDependencies[name], "^0.1.0");
+    const section = Object.hasOwn(manifest.dependencies, name)
+      ? "dependencies"
+      : "devDependencies";
+    assert.equal(projected[section][name], `file:/archives/${name}.tgz`);
+    assert.equal(manifest[section][name], "^0.1.0");
   }
 });
 

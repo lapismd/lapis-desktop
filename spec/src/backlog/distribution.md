@@ -64,10 +64,10 @@ supported public consumption or an explicit private archive prerequisite.
 Preserve portable tracked ranges and validate the resulting consumer; do not
 conceal the missing package through a source alias or copied implementation.
 
-Release the Workspace disk-acceptance and Design Core completion-lifetime
-repairs, then replace their temporary prepared public archives with registry
-versions and repeat frozen registry-install acceptance. Reconcile Bases' current
-peer cohort and publication of Tasks, AI, Terminal and JJ conversations
-alongside App Profile and History. The pinned CI projection qualifies source
-intake; registry-only distribution remains deferred until these prerequisites
-close.
+Release the Workspace disk-acceptance, Design Core lifetime/contrast and Agent
+UI send-capability repairs, then replace their temporary public archives with
+registry versions and repeat frozen registry-install acceptance. Reconcile
+Bases' current peer cohort and publication of Tasks, AI, Terminal and JJ
+conversations alongside App Profile and History. The pinned CI projection
+qualifies source intake; registry-only distribution remains deferred until these
+prerequisites close.
