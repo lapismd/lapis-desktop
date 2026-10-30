@@ -397,3 +397,4 @@
 - [Portable native fixture prerequisites](history/E-CI-006.md)
 - [Terminal attachment and Properties refusal intake](history/E-CI-007.md)
 - [Inherited evidence ancestry validation](history/E-CI-008.md)
+- [Current native fixture admission and streamed CI diagnosis](history/E-CI-009.md)

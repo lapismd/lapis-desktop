@@ -1,5 +1,6 @@
 # Evidence
 
+- [Current native fixture admission and streamed CI diagnosis](E-CI-009.md)
 - [Inherited evidence ancestry validation](E-CI-008.md)
 - [Terminal attachment and Properties refusal intake](E-CI-007.md)
 - [Portable native fixture prerequisites](E-CI-006.md)

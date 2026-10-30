@@ -30,7 +30,7 @@ export function nativeTurnFixture() {
     "lapis-compute",
   ];
   let manifest =
-    'version = 1\npackage_version = "0.1.1"\ntarget = "aarch64-apple-darwin"\n';
+    'version = 1\npackage_version = "0.2.0"\ntarget = "aarch64-apple-darwin"\n';
   for (const name of helpers) {
     const body = name === "lapis-acp" ? peer : "#!/bin/sh\nexit 1\n";
     writeFileSync(join(bundle, name), body, { mode: 0o700 });

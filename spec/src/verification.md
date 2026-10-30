@@ -28,7 +28,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-REVIEW-011 | Planned | [E-PLAN-005](history/E-PLAN-005.md): planning only; M17.5 explicit delivery and proven answer links pending. |
 | LD-SESSION-003 | Implemented | [E-MUTATION-001](history/E-MUTATION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-GOV-001 | Implemented | [E-SHELL-002](history/E-SHELL-002.md)  [E-CI-001](history/E-CI-001.md): combined CI and dependency intake; hosted checks gate merging. |
-| LD-GOV-002 | Implemented | [E-SHELL-002](history/E-SHELL-002.md) |
+| LD-GOV-002 | Implemented | [E-CI-009](history/E-CI-009.md) |
 | LD-GOV-003 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
 | LD-GOV-004 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical spec authority. [E-CI-008](history/E-CI-008.md): immutable receipt ancestry and fail-closed path validation. |
 | LD-GOV-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-STRUCTURE-001](history/E-STRUCTURE-001.md) |

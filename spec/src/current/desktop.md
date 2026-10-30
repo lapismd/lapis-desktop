@@ -9,6 +9,9 @@ LD-DESK-003 keeps Core AI/History caller/session admission native; renderer
 paths, generations, actors, executables and environment stay denied. Portable
 Docker checks use test-only bundles and compatible registry packages. Actual
 helpers, windows and platform resources require native app-build acceptance.
+Native protocol fixtures use the pinned runtime's admitted package version and
+exact helper hashes. Hosted unit, catalog and native lanes stream live output
+without changing their acceptance assertions or deadlines (E-CI-009).
 
 ## Requirements
 
@@ -320,9 +323,3 @@ Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
 [Native qualification](native-acceptance.md) retains AI/repository gates.
-
-Verified Lapis AI helpers ship as resources; native checks stage them first.
-[Client delivery](ai-clients.md), [turn adoption](ai-adapter.md), and
-[dependency intake](local-dependencies.md) retain the pinned helper/crate
-sources. Hosted native acceptance prepares real portable plugin archives and
-Tasks with ephemeral test keys. This does not replace the native product gates.

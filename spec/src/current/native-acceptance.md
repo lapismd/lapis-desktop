@@ -70,3 +70,11 @@ retains the original 97-pass/12-failure hosted result and separate repair proof.
 Before terminating a still-running isolated acceptance process, cleanup retains
 a bounded DOM/probe diagnostic when the driver responds. Diagnostic collection
 cannot change assertions, native close deadlines or the original test outcome.
+
+## Hosted fixture prerequisites
+
+Verified Lapis AI helpers ship as resources; native checks stage them first.
+[Client delivery](ai-clients.md), [turn adoption](ai-adapter.md), and
+[dependency intake](local-dependencies.md) retain the pinned helper/crate
+sources. Hosted native acceptance prepares real portable plugin archives and
+Tasks with ephemeral test keys. This does not replace the native product gates.

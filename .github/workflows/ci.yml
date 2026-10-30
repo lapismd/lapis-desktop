@@ -141,7 +141,7 @@ jobs:
       - name: Prepare the pinned native AI runtime
         run: pnpm ai:prepare -- --reuse
       - name: Run unit tests
-        run: node scripts/run-turbo.mjs ci:unit --summarize
+        run: node scripts/run-turbo.mjs ci:unit --summarize --log-order=stream
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
 
@@ -197,7 +197,9 @@ jobs:
       - name: Install Chromium
         run: pnpm exec playwright install --with-deps chromium
       - name: Run Storybook interaction and accessibility tests
-        run: node scripts/run-turbo.mjs ci:storybook-interaction --summarize
+        run:
+          node scripts/run-turbo.mjs ci:storybook-interaction --summarize
+          --log-order=stream
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
 
@@ -265,7 +267,7 @@ jobs:
       - name: Native ARM64 acceptance
         env:
           LAPIS_DESKTOP_PORTABLE_FIXTURES: .local/ci-native-plugins/manifest.json
-        run: node scripts/run-turbo.mjs ci:headed --summarize
+        run: node scripts/run-turbo.mjs ci:headed --summarize --log-order=stream
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
       - uses: actions/upload-artifact@v7

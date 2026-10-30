@@ -11,13 +11,13 @@ IPC; generic plugin grants deny. Tasks/default gates remain separate. SSH
 options preserve authentication, endpoints and literal arguments. Archive
 rewriting is idempotent only for an exact path redirected to a verified tarball.
 Fixtures pin tools and Server peers; unverified paths/file peers reject.
-
 [Local intake](local-dependencies.md) governs registry 0.7.1 (E-CI-005) and
 complete review refreshes from committed default sources under LD-GOV-006/008.
 
-Native readiness covers split/log-batched receipts without longer deadlines. The
-e2e entry shares early progress, then imports runtime instrumentation; ordinary
-bundle audits reject its startup capture marker.
+Native readiness matches split/log-batched receipts without longer deadlines.
+Hosted test logs stream live (E-CI-009). The e2e entry shares early progress,
+then imports runtime instrumentation; ordinary bundles reject its startup
+capture marker.
 
 Canonical owners include planned
 [Review](../backlog/markdown-review-contract.md) and staged
