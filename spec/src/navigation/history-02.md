@@ -184,3 +184,4 @@
 - [Portable intake and package qualification handoff](../history/E-CI-021.md)
 - [Green Mira source merge handoff](../history/E-CI-022.md)
 - [Approved Mira version merge handoff](../history/E-CI-023.md)
+- [Completed Mira publication handoff](../history/E-CI-024.md)
