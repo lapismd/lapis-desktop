@@ -1,5 +1,6 @@
 # Evidence
 
+- [Ordered Terminal native frame intake](E-CI-011.md)
 - [Shared native editing transport injection](E-CI-010.md)
 - [Current native fixture admission and streamed CI diagnosis](E-CI-009.md)
 - [Inherited evidence ancestry validation](E-CI-008.md)

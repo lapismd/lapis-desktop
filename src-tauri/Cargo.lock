@@ -6567,8 +6567,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-terminal-engine"
-version = "0.1.1"
-source = "git+https://github.com/lapismd/lapis-terminal?rev=e5bb735c1225ba2e6a83754170e66c5789418885#e5bb735c1225ba2e6a83754170e66c5789418885"
+version = "0.1.2"
+source = "git+https://github.com/lapismd/lapis-terminal?rev=b235b4189fc6c0eccfc8a01285002c21a235fca1#b235b4189fc6c0eccfc8a01285002c21a235fca1"
 dependencies = [
  "alacritty_terminal",
  "parking_lot",
@@ -6576,8 +6576,8 @@ dependencies = [
 
 [[package]]
 name = "lapis-terminal-runtime"
-version = "0.1.1"
-source = "git+https://github.com/lapismd/lapis-terminal?rev=e5bb735c1225ba2e6a83754170e66c5789418885#e5bb735c1225ba2e6a83754170e66c5789418885"
+version = "0.1.2"
+source = "git+https://github.com/lapismd/lapis-terminal?rev=b235b4189fc6c0eccfc8a01285002c21a235fca1#b235b4189fc6c0eccfc8a01285002c21a235fca1"
 dependencies = [
  "lapis-terminal-engine",
  "libc",
@@ -10508,8 +10508,8 @@ dependencies = [
 
 [[package]]
 name = "tauri-plugin-lapis-terminal"
-version = "0.1.1"
-source = "git+https://github.com/lapismd/lapis-terminal?rev=e5bb735c1225ba2e6a83754170e66c5789418885#e5bb735c1225ba2e6a83754170e66c5789418885"
+version = "0.1.2"
+source = "git+https://github.com/lapismd/lapis-terminal?rev=b235b4189fc6c0eccfc8a01285002c21a235fca1#b235b4189fc6c0eccfc8a01285002c21a235fca1"
 dependencies = [
  "lapis-terminal-runtime",
  "serde",

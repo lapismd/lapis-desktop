@@ -389,7 +389,6 @@
 - [Approved Design Core publication](history/E-RELEASE-017.md)
 - [Release tracker integration into main](history/E-RELEASE-018.md)
 - [Combined hosted CI and pinned dependencies](history/E-CI-001.md)
-
 - [Shared conflict presentation intake](history/E-CI-003.md)
 - [Combined source repair intake](history/E-CI-004.md)
 - [Released Design Core registry intake](history/E-CI-005.md)
@@ -398,3 +397,4 @@
 - [Inherited evidence ancestry validation](history/E-CI-008.md)
 - [Current native fixture admission and streamed CI diagnosis](history/E-CI-009.md)
 - [Shared native editing transport injection](history/E-CI-010.md)
+- [Ordered Terminal native frame intake](history/E-CI-011.md)

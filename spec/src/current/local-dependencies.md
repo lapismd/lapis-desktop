@@ -128,18 +128,19 @@ and no crate tag: `@lapismd/ai`, `@lapismd/jj-conversations`,
 the History repository controllers absent from its published 0.1.4 archive.
 Agent UI and Repository UI have published npm packages; the send-capability
 repair below temporarily selects an owning Agent UI archive. The published Notes
-cohort is API 0.2.0, UI 0.1.4, Workspace 0.3.0 and File Explorer 0.2.0; Markdown
-is 0.2.0 and Design Core is registry 0.7.1. This private validation projection
-does not qualify a registry-only distribution.
+selection is API 0.2.0, UI 0.1.4, Workspace 0.3.0 and File Explorer 0.2.0;
+Markdown is 0.2.0 and Design Core is registry 0.7.1. This private validation
+projection does not qualify a registry-only distribution.
 
 All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
 Native application crates use lapis-server
 `4150cac6f2fef28b128421e4e3a851b848acdcf3`, restoring retained projection
 engines through exact owning Plugins, Tasks and Docs Git commits. Terminal uses
-`e5bb735c1225ba2e6a83754170e66c5789418885`, including the source-owned atomic
-attachment repair from Terminal PR #4. E-CI-007 records the separate native
-consumer gate; prompt assertions and shell admission remain unchanged. No native
-dependency requires an ambient sibling crate path or an invented release tag.
+`b235b4189fc6c0eccfc8a01285002c21a235fca1`, including the atomic attachment
+repair and ordered snapshot capture from Terminal PRs #4/#8. E-CI-011 records
+the separate native consumer gate; prompt assertions and shell admission remain
+unchanged. No native dependency requires an ambient sibling crate path or an
+invented release tag.
 
 Hosted audit runs against the actual private install projection before restoring
 tracked files. The tracked lock records the published registry graph; private
@@ -162,12 +163,14 @@ through the same bounded security override used by Notes; its upstream 0.16
 range otherwise retains GHSA-238p-pmpm-9mq7. CI verifies installed private
 archive payloads across every active import route before testing or auditing.
 
-Workspace 0.3.0's shared conflict screen omits explicit disk acceptance. Until
-its patch release, CI builds its public archive from Notes
-`6f315baef2bd2f0bb4942927d4e19b9e0eb2a15d` and verifies that installed payload.
-The tracked range stays portable. Desktop uses its shared presentation lease and
-removes its duplicate screen; guarded deletion and leave assertions remain
-unchanged. Registry-only distribution still requires the released patch.
+Workspace 0.3.0's shared conflict screen omits explicit disk acceptance. Notes
+has now published and verified Workspace 0.3.1, API 0.2.1 and UI 0.1.5, with
+signed provenance and scoped GitHub releases at `462d2248`. Desktop still builds
+the equivalent Workspace archive from qualified Notes
+`6f315baef2bd2f0bb4942927d4e19b9e0eb2a15d` until registry cohort adoption.
+Tracked ranges stay portable. The shared presentation lease, guarded deletion
+and leave assertions remain unchanged; registry-only distribution remains a
+separate complete-cohort gate.
 
 Design Core's released 0.7.1 contains the qualified composer/SurfaceLayer
 lifetime, filter contrast and transcript bottom-lock repairs. Hosted and local

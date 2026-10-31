@@ -11,7 +11,9 @@ Docker checks use test-only bundles and compatible registry packages. Actual
 helpers, windows and platform resources require native app-build acceptance.
 Native protocol fixtures use the pinned runtime's admitted package version and
 exact helper hashes. Hosted unit, catalog and native lanes stream live output
-without changing their acceptance assertions or deadlines (E-CI-009).
+without changing their acceptance assertions or deadlines (E-CI-009). Terminal
+0.1.2 uses the qualified ordered-frame Git source in
+[local intake](local-dependencies.md) (E-CI-011); native consumer gates remain.
 
 ## Requirements
 

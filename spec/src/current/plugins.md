@@ -208,12 +208,12 @@ outside M8–M10. Dynamic package signature verification remains required.
 
 ## Terminal host integration
 
-The bundled Terminal uses the local `@lapismd/terminal` built public exports and
-Rust Tauri plugin. The private migration app records this unpublished local link
-as a temporary development prerequisite; distribution must resolve it later.
-Native code reads compatible shell/cwd preferences from admitted vault state,
-validates executable files and confines cwd to that physical vault. The renderer
-submits only opaque target and request identities.
+The bundled Terminal uses public built `@lapismd/terminal` exports and its Rust
+Tauri plugin. E-CI-011 pins ordered native frame capture; the unpublished link
+remains a temporary private prerequisite until distribution. Native code reads
+compatible shell/cwd preferences from admitted vault state, validates executable
+files and confines cwd to that physical vault. The renderer submits only opaque
+target and request identities.
 
 App-owned session coordination separates viewport detach from explicit close.
 Confirmed reload suspends its admission after guarded persistence and reconnects
