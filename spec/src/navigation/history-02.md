@@ -188,3 +188,4 @@
 - [Saved remote checkpoints and explicit pause](../history/E-CI-025.md)
 - [Phase 1 resume and Mira docs merge](../history/E-CI-026.md)
 - [Passed Core qualification and open source pull request](../history/E-CI-027.md)
+- [Verified Design Core 0.7.4 publication](../history/E-CI-028.md)

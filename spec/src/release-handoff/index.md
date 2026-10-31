@@ -1,13 +1,11 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 14:53 UTC**. Overall status: **phase 1 in
-progress**. Mira docs PR [#28](https://github.com/lapismd/mira-mde/pull/28) is
-merged at `001564ae` and did not republish Mira. Core qualification r3 passed on
-`16cda140`, and source PR [#47](https://github.com/lapismd/design-core/pull/47)
-is open. Publication is not complete until the version pull request merges and
-npm shows 0.7.4. Agent UI, Tasks, Plugins, the Notes profile, and Desktop intake
-stay stopped. Desktop PR #1 and Tasks draft #1 remain open; auto-merge is
-disabled.
+Last reviewed: **2026-10-31 15:38 UTC**. Overall status: **phase 1 complete**.
+`@lapismd/design-core` **0.7.4** is on npm from `30a5c883`. Mira docs PR
+[#28](https://github.com/lapismd/mira-mde/pull/28) is merged at `001564ae` and
+did not republish Mira. Agent UI, Tasks, Plugins, the Notes profile, and Desktop
+intake are not started. Desktop PR #1 and Tasks draft #1 remain open; auto-merge
+is disabled.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -33,35 +31,46 @@ An open version PR or prepared archive does not complete publication.
 
 ## Completed and verified
 
-| Area                           | Completed result                                                                                                                                                                                                                                                                               |
-| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Notes consolidation            | [PR #44](https://github.com/lapismd/lapis-notes/pull/44) merged at `f47e275c`; canonical contracts/backlogs replace the old migration registers.                                                                                                                                               |
-| Server consolidation           | [PR #8](https://github.com/lapismd/lapis-server/pull/8) merged at `5ba4c5aa`.                                                                                                                                                                                                                  |
-| Notes API                      | API **0.2.3** published from `0d9d4d9253579541b1e796d7f2c68ef3b19a8df6`; run `41190163735` passed all 14 publication/consumer jobs. Governed tag is `next`; do not promote `latest`.                                                                                                           |
-| Other earlier releases         | Notes UI **0.1.5**, Workspace **0.3.1** and Terminal **0.1.2** are verified. Mira companion packages remain **0.0.3**.                                                                                                                                                                         |
-| Bits UI                        | Canonical registry **2.20.2** patch retains Link Preview cleanup, six Slider destruction guards and the upstream FocusScope identity fix. Every consumer root must register it explicitly.                                                                                                     |
-| Mira math/lifecycle release    | **0.1.4** is fully published from `6658fe56`; source #26 and formally approved version #27 merged green. Production run `41205035585` passed all five stages. Registry bytes, clean install, signatures, exact-source provenance, tag and GitHub release verify.                               |
-| Design Core                    | **0.7.3** is actually published and verified from `1ff36f37c165a3496be4826be48b048fc812e38e`. PR/main each passed 11 checks; release `41194948225` passed all five jobs. Registry bytes, signatures, provenance, tag and GitHub release match. Docs PR #46 merged at `8e9b3f29`.               |
-| Plugins intermediate graph     | API 0.2.3/Core 0.7.3: all 18 checks; 1,181 units; 17 builds/publint; 264 catalog passes, 57 unchanged parked Sync skips; static build; 163 release-tool tests; source artifact reproduction all passed.                                                                                        |
-| UI intermediate graph          | Core 0.7.3/Mira 0.1.2: 1,956 interaction/axe cases, 151 browser cases, 149 public examples, 235 units, all 418 fingerprints, strict types/build/spec/actionlint passed.                                                                                                                        |
-| Tasks intermediate graph       | Compatible normal lock refresh cleared all critical/high/moderate findings. All 2,889 units, 27 Rust and 63 interaction/axe cases, strict types/build/publint/static/spec passed. One low Mira math dependency remains pending the repair below.                                               |
-| Math consumer regression       | Real-App Reading Math scenario added in Plugins. Exact case 1/0 and full Reading family 10/0 pass on both the original Core 0.7.2 baseline and integrated Core 0.7.3 graph. Original vault text and mode teardown are asserted; visual baselines unchanged.                                    |
-| Desktop current portable slice | API 0.2.3/Core 0.7.3: quality, renderer/static builds, all four spec lanes and 2,128 cold catalog cases pass. Tests: 596 Node + 746 policy + 259 Linux Rust; two unchanged Rust ignores, four Mac-only cases not collected. Committed as `1849cdf4`; final cohort/native gates remain pending. |
-| Spec tooling/navigation        | Spec Validator **0.2.0**, semantic search and doctor checked. Desktop uses supported SUMMARY fragments; historical receipts remain unchanged and the 400-line/32,768-byte page caps remain intact.                                                                                             |
+| Area                           | Completed result                                                                                                                                                                                                                                                                                            |
+| ------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Notes consolidation            | [PR #44](https://github.com/lapismd/lapis-notes/pull/44) merged at `f47e275c`; canonical contracts/backlogs replace the old migration registers.                                                                                                                                                            |
+| Server consolidation           | [PR #8](https://github.com/lapismd/lapis-server/pull/8) merged at `5ba4c5aa`.                                                                                                                                                                                                                               |
+| Notes API                      | API **0.2.3** published from `0d9d4d9253579541b1e796d7f2c68ef3b19a8df6`; run `41190163735` passed all 14 publication/consumer jobs. Governed tag is `next`; do not promote `latest`.                                                                                                                        |
+| Other earlier releases         | Notes UI **0.1.5**, Workspace **0.3.1** and Terminal **0.1.2** are verified. Mira companion packages remain **0.0.3**.                                                                                                                                                                                      |
+| Bits UI                        | Canonical registry **2.20.2** patch retains Link Preview cleanup, six Slider destruction guards and the upstream FocusScope identity fix. Every consumer root must register it explicitly.                                                                                                                  |
+| Mira math/lifecycle release    | **0.1.4** is fully published from `6658fe56`; source #26 and formally approved version #27 merged green. Production run `41205035585` passed all five stages. Registry bytes, clean install, signatures, exact-source provenance, tag and GitHub release verify.                                            |
+| Design Core                    | **0.7.4** is published from `30a5c883`. Source #47 merged at `4c3ae982` (`16cda140`); approved version #48 merged at `30a5c883`. Release `41214599110` passed all five jobs. Registry bytes, SHA-512, SLSA provenance, tag and GitHub release match. Prior **0.7.3** remains the previous verified release. |
+| Plugins intermediate graph     | API 0.2.3/Core 0.7.3: all 18 checks; 1,181 units; 17 builds/publint; 264 catalog passes, 57 unchanged parked Sync skips; static build; 163 release-tool tests; source artifact reproduction all passed.                                                                                                     |
+| UI intermediate graph          | Core 0.7.3/Mira 0.1.2: 1,956 interaction/axe cases, 151 browser cases, 149 public examples, 235 units, all 418 fingerprints, strict types/build/spec/actionlint passed.                                                                                                                                     |
+| Tasks intermediate graph       | Compatible normal lock refresh cleared all critical/high/moderate findings. All 2,889 units, 27 Rust and 63 interaction/axe cases, strict types/build/publint/static/spec passed. One low Mira math dependency remains pending the repair below.                                                            |
+| Math consumer regression       | Real-App Reading Math scenario added in Plugins. Exact case 1/0 and full Reading family 10/0 pass on both the original Core 0.7.2 baseline and integrated Core 0.7.3 graph. Original vault text and mode teardown are asserted; visual baselines unchanged.                                                 |
+| Desktop current portable slice | API 0.2.3/Core 0.7.3: quality, renderer/static builds, all four spec lanes and 2,128 cold catalog cases pass. Tests: 596 Node + 746 policy + 259 Linux Rust; two unchanged Rust ignores, four Mac-only cases not collected. Committed as `1849cdf4`; final cohort/native gates remain pending.              |
+| Spec tooling/navigation        | Spec Validator **0.2.0**, semantic search and doctor checked. Desktop uses supported SUMMARY fragments; historical receipts remain unchanged and the 400-line/32,768-byte page caps remain intact.                                                                                                          |
 
 Canonical Bits patch SHA-256:
 `debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad`. Core 0.7.3
 tarball: 1,903,722 bytes, SHA-256
 `4c07fdaa8fecc6d7f1ede2f03f89b5afb0728dae82b25dc0e55ec6ddda7ab6ca`.
 
+Core **0.7.4** is the verified registry package. Source
+[#47](https://github.com/lapismd/design-core/pull/47) merged at `4c3ae982` from
+`16cda140`. Version [#48](https://github.com/lapismd/design-core/pull/48) was
+approved and merged at `30a5c883`. Release run
+[41214599110](https://github.com/lapismd/design-core/actions/runs/41214599110)
+passed all five jobs after the npm-production deployment was approved.
+Independent registry proof: version `0.7.4` on `latest`, tarball 1,903,953
+bytes, SHA-256
+`1d0a81a43f6cad2dce89f3b2a20fbe3acceeac397f4a287b08597598c84d9f1d`, and SHA-512
+matching both the registry integrity and the publish/SLSA subjects. Provenance
+binds `.github/workflows/release.yml` on `main` to commit `30a5c883` and that
+run. Tag `design-core@0.7.4` and the
+[GitHub release](https://github.com/lapismd/design-core/releases/tag/design-core%400.7.4)
+point at `30a5c883`. No check was quarantined.
+
 ## Pending after an explicit resume
 
-1. **Finish and release Core's saved candidate.** Qualification r3 passed full
-   `pnpm checks` and `pnpm packages:pack` on `16cda140` with no quarantine.
-   Source PR [#47](https://github.com/lapismd/design-core/pull/47) is open
-   against main `8e9b3f29`. No Dependabot pull request was open before the push.
-   Wait for its 11 required checks, approve, and merge. Then review the Version
-   Packages pull request and verify actual npm 0.7.4.
+1. **Core 0.7.4 is published.** Do not republish it. Downstream adoption is the
+   next phase and has not started.
 2. **Complete downstream source and version releases.** Adopt the verified fixed
    Core in Agent/Repository UI, Tasks and Plugins. Repeat the required exact,
    cold and full acceptance, then source PR merge, bot Changesets diff review,
@@ -171,7 +180,7 @@ Inspect `jj st`, exact revisions and current remote state before continuing.
 | Root: Desktop                                 | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean at `1849cdf4`, pushed to [wip/desktop-release-paused-20261031](https://github.com/lapismd/lapis-desktop/tree/wip/desktop-release-paused-20261031). E-CI-017 remains pending final cohort/native proof. PR #1 stays at `96a4139b`; auto-merge is off.                          |
 | Root: this handoff                            | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote `release-handoff-20261031` is the maintained paused tracker. Its independent documentation lineage starts at `7df6725b`. After resume, integrate it into the final product head retaining all history entries, including E-CI-017.                                                      |
 | Root: Plugins                                 | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at `5df6d7cf`, pushed to [wip/plugins-release-paused-20261031](https://github.com/lapismd/lapis-plugins/tree/wip/plugins-release-paused-20261031). Includes eligibility, API/Core intake, reproduced artifacts and Reading Math. Original unrelated work and conflicted `main` are preserved. |
-| `terminal_publication`: Core, then UI/profile | `/private/tmp/lapis-core-required-release-20261031`; clean at `16cda140`, pushed to [wip/core-fixed-mira-20261031](https://github.com/lapismd/design-core/tree/wip/core-fixed-mira-20261031). r3 passed. Source PR [#47](https://github.com/lapismd/design-core/pull/47) is open. Mira docs #28 is merged at `001564ae`.                              |
+| `terminal_publication`: Core, then UI/profile | `/private/tmp/lapis-core-required-release-20261031`; source `16cda140` is merged. Published Core is `30a5c883` / npm 0.7.4. Mira docs #28 is merged at `001564ae`. UI and profile work has not started.                                                                                                                                               |
 | Same owner: UI                                | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over `6f9924a4`, pushed to [wip/ui-release-preparation-20261031](https://github.com/lapismd/agent-ui/tree/wip/ui-release-preparation-20261031). No source PR/version/release. Fixed-Core qualification pending. Original nine dirty readiness files remain untouched.             |
 | `tasks_publication`: Tasks                    | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519`, pushed to [wip/tasks-release-paused-20261031](https://github.com/lapismd/lapis-plugin-tasks/tree/wip/tasks-release-paused-20261031). Draft PR #1 stays at `adc24f35`, auto-merge off; its body links the nine-commit-ahead checkpoint. No worker or publication active.         |
 | Preserved math-story workspace                | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                             |
@@ -364,3 +373,9 @@ start local headed/provider tests without the existing explicit opt-in.
   and `pnpm packages:pack`, with no quarantine. Source PR #47 is open on
   `16cda140`. Hosted checks and publication remain pending. Mira npm stays
   0.1.4; release run `41210897173` skipped publication.
+- **October 31, 15:38 UTC:** Core 0.7.4 is published. Source #47 merged at
+  `4c3ae982`; version #48 was approved and merged at `30a5c883`. Release
+  `41214599110` passed publish, provenance verification, and the GitHub release.
+  Independent registry proof: 1,903,953 bytes, SHA-256
+  `1d0a81a43f6cad2dce89f3b2a20fbe3acceeac397f4a287b08597598c84d9f1d`, tag
+  `design-core@0.7.4`. No quarantine. Downstream work remains stopped.
