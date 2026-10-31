@@ -22,7 +22,7 @@ and explicit original-history adoption. Immutable readers keep their source and
 operation pins; credentials stay in installation-owned native custody. The host
 owns watching, vault admission and editor/close barriers. See the
 [backup contract](../spec/src/current/vault-backup.md) and
-[delivery checklist](../docs/automatic-vault-backup-progress.md) for setup and
+[delivery checklist](../spec/src/backlog/vault-synchronization.md) for setup and
 qualification boundaries.
 
 `ai::capture::ManagedCapture` adapts an injected

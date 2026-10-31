@@ -2,12 +2,13 @@
 // This bundles the verified public package; no Task implementation lives here.
 import { build } from "vite";
 import { svelte, vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+import { execFileSync } from "node:child_process";
 import { createRequire } from "node:module";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { pluginImportMap } from "../../scripts/plugin-host-modules.ts";
-import { verifyArchiveResolution } from "../../scripts/archive-resolution.mjs";
+import { unpackTasksPackage } from "../../scripts/unpack-tasks-package.mjs";
 import {
   artifactPaths,
   assertTaskHostModules,
@@ -15,6 +16,15 @@ import {
   readTasksArtifact,
   taskPackageName,
 } from "./tasks-installed-assets.mjs";
+
+function exportRelative(pkg, key) {
+  const value = pkg.exports?.[key];
+  const relative =
+    typeof value === "string" ? value : (value?.import ?? value?.default);
+  if (typeof relative !== "string" || !relative.startsWith("./"))
+    throw new Error(`Tasks archive is missing export ${key}`);
+  return relative.slice(2);
+}
 
 export async function buildTasksArtifact(
   manifestPath,
@@ -31,24 +41,32 @@ export async function buildTasksArtifact(
   if (digest(readFileSync(tarball)) !== source.sha256)
     throw new Error("Task public archive hash changed");
   const repository = process.cwd();
-  // Reuse the normal complete installed-package fingerprint checker, before
-  // bundling any bytes. Manifests and published dependency ranges stay intact.
-  verifyArchiveResolution(repository, [{ ...source, tarball }]);
-  const require = createRequire(join(repository, "package.json"));
-  const entry = require.resolve(taskPackageName);
-  const pkg = JSON.parse(
-    readFileSync(join(dirname(dirname(entry)), "package.json"), "utf8"),
+  // The published registry install is not this pin. Bundle the packed archive.
+  const payload = unpackTasksPackage(
+    tarball,
+    join(dirname(directory), "unpacked"),
   );
+  const pkg = JSON.parse(readFileSync(join(payload, "package.json"), "utf8"));
   if (pkg.name !== taskPackageName || pkg.version !== source.version)
     throw new Error("Task public package identity changed");
+  // The pin's dependencies are not the published 0.1.1 graph. Install them
+  // beside the archive without reading or writing the Desktop manifest.
+  execFileSync("pnpm", ["install", "--ignore-scripts", "--ignore-workspace"], {
+    cwd: payload,
+    stdio: "inherit",
+    env: { ...process.env, COREPACK_ENABLE_AUTO_PIN: "0" },
+  });
+  const require = createRequire(join(repository, "package.json"));
   const renderer = JSON.parse(
     readFileSync(require.resolve("svelte/package.json"), "utf8"),
   ).version;
   mkdirSync(dirname(directory), { recursive: true });
   const input = join(dirname(directory), "entry.mjs");
+  const moduleEntry = join(payload, exportRelative(pkg, "."));
+  const styles = join(payload, exportRelative(pkg, "./styles.css"));
   writeFileSync(
     input,
-    `export { default } from "${taskPackageName}";\nimport "${taskPackageName}/styles.css";\n`,
+    `export { default } from ${JSON.stringify(moduleEntry)};\nimport ${JSON.stringify(styles)};\n`,
   );
   const result = await build({
     root: repository,

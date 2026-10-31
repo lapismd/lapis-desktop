@@ -62,6 +62,11 @@ navigation and persistence assertions. Readiness receipt matching observes each
 complete output chunk before retaining a bounded tail, so batched driver logs
 cannot hide a completed renderer boot.
 
+External Graph refresh acceptance waits for the exact indexed node/link totals,
+then reveals each real canvas label through the existing hover interaction.
+Zoom-dependent label fading cannot stand in for missing data. Rename and delete
+retain exact new/retired labels and cold-restoration assertions (E-CI-012).
+
 The enabled-writer audit expands with Search and Graph. A delayed plugin save
 must remain admitted before host shutdown begins; an unload-time save alone is
 not evidence that pending controls entered the original M4 guard. Generated

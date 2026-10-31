@@ -1,5 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import { TerminalError } from "@lapismd/terminal";
 import { TerminalSessions } from "../../src/lib/terminal/terminal-sessions.ts";
 
 function fixture() {
@@ -187,4 +188,84 @@ test("failed native release can be retried without admitting new terminal work",
   await assert.rejects(sessions.start("late"), /disabled/);
   await sessions.dispose("close");
   assert.equal(attempts, 2);
+});
+
+test("successful scoped host release resolves denied closes of revoked terminal handles", async () => {
+  const state = fixture();
+  const sessions = new TerminalSessions(state.backend);
+  const active = await sessions.start("revoked");
+  active.close = async () => {
+    throw new TerminalError("denied", "Terminal admission was revoked");
+  };
+  state.backend.release = async (mode) => {
+    assert.equal(mode, "close");
+    state.events.push("confirmed-scoped-release");
+    state.retained.clear();
+  };
+  await sessions.dispose("close");
+  assert.equal(state.retained.size, 0);
+  assert.ok(state.events.includes("confirmed-scoped-release"));
+  await assert.rejects(sessions.start("late"), /disabled/);
+});
+
+test("denied cleanup stays blocking until scoped host release succeeds", async () => {
+  const state = fixture();
+  const sessions = new TerminalSessions(state.backend);
+  const active = await sessions.start("revoked");
+  const denied = new TerminalError("denied", "Terminal admission was revoked");
+  active.close = async () => {
+    throw denied;
+  };
+  let releases = 0;
+  state.backend.release = async () => {
+    if (++releases === 1) throw new Error("scoped release failed");
+    state.retained.clear();
+  };
+  await assert.rejects(sessions.dispose("close"), (error) => {
+    assert.ok(error instanceof AggregateError);
+    assert.ok(error.errors.includes(denied));
+    assert.match(error.message, /scoped release failed/);
+    return true;
+  });
+  assert.equal(state.retained.size, 1);
+  await assert.rejects(sessions.start("late"), /disabled/);
+  await sessions.dispose("close");
+  assert.equal(releases, 2);
+  assert.equal(state.retained.size, 0);
+});
+
+test("reload keeps denied detach failures blocking and never closes retained shells", async () => {
+  const state = fixture();
+  const sessions = new TerminalSessions(state.backend);
+  const active = await sessions.start("retained");
+  const denied = new TerminalError("denied", "Terminal admission was revoked");
+  active.detach = async () => {
+    throw denied;
+  };
+  await assert.rejects(sessions.dispose("reload"), (error) => {
+    assert.ok(error instanceof AggregateError);
+    assert.ok(error.errors.includes(denied));
+    return true;
+  });
+  assert.ok(state.events.includes("release:reload"));
+  assert.equal(state.retained.size, 1);
+  assert.ok(!state.events.includes("close:retained"));
+  await assert.rejects(sessions.start("late"), /disabled/);
+});
+
+test("scoped release does not suppress untyped denied-shaped cleanup errors", async () => {
+  const state = fixture();
+  const sessions = new TerminalSessions(state.backend);
+  const active = await sessions.start("broken");
+  const malformed = Object.assign(new Error("unexpected cleanup error"), {
+    code: "denied",
+  });
+  active.close = async () => {
+    throw malformed;
+  };
+  await assert.rejects(sessions.dispose("close"), (error) => {
+    assert.ok(error instanceof AggregateError);
+    assert.ok(error.errors.includes(malformed));
+    return true;
+  });
 });

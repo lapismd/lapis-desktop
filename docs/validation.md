@@ -38,10 +38,14 @@ Intentional host execution requires an explicit runtime selection:
 LAPIS_DESKTOP_VALIDATION_RUNTIME=native pnpm check:types
 ```
 
-Hosted CI selects its provisioned native runtime explicitly. Development
-servers, local archive preparation, preview maintenance, native bundles and
-visual baseline approval are outside the portable runner. Screenshots do not
-approve baselines.
+Hosted CI selects its provisioned native runtime explicitly. Portable lanes,
+specification checks, Storybook, the bundle gate and headed acceptance run as
+separate Turbo jobs when they do not share Cargo output or a dev-server port.
+Linux CI also builds `x86_64-unknown-linux-gnu` and `aarch64-unknown-linux-gnu`
+release binaries. Storybook Pages publishes
+<https://lapismd.github.io/lapis-desktop/>. Development servers, local archive
+preparation, preview maintenance, native bundles and visual baseline approval
+are outside the portable runner. Screenshots do not approve baselines.
 
 ## Exact sources and private prerequisites
 
@@ -65,6 +69,18 @@ including private linked packages. The runner checks package identity and
 digest, creates an isolated archive install projection and lock, installs that
 projection with `--frozen-lockfile`, then restores tracked source manifests and
 lock before validation. This is distinct from a frozen registry-only install.
+Hosted CI records its source pins in `scripts/ci-sources.json`, packs the
+required public exports and redirects their transitive dependency routes to
+those same compatible archives. Its temporary install starts from the tracked
+published registry graph; private inputs are absent from that registry-only
+lock. Both tracked files are restored after the install or audit, including a
+failure. The canonical
+[dependency intake](../spec/src/current/local-dependencies.md) and
+[distribution backlog](../spec/src/backlog/distribution.md) own the current
+private package inventory. Remove a completed npm projection after actual
+released-package acceptance, while retaining any source build still required for
+real installed-plugin fixtures. An npm package and a bundled runtime artifact
+have separate dependency graphs and qualification boundaries.
 
 `LAPIS_DESKTOP_VALIDATION_ARCHIVES` or the ignored configuration's `archives`
 field selects this explicit prerequisite inventory. Archive source revisions and

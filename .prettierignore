@@ -7,8 +7,13 @@ node_modules/
 dist/
 .local/
 spec/book/
+spec/.generated/
 public/lapis-logo.svg
 .jj/
 storybook-static/
 test-results/
 playwright-report/
+
+# Immutable historical receipt bytes predate formatter normalization.
+spec/src/history/E-AI-109.md
+spec/src/history/E-LIFE-002.md

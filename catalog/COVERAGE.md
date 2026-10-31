@@ -112,7 +112,7 @@ worker failure feedback. `tests/workers/command-parser.test.ts` separately
 exercises the actual bundled module worker; fixtures do not qualify native IO.
 
 The complete AI source-family inventory and remaining unique scenarios are
-tracked in [AI migration coverage](AI_MIGRATION.md). Desktop-specific visible
+tracked in [AI migration coverage](AI_COVERAGE.md). Desktop-specific visible
 states are mapped in the [desktop review inventory](DESKTOP_STATES.md),
 including loading, failure, Safe Mode, file conflicts and both desktop-only
 plugins.
@@ -304,9 +304,8 @@ ImmediateInitializingComposer, LocalConversations, AgentSwitching, Recovery and
 FollowScope, with their complete behavior plays and public Docs examples.
 Compositions retains ChatWithToolActivity and Overview; the existing right
 sidebar placements cover every original Registry History/Catalog assertion.
-`AI_MIGRATION.md` records all 54 browser mappings, the sidebar-fixture
-adaptation and the two pending native Live Host replacements. E-AI-018 records
-results.
+`AI_COVERAGE.md` records all 54 browser mappings, the sidebar-fixture adaptation
+and the two pending native Live Host replacements. E-AI-018 records results.
 
 The Notes Catalog's extra command-file navigation and explicit expand/collapse
 checks now run in the leaf panel and every placement. Fixed viewport hosts and

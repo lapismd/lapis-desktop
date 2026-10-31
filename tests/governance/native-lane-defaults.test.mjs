@@ -140,8 +140,14 @@ test("no default lane collects an on-demand macOS lane", () => {
   assert.deepEqual([...new Set(dispatched)].sort(), ["test", "test:storybook"]);
   assert.ok(!lanes["test:desktop"].includes("--headed"));
   assert.ok(!lanes["test:desktop:headless"].includes("--headed"));
+  assert.equal(scripts["ci:headed"], "pnpm test:desktop:headed");
   for (const [name, command] of Object.entries(scripts)) {
-    if (nativeScripts.includes(name) || name === "test:native:macos") continue;
+    if (
+      nativeScripts.includes(name) ||
+      name === "test:native:macos" ||
+      name === "ci:headed"
+    )
+      continue;
     for (const native of nativeScripts)
       assert.ok(
         !command.includes(native),
@@ -190,13 +196,36 @@ test("the dispatcher refuses without an explicit on-demand request", () => {
 });
 
 test("hosted CI keeps the portable lane set and its documented native runtime", () => {
-  for (const command of ["pnpm check", "pnpm test", "pnpm spec:check"])
-    assert.ok(ci.includes(command), `CI must run the portable lane ${command}`);
+  assert.equal(scripts["ci:quality"], "pnpm check");
+  assert.equal(scripts["ci:unit"], "pnpm test");
+  assert.match(scripts["ci:governance"], /^pnpm spec:check && /u);
+  assert.match(scripts["ci:governance"], /pnpm spec:first --base /u);
+  assert.match(
+    scripts["ci:bundle"],
+    /pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle/u,
+  );
+  for (const task of [
+    "ci:governance",
+    "ci:quality",
+    "ci:unit",
+    "ci:storybook-static",
+    "ci:storybook-interaction",
+    "ci:bundle",
+    "ci:headed",
+  ])
+    assert.equal(
+      ci.match(new RegExp(`run-turbo\\.mjs ${task}\\b`, "g"))?.length,
+      1,
+      `CI runs ${task} in its own job`,
+    );
+  assert.doesNotMatch(ci, /jj@0\.45\.1/u);
+  assert.match(ci, /install-tools\.mjs --ci/u);
   assert.match(ci, /LAPIS_DESKTOP_VALIDATION_RUNTIME: native/u);
   assert.match(ci, /runs-on: macos-15/u);
   const selectors = [
     ...walk(resolve(root, "scripts")),
     ".github/workflows/ci.yml",
+    ".github/workflows/publish-storybook-pages.yml",
     "package.json",
   ].filter(
     (path) =>
@@ -207,6 +236,7 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
     selectors.sort(),
     [
       ".github/workflows/ci.yml",
+      ".github/workflows/publish-storybook-pages.yml",
       "scripts/local-macos-build.mjs",
       "scripts/macos-native-lanes.mjs",
       "scripts/validation.mjs",

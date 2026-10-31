@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import { totalmem } from "node:os";
 export const bootstrapIgnore =
   "node_modules/\n.local/\n.turbo/\nsrc-tauri/target/\n";
 export const label = "dev.lapismd.lapis-desktop.validation";
@@ -131,6 +132,11 @@ export function buildEnvironment(lane, memoryBytes) {
     Math.max(1, Math.floor(memoryBytes / 2 / 1024 ** 2)),
   );
   return { NODE_OPTIONS: `--max-old-space-size=${heapMiB}` };
+}
+
+/** Native runners have no cgroup limit; still bound builds to available RAM. */
+export function nativeBuildEnvironment(lane) {
+  return buildEnvironment(lane, process.constrainedMemory() || totalmem());
 }
 
 export function workerEnvironment(imageTarget, lane, memoryGiB = 24) {

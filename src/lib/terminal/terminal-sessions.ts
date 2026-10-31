@@ -1,9 +1,11 @@
 import type { TerminalClient, TerminalSession } from "@lapismd/terminal";
+import { TerminalError } from "@lapismd/terminal";
 
 export type TerminalLeaveMode = "close" | "reload";
 export interface TerminalBackend {
   client: TerminalClient;
   activate(): Promise<void>;
+  /** Close confirms scoped process shutdown; reload preserves retained shells. */
   release(mode: TerminalLeaveMode): Promise<void>;
 }
 
@@ -92,14 +94,25 @@ export class TerminalSessions {
       );
       this.#sessions.clear();
       this.#requested.clear();
+      let released = false;
       try {
         await this.#backend.release(mode);
+        released = true;
       } catch (error) {
         results.push({ status: "rejected", reason: error });
       }
-      const failures = results.flatMap((result) =>
-        result.status === "rejected" ? [result.reason] : [],
-      );
+      const failures = results.flatMap((result) => {
+        if (result.status === "fulfilled") return [];
+        // Revoked IPC stays denied; the host separately confirms scoped shutdown.
+        if (
+          mode === "close" &&
+          released &&
+          result.reason instanceof TerminalError &&
+          result.reason.code === "denied"
+        )
+          return [];
+        return [result.reason];
+      });
       if (failures.length)
         throw new AggregateError(
           failures,

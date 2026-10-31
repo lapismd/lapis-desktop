@@ -1,5 +1,8 @@
 # Native acceptance modes
 
+Portable native checks retain unsupported credential ports outside macOS; only
+the supported Keychain backend constructs its device service identity.
+
 Cold-process acceptance matches the complete Rust readiness output before
 retaining a bounded tail. A listening driver socket alone cannot prove IPC
 readiness; early evaluation can lose replies during navigation. Keep the bounded
@@ -57,3 +60,24 @@ enable/disable/revoke controls remain denied there. Actual Metadata/Search/Graph
 view families also run with explicit native metadata selection; hidden reads
 cannot replace their visible workspace gate. Native Search selection stays
 unavailable in this metadata-only intake.
+
+Native fixture tools MUST resolve from the selected runner installation before
+hardening the application PATH. Repository fixtures retain that absolute JJ
+identity instead of assuming Homebrew. The actual native process keeps only
+`/usr/bin:/bin`; fixture tool discovery does not broaden application admission.
+Shared native turn/queue peers MUST come from lapis-server at the same full Git
+commit selected by the compiled app core, with an explicit hosted source
+prerequisite. Retired Notes source paths do not supply those peers. E-CI-006
+retains the original 97-pass/12-failure hosted result and separate repair proof.
+
+Before terminating a still-running isolated acceptance process, cleanup retains
+a bounded DOM/probe diagnostic when the driver responds. Diagnostic collection
+cannot change assertions, native close deadlines or the original test outcome.
+
+## Hosted fixture prerequisites
+
+Verified Lapis AI helpers ship as resources; native checks stage them first.
+[Client delivery](ai-clients.md), [turn adoption](ai-adapter.md), and
+[dependency intake](local-dependencies.md) retain the pinned helper/crate
+sources. Hosted native acceptance prepares real portable plugin archives and
+Tasks with ephemeral test keys. This does not replace the native product gates.

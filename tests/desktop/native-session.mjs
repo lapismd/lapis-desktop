@@ -1,5 +1,5 @@
 import { spawn, execFileSync } from "node:child_process";
-import { createWriteStream } from "node:fs";
+import { createWriteStream, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { resolve, join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
@@ -71,6 +71,34 @@ export async function nativeSession(
   let browser;
   async function cleanup() {
     if (child.exitCode === null && child.signalCode === null) {
+      if (browser) {
+        let timer;
+        try {
+          const diagnostic = await Promise.race([
+            browser.execute(() => ({
+              body: document.body.innerText,
+              activeElement: document.activeElement?.outerHTML.slice(0, 2000),
+              graphFrames: globalThis.__nativeGraphFrames ?? null,
+              taskTransport: globalThis.__lapisTasksAcceptance?.snapshot(),
+            })),
+            new Promise((resolve) => {
+              timer = setTimeout(() => resolve(null), 1500);
+            }),
+          ]);
+          if (diagnostic)
+            writeFileSync(
+              join(root, `${name}.dom.log`),
+              JSON.stringify(diagnostic, null, 2).slice(0, 256 * 1024),
+            );
+        } catch (error) {
+          console.error(
+            `Native cleanup diagnostic unavailable: ${name}`,
+            error,
+          );
+        } finally {
+          clearTimeout(timer);
+        }
+      }
       child.kill("SIGTERM");
       const timer = setTimeout(() => child.kill("SIGKILL"), 3000);
       await exited;

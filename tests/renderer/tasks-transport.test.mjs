@@ -118,6 +118,47 @@ test("ordinary read gate holds all selected reads while native editing snapshots
   f.probe.dispose();
 });
 
+test("protected editing observation failure is exact-path and one-shot without fabricating a native outcome", async () => {
+  const f = fixture();
+  f.probe.failNextEditingSnapshot("Note.md");
+  const selected = { sessionId: "admitted", path: "Note.md" };
+  const other = { sessionId: "admitted", path: "Other.md" };
+  const options = { headers: { test: "yes" } };
+  assert.equal(
+    await f.probe.invoke("vault_editing_snapshot", other, options),
+    f.reply,
+  );
+  await assert.rejects(
+    f.probe.invoke("vault_editing_snapshot", selected),
+    /Protected saved-text observation failed: Note.md/,
+  );
+  assert.deepEqual(f.probe.snapshot().failedEditingSnapshots, ["Note.md"]);
+  assert.deepEqual(f.calls, [["vault_editing_snapshot", other, options]]);
+  assert.equal(
+    await f.probe.invoke("vault_editing_snapshot", selected, options),
+    f.reply,
+  );
+  assert.deepEqual(f.calls.at(-1), [
+    "vault_editing_snapshot",
+    selected,
+    options,
+  ]);
+  assert.deepEqual(f.probe.snapshot().records, []);
+});
+
+test("disposing the fixture clears an unconsumed protected-observation fault", async () => {
+  const f = fixture();
+  f.probe.failNextEditingSnapshot("Note.md");
+  f.probe.dispose();
+  const selected = { sessionId: "admitted", path: "Note.md" };
+  assert.equal(
+    await f.probe.invoke("vault_editing_snapshot", selected),
+    f.reply,
+  );
+  assert.deepEqual(f.probe.snapshot().failedEditingSnapshots, []);
+  assert.equal(f.calls.length, 1);
+});
+
 test("forwarding below the public observer retains its pending drain and typed native outcome", async () => {
   const f = fixture();
   const observer = new NativeTasksSession(

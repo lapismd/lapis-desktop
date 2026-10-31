@@ -1,0 +1,32 @@
+[
+  {
+    "name": "lapis-notes",
+    "repository": "lapismd/lapis-notes",
+    "revision": "e99baa742483ace8177b22fbdec3eed11867eedc"
+  },
+  {
+    "name": "lapis-plugins",
+    "repository": "lapismd/lapis-plugins",
+    "revision": "879581d1549187bdbac2d75b40d02e0df46e721a"
+  },
+  {
+    "name": "lapis-ai",
+    "repository": "lapismd/lapis-ai",
+    "revision": "9a98293c26524c9320acdd9767e34e8ffdd7170c"
+  },
+  {
+    "name": "jj-store",
+    "repository": "stevejuma/jj-store",
+    "revision": "7a98bd89d2bc77fb6ec41f91186992abb19ba161"
+  },
+  {
+    "name": "lapis-plugin-tasks",
+    "repository": "lapismd/lapis-plugin-tasks",
+    "revision": "52270c2aa7838811604a20be0861cdbd04027b42"
+  },
+  {
+    "name": "lapis-server",
+    "repository": "lapismd/lapis-server",
+    "revision": "4150cac6f2fef28b128421e4e3a851b848acdcf3"
+  }
+]

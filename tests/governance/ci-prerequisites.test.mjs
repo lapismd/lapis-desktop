@@ -1,0 +1,166 @@
+import assert from "node:assert/strict";
+import { execFileSync } from "node:child_process";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import test from "node:test";
+import { unpackTasksPackage } from "../../scripts/unpack-tasks-package.mjs";
+import { sourceUrl } from "../../scripts/ci-siblings.mjs";
+import {
+  projectUnpublished,
+  unpublishedRanges,
+} from "../../scripts/ci-install.mjs";
+
+test("CI source downloads require full immutable commits and safe repository names", () => {
+  const source = {
+    name: "lapis-notes",
+    repository: "lapismd/lapis-notes",
+    revision: "a".repeat(40),
+  };
+  assert.equal(
+    sourceUrl(source),
+    `https://codeload.github.com/lapismd/lapis-notes/tar.gz/${source.revision}`,
+  );
+  for (const change of [
+    { revision: "main" },
+    { name: "../existing" },
+    { repository: "other/repo/../../escape" },
+  ])
+    assert.throws(() => sourceUrl({ ...source, ...change }), /full commit/);
+});
+
+test("source-fix archives share the graph while tracked ranges and unaffected registry packages remain portable", () => {
+  const manifest = {
+    dependencies: {
+      "@lapismd/agent-ui": "^0.2.0",
+      "@lapismd/repository-ui": "^0.1.1",
+      "@lapismd/design-core": "^0.8.0",
+      "@lapis-notes/workspace": "^0.3.1",
+      "@lapismd/terminal": "^0.1.2",
+      "@lapis-notes/bases": "^0.2.0",
+      "@lapis-notes/history": "^0.2.0",
+    },
+    devDependencies: {
+      "@lapis-notes/lapis-plugin-tasks": "^0.1.1",
+    },
+  };
+  for (const name of Object.keys(unpublishedRanges))
+    if (!Object.hasOwn(manifest.dependencies, name))
+      manifest.devDependencies[name] = "^0.1.0";
+  const original = structuredClone(manifest);
+  const projected = projectUnpublished(
+    manifest,
+    () => true,
+    (name) => `/archives/${name}.tgz`,
+  );
+  assert.deepEqual(manifest, original);
+  assert.equal(projected.dependencies["@lapismd/repository-ui"], "^0.1.1");
+  assert.equal(projected.dependencies["@lapismd/design-core"], "^0.8.0");
+  assert.equal(projected.dependencies["@lapis-notes/workspace"], "^0.3.1");
+  assert.equal(projected.dependencies["@lapismd/terminal"], "^0.1.2");
+  assert.equal(projected.dependencies["@lapismd/agent-ui"], "^0.2.0");
+  assert.equal(projected.dependencies["@lapis-notes/bases"], "^0.2.0");
+  assert.equal(projected.dependencies["@lapis-notes/history"], "^0.2.0");
+  assert.equal(
+    projected.devDependencies["@lapis-notes/lapis-plugin-tasks"],
+    "^0.1.1",
+  );
+  for (const name of Object.keys(unpublishedRanges)) {
+    const section = Object.hasOwn(manifest.dependencies, name)
+      ? "dependencies"
+      : "devDependencies";
+    assert.equal(projected[section][name], `file:/archives/${name}.tgz`);
+    assert.equal(manifest[section][name], "^0.1.0");
+  }
+});
+
+test("hosted native acceptance prepares real artifacts and passes their inventory to every consumer", () => {
+  const ci = readFileSync(".github/workflows/ci.yml", "utf8");
+  const setup = ci.indexOf("node --import tsx scripts/ci-native-fixtures.mjs");
+  const run = ci.indexOf("run: node scripts/run-turbo.mjs ci:headed");
+  assert.ok(setup > 0 && setup < run);
+  assert.match(
+    ci.slice(setup, run),
+    /LAPIS_DESKTOP_PORTABLE_FIXTURES: .local\/ci-native-plugins\/manifest.json/,
+  );
+  assert.match(
+    readFileSync("tests/desktop/distribution-fixtures.mjs", "utf8"),
+    /process.env.LAPIS_DESKTOP_PORTABLE_FIXTURES/,
+  );
+});
+
+test("native fixtures install plugins before importing the release signer", () => {
+  const source = readFileSync("scripts/ci-native-fixtures.mjs", "utf8");
+  const install = source.indexOf('["install", "--frozen-lockfile"]');
+  const imported = source.indexOf("scripts/plugin-release.mjs");
+  assert.ok(install > 0 && imported > install);
+  assert.match(source, /node_modules\/fflate\/package\.json/);
+});
+
+test("Design Core 0.8.0 is the only resolved copy so API has one peer context", () => {
+  const workspace = readFileSync("pnpm-workspace.yaml", "utf8");
+  const lock = readFileSync("pnpm-lock.yaml", "utf8");
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  assert.match(workspace, /"@lapismd\/design-core": "0\.8\.0"/);
+  assert.doesNotMatch(workspace, /peerDependencyRules/);
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.2.3");
+  assert.equal(manifest.dependencies["@lapismd/mira"], "~0.1.4");
+  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.8.0");
+  assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
+  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.2\.3\([^']+\)':$/gm);
+  assert.equal(contexts?.length, 1);
+  assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.7\./);
+  assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.7\./);
+});
+
+test("native Tasks fixtures unpack the packed pin instead of the registry install", () => {
+  const root = mkdtempSync(join(tmpdir(), "tasks-pin-"));
+  try {
+    const packed = join(root, "package");
+    mkdirSync(packed);
+    writeFileSync(
+      join(packed, "package.json"),
+      JSON.stringify({
+        name: "@lapis-notes/lapis-plugin-tasks",
+        version: "0.1.0",
+      }),
+    );
+    const tarball = join(root, "tasks.tgz");
+    execFileSync("tar", ["-czf", tarball, "-C", root, "package"]);
+    const payload = unpackTasksPackage(tarball, join(root, "unpacked"));
+    assert.equal(
+      JSON.parse(readFileSync(join(payload, "package.json"), "utf8")).version,
+      "0.1.0",
+    );
+    const artifact = readFileSync(
+      "tests/desktop/tasks-installed-artifact.mjs",
+      "utf8",
+    );
+    assert.doesNotMatch(artifact, /verifyArchiveResolution/);
+    assert.match(
+      artifact,
+      /\["install", "--ignore-scripts", "--ignore-workspace"\]/,
+    );
+    assert.equal(
+      JSON.parse(readFileSync("package.json", "utf8")).devDependencies[
+        "@lapis-notes/lapis-plugin-tasks"
+      ],
+      "^0.1.1",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test("semantic specification search remains an authoring command", () => {
+  const pkg = JSON.parse(readFileSync("package.json", "utf8"));
+  assert.equal(pkg.scripts["spec:search"], "spec-validator search --semantic");
+  const ci = readFileSync(".github/workflows/ci.yml", "utf8");
+  assert.doesNotMatch(ci, /pnpm spec:(?:search|index)/);
+});

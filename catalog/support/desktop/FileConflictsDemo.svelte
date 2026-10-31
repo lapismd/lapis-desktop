@@ -44,11 +44,7 @@
     <div class="shell" inert={leaving}>
       <WorkspaceShell app={fixture.app} displayMode="desktop" />
     </div>
-    <FileConflicts
-      app={fixture.app}
-      registry={fixture.app.fileEditingSessions.textConflicts}
-      disabled={leaving}
-    />
+    <FileConflicts app={fixture.app} disabled={leaving} />
   {/if}
   {#if failure}<p role="alert">{failure}</p>{/if}
 </div>

@@ -1,5 +1,10 @@
 # File management (M5)
 
+Native missing-file recovery waits for the captured review's disk-accept action
+to become enabled after refresh, then retains exact draft, deletion, renamed
+disk bytes and review-removal assertions (E-CI-012). Visible deleted-file copy
+alone does not establish that the asynchronous refresh guard has released.
+
 The R1.1 shared-core extraction moves checked file IO, atomic/conditional
 writes, exclusive mutations and retained action targets into Notes-owned
 `lapis-app-core`. Desktop consumes those public native types directly and keeps
@@ -19,7 +24,11 @@ Markdown editor while preserving its focused local property draft. Separate
 native pre-Yield acceptance MUST retain the failed editing Problem and input
 protection, block close and preserve disk bytes. Only explicit retry after
 ordinary producer convergence may restore access; cleanup cannot clear a failed
-handoff through a no-op rearm or replay the unadmitted mutation.
+handoff through a no-op rearm or replay the unadmitted mutation. The debug-only
+refusal fixture MUST fail one selected protected saved-text observation
+explicitly. Holding ordinary file reads alone no longer creates a refusal,
+because the API reconciles clean text in-guard. Later observations and intent
+calls stay real; the fixture cannot fabricate native state or outcomes.
 
 R1.3 file IPC delegates portable operations to the shared vault service while
 preserving existing renderer frames and portable file errors. Native retained
@@ -50,7 +59,8 @@ M16.7/E-CORE-033 binds opt-in native editor intents and authoritative snapshots
 to that same admitted file client. Existing conditional saves retain their own
 caller exemption; foreign active/dirty/retained writers remain fenced. Desktop
 adds no alternate save or recovery path. Refused leave and ready-session host
-failures preserve watching and surface through Problems with a toast, not chrome above WorkspaceShell.
+failures preserve watching and surface through Problems with a toast, not chrome
+above WorkspaceShell.
 
 E-AI-093 keeps LD-FILE-002/003 ordinary watch, picker and containment contracts
 unchanged. Backup-only watches use the shared native transcript allowlist;
@@ -120,8 +130,9 @@ retired writers keep their original views and recovery owner, with existing
 notifications explaining external moves/removals. This integration remains
 subject to actual native and original aggregate qualification.
 
-M5 preserves its original PLAN.md gate. Targeted slices do not complete the
-aggregate milestone while end-of-M7 full qualification remains deferred.
+The original file-management boundary includes actual native operations and cold
+recovery. E-QUALIFICATION-002 records the completed aggregate; later changes
+retain their affected acceptance and any explicit backlog qualification.
 
 ## Requirements
 
@@ -142,6 +153,11 @@ Core component styles remain unchanged.
 | LD-FILE-008 | Retained file conflicts MUST reveal Problems. Opening a problem MUST show the draft, baseline and disk version through the shared three-way comparison, with an editable centre whose reviewed text is saved through the guarded writer and refresh. Closing the review MUST preserve unresolved drafts; successful resolution MUST clear its diagnostic.         |
 
 ## Conflict review presentation
+
+The published Workspace package owns conflict presentation and its App-scoped
+diagnostics. Desktop holds its public `bindFileConflictReviews` lease with the
+host's leave/startup inhibition; the mounted shell shares that registration.
+Desktop MUST NOT register a second collection or retain a copied review screen.
 
 E-CATALOG-016 covers actual native Problems/merge acceptance. Explicit disk
 acceptance uses the writer-owned decision and preserves absence when the
