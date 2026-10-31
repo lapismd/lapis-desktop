@@ -47,7 +47,10 @@ The native acceptance candidate MUST bundle the verified public Tasks archive,
 validate every external module against the Desktop host import map, then use the
 existing ephemeral signed-distribution fixture and production installer. Fixture
 resource hashes MUST be checked before signing. Acceptance helpers remain
-confined to the debug e2e entry; ordinary bundles reject their markers.
+confined to the debug e2e entry; ordinary bundles reject their markers. Hosted
+preparation bundles the packed Tasks pin after installing that pin's own
+dependencies beside the archive. The published registry install stays separate
+(E-CI-034).
 
 Headed acceptance MUST exercise the real planner and source editor, configured
 locale and daily provider, stale admission, uncertain replies, read-only journal

@@ -12,8 +12,9 @@ windows and platform resources require native app-build acceptance. Fixtures
 match admitted runtime versions and exact helper hashes. Hosted logs stream;
 assertions/deadlines stay (E-CI-009). Terminal 0.1.2 uses qualified Git sources
 ([intake](local-dependencies.md), E-CI-011/013). Confirmed scoped shutdown
-settles stale denied cleanup only on close. Native gates remain. Graph labels
-use real hover; disk recovery awaits enabled controls (E-CI-012).
+settles stale denied cleanup only on close. Native gates remain; Tasks fixtures
+bundle the packed pin (E-CI-034). Graph labels use real hover; disk recovery
+awaits enabled controls (E-CI-012).
 
 ## Requirements
 

@@ -1,6 +1,16 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import test from "node:test";
+import { unpackTasksPackage } from "../../scripts/unpack-tasks-package.mjs";
 import { sourceUrl } from "../../scripts/ci-siblings.mjs";
 import {
   projectUnpublished,
@@ -107,6 +117,45 @@ test("Design Core 0.8.0 is the only resolved copy so API has one peer context", 
   assert.equal(contexts?.length, 1);
   assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.7\./);
   assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.7\./);
+});
+
+test("native Tasks fixtures unpack the packed pin instead of the registry install", () => {
+  const root = mkdtempSync(join(tmpdir(), "tasks-pin-"));
+  try {
+    const packed = join(root, "package");
+    mkdirSync(packed);
+    writeFileSync(
+      join(packed, "package.json"),
+      JSON.stringify({
+        name: "@lapis-notes/lapis-plugin-tasks",
+        version: "0.1.0",
+      }),
+    );
+    const tarball = join(root, "tasks.tgz");
+    execFileSync("tar", ["-czf", tarball, "-C", root, "package"]);
+    const payload = unpackTasksPackage(tarball, join(root, "unpacked"));
+    assert.equal(
+      JSON.parse(readFileSync(join(payload, "package.json"), "utf8")).version,
+      "0.1.0",
+    );
+    const artifact = readFileSync(
+      "tests/desktop/tasks-installed-artifact.mjs",
+      "utf8",
+    );
+    assert.doesNotMatch(artifact, /verifyArchiveResolution/);
+    assert.match(
+      artifact,
+      /\["install", "--ignore-scripts", "--ignore-workspace"\]/,
+    );
+    assert.equal(
+      JSON.parse(readFileSync("package.json", "utf8")).devDependencies[
+        "@lapis-notes/lapis-plugin-tasks"
+      ],
+      "^0.1.1",
+    );
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
 });
 
 test("semantic specification search remains an authoring command", () => {

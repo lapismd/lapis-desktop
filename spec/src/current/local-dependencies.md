@@ -107,9 +107,11 @@ node_modules or a second chat writer.
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History
 package builds. Native plugin fixture sources, including Plugins and Tasks, and
-the qualified Rust git pins stay. The remaining npm archive prerequisites are
-App Profile and AI. Both remain intentionally private. JJ Conversations 0.1.0
-stays the published registry range. Public transitions are governed by
+the qualified Rust git pins stay. Hosted preparation installs the packed Tasks
+pin's own dependencies, bundles that pin, and leaves the published registry
+range and lockfile unchanged (E-CI-034). The remaining npm archive prerequisites
+are App Profile and AI. Both remain intentionally private. JJ Conversations
+0.1.0 stays the published registry range. Public transitions are governed by
 [the distribution backlog](../backlog/distribution.md). Preserve tracked
 registry ranges and verify every active private archive import route; the
 resulting graph does not qualify registry-only application distribution.
