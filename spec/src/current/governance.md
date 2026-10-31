@@ -397,4 +397,4 @@ Native build heaps use half constrained or physical RAM, capped at 6 GiB.
 
 Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
 Native fixtures install the pinned plugins tree before signing when fflate is
-absent (E-CI-032) and bundle the packed Tasks pin (E-CI-034, E-CI-037).
+absent (E-CI-032). Packed Tasks pin (E-CI-034). Audits: E-CI-037.
