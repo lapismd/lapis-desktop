@@ -1,9 +1,10 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 12:24 UTC**. Overall status: **in progress**.
+Last reviewed: **2026-10-31 12:29 UTC**. Overall status: **in progress**.
 Desktop PR #1 is open; final released-cohort and hosted native acceptance remain
 required before merge. No npm challenge is active. The Dnd compiler diagnostic
-below requires a specific disposition; its proposed exception is not approved.
+below requires a specific disposition; the user decision has been requested and
+its proposed exception is not approved.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -53,8 +54,10 @@ tarball: 1,903,722 bytes, SHA-256
    adapters/parser helpers and retain a patched direct KaTeX dependency, public
    APIs, runtime conditions and MIT notices. Base production audit,
    declarations, CSS and the development public host pass. An owning table
-   teardown regression is repaired at its exact target; full requalification is
-   running. The packed production host remains blocked on the Dnd diagnostic
+   teardown regression is repaired at its exact target; full source checks and
+   all 178 Storybook interaction/axe cases pass. Cold static/browser
+   qualification also passes its 60-case suite with its unchanged known-failure
+   policy. The packed production host remains blocked on the Dnd diagnostic
    below. Publish the normal version PR's actual result, expected Mira 0.1.4 but
    subject to its plan.
 2. **Release Core's fixed dependency boundary.** Require that actual fixed Mira
@@ -97,10 +100,22 @@ is required. Proposal:
 Separately, a full Mira check exposed one uncaught post-teardown `MouseEvent`
 from table cells. The exact owning pipe/grid target reproduced four failures
 with the existing keyboard case passing; timer cancellation and lifecycle guards
-now pass all five without changed assertions/deadlines. Full `check:all`
-requalification is active in session 35652; driver
-`/tmp/lapis-mira-math-validation-20261031/check-all-r3-driver.log`. That failure
-cannot inherit the compile-warning exception.
+now pass all five without changed assertions/deadlines. Full `check:all` passes
+525 units, 16 runner guards, strict Svelte checks, lint, format, build and
+publint. Run `mira-validation-525478e5-fc25-4c98-851a-ea4a0949ae2c`; driver
+`/tmp/lapis-mira-math-validation-20261031/check-all-r3-driver.log`. All 178
+distinct cold Storybook/axe cases then pass, with all four JUnit reports
+independently checked: run
+`mira-validation-41ddea53-1a3e-486f-8c06-1ca79a2ac3bc`.
+
+The subsequent cold `pnpm storybook:check` passes all 60 cases under the
+unchanged known-failure policy. Run
+`mira-validation-3f951b52-dcf1-41b7-b189-8eec1c5b4f7e` records exit 0 and
+`status: passed`. The red indentation case at
+`tests/storybook/indentation.spec.ts:1224` has an existing unconditional
+`test.fail` marker; its console symbol alone does not mean the suite failed. Do
+not remove that marker or change its assertion without exact evidence. Driver:
+`/tmp/lapis-mira-math-validation-20261031/catalog-static-e2e-driver.log`.
 
 Mira's old math adapters pull vulnerable KaTeX. The new base-package repair has
 a clean independent production closure. An unchanged Mermaid 11/layout-ELK
@@ -136,9 +151,9 @@ Inspect `jj st`, exact revisions and current remote state before continuing.
 | Owner / area                                       | Workspace and saved state                                                                                                                                                                                                                                                                                                                                            |
 | -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; parent `7df6725b`, with the uncommitted 13-file API 0.2.3/Core 0.7.3 intake and fresh pending `spec/src/history/E-CI-017.md`. Prior Bits commit `4f3ff601`. PR #1 remote remains `96a4139b`; newer local work is not pushed.                                                                       |
-| Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; isolated documentation workspace from `7df6725b`, so the live product test snapshot remains unchanged.                                                                                                                                                                                                        |
+| Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; initial commit `ce1204d7` is backed up remotely as `release-handoff-20261031`. This isolated documentation workspace from `7df6725b` leaves the live product test snapshot unchanged. Later integrate its commits into PR #1, retaining both E-CI-017 and E-CI-018 navigation entries.                        |
 | Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`. |
-| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`, change `zltrmxzt`, last reported snapshot `a09d9dbe`, parent published `e2ad5063`; 25 owned edits uncommitted. Reassigned from interrupted `pending_package_releases`. Next ordinary target: `pnpm packages:pack` using the existing local transport wrapper.                                                 |
+| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`, change `zltrmxzt`, qualified snapshot `c0902e0b`, parent published `e2ad5063`; owned edits remain uncommitted. Reassigned from interrupted `pending_package_releases`. Cold source/catalog/browser checks pass; packed-host Dnd disposition remains pending.                                                  |
 | Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                             |
 | `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                      |
 | Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                            |
@@ -225,3 +240,8 @@ start local headed/provider tests without the existing explicit opt-in.
   route authorized. Source work preserved after agent interruption and normal
   release ownership reassigned. This single handoff is now the maintained resume
   point; local scratch checkpoints are not the source of current status.
+- **October 31, 12:29 UTC:** Initial handoff `ce1204d7` is committed and pushed
+  to `release-handoff-20261031`, with all four canonical spec lanes passing.
+  Mira's repaired source, 178-case Storybook lane and subsequent cold 60-case
+  browser suite pass under the unchanged known-failure policy. The exact Dnd
+  exception question is pending a user response.
