@@ -1,11 +1,14 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 15:38 UTC**. Overall status: **phase 1 complete**.
-`@lapismd/design-core` **0.7.4** is on npm from `30a5c883`. Mira docs PR
-[#28](https://github.com/lapismd/mira-mde/pull/28) is merged at `001564ae` and
-did not republish Mira. Agent UI, Tasks, Plugins, the Notes profile, and Desktop
-intake are not started. Desktop PR #1 and Tasks draft #1 remain open; auto-merge
-is disabled.
+Last reviewed: **2026-10-31 18:24 UTC**. Overall status: **npm cohort
+recorded**. `@lapismd/design-core` **0.7.4** is on npm from `30a5c883`. Mira
+docs PR [#28](https://github.com/lapismd/mira-mde/pull/28) is merged at
+`001564ae` and did not republish Mira. Bases **0.2.0**, History **0.2.0**, Tasks
+**0.1.1**, Agent UI **0.2.0** and Repository UI **0.1.1** are published. The
+private profile stays **0.0.0**; Notes
+[#58](https://github.com/lapismd/lapis-notes/pull/58) is open. Desktop intake
+has not started. Registry proof: [E-CI-029](../history/E-CI-029.md). Desktop PR
+#1 and Tasks draft #1 remain open; auto-merge is disabled.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -40,6 +43,7 @@ An open version PR or prepared archive does not complete publication.
 | Bits UI                        | Canonical registry **2.20.2** patch retains Link Preview cleanup, six Slider destruction guards and the upstream FocusScope identity fix. Every consumer root must register it explicitly.                                                                                                                  |
 | Mira math/lifecycle release    | **0.1.4** is fully published from `6658fe56`; source #26 and formally approved version #27 merged green. Production run `41205035585` passed all five stages. Registry bytes, clean install, signatures, exact-source provenance, tag and GitHub release verify.                                            |
 | Design Core                    | **0.7.4** is published from `30a5c883`. Source #47 merged at `4c3ae982` (`16cda140`); approved version #48 merged at `30a5c883`. Release `41214599110` passed all five jobs. Registry bytes, SHA-512, SLSA provenance, tag and GitHub release match. Prior **0.7.3** remains the previous verified release. |
+| Published npm cohort           | Bases 0.2.0, History 0.2.0, Tasks 0.1.1, Agent UI 0.2.0 and Repository UI 0.1.1 are on npm. Mira stays 0.1.4. Private profile stays 0.0.0. [E-CI-029](../history/E-CI-029.md).                                                                                                                              |
 | Plugins intermediate graph     | API 0.2.3/Core 0.7.3: all 18 checks; 1,181 units; 17 builds/publint; 264 catalog passes, 57 unchanged parked Sync skips; static build; 163 release-tool tests; source artifact reproduction all passed.                                                                                                     |
 | UI intermediate graph          | Core 0.7.3/Mira 0.1.2: 1,956 interaction/axe cases, 151 browser cases, 149 public examples, 235 units, all 418 fingerprints, strict types/build/spec/actionlint passed.                                                                                                                                     |
 | Tasks intermediate graph       | Compatible normal lock refresh cleared all critical/high/moderate findings. All 2,889 units, 27 Rust and 63 interaction/axe cases, strict types/build/publint/static/spec passed. One low Mira math dependency remains pending the repair below.                                                            |
@@ -69,28 +73,22 @@ point at `30a5c883`. No check was quarantined.
 
 ## Pending after an explicit resume
 
-1. **Core 0.7.4 is published.** Do not republish it. Downstream adoption is the
-   next phase and has not started.
-2. **Complete downstream source and version releases.** Adopt the verified fixed
-   Core in Agent/Repository UI, Tasks and Plugins. Repeat the required exact,
-   cold and full acceptance, then source PR merge, bot Changesets diff review,
-   formal approval, green merge and actual publication verification. Expected
-   candidates: Agent UI 0.2.0, Repository UI 0.1.1, Tasks 0.1.1 and
-   Bases/History 0.2.0; verify each actual generated plan.
-3. **Rebuild the private Notes App Profile.** Its current Agent UI `^0.1.0` and
-   History `^0.1.4` ranges exclude those planned 0.2.0 releases. After the
-   releases exist, change the owning private package to their actual compatible
-   minima and fixed Core minimum, preserve API exactly 0.2.3, qualify the public
-   build and record a new private source pin/archive hash.
-4. **Finish Desktop intake.** Raise all actual published minima/locks, replace
+1. **Do not republish the cohort in [E-CI-029](../history/E-CI-029.md).** Core
+   0.7.4, Mira 0.1.4, Bases 0.2.0, History 0.2.0, Tasks 0.1.1, Agent UI 0.2.0
+   and Repository UI 0.1.1 stay at those versions. API stays exactly 0.2.3.
+2. **Notes PR #58 is open and unmerged.** Private `@lapis-notes/app-profile`
+   stays 0.0.0. Its rebuilt archive is recorded in E-CI-029. Desktop intake
+   waits until that pull request merges.
+3. **Finish Desktop intake.** Raise all actual published minima/locks, replace
    the private profile with that qualified artifact, remove completed npm
    archive projections and verify every active first-party/runtime/peer route.
    Retain source builds needed for real native plugin fixtures. The intermediate
    install also warns that API 0.2.3 expects Dnd DOM/Svelte `^0.4.0` but
    receives 0.5.1/0.5.0. Qualify the correct host peer inputs during final
    intake; do not suppress those warnings. The other two peer warnings belong to
-   old Tasks 0.1.0's API/Core ranges and need its actual replacement release.
-5. **Finish Desktop CI and merge.** Repeat final portable/catalog/audit/bundle
+   old Tasks 0.1.0's API/Core ranges; published Tasks 0.1.1 is the replacement
+   to qualify at intake.
+4. **Finish Desktop CI and merge.** Repeat final portable/catalog/audit/bundle
    and hosted native acceptance on that exact input, add fresh immutable
    evidence, update canonical verification/backlog, push PR #1, wait for all
    required checks and merge. Resolve PR #2 as included. Distribution and
@@ -180,9 +178,9 @@ Inspect `jj st`, exact revisions and current remote state before continuing.
 | Root: Desktop                                 | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean at `1849cdf4`, pushed to [wip/desktop-release-paused-20261031](https://github.com/lapismd/lapis-desktop/tree/wip/desktop-release-paused-20261031). E-CI-017 remains pending final cohort/native proof. PR #1 stays at `96a4139b`; auto-merge is off.                          |
 | Root: this handoff                            | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote `release-handoff-20261031` is the maintained paused tracker. Its independent documentation lineage starts at `7df6725b`. After resume, integrate it into the final product head retaining all history entries, including E-CI-017.                                                      |
 | Root: Plugins                                 | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at `5df6d7cf`, pushed to [wip/plugins-release-paused-20261031](https://github.com/lapismd/lapis-plugins/tree/wip/plugins-release-paused-20261031). Includes eligibility, API/Core intake, reproduced artifacts and Reading Math. Original unrelated work and conflicted `main` are preserved. |
-| `terminal_publication`: Core, then UI/profile | `/private/tmp/lapis-core-required-release-20261031`; source `16cda140` is merged. Published Core is `30a5c883` / npm 0.7.4. Mira docs #28 is merged at `001564ae`. UI and profile work has not started.                                                                                                                                               |
-| Same owner: UI                                | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over `6f9924a4`, pushed to [wip/ui-release-preparation-20261031](https://github.com/lapismd/agent-ui/tree/wip/ui-release-preparation-20261031). No source PR/version/release. Fixed-Core qualification pending. Original nine dirty readiness files remain untouched.             |
-| `tasks_publication`: Tasks                    | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519`, pushed to [wip/tasks-release-paused-20261031](https://github.com/lapismd/lapis-plugin-tasks/tree/wip/tasks-release-paused-20261031). Draft PR #1 stays at `adc24f35`, auto-merge off; its body links the nine-commit-ahead checkpoint. No worker or publication active.         |
+| `terminal_publication`: Core, then UI/profile | `/private/tmp/lapis-core-required-release-20261031`; source `16cda140` is merged. Published Core is `30a5c883` / npm 0.7.4. Mira docs #28 is merged at `001564ae`. Published UI and profile facts are in E-CI-029.                                                                                                                                    |
+| Same owner: UI                                | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over `6f9924a4`, pushed to [wip/ui-release-preparation-20261031](https://github.com/lapismd/agent-ui/tree/wip/ui-release-preparation-20261031). Agent UI 0.2.0 and Repository UI 0.1.1 are published; see E-CI-029. Original nine dirty readiness files remain untouched.         |
+| `tasks_publication`: Tasks                    | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519`, pushed to [wip/tasks-release-paused-20261031](https://github.com/lapismd/lapis-plugin-tasks/tree/wip/tasks-release-paused-20261031). Draft PR #1 stays at `adc24f35`, auto-merge off; its body links the nine-commit-ahead checkpoint. Tasks 0.1.1 is published; see E-CI-029.  |
 | Preserved math-story workspace                | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                             |
 
 Original unrelated Plugins work in `qzorkqrm` and the conflicted local `main`
@@ -194,8 +192,9 @@ Mira docs #28 merged at `001564ae` after the three jobs in `41206080306`
 succeeded. The push started release run `41210897173`. Its version job succeeded
 and opened no Version Packages pull request. Publication stays off unless a
 `workflow_dispatch` sets `publish` true, so this run does not republish Mira
-0.1.4. Notes private-profile work has no edits. Desktop PR #1 and Tasks draft #1
-stay open with auto-merge off. No other product worker is active.
+0.1.4. Notes PR #58 is open and unmerged, and the private profile stays 0.0.0.
+Desktop PR #1 and Tasks draft #1 stay open with auto-merge off. Published npm
+facts are in E-CI-029.
 
 Core R1 retained 919 unit passes and one stale range guard failure. That exact
 guard now rejects 0.1.2/0.1.3 and admits 0.1.4/0.1.5; one before-failure became
@@ -264,15 +263,10 @@ Verified Desktop runs:
   Bits edges/two peer contexts with all three exact patched postimages;
   `api023-core073-graph.json` in the quality run's results.
 
-After an explicit resume, wait for the actually published fixed Core boundary,
-then finish Plugins' Bases/History floor update, full gates, source/version PRs
-and actual releases. Trigger the retained Tasks owner after fixed Core is live.
-UI/profile ownership remains with the Mira/Core owner. The read-only Changesets
-API plan confirms only Bases and History at 0.2.0 from eight changesets; the
-bot's actual version diff still requires review. CLI status cannot resolve the
-preserved conflicted `main`; do not move that bookmark to obtain a local plan.
-Final Desktop intake needs fresh evidence after the releases/private-profile
-build. Do not rewrite committed E-CI-017 or earlier receipts.
+The published npm cohort is [E-CI-029](../history/E-CI-029.md). Do not republish
+those packages. CLI status cannot resolve the preserved conflicted `main`; do
+not move that bookmark. Final Desktop intake needs fresh evidence after Notes PR
+#58 merges. Do not rewrite committed E-CI-017, E-CI-014, or earlier receipts.
 
 The reusable cold Plugins math acceptance is:
 
@@ -379,3 +373,8 @@ start local headed/provider tests without the existing explicit opt-in.
   Independent registry proof: 1,903,953 bytes, SHA-256
   `1d0a81a43f6cad2dce89f3b2a20fbe3acceeac397f4a287b08597598c84d9f1d`, tag
   `design-core@0.7.4`. No quarantine. Downstream work remains stopped.
+- **October 31, 18:24 UTC:** The published npm cohort is
+  [E-CI-029](../history/E-CI-029.md). Bases 0.2.0, History 0.2.0, Tasks 0.1.1,
+  Agent UI 0.2.0 and Repository UI 0.1.1 are on npm. Mira stays 0.1.4. The
+  private profile stays 0.0.0 and Notes PR #58 is open. Desktop intake has not
+  started.
