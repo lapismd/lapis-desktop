@@ -1,11 +1,12 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 13:03 UTC**. Overall status: **in progress**.
+Last reviewed: **2026-10-31 13:13 UTC**. Overall status: **in progress**.
 Desktop PR #1 is open; final released-cohort and hosted native acceptance remain
 required before merge. No npm challenge is active. The Dnd compiler diagnostic
 below has received the user's specific approval through November 30. The Mira
-source PR #26 has merged after every required hosted job passed. Versioning and
-actual publication are next; no new Mira version is published yet.
+source PR #26 and version PR #27 have merged after every required hosted job
+passed. Mira 0.1.4 is versioned at `6658fe56`; main qualification, immutable
+release preparation and actual npm publication remain pending.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -62,9 +63,12 @@ tarball: 1,903,722 bytes, SHA-256
    exact approved Dnd scope.
    [Source PR #26](https://github.com/lapismd/mira-mde/pull/26) merged as
    `11ecdb86` after all three required jobs passed on `f9dba17f` in run
-   `41203120667`. Finish formal version PR review/approval, green merge and
-   actual publication. Expected Mira 0.1.4 remains subject to the generated
-   plan.
+   `41203120667`. [Version PR #27](https://github.com/lapismd/mira-mde/pull/27)
+   was formally approved at exact head `13539eab` (review `5722819959`) and
+   merged as `6658fe56` after all three required jobs passed in `41203791057`.
+   Its actual plan changes only Mira to **0.1.4**; companions stay unchanged.
+   Finish main CI, immutable artifact preparation, protected publication and
+   actual registry/provenance/tag verification before Core consumes that floor.
 2. **Release Core's fixed dependency boundary.** Require that actual fixed Mira
    version, remove Core's obsolete base-math audit exception, run required
    source/version/release gates and verify the actual Core patch publication
@@ -188,7 +192,7 @@ Inspect `jj st`, exact revisions and current remote state before continuing.
 | Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean over committed `1849cdf4`, empty child `e7794364`. Bookmark `desktop-api023-core073-qualified-20261031` preserves the intermediate intake. E-CI-017 is committed and remains pending final cohort/native proof. PR #1 remote remains `96a4139b`; new product work is not pushed.             |
 | Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote branch `release-handoff-20261031` preserves the independent documentation lineage from `7df6725b`. Integrate it into the final product head while retaining all new history navigation entries, including E-CI-017.                                                                                    |
 | Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`. |
-| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; source [PR #26](https://github.com/lapismd/mira-mde/pull/26) merged as `11ecdb86` after all three hosted jobs passed on `f9dba17f`. Original package CI failure and its Chromium regression are retained. Owner is watching version PR/actual publication; no new version published yet.                      |
+| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; source PR #26 merged as `11ecdb86`, version PR #27 as `6658fe56` after formal approval and all three checks. Plan: only Mira0.1.4. Owner is tracking new main CI and immutable preparation, then protected publication. No registry publication claimed.                                                      |
 | Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                             |
 | `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                      |
 | Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                            |
@@ -203,6 +207,23 @@ Desktop's intermediate pipeline and receipt checks are complete; exec sessions
 `/tmp/lapis-desktop-api023-core073-{test,build,catalog,static,spec-final}.log`;
 final evidence/spec logs end in `evidence-final.log` and `receipt-spec.log`.
 Never rerun old session IDs blindly or start two Docker lanes in one workspace.
+
+Use the installed Node 24 before local tooling:
+
+```sh
+export PATH=/Users/stevejuma/.nvm/versions/node/v24.10.0/bin:$PATH
+jj --no-pager st
+```
+
+Verified work is committed unsigned. Pushes need both
+`--config signing.behavior=drop` and `--config git.sign-on-push=false`.
+Desktop's `handoff-https` remote works with the existing GitHub CLI credential
+helper; do not change global credentials or retry the unresponsive GitHub SSH
+route. Portable workers use the existing `omarchy` SSH transport, 4 CPU, 12 GiB
+memory and 2 GiB shared memory, with `/tmp/lapis-tasks-validation-%C` as control
+path. The temporary workspaces share durable repository stores under
+`/Users/stevejuma/code/lapismd/<repo>/.jj/repo`; named bookmarks preserve the
+commits if a temporary checkout disappears. Preserve other workspace heads.
 
 Verified Desktop runs:
 
@@ -306,3 +327,7 @@ start local headed/provider tests without the existing explicit opt-in.
   required recovery-head hosted jobs passed. The version PR and actual npm
   publication remain pending. Desktop's final intake must also resolve the
   explicitly recorded Dnd host-peer and old Tasks range warnings.
+- **October 31, 13:13 UTC:** Mira version PR #27 was formally approved and
+  merged as `6658fe56` after all required checks passed. Its actual release plan
+  changes only Mira to 0.1.4. Main CI, immutable preparation, protected
+  publication and registry verification are next; publication is not complete.

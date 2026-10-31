@@ -183,3 +183,4 @@
 - [Approved Dnd diagnostic handoff scope](../history/E-CI-020.md)
 - [Portable intake and package qualification handoff](../history/E-CI-021.md)
 - [Green Mira source merge handoff](../history/E-CI-022.md)
+- [Approved Mira version merge handoff](../history/E-CI-023.md)
