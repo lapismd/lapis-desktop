@@ -119,9 +119,8 @@ private distribution contract is qualified in Desktop.
 
 | Package                     | Remaining transition                                          |
 | --------------------------- | ------------------------------------------------------------- |
-| `@lapis-notes/app-profile`  | Retain the intentionally private verified built prerequisite. |
-| `@lapismd/ai`               | Retain the intentionally private verified built client.       |
-| `@lapismd/jj-conversations` | Resolve the unpublished built client distribution.            |
+| `@lapis-notes/app-profile` | Retain the intentionally private verified built prerequisite. |
+| `@lapismd/ai`              | Retain the intentionally private verified built client.       |
 
 The original E-CI-005 audit predates these newer verified releases. Each
 selected source repair still needs its own release and consumer proof. These

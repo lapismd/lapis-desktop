@@ -85,7 +85,7 @@ retain their owning contracts.
 
 E-CI-030 selects the published cohort on the API 0.2.3 intake from E-CI-017.
 Declared registry minima are API 0.2.3, UI 0.1.5, Workspace 0.3.1, Mira ~0.1.4,
-Core ^0.7.4, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0, History
+Core ^0.8.0, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0, History
 ^0.2.0, Tasks ^0.1.1 and Terminal 0.1.2. Mira companions remain ~0.0.3. API
 stays the published 0.2.3 package and is not republished. Final frozen-graph,
 audit, portable and hosted native qualification remains pending; a declared
@@ -108,14 +108,14 @@ Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History
 package builds. Native plugin fixture sources, including Plugins and Tasks, and
 the qualified Rust git pins stay. The remaining npm archive prerequisites are
-App Profile, AI and JJ Conversations. AI and App Profile remain intentionally
-private. JJ Conversations' qualified distribution is still unresolved. Public
+App Profile and AI. Both remain intentionally private. JJ Conversations 0.1.0
+stays the published registry range. Public
 transitions are governed by
 [the distribution backlog](../backlog/distribution.md). Preserve tracked
 registry ranges and verify every active private archive import route; the
 resulting graph does not qualify registry-only application distribution.
 
-Design Core ^0.7.4 is the published range. Every Bits copy retains the exact
+Design Core ^0.8.0 is the published range. Every Bits copy retains the exact
 root patch below. `@dnd-kit/dom` and `@dnd-kit/svelte` are selected at 0.4.x,
 resolving the recorded 0.4.0 source, because API 0.2.3 peers require `^0.4.0`.
 Peer warnings stay visible; do not suppress them. The approved compiler

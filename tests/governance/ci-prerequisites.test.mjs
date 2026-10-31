@@ -30,7 +30,7 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
     dependencies: {
       "@lapismd/agent-ui": "^0.2.0",
       "@lapismd/repository-ui": "^0.1.1",
-      "@lapismd/design-core": "^0.7.4",
+      "@lapismd/design-core": "^0.8.0",
       "@lapis-notes/workspace": "^0.3.1",
       "@lapismd/terminal": "^0.1.2",
       "@lapis-notes/bases": "^0.2.0",
@@ -51,7 +51,7 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
   );
   assert.deepEqual(manifest, original);
   assert.equal(projected.dependencies["@lapismd/repository-ui"], "^0.1.1");
-  assert.equal(projected.dependencies["@lapismd/design-core"], "^0.7.4");
+  assert.equal(projected.dependencies["@lapismd/design-core"], "^0.8.0");
   assert.equal(projected.dependencies["@lapis-notes/workspace"], "^0.3.1");
   assert.equal(projected.dependencies["@lapismd/terminal"], "^0.1.2");
   assert.equal(projected.dependencies["@lapismd/agent-ui"], "^0.2.0");

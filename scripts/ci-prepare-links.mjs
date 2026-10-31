@@ -40,17 +40,6 @@ const jobs = [
       ["../lapis-ai", "pnpm", ["--filter", "@lapismd/ai", "build"]],
     ],
   },
-  {
-    marker: "../jj-store/packages/jj-conversations/dist/index.js",
-    steps: [
-      ["../jj-store", "pnpm", ["install", "--frozen-lockfile"]],
-      [
-        "../jj-store",
-        "pnpm",
-        ["--filter", "@lapismd/jj-conversations", "build"],
-      ],
-    ],
-  },
 ];
 
 function run(cwd, command, args) {

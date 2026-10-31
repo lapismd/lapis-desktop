@@ -18,7 +18,6 @@ import { runAudit } from "./ci-audit.mjs";
 export const unpublishedRanges = {
   "@lapis-notes/app-profile": "../lapis-notes/packages/app-profile",
   "@lapismd/ai": "../lapis-ai/packages/ai",
-  "@lapismd/jj-conversations": "../jj-store/packages/jj-conversations",
 };
 
 const localRange = /^(?:file:|link:|workspace:|git|https?:|[/.])/u;
