@@ -397,4 +397,4 @@
 - [Inherited evidence ancestry validation](history/E-CI-008.md)
 - [Current native fixture admission and streamed CI diagnosis](history/E-CI-009.md)
 - [Shared native editing transport injection](history/E-CI-010.md)
-- [Ordered Terminal native frame intake](history/E-CI-011.md)
+- [Terminal](history/E-CI-011.md); [native readiness](history/E-CI-012.md)

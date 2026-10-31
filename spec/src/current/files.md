@@ -1,5 +1,10 @@
 # File management (M5)
 
+Native missing-file recovery waits for the captured review's disk-accept action
+to become enabled after refresh, then retains exact draft, deletion, renamed
+disk bytes and review-removal assertions (E-CI-012). Visible deleted-file copy
+alone does not establish that the asynchronous refresh guard has released.
+
 The R1.1 shared-core extraction moves checked file IO, atomic/conditional
 writes, exclusive mutations and retained action targets into Notes-owned
 `lapis-app-core`. Desktop consumes those public native types directly and keeps

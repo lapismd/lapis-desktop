@@ -1,5 +1,6 @@
 # Evidence
 
+- [Native Graph and missing-file recovery readiness](E-CI-012.md)
 - [Ordered Terminal native frame intake](E-CI-011.md)
 - [Shared native editing transport injection](E-CI-010.md)
 - [Current native fixture admission and streamed CI diagnosis](E-CI-009.md)

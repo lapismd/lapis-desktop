@@ -39,7 +39,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-DESK-002 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-REVIEW-001](history/E-REVIEW-001.md); [E-REVIEW-002](history/E-REVIEW-002.md); [E-SHELL-003](history/E-SHELL-003.md): native HTML drag routing. |
 | LD-DESK-003 | Implemented | [E-SHELL-002](history/E-SHELL-002.md) |
 | LD-DESK-004 | Implemented | [E-SHELL-002](history/E-SHELL-002.md) |
-| LD-DESK-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-SESSION-002](history/E-SESSION-002.md); [E-REVIEW-002](history/E-REVIEW-002.md) |
+| LD-DESK-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-SESSION-002](history/E-SESSION-002.md); [E-REVIEW-002](history/E-REVIEW-002.md); [E-CI-012](history/E-CI-012.md): local pass; CI pending. |
 | LD-MIG-001 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
 | LD-MIG-002 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
 | LD-HOST-001 | Implemented | [E-HOST-001](history/E-HOST-001.md). |
@@ -70,7 +70,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-REC-001 | Implemented | [E-RECOVERY-001](history/E-RECOVERY-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-REC-002 | Implemented | [E-RECOVERY-001](history/E-RECOVERY-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-FILE-001 | Implemented | [E-FILES-001](history/E-FILES-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
-| LD-FILE-002 | Implemented | [E-INGESTION-001](history/E-INGESTION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
+| LD-FILE-002 | Implemented | [E-INGESTION-001](history/E-INGESTION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. [E-CI-012](history/E-CI-012.md): local pass; CI pending. |
 | LD-FILE-003 | Implemented | [E-MOVE-001](history/E-MOVE-001.md); [E-INGESTION-001](history/E-INGESTION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
 | LD-FILE-004 | Implemented | [E-IMPORT-001](history/E-IMPORT-001.md); [E-ACTIONS-001](history/E-ACTIONS-001.md); [E-CREATE-001](history/E-CREATE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
 | LD-FILE-005 | Implemented | [E-HTTP-001](history/E-HTTP-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
@@ -82,7 +82,7 @@ E-REPO-012/013 retain manual previews and visual gates.
 | LD-NAV-003 | Implemented | [E-NAV-001](history/E-NAV-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-004 | Implemented | [E-NAV-001](history/E-NAV-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-005 | Implemented | [E-NAV-001](history/E-NAV-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
-| LD-NAV-006 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
+| LD-NAV-006 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. [E-CI-012](history/E-CI-012.md): local pass; CI pending. |
 | LD-NAV-007 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-008 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-INT-001 | Implemented | [E-INTEGRATION-001](history/E-INTEGRATION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native menus, bounded services, cold/running URL delivery, ownership and ordinary-bundle gates pass. |

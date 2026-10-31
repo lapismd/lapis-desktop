@@ -137,7 +137,9 @@ for (const operation of ["rename", "delete"]) {
       "Your version",
       "# Retained local draft\n",
     );
-    await conflict.$("button=Use disk version").click();
+    const acceptDisk = conflict.$("button=Use disk version");
+    await acceptDisk.waitForEnabled();
+    await acceptDisk.click();
     await browser.waitUntil(
       async () => !(await browser.$(conflictReview("Note.md")).isExisting()),
     );
