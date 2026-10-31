@@ -6,15 +6,14 @@ on failure. [Search/Graph](navigation.md), [plugins/Terminal](plugins.md) and
 [history](repository.md) retain their owning contracts.
 
 LD-DESK-003 keeps Core AI/History caller/session admission native; renderer
-paths, generations, actors, executables and environment stay denied. Portable
-Docker checks use test-only bundles and compatible registry packages. Actual
-helpers, windows and platform resources require native app-build acceptance.
-Native protocol fixtures use the pinned runtime's admitted package version and
-exact helper hashes. Hosted unit/catalog/native logs stream without changed
-assertions or deadlines (E-CI-009). Terminal 0.1.2 uses the qualified
-ordered-frame Git source in [local intake](local-dependencies.md) (E-CI-011);
-native consumer gates remain. Native Graph labels use real hover; disk recovery
-awaits enabled controls (E-CI-012).
+paths, generations, actors, executables and environment stay denied. Docker
+checks use test bundles and compatible registry packages; actual helpers,
+windows and platform resources require native app-build acceptance. Fixtures
+match admitted runtime versions and exact helper hashes. Hosted logs stream;
+assertions/deadlines stay (E-CI-009). Terminal 0.1.2 uses qualified Git sources
+([intake](local-dependencies.md), E-CI-011/013). Confirmed scoped shutdown
+settles stale denied cleanup only on close. Native gates remain. Graph labels
+use real hover; disk recovery awaits enabled controls (E-CI-012).
 
 ## Requirements
 

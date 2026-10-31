@@ -1,5 +1,3 @@
-# Summary
-
 - [Current specification](current/index.md)
   - [Governance](current/governance.md)
     - [Native acceptance modes](current/native-acceptance.md)
@@ -41,8 +39,7 @@
   - [AI tool expansion](backlog/ai-tool-expansion.md)
   - [Markdown document Review mode](backlog/markdown-review-mode.md)
     - [Planned Review contract](backlog/markdown-review-contract.md)
-- [Evidence](history/index.md)
-  - [Specification and backlog consolidation](history/E-SPEC-001.md)
+- [Specification and backlog consolidation](history/E-SPEC-001.md)
 - [Current compatible dependency and native intake](history/current-intake.md)
   - [Stored migration plan](history/E-PLAN-001.md)
   - [Native shell foundation](history/E-SHELL-001.md)
@@ -58,8 +55,8 @@
 - [E-SESSION-001: native Notes workspace](history/E-SESSION-001.md)
   - [E-SESSION-002: complete native Notes qualification](history/E-SESSION-002.md)
   - [Safe lifecycle and restoration](history/E-LIFE-001.md)
-  - [Shell failure presentation](history/E-LIFE-002.md) ·
-    [native requalification](history/E-LIFE-003.md)
+  - [Shell failure presentation](history/E-LIFE-002.md)
+  - [Native shell failure requalification](history/E-LIFE-003.md)
   - [Native conditional text storage](history/E-WRITE-001.md)
   - [API editor conflict recovery](history/E-CONFLICT-001.md)
   - [Workspace peer archive verification](history/E-ARCHIVES-001.md)
@@ -353,9 +350,9 @@
 - [Docker-default runtime and on-demand macOS lanes](history/E-VALIDATION-004.md)
 - [Dead-owner checkout lease adoption](history/E-VALIDATION-005.md)
 - [Local-only macOS app build with bundled plugins](history/E-VALIDATION-006.md)
-  · [Parallel hosted CI](history/E-VALIDATION-007.md) ·
-  [Sibling install projection](history/E-VALIDATION-008.md) ·
-  [Linux release binaries and Storybook Pages](history/E-VALIDATION-009.md)
+- [Parallel hosted CI](history/E-VALIDATION-007.md)
+- [Sibling install projection](history/E-VALIDATION-008.md)
+- [Linux release binaries and Storybook Pages](history/E-VALIDATION-009.md)
 - [Actual provider reload-detach preflight](history/E-CORE-024.md)
 - [Trusted native target default modes](history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](history/E-CORE-026.md)
@@ -397,4 +394,7 @@
 - [Inherited evidence ancestry validation](history/E-CI-008.md)
 - [Current native fixture admission and streamed CI diagnosis](history/E-CI-009.md)
 - [Shared native editing transport injection](history/E-CI-010.md)
-- [Terminal](history/E-CI-011.md); [native readiness](history/E-CI-012.md)
+- [Ordered Terminal native frame intake](history/E-CI-011.md)
+- [Native Graph and missing-file recovery readiness](history/E-CI-012.md)
+- [Scoped Terminal cleanup and remount intake](history/E-CI-013.md)
+- [Hosted catalog shard coverage](history/E-CI-014.md)

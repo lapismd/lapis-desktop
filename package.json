@@ -64,7 +64,7 @@
     "ci:quality": "pnpm check",
     "ci:unit": "pnpm test",
     "ci:storybook-static": "pnpm build-storybook",
-    "ci:storybook-interaction": "pnpm test:storybook",
+    "ci:storybook-interaction": "node scripts/ci-catalog.mjs",
     "ci:bundle": "pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle",
     "ci:headed": "pnpm test:desktop:headed",
     "checks": "node scripts/run-turbo.mjs ci:governance ci:storybook-static --summarize && node scripts/run-turbo.mjs ci:storybook-interaction --summarize && node scripts/run-turbo.mjs ci:quality --summarize && node scripts/run-turbo.mjs ci:unit --summarize && node scripts/run-turbo.mjs ci:bundle --summarize"

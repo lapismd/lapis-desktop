@@ -52,7 +52,7 @@ tauri-plugin-wdio-webdriver = { version = "=1.5.0", optional = true }
 url = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 
-tauri-plugin-lapis-terminal = { git = "https://github.com/lapismd/lapis-terminal", rev = "b235b4189fc6c0eccfc8a01285002c21a235fca1" }
+tauri-plugin-lapis-terminal = { git = "https://github.com/lapismd/lapis-terminal", rev = "2463f944149d753eaf638cf876393a6f60f50190" }
 
 tauri-plugin-lapis-ai = { git = "https://github.com/lapismd/lapis-ai", tag = "v0.2.0", version = "0.2.0" }
 lapis-ai-app-tools = { git = "https://github.com/lapismd/lapis-ai", tag = "v0.2.0", version = "0.2.0" }

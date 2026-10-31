@@ -172,10 +172,16 @@ jobs:
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
 
-  storybook-interaction:
-    name: Storybook interactions
+  storybook-interaction-shards:
+    name: Storybook interactions (shard ${{ matrix.shard }}/4)
     runs-on: ubuntu-latest
     timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    env:
+      LAPIS_DESKTOP_CATALOG_SHARD: ${{ matrix.shard }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
@@ -202,6 +208,17 @@ jobs:
           --log-order=stream
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
+
+  storybook-interaction:
+    name: Storybook interactions
+    if: always()
+    needs: [storybook-interaction-shards]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Require every catalog shard
+        env:
+          SHARDS: ${{ needs.storybook-interaction-shards.result }}
+        run: test "$SHARDS" = success
 
   bundle:
     name: Native bundle

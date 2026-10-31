@@ -51,9 +51,9 @@ E-REPO-043 maps upstream action/count states and external repository reveal to
 production plugin settings/status stories. Fixtures inject providers and record
 intent without real network publication or file-manager launch.
 
-Catalog browser files run serially through the browser-pool option; the outer
-Vitest file option alone does not bound that pool. Existing assertions and
-deadlines remain unchanged.
+Catalog files run serially through the browser-pool option. Hosted CI runs four
+required shards, each retaining both viewports/themes (E-CI-014). The outer
+Vitest file option alone does not bound the browser pool.
 
 The shell reserves a full-width status footer beneath ribbon, sidebars and
 content. Repository/backup controls and Problems occupy the left; activity uses
@@ -208,18 +208,18 @@ outside M8–M10. Dynamic package signature verification remains required.
 
 ## Terminal host integration
 
-The bundled Terminal uses public built `@lapismd/terminal` exports and its Rust
-Tauri plugin. E-CI-011 pins ordered native frame capture; the unpublished link
-remains a temporary private prerequisite until distribution. Native code reads
-compatible shell/cwd preferences from admitted vault state, validates executable
-files and confines cwd to that physical vault. The renderer submits only opaque
-target and request identities.
+Terminal uses public `@lapismd/terminal` exports and its Rust plugin.
+E-CI-011/013 pin ordered frames and remount delivery; npm intake remains
+pending. Native policy verifies admitted shell/cwd settings, executables and
+physical-vault cwd; the renderer sends opaque target/request IDs.
 
-App-owned session coordination separates viewport detach from explicit close.
-Confirmed reload suspends its admission after guarded persistence and reconnects
-the same native process; cold restart never launches a shell. Plugin disable,
-vault return and trust revocation release only their window admission. Native
-exit cleanup remains owned by the public terminal plugin.
+App-owned sessions separate detach and close. Guarded reload suspends admission
+and reconnects the same process; cold restart never launches shells. Plugin
+disable, vault return and trust revocation release only their window admission;
+the public plugin owns exit cleanup.
+
+After successful scoped host release, close treats typed stale-handle `denied`
+as resolved. Reload, other errors and failed release still block (E-CI-013).
 
 Terminal settings use the public controlled plugin-settings definition: plugin
 data owns shell/cwd values, subscription cleanup follows plugin disable and the

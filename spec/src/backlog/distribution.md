@@ -5,6 +5,27 @@ contracts and requirement verification retain the implemented scope. Legacy task
 identities below are provenance, not a separate completion ledger. Preserve each
 original acceptance boundary; parent and child entries are not independent jobs.
 
+## Required native CI qualification
+
+Desktop remains blocked on final native acceptance. Run41150100447 at96a4139b
+passes588 Node,746 policy and263 Rust tests (two existing ignored cases),
+quality, bundle and both Linux builds. Native startup passes3; the complete
+suite is99 pass/10fail. E-CI-012's Graph/recovery refinements pass all six local
+native family cases but have not reached hosted CI.
+
+E-CI-013's coordinator regression passes11 cases and the cold Terminal native
+family passes5. A retained close failure is now traced beyond successful native
+Terminal release to Notes Sync's cached initialization error. Its API source
+regression moves one failure to two passes; 2,050 full unit and 268 cold catalog
+cases pass. Notes PR #51 still needs hosted CI, publication and Desktop
+adoption.
+
+ACP secondary-window readiness/guarded exit, native queue resume and Bookmarks
+rename freshness still need final-head hosted proof. Preserve assertions,
+deadlines, admission and retry rules. E-CI-013 retains failed attempts and
+separates source from consumer qualification. Every required aggregate must pass
+before merge.
+
 ## Distribution and platform qualification
 
 Former reference: M11. Dependencies: Native AI product qualification; explicit
@@ -64,14 +85,13 @@ supported public consumption or an explicit private archive prerequisite.
 Preserve portable tracked ranges and validate the resulting consumer; do not
 conceal the missing package through a source alias or copied implementation.
 
-Release the Workspace disk-acceptance and Agent UI send-capability repairs, then
-replace their temporary public archives with registry versions and repeat frozen
-registry-install acceptance. Reconcile Bases' current peer cohort and
-publication of Tasks, AI, Terminal and JJ conversations alongside App Profile
-and History. The pinned CI projection qualifies source intake; registry-only
-distribution remains deferred until these prerequisites close. Design Core
-lifetime/contrast repairs are released in 0.7.1; E-CI-005 qualifies their
-registry intake separately.
+Workspace0.3.1 and Terminal0.1.2 are published and verified; replace their
+temporary archives with registry versions and repeat frozen consumer acceptance.
+Complete Agent/Repository UI, Bases, History, Tasks and JJ conversations
+releases and their current peer cohort. AI and App Profile intentionally remain
+private with explicit verified built prerequisites. This does not qualify
+registry-only distribution. Design Core0.7.1 is consumed from npm; the newer
+source patch still needs publication and consumer qualification.
 
 ### Remaining npm archive prerequisites
 
@@ -83,17 +103,16 @@ explicit private distribution contract is qualified in Desktop.
 | Package                           | Remaining transition                                                            |
 | --------------------------------- | ------------------------------------------------------------------------------- |
 | `@lapismd/agent-ui`               | Release the merged host-owned draft/send repair.                                |
-| `@lapis-notes/workspace`          | Release the shared disk-acceptance repair.                                      |
+| `@lapis-notes/workspace`          | Adopt verified0.3.1 from npm; its governed tag remains next.                    |
 | `@lapis-notes/bases`              | Reconcile the qualified bundle and current peer cohort for registry intake.     |
 | `@lapis-notes/history`            | Release the repository-controller exports used by Desktop.                      |
-| `@lapis-notes/app-profile`        | Resolve its unpublished application-profile distribution boundary.              |
+| `@lapis-notes/app-profile`        | Retain the intentionally private verified built prerequisite.                   |
 | `@lapis-notes/lapis-plugin-tasks` | Release the qualified npm plugin boundary or document its private distribution. |
-| `@lapismd/ai`                     | Resolve the unpublished built client distribution.                              |
-| `@lapismd/terminal`               | Resolve the unpublished built client distribution.                              |
+| `@lapismd/ai`                     | Retain the intentionally private verified built client.                         |
+| `@lapismd/terminal`               | Adopt verified0.1.2 from npm; Rust continues through qualified Git commits.     |
 | `@lapismd/jj-conversations`       | Resolve the unpublished built client distribution.                              |
 
-The first four have npm publications; their selected source changes remain
-separate from registry qualification. npm returns E404 for the last five at the
-E-CI-005 audit. These prerequisites permit private CI validation; registry-only
-distribution remains outstanding. Design Core is released and consumed through
-its normal npm range at 0.7.1.
+The original E-CI-005 audit predates these newer verified releases. Each
+selected source repair still needs its own release and consumer proof. These
+prerequisites permit private CI validation; registry-only distribution remains
+outstanding.

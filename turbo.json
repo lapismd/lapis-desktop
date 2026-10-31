@@ -32,6 +32,7 @@
       "outputs": ["storybook-static/**"]
     },
     "ci:storybook-interaction": {
+      "env": ["LAPIS_DESKTOP_CATALOG_SHARD"],
       "outputs": []
     },
     "ci:bundle": {

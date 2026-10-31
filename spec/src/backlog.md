@@ -13,7 +13,7 @@ label is not a current activity claim. Preserve original acceptance boundaries.
 - [Markdown document Review mode](backlog/markdown-review-mode.md)
   - [Planned Review contract](backlog/markdown-review-contract.md)
 
-[Historical evidence](history/index.md) retains commands, failures and source
+Historical evidence in the book navigation retains commands, failures and source
 identities. The source migration inventory is immutable provenance, not a task
 ledger. Shared core/hosted work belongs to the
 [Server backlog](https://github.com/lapismd/lapis-server/blob/main/spec/src/backlog.md).
