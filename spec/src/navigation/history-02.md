@@ -178,3 +178,4 @@
 - [Scoped Terminal cleanup and remount intake](../history/E-CI-013.md)
 - [Hosted catalog shard coverage](../history/E-CI-014.md)
 - [Bounded specification navigation](../history/E-CI-016.md)
+- [Maintained cross-repository release handoff](../history/E-CI-018.md)
