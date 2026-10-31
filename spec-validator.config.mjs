@@ -24,7 +24,7 @@ export default defineConfig(
         references: true,
         changeMap: false,
       },
-      summary: true,
+      summary: { fragments: true },
       fileLimits: { maxLines: 400, maxBytes: 32768 },
       book: true,
       qmd: {
@@ -137,6 +137,7 @@ export default defineConfig(
       },
       { pattern: "^verification\\.md$", role: "verification" },
       { pattern: "^history/(?!index)", role: "history" },
+      { pattern: "^navigation/", role: "navigation" },
       { pattern: "(?:index|SUMMARY)\\.md$", role: "navigation" },
     ],
     check: {

@@ -29,8 +29,8 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-REVIEW-010 | Planned | [E-PLAN-005](history/E-PLAN-005.md): planning only; M17.2/M17.4 inline/overview discussion lifecycle pending. |
 | LD-REVIEW-011 | Planned | [E-PLAN-005](history/E-PLAN-005.md): planning only; M17.5 explicit delivery and proven answer links pending. |
 | LD-SESSION-003 | Implemented | [E-MUTATION-001](history/E-MUTATION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
-| LD-GOV-001 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-CI-001](history/E-CI-001.md); [E-CI-014](history/E-CI-014.md): Canonical navigation, CI and dependency intake. |
-| LD-GOV-002 | Implemented | [E-CI-009](history/E-CI-009.md); [E-CI-014](history/E-CI-014.md): Mapped spec-first changes. |
+| LD-GOV-001 | Implemented | [E-CI-016](history/E-CI-016.md): Bounded navigation preserves 400 chapters and adds one; page caps remain unchanged. [E-CI-014](history/E-CI-014.md): CI intake. |
+| LD-GOV-002 | Implemented | [E-CI-009](history/E-CI-009.md); [E-CI-016](history/E-CI-016.md): Mapped spec-first changes. |
 | LD-GOV-003 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
 | LD-GOV-004 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical spec authority. [E-CI-008](history/E-CI-008.md): immutable receipt ancestry and fail-closed path validation. |
 | LD-GOV-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-STRUCTURE-001](history/E-STRUCTURE-001.md) |

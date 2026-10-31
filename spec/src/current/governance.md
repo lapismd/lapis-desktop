@@ -114,9 +114,9 @@ the debug acceptance feature and explicit fixture opt-in; ordinary permissions
 remain exact. Bundle audits reject native and renderer proof markers. Native
 tests retain isolated profiles and no Node/Deno app PATH.
 
-The executable configuration is `spec-validator.config.mjs`. Its source and
-evidence plugins are also normal check entry points. `spec:first` compares the
-actual Jujutsu change; CI checks the complete pull-request revision range.
+`spec-validator.config.mjs` owns normal audits. Bounded `navigation/*.md`
+SUMMARY fragments preserve chapter order/routes; Spec Validator builds/serves
+ignored `spec/.generated/`. `spec:first` checks full JJ changes and CI PRs.
 
 The local archive installer validates each checksum, packed package identity,
 version, and source revision before pnpm runs. Its ignored pnpm hook redirects

@@ -7,6 +7,7 @@ node_modules/
 dist/
 .local/
 spec/book/
+spec/.generated/
 public/lapis-logo.svg
 .jj/
 storybook-static/
