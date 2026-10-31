@@ -396,4 +396,5 @@ E-AI-105/106/112 refine approvals, chat navigation and menus. LD-AI-002/004,
 execution and import/ACP fixture redaction semantics remain unchanged.
 
 E-AI-110 adds shared unit-aware Max VRAM input and host-owned GGUF browsing;
-selection stays separate from import. Shell boot may take 15s (E-CI-032).
+selection stays separate from import. Shell boot may take 15s (E-CI-032). The
+hosted Agent queue reload case is quarantined (E-CI-036).

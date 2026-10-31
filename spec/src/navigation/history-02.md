@@ -197,3 +197,4 @@
 - [One Design Core peer context for API](../history/E-CI-033.md)
 - [Packed Tasks pin for native fixtures](../history/E-CI-034.md)
 - [Distribution backlog table formatting](../history/E-CI-035.md)
+- [Hosted ARM64 case quarantine](../history/E-CI-036.md)

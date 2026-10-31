@@ -126,3 +126,17 @@ The original E-CI-005 audit predates these newer verified releases. Each
 selected source repair still needs its own release and consumer proof. These
 prerequisites permit private CI validation; registry-only distribution remains
 outstanding.
+
+## Hosted ARM64 case quarantine
+
+[E-CI-036](../history/E-CI-036.md) quarantines four headed cases after run
+[41243534780](https://github.com/lapismd/lapis-desktop/actions/runs/41243534780)
+on revision `0f99a2d122cae00d6a52a001d913126efa91ad1c`. Command:
+`pnpm ci:headed`. Evidence: job `124662463336`, 105 passed and 4 failed. Reason:
+the Agent queue reload wait timed out after 30000ms, the conflicted-tab shutdown
+wait timed out after 5000ms, and two shell cases had a live session whose output
+did not include `$`. Requirement: LD-DESK-005, LD-AI-002, LD-FILE-008, and
+LD-TERM-002. Limitation: this release candidate does not qualify those four
+cases; the other headed cases on that run still count. Owner: Desktop. Re-enable
+a case only after a later hosted Native ARM64 run passes that case without a
+timeout or a missing `$` prompt.

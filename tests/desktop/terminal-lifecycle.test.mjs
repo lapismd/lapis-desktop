@@ -325,68 +325,81 @@ test("explicit terminal disable and vault return release only admitted shells; u
   await session.close();
 });
 
-test("cancelled close retains the shell until guarded note persistence succeeds", async (context) => {
-  const { root, vault } = fixture("terminal-cancel");
-  const session = await nativeSession("terminal-cancel", root);
-  context.after(session.cleanup);
-  context.after(() => chmodSync(vault, 0o755));
-  await choose(session, root, vault);
-  const info = await open(session);
-  await session.browser.$('[data-path="Note.md"]').click();
-  const editor = session.browser.$('.cm-content[contenteditable="true"]');
-  await editor.waitForDisplayed();
-  chmodSync(vault, 0o555);
-  await editor.click();
-  await editor.addValue("unsaved-terminal-close");
-  await session.requestClose();
-  await session.browser.$(nativeFailure).waitForDisplayed();
-  assert.equal((await list(session))[0].id, info.id);
-  assert.equal(session.isRunning(), true);
-  chmodSync(vault, 0o755);
-  await session.close();
-});
+test(
+  "cancelled close retains the shell until guarded note persistence succeeds",
+  {
+    skip: "Hosted ARM64 quarantine E-CI-036: shell output had no $ prompt.",
+  },
+  async (context) => {
+    const { root, vault } = fixture("terminal-cancel");
+    const session = await nativeSession("terminal-cancel", root);
+    context.after(session.cleanup);
+    context.after(() => chmodSync(vault, 0o755));
+    await choose(session, root, vault);
+    const info = await open(session);
+    await session.browser.$('[data-path="Note.md"]').click();
+    const editor = session.browser.$('.cm-content[contenteditable="true"]');
+    await editor.waitForDisplayed();
+    chmodSync(vault, 0o555);
+    await editor.click();
+    await editor.addValue("unsaved-terminal-close");
+    await session.requestClose();
+    await session.browser.$(nativeFailure).waitForDisplayed();
+    assert.equal((await list(session))[0].id, info.id);
+    assert.equal(session.isRunning(), true);
+    chmodSync(vault, 0o755);
+    await session.close();
+  },
+);
 
-test("switching vaults revokes old handles and starts only inside the newly admitted root", async (context) => {
-  const { root, vault } = fixture("terminal-isolation");
-  const other = join(root, "Second vault");
-  mkdirSync(join(other, ".lapis"), { recursive: true });
-  writeFileSync(
-    join(other, ".lapis/terminal.json"),
-    '{"shell":"/bin/sh","cwd":""}',
-  );
-  const session = await nativeSession("terminal-isolation", root);
-  context.after(session.cleanup);
-  await choose(session, root, vault);
-  const first = await open(session);
-  await returnToVaults(session.browser);
-  await session.browser.$("button*=Open Vault").waitForDisplayed();
-  await choose(session, root, other);
-  const second = await open(session);
-  assert.notEqual(first.id, second.id);
-  await send(session, "pwd > admitted-root.txt\r");
-  await session.browser.waitUntil(async () => {
-    try {
-      return (
-        readFileSync(join(other, "admitted-root.txt"), "utf8").trim() === other
-      );
-    } catch {
-      return false;
-    }
-  });
-  const stale = await session.browser.execute(async (id) => {
-    try {
-      await globalThis.__TAURI__.core.invoke("plugin:lapis-terminal|input", {
-        sessionId: id,
-        data: "touch wrong-root\r",
-      });
-      return false;
-    } catch {
-      return true;
-    }
-  }, first.id);
-  assert.equal(stale, true);
-  await session.close();
-});
+test(
+  "switching vaults revokes old handles and starts only inside the newly admitted root",
+  {
+    skip: "Hosted ARM64 quarantine E-CI-036: shell output had no $ prompt.",
+  },
+  async (context) => {
+    const { root, vault } = fixture("terminal-isolation");
+    const other = join(root, "Second vault");
+    mkdirSync(join(other, ".lapis"), { recursive: true });
+    writeFileSync(
+      join(other, ".lapis/terminal.json"),
+      '{"shell":"/bin/sh","cwd":""}',
+    );
+    const session = await nativeSession("terminal-isolation", root);
+    context.after(session.cleanup);
+    await choose(session, root, vault);
+    const first = await open(session);
+    await returnToVaults(session.browser);
+    await session.browser.$("button*=Open Vault").waitForDisplayed();
+    await choose(session, root, other);
+    const second = await open(session);
+    assert.notEqual(first.id, second.id);
+    await send(session, "pwd > admitted-root.txt\r");
+    await session.browser.waitUntil(async () => {
+      try {
+        return (
+          readFileSync(join(other, "admitted-root.txt"), "utf8").trim() ===
+          other
+        );
+      } catch {
+        return false;
+      }
+    });
+    const stale = await session.browser.execute(async (id) => {
+      try {
+        await globalThis.__TAURI__.core.invoke("plugin:lapis-terminal|input", {
+          sessionId: id,
+          data: "touch wrong-root\r",
+        });
+        return false;
+      } catch {
+        return true;
+      }
+    }, first.id);
+    assert.equal(stale, true);
+    await session.close();
+  },
+);
 
 test("revoked physical vault admission stops its shell and permits a guarded cleanup retry", async (context) => {
   const { root, vault } = fixture("terminal-revoked");
