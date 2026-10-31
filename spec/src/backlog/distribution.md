@@ -86,45 +86,42 @@ not establish a published Core replacement or final Desktop acceptance.
 
 The current private application requests @lapis-notes/app-profile at ^0.0.0,
 which is absent from npm. CI has a pinned private public-build prerequisite.
-History 0.1.4 on npm also lacks the repository-controller exports used by
-Desktop; CI builds those public exports at the recorded plugins commit. Release
-those exports and the private clients before registry-only qualification. Before
-a normal registry-only candidate, reconcile that profile's owning package and
-supported public consumption or an explicit private archive prerequisite.
-Preserve portable tracked ranges and validate the resulting consumer; do not
-conceal the missing package through a source alias or copied implementation.
+History ^0.2.0, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0 and Tasks
+^0.1.1 are published registry ranges. AI and JJ Conversations remain unpublished
+clients. Before a normal registry-only candidate, reconcile that profile's
+owning package and supported public consumption or keep its explicit private
+archive prerequisite. Preserve portable tracked ranges and validate the
+resulting consumer; do not conceal the missing package through a source alias or
+copied implementation.
 
-Workspace 0.3.1 and Terminal 0.1.2 are published and verified. E-CI-017 removes
-their temporary npm archive projections; final frozen consumer acceptance is
-still pending. Complete Agent/Repository UI, Bases, History, Tasks and JJ
-conversations releases and their current peer cohort. AI and App Profile
-intentionally remain private with explicit verified built prerequisites. This
-does not qualify registry-only distribution. Design Core 0.7.3 is published and
-verified; final released-cohort consumer qualification remains pending.
+Workspace 0.3.1, Terminal 0.1.2, Mira ~0.1.4 and Core ^0.7.4 are published.
+E-CI-017 removes the Workspace and Terminal npm projections. E-CI-018 removes
+the Agent UI, Bases, History and Tasks npm projections while retaining native
+plugin fixture sources and qualified Rust git pins. AI, App Profile and JJ
+Conversations remain private archive prerequisites. This does not qualify
+registry-only distribution. Final released-cohort consumer qualification remains
+pending.
 
-UI and Tasks' required-peer audits retain low KaTeX advisory GHSA-238p-pmpm-9mq7
-through Mira's old math adapters. Ordinary compatible Tasks dependency updates
-clear all higher-severity findings. The owning Mira packaging repair and Core's
-fixed Mira minimum must complete actual publication before the final consumer
-cohort is selected. Preserve the original audit receipts and every blocking
-audit; Core's former scoped acceptance does not transfer here.
+UI and Tasks' earlier required-peer audits retained low KaTeX advisory
+GHSA-238p-pmpm-9mq7 through Mira's old math adapters. Mira 0.1.4 and Core 0.7.4
+publish the repaired boundary. Preserve the original audit receipts and every
+blocking audit; Core's former scoped acceptance does not transfer here. The
+selected cohort still needs its own Desktop audit.
 
 ### Remaining npm archive prerequisites
 
-CI prepares these seven packages from the full commits in
+CI prepares these three packages from the full commits in
 `scripts/ci-sources.json`; `scripts/ci-install.mjs` selects their package
-boundaries. Remove each temporary projection after its released replacement or
-explicit private distribution contract is qualified in Desktop.
+boundaries. That source list also keeps native plugin fixture checkouts and
+qualified Rust git pins after their npm projections are removed. Remove each
+remaining temporary projection after its released replacement or explicit
+private distribution contract is qualified in Desktop.
 
-| Package                           | Remaining transition                                                            |
-| --------------------------------- | ------------------------------------------------------------------------------- |
-| `@lapismd/agent-ui`               | Release the merged host-owned draft/send repair.                                |
-| `@lapis-notes/bases`              | Reconcile the qualified bundle and current peer cohort for registry intake.     |
-| `@lapis-notes/history`            | Release the repository-controller exports used by Desktop.                      |
-| `@lapis-notes/app-profile`        | Retain the intentionally private verified built prerequisite.                   |
-| `@lapis-notes/lapis-plugin-tasks` | Release the qualified npm plugin boundary or document its private distribution. |
-| `@lapismd/ai`                     | Retain the intentionally private verified built client.                         |
-| `@lapismd/jj-conversations`       | Resolve the unpublished built client distribution.                              |
+| Package                     | Remaining transition                                          |
+| --------------------------- | ------------------------------------------------------------- |
+| `@lapis-notes/app-profile`  | Retain the intentionally private verified built prerequisite. |
+| `@lapismd/ai`               | Retain the intentionally private verified built client.       |
+| `@lapismd/jj-conversations` | Resolve the unpublished built client distribution.            |
 
 The original E-CI-005 audit predates these newer verified releases. Each
 selected source repair still needs its own release and consumer proof. These

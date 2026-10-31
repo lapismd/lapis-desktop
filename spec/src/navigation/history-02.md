@@ -179,3 +179,4 @@
 - [Hosted catalog shard coverage](../history/E-CI-014.md)
 - [Bounded specification navigation](../history/E-CI-016.md)
 - [Released framework and private profile intake](../history/E-CI-017.md)
+- [Published cohort registry intake](../history/E-CI-018.md)

@@ -12,7 +12,7 @@ options preserve authentication, endpoints and literal arguments. Archive
 rewriting is idempotent only for an exact path redirected to a verified tarball.
 Fixtures pin tools and Server peers; unverified paths/file peers reject.
 [Local intake](local-dependencies.md) governs pins, refreshes, the Bits patch
-and released-cohort gates (E-CI-015/017; LD-GOV-006/008).
+and released-cohort gates (E-CI-015/018; LD-GOV-006/008).
 
 Native readiness matches split/log-batched receipts without longer deadlines.
 Hosted test logs stream live (E-CI-009). The e2e entry shares early progress,

@@ -83,46 +83,46 @@ retain their owning contracts.
 
 ## Current registry and private inputs
 
-E-CI-017 starts the released-cohort intake with declared registry minima API
-0.2.3, UI 0.1.5, Workspace 0.3.1, Mira 0.1.3 and Terminal 0.1.2. The Mira
-companions remain 0.0.3. Remove the completed Workspace and Terminal npm archive
-projections and their redundant source builds. Keep the real Plugins and Tasks
-source preparation required by native installed-plugin acceptance. Final
-frozen-graph, audit, portable and hosted native qualification remains pending; a
-declared minimum or prepared artifact is not consumer acceptance.
+E-CI-018 selects the published cohort on the API 0.2.3 intake from E-CI-017.
+Declared registry minima are API 0.2.3, UI 0.1.5, Workspace 0.3.1, Mira ~0.1.4,
+Core ^0.7.4, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0, History
+^0.2.0, Tasks ^0.1.1 and Terminal 0.1.2. Mira companions remain ~0.0.3. API
+stays the published 0.2.3 package and is not republished. Final frozen-graph,
+audit, portable and hosted native qualification remains pending; a declared
+minimum is not consumer acceptance.
 
-The intermediate API 0.2.3/Core 0.7.3 input passes full quality, 596 Node and
-746 policy cases, 259 Linux Rust tests, all 2,128 cold catalog cases, renderer
-and static builds. Two Rust tests retain their existing ignores; four macOS-only
-cases are not collected on Linux. E-CI-017 records these bounded passes. Final
-released-cohort, audit and hosted native qualification remain pending.
+E-CI-017's intermediate API 0.2.3/Core 0.7.3 input passed full quality, 596 Node
+and 746 policy cases, 259 Linux Rust tests, all 2,128 cold catalog cases,
+renderer and static builds. Two Rust tests retain their existing ignores; four
+macOS-only cases are not collected on Linux. Those passes do not transfer to
+this selected cohort.
 
-Notes' private App Profile is built from the actual API 0.2.3 release source
-`0d9d4d9253579541b1e796d7f2c68ef3b19a8df6` and must depend on that exact API
-version. Its verified 35,343-byte archive has SHA-256
-`975ea33dcba8d8db55288820221e8aae39f7d6fea4fc87312b64fa5b0715a1d5`. The source
-build uses frozen Core 0.7.2; final Desktop Core acceptance remains separate.
-Hosted CI builds this same committed public boundary, without source aliases,
-bundled node_modules or a second chat writer.
+Notes' private App Profile is built from Notes
+`e99baa742483ace8177b22fbdec3eed11867eedc` and must depend on API 0.2.3 exactly.
+Its verified 35,323-byte archive has SHA-256
+`c963d3d1f2517eceb7e3ccdc1d69f2acbe5b7777cf714d35bc1860d84d0c37fa`. Hosted CI
+builds this same committed public boundary, without source aliases, bundled
+node_modules or a second chat writer.
 
-The current seven npm archive prerequisites are Agent UI, Bases, History, App
-Profile, Tasks, AI and JJ Conversations. The public release transitions and
-final dependency selection are governed by
-[the distribution backlog](../backlog/distribution.md). AI and App Profile
-remain intentionally private. JJ Conversations' qualified distribution is still
-unresolved. Preserve tracked registry ranges and verify every active private
-archive import route; the resulting graph does not qualify registry-only
-application distribution.
+Completed npm archive projections for Agent UI, Bases, History and Tasks are
+removed, including Agent UI's redundant source build and the Bases and History
+package builds. Native plugin fixture sources, including Plugins and Tasks, and
+the qualified Rust git pins stay. The remaining npm archive prerequisites are
+App Profile, AI and JJ Conversations. AI and App Profile remain intentionally
+private. JJ Conversations' qualified distribution is still unresolved. Public
+transitions are governed by
+[the distribution backlog](../backlog/distribution.md). Preserve tracked
+registry ranges and verify every active private archive import route; the
+resulting graph does not qualify registry-only application distribution.
 
-Design Core 0.7.3 is published and verified from source `1ff36f37`, including
-registry bytes, provenance, package tag and GitHub release in run 41194948225.
-The public lock advances only that package from the preliminary 0.7.2 input;
-every Bits copy retains the exact root patch below. Final consumer qualification
-requires the complete selected cohort. Agent UI's temporary source selection
-retains host-advertised send capability independently of the transcript draft,
-with native queue authority in the host and Stop available for an unsupported
-draft. Its published replacement must pass the original consumer boundary before
-removing the projection.
+Design Core ^0.7.4 is the published range. Every Bits copy retains the exact
+root patch below. `@dnd-kit/dom` and `@dnd-kit/svelte` are selected at 0.4.x,
+resolving the recorded 0.4.0 source, because API 0.2.3 peers require `^0.4.0`.
+Peer warnings stay visible; do not suppress them. The approved compiler
+exception admits one `state_referenced_locally` diagnostic for
+`@dnd-kit/svelte@0.4.0` `dist/core/context/DragDropProvider.svelte`, SHA-256
+`9750aa31f409e0f6be0e70b3fef6c8d8e8e447ff25b150fbc2dd4bec4781eaab`, through
+2026-11-30. Any other compiler warning remains fatal.
 
 All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
 Native application crates use lapis-server
@@ -142,10 +142,10 @@ WebdriverIO 9.32, with upstream browser-download and Mocha serializer overrides.
 The language-service chain uses released KaTeX 0.18.10; private App Profile uses
 Markdown 0.2.0 without the former Mira/KaTeX cohort.
 
-The sole approved development exception is GHSA-gcqx-w48m-w2h4 for deepmerge
-4.3.1 under the Svelte Vite plugin through 2026-11-30. Enforce its exact path,
-version and expiry; retain full diagnostics. Production findings and any new or
-changed advisory remain blocking. Remove stale exceptions.
+The sole approved development audit exception is GHSA-gcqx-w48m-w2h4 for
+deepmerge 4.3.1 under the Svelte Vite plugin through 2026-11-30. Enforce its
+exact path, version and expiry; retain full diagnostics. Production findings and
+any new or changed advisory remain blocking. Remove stale exceptions.
 
 ## Authorized Bits UI patch
 

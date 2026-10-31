@@ -16,11 +16,7 @@ import { runAudit } from "./ci-audit.mjs";
 
 /** Packages awaiting qualified registry releases keep tracked semver ranges. */
 export const unpublishedRanges = {
-  "@lapismd/agent-ui": "../agent-ui/packages/agent-ui",
-  "@lapis-notes/bases": "../lapis-plugins/packages/bases",
-  "@lapis-notes/history": "../lapis-plugins/packages/history",
   "@lapis-notes/app-profile": "../lapis-notes/packages/app-profile",
-  "@lapis-notes/lapis-plugin-tasks": "../lapis-plugin-tasks",
   "@lapismd/ai": "../lapis-ai/packages/ai",
   "@lapismd/jj-conversations": "../jj-store/packages/jj-conversations",
 };

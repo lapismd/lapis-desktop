@@ -7,13 +7,6 @@ import { pathToFileURL } from "node:url";
 const root = process.cwd();
 const jobs = [
   {
-    marker: "../agent-ui/packages/agent-ui/dist/index.js",
-    steps: [
-      ["../agent-ui", "pnpm", ["install", "--frozen-lockfile"]],
-      ["../agent-ui", "pnpm", ["--filter", "@lapismd/agent-ui", "build"]],
-    ],
-  },
-  {
     marker: "../lapis-plugin-tasks/dist/index.js",
     steps: [
       [
@@ -26,21 +19,6 @@ const jobs = [
         "pnpm",
         ["exec", "svelte-package", "--tsconfig", "./tsconfig.pack.json"],
       ],
-    ],
-  },
-  {
-    marker:
-      "../lapis-plugins/packages/history/dist/repository/controllers/native-indexed-search.js",
-    steps: [
-      ["../lapis-plugins", "pnpm", ["install", "--frozen-lockfile"]],
-      ["../lapis-plugins/packages/history", "pnpm", ["build"]],
-    ],
-  },
-  {
-    marker: "../lapis-plugins/packages/bases/dist/index.js",
-    steps: [
-      ["../lapis-plugins", "pnpm", ["install", "--frozen-lockfile"]],
-      ["../lapis-plugins/packages/bases", "pnpm", ["build"]],
     ],
   },
   {

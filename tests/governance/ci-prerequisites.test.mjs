@@ -28,13 +28,17 @@ test("CI source downloads require full immutable commits and safe repository nam
 test("source-fix archives share the graph while tracked ranges and unaffected registry packages remain portable", () => {
   const manifest = {
     dependencies: {
-      "@lapismd/agent-ui": "^0.1.0",
-      "@lapismd/repository-ui": "^0.1.0",
-      "@lapismd/design-core": "^0.7.1",
+      "@lapismd/agent-ui": "^0.2.0",
+      "@lapismd/repository-ui": "^0.1.1",
+      "@lapismd/design-core": "^0.7.4",
       "@lapis-notes/workspace": "^0.3.1",
       "@lapismd/terminal": "^0.1.2",
+      "@lapis-notes/bases": "^0.2.0",
+      "@lapis-notes/history": "^0.2.0",
     },
-    devDependencies: {},
+    devDependencies: {
+      "@lapis-notes/lapis-plugin-tasks": "^0.1.1",
+    },
   };
   for (const name of Object.keys(unpublishedRanges))
     if (!Object.hasOwn(manifest.dependencies, name))
@@ -46,13 +50,16 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
     (name) => `/archives/${name}.tgz`,
   );
   assert.deepEqual(manifest, original);
-  assert.equal(projected.dependencies["@lapismd/repository-ui"], "^0.1.0");
-  assert.equal(projected.dependencies["@lapismd/design-core"], "^0.7.1");
+  assert.equal(projected.dependencies["@lapismd/repository-ui"], "^0.1.1");
+  assert.equal(projected.dependencies["@lapismd/design-core"], "^0.7.4");
   assert.equal(projected.dependencies["@lapis-notes/workspace"], "^0.3.1");
   assert.equal(projected.dependencies["@lapismd/terminal"], "^0.1.2");
+  assert.equal(projected.dependencies["@lapismd/agent-ui"], "^0.2.0");
+  assert.equal(projected.dependencies["@lapis-notes/bases"], "^0.2.0");
+  assert.equal(projected.dependencies["@lapis-notes/history"], "^0.2.0");
   assert.equal(
-    projected.dependencies["@lapismd/agent-ui"],
-    "file:/archives/@lapismd/agent-ui.tgz",
+    projected.devDependencies["@lapis-notes/lapis-plugin-tasks"],
+    "^0.1.1",
   );
   for (const name of Object.keys(unpublishedRanges)) {
     const section = Object.hasOwn(manifest.dependencies, name)
