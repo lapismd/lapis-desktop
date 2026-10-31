@@ -181,3 +181,4 @@
 - [Maintained cross-repository release handoff](../history/E-CI-018.md)
 - [Refresh the operational release handoff](../history/E-CI-019.md)
 - [Approved Dnd diagnostic handoff scope](../history/E-CI-020.md)
+- [Portable intake and package qualification handoff](../history/E-CI-021.md)

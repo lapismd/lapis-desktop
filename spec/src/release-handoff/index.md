@@ -1,10 +1,10 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 12:39 UTC**. Overall status: **in progress**.
+Last reviewed: **2026-10-31 12:51 UTC**. Overall status: **in progress**.
 Desktop PR #1 is open; final released-cohort and hosted native acceptance remain
 required before merge. No npm challenge is active. The Dnd compiler diagnostic
 below has received the user's specific approval through November 30. The Mira
-owner is applying that exact scope and resuming packed-package qualification.
+packed-package check passes locally; PR #26 needs a CI browser-install repair.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -28,20 +28,20 @@ version PR or prepared archive does not complete publication.
 
 ## Completed and verified
 
-| Area                           | Completed result                                                                                                                                                                                                                                                                 |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Notes consolidation            | [PR #44](https://github.com/lapismd/lapis-notes/pull/44) merged at `f47e275c`; canonical contracts/backlogs replace the old migration registers.                                                                                                                                 |
-| Server consolidation           | [PR #8](https://github.com/lapismd/lapis-server/pull/8) merged at `5ba4c5aa`.                                                                                                                                                                                                    |
-| Notes API                      | API **0.2.3** published from `0d9d4d9253579541b1e796d7f2c68ef3b19a8df6`; run `41190163735` passed all 14 publication/consumer jobs. Governed tag is `next`; do not promote `latest`.                                                                                             |
-| Other earlier releases         | Notes UI **0.1.5**, Workspace **0.3.1**, Terminal **0.1.2**, Mira **0.1.3** and its existing **0.0.3** companion packages were verified.                                                                                                                                         |
-| Bits UI                        | Canonical registry **2.20.2** patch retains Link Preview cleanup, six Slider destruction guards and the upstream FocusScope identity fix. Every consumer root must register it explicitly.                                                                                       |
-| Design Core                    | **0.7.3** is actually published and verified from `1ff36f37c165a3496be4826be48b048fc812e38e`. PR/main each passed 11 checks; release `41194948225` passed all five jobs. Registry bytes, signatures, provenance, tag and GitHub release match. Docs PR #46 merged at `8e9b3f29`. |
-| Plugins intermediate graph     | API 0.2.3/Core 0.7.3: all 18 checks; 1,181 units; 17 builds/publint; 264 catalog passes, 57 unchanged parked Sync skips; static build; 163 release-tool tests; source artifact reproduction all passed.                                                                          |
-| UI intermediate graph          | Core 0.7.3/Mira 0.1.2: 1,956 interaction/axe cases, 151 browser cases, 149 public examples, 235 units, all 418 fingerprints, strict types/build/spec/actionlint passed.                                                                                                          |
-| Tasks intermediate graph       | Compatible normal lock refresh cleared all critical/high/moderate findings. All 2,889 units, 27 Rust and 63 interaction/axe cases, strict types/build/publint/static/spec passed. One low Mira math dependency remains pending the repair below.                                 |
-| Math consumer regression       | Real-App Reading Math scenario added in Plugins. Exact case 1/0 and full Reading family 10/0 pass on both the original Core 0.7.2 baseline and integrated Core 0.7.3 graph. Original vault text and mode teardown are asserted; visual baselines unchanged.                      |
-| Desktop current portable slice | API 0.2.3/Core 0.7.3 quality passes, including strict types, normal/e2e Clippy and formatting. Tests: 596 Node + 746 policy + 259 Linux Rust pass; two existing Rust ignores, four Mac-specific cases not collected. Renderer build passes. Full catalog is still running.       |
-| Spec tooling/navigation        | Spec Validator **0.2.0**, semantic search and doctor checked. Desktop uses supported SUMMARY fragments; historical receipts remain unchanged and the 400-line/32,768-byte page caps remain intact.                                                                               |
+| Area                           | Completed result                                                                                                                                                                                                                                                                               |
+| ------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Notes consolidation            | [PR #44](https://github.com/lapismd/lapis-notes/pull/44) merged at `f47e275c`; canonical contracts/backlogs replace the old migration registers.                                                                                                                                               |
+| Server consolidation           | [PR #8](https://github.com/lapismd/lapis-server/pull/8) merged at `5ba4c5aa`.                                                                                                                                                                                                                  |
+| Notes API                      | API **0.2.3** published from `0d9d4d9253579541b1e796d7f2c68ef3b19a8df6`; run `41190163735` passed all 14 publication/consumer jobs. Governed tag is `next`; do not promote `latest`.                                                                                                           |
+| Other earlier releases         | Notes UI **0.1.5**, Workspace **0.3.1**, Terminal **0.1.2**, Mira **0.1.3** and its existing **0.0.3** companion packages were verified.                                                                                                                                                       |
+| Bits UI                        | Canonical registry **2.20.2** patch retains Link Preview cleanup, six Slider destruction guards and the upstream FocusScope identity fix. Every consumer root must register it explicitly.                                                                                                     |
+| Design Core                    | **0.7.3** is actually published and verified from `1ff36f37c165a3496be4826be48b048fc812e38e`. PR/main each passed 11 checks; release `41194948225` passed all five jobs. Registry bytes, signatures, provenance, tag and GitHub release match. Docs PR #46 merged at `8e9b3f29`.               |
+| Plugins intermediate graph     | API 0.2.3/Core 0.7.3: all 18 checks; 1,181 units; 17 builds/publint; 264 catalog passes, 57 unchanged parked Sync skips; static build; 163 release-tool tests; source artifact reproduction all passed.                                                                                        |
+| UI intermediate graph          | Core 0.7.3/Mira 0.1.2: 1,956 interaction/axe cases, 151 browser cases, 149 public examples, 235 units, all 418 fingerprints, strict types/build/spec/actionlint passed.                                                                                                                        |
+| Tasks intermediate graph       | Compatible normal lock refresh cleared all critical/high/moderate findings. All 2,889 units, 27 Rust and 63 interaction/axe cases, strict types/build/publint/static/spec passed. One low Mira math dependency remains pending the repair below.                                               |
+| Math consumer regression       | Real-App Reading Math scenario added in Plugins. Exact case 1/0 and full Reading family 10/0 pass on both the original Core 0.7.2 baseline and integrated Core 0.7.3 graph. Original vault text and mode teardown are asserted; visual baselines unchanged.                                    |
+| Desktop current portable slice | API 0.2.3/Core 0.7.3: quality, renderer/static builds, all four spec lanes and 2,128 cold catalog cases pass. Tests: 596 Node + 746 policy + 259 Linux Rust; two unchanged Rust ignores, four Mac-only cases not collected. Committed as `1849cdf4`; final cohort/native gates remain pending. |
+| Spec tooling/navigation        | Spec Validator **0.2.0**, semantic search and doctor checked. Desktop uses supported SUMMARY fragments; historical receipts remain unchanged and the 400-line/32,768-byte page caps remain intact.                                                                                             |
 
 Canonical Bits patch SHA-256:
 `debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad`. Core 0.7.3
@@ -57,9 +57,14 @@ tarball: 1,903,722 bytes, SHA-256
    teardown regression is repaired at its exact target; full source checks and
    all 178 Storybook interaction/axe cases pass. Cold static/browser
    qualification also passes its 60-case suite with its unchanged known-failure
-   policy. The exact Dnd diagnostic exception below is now approved; finish the
-   packed production host check and remaining release gates. Publish the normal
-   version PR's actual result, expected Mira 0.1.4 but subject to its plan.
+   policy. All six packed tarballs and both cold public hosts now pass with the
+   exact approved Dnd scope.
+   [Source PR #26](https://github.com/lapismd/mira-mde/pull/26) is open at
+   `07fc2592`. Its first hosted package job lacks Chromium; the owner is adding
+   browser installation to both package CI and release artifact jobs. Finish
+   fresh-head hosted checks, source merge, formal version PR approval/merge and
+   actual publication. Expected Mira 0.1.4 remains subject to the generated
+   plan.
 2. **Release Core's fixed dependency boundary.** Require that actual fixed Mira
    version, remove Core's obsolete base-math audit exception, run required
    source/version/release gates and verify the actual Core patch publication
@@ -85,20 +90,39 @@ tarball: 1,903,722 bytes, SHA-256
    required checks and merge. Resolve PR #2 as included. Distribution and
    frozen-Deno retirement retain their separate unfulfilled product gates.
 
-## Current blocker and accepted scope
+## Current release gates and accepted scope
 
-The packed production host stops on one pre-existing `@dnd-kit/svelte@0.4.0`
-compiler warning, `state_referenced_locally`, in `DragDropProvider.svelte`: it
-captures the initial `managerProp`. Both actual 0.4.0 and latest 0.5.1 reproduce
-it with the qualified compiler. The user explicitly approved the prepared
-exception on October 31, valid through **2026-11-30**. Admit at most one
-occurrence per production build matching this exact version, source SHA-256
+The packed production host previously stopped on one pre-existing
+`@dnd-kit/svelte@0.4.0` compiler warning, `state_referenced_locally`, in
+`DragDropProvider.svelte`: it captures the initial `managerProp`. Both actual
+0.4.0 and latest 0.5.1 reproduce it with the qualified compiler. The user
+explicitly approved the prepared exception on October 31, valid through
+**2026-11-30**. Admit at most one occurrence per production build matching this
+exact version, source SHA-256
 `9750aa31f409e0f6be0e70b3fef6c8d8e8e447ff25b150fbc2dd4bec4781eaab`, file, code
 and complete message. Keep raw diagnostics visible and retained; every other
-warning/runtime/functional/accessibility failure stays fatal. The Mira owner
-must record and implement that accepted policy before rerunning the packed
-production host; approval alone is not an executed pass. Original scope:
+warning/runtime/functional/accessibility failure stays fatal. Mira has now
+implemented that exact scope, with 13 focused scope/workflow guards passing
+after the original retention regression failed once. Original scope:
 `/private/tmp/lapis-mira-math-release-20261031/.local/release-preflight/dnd-compile-diagnostic-proposal.md`.
+
+Exact `pnpm packages:pack` now passes in
+`mira-validation-a455ea13-9166-4ed6-9d04-9ef9e97d63b9` at `b76eac56`: all six
+isolated tarballs, declarations, CSS and package-boundary checks; both cold
+public hosts with 18 browser assertions and four Node scenarios each; zero
+runtime diagnostics and base audit findings. Development compiler warnings are
+zero; production emits exactly one approved warning with its raw receipt
+retained. The metadata-only import-condition lookup regression went from one
+failure to one pass, with all 11 policy cases passing. Root independently read
+`/tmp/lapis-mira-math-validation-20261031/final-packed-report-verification.json`.
+
+PR #26's first hosted package job (`124541176610`) fails because its new cold
+browser host cannot find `chromium_headless_shell-1234`. The independent job
+never installed Chromium; passing Storybook in a separate runner cannot supply
+it. The owner is adding explicit browser installation to both package CI and
+release artifact jobs plus a job-scoped regression. Retain that failure and
+require normal new-head hosted verification; local package passes do not waive
+this CI gate.
 
 Separately, a full Mira check exposed one uncaught post-teardown `MouseEvent`
 from table cells. The exact owning pipe/grid target reproduced four failures
@@ -151,42 +175,53 @@ diagnostics; read-only failure handling remains separate.
 Workspace paths are local recovery pointers, not portable dependency inputs.
 Inspect `jj st`, exact revisions and current remote state before continuing.
 
-| Owner / area                                       | Workspace and saved state                                                                                                                                                                                                                                                                                                                                                                         |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; parent `7df6725b`, with the uncommitted 13-file API 0.2.3/Core 0.7.3 intake and fresh pending `spec/src/history/E-CI-017.md`. Prior Bits commit `4f3ff601`. PR #1 remote remains `96a4139b`; newer local work is not pushed.                                                                                                    |
-| Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; initial commit `ce1204d7` is backed up remotely as `release-handoff-20261031`. This isolated documentation workspace from `7df6725b` leaves the live product test snapshot unchanged. Later integrate its commits into PR #1, retaining both E-CI-017 and E-CI-018 navigation entries.                                                     |
-| Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`.                              |
-| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; verified source is now committed as `c69a7cf6` over `e2ad5063`, with clean empty child `f3a778bc`. Product bytes equal qualified `c0902e0b`; only three evidence/spec files changed afterward and final spec passes all four lanes. Owner resumed the approved exact Dnd policy and packed-release queue. Nothing pushed or published yet. |
-| Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                                                          |
-| `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                                                   |
-| Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                                                         |
+| Owner / area                                       | Workspace and saved state                                                                                                                                                                                                                                                                                                                                            |
+| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean over committed `1849cdf4`, empty child `e7794364`. Bookmark `desktop-api023-core073-qualified-20261031` preserves the intermediate intake. E-CI-017 is committed and remains pending final cohort/native proof. PR #1 remote remains `96a4139b`; new product work is not pushed.             |
+| Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote branch `release-handoff-20261031` preserves the independent documentation lineage from `7df6725b`. Integrate it into the final product head while retaining all new history navigation entries, including E-CI-017.                                                                                    |
+| Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`. |
+| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; committed `c69a7cf6` and `07fc2592` are pushed in [PR #26](https://github.com/lapismd/mira-mde/pull/26). Local exact package check passes at `b76eac56`. Hosted package job lacks Chromium; the owner is repairing both CI/release browser setup and its regression. No new version published yet.            |
+| Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                             |
+| `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                      |
+| Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                            |
 
 Original unrelated Plugins work in `qzorkqrm` and the conflicted local `main`
 bookmark remain untouched. Never manually move `main` or discard source edits.
 
 ## Active run and precise resume commands
 
-Desktop's current intermediate pipeline is exec session **50800**, running
-`/tmp/lapis-desktop-api023-core073-qualify-20261031.mjs`. Test and renderer
-build have passed; catalog is active, then static and full spec follow. Logs:
-`/tmp/lapis-desktop-api023-core073-{test,build,catalog,static,spec-final}.log`.
-Process/session IDs may expire: inspect the run reports before starting another
-worker. Never run two Docker lanes in the same workspace.
+Desktop's intermediate pipeline and receipt checks are complete; exec sessions
+50800 and 32128 have been collected. No Desktop product worker is active. Logs:
+`/tmp/lapis-desktop-api023-core073-{test,build,catalog,static,spec-final}.log`;
+final evidence/spec logs end in `evidence-final.log` and `receipt-spec.log`.
+Never rerun old session IDs blindly or start two Docker lanes in one workspace.
 
 Verified Desktop runs:
 
 - Quality: `lapis-desktop-validation-a439d38a-6226-4682-8942-976008f5adce`.
 - Full tests: `lapis-desktop-validation-111c8383-2396-4ea1-a231-2b35649b0379`.
 - Renderer: `lapis-desktop-validation-99398953-80e9-4992-b095-2809cb17685b`.
+- Catalog: `lapis-desktop-validation-b8419644-0c27-4d7a-9efe-28d02e35f8b4`; all
+  16 JUnit reports independently verify 2,128 actual cases with zero failures,
+  errors or skips; `/tmp/lapis-desktop-api023-core073-catalog-proof.json`.
+- Static: `lapis-desktop-validation-58e5142e-164d-44c8-9717-4898efc733e7`.
+- Initial full spec:
+  `lapis-desktop-validation-9e05af4c-cdf3-4690-b25b-f4043ffdf135`.
+- Final receipts: evidence `00837998-bba2-4ffa-93d4-a590df2e38c9` passes 356
+  records; spec `1dacd122-f2c1-4eec-a7db-bede8680d4c6` passes all four lanes.
 - Actual worker graph: 1,191 reachable packages, only API 0.2.3/Core 0.7.3, five
   Bits edges/two peer contexts with all three exact patched postimages;
   `api023-core073-graph.json` in the quality run's results.
 
-Next Root actions: collect the full catalog/static/spec outcomes; append actual
-counts/failures to still-uncommitted E-CI-017; validate evidence/spec and commit
-that intermediate slice. Its overall result stays pending final releases and
-native proof. Later final intake needs a fresh evidence record; do not rewrite
-committed E-CI-015/016 or any other historical receipt.
+Next Root actions: wait for the actually published fixed Mira/Core boundary,
+then finish Plugins' Bases/History floor update, full gates, source/version PRs
+and actual releases. Trigger the retained Tasks owner after fixed Core is live.
+UI/profile ownership remains with the Mira/Core owner. The read-only Changesets
+API plan confirms only Bases and History at 0.2.0 from eight changesets; the
+bot's actual version diff still requires review. CLI status cannot resolve the
+preserved conflicted `main`; do not move that bookmark to obtain a local plan.
+Final Desktop intake needs fresh evidence after the releases/private-profile
+build. Do not rewrite committed E-CI-017 or earlier receipts.
 
 The reusable cold Plugins math acceptance is:
 
@@ -251,3 +286,11 @@ start local headed/provider tests without the existing explicit opt-in.
   exception through November 30. Mira source preparation is committed as
   `c69a7cf6`; its owner resumed the normal packed-package and actual-release
   queue. All other diagnostics and release/native gates remain blocking.
+- **October 31, 12:48 UTC:** Exact Mira six-package qualification is green and
+  source PR #26 is open. Desktop's complete intermediate portable/catalog/static
+  suite and final evidence/spec checks pass; source slice committed as
+  `1849cdf4` with a clean workspace. Actual fixed Mira/Core and downstream
+  publications, final intake and hosted native acceptance remain pending.
+- **October 31, 12:51 UTC:** Mira PR #26's first hosted package job exposes
+  missing Chromium setup. The owner is repairing the independent CI and release
+  jobs and adding a scoped regression; no assertion or timeout is relaxed.
