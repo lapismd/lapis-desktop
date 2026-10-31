@@ -44,18 +44,6 @@ const jobs = [
     ],
   },
   {
-    marker: "../lapis-notes/packages/workspace/dist/index.js",
-    steps: [
-      ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],
-      [
-        "../lapis-notes",
-        "pnpm",
-        ["--filter", "@lapis-notes/workspace^...", "build"],
-      ],
-      ["../lapis-notes/packages/workspace", "pnpm", ["build"]],
-    ],
-  },
-  {
     marker: "../lapis-notes/packages/app-profile/dist/native-chat/index.js",
     steps: [
       ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],
@@ -72,13 +60,6 @@ const jobs = [
     steps: [
       ["../lapis-ai", "pnpm", ["install", "--frozen-lockfile"]],
       ["../lapis-ai", "pnpm", ["--filter", "@lapismd/ai", "build"]],
-    ],
-  },
-  {
-    marker: "../lapis-terminal/packages/terminal/dist/index.js",
-    steps: [
-      ["../lapis-terminal", "pnpm", ["install", "--frozen-lockfile"]],
-      ["../lapis-terminal", "pnpm", ["--filter", "@lapismd/terminal", "build"]],
     ],
   },
   {

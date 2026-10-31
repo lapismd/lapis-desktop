@@ -7,7 +7,7 @@
   {
     "name": "lapis-notes",
     "repository": "lapismd/lapis-notes",
-    "revision": "6f315baef2bd2f0bb4942927d4e19b9e0eb2a15d"
+    "revision": "0d9d4d9253579541b1e796d7f2c68ef3b19a8df6"
   },
   {
     "name": "lapis-plugins",
@@ -18,11 +18,6 @@
     "name": "lapis-ai",
     "repository": "lapismd/lapis-ai",
     "revision": "9a98293c26524c9320acdd9767e34e8ffdd7170c"
-  },
-  {
-    "name": "lapis-terminal",
-    "repository": "lapismd/lapis-terminal",
-    "revision": "2463f944149d753eaf638cf876393a6f60f50190"
   },
   {
     "name": "jj-store",

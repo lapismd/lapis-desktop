@@ -74,10 +74,13 @@ required public exports and redirects their transitive dependency routes to
 those same compatible archives. Its temporary install starts from the tracked
 published registry graph; private inputs are absent from that registry-only
 lock. Both tracked files are restored after the install or audit, including a
-failure. Hosted CI follows that restore rule for the three unpublished packages:
-it builds the sibling checkouts, projects Agent UI, Repository UI and App
-Profile onto those directories for one install, then writes the tracked manifest
-and lockfile back.
+failure. The canonical
+[dependency intake](../spec/src/current/local-dependencies.md) and
+[distribution backlog](../spec/src/backlog/distribution.md) own the current
+private package inventory. Remove a completed npm projection after actual
+released-package acceptance, while retaining any source build still required for
+real installed-plugin fixtures. An npm package and a bundled runtime artifact
+have separate dependency graphs and qualification boundaries.
 
 `LAPIS_DESKTOP_VALIDATION_ARCHIVES` or the ignored configuration's `archives`
 field selects this explicit prerequisite inventory. Archive source revisions and

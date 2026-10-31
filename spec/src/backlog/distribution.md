@@ -94,17 +94,24 @@ supported public consumption or an explicit private archive prerequisite.
 Preserve portable tracked ranges and validate the resulting consumer; do not
 conceal the missing package through a source alias or copied implementation.
 
-Workspace0.3.1 and Terminal0.1.2 are published and verified; replace their
-temporary archives with registry versions and repeat frozen consumer acceptance.
-Complete Agent/Repository UI, Bases, History, Tasks and JJ conversations
-releases and their current peer cohort. AI and App Profile intentionally remain
-private with explicit verified built prerequisites. This does not qualify
-registry-only distribution. Design Core0.7.1 is consumed from npm; the newer
-source patch still needs publication and consumer qualification.
+Workspace 0.3.1 and Terminal 0.1.2 are published and verified. E-CI-017 removes
+their temporary npm archive projections; final frozen consumer acceptance is
+still pending. Complete Agent/Repository UI, Bases, History, Tasks and JJ
+conversations releases and their current peer cohort. AI and App Profile
+intentionally remain private with explicit verified built prerequisites. This
+does not qualify registry-only distribution. Design Core 0.7.3 is published and
+verified; final released-cohort consumer qualification remains pending.
+
+UI and Tasks' required-peer audits retain low KaTeX advisory GHSA-238p-pmpm-9mq7
+through Mira's old math adapters. Ordinary compatible Tasks dependency updates
+clear all higher-severity findings. The owning Mira packaging repair and Core's
+fixed Mira minimum must complete actual publication before the final consumer
+cohort is selected. Preserve the original audit receipts and every blocking
+audit; Core's former scoped acceptance does not transfer here.
 
 ### Remaining npm archive prerequisites
 
-CI prepares these nine packages from the full commits in
+CI prepares these seven packages from the full commits in
 `scripts/ci-sources.json`; `scripts/ci-install.mjs` selects their package
 boundaries. Remove each temporary projection after its released replacement or
 explicit private distribution contract is qualified in Desktop.
@@ -112,13 +119,11 @@ explicit private distribution contract is qualified in Desktop.
 | Package                           | Remaining transition                                                            |
 | --------------------------------- | ------------------------------------------------------------------------------- |
 | `@lapismd/agent-ui`               | Release the merged host-owned draft/send repair.                                |
-| `@lapis-notes/workspace`          | Adopt verified0.3.1 from npm; its governed tag remains next.                    |
 | `@lapis-notes/bases`              | Reconcile the qualified bundle and current peer cohort for registry intake.     |
 | `@lapis-notes/history`            | Release the repository-controller exports used by Desktop.                      |
 | `@lapis-notes/app-profile`        | Retain the intentionally private verified built prerequisite.                   |
 | `@lapis-notes/lapis-plugin-tasks` | Release the qualified npm plugin boundary or document its private distribution. |
 | `@lapismd/ai`                     | Retain the intentionally private verified built client.                         |
-| `@lapismd/terminal`               | Adopt verified0.1.2 from npm; Rust continues through qualified Git commits.     |
 | `@lapismd/jj-conversations`       | Resolve the unpublished built client distribution.                              |
 
 The original E-CI-005 audit predates these newer verified releases. Each
