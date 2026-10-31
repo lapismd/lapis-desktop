@@ -397,4 +397,4 @@ and lifecycle states (E-CORE-030); App/vault own metadata and status.
 
 E-AI-106/107/110 review header actions, required provider models and shared
 Compute inputs through production stories. Shell lifecycle ReadySessionFailure
-covers host Problems/toast presentation; native gates remain.
+covers host Problems; native gates remain. Shell boot may take 15s (E-CI-032).

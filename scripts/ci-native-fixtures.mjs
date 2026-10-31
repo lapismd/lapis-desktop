@@ -3,6 +3,7 @@
 import { execFileSync } from "node:child_process";
 import { createHash, generateKeyPairSync } from "node:crypto";
 import {
+  existsSync,
   mkdirSync,
   readFileSync,
   readdirSync,
@@ -17,6 +18,14 @@ const root = process.cwd();
 const plugins = resolve("../lapis-plugins");
 const sources = JSON.parse(readFileSync("scripts/ci-sources.json", "utf8"));
 const source = sources.find((entry) => entry.name === "lapis-plugins");
+// Registry intake no longer builds Bases or History from this checkout, but
+// release signing still imports fflate and the plugin build still needs Vite.
+if (!existsSync(join(plugins, "node_modules/fflate/package.json"))) {
+  execFileSync("pnpm", ["install", "--frozen-lockfile"], {
+    cwd: plugins,
+    stdio: "inherit",
+  });
+}
 const tools = await import(
   pathToFileURL(join(plugins, "scripts/plugin-release.mjs"))
 );

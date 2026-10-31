@@ -85,6 +85,14 @@ test("hosted native acceptance prepares real artifacts and passes their inventor
   );
 });
 
+test("native fixtures install plugins before importing the release signer", () => {
+  const source = readFileSync("scripts/ci-native-fixtures.mjs", "utf8");
+  const install = source.indexOf('["install", "--frozen-lockfile"]');
+  const imported = source.indexOf("scripts/plugin-release.mjs");
+  assert.ok(install > 0 && imported > install);
+  assert.match(source, /node_modules\/fflate\/package\.json/);
+});
+
 test("semantic specification search remains an authoring command", () => {
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   assert.equal(pkg.scripts["spec:search"], "spec-validator search --semantic");
