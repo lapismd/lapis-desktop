@@ -95,7 +95,7 @@ resulting consumer; do not conceal the missing package through a source alias or
 copied implementation.
 
 Workspace 0.3.1, Terminal 0.1.2, Mira ~0.1.4 and Core ^0.7.4 are published.
-E-CI-017 removes the Workspace and Terminal npm projections. E-CI-018 removes
+E-CI-017 removes the Workspace and Terminal npm projections. E-CI-030 removes
 the Agent UI, Bases, History and Tasks npm projections while retaining native
 plugin fixture sources and qualified Rust git pins. AI, App Profile and JJ
 Conversations remain private archive prerequisites. This does not qualify

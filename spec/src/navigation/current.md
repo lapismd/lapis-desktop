@@ -1,3 +1,4 @@
+- [Release handoff](../release-handoff/index.md)
 - [Current specification](../current/index.md)
   - [Governance](../current/governance.md)
     - [Native acceptance modes](../current/native-acceptance.md)

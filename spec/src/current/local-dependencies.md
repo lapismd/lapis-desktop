@@ -83,7 +83,7 @@ retain their owning contracts.
 
 ## Current registry and private inputs
 
-E-CI-018 selects the published cohort on the API 0.2.3 intake from E-CI-017.
+E-CI-030 selects the published cohort on the API 0.2.3 intake from E-CI-017.
 Declared registry minima are API 0.2.3, UI 0.1.5, Workspace 0.3.1, Mira ~0.1.4,
 Core ^0.7.4, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0, History
 ^0.2.0, Tasks ^0.1.1 and Terminal 0.1.2. Mira companions remain ~0.0.3. API

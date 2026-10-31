@@ -4,6 +4,9 @@ Read the owning contract, its verification row and the relevant backlog topic.
 Product requirements live here; evidence records actual results and cannot
 redefine gates.
 
+The [release handoff](../release-handoff/index.md) records the current
+cross-repository release state and exact resume steps.
+
 - [Governance](governance.md)
 - [Local dependency intake](local-dependencies.md)
 - [Desktop shell](desktop.md)
