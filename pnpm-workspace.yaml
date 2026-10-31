@@ -5,6 +5,8 @@ onlyBuiltDependencies:
 overrides:
   # Temporary reviewed lifecycle/focus patch; see E-CI-015 for removal gates.
   bits-ui: "2.20.2"
+  # One resolved Design Core for the API peer context. Unmet peer warnings stay.
+  "@lapismd/design-core": "0.8.0"
   "mocha>serialize-javascript": "^7.1.3"
   "@wdio/utils>@puppeteer/browsers": "^3.2.1"
   "katex@<0.18.2": "0.18.10"

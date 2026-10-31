@@ -93,6 +93,22 @@ test("native fixtures install plugins before importing the release signer", () =
   assert.match(source, /node_modules\/fflate\/package\.json/);
 });
 
+test("Design Core 0.8.0 is the only resolved copy so API has one peer context", () => {
+  const workspace = readFileSync("pnpm-workspace.yaml", "utf8");
+  const lock = readFileSync("pnpm-lock.yaml", "utf8");
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  assert.match(workspace, /"@lapismd\/design-core": "0\.8\.0"/);
+  assert.doesNotMatch(workspace, /peerDependencyRules/);
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.2.3");
+  assert.equal(manifest.dependencies["@lapismd/mira"], "~0.1.4");
+  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.8.0");
+  assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
+  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.2\.3\([^']+\)':$/gm);
+  assert.equal(contexts?.length, 1);
+  assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.7\./);
+  assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.7\./);
+});
+
 test("semantic specification search remains an authoring command", () => {
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   assert.equal(pkg.scripts["spec:search"], "spec-validator search --semantic");

@@ -109,17 +109,20 @@ removed, including Agent UI's redundant source build and the Bases and History
 package builds. Native plugin fixture sources, including Plugins and Tasks, and
 the qualified Rust git pins stay. The remaining npm archive prerequisites are
 App Profile and AI. Both remain intentionally private. JJ Conversations 0.1.0
-stays the published registry range. Public
-transitions are governed by
+stays the published registry range. Public transitions are governed by
 [the distribution backlog](../backlog/distribution.md). Preserve tracked
 registry ranges and verify every active private archive import route; the
 resulting graph does not qualify registry-only application distribution.
 
-Design Core ^0.8.0 is the published range. Every Bits copy retains the exact
-root patch below. `@dnd-kit/dom` and `@dnd-kit/svelte` are selected at 0.4.x,
-resolving the recorded 0.4.0 source, because API 0.2.3 peers require `^0.4.0`.
-Peer warnings stay visible; do not suppress them. The approved compiler
-exception admits one `state_referenced_locally` diagnostic for
+Design Core ^0.8.0 is the published range. The root pnpm override resolves every
+`@lapismd/design-core` copy to 0.8.0, including peers declared as `^0.7.x`, so
+`@lapis-notes/api` has one peer context (E-CI-033). Every Bits copy retains the
+exact root patch below. `@dnd-kit/dom` and `@dnd-kit/svelte` are selected at
+0.4.x, resolving the recorded 0.4.0 source, because API 0.2.3 peers require
+`^0.4.0`. Peer warnings stay visible; do not suppress them. API 0.2.3 still
+peers Mira `~0.1.3` while Desktop selects `~0.1.4`. Do not silence that warning
+and do not move Desktop back to Mira 0.1.3 or Design Core 0.7.4. The approved
+compiler exception admits one `state_referenced_locally` diagnostic for
 `@dnd-kit/svelte@0.4.0` `dist/core/context/DragDropProvider.svelte`, SHA-256
 `9750aa31f409e0f6be0e70b3fef6c8d8e8e447ff25b150fbc2dd4bec4781eaab`, through
 2026-11-30. Any other compiler warning remains fatal.

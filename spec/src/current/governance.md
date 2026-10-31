@@ -310,9 +310,9 @@ public asset fingerprint contract; CSP admits same-origin asset reads, workers
 and WASM compilation without arbitrary JavaScript evaluation or new IPC grants.
 
 The desktop declares its portable editor/Lezer shared modules explicitly through
-registry semver ranges and deduplicates them alongside API and Svelte.
-Build-owned entries reuse that graph instead of resolving private dependency
-paths.
+registry semver ranges and deduplicates them alongside API, Svelte and one
+Design Core 0.8.0 copy (E-CI-033). Build-owned entries reuse that graph instead
+of resolving private dependency paths.
 
 Portable native acceptance observes plugin-owned Apps through a weak reference
 and wraps worker creation/termination only in the e2e renderer entry. Normal
