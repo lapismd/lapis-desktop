@@ -1,10 +1,11 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 12:51 UTC**. Overall status: **in progress**.
+Last reviewed: **2026-10-31 13:03 UTC**. Overall status: **in progress**.
 Desktop PR #1 is open; final released-cohort and hosted native acceptance remain
 required before merge. No npm challenge is active. The Dnd compiler diagnostic
 below has received the user's specific approval through November 30. The Mira
-packed-package check passes locally; PR #26 needs a CI browser-install repair.
+source PR #26 has merged after every required hosted job passed. Versioning and
+actual publication are next; no new Mira version is published yet.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -59,10 +60,9 @@ tarball: 1,903,722 bytes, SHA-256
    qualification also passes its 60-case suite with its unchanged known-failure
    policy. All six packed tarballs and both cold public hosts now pass with the
    exact approved Dnd scope.
-   [Source PR #26](https://github.com/lapismd/mira-mde/pull/26) is open at
-   `07fc2592`. Its first hosted package job lacks Chromium; the owner is adding
-   browser installation to both package CI and release artifact jobs. Finish
-   fresh-head hosted checks, source merge, formal version PR approval/merge and
+   [Source PR #26](https://github.com/lapismd/mira-mde/pull/26) merged as
+   `11ecdb86` after all three required jobs passed on `f9dba17f` in run
+   `41203120667`. Finish formal version PR review/approval, green merge and
    actual publication. Expected Mira 0.1.4 remains subject to the generated
    plan.
 2. **Release Core's fixed dependency boundary.** Require that actual fixed Mira
@@ -83,7 +83,11 @@ tarball: 1,903,722 bytes, SHA-256
 5. **Finish Desktop intake.** Raise all actual published minima/locks, replace
    the private profile with that qualified artifact, remove completed npm
    archive projections and verify every active first-party/runtime/peer route.
-   Retain source builds needed for real native plugin fixtures.
+   Retain source builds needed for real native plugin fixtures. The intermediate
+   install also warns that API 0.2.3 expects Dnd DOM/Svelte `^0.4.0` but
+   receives 0.5.1/0.5.0. Qualify the correct host peer inputs during final
+   intake; do not suppress those warnings. The other two peer warnings belong to
+   old Tasks 0.1.0's API/Core ranges and need its actual replacement release.
 6. **Finish Desktop CI and merge.** Repeat final portable/catalog/audit/bundle
    and hosted native acceptance on that exact input, add fresh immutable
    evidence, update canonical verification/backlog, push PR #1, wait for all
@@ -116,13 +120,17 @@ retained. The metadata-only import-condition lookup regression went from one
 failure to one pass, with all 11 policy cases passing. Root independently read
 `/tmp/lapis-mira-math-validation-20261031/final-packed-report-verification.json`.
 
-PR #26's first hosted package job (`124541176610`) fails because its new cold
+PR #26's first hosted package job (`124541176610`) failed because its new cold
 browser host cannot find `chromium_headless_shell-1234`. The independent job
 never installed Chromium; passing Storybook in a separate runner cannot supply
-it. The owner is adding explicit browser installation to both package CI and
-release artifact jobs plus a job-scoped regression. Retain that failure and
-require normal new-head hosted verification; local package passes do not waive
-this CI gate.
+it. Both package CI and release artifact jobs now explicitly install Chromium.
+The job-scoped regression changed from one failure to one pass; all 48 release
+guards, boundary checks, lint and all four spec lanes pass. Fresh hosted run
+`41203120667` on `f9dba17f` passes all three required jobs, including packed
+public consumers, 178 interaction/axe cases and full browser acceptance. PR #26
+merged at `11ecdb86089a0bde855776f7111715b9c6f304df` on 13:02 UTC. Original
+failure logs and early evidence artifact `13042588940` remain retained; no
+assertion, deadline or diagnostic was waived.
 
 Separately, a full Mira check exposed one uncaught post-teardown `MouseEvent`
 from table cells. The exact owning pipe/grid target reproduced four failures
@@ -180,7 +188,7 @@ Inspect `jj st`, exact revisions and current remote state before continuing.
 | Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean over committed `1849cdf4`, empty child `e7794364`. Bookmark `desktop-api023-core073-qualified-20261031` preserves the intermediate intake. E-CI-017 is committed and remains pending final cohort/native proof. PR #1 remote remains `96a4139b`; new product work is not pushed.             |
 | Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote branch `release-handoff-20261031` preserves the independent documentation lineage from `7df6725b`. Integrate it into the final product head while retaining all new history navigation entries, including E-CI-017.                                                                                    |
 | Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`. |
-| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; committed `c69a7cf6` and `07fc2592` are pushed in [PR #26](https://github.com/lapismd/mira-mde/pull/26). Local exact package check passes at `b76eac56`. Hosted package job lacks Chromium; the owner is repairing both CI/release browser setup and its regression. No new version published yet.            |
+| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; source [PR #26](https://github.com/lapismd/mira-mde/pull/26) merged as `11ecdb86` after all three hosted jobs passed on `f9dba17f`. Original package CI failure and its Chromium regression are retained. Owner is watching version PR/actual publication; no new version published yet.                      |
 | Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                             |
 | `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                      |
 | Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                            |
@@ -294,3 +302,7 @@ start local headed/provider tests without the existing explicit opt-in.
 - **October 31, 12:51 UTC:** Mira PR #26's first hosted package job exposes
   missing Chromium setup. The owner is repairing the independent CI and release
   jobs and adding a scoped regression; no assertion or timeout is relaxed.
+- **October 31, 13:03 UTC:** Mira source PR #26 merged at `11ecdb86` after all
+  required recovery-head hosted jobs passed. The version PR and actual npm
+  publication remain pending. Desktop's final intake must also resolve the
+  explicitly recorded Dnd host-peer and old Tasks range warnings.
