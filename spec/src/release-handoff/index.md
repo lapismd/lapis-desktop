@@ -1,10 +1,10 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 12:29 UTC**. Overall status: **in progress**.
+Last reviewed: **2026-10-31 12:39 UTC**. Overall status: **in progress**.
 Desktop PR #1 is open; final released-cohort and hosted native acceptance remain
 required before merge. No npm challenge is active. The Dnd compiler diagnostic
-below requires a specific disposition; the user decision has been requested and
-its proposed exception is not approved.
+below has received the user's specific approval through November 30. The Mira
+owner is applying that exact scope and resuming packed-package qualification.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -57,9 +57,9 @@ tarball: 1,903,722 bytes, SHA-256
    teardown regression is repaired at its exact target; full source checks and
    all 178 Storybook interaction/axe cases pass. Cold static/browser
    qualification also passes its 60-case suite with its unchanged known-failure
-   policy. The packed production host remains blocked on the Dnd diagnostic
-   below. Publish the normal version PR's actual result, expected Mira 0.1.4 but
-   subject to its plan.
+   policy. The exact Dnd diagnostic exception below is now approved; finish the
+   packed production host check and remaining release gates. Publish the normal
+   version PR's actual result, expected Mira 0.1.4 but subject to its plan.
 2. **Release Core's fixed dependency boundary.** Require that actual fixed Mira
    version, remove Core's obsolete base-math audit exception, run required
    source/version/release gates and verify the actual Core patch publication
@@ -90,11 +90,14 @@ tarball: 1,903,722 bytes, SHA-256
 The packed production host stops on one pre-existing `@dnd-kit/svelte@0.4.0`
 compiler warning, `state_referenced_locally`, in `DragDropProvider.svelte`: it
 captures the initial `managerProp`. Both actual 0.4.0 and latest 0.5.1 reproduce
-it with the qualified compiler. No prior acceptance was found. A proposed,
-**unactivated** exception would admit only this exact package/file
-hash/code/message and one occurrence per production build through November 30,
-retaining raw diagnostics and every other fatal gate. Specific user acceptance
-is required. Proposal:
+it with the qualified compiler. The user explicitly approved the prepared
+exception on October 31, valid through **2026-11-30**. Admit at most one
+occurrence per production build matching this exact version, source SHA-256
+`9750aa31f409e0f6be0e70b3fef6c8d8e8e447ff25b150fbc2dd4bec4781eaab`, file, code
+and complete message. Keep raw diagnostics visible and retained; every other
+warning/runtime/functional/accessibility failure stays fatal. The Mira owner
+must record and implement that accepted policy before rerunning the packed
+production host; approval alone is not an executed pass. Original scope:
 `/private/tmp/lapis-mira-math-release-20261031/.local/release-preflight/dnd-compile-diagnostic-proposal.md`.
 
 Separately, a full Mira check exposed one uncaught post-teardown `MouseEvent`
@@ -148,15 +151,15 @@ diagnostics; read-only failure handling remains separate.
 Workspace paths are local recovery pointers, not portable dependency inputs.
 Inspect `jj st`, exact revisions and current remote state before continuing.
 
-| Owner / area                                       | Workspace and saved state                                                                                                                                                                                                                                                                                                                                            |
-| -------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; parent `7df6725b`, with the uncommitted 13-file API 0.2.3/Core 0.7.3 intake and fresh pending `spec/src/history/E-CI-017.md`. Prior Bits commit `4f3ff601`. PR #1 remote remains `96a4139b`; newer local work is not pushed.                                                                       |
-| Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; initial commit `ce1204d7` is backed up remotely as `release-handoff-20261031`. This isolated documentation workspace from `7df6725b` leaves the live product test snapshot unchanged. Later integrate its commits into PR #1, retaining both E-CI-017 and E-CI-018 navigation entries.                        |
-| Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`. |
-| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`, change `zltrmxzt`, qualified snapshot `c0902e0b`, parent published `e2ad5063`; owned edits remain uncommitted. Reassigned from interrupted `pending_package_releases`. Cold source/catalog/browser checks pass; packed-host Dnd disposition remains pending.                                                  |
-| Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                             |
-| `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                      |
-| Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                            |
+| Owner / area                                       | Workspace and saved state                                                                                                                                                                                                                                                                                                                                                                         |
+| -------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Root: Desktop                                      | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; parent `7df6725b`, with the uncommitted 13-file API 0.2.3/Core 0.7.3 intake and fresh pending `spec/src/history/E-CI-017.md`. Prior Bits commit `4f3ff601`. PR #1 remote remains `96a4139b`; newer local work is not pushed.                                                                                                    |
+| Root: this handoff                                 | `/private/tmp/lapis-desktop-release-handoff-20261031`; initial commit `ce1204d7` is backed up remotely as `release-handoff-20261031`. This isolated documentation workspace from `7df6725b` leaves the live product test snapshot unchanged. Later integrate its commits into PR #1, retaining both E-CI-017 and E-CI-018 navigation entries.                                                     |
+| Root: Plugins                                      | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`.                              |
+| `terminal_publication`: Mira/Core, then UI/profile | Mira: `/private/tmp/lapis-mira-math-release-20261031`; verified source is now committed as `c69a7cf6` over `e2ad5063`, with clean empty child `f3a778bc`. Product bytes equal qualified `c0902e0b`; only three evidence/spec files changed afterward and final spec passes all four lanes. Owner resumed the approved exact Dnd policy and packed-release queue. Nothing pushed or published yet. |
+| Same owner: UI                                     | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                                                          |
+| `tasks_publication`: Tasks                         | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                                                   |
+| Preserved math-story workspace                     | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                                                         |
 
 Original unrelated Plugins work in `qzorkqrm` and the conflicted local `main`
 bookmark remain untouched. Never manually move `main` or discard source edits.
@@ -243,5 +246,8 @@ start local headed/provider tests without the existing explicit opt-in.
 - **October 31, 12:29 UTC:** Initial handoff `ce1204d7` is committed and pushed
   to `release-handoff-20261031`, with all four canonical spec lanes passing.
   Mira's repaired source, 178-case Storybook lane and subsequent cold 60-case
-  browser suite pass under the unchanged known-failure policy. The exact Dnd
-  exception question is pending a user response.
+  browser suite pass under the unchanged known-failure policy.
+- **October 31, 12:39 UTC:** User approved the exact scoped Dnd compiler
+  exception through November 30. Mira source preparation is committed as
+  `c69a7cf6`; its owner resumed the normal packed-package and actual-release
+  queue. All other diagnostics and release/native gates remain blocking.
