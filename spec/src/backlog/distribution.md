@@ -15,10 +15,11 @@ native family cases but have not reached hosted CI.
 
 E-CI-013's coordinator regression passes11 cases and the cold Terminal native
 family passes5. A retained close failure is now traced beyond successful native
-Terminal release to Notes Sync's cached initialization error. Its API source
-regression moves one failure to two passes; 2,050 full unit and 268 cold catalog
-cases pass. Notes PR #51 still needs hosted CI, publication and Desktop
-adoption.
+Terminal release to Notes Sync's cached initialization error. Notes source PR
+#51 and version PR #55 are merged; API 0.2.3 is verified on npm's governed
+`next` tag from `0d9d4d92`, with all 14 publication/consumer gates passing in
+run 41190163735. Desktop must adopt that release and its rebuilt private App
+Profile, then prove the original native close boundary. API 0.2.2 lacks the fix.
 
 ACP secondary-window readiness/guarded exit, native queue resume and Bookmarks
 rename freshness still need final-head hosted proof. Preserve assertions,
@@ -74,6 +75,14 @@ approved for each candidate/wave; this backlog does not authorize tags,
 package/image dispatches, signing, deployment or installed-app replacement.
 
 ## Registry-install prerequisite
+
+The approved manual Bits UI 2.20.2 patch permits the pending Core/UI release
+work to proceed through normal qualification without an upstream release wait.
+Retain Link Preview and Slider repairs plus the verified FocusScope guard; every
+consumer installs the explicit root patch and frozen hash. E-CI-015 and
+[dependency intake](../current/local-dependencies.md) own qualification and the
+upstream-equivalence removal gate. A local patch or prepared source alone does
+not establish a published Core replacement or final Desktop acceptance.
 
 The current private application requests @lapis-notes/app-profile at ^0.0.0,
 which is absent from npm. CI has a pinned private public-build prerequisite.

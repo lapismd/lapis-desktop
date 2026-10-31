@@ -188,3 +188,26 @@ retaining the portable `^0.1.0` range. Native queue authority remains in the
 host and an unsupported draft retains Stop. Capability MUST remain independent
 of the transcript's own draft when the host owns its composer content
 separately.
+
+## Authorized Bits UI patch
+
+The user's October 31 instruction authorizes a tracked pnpm patch for registry
+`bits-ui` 2.20.2 while its owning fixes await an upstream release. Keep the
+existing Link Preview selection-timer and Slider destroyed-callback repairs, and
+the same-container FocusScope guard from upstream
+[Bits UI #2264](https://github.com/huntabyte/bits-ui/pull/2264), owner source
+`692fbdf5095941464561189fd81ffc2cb4b81c6c`. This is a scoped exception to the
+dependency-patch prohibition; public package names and npm ranges remain intact.
+
+The root workspace MUST register the exact versioned patch and retain its
+frozen-lock hash. A published dependency's pnpm patch configuration does not
+propagate to this application. Every resolved Bits copy MUST use the reviewed
+payload; dependency projections, cold catalogs and native bundles retain that
+same input. The patch SHA256 is
+`debd3bc7d43917f0967f0cc1e212fc5c7721c751d3b92bf8f31030d1c96289ad`. E-CI-015
+records actual consumer qualification.
+
+Remove each hunk only after a released upstream version contains the equivalent
+repair, a fresh unpatched install passes the original regression and all
+affected lifecycle/focus lanes, and every consumer updates its root mapping. The
+patch does not waive native acceptance, audit, distribution or visual gates.

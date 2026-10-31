@@ -317,7 +317,7 @@
 - [Shared-screen runtime failures and public controls](history/E-SHARED-005.md)
 - [Shared-screen final qualification and live view state](history/E-SHARED-006.md)
 - [Shared-screen main workspace integration](history/E-SHARED-007.md)
-- [Shared Rust application-services evidence](history/core/index.md)
+- [Authorized Bits UI patch intake](history/E-CI-015.md)
 - [Shared native vault engine intake](history/E-CORE-001.md)
 - [Shared core protocol dependency intake](history/E-CORE-002.md)
 - [Shared native file-service adapter](history/E-CORE-003.md)

@@ -3,6 +3,11 @@ onlyBuiltDependencies:
 
 # Native test tooling: consume the published security repairs.
 overrides:
+  # Temporary reviewed lifecycle/focus patch; see E-CI-015 for removal gates.
+  bits-ui: "2.20.2"
   "mocha>serialize-javascript": "^7.1.3"
   "@wdio/utils>@puppeteer/browsers": "^3.2.1"
   "katex@<0.18.2": "0.18.10"
+
+patchedDependencies:
+  bits-ui@2.20.2: patches/bits-ui@2.20.2.patch

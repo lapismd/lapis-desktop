@@ -63,7 +63,7 @@ export default defineConfig(
         canonicalPattern: canonicalContractPattern("spec/src/"),
         protected: [
           "^(?:\\.storybook/|catalog/(?!plugins/ai/|support/ai/)|(?:vite|vitest)\\.catalog\\.config\\.ts$)",
-          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
+          "^(?:src/|src-tauri/|public/|docs/|tests/|scripts/|patches/|\\.github/|index\\.html$|.*\\.(?:json|toml|yaml|mjs|ts|js)$|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
         ],
         ignore: ["(^|/)(?:target|dist|node_modules|gen)/", "^spec/book/"],
         rules: [
@@ -123,7 +123,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:config/dependency-audit\\.json$|scripts/|docs/|spec/book\\.toml$|tests/governance/|\\.github/|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|[^/]+\\.(?:json|toml|yaml|mjs)$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
+              "^(?:config/dependency-audit\\.json$|scripts/|patches/|docs/|spec/book\\.toml$|tests/governance/|\\.github/|AGENTS\\.md$|README\\.md$|LICENSE\\.md$|[^/]+\\.(?:json|toml|yaml|mjs)$|\\.gitignore$|\\.prettierignore$|\\.node-version$)",
             chapters: ["spec/src/current/governance.md"],
           },
         ],
