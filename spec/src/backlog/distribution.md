@@ -117,8 +117,8 @@ qualified Rust git pins after their npm projections are removed. Remove each
 remaining temporary projection after its released replacement or explicit
 private distribution contract is qualified in Desktop.
 
-| Package                     | Remaining transition                                          |
-| --------------------------- | ------------------------------------------------------------- |
+| Package                    | Remaining transition                                          |
+| -------------------------- | ------------------------------------------------------------- |
 | `@lapis-notes/app-profile` | Retain the intentionally private verified built prerequisite. |
 | `@lapismd/ai`              | Retain the intentionally private verified built client.       |
 
