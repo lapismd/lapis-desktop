@@ -9,6 +9,44 @@
       "expires": "2026-11-30",
       "reason": "No patched npm release exists. This dependency is used only by the Svelte Vite build plugin to merge repository-owned configuration. It is absent from production dependencies. Retain full diagnostics; block a changed path, production occurrence, new finding or expired approval.",
       "approvedBy": "User, 2026-10-30"
+    },
+    {
+      "advisory": "GHSA-3g3m-2fjr-6pw4",
+      "package": "glob",
+      "severity": "moderate",
+      "version": "10.5.0",
+      "path": ".>@wdio/cli>@wdio/config>glob",
+      "status": "approved",
+      "expires": "2026-11-30",
+      "reason": "Development-only WebdriverIO config tooling. The production audit reported no advisories. Glob 14 is not a drop-in replacement for this 10.5.0 edge. Remove this exception when that edge is patched or gone.",
+      "approvedBy": "User, 2026-10-31"
+    },
+    {
+      "advisory": "GHSA-g3hv-75wg-m249",
+      "package": "minimatch",
+      "severity": "moderate",
+      "findings": [
+        {
+          "version": "9.0.9",
+          "paths": [".>@wdio/cli>@wdio/config>glob>minimatch"]
+        },
+        {
+          "version": "5.1.9",
+          "paths": [".>@wdio/cli>create-wdio>ejs>jake>filelist>minimatch"]
+        },
+        {
+          "version": "3.1.5",
+          "paths": [".>@wdio/cli>create-wdio>recursive-readdir>minimatch"]
+        },
+        {
+          "version": "10.2.6",
+          "paths": [".>webdriverio>archiver>readdir-glob>minimatch"]
+        }
+      ],
+      "status": "approved",
+      "expires": "2026-11-30",
+      "reason": "Development-only WebdriverIO tooling on minimatch 3, 5, 9 and 10. The production audit reported no advisories. Minimatch 11 is not a drop-in replacement for those edges. Remove this exception when every listed edge is patched or gone.",
+      "approvedBy": "User, 2026-10-31"
     }
   ]
 }

@@ -1,6 +1,15 @@
 import { readFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
 
+function samePaths(actual, expected) {
+  return (
+    Array.isArray(actual) &&
+    Array.isArray(expected) &&
+    actual.length === expected.length &&
+    actual.every((path, index) => path === expected[index])
+  );
+}
+
 export function auditFindings(
   all,
   production,
@@ -35,15 +44,24 @@ export function auditFindings(
       /^\d{4}-\d{2}-\d{2}$/u.test(exception.expires) &&
       date <= exception.expires &&
       !productionIds.has(entry.github_advisory_id) &&
-      entry.severity === "low" &&
+      entry.severity === (exception.severity ?? "low") &&
       entry.module_name === exception.package &&
       entry.findings?.length > 0 &&
-      entry.findings.every(
-        (finding) =>
-          finding.version === exception.version &&
-          finding.paths?.length > 0 &&
-          finding.paths.every((path) => path === exception.path),
-      );
+      (exception.findings
+        ? entry.findings.length === exception.findings.length &&
+          entry.findings.every((finding) =>
+            exception.findings.some(
+              (expected) =>
+                finding.version === expected.version &&
+                samePaths(finding.paths, expected.paths),
+            ),
+          )
+        : entry.findings.every(
+            (finding) =>
+              finding.version === exception.version &&
+              finding.paths?.length > 0 &&
+              finding.paths.every((path) => path === exception.path),
+          ));
     if (matches) accepted.add(exception.advisory);
     else
       errors.push(

@@ -140,3 +140,16 @@ LD-TERM-002. Limitation: this release candidate does not qualify those four
 cases; the other headed cases on that run still count. Owner: Desktop. Re-enable
 a case only after a later hosted Native ARM64 run passes that case without a
 timeout or a missing `$` prompt.
+
+## Development audit exceptions
+
+[E-CI-037](../history/E-CI-037.md) records two development-only advisories that
+blocked Dependency audits on run
+[41246684301](https://github.com/lapismd/lapis-desktop/actions/runs/41246684301),
+revision `d83bec25d0467725f38b7ca9fd5ecbe739286769`, job `124682633629`.
+Command: `node scripts/ci-install.mjs --audit`. Evidence: the production audit
+reported no advisories; the full audit blocked `GHSA-3g3m-2fjr-6pw4` (glob
+10.5.0) and `GHSA-g3hv-75wg-m249` (minimatch 3.1.5, 5.1.9, 9.0.9 and 10.2.6),
+both under WebdriverIO tooling. Requirement: LD-GOV-006. Limitation: these
+exceptions do not qualify production dependencies and expire 2026-11-30. Owner:
+Desktop. Remove an exception when its listed edges are patched or gone.

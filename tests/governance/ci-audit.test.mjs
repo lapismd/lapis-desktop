@@ -65,6 +65,43 @@ test("production, new paths, changed versions and new advisories remain blocking
     assert.ok(assess({ ...advisory, ...change }).length);
 });
 
+test("a dated moderate development exception accepts only its exact findings", () => {
+  const glob = {
+    github_advisory_id: "GHSA-glob",
+    module_name: "glob",
+    severity: "moderate",
+    findings: [{ version: "10.5.0", paths: [".>tool>glob"] }],
+  };
+  const rules = {
+    exceptions: [
+      {
+        advisory: "GHSA-glob",
+        package: "glob",
+        severity: "moderate",
+        version: "10.5.0",
+        path: ".>tool>glob",
+        status: "approved",
+        expires: "2026-11-30",
+      },
+    ],
+  };
+  assert.deepEqual(assess(glob, report({}), rules), []);
+  assert.ok(assess({ ...glob, severity: "high" }, report({}), rules).length);
+  assert.ok(
+    assess(
+      {
+        ...glob,
+        findings: [
+          ...glob.findings,
+          { version: "10.5.0", paths: [".>app>glob"] },
+        ],
+      },
+      report({}),
+      rules,
+    ).length,
+  );
+});
+
 test("incomplete reports and obsolete exceptions fail closed", () => {
   assert.ok(auditFindings({ error: "network" }, report({}), policy).length);
   assert.ok(
