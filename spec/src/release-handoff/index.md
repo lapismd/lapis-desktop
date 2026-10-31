@@ -1,12 +1,11 @@
 # Migration and release handoff
 
-Last reviewed: **2026-10-31 13:29 UTC**. Overall status: **in progress**.
-Desktop PR #1 is open; final released-cohort and hosted native acceptance remain
-required before merge. No npm challenge is active. The Dnd compiler diagnostic
-below has received the user's specific approval through November 30. The Mira
-source and version PRs are merged, and **Mira 0.1.4 is fully released** from
-`6658fe56`. Core is adopting that actual version and removing its obsolete
-math-audit exception before full qualification.
+Last reviewed: **2026-10-31 13:39 UTC**. Overall status: **PAUSED at the user's
+explicit request**. Do not resume qualification, merges, publication or product
+work until the user asks. Prepared owned changes are pushed to the remote
+checkpoints below. No publication is mid-flight; Mira 0.1.4 is complete. Core's
+corrected candidate is saved with full qualification interrupted. Desktop PR #1,
+Tasks draft #1 and Mira docs #28 remain open; auto-merge is disabled.
 
 This is the single maintained operational handoff for this cross-repository
 work. Update it after material check results, commits, PR changes, publications,
@@ -25,7 +24,8 @@ verified dependencies in Desktop, pass every required CI aggregate and merge
 [Desktop #1](https://github.com/lapismd/lapis-desktop/pull/1). Desktop #2's
 consolidation is included by ancestry. The user authorized source and Changesets
 PR review/approval/merge, actual releases, the manual Bits UI patch, and
-creation of the Tasks/Docs source repositories. Continue this work; an open
+creation of the Tasks/Docs source repositories. Those authorizations remain
+available after an explicit resume; they do not override this pause. An open
 version PR or prepared archive does not complete publication.
 
 ## Completed and verified
@@ -51,12 +51,13 @@ Canonical Bits patch SHA-256:
 tarball: 1,903,722 bytes, SHA-256
 `4c07fdaa8fecc6d7f1ede2f03f89b5afb0728dae82b25dc0e55ec6ddda7ab6ca`.
 
-## Pending chain, in order
+## Pending after an explicit resume
 
-1. **Release Core's fixed dependency boundary.** Require actually published Mira
-   **~0.1.4**, remove Core's obsolete base-math audit exception, run required
-   source/version/release gates and verify the actual Core patch publication
-   (expected 0.7.4; not published yet).
+1. **Finish and release Core's saved candidate.** The WIP already requires
+   actual Mira **~0.1.4**, removes the obsolete base-math audit exception and
+   corrects the minimum-version guard. Recheck main/workspace state, complete
+   interrupted full qualification and packing, then source/version/release gates
+   and actual publication (expected 0.7.4; not published yet).
 2. **Complete downstream source and version releases.** Adopt the verified fixed
    Core in Agent/Repository UI, Tasks and Plugins. Repeat the required exact,
    cold and full acceptance, then source PR merge, bot Changesets diff review,
@@ -161,20 +162,53 @@ applicable audits remain blocking. Changed visuals stay `visual-pending`.
 Workspace paths are local recovery pointers, not portable dependency inputs.
 Inspect `jj st`, exact revisions and current remote state before continuing.
 
-| Owner / area                                  | Workspace and saved state                                                                                                                                                                                                                                                                                                                                            |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Root: Desktop                                 | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean over committed `1849cdf4`, empty child `e7794364`. Bookmark `desktop-api023-core073-qualified-20261031` preserves the intermediate intake. E-CI-017 is committed and remains pending final cohort/native proof. PR #1 remote remains `96a4139b`; new product work is not pushed.             |
-| Root: this handoff                            | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote branch `release-handoff-20261031` preserves the independent documentation lineage from `7df6725b`. Integrate it into the final product head while retaining all new history navigation entries, including E-CI-017.                                                                                    |
-| Root: Plugins                                 | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at committed `5df6d7cf` (empty child `c35ec125`). Stack contains eligibility `e22d45d4`/`13800e08`, API intake `26bd3df9`, API artifacts `c9c76f7f`, Core intake `34d3a1a1`, artifacts `3ffd1a94`, Reading Math `d3893215` and integration `5df6d7cf`. No new push beyond merged patch PR #43 at `14395ff0`. |
-| `terminal_publication`: Core, then UI/profile | Core: `/private/tmp/lapis-core-required-release-20261031`, from current main `8e9b3f29`; applying actual Mira ~0.1.4 and strict zero-audit boundary. Mira: `/private/tmp/lapis-mira-math-release-20261031`; complete release `6658fe56`, production run `41205035585`. Next: Core actual release, UI, then private Notes profile.                                    |
-| Same owner: UI                                | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over release-workflow `6f9924a4`; no push. Original nine-file readiness workspace remains untouched.                                                                                                                                                                                             |
-| `tasks_publication`: Tasks                    | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519` over `200c9887`. PR #1 remains draft at remote `adc24f35`, with current evidence in its body; final source changes are not pushed. Resume after actual fixed Core handoff.                                                                                                                      |
-| Preserved math-story workspace                | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                                            |
+| Owner / area                                  | Workspace and saved state                                                                                                                                                                                                                                                                                                                             |
+| --------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Root: Desktop                                 | `/private/tmp/lapis-desktop-ci/workspace/lapis-desktop-registry`; clean at `1849cdf4`, pushed to [wip/desktop-release-paused-20261031](https://github.com/lapismd/lapis-desktop/tree/wip/desktop-release-paused-20261031). E-CI-017 remains pending final cohort/native proof. PR #1 stays at `96a4139b`; auto-merge is off.                          |
+| Root: this handoff                            | `/private/tmp/lapis-desktop-release-handoff-20261031`; remote `release-handoff-20261031` is the maintained paused tracker. Its independent documentation lineage starts at `7df6725b`. After resume, integrate it into the final product head retaining all history entries, including E-CI-017.                                                      |
+| Root: Plugins                                 | `/private/tmp/lapis-plugins-bits-patch-20261031`; clean at `5df6d7cf`, pushed to [wip/plugins-release-paused-20261031](https://github.com/lapismd/lapis-plugins/tree/wip/plugins-release-paused-20261031). Includes eligibility, API/Core intake, reproduced artifacts and Reading Math. Original unrelated work and conflicted `main` are preserved. |
+| `terminal_publication`: Core, then UI/profile | `/private/tmp/lapis-core-required-release-20261031`; clean at `16cda140`, pushed to [wip/core-fixed-mira-20261031](https://github.com/lapismd/design-core/tree/wip/core-fixed-mira-20261031). Candidate from `8e9b3f29`; full qualification interrupted, no Core PR/release. Mira is fully released; docs PR #28 is green/open with auto-merge off.   |
+| Same owner: UI                                | `/tmp/lapis-agent-ui-patched-release-20261031`; clean at `9976a303` over `6f9924a4`, pushed to [wip/ui-release-preparation-20261031](https://github.com/lapismd/agent-ui/tree/wip/ui-release-preparation-20261031). No source PR/version/release. Fixed-Core qualification pending. Original nine dirty readiness files remain untouched.             |
+| `tasks_publication`: Tasks                    | `/private/tmp/lapis-tasks-publication-20261030`; clean at `0cec0519`, pushed to [wip/tasks-release-paused-20261031](https://github.com/lapismd/lapis-plugin-tasks/tree/wip/tasks-release-paused-20261031). Draft PR #1 stays at `adc24f35`, auto-merge off; its body links the nine-commit-ahead checkpoint. No worker or publication active.         |
+| Preserved math-story workspace                | `/private/tmp/lapis-plugins-reading-math-20261031`, original `rytmpuxv`/`4da7d9c4` on `c9c76f7f`; integrated recoverably into Root Plugins as `d3893215`.                                                                                                                                                                                             |
 
 Original unrelated Plugins work in `qzorkqrm` and the conflicted local `main`
 bookmark remain untouched. Never manually move `main` or discard source edits.
 
-## Active run and precise resume commands
+## Stopped workers and precise resume commands
+
+All owned product/test workers and agent release queues are stopped. No local
+publication is active. Existing remote CI may finish without follow-up; no open
+owned PR has auto-merge enabled. Mira docs #28 at `b14a7f52` is already green in
+all three jobs of `41206080306` and remains deliberately unmerged. Notes
+private-profile work has no edits.
+
+Core R1 retained 919 unit passes and one stale range guard failure. That exact
+guard now rejects 0.1.2/0.1.3 and admits 0.1.4/0.1.5; one before-failure became
+one pass. R2 passed registry/Bits checks, 17 guards, the exact guard and all
+four editor units plus spec-first, then was stopped during four-family Storybook
+at **13:35:16 UTC**, exit **143**. Its raw result still says `running` because
+SIGTERM prevented finalization; it is neither a live worker nor a pass. R1 is
+also stopped, exit 1. Full Core qualification/packing remains pending. Retain
+both containers/reports and use a new run directory after an explicit resume.
+
+Core R2 log: `/tmp/lapis-core-fixed-mira-validation-20261031/driver-r2.log`;
+results: `/tmp/lapis-core-fixed-mira-validation-20261031-r2/results/`. The
+owning Core WIP contains canonical pause evidence. Local recovery detail:
+`/tmp/lapis-terminal-publication-paused-20261031.md`.
+
+After explicit resume and fresh main/workspace/dependency checks, if Core main
+is still `8e9b3f29`, the retained combined runner can restart from its
+workspace:
+
+```sh
+PATH=/tmp/lapis-mira-math-validation-20261031/transport/bin:/Users/stevejuma/.nvm/versions/node/v24.10.0/bin:$PATH node /tmp/lapis-core-fixed-mira-validation-20261031/run.mjs 8e9b3f295ab151fb2f44661a55ccaa0527f3e524 0.1.4 /tmp/lapis-core-fixed-mira-validation-20261031-r3
+```
+
+Complete `pnpm checks` and `pnpm packages:pack`, then source/version PRs and
+actual Core publication. Do not recreate old mutable probe bookmarks or resume
+tests from an expired session ID. If temporary helper files are unavailable,
+recover the saved WIP and follow its tracked validation guide.
 
 Desktop's intermediate pipeline and receipt checks are complete; exec sessions
 50800 and 32128 have been collected. No Desktop product worker is active. Logs:
@@ -216,7 +250,7 @@ Verified Desktop runs:
   Bits edges/two peer contexts with all three exact patched postimages;
   `api023-core073-graph.json` in the quality run's results.
 
-Next Root actions: wait for the actually published fixed Mira/Core boundary,
+After an explicit resume, wait for the actually published fixed Core boundary,
 then finish Plugins' Bases/History floor update, full gates, source/version PRs
 and actual releases. Trigger the retained Tasks owner after fixed Core is live.
 UI/profile ownership remains with the Mira/Core owner. The read-only Changesets
@@ -310,3 +344,9 @@ start local headed/provider tests without the existing explicit opt-in.
   exact-source/run provenance and tag/GitHub release verify. Root's exact-source
   environment and artifact approval are recorded above. Core's actual ~0.1.4
   floor and strict production-audit qualification are now in progress.
+- **October 31, 13:39 UTC — user-requested pause:** Desktop, Plugins, Core, UI
+  and Tasks prepared work is saved on the exact remote WIP branches above. Local
+  owned workspaces are clean; Core R2 and all other owned workers are stopped.
+  Mira 0.1.4 publication is complete; no publication is mid-flight. Existing PRs
+  are left open with auto-merge off. Complete only this checkpoint's
+  documentation validation/backup, then stop until explicitly resumed.
