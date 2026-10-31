@@ -187,3 +187,4 @@
 - [Completed Mira publication handoff](../history/E-CI-024.md)
 - [Saved remote checkpoints and explicit pause](../history/E-CI-025.md)
 - [Phase 1 resume and Mira docs merge](../history/E-CI-026.md)
+- [Passed Core qualification and open source pull request](../history/E-CI-027.md)
