@@ -397,4 +397,4 @@ execution and import/ACP fixture redaction semantics remain unchanged.
 
 E-AI-110: shared Max VRAM units/host-owned GGUF browsing, separate from import.
 Boot: 15s (E-CI-032). ACP queue/close/windows/reload is unqualified
-(E-CI-042/E-RELEASE-004); E-RELEASE-008 defers background admission/cold reset.
+(E-CI-042/E-RELEASE-004); E-RELEASE-008/010 defer admission and queue cases.

@@ -54,6 +54,12 @@ closure uses the existing native fence/drain ownership.
 
 ## Qualification
 
+E-RELEASE-010 quarantines the exact native queue admission/browser-authority
+case after intermittent renderer-readiness failures on an unchanged application
+cohort. Its full body, 90000ms case timeout and shared 15000ms readiness
+deadline remain intact. That case's admission/refusal proof remains unqualified;
+the other enabled native queue cases still gate releases.
+
 Start with exact renderer transport/declaration regressions, including opaque
 misleading labels, absent metadata, unchanged captures, exact scopes, all five
 commands and typed uncertain refusals without retry. Preserve the extracted

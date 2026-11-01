@@ -219,7 +219,10 @@ test("closing a preview's owning tab retains its failed draft and App shutdown b
 
 test(
   "deleted preview recovery resets a retired writer and permits native shutdown",
-  { timeout: 60000 },
+  {
+    timeout: 60000,
+    skip: "Hosted ARM64 quarantine E-RELEASE-010: intermittent deleted-preview merged-file recreation timeout.",
+  },
   async (context) => {
     const { browser, session, file } = await fixture(
       context,

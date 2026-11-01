@@ -205,7 +205,7 @@ distribution tooling, not application implementation. The later
 feature/lifecycle suite was not reached and is not counted as passing. Artifact
 13089557346 retains the failed attempt. Requirement: LD-DESK-001/002/005.
 Limitation: initial branding/progress/control clearance remains unqualified for
-this preview. There are 15 disclosed quarantines: this cold-start case plus the
+this preview. That checkpoint had 15 quarantines: this cold-start case plus the
 14 existing feature cases. Owner: Desktop native automation. Re-enable after the
 capture/layout boundary is understood and the original case plus complete cold
 startup family pass reliably on fresh hosted runs with unchanged assertions and
@@ -225,11 +225,41 @@ family finished 94 passed, 1 failed and 14 skipped. Startup had 2 passes and 1
 skip; the later resource/development-WebView family was not run. Requirements:
 LD-DESK-003/005 and LD-AI-001. Limitation: caller/frame, reload-scope,
 vault-closure and cold-reset coverage from this complete case is unqualified.
-There are now 16 disclosed quarantines (1 startup, 15 feature). Owner: Desktop
+That checkpoint had 16 quarantines (1 startup, 15 feature). Owner: Desktop
 native automation. Re-enable after the readiness boundary is understood and the
 original case plus complete native family pass reliably in fresh hosted runs
 with unchanged assertions and deadlines. Enabled native gates and ordinary
 packaged installation qualification remain mandatory.
+
+[E-RELEASE-010](../history/E-RELEASE-010.md) adds two exact intermittent cases
+under the maintainer's RC direction. Queue admission/browser-authority passed in
+PR5 run 41329397152, job 124916613683 (3684.871208ms), then failed on the same
+application cohort in main8dc63055 run 41332697278, job 124925996739
+(16372.17ms), before driver evaluation at `native-session.mjs:124`. It passed
+again in PR #7 run 41333250465, job 124927638150 (9343.755041ms). Keep its full
+body, 90000ms case timeout and shared 15000ms readiness deadline unchanged.
+
+Deleted-preview recovery passed on PR #5 (5211.512416ms) and main `8dc63055`
+(8409.686792ms), then failed in PR #7 head `93c75a08` (23661.083583ms) at
+`preview-conflicts.test.mjs:252`: merged-file recreation waited 15000ms. The
+retained draft remained visible; Target.md stayed absent. The later shutdown
+assertion was not reached. Keep its full body, 60000ms case timeout and file
+wait unchanged. Other preview/conflict cases remain enabled. No application,
+public package, helper or shared acceptance implementation changed in PR7.
+
+Main `8dc63055` finished 93 feature passes, 2 failures and 14 feature skips. PR
+#7 finished 93 feature passes, 1 failure and 15 feature skips. Both startup
+families had 2 passes/1 skip; neither reached the later
+resource/development-WebView family. Failed artifacts 13094867223 and
+13095249631 retain those attempts; E-RELEASE-010 records their verified ZIP
+hashes. Total current quarantine: 18 cases (1 startup, 17 feature). Queue
+admission/refusal and deleted-preview recreation/shutdown coverage from these
+cases remain unqualified. Requirements: LD-AI-005, LD-FILE-008 and LD-DESK-005.
+Owner: Desktop native automation, with file recovery owned by Desktop/Notes
+editing. Re-enable each after its boundary is understood and the original case
+plus complete native family pass reliably in fresh hosted runs with original
+assertions/deadlines. Enabled exact-source native and ordinary package/Homebrew
+qualification remain mandatory.
 
 ## Development audit exceptions
 

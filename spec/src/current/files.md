@@ -6,6 +6,12 @@ disk bytes and review-removal assertions (E-CI-012). Visible deleted-file copy
 alone does not establish that the asynchronous refresh guard has released.
 Hosted Explorer rename kept both note bodies and is quarantined (E-CI-042).
 
+E-RELEASE-010 quarantines the intermittent deleted-preview merged-file
+recreation case. Its draft remained visible and the deleted file stayed absent
+in the failed receipt. Reviewed-file recreation and later shutdown from that
+complete case remain unqualified; other preview/conflict cases stay enabled. Its
+original body, 60000ms case timeout and 15000ms file-write wait remain intact.
+
 The R1.1 shared-core extraction moves checked file IO, atomic/conditional
 writes, exclusive mutations and retained action targets into Notes-owned
 `lapis-app-core`. Desktop consumes those public native types directly and keeps
