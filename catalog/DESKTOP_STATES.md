@@ -277,3 +277,8 @@ named-profile failure/recovery case.
 E-AI-113: `AI/Sent context/NewChat`, `AgentSwitch` and `UnknownOutcome` cover
 startup/profile context, forwarded conversation evidence, rendered/raw
 inspection, both views and honest unknown delivery through production chat.
+
+Website media: `Desktop/Website media/Workspace` seeds a realistic project in
+the actual Notes workspace. It remains visual-pending and owns no native
+effects. `catalog/website-media.json` also fixes the owned Launcher scene, which
+sets and restores the real launcher appearance preference.

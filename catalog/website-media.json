@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "repository": "https://github.com/lapismd/lapis-desktop",
+  "captures": [
+    {
+      "id": "desktop-workspace",
+      "storyId": "desktop-website-media--workspace",
+      "alt": "The Tauri Desktop Notes workspace with Explorer and a project note."
+    },
+    {
+      "id": "desktop-launcher",
+      "storyId": "desktop-website-media--launcher",
+      "alt": "The Desktop vault launcher before a vault has been opened."
+    }
+  ]
+}

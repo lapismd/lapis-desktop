@@ -459,5 +459,14 @@
   },
   "catalog/plugins/terminal/Terminal.stories.ts": {
     "kind": "application"
+  },
+  "catalog/plugins/WebsiteMedia.stories.ts": {
+    "kind": "application",
+    "stories": {
+      "Launcher": {
+        "kind": "component",
+        "subject": "src/components/vaults/VaultLauncher.svelte#default"
+      }
+    }
   }
 }

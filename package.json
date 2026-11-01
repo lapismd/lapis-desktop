@@ -145,6 +145,7 @@
     "webdriverio": "9.32.0",
     "turbo": "^2.5.4",
     "@lapis-notes/lapis-plugin-tasks": "^0.1.0",
-    "@lapis-notes/bases": "^0.1.4"
+    "@lapis-notes/bases": "^0.1.4",
+    "@lapismd/storybook-addon-visual-delta": "^0.1.0"
   }
 }

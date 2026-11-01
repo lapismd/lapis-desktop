@@ -259,3 +259,5 @@ this list.
 
 - [Shared conflict presentation intake](E-CI-003.md)
 - [Combined source repair intake](E-CI-004.md)
+
+- [Website product capture scenes](E-SITE-001.md)

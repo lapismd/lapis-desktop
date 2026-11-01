@@ -5,6 +5,7 @@ import catalog from "../vite.catalog.config.ts";
 const config: StorybookConfig = {
   stories: ["../catalog/**/*.mdx", "../catalog/**/*.stories.ts"],
   addons: [
+    "@lapismd/storybook-addon-visual-delta",
     "@storybook/addon-docs",
     "@storybook/addon-a11y",
     "@storybook/addon-themes",

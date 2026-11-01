@@ -388,7 +388,6 @@ table. Disabling AI removes both AI preferences and Agents registrations.
 E-AI-089 adopts reviewed chat presentation in the existing AI plugin. Plugin
 identity, App ownership, disposal and public host boundaries are unchanged.
 Native conversations augment normal ACP; no replacement plugin is introduced.
-
 E-AI-095 extends the existing Native Notes binding and workspace-lifecycle
 review stories with provider-discovery counters and bottom-panel/draft
 assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
@@ -397,4 +396,5 @@ and lifecycle states (E-CORE-030); App/vault own metadata and status.
 
 E-AI-106/107/110 review header actions, required provider models and shared
 Compute inputs through production stories. Shell lifecycle ReadySessionFailure
-covers host Problems/toast presentation; native gates remain.
+covers host Problems/toast presentation; native gates remain. Website media uses
+governed production stories; native and visual gates remain separate.
