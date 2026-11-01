@@ -211,6 +211,26 @@ capture/layout boundary is understood and the original case plus complete cold
 startup family pass reliably on fresh hosted runs with unchanged assertions and
 deadlines. All enabled exact-source native gates remain required.
 
+[E-RELEASE-008](../history/E-RELEASE-008.md) quarantines the complete background
+AI admission/cold-reset case under the maintainer's RC guidance. It passed in
+run 41324538550, job 124901661158, on PR head
+`c6a37f74ee209823e6a250e31695e6b5cd3d12a6` in 7063.707666ms. The merged main
+`5385f7e46a07387552d0485184ef384e3c1a7ba6` has an identical tree, but run
+41327592484, job 124910729657, failed the second hidden process's renderer
+readiness assertion at `native-session.mjs:124` from `ai-admission.test.mjs:171`
+(21568.4285ms). The original 15000ms deadline is unchanged. Artifact 13093916788
+retains the failure; its ZIP SHA-256 is
+`805f9e89be854524cb39c4d8fc8d0a56ac82e0922d68d8d4fa6f73c9a6be6b7c`. The feature
+family finished 94 passed, 1 failed and 14 skipped. Startup had 2 passes and 1
+skip; the later resource/development-WebView family was not run. Requirements:
+LD-DESK-003/005 and LD-AI-001. Limitation: caller/frame, reload-scope,
+vault-closure and cold-reset coverage from this complete case is unqualified.
+There are now 16 disclosed quarantines (1 startup, 15 feature). Owner: Desktop
+native automation. Re-enable after the readiness boundary is understood and the
+original case plus complete native family pass reliably in fresh hosted runs
+with unchanged assertions and deadlines. Enabled native gates and ordinary
+packaged installation qualification remain mandatory.
+
 ## Development audit exceptions
 
 [E-CI-037](../history/E-CI-037.md) records two development-only advisories that

@@ -8,6 +8,12 @@ retaining a bounded tail. A listening driver socket alone cannot prove IPC
 readiness; early evaluation can lose replies during navigation. Keep the bounded
 startup deadline.
 
+E-RELEASE-008 quarantines the background AI admission/cold-reset case after an
+intermittent second-process readiness failure on an unchanged tree. Its complete
+body and 15-second readiness deadline remain intact. Caller/frame, reload-scope,
+vault-closure and cold-reset coverage from that case remains unqualified; the
+other enabled native cases still gate releases.
+
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,
 vault lifetime and cold admission reset without visible UI or animation claims.
