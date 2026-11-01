@@ -209,6 +209,9 @@
 - [Native watcher shutdown cancellation](../history/E-RELEASE-003.md)
 - [Hosted ACP reload quarantine](../history/E-RELEASE-004.md)
 - [Linux Tauri preview distribution](../history/E-RELEASE-005.md)
-
 - [Cold progress geometry quarantine](../history/E-RELEASE-006.md)
 - [Affected CI gates and Rust caching](../history/E-RELEASE-007.md)
+- [Dependency automation PR governance](../history/E-DEPENDENCIES-001.md)
+- [Compatible first-party dependency intake](../history/E-DEPENDENCIES-002.md)
+
+- [Dependency automation CI rebase](../history/E-DEPENDENCIES-003.md)

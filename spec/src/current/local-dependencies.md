@@ -84,12 +84,13 @@ retain their owning contracts.
 ## Current registry and private inputs
 
 E-CI-030 selects the published cohort on the API 0.2.3 intake from E-CI-017.
-Declared registry minima are API 0.2.3, UI 0.1.5, Workspace 0.3.1, Mira ~0.1.4,
-Core ^0.8.0, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0, History
-^0.2.0, Tasks ^0.1.1 and Terminal 0.1.2. Mira companions remain ~0.0.3. API
-stays the published 0.2.3 package and is not republished. Final frozen-graph,
-audit, portable and hosted native qualification remains pending; a declared
-minimum is not consumer acceptance.
+E-DEPENDENCIES-002 refreshes compatible UI/Markdown patches while retaining the
+private Profile/API source pair. Declared minima are API 0.2.3, UI 0.1.6,
+Markdown 0.2.1, Workspace 0.3.1, Mira ~0.1.4, Core ^0.8.0, Agent UI ^0.2.0,
+Repository UI ^0.1.1, Bases ^0.2.0, History ^0.2.0, Tasks ^0.1.1 and Terminal
+0.1.2. Mira companions remain ~0.0.3. API stays the published 0.2.3 package and
+is not republished. Final frozen-graph, audit, portable and hosted native
+qualification remains pending; a declared minimum is not consumer acceptance.
 
 E-CI-017's intermediate API 0.2.3/Core 0.7.3 input passed full quality, 596 Node
 and 746 policy cases, 259 Linux Rust tests, all 2,128 cold catalog cases,

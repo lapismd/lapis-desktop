@@ -1,5 +1,7 @@
 # Governance — [CI](ci.md), [native turns](ai-adapter.md)
 
+Trusted bot PRs skip specs; functional/release and Changeset gates remain.
+
 [Shared screens](shared-screen-integration.md) own integration; retained
 [backlog](../backlog.md) retains outstanding acceptance.
 [Local validation](../../../docs/validation.md) defines Docker/native commands,
