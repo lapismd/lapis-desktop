@@ -4,6 +4,7 @@ Native missing-file recovery waits for the captured review's disk-accept action
 to become enabled after refresh, then retains exact draft, deletion, renamed
 disk bytes and review-removal assertions (E-CI-012). Visible deleted-file copy
 alone does not establish that the asynchronous refresh guard has released.
+Hosted Explorer rename kept both note bodies and is quarantined (E-CI-042).
 
 The R1.1 shared-core extraction moves checked file IO, atomic/conditional
 writes, exclusive mutations and retained action targets into Notes-owned

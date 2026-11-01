@@ -14,7 +14,8 @@ failed backup preparation must preserve the same related editors and drafts.
 
 The original native-hosting and shared-workspace proofs retain their separate
 receipts. E-POPOUT-004 qualifies ordinary application popup admission; later
-changes retain the native lifetime and persistence boundaries below.
+changes retain the native lifetime and persistence boundaries below. Hosted
+popup resize left the native controls off center (E-CI-042).
 
 ## Requirements
 

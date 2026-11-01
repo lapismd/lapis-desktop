@@ -397,4 +397,4 @@ execution and import/ACP fixture redaction semantics remain unchanged.
 
 E-AI-110 adds shared unit-aware Max VRAM input and host-owned GGUF browsing;
 selection stays separate from import. Shell boot may take 15s (E-CI-032). The
-hosted Agent queue reload case is quarantined (E-CI-036).
+hosted queue, close, and window ACP cases are quarantined (E-CI-042).

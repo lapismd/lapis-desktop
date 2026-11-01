@@ -141,6 +141,26 @@ cases; the other headed cases on that run still count. Owner: Desktop. Re-enable
 a case only after a later hosted Native ARM64 run passes that case without a
 timeout or a missing `$` prompt.
 
+[E-CI-042](../history/E-CI-042.md) quarantines eight more headed cases that
+failed after that green run. Command: `pnpm ci:headed`. Evidence: run
+[41251640087](https://github.com/lapismd/lapis-desktop/actions/runs/41251640087)
+job `124686411810` on `20999505d25f21828217b42ac9c002d18eae408f` had 101 passed,
+4 skipped, and 4 failed; run
+[41253897388](https://github.com/lapismd/lapis-desktop/actions/runs/41253897388)
+job `124693184977` on `5eaf084605f7fbc9fc5b3457289c67663d9c29eb` had 98 passed,
+8 skipped, and 3 failed; run
+[41257308621](https://github.com/lapismd/lapis-desktop/actions/runs/41257308621)
+job `124703112760` on `9d8531b36711ed7b36ada0bd199d8d311fb7d8a0` had 97 passed,
+11 skipped, and 1 failed. Reason: ACP close ended with `SIGKILL`, a blocked note
+save kept both bodies, the portable Bookmarks wait timed out after 10000ms,
+three shells had no `$` prompt, Explorer rename kept both note bodies, popup
+controls were not centered after resize, and the second ACP WebView handle was
+gone. Requirement: LD-DESK-005, LD-AI-001, LD-AI-002, LD-FILE-008, LD-POP-001,
+LD-PLUG-003, and LD-TERM-002. Limitation: this release candidate does not
+qualify those eight cases. Owner: Desktop. Re-enable a case only after a later
+hosted Native ARM64 run passes it without a forced kill, a mixed note body, a
+timeout, off-center native controls, a missing window, or a missing `$` prompt.
+
 ## Development audit exceptions
 
 [E-CI-037](../history/E-CI-037.md) records two development-only advisories that
