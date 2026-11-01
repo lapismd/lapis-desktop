@@ -1,5 +1,10 @@
 # Automatic vault backup
 
+E-RELEASE-014 quarantines one macOS ARM64 Rust Original/Managed reader case
+after intermittent backup initialization failed with a sanitized IO error. Its
+full source-independence and managed-history boundary remains unqualified; Linux
+retains the unchanged case. Production backup and all other gates stay.
+
 ## AI turn observations
 
 When automatic Repository History is enabled, AI dispatch MUST establish a

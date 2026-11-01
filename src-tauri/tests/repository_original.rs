@@ -9,6 +9,10 @@ use serde_json::json;
 use std::fs;
 
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
+#[cfg_attr(
+    all(target_os = "macos", target_arch = "aarch64"),
+    ignore = "Hosted ARM64 quarantine E-RELEASE-014: intermittent backup initialization after Original history reads"
+)]
 async fn original_and_managed_reads_share_one_client_without_initializing_original_history() {
     let temp = tempfile::tempdir().unwrap();
     let root = temp.path().canonicalize().unwrap();

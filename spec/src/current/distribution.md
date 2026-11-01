@@ -50,8 +50,10 @@ admission/cold-reset case after an intermittent readiness failure. E-RELEASE-010
 adds queue admission/readiness and deleted-preview merged-file recreation.
 E-RELEASE-012 defers the Explorer rename/move/cold-layout case after
 intermittent filename replacement. E-RELEASE-013 defers the vault-return case
-after replacement input retained the original note body; 20 native cases are
-quarantined.
+after replacement input retained the original note body. E-RELEASE-014 defers
+native queue-owner startup and one macOS ARM64 Rust reader/backup case. There
+are 21 native UI quarantines plus that one additional Rust quarantine. Linux
+retains the Rust case; ordinary package/Homebrew checks remain required.
 
 Qualified assets include all three archives, manifest, per-target build and
 bundle reports, Homebrew receipts, limitations and SHA256SUMS. The protected job

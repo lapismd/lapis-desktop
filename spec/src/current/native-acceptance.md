@@ -33,7 +33,15 @@ E-RELEASE-012's concatenated filename, this motivates shared native focus,
 selection and input-delivery investigation; neither artifact proves the exact
 driver cause. Preserve both complete callbacks, assertions and deadlines.
 Vault-return/cancellation/database coverage from the new case remains
-unqualified. Total quarantine is 20 cases: 1 startup and 19 feature cases.
+unqualified.
+
+E-RELEASE-014 additionally quarantines the exact native
+queue-owner/cold-recovery case after its first process missed renderer readiness
+before driver evaluation. Its complete callback and deadlines remain intact.
+There are now 21 native UI quarantines: 1 startup and 20 feature cases. A
+separate Rust Original/Managed reader case is ignored only on macOS ARM64 after
+intermittent backup startup; Linux retains it. These cases remain unqualified;
+no production policy changes.
 
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,

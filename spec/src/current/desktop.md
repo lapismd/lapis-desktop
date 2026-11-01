@@ -13,8 +13,8 @@ match admitted runtime versions and exact helper hashes. Hosted logs stream;
 assertions/deadlines stay (E-CI-009). Terminal 0.1.2 uses qualified Git sources
 ([intake](local-dependencies.md), E-CI-011/013). Confirmed scoped shutdown
 settles stale denied cleanup only on close. Tasks use the packed pin (E-CI-034);
-Graph uses real hover (E-CI-012). ARM64 skips: E-CI-036/044,
-E-RELEASE-004/006/008/010/012/013. Native gates remain.
+Graph uses real hover (E-CI-012). ARM64 skips: E-CI-036/042/044,
+E-RELEASE-004/006/008/010/012/013/014. Gates remain.
 
 ## Requirements
 
