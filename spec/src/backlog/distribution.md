@@ -27,6 +27,20 @@ deadlines, admission and retry rules. E-CI-013 retains failed attempts and
 separates source from consumer qualification. Every required aggregate must pass
 before merge.
 
+## Manual full qualification history
+
+[E-RELEASE-011](../history/E-RELEASE-011.md) records the manual CI blocker on
+main `2e63d223e029ac229b9e5656c611bf450c24acaf`. Selected PR #7 checks passed,
+including 92 feature passes/17 skips, 2 startup passes/1 skip and 2 resource
+passes. Explicit full run 41339715598 failed Governance job 124947318923: manual
+dispatch selected `root()` and treated historical receipts as fresh, reporting
+their old paths as missing. The remaining incomplete work was cancelled; this
+run does not qualify a release. Fix only manual revision selection to require
+the checked-out source's fetched first parent. Keep initial-push, PR and push
+semantics and all historical receipt contents intact. Local regression and
+complete hosted qualification must pass before candidate preparation; this is a
+tooling repair, not another native case quarantine.
+
 ## Distribution and platform qualification
 
 Former reference: M11. Dependencies: Native AI product qualification; explicit

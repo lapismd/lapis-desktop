@@ -218,3 +218,4 @@
 - [Background AI cold readiness quarantine](../history/E-RELEASE-008.md)
 - [RC quarantine and dependency integration](../history/E-RELEASE-009.md)
 - [Queue readiness and deleted-preview quarantine](../history/E-RELEASE-010.md)
+- [Manual full CI receipt ancestry](../history/E-RELEASE-011.md)
