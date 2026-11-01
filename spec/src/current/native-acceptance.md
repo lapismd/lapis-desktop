@@ -20,6 +20,21 @@ deadlines remain intact. Ordinary packaged-app acceptance and all other enabled
 native cases remain required; these two skipped cases do not qualify their
 original admission/refusal or deleted-file recovery/shutdown boundaries.
 
+E-RELEASE-012 additionally quarantines the complete Explorer rename/move/layout
+case after intermittent filename input appended to the old name. Preserve its
+callback, assertions and deadlines. Its rename, move and cold-layout boundary
+remains unqualified; other enabled native cases and ordinary package checks
+remain required.
+
+E-RELEASE-013 quarantines the exact vault-return/cancel/database case after its
+replacement input left the original body behind the new text. It passed in the
+preceding run with identical product, cohort and helper inputs. Together with
+E-RELEASE-012's concatenated filename, this motivates shared native focus,
+selection and input-delivery investigation; neither artifact proves the exact
+driver cause. Preserve both complete callbacks, assertions and deadlines.
+Vault-return/cancellation/database coverage from the new case remains
+unqualified. Total quarantine is 20 cases: 1 startup and 19 feature cases.
+
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,
 vault lifetime and cold admission reset without visible UI or animation claims.

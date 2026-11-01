@@ -1,6 +1,6 @@
 # Governance — [CI](ci.md), [native turns](ai-adapter.md)
 
-Trusted bot PRs skip specs; functional/release and Changeset gates remain.
+Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 
 [Shared screens](shared-screen-integration.md) own integration; retained
 [backlog](../backlog.md) retains outstanding acceptance.

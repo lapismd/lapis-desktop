@@ -3,6 +3,12 @@
 Regular pull-request and main CI select complete affected gates. Preview
 publication retains the separately required full exact-source qualification.
 
+Manual full qualification uses the source commit's first parent as its
+specification/evidence base, retaining historical receipt ancestry. Missing or
+invalid parent history rejects qualification. The existing initial-push root
+comparison remains separate; a manual run must not reclassify every old receipt
+as newly authored.
+
 ## Requirements
 
 | ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                              |

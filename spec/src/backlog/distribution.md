@@ -27,6 +27,20 @@ deadlines, admission and retry rules. E-CI-013 retains failed attempts and
 separates source from consumer qualification. Every required aggregate must pass
 before merge.
 
+## Manual full qualification history
+
+[E-RELEASE-011](../history/E-RELEASE-011.md) records the manual CI blocker on
+main `2e63d223e029ac229b9e5656c611bf450c24acaf`. Selected PR #7 checks passed,
+including 92 feature passes/17 skips, 2 startup passes/1 skip and 2 resource
+passes. Explicit full run 41339715598 failed Governance job 124947318923: manual
+dispatch selected `root()` and treated historical receipts as fresh, reporting
+their old paths as missing. The remaining incomplete work was cancelled; this
+run does not qualify a release. Fix only manual revision selection to require
+the checked-out source's fetched first parent. Keep initial-push, PR and push
+semantics and all historical receipt contents intact. Local regression and
+complete hosted qualification must pass before candidate preparation; this is a
+tooling repair, not another native case quarantine.
+
 ## Distribution and platform qualification
 
 Former reference: M11. Dependencies: Native AI product qualification; explicit
@@ -252,7 +266,7 @@ Main `8dc63055` finished 93 feature passes, 2 failures and 14 feature skips. PR
 families had 2 passes/1 skip; neither reached the later
 resource/development-WebView family. Failed artifacts 13094867223 and
 13095249631 retain those attempts; E-RELEASE-010 records their verified ZIP
-hashes. Total current quarantine: 18 cases (1 startup, 17 feature). Queue
+hashes. At E-RELEASE-010: 18 quarantines (1 startup, 17 feature). Queue
 admission/refusal and deleted-preview recreation/shutdown coverage from these
 cases remain unqualified. Requirements: LD-AI-005, LD-FILE-008 and LD-DESK-005.
 Owner: Desktop native automation, with file recovery owned by Desktop/Notes
@@ -260,6 +274,70 @@ editing. Re-enable each after its boundary is understood and the original case
 plus complete native family pass reliably in fresh hosted runs with original
 assertions/deadlines. Enabled exact-source native and ordinary package/Homebrew
 qualification remain mandatory.
+
+### Explorer filename replacement quarantine
+
+[E-RELEASE-012](../history/E-RELEASE-012.md) quarantines only
+`Explorer rename and move preserve collisions, the active editor and restart layout`
+after PR #8 run 41340718997/job 124950772330 on `627d2148`. It passed unchanged
+in PR #7 run 41337362311/job 124939943968 in 11110.81825ms; only manual CI
+revision selection, its tests and documentation changed afterward. Application,
+dependency and native helper inputs are identical. The failed case took
+11187.844875ms and timed out at `file-ui-mutations.test.mjs:130` after the
+original 5000ms wait for `Renamed.md`.
+
+Verified artifact 13098307647 has ZIP SHA-256
+`838b90d8b6a9ffaf2765d4768319d5a1343f7c00a004f5726a2ae732ca4d2198`. Its disk and
+DOM contain `Note.mdRenamed.md` with the exact intended draft; `Keep.md` and
+`Archive/Renamed.md` retain their collision bytes. This points to the
+automation's filename replacement, not a slow tree projection. The exact
+clear/input mechanism remains to be diagnosed. No move or cold-layout success is
+inferred from the failed run. Startup: 2 pass/1 skip. Feature family: 91 pass/1
+fail/17 skips. The later resource family was not run.
+
+Preserve the original callback, assertions, helper and deadlines. E-RELEASE-012
+added one explicit skip, then totaling 19 cases (1 startup, 18 feature). The
+combined rename/move/cold-layout boundary remains unqualified. Owner: Desktop
+native automation; Notes Explorer owns any upstream input defect. Re-enable
+after diagnosing filename replacement, verifying the exact requested value
+before submission and passing the original complete case plus its native family
+reliably on fresh hosted runners with the original outcome assertions and
+deadlines. Other mutation/recovery cases, exact-source full CI and actual
+Homebrew package qualification remain required. Carry this limitation into the
+candidate receipts and release notes; skipped coverage is not passing coverage.
+
+### Vault-return replacement input quarantine
+
+[E-RELEASE-013](../history/E-RELEASE-013.md) quarantines only
+`the chooser returns to the previous vault after cancellation without retaining its old database`.
+It failed PR #8 run 41345056450/job 124963038273 on `d3f33f62` in 5977.988958ms
+at `vault-return.test.mjs:35`. The complete unchanged case passed the preceding
+run 41340718997/job 124950772330 in 7000.684083ms. Only the unrelated Explorer
+case skip and its documentation changed; product, dependency, vault-return and
+shared helper inputs match.
+
+Verified artifact 13099099342 has ZIP SHA-256
+`576fd4ec49e48b623ff3732df0be943cf57ee147044866b7dca7568e5f5e5e8e`. Its actual
+`Welcome.md` contains `# Preserved when returning` followed by the original
+`# Return to this note`. The launcher is visible. The input sequence intended to
+select all and replace the original text before returning; exact
+focus/selection/driver delivery remains undiagnosed. This shares an input
+replacement symptom with E-RELEASE-012, without proving a common root cause. The
+assertion precedes database reopen/release, cancelled picker and return checks,
+so none of those later boundaries is qualified by this failed case. Startup: 2
+pass/1 skip. Feature family: 90 pass/1 fail/18 skips. Later resource checks were
+not run. All 13 other direct gates passed; two aggregates failed downstream.
+
+Keep the complete body, assertions, original deadlines and shared helpers. Total
+current quarantine: 20 cases (1 startup, 19 feature). Owner: Desktop native
+automation, with Notes editing ownership for any upstream selection defect.
+Investigate native focus, select-all acknowledgement and element input delivery
+across both input cases. Re-enable after exact replacement text is established
+before leaving, and the original full case plus native family pass reliably on
+fresh hosted runners with outcome assertions and deadlines intact. This case's
+vault return, cancellation and database lifetime coverage remains unqualified.
+Enabled native CI, exact-main full qualification and ordinary Homebrew package
+acceptance remain required. Carry the gap into candidate notes and receipts.
 
 ## Development audit exceptions
 

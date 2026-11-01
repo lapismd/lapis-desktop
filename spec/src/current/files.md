@@ -12,6 +12,14 @@ in the failed receipt. Reviewed-file recreation and later shutdown from that
 complete case remain unqualified; other preview/conflict cases stay enabled. Its
 original body, 60000ms case timeout and 15000ms file-write wait remain intact.
 
+E-RELEASE-012 quarantines the exact Explorer rename/move/cold-layout case. Its
+failed native artifact contains `Note.mdRenamed.md` with the intended draft,
+while automation awaited `Renamed.md`; the collision destination stayed intact.
+The unchanged case previously passed with identical app, cohort and helper
+inputs. Filename replacement, later move and cold-layout coverage from this case
+remain unqualified. Keep its complete body and original deadlines; all other
+enabled mutation and recovery cases retain their gates.
+
 The R1.1 shared-core extraction moves checked file IO, atomic/conditional
 writes, exclusive mutations and retained action targets into Notes-owned
 `lapis-app-core`. Desktop consumes those public native types directly and keeps

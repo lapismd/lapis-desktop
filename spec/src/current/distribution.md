@@ -47,8 +47,11 @@ failure, owner and re-enable gate join the candidate limitations and remain
 unqualified. E-RELEASE-006 additionally defers the intermittent first-frame
 progress/clearance case. E-RELEASE-008 defers the background AI
 admission/cold-reset case after an intermittent readiness failure. E-RELEASE-010
-adds queue admission/readiness and deleted-preview merged-file recreation; 18
-native cases are quarantined.
+adds queue admission/readiness and deleted-preview merged-file recreation.
+E-RELEASE-012 defers the Explorer rename/move/cold-layout case after
+intermittent filename replacement. E-RELEASE-013 defers the vault-return case
+after replacement input retained the original note body; 20 native cases are
+quarantined.
 
 Qualified assets include all three archives, manifest, per-target build and
 bundle reports, Homebrew receipts, limitations and SHA256SUMS. The protected job
