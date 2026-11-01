@@ -395,6 +395,6 @@ and deferred managed-store receipt requirements.
 E-AI-105/106/112 refine approvals, chat navigation and menus. LD-AI-002/004,
 execution and import/ACP fixture redaction semantics remain unchanged.
 
-E-AI-110 adds shared unit-aware Max VRAM input and host-owned GGUF browsing;
-selection stays separate from import. Shell boot may take 15s (E-CI-032). The
-hosted queue, close, and window ACP cases are quarantined (E-CI-042).
+E-AI-110 adds shared Max VRAM units and host-owned GGUF browsing, separate from
+import. Shell boot may take 15s (E-CI-032). ACP queue/close/windows and reload
+remain unqualified (E-CI-042/E-RELEASE-004).

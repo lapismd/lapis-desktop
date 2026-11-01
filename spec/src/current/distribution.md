@@ -33,6 +33,13 @@ adds no driver, profile override or fixture to the ordinary application. This
 boundary does not prove all editor/provider behavior; the separate original
 exact-source CI and its documented skips remain authoritative.
 
+E-RELEASE-003 records the native watcher shutdown regression found while
+qualifying the preview branch. Candidate preparation still requires successful
+CI for the final source; an infrastructure retry cannot waive that regression.
+E-RELEASE-004 adds one approved ACP renderer-reload quarantine; its exact
+failure, owner and re-enable gate join the candidate limitations and remain
+unqualified.
+
 Qualified assets include the ZIP, manifest, build metadata, bundle report,
 Homebrew receipts, limitations and SHA256SUMS. The protected job downloads that
 artifact, verifies its contents and source CI, creates a source-bound tag,

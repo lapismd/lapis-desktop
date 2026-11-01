@@ -174,6 +174,24 @@ LD-DESK-005. Limitation: this release candidate does not qualify that case.
 Owner: Desktop. Re-enable it only after a later hosted Native ARM64 run passes
 it without a 5000ms timeout.
 
+[E-RELEASE-004](../history/E-RELEASE-004.md) quarantines the ACP retained-worker
+renderer-reload case with maintainer approval on 2026-11-01. It passed on main
+`260a21d00948b056b575fa7910e6ca2edad1948e` in run
+[41267757854](https://github.com/lapismd/lapis-desktop/actions/runs/41267757854),
+job `124734022019`, in 4379.870625ms. It failed in run
+[41303987128](https://github.com/lapismd/lapis-desktop/actions/runs/41303987128),
+job `124840793734`, on `885268aded6fd2f329d04b5bd2d4479768aa8275` at
+`acp-transport.test.mjs:202`: WebDriver `execute/sync` request timed out after
+renderer refresh (14825.897334ms case duration). That run finished 95 passed, 1
+failed and 13 skipped. The retained provider received exactly one prompt;
+reconnection, permission continuity and final provider reaping were not reached.
+Requirement: LD-AI-001 and LD-DESK-005. Limitation: this preview does not
+qualify retained ACP reconnection across renderer reload. Owner: Desktop native
+automation. Re-enable after a cold hosted run passes the original case and its
+complete ACP family with the existing deadlines and assertions, without a
+WebDriver timeout or uncertain provider replay. Enabled native acceptance and
+ordinary packaged Homebrew installation/window/quit checks remain required.
+
 ## Development audit exceptions
 
 [E-CI-037](../history/E-CI-037.md) records two development-only advisories that

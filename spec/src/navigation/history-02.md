@@ -206,3 +206,5 @@
 - [Hosted Safe Mode startup quarantine](../history/E-CI-044.md)
 - [Tauri preview release automation](../history/E-RELEASE-001.md)
 - [Provision candidate Homebrew](../history/E-RELEASE-002.md)
+- [Native watcher shutdown cancellation](../history/E-RELEASE-003.md)
+- [Hosted ACP reload quarantine](../history/E-RELEASE-004.md)
