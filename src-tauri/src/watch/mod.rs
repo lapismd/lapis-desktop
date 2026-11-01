@@ -1,6 +1,8 @@
 mod pending;
 mod registry;
 mod snapshot;
+#[cfg(test)]
+mod tests;
 
 pub use registry::WatchRegistry;
 
@@ -152,7 +154,7 @@ impl NativeWatch {
             let _watcher = watcher;
             let mut sequence = 0;
             let mut uncertain = false;
-            while receive.recv().is_ok() {
+            while running.load(Ordering::Acquire) && receive.recv().is_ok() {
                 if !running.load(Ordering::Acquire) {
                     break;
                 }

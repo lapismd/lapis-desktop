@@ -255,6 +255,11 @@ Incomplete scans retain the last complete snapshot and report recovery needs.
 The event worker owns and drops its native notifier, and close joins that
 worker.
 
+Shutdown cancellation remains authoritative after debouncing drains wake hints
+and an unchanged snapshot produces no delivery. A retired worker MUST check
+cancellation before waiting again; session closure cannot require another file
+event to release its notifier and join the worker.
+
 The native registry bounds active watches to 16 per admission and 32 overall.
 Only the issuing live admission may stop its subscriptions. Vault closure joins
 all workers before releasing the root; failed cleanup stays owned for retry.

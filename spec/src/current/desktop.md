@@ -12,9 +12,9 @@ windows and platform resources require native app-build acceptance. Fixtures
 match admitted runtime versions and exact helper hashes. Hosted logs stream;
 assertions/deadlines stay (E-CI-009). Terminal 0.1.2 uses qualified Git sources
 ([intake](local-dependencies.md), E-CI-011/013). Confirmed scoped shutdown
-settles stale denied cleanup only on close. Native gates remain; Tasks fixtures
-bundle the packed pin (E-CI-034). Graph labels use real hover (E-CI-012). ARM64
-cases quarantined (E-CI-036/044).
+settles stale denied cleanup only on close. Tasks use the packed pin (E-CI-034);
+Graph uses real hover (E-CI-012). ARM64 quarantines: E-CI-036/044 and
+E-RELEASE-004. Native gates remain.
 
 ## Requirements
 
@@ -123,7 +123,7 @@ artifact is never the ordinary application bundle. Browser and Rust tests are
 supporting evidence; neither can replace the actual WebView gate. Builds reject
 catalog imports; shell grouping preserves one main landmark.
 
-Application signing and notarization are deferred to M11. The local bundle gate
+Ad-hoc previews follow [distribution](distribution.md). The local bundle gate
 checks identity, architecture and runtime contents without requiring a
 signature. WebDriver's embedded pointer actions dispatch DOM MouseEvents and
 cannot establish AppKit titlebar dragging. Physical native input and persisted

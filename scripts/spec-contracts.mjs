@@ -15,6 +15,7 @@ const chapters = [
   "repository-navigation",
   "vault-backup",
   "governance",
+  "distribution",
   "local-dependencies",
   "migration",
 ];
