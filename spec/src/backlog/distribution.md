@@ -38,8 +38,10 @@ Acceptance: Install, upgrade, rollback, clean-machine launch, and platform
 filesystem/WebView tests pass. Local `.app` success alone does not complete
 distribution.
 
-Remaining outcome: Await explicit resumption; retain distribution and platform
-gates.
+Remaining outcome: Preview automation is resumed under
+[current distribution](../current/distribution.md). Qualify the first ordinary
+release archive and Homebrew installation before approval. Stable cutover,
+rollback and additional platform qualification remain deferred.
 
 Evidence: [E-PLAN-006](../history/E-PLAN-006.md).
 
@@ -191,3 +193,12 @@ tests, Storybook, the native bundle, headed acceptance, or the Linux builds.
 Validate still requires its result. The catalog merge unit check requires that
 same split ([E-CI-043](../history/E-CI-043.md)): Validate waits for every shard,
 and Dependency audits has no lane dependency.
+
+## Stable Tauri cutover follow-up
+
+Preview automation does not switch stable users. A separate approved cutover
+must use a CalVer above the actual installed Deno release, preserve
+`Lapis Notes.app` and `notes.lapis.desktop`, prove Deno-to-Tauri upgrade,
+rollback and note/profile compatibility, explicitly make the active stable cask
+macOS-only, and retire Deno desktop build/test/release CI while preserving
+archives and data.

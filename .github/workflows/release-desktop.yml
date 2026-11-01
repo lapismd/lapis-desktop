@@ -1,0 +1,245 @@
+name: Desktop preview release
+
+on:
+  workflow_dispatch:
+    inputs:
+      operation:
+        description:
+          Prepare a candidate or recover a published release's tap update
+        type: choice
+        options: [prepare, publish-candidate, recover-tap]
+        default: prepare
+      publish:
+        description:
+          Request protected publication approval after candidate qualification
+        type: boolean
+        default: false
+      candidate_run_id:
+        description: Successful preparation run ID to publish without rebuilding
+        type: string
+        required: false
+      tag:
+        description:
+          Exact published desktop-v<CalVer>-rc.<N> tag for tap recovery
+        type: string
+        required: false
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: desktop-preview-release
+  cancel-in-progress: false
+
+env:
+  HOMEBREW_TAP_REF: 971d0793f9de1f8d124e74cf7a128491c30597b7
+
+jobs:
+  candidate:
+    name: Qualify Desktop preview candidate
+    if: github.ref == 'refs/heads/main' && inputs.operation == 'prepare'
+    runs-on: macos-15
+    timeout-minutes: 180
+    env:
+      LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+      LAPIS_NOTES_VALIDATION_RUNTIME: native
+      LAPIS_AI_VALIDATION_RUNTIME: native
+      MACOSX_DEPLOYMENT_TARGET: "15.0"
+      CARGO_BUILD_JOBS: "2"
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      tag: ${{ steps.identity.outputs.tag }}
+      artifact: ${{ steps.identity.outputs.artifact }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Require successful CI on this exact main source
+        run: node scripts/release/gate.mjs
+      - name: Record candidate identity
+        id: identity
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFileSync } from 'node:fs';
+          import { readIdentity } from './scripts/release/contract.mjs';
+          const { tag } = readIdentity();
+          appendFileSync(process.env.GITHUB_OUTPUT, `tag=${tag}\nartifact=desktop-preview-${process.env.GITHUB_SHA}-${process.env.GITHUB_RUN_ATTEMPT}\n`);
+          JS
+      - uses: pnpm/action-setup@v6
+      - uses: dtolnay/rust-toolchain@1.99.0
+      - name: Install pinned Jujutsu tooling
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Prepare exact pinned source prerequisites
+        run: node scripts/ci-siblings.mjs
+      - name: Build private public exports
+        run: node scripts/ci-prepare-links.mjs
+      - name: Install and record verified private archives
+        run: node scripts/ci-install.mjs --audit
+      - name: Build ordinary release app and signed helper inventory
+        run: pnpm release:prepare
+      - uses: actions/checkout@v6
+        with:
+          repository: lapismd/homebrew-tap
+          ref: ${{ env.HOMEBREW_TAP_REF }}
+          path: .local/release/tap
+      - uses: actions/checkout@v6
+        with:
+          repository: lapismd/homebrew-tap
+          ref: main
+          path: .local/release/previous
+      - name: Install, launch and retain data through Homebrew operations
+        run: |
+          archive=$(node --input-type=module -e 'import { readIdentity, archiveName } from "./scripts/release/contract.mjs"; console.log(archiveName(readIdentity().version));')
+          node .local/release/tap/scripts/test-preview-install.mjs \
+            --manifest .local/release/candidate/desktop-manifest.json \
+            --archive ".local/release/candidate/$archive" \
+            --source "$GITHUB_WORKSPACE" \
+            --previous-manifest .local/release/previous/desktop-preview-manifest.json \
+            --output .local/release/homebrew
+      - name: Seal qualified bytes and receipts
+        run: pnpm release:verify --seal
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{ steps.identity.outputs.artifact }}
+          path: .local/release/candidate/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name:
+            desktop-preview-failure-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            .local/release/source-ci.json
+            .local/release/homebrew/
+          include-hidden-files: true
+          if-no-files-found: ignore
+
+  select-candidate:
+    name: Select previously qualified bytes
+    if:
+      github.ref == 'refs/heads/main' && inputs.operation == 'publish-candidate'
+    runs-on: ubuntu-24.04
+    outputs:
+      run-id: ${{ steps.select.outputs.run-id }}
+      artifact: ${{ steps.select.outputs.artifact }}
+      tag: ${{ steps.select.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - id: select
+        run: node scripts/release/select-candidate.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
+
+  publish:
+    name: Approve and publish qualified preview
+    needs: [candidate, select-candidate]
+    if: >-
+      always() && inputs.publish == true && ((inputs.operation == 'prepare' &&
+      needs.candidate.result == 'success') ||
+       (inputs.operation == 'publish-candidate' && needs.select-candidate.result
+      == 'success'))
+    runs-on: ubuntu-24.04
+    outputs:
+      tag:
+        ${{ needs.select-candidate.outputs.tag || needs.candidate.outputs.tag }}
+    environment: desktop-preview-release
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8
+        with:
+          name:
+            ${{ needs.select-candidate.outputs.artifact ||
+            needs.candidate.outputs.artifact }}
+          run-id: ${{ needs.select-candidate.outputs.run-id || github.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .local/release/candidate
+      - name: Verify and publish the approved bytes without rebuilding
+        run: node scripts/release/publish.mjs
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LAPIS_DESKTOP_PUBLISH_APPROVED: "1"
+
+  tap-update:
+    name: Update Homebrew preview
+    needs: publish
+    if: always() && needs.publish.result == 'success'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: lapismd/homebrew-tap
+          ref: ${{ env.HOMEBREW_TAP_REF }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Verify the published release and generate its preview cask
+        run:
+          node scripts/update-cask.mjs --channel preview --release
+          "$RELEASE_TAG"
+        env:
+          RELEASE_TAG: ${{ needs.publish.outputs.tag }}
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ vars.HOMEBREW_TAP_APP_ID }}
+          private-key: ${{ secrets.HOMEBREW_TAP_APP_PRIVATE_KEY }}
+          owner: lapismd
+          repositories: homebrew-tap
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Open or recover the protected auto-merge PR
+        run: node scripts/open-update-pr.mjs --channel preview
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}
+
+  recover-tap:
+    name: Recover published preview tap update
+    if: github.ref == 'refs/heads/main' && inputs.operation == 'recover-tap'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: lapismd/homebrew-tap
+          ref: ${{ env.HOMEBREW_TAP_REF }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Verify the existing public preview
+        run:
+          node scripts/update-cask.mjs --channel preview --release
+          "$RELEASE_TAG"
+        env:
+          RELEASE_TAG: ${{ inputs.tag }}
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ vars.HOMEBREW_TAP_APP_ID }}
+          private-key: ${{ secrets.HOMEBREW_TAP_APP_PRIVATE_KEY }}
+          owner: lapismd
+          repositories: homebrew-tap
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Recover the update PR without republishing
+        run: node scripts/open-update-pr.mjs --channel preview
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}

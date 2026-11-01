@@ -8,6 +8,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { execFileSync, spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import { verifyArchiveResolution } from "./archive-resolution.mjs";
 import { resolve } from "node:path";
@@ -132,6 +133,28 @@ module.exports = { hooks: { readPackage(pkg) {
       writeFileSync(
         resolve(".local/ci-install/pnpm-lock.yaml"),
         readFileSync(lockPath),
+      );
+      const sources = JSON.parse(
+        readFileSync("scripts/ci-sources.json", "utf8"),
+      );
+      const receipt = Object.entries(archives).map(([name, entry]) => {
+        const bytes = readFileSync(entry.path);
+        const source = sources.find(
+          (source) => source.name === unpublishedRanges[name].split("/")[1],
+        );
+        if (!source) throw Error(`Missing pinned source identity for ${name}`);
+        return {
+          name,
+          version: entry.version,
+          sourceRepository: source.repository,
+          sourceCommit: source.revision,
+          size: bytes.length,
+          sha256: createHash("sha256").update(bytes).digest("hex"),
+        };
+      });
+      writeFileSync(
+        resolve(".local/ci-install/archives.json"),
+        JSON.stringify(receipt, null, 2) + "\n",
       );
       if (process.argv.includes("--audit")) {
         status = runAudit();

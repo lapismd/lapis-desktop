@@ -69,6 +69,11 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^(?:scripts/release/|tests/governance/release-|\\.github/workflows/release-desktop\\.yml$|src-tauri/tauri\\.preview\\.conf\\.json$)",
+            chapters: ["spec/src/current/distribution.md"],
+          },
+          {
+            pattern:
               "^(?:src/lib/native/tasks/|src-tauri/src/(?:vault/tasks\\.rs$|host/vault/tasks\\.rs$)|src-tauri/tests/core_tasks_service\\.rs$|tests/(?:renderer/(?:native-tasks\\.test\\.mjs$|tasks-)|desktop/tasks-))",
             chapters: ["spec/src/current/tasks.md"],
           },

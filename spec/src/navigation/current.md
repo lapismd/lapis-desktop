@@ -2,6 +2,7 @@
 - [Current specification](../current/index.md)
   - [Governance](../current/governance.md)
     - [Native acceptance modes](../current/native-acceptance.md)
+  - [Preview distribution](../current/distribution.md)
   - [Desktop shell](../current/desktop.md)
   - [Native Tasks](../current/tasks.md)
   - [Native workspace windows](../current/windows.md)
@@ -33,6 +34,7 @@
   - [Source provenance and acceptance](../current/migration.md)
   - [Verification](../verification.md)
 - [Backlog](../backlog.md)
+
   - [AI and shared-screen qualification](../backlog/ai-qualification.md)
   - [Vault synchronization and turn history](../backlog/vault-synchronization.md)
   - [Native canonical conversations](../backlog/native-conversations.md)
@@ -40,3 +42,5 @@
   - [AI tool expansion](../backlog/ai-tool-expansion.md)
   - [Markdown document Review mode](../backlog/markdown-review-mode.md)
     - [Planned Review contract](../backlog/markdown-review-contract.md)
+
+- [Additional qualification notes](../verification-notes.md)

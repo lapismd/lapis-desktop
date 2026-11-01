@@ -123,7 +123,7 @@ artifact is never the ordinary application bundle. Browser and Rust tests are
 supporting evidence; neither can replace the actual WebView gate. Builds reject
 catalog imports; shell grouping preserves one main landmark.
 
-Application signing and notarization are deferred to M11. The local bundle gate
+Ad-hoc previews follow [distribution](distribution.md). The local bundle gate
 checks identity, architecture and runtime contents without requiring a
 signature. WebDriver's embedded pointer actions dispatch DOM MouseEvents and
 cannot establish AppKit titlebar dragging. Physical native input and persisted

@@ -9,7 +9,8 @@ existing Notes workspace, editor, Markdown reader, Search, metadata and Graph
 views. Native menus and services use the same owned application lifecycle. The
 live catalog is <https://lapismd.github.io/lapis-desktop/>. The
 [backlog](spec/src/backlog.md) defines outstanding qualification and deferred
-distribution.
+distribution. See the [preview release workflow](docs/desktop-release.md) for
+qualified GitHub prereleases and the separate Homebrew preview channel.
 
 Start with the [canonical specification](spec/src/current/index.md) for current
 behavior and its [backlog](spec/src/backlog.md) for next work. See
