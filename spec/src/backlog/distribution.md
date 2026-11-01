@@ -161,6 +161,17 @@ qualify those eight cases. Owner: Desktop. Re-enable a case only after a later
 hosted Native ARM64 run passes it without a forced kill, a mixed note body, a
 timeout, off-center native controls, a missing window, or a missing `$` prompt.
 
+[E-CI-044](../history/E-CI-044.md) quarantines the hosted Safe Mode startup case
+after run
+[41262453457](https://github.com/lapismd/lapis-desktop/actions/runs/41262453457)
+on revision `80c10a82d2d612e9f54d695ead5d129e1700e1f8`. Command:
+`pnpm ci:headed`. Evidence: job `124718457969`, 101 passed, 4 skipped, and 4
+failed. Three of those failures are already skipped by E-CI-042. Reason: the
+Safe Mode reload wait timed out after 5000ms. Requirement: LD-DESK-004 and
+LD-DESK-005. Limitation: this release candidate does not qualify that case.
+Owner: Desktop. Re-enable it only after a later hosted Native ARM64 run passes
+it without a 5000ms timeout.
+
 ## Development audit exceptions
 
 [E-CI-037](../history/E-CI-037.md) records two development-only advisories that

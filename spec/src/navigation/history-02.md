@@ -203,3 +203,4 @@
 - [Dependency audits start with the other lanes](../history/E-CI-041.md)
 - [Catalog merge check allows an immediate audit](../history/E-CI-043.md)
 - [Hosted ARM64 cases after the green headed run](../history/E-CI-042.md)
+- [Hosted Safe Mode startup quarantine](../history/E-CI-044.md)
