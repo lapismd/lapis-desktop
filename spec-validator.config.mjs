@@ -69,6 +69,11 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^(?:scripts/ci/|tests/governance/ci-selection|\\.github/workflows/ci\\.yml$)",
+            chapters: ["spec/src/current/ci.md"],
+          },
+          {
+            pattern:
               "^(?:scripts/release/|tests/governance/release-|\\.github/workflows/release-desktop\\.yml$|src-tauri/tauri\\.preview\\.conf\\.json$)",
             chapters: ["spec/src/current/distribution.md"],
           },

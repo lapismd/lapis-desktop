@@ -1,4 +1,4 @@
-# Governance — [native turns](ai-adapter.md)
+# Governance — [CI](ci.md), [native turns](ai-adapter.md)
 
 [Shared screens](shared-screen-integration.md) own integration; retained
 [backlog](../backlog.md) retains outstanding acceptance.

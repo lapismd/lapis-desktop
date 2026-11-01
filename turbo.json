@@ -22,11 +22,13 @@
     },
     "ci:quality": {
       "cache": false,
-      "outputs": []
+      "outputs": [],
+      "env": ["LAPIS_CI_QUALITY_GROUPS", "LAPIS_CI_RUST_PACKAGES"]
     },
     "ci:unit": {
       "cache": false,
-      "outputs": []
+      "outputs": [],
+      "env": ["LAPIS_CI_UNIT_GROUPS", "LAPIS_CI_RUST_PACKAGES"]
     },
     "ci:storybook-static": {
       "outputs": ["storybook-static/**"]

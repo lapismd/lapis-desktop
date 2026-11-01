@@ -50,8 +50,11 @@ test("invalid CI shard input refuses before starting a partial catalog", () => {
 test("the existing catalog merge check requires every shard and rejects partial results", () => {
   const job = jobs["storybook-interaction"];
   assert.equal(job.name, "Storybook interactions");
-  assert.equal(job.if, "always()");
-  assert.deepEqual(job.needs, ["storybook-interaction-shards"]);
+  assert.ok(
+    job.if.includes("always()") &&
+      job.if.includes("needs.changes.outputs.storybook_interaction"),
+  );
+  assert.deepEqual(job.needs, ["changes", "storybook-interaction-shards"]);
   const step = job.steps.find(
     (candidate) => candidate.name === "Require every catalog shard",
   );
@@ -66,5 +69,5 @@ test("the existing catalog merge check requires every shard and rejects partial 
     assert.equal(child.status === 0, result === "success", result);
   }
   assert.ok(jobs.validate.needs.includes("storybook-interaction"));
-  assert.equal(jobs.audit.needs, undefined);
+  assert.deepEqual(jobs.audit.needs, ["changes"]);
 });

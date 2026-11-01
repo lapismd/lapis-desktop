@@ -194,6 +194,23 @@ complete ACP family with the existing deadlines and assertions, without a
 WebDriver timeout or uncertain provider replay. Enabled native acceptance and
 ordinary packaged Homebrew installation/window/quit checks remain required.
 
+[E-RELEASE-006](../history/E-RELEASE-006.md) quarantines one initial cold-shell
+progress/clearance case under the maintainer's RC guidance. The exact case
+passed on main `b5a255bbb381d6fc2d936b38925f5b2ae7a6c755` in run 41312175583,
+job 124864653873 (6168.600791ms). On PR head
+`0e8028df17244196678ba9f8e77e9a889bb8dbf7`, run 41318358534, job 124883118088,
+it failed `initial.logoTop > 52` at `startup-progress.test.mjs:33`
+(8081.951584ms). The other two startup cases passed. The branch changes
+distribution tooling, not application implementation. The later
+feature/lifecycle suite was not reached and is not counted as passing. Artifact
+13089557346 retains the failed attempt. Requirement: LD-DESK-001/002/005.
+Limitation: initial branding/progress/control clearance remains unqualified for
+this preview. There are 15 disclosed quarantines: this cold-start case plus the
+14 existing feature cases. Owner: Desktop native automation. Re-enable after the
+capture/layout boundary is understood and the original case plus complete cold
+startup family pass reliably on fresh hosted runs with unchanged assertions and
+deadlines. All enabled exact-source native gates remain required.
+
 ## Development audit exceptions
 
 [E-CI-037](../history/E-CI-037.md) records two development-only advisories that

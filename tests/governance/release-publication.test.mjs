@@ -12,12 +12,14 @@ import {
   sealCandidate,
   verifyCandidate,
 } from "../../scripts/release/candidate.mjs";
+import { fullCIJobs } from "../../scripts/release/source-ci.mjs";
 import { publishCandidate } from "../../scripts/release/publish.mjs";
 const source = "a".repeat(40),
   version = "2026.31.6-rc.1",
   tag = `desktop-v${version}`;
 const ci = {
   id: 9,
+  event: "push",
   head_sha: source,
   head_branch: "main",
   status: "completed",
@@ -37,6 +39,7 @@ async function candidate(context) {
   const sourceCI = {
     sourceCommit: source,
     ciResult: "success",
+    fullQualification: true,
     ciRun: 9,
     ciUrl: "https://github.com/lapismd/lapis-desktop/actions/runs/9",
   };
@@ -121,6 +124,15 @@ function service({
     publicizations: 0,
   };
   state.request = async (path, options = {}) => {
+    if (path.includes("/actions/runs/9/jobs"))
+      return {
+        jobs: fullCIJobs.map((name, id) => ({
+          id: id + 1,
+          name,
+          status: "completed",
+          conclusion: "success",
+        })),
+      };
     if (path.includes("ci.yml/runs"))
       return {
         workflow_runs: [

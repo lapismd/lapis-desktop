@@ -92,6 +92,7 @@ export async function verifyCandidate(directory, sourceCommit) {
     metadata.tag !== manifest.tag ||
     metadata.sourceCI?.sourceCommit !== sourceCommit ||
     metadata.sourceCI?.ciResult !== "success" ||
+    metadata.sourceCI?.fullQualification !== true ||
     !Array.isArray(metadata.platforms) ||
     metadata.platforms.length !== releaseTargets.length ||
     new Set(metadata.platforms.map((p) => p.target)).size !==

@@ -1,6 +1,7 @@
 - [Release handoff](../release-handoff/index.md)
 - [Current specification](../current/index.md)
   - [Governance](../current/governance.md)
+  - [Affected CI](../current/ci.md)
     - [Native acceptance modes](../current/native-acceptance.md)
   - [Preview distribution](../current/distribution.md)
   - [Desktop shell](../current/desktop.md)

@@ -4,6 +4,7 @@ import { pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 import { hostedMain, hash, repository } from "./contract.mjs";
 import { verifyCandidate } from "./candidate.mjs";
+import { requireFullCI } from "./source-ci.mjs";
 import { github } from "./github.mjs";
 export async function publishCandidate(
   directory,
@@ -15,20 +16,8 @@ export async function publishCandidate(
     sourceCommit,
   );
   const api = `/repos/${repository}`;
-  const runs = await request(
-    `${api}/actions/workflows/ci.yml/runs?head_sha=${sourceCommit}&event=push&per_page=100`,
-  );
-  const latest = runs.workflow_runs
-    .filter(
-      (run) => run.head_sha === sourceCommit && run.head_branch === "main",
-    )
-    .sort((a, b) => b.id - a.id)[0];
-  if (
-    !latest ||
-    latest.status !== "completed" ||
-    latest.conclusion !== "success" ||
-    latest.id !== metadata.sourceCI.ciRun
-  )
+  const sourceCI = await requireFullCI(sourceCommit, request);
+  if (sourceCI.ciRun !== metadata.sourceCI.ciRun)
     throw Error(
       "The approved candidate no longer has its exact successful CI qualification",
     );

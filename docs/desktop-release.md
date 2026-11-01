@@ -15,7 +15,16 @@ candidate is 2026.31.6-rc.1, provided stable Deno remains at 2026.31.5;
 preparation checks the actual published baseline again. Do not reuse a published
 version.
 
-Wait for main CI to pass on that exact commit, then run:
+Regular CI selects affected gates. Before packaging, require full CI on the
+exact main commit, including all enabled native feature tests and all platform
+builds. A selective docs-only green run cannot qualify a release. If needed,
+dispatch:
+
+```sh
+gh workflow run ci.yml --repo lapismd/lapis-desktop --ref main -F full=true
+```
+
+After that full run passes, prepare:
 
 ```sh
 gh workflow run release-desktop.yml --repo lapismd/lapis-desktop --ref main \
@@ -41,6 +50,12 @@ native RC quarantines from the owning backlog. Skipped cases are not passing
 feature coverage.
 
 ## Publish after qualification
+
+Each approved version creates its own entry in the repository's
+[GitHub Releases](https://github.com/lapismd/lapis-desktop/releases), containing
+all three platform packages, checksums, manifest and receipts. RC versions are
+marked prerelease. The list stays empty until the first qualified candidate is
+approved and published.
 
 Promote the reviewed preparation run without rebuilding:
 

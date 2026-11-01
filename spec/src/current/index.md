@@ -8,6 +8,7 @@ The [release handoff](../release-handoff/index.md) records the current
 cross-repository release state and exact resume steps.
 
 - [Governance](governance.md)
+- [Affected CI](ci.md)
 - [Preview distribution](distribution.md)
 - [Local dependency intake](local-dependencies.md)
 - [Desktop shell](desktop.md)

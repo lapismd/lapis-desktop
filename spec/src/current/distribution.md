@@ -20,15 +20,16 @@ remains in the [distribution backlog](../backlog/distribution.md).
 ## Candidate and publication boundary
 
 `.github/workflows/release-desktop.yml` accepts prepare, publish-candidate or
-recover-tap. Prepare requires a passing exact-source CI run; `publish` defaults
-false. Promotion selects an unexpired artifact from a successful preparation on
-the same main commit, so review without publication does not require a rebuild.
-Platform builds produce three ordinary archives from the same source. The
-workflow assembles the complete manifest before testing each archive through the
-pinned tap's temporary installer, then seals those exact bytes with their
-per-target receipts. Native installation and window/quit checks run only on
-ephemeral GitHub runners; no developer profile or installed application is
-replaced.
+recover-tap. Prepare requires a passing full exact-source CI run; selective
+green runs cannot qualify a release. Full CI remains manually dispatchable;
+`publish` defaults false. Promotion selects an unexpired artifact from a
+successful preparation on the same main commit, so review without publication
+does not require a rebuild. Platform builds produce three ordinary archives from
+the same source. The workflow assembles the complete manifest before testing
+each archive through the pinned tap's temporary installer, then seals those
+exact bytes with their per-target receipts. Native installation and window/quit
+checks run only on ephemeral GitHub runners; no developer profile or installed
+application is replaced.
 
 The source-owned smoke uses external AppKit/CoreGraphics on macOS and X11
 window-manager observation on Linux. It observes an on-screen native window for
@@ -43,7 +44,8 @@ qualifying the preview branch. Candidate preparation still requires successful
 CI for the final source; an infrastructure retry cannot waive that regression.
 E-RELEASE-004 adds one approved ACP renderer-reload quarantine; its exact
 failure, owner and re-enable gate join the candidate limitations and remain
-unqualified.
+unqualified. E-RELEASE-006 additionally defers the intermittent first-frame
+progress/clearance case; 15 native cases are now disclosed as quarantined.
 
 Qualified assets include all three archives, manifest, per-target build and
 bundle reports, Homebrew receipts, limitations and SHA256SUMS. The protected job

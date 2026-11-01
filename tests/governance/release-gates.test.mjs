@@ -8,6 +8,7 @@ import {
   compareCalendar,
   versionPattern,
 } from "../../scripts/release/contract.mjs";
+import { fullCIJobs } from "../../scripts/release/source-ci.mjs";
 import { verifySource } from "../../scripts/release/gate.mjs";
 import { selectCandidate } from "../../scripts/release/select-candidate.mjs";
 const source = "a".repeat(40),
@@ -18,6 +19,7 @@ const source = "a".repeat(40),
   };
 const ci = {
   id: 9,
+  event: "push",
   head_sha: source,
   head_branch: "main",
   conclusion: "success",
@@ -34,11 +36,20 @@ function sourceServer({
   existing = null,
 } = {}) {
   return async (path) =>
-    path.includes("ci.yml/runs")
-      ? { workflow_runs: runs }
-      : path.includes("lapis-notes/releases")
-        ? releases
-        : existing;
+    path.includes("/actions/runs/9/jobs")
+      ? {
+          jobs: fullCIJobs.map((name, id) => ({
+            id: id + 1,
+            name,
+            status: "completed",
+            conclusion: "success",
+          })),
+        }
+      : path.includes("ci.yml/runs")
+        ? { workflow_runs: runs }
+        : path.includes("lapis-notes/releases")
+          ? releases
+          : existing;
 }
 test("public preview identities agree and unhosted release operations reject", () => {
   assert.match(readIdentity().version, versionPattern);
@@ -146,4 +157,18 @@ test("promotion selects only qualified unexpired artifacts from the same source 
       selectCandidate("42", source, request(run, artifacts)),
     );
   await assert.rejects(selectCandidate("42; shell", source, request()));
+});
+
+test("selective docs-only CI cannot qualify release preparation", async () => {
+  const server = sourceServer();
+  const request = async (path, options) =>
+    path.includes("/actions/runs/9/jobs")
+      ? {
+          jobs: [
+            { name: "Governance", conclusion: "success" },
+            { name: "Validate", conclusion: "success" },
+          ],
+        }
+      : server(path, options);
+  await assert.rejects(verifySource(identity, request), /full native/);
 });

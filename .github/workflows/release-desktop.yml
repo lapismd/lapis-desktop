@@ -1,5 +1,4 @@
 name: Desktop preview release
-
 on:
   workflow_dispatch:
     inputs:
@@ -7,7 +6,10 @@ on:
         description:
           Prepare a candidate or recover a published release's tap update
         type: choice
-        options: [prepare, publish-candidate, recover-tap]
+        options:
+          - prepare
+          - publish-candidate
+          - recover-tap
         default: prepare
       publish:
         description:
@@ -23,18 +25,14 @@ on:
           Exact published desktop-v<CalVer>-rc.<N> tag for tap recovery
         type: string
         required: false
-
 permissions:
   contents: read
   actions: read
-
 concurrency:
   group: desktop-preview-release
   cancel-in-progress: false
-
 env:
   HOMEBREW_TAP_REF: 5948fa8c25a135e79bb4a48e9186397b851db8a8
-
 jobs:
   build:
     name: Build ordinary preview (${{ matrix.target }})
@@ -43,16 +41,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: macos-15, target: aarch64-apple-darwin }
-          - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
-          - { os: ubuntu-24.04, target: x86_64-unknown-linux-gnu }
+          - os: macos-15
+            target: aarch64-apple-darwin
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
     runs-on: ${{ matrix.os }}
     timeout-minutes: 180
     env:
       LAPIS_DESKTOP_VALIDATION_RUNTIME: native
       LAPIS_NOTES_VALIDATION_RUNTIME: native
       LAPIS_AI_VALIDATION_RUNTIME: native
-      MACOSX_DEPLOYMENT_TARGET: "15.0"
+      MACOSX_DEPLOYMENT_TARGET:
+        ${{ matrix.target == 'aarch64-apple-darwin' && '15.0' || '' }}
       CARGO_BUILD_JOBS: "2"
       RELEASE_TARGET: ${{ matrix.target }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -78,6 +80,20 @@ jobs:
         run: node scripts/validation/install-tools.mjs --ci
       - name: Prepare exact pinned source prerequisites
         run: node scripts/ci-siblings.mjs
+      - name: Restore Rust dependency builds
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
+        with:
+          workspaces: |-
+            src-tauri -> target
+            ../lapis-ai -> target
+          shared-key: desktop-${{ runner.os }}-${{ runner.arch }}
+          key:
+            ${{ matrix.target || 'host' }}-${{
+            hashFiles('scripts/ci-sources.json') }}-${{
+            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+          cache-workspace-crates: false
+          cache-on-failure: true
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST
       - name: Build private public exports
         run: node scripts/ci-prepare-links.mjs
       - name: Install and record verified private archives
@@ -101,7 +117,6 @@ jobs:
             }}-${{ github.run_attempt }}
           path: .local/release/source-ci.json
           if-no-files-found: ignore
-
   assemble:
     name: Assemble complete platform candidate
     needs: build
@@ -129,7 +144,6 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
-
   install:
     name: Qualify Homebrew preview (${{ matrix.target }})
     needs: assemble
@@ -137,9 +151,12 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { os: macos-15, target: aarch64-apple-darwin }
-          - { os: ubuntu-24.04-arm, target: aarch64-unknown-linux-gnu }
-          - { os: ubuntu-24.04, target: x86_64-unknown-linux-gnu }
+          - os: macos-15
+            target: aarch64-apple-darwin
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
     runs-on: ${{ matrix.os }}
     timeout-minutes: 45
     steps:
@@ -198,7 +215,6 @@ jobs:
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 30
-
   candidate:
     name: Qualify Desktop preview candidate
     needs: install
@@ -244,7 +260,6 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
-
   select-candidate:
     name: Select previously qualified bytes
     if:
@@ -266,13 +281,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
-
   publish:
     name: Approve and publish qualified preview
-    needs: [candidate, select-candidate]
-    if: >-
-      always() && inputs.publish == true && ((inputs.operation == 'prepare' &&
-      needs.candidate.result == 'success') ||
+    needs:
+      - candidate
+      - select-candidate
+    if: |-
+      always() && inputs.publish == true && ((inputs.operation == 'prepare' && needs.candidate.result == 'success') ||
        (inputs.operation == 'publish-candidate' && needs.select-candidate.result
       == 'success'))
     runs-on: ubuntu-24.04
@@ -303,7 +318,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LAPIS_DESKTOP_PUBLISH_APPROVED: "1"
-
   tap-update:
     name: Update Homebrew preview
     needs: publish
@@ -336,7 +350,6 @@ jobs:
         run: node scripts/open-update-pr.mjs --channel preview
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
-
   recover-tap:
     name: Recover published preview tap update
     if: github.ref == 'refs/heads/main' && inputs.operation == 'recover-tap'

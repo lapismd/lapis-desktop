@@ -7,25 +7,10 @@ import {
   compareCalendar,
   repository,
 } from "./contract.mjs";
+import { requireFullCI } from "./source-ci.mjs";
 import { github } from "./github.mjs";
 export async function verifySource(identity, request) {
-  const response = await request(
-    `/repos/${repository}/actions/workflows/ci.yml/runs?head_sha=${identity.sourceCommit}&event=push&per_page=100`,
-  );
-  const latest = response.workflow_runs
-    .filter(
-      (run) =>
-        run.head_sha === identity.sourceCommit && run.head_branch === "main",
-    )
-    .sort((a, b) => b.id - a.id)[0];
-  if (
-    !latest ||
-    latest.conclusion !== "success" ||
-    latest.status !== "completed"
-  )
-    throw Error(
-      "The latest main CI run for this exact source commit must pass before candidate preparation",
-    );
+  const sourceCI = await requireFullCI(identity.sourceCommit, request);
   let highest;
   for (let page = 1; page <= 100; page++) {
     const releases = await request(
@@ -57,14 +42,7 @@ export async function verifySource(identity, request) {
     throw Error(
       "Candidate release already exists; recover the tap update instead of rebuilding it",
     );
-  return {
-    sourceCommit: identity.sourceCommit,
-    ciRun: latest.id,
-    ciAttempt: latest.run_attempt,
-    ciUrl: latest.html_url,
-    ciResult: latest.conclusion,
-    legacyVersion: highest,
-  };
+  return { ...sourceCI, legacyVersion: highest };
 }
 async function main() {
   hostedMain();
