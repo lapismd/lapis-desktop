@@ -5,6 +5,34 @@ export const repository = "lapismd/lapis-desktop";
 export const identifier = "com.lapismd.lapis-desktop.preview";
 export const productName = "Lapis Notes Preview";
 export const target = "aarch64-apple-darwin";
+export const releaseTargets = [
+  {
+    target,
+    platform: "macos",
+    architecture: "arm64",
+    extension: "zip",
+    label: "macos-arm64",
+  },
+  {
+    target: "aarch64-unknown-linux-gnu",
+    platform: "linux",
+    architecture: "arm64",
+    extension: "tar.gz",
+    label: "linux-arm64",
+  },
+  {
+    target: "x86_64-unknown-linux-gnu",
+    platform: "linux",
+    architecture: "x64",
+    extension: "tar.gz",
+    label: "linux-x64",
+  },
+];
+export function targetInfo(value) {
+  const item = releaseTargets.find((entry) => entry.target === value);
+  if (!item) throw Error("Unsupported preview target");
+  return item;
+}
 export const helpers = [
   "lapis-acp",
   "lapis-agent",
@@ -14,8 +42,10 @@ export const helpers = [
 export const versionPattern =
   /^(20\d{2})\.(0|[1-9]\d*)\.(0|[1-9]\d*)-rc\.([1-9]\d*)$/;
 export const hash = (bytes) => createHash("sha256").update(bytes).digest("hex");
-export const archiveName = (version) =>
-  `Lapis-Notes-Preview-${version}-macos-arm64.zip`;
+export function archiveName(version, value = target) {
+  const item = targetInfo(value);
+  return `Lapis-Notes-Preview-${version}-${item.platform}-${item.architecture}.${item.extension}`;
+}
 export function readIdentity(root = process.cwd()) {
   const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
   const config = JSON.parse(
@@ -48,6 +78,22 @@ export function readIdentity(root = process.cwd()) {
     sourceCommit: process.env.GITHUB_SHA,
   };
 }
+export function validateArtifact(a, version, tag) {
+  const info = targetInfo(a?.target);
+  if (
+    a.platform !== info.platform ||
+    a.architecture !== info.architecture ||
+    a.file !== archiveName(version, info.target) ||
+    a.url !==
+      `https://github.com/${repository}/releases/download/${tag}/${a.file}` ||
+    !/^[a-f0-9]{64}$/.test(a.sha256) ||
+    /^0+$/.test(a.sha256) ||
+    !Number.isSafeInteger(a.size) ||
+    a.size <= 0
+  )
+    throw Error("Invalid preview release artifact");
+  return a;
+}
 export function validateManifest(m) {
   if (
     m?.schemaVersion !== 2 ||
@@ -57,44 +103,47 @@ export function validateManifest(m) {
     !versionPattern.test(m.version) ||
     m.tag !== `desktop-v${m.version}` ||
     !/^[a-f0-9]{40}$/.test(m.sourceCommit) ||
-    m.artifacts?.length !== 1
+    !Array.isArray(m.artifacts) ||
+    ![1, 3].includes(m.artifacts.length)
   )
     throw Error("Invalid preview release manifest");
-  const a = m.artifacts[0];
-  if (
-    a.target !== target ||
-    a.platform !== "macos" ||
-    a.architecture !== "arm64" ||
-    a.file !== archiveName(m.version) ||
-    a.url !==
-      `https://github.com/${repository}/releases/download/${m.tag}/${a.file}` ||
-    !/^[a-f0-9]{64}$/.test(a.sha256) ||
-    /^0+$/.test(a.sha256) ||
-    !Number.isSafeInteger(a.size) ||
-    a.size <= 0
-  )
-    throw Error("Invalid preview release artifact");
+  const seen = new Set();
+  for (const a of m.artifacts) {
+    validateArtifact(a, m.version, m.tag);
+    if (seen.has(a.target)) throw Error("Duplicate preview target");
+    seen.add(a.target);
+  }
+  if (!seen.has(target))
+    throw Error("Preview requires its macOS ARM64 artifact");
   return m;
 }
-export function createManifest(identity, bytes) {
-  const file = archiveName(identity.version);
+export function createArtifact(identity, bytes, value = target) {
+  const info = targetInfo(value),
+    file = archiveName(identity.version, value);
+  return validateArtifact(
+    {
+      target: value,
+      platform: info.platform,
+      architecture: info.architecture,
+      file,
+      url: `https://github.com/${repository}/releases/download/${identity.tag}/${file}`,
+      size: bytes.length,
+      sha256: hash(bytes),
+    },
+    identity.version,
+    identity.tag,
+  );
+}
+export function createManifest(identity, bytesOrArtifacts) {
   return validateManifest({
     schemaVersion: 2,
     runtime: "tauri",
     channel: "preview",
     repository,
     ...identity,
-    artifacts: [
-      {
-        target,
-        platform: "macos",
-        architecture: "arm64",
-        file,
-        url: `https://github.com/${repository}/releases/download/${identity.tag}/${file}`,
-        size: bytes.length,
-        sha256: hash(bytes),
-      },
-    ],
+    artifacts: Array.isArray(bytesOrArtifacts)
+      ? bytesOrArtifacts
+      : [createArtifact(identity, bytesOrArtifacts)],
   });
 }
 export function compareCalendar(a, b) {

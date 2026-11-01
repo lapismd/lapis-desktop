@@ -61,7 +61,7 @@ export async function publishCandidate(
         draft: true,
         prerelease: true,
         make_latest: "false",
-        body: `Apple Silicon macOS 15+ preview, ad-hoc signed and unnotarized.\n\nSource: ${sourceCommit}\nCI: ${metadata.sourceCI.ciUrl}\n\nInstall using the verified Homebrew preview cask after its update PR merges.\n\n${notes}`,
+        body: `Preview for Apple Silicon macOS 15+ (ad-hoc signed, unnotarized) and Ubuntu 24.04 ARM64/x64 (WebKitGTK 4.1, GTK 3 and Ayatana AppIndicator required).\n\nSource: ${sourceCommit}\nCI: ${metadata.sourceCI.ciUrl}\n\nInstall using the verified Homebrew preview cask after its update PR merges.\n\n${notes}`,
       },
     });
   const local = new Map(

@@ -3,7 +3,11 @@ import { test } from "node:test";
 import { mkdtemp, readFile, writeFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, basename } from "node:path";
-import { createManifest } from "../../scripts/release/contract.mjs";
+import {
+  createArtifact,
+  createManifest,
+  releaseTargets,
+} from "../../scripts/release/contract.mjs";
 import {
   sealCandidate,
   verifyCandidate,
@@ -22,68 +26,85 @@ const ci = {
 async function candidate(context) {
   const directory = await mkdtemp(join(tmpdir(), "desktop-release-test-"));
   context.after(() => rm(directory, { recursive: true, force: true }));
+  const identity = { version, tag, sourceCommit: source };
+  const bytes = Buffer.from("qualified archive");
   const manifest = createManifest(
-    { version, tag, sourceCommit: source },
-    Buffer.from("qualified archive"),
+    identity,
+    releaseTargets.map(({ target }) => createArtifact(identity, bytes, target)),
   );
   const json = (file, value) =>
     writeFile(join(directory, file), JSON.stringify(value) + "\n");
-  await writeFile(
-    join(directory, manifest.artifacts[0].file),
-    "qualified archive",
-  );
+  const sourceCI = {
+    sourceCommit: source,
+    ciResult: "success",
+    ciRun: 9,
+    ciUrl: "https://github.com/lapismd/lapis-desktop/actions/runs/9",
+  };
+  const platforms = [];
+  for (const artifact of manifest.artifacts) {
+    const binding = {
+      ...identity,
+      target: artifact.target,
+      artifactSha256: artifact.sha256,
+    };
+    await writeFile(join(directory, artifact.file), bytes);
+    platforms.push({
+      ...binding,
+      helperProfile: "release",
+      sourceCI,
+      sources: [{ repository: "lapismd/lapis-ai", revision: "b".repeat(40) }],
+      privateArchives: [
+        {
+          name: "@lapismd/ai",
+          version: "0.2.0",
+          sourceRepository: "lapismd/lapis-ai",
+          sourceCommit: "b".repeat(40),
+          sha256: "c".repeat(64),
+          size: 7,
+        },
+      ],
+    });
+    await json(`bundle-check-${artifact.target}.json`, {
+      target: artifact.target,
+      artifactSha256: artifact.sha256,
+      result: "pass",
+      normalAutomationMarkers: 0,
+      architectures: artifact.architecture,
+    });
+    await json(`homebrew-${artifact.target}-homebrew.json`, {
+      ...binding,
+      ok: true,
+      install: "passed",
+      reinstall: "passed",
+      uninstall: "passed",
+      retainedProfileAndVault: "passed",
+      audit: "passed",
+      upgrade: "not-run: no previous different preview",
+    });
+    for (const phase of ["install", "reinstall"])
+      await json(`homebrew-${artifact.target}-${phase}.json`, {
+        ...binding,
+        ok: true,
+        architecture: artifact.architecture,
+        signature:
+          artifact.platform === "macos" ? "verified" : "not-applicable",
+        visibleNativeWindow: true,
+        gracefulQuit: true,
+        nodeDenoOnPath: false,
+        ordinaryBundle: "verified",
+      });
+  }
   await json("desktop-manifest.json", manifest);
   await json("build-metadata.json", {
-    version,
-    tag,
-    sourceCommit: source,
-    helperProfile: "release",
-    sources: [{ repository: "lapismd/lapis-ai", revision: "b".repeat(40) }],
-    privateArchives: [
-      {
-        name: "@lapismd/ai",
-        version: "0.2.0",
-        sourceRepository: "lapismd/lapis-ai",
-        sourceCommit: "b".repeat(40),
-        sha256: "c".repeat(64),
-        size: 7,
-      },
-    ],
-    sourceCI: {
-      sourceCommit: source,
-      ciResult: "success",
-      ciRun: 9,
-      ciUrl: "https://github.com/lapismd/lapis-desktop/actions/runs/9",
-    },
-  });
-  await json("bundle-check.json", {
-    result: "pass",
-    normalAutomationMarkers: 0,
-    architectures: "arm64",
+    schemaVersion: 2,
+    ...identity,
+    sourceCI,
+    platforms,
   });
   await writeFile(
     join(directory, "LIMITATIONS.md"),
     "Existing native cases remain unqualified.\n",
   );
-  await json("homebrew-homebrew.json", {
-    ok: true,
-    sourceCommit: source,
-    version,
-    install: "passed",
-    reinstall: "passed",
-    uninstall: "passed",
-    retainedProfileAndVault: "passed",
-    audit: "passed",
-  });
-  for (const phase of ["install", "reinstall"])
-    await json(`homebrew-${phase}.json`, {
-      ok: true,
-      sourceCommit: source,
-      version,
-      visibleNativeWindow: true,
-      gracefulQuit: true,
-      ordinaryBundle: "verified",
-    });
   await sealCandidate(directory);
   return { directory, manifest };
 }
@@ -160,7 +181,7 @@ test("candidate verification rejects changed bytes, missing inventory and forged
     "qualified archive",
   );
   await writeFile(
-    join(directory, "homebrew-homebrew.json"),
+    join(directory, `homebrew-${manifest.artifacts[0].target}-homebrew.json`),
     JSON.stringify({ ok: false }),
   );
   await sealCandidate(directory);
@@ -168,6 +189,45 @@ test("candidate verification rejects changed bytes, missing inventory and forged
     verifyCandidate(directory, source),
     /Homebrew qualification/,
   );
+});
+test("final candidates include both qualified Linux architectures", async (context) => {
+  const { directory, manifest } = await candidate(context);
+  manifest.artifacts = manifest.artifacts.filter(
+    (item) => item.platform === "macos",
+  );
+  await writeFile(
+    join(directory, "desktop-manifest.json"),
+    JSON.stringify(manifest),
+  );
+  await sealCandidate(directory);
+  await assert.rejects(verifyCandidate(directory, source), /all three|Linux/);
+});
+test("qualification receipts cannot be reused for another target or changed Linux archive", async (context) => {
+  for (const mutation of [
+    (receipt) => {
+      receipt.target = "aarch64-apple-darwin";
+    },
+    (receipt) => {
+      receipt.artifactSha256 = "f".repeat(64);
+    },
+    (receipt) => {
+      receipt.nodeDenoOnPath = true;
+    },
+    (receipt) => {
+      receipt.architecture = "arm64";
+    },
+  ]) {
+    const { directory } = await candidate(context);
+    const file = join(
+      directory,
+      "homebrew-x86_64-unknown-linux-gnu-install.json",
+    );
+    const receipt = JSON.parse(await readFile(file, "utf8"));
+    mutation(receipt);
+    await writeFile(file, JSON.stringify(receipt));
+    await sealCandidate(directory);
+    await assert.rejects(verifyCandidate(directory, source), /smoke evidence/);
+  }
 });
 test("publication promotes qualified bytes and an identical completed rerun is a no-op", async (context) => {
   const { directory } = await candidate(context),

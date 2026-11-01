@@ -1,7 +1,7 @@
 import { cp } from "node:fs/promises";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { hostedMain } from "./contract.mjs";
+import { hostedMain, releaseTargets } from "./contract.mjs";
 import { sealCandidate, verifyCandidate } from "./candidate.mjs";
 const { values } = parseArgs({
   options: {
@@ -11,11 +11,12 @@ const { values } = parseArgs({
 });
 hostedMain();
 if (values.seal) {
-  for (const phase of ["install", "reinstall", "homebrew"])
-    await cp(
-      `.local/release/homebrew/${phase}.json`,
-      join(values.directory, `homebrew-${phase}.json`),
-    );
+  for (const { target } of releaseTargets)
+    for (const phase of ["install", "reinstall", "homebrew"])
+      await cp(
+        `.local/release/homebrew/${target}/${phase}.json`,
+        join(values.directory, `homebrew-${target}-${phase}.json`),
+      );
   await sealCandidate(values.directory);
 }
 const { manifest } = await verifyCandidate(

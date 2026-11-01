@@ -1,6 +1,12 @@
 import { readdir, readFile, writeFile, stat } from "node:fs/promises";
 import { join } from "node:path";
-import { hash, validateManifest, repository } from "./contract.mjs";
+import {
+  hash,
+  validateManifest,
+  repository,
+  releaseTargets,
+  targetInfo,
+} from "./contract.mjs";
 export async function candidateFiles(directory, prefix = "") {
   const result = [];
   for (const item of await readdir(join(directory, prefix), {
@@ -40,16 +46,22 @@ export async function verifyCandidate(directory, sourceCommit) {
     throw Error(
       "Candidate source does not match the approved workflow revision",
     );
+  if (manifest.artifacts.length !== releaseTargets.length)
+    throw Error(
+      "Final candidates require all three targets including both Linux architectures",
+    );
   const expected = await candidateFiles(directory);
   const required = [
-    manifest.artifacts[0].file,
+    ...manifest.artifacts.flatMap((a) => [
+      a.file,
+      `bundle-check-${a.target}.json`,
+      ...["homebrew", "install", "reinstall"].map(
+        (phase) => `homebrew-${a.target}-${phase}.json`,
+      ),
+    ]),
     "desktop-manifest.json",
     "build-metadata.json",
-    "bundle-check.json",
     "LIMITATIONS.md",
-    "homebrew-homebrew.json",
-    "homebrew-install.json",
-    "homebrew-reinstall.json",
   ].sort();
   if (JSON.stringify(expected) !== JSON.stringify(required))
     throw Error("Candidate asset set is incomplete or unexpected");
@@ -70,82 +82,106 @@ export async function verifyCandidate(directory, sourceCommit) {
   }
   if (JSON.stringify(names.sort()) !== JSON.stringify(expected))
     throw Error("Candidate checksum inventory is incomplete or duplicated");
-  const bytes = await readFile(join(directory, manifest.artifacts[0].file));
+  const json = async (file) =>
+    JSON.parse(await readFile(join(directory, file), "utf8"));
+  const metadata = await json("build-metadata.json");
   if (
-    bytes.length !== manifest.artifacts[0].size ||
-    hash(bytes) !== manifest.artifacts[0].sha256
-  )
-    throw Error("Candidate archive identity changed");
-  const metadata = JSON.parse(
-    await readFile(join(directory, "build-metadata.json"), "utf8"),
-  );
-  if (
+    metadata.schemaVersion !== 2 ||
     metadata.sourceCommit !== sourceCommit ||
     metadata.version !== manifest.version ||
     metadata.tag !== manifest.tag ||
     metadata.sourceCI?.sourceCommit !== sourceCommit ||
     metadata.sourceCI?.ciResult !== "success" ||
-    metadata.helperProfile !== "release"
+    !Array.isArray(metadata.platforms) ||
+    metadata.platforms.length !== releaseTargets.length ||
+    new Set(metadata.platforms.map((p) => p.target)).size !==
+      releaseTargets.length
   )
     throw Error("Candidate build/source qualification disagrees");
-  if (
-    !Array.isArray(metadata.privateArchives) ||
-    !metadata.privateArchives.length ||
-    !Array.isArray(metadata.sources) ||
-    metadata.privateArchives.some(
-      (entry) =>
-        !entry.name ||
-        !entry.version ||
-        !/^[a-f0-9]{64}$/.test(entry.sha256) ||
-        !Number.isSafeInteger(entry.size) ||
-        entry.size <= 0 ||
-        !/^[a-f0-9]{40}$/.test(entry.sourceCommit) ||
-        !metadata.sources.some(
-          (source) =>
-            source.repository === entry.sourceRepository &&
-            source.revision === entry.sourceCommit,
-        ),
-    )
-  )
-    throw Error("Missing verified private archive provenance");
-  const bundle = JSON.parse(
-    await readFile(join(directory, "bundle-check.json"), "utf8"),
-  );
-  if (
-    bundle.result !== "pass" ||
-    bundle.normalAutomationMarkers !== 0 ||
-    bundle.architectures !== "arm64"
-  )
-    throw Error("Candidate requires ordinary bundle audit evidence");
-  const install = JSON.parse(
-    await readFile(join(directory, "homebrew-homebrew.json"), "utf8"),
-  );
-  if (
-    install.ok !== true ||
-    install.sourceCommit !== sourceCommit ||
-    install.version !== manifest.version ||
-    [
-      install.install,
-      install.reinstall,
-      install.uninstall,
-      install.retainedProfileAndVault,
-      install.audit,
-    ].some((value) => value !== "passed")
-  )
-    throw Error("Candidate requires successful native Homebrew qualification");
-  for (const phase of ["install", "reinstall"]) {
-    const smoke = JSON.parse(
-      await readFile(join(directory, `homebrew-${phase}.json`), "utf8"),
+  for (const artifact of manifest.artifacts) {
+    const bytes = await readFile(join(directory, artifact.file));
+    if (bytes.length !== artifact.size || hash(bytes) !== artifact.sha256)
+      throw Error("Candidate archive identity changed");
+    const info = targetInfo(artifact.target);
+    const platform = metadata.platforms.find(
+      (p) => p.target === artifact.target,
     );
+    const bound = (receipt) =>
+      receipt?.target === artifact.target &&
+      receipt.artifactSha256 === artifact.sha256 &&
+      receipt.sourceCommit === sourceCommit &&
+      receipt.version === manifest.version;
     if (
-      !smoke.ok ||
-      smoke.sourceCommit !== sourceCommit ||
-      smoke.version !== manifest.version ||
-      smoke.visibleNativeWindow !== true ||
-      smoke.gracefulQuit !== true ||
-      smoke.ordinaryBundle !== "verified"
+      !bound(platform) ||
+      platform.tag !== manifest.tag ||
+      platform.helperProfile !== "release" ||
+      JSON.stringify(platform.sourceCI) !== JSON.stringify(metadata.sourceCI)
     )
-      throw Error("Candidate requires installed ordinary-app smoke evidence");
+      throw Error("Platform build/source qualification disagrees");
+    if (
+      !Array.isArray(platform.privateArchives) ||
+      !platform.privateArchives.length ||
+      !Array.isArray(platform.sources) ||
+      platform.privateArchives.some(
+        (entry) =>
+          !entry.name ||
+          !entry.version ||
+          !/^[a-f0-9]{64}$/.test(entry.sha256) ||
+          !Number.isSafeInteger(entry.size) ||
+          entry.size <= 0 ||
+          !/^[a-f0-9]{40}$/.test(entry.sourceCommit) ||
+          !platform.sources.some(
+            (source) =>
+              source.repository === entry.sourceRepository &&
+              source.revision === entry.sourceCommit,
+          ),
+      )
+    )
+      throw Error("Missing verified private archive provenance");
+    const bundle = await json(`bundle-check-${artifact.target}.json`);
+    if (
+      bundle.target !== artifact.target ||
+      bundle.artifactSha256 !== artifact.sha256 ||
+      bundle.result !== "pass" ||
+      bundle.normalAutomationMarkers !== 0 ||
+      bundle.architectures !== info.architecture
+    )
+      throw Error("Candidate requires ordinary bundle audit evidence");
+    const install = await json(`homebrew-${artifact.target}-homebrew.json`);
+    if (
+      !bound(install) ||
+      install.ok !== true ||
+      [
+        install.install,
+        install.reinstall,
+        install.uninstall,
+        install.retainedProfileAndVault,
+        install.audit,
+      ].some((value) => value !== "passed") ||
+      !(
+        install.upgrade === "passed" ||
+        install.upgrade === "not-run: no previous different preview" ||
+        install.upgrade === "not-run: no previous preview for this platform"
+      )
+    )
+      throw Error(
+        "Candidate requires successful native Homebrew qualification",
+      );
+    for (const phase of ["install", "reinstall"]) {
+      const smoke = await json(`homebrew-${artifact.target}-${phase}.json`);
+      if (
+        !bound(smoke) ||
+        smoke.ok !== true ||
+        smoke.architecture !== info.architecture ||
+        smoke.visibleNativeWindow !== true ||
+        smoke.gracefulQuit !== true ||
+        smoke.nodeDenoOnPath !== false ||
+        smoke.ordinaryBundle !== "verified" ||
+        smoke.signature !==
+          (info.platform === "macos" ? "verified" : "not-applicable")
+      )
+        throw Error("Candidate requires installed ordinary-app smoke evidence");
+    }
   }
   if (!(await stat(join(directory, "LIMITATIONS.md"))).size)
     throw Error("Missing native RC limitations");

@@ -1,9 +1,10 @@
 # Desktop preview releases
 
-The Desktop preview is Apple Silicon macOS 15+, ad-hoc signed and unnotarized.
-It installs as Lapis Notes Preview, with a separate application profile. It does
-not register stable Notes URL handlers. Stable users and Linux packages remain
-on the existing tap release until a separately approved cutover.
+The Desktop preview targets Apple Silicon macOS 15+ and Ubuntu 24.04 Linux
+ARM64/x64. macOS is ad-hoc signed and unnotarized. It installs as Lapis Notes
+Preview, with a separate application profile. It does not register stable Notes
+URL handlers. Stable users remain on the existing Deno tap release until a
+separately approved cutover.
 
 ## Prepare and review
 
@@ -23,17 +24,21 @@ gh workflow run release-desktop.yml --repo lapismd/lapis-desktop --ref main \
 
 Review the qualified artifact and its native receipts. Preparation builds
 release-mode native helpers and the ordinary app, signs nested helpers before
-their inventory and the outer app last, audits the bundle, and tests the ZIP
-through Homebrew installation, reinstall and uninstall in an application
-directory containing spaces. Profile/vault bytes are checked across those
-operations. The first release honestly reports that upgrade coverage has no
-previous preview. Later releases use the prior published preview for upgrades.
+their inventory and the outer app last, audits each bundle, and tests all three
+archives through native Homebrew installation, reinstall and uninstall. macOS
+uses an application directory containing spaces; Linux uses an XDG application
+directory containing spaces. The Linux tar.gz retains the ordinary executable,
+its exact Tauri resource tree, release-built AI helpers, icon and preview
+desktop entry. Profile/vault bytes are checked across those operations. The
+first release honestly reports that upgrade coverage has no previous preview.
+Later releases use the prior published preview for upgrades.
 
-`build-metadata.json` records the actual CI run, toolchain, pinned prerequisite
-sources, private archive content hashes and lock hashes. App Profile and the AI
-client remain explicit private public-build prerequisites; this is not a
-registry-only claim. LIMITATIONS.md retains the native RC quarantines from the
-owning backlog. Skipped cases are not passing feature coverage.
+`build-metadata.json` records per-target metadata and the actual CI run,
+toolchain, pinned prerequisite sources, private archive content hashes and lock
+hashes. App Profile and the AI client remain explicit private public-build
+prerequisites; this is not a registry-only claim. LIMITATIONS.md retains the
+native RC quarantines from the owning backlog. Skipped cases are not passing
+feature coverage.
 
 ## Publish after qualification
 
@@ -58,7 +63,8 @@ Configure `HOMEBREW_TAP_APP_ID` and `HOMEBREW_TAP_APP_PRIVATE_KEY` in this
 repository. The GitHub App must be restricted to the tap with Contents and Pull
 requests write permissions. The workflow opens a two-file preview cask/manifest
 PR and enables squash auto-merge. Tap checks and all three Native installation
-jobs remain required. The macOS job also verifies preview installation.
+jobs remain required. Each supported platform also verifies preview
+installation.
 
 Once the generated PR merges:
 
@@ -68,6 +74,23 @@ brew trust --cask lapismd/tap/lapis-notes@preview
 brew install --cask lapismd/tap/lapis-notes@preview
 brew upgrade --cask lapismd/tap/lapis-notes@preview
 ```
+
+Linux requires a graphical desktop, D-Bus and these system libraries:
+
+```sh
+sudo apt-get install libwebkit2gtk-4.1-0 libgtk-3-0t64 libayatana-appindicator3-1
+lapis-notes-preview
+```
+
+Linux archives are built natively on Ubuntu 24.04 (glibc 2.39) and require no
+FUSE. Homebrew retains the complete package in Caskroom, links only the preview
+launcher and installs a separate preview desktop entry. Linux receipts verify
+the actual installed executable/resources, architecture, profile identity,
+visible X11 window and graceful quit with no Node/Deno on the app's PATH. This
+smoke does not qualify full Linux feature parity. The existing macOS native
+feature suite stays bound to the same source commit, with all quarantines
+disclosed. Final candidate verification requires all three archives and receipts
+bound to target and SHA-256.
 
 ## Recovery
 
@@ -90,6 +113,6 @@ Actions receipts before retrying. Do not waive required checks or alter hashes.
 
 A later approved change must preserve Lapis Notes.app and notes.lapis.desktop,
 advance CalVer above installed Deno, qualify real old-to-new upgrade, rollback
-and data compatibility, explicitly make stable macOS-only, and retire Deno
-desktop CI while retaining old archives and user data. Linux Tauri, Intel macOS,
+and data compatibility on macOS and both retained Linux architectures, and
+retire Deno desktop CI while retaining old archives and user data. Intel macOS,
 Windows, Developer ID/notarization and an in-app updater remain separate work.

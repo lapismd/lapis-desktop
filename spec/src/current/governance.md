@@ -5,9 +5,10 @@
 [Local validation](../../../docs/validation.md) defines Docker/native commands,
 isolated archive prerequisites, reports and owned cleanup. E-VALIDATION-001
 preserves Docker/native boundaries. [Preview distribution](distribution.md) owns
-releases. E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share
-History ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034
-qualify editing. Core readers use exact local IPC; generic plugin grants deny.
+releases, including the Linux extension recorded by E-RELEASE-005.
+E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
+ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
+editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for an
 exact path redirected to a verified tarball. Fixtures pin tools and Server

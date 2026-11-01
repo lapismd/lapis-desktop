@@ -5,6 +5,7 @@ import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { fileURLToPath } from "node:url";
+import { validateManifest } from "./contract.mjs";
 import { verifyInstalled } from "./verify-installed.mjs";
 if (
   process.platform !== "darwin" ||
@@ -24,7 +25,12 @@ const { values } = parseArgs({
 });
 if (!values.app || !values.manifest || !values.output)
   throw Error("Require --app, --manifest and --output");
-const manifest = JSON.parse(await readFile(values.manifest, "utf8"));
+const manifest = validateManifest(
+  JSON.parse(await readFile(values.manifest, "utf8")),
+);
+const artifact = manifest.artifacts.find(
+  (a) => a.target === "aarch64-apple-darwin",
+);
 const report = verifyInstalled(resolve(values.app), manifest);
 const native = JSON.parse(
   execFileSync(
@@ -47,6 +53,8 @@ await writeFile(
     {
       ok: true,
       sourceCommit: manifest.sourceCommit,
+      target: artifact.target,
+      artifactSha256: artifact.sha256,
       ...report,
       ...native,
       boundary:

@@ -62,12 +62,14 @@ Evidence: [E-PLAN-002](../history/E-PLAN-002.md),
 
 ## Retained release decisions
 
-The first preview target is Apple Silicon macOS 15+, ad-hoc signed and
-unnotarized through Homebrew. Preserve Lapis Notes.app and the canonical bundle
-identity; keep preview configuration separate. Continue desktop CalVer above the
-actual installed Deno release, checking that version when release work resumes.
-At approved Tauri cutover, make the active cask macOS-only and retire Deno
-desktop build/test/release CI while preserving old archives and user data.
+The first preview targets Apple Silicon macOS 15+ (ad-hoc signed, unnotarized)
+and Ubuntu 24.04 Linux ARM64/x64 through Homebrew. Preserve Lapis Notes.app and
+the canonical bundle identity; keep preview configuration separate. Continue
+desktop CalVer above the actual installed Deno release, checking that version
+when release work resumes. At approved Tauri cutover, retain all qualified
+platforms and retire Deno desktop build/test/release CI while preserving old
+archives and user data. Preview installation/window/quit checks do not establish
+full Linux native feature parity.
 
 Reconcile currently published upstream packages and consumer contracts before a
 registry-only build. The retired release-wave register predates newer published
@@ -217,6 +219,6 @@ and Dependency audits has no lane dependency.
 Preview automation does not switch stable users. A separate approved cutover
 must use a CalVer above the actual installed Deno release, preserve
 `Lapis Notes.app` and `notes.lapis.desktop`, prove Deno-to-Tauri upgrade,
-rollback and note/profile compatibility, explicitly make the active stable cask
-macOS-only, and retire Deno desktop build/test/release CI while preserving
+rollback and note/profile compatibility on macOS and the retained Linux
+architectures, and retire Deno desktop build/test/release CI while preserving
 archives and data.

@@ -68,7 +68,7 @@
     "ci:bundle": "pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle",
     "ci:headed": "pnpm test:desktop:headed",
     "checks": "node scripts/run-turbo.mjs ci:governance ci:storybook-static --summarize && node scripts/run-turbo.mjs ci:storybook-interaction --summarize && node scripts/run-turbo.mjs ci:quality --summarize && node scripts/run-turbo.mjs ci:unit --summarize && node scripts/run-turbo.mjs ci:bundle --summarize",
-    "release:prepare": "node scripts/release/build.mjs",
+    "release:prepare": "node scripts/release/prepare-platform.mjs",
     "release:verify": "node scripts/release/verify-candidate.mjs"
   },
   "dependencies": {
