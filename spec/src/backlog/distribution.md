@@ -266,7 +266,7 @@ Main `8dc63055` finished 93 feature passes, 2 failures and 14 feature skips. PR
 families had 2 passes/1 skip; neither reached the later
 resource/development-WebView family. Failed artifacts 13094867223 and
 13095249631 retain those attempts; E-RELEASE-010 records their verified ZIP
-hashes. Total current quarantine: 18 cases (1 startup, 17 feature). Queue
+hashes. At E-RELEASE-010: 18 quarantines (1 startup, 17 feature). Queue
 admission/refusal and deleted-preview recreation/shutdown coverage from these
 cases remain unqualified. Requirements: LD-AI-005, LD-FILE-008 and LD-DESK-005.
 Owner: Desktop native automation, with file recovery owned by Desktop/Notes
@@ -274,6 +274,37 @@ editing. Re-enable each after its boundary is understood and the original case
 plus complete native family pass reliably in fresh hosted runs with original
 assertions/deadlines. Enabled exact-source native and ordinary package/Homebrew
 qualification remain mandatory.
+
+### Explorer filename replacement quarantine
+
+[E-RELEASE-012](../history/E-RELEASE-012.md) quarantines only
+`Explorer rename and move preserve collisions, the active editor and restart layout`
+after PR #8 run 41340718997/job 124950772330 on `627d2148`. It passed unchanged
+in PR #7 run 41337362311/job 124939943968 in 11110.81825ms; only manual CI
+revision selection, its tests and documentation changed afterward. Application,
+dependency and native helper inputs are identical. The failed case took
+11187.844875ms and timed out at `file-ui-mutations.test.mjs:130` after the
+original 5000ms wait for `Renamed.md`.
+
+Verified artifact 13098307647 has ZIP SHA-256
+`838b90d8b6a9ffaf2765d4768319d5a1343f7c00a004f5726a2ae732ca4d2198`. Its disk and
+DOM contain `Note.mdRenamed.md` with the exact intended draft; `Keep.md` and
+`Archive/Renamed.md` retain their collision bytes. This points to the
+automation's filename replacement, not a slow tree projection. The exact
+clear/input mechanism remains to be diagnosed. No move or cold-layout success is
+inferred from the failed run. Startup: 2 pass/1 skip. Feature family: 91 pass/1
+fail/17 skips. The later resource family was not run.
+
+Preserve the original callback, assertions, helper and deadlines. This adds one
+explicit skip, bringing the total to 19 cases (1 startup, 18 feature). The
+combined rename/move/cold-layout boundary remains unqualified. Owner: Desktop
+native automation; Notes Explorer owns any upstream input defect. Re-enable
+after diagnosing filename replacement, verifying the exact requested value
+before submission and passing the original complete case plus its native family
+reliably on fresh hosted runners with the original outcome assertions and
+deadlines. Other mutation/recovery cases, exact-source full CI and actual
+Homebrew package qualification remain required. Carry this limitation into the
+candidate receipts and release notes; skipped coverage is not passing coverage.
 
 ## Development audit exceptions
 
