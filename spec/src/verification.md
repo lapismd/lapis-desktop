@@ -4,12 +4,10 @@
 native policy cases under LD-GOV-006/010 and LD-AI-002; UI and provider
 acceptance retain their original gates.
 
-E-AI-115 covers root-context Markdown alignment under LD-AI-002/LD-CAT-003;
-package intake and focused stories retain their gates.
+E-AI-115 covers root context Markdown alignment under LD-AI-002/LD-CAT-003; the
+shared package intake and focused stories retain existing milestone gates.
 
 E-REPO-012/013 retain manual previews and visual gates.
-
-E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 
 <!-- prettier-ignore -->
 | ID | Status | Evidence |
@@ -29,21 +27,21 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-REVIEW-010 | Planned | [E-PLAN-005](history/E-PLAN-005.md): planning only; M17.2/M17.4 inline/overview discussion lifecycle pending. |
 | LD-REVIEW-011 | Planned | [E-PLAN-005](history/E-PLAN-005.md): planning only; M17.5 explicit delivery and proven answer links pending. |
 | LD-SESSION-003 | Implemented | [E-MUTATION-001](history/E-MUTATION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
-| LD-GOV-001 | Implemented | [E-CI-016](history/E-CI-016.md): Bounded navigation preserves 400 chapters and adds one; page caps remain unchanged. [E-CI-014](history/E-CI-014.md): CI intake. |
-| LD-GOV-002 | Implemented | [E-CI-009](history/E-CI-009.md); [E-CI-016](history/E-CI-016.md): Mapped spec-first changes. |
-| LD-GOV-003 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
-| LD-GOV-004 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical spec authority. [E-CI-008](history/E-CI-008.md): immutable receipt ancestry and fail-closed path validation. |
+| LD-GOV-001 | Implemented | [E-SHELL-002](history/E-SHELL-002.md)  [E-CI-001](history/E-CI-001.md): combined CI and dependency intake; hosted checks gate merging. |
+| LD-GOV-002 | Implemented | [E-SHELL-002](history/E-SHELL-002.md) |
+| LD-GOV-003 | Implemented | [E-SPEC-001](history/E-SPEC-001.md); [E-EVIDENCE-001](history/E-EVIDENCE-001.md) verifies immutable historical deletion provenance; original acceptance remains enforced. |
+| LD-GOV-004 | Implemented | [E-SPEC-001](history/E-SPEC-001.md); [E-EVIDENCE-001](history/E-EVIDENCE-001.md) verifies immutable historical deletion provenance; original acceptance remains enforced. |
 | LD-GOV-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-STRUCTURE-001](history/E-STRUCTURE-001.md) |
-| LD-GOV-006 | Implemented | [E-CI-034](history/E-CI-034.md): packed Tasks pin. [E-CI-033](history/E-CI-033.md): one Design Core 0.8.0 API context; hosted Quality pending. [E-CI-015](history/E-CI-015.md): patch proof. [E-CI-030](history/E-CI-030.md): selected published cohort; final audit/native proof pending. [E-CI-017](history/E-CI-017.md): API 0.2.3/Core 0.7.3 portable passes. Earlier: [E-ARCHIVES-002](history/E-ARCHIVES-002.md), [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md). |
-| LD-GOV-007 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-STRUCTURE-001](history/E-STRUCTURE-001.md); [E-ICONS-001](history/E-ICONS-001.md); [E-ICONS-002](history/E-ICONS-002.md); [E-CI-014](history/E-CI-014.md): Source structure and file-artwork intake. |
-| LD-GOV-008 | Implemented | [E-ARCHIVES-001](history/E-ARCHIVES-001.md); [E-ARCHIVES-002](history/E-ARCHIVES-002.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass.; [E-ICONS-001](history/E-ICONS-001.md), [E-ICONS-002](history/E-ICONS-002.md): qualified file artwork and main intake. |
+| LD-GOV-006 | Implemented | [E-SHELL-002](history/E-SHELL-002.md), [E-ARCHIVES-002](history/E-ARCHIVES-002.md), [E-CI-001](history/E-CI-001.md); [E-PARITY-001](history/E-PARITY-001.md): public profile intake and 760 catalog cases; registry/native gates remain separate. |
+| LD-GOV-007 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-STRUCTURE-001](history/E-STRUCTURE-001.md); [E-ICONS-001](history/E-ICONS-001.md), [E-ICONS-002](history/E-ICONS-002.md): qualified file artwork and main intake. |
+| LD-GOV-008 | Implemented | [E-ARCHIVES-002](history/E-ARCHIVES-002.md), [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md), [E-ICONS-002](history/E-ICONS-002.md); [E-PARITY-001](history/E-PARITY-001.md): verified public profile/catalog intake. |
 | LD-DESK-001 | Implemented | [E-SHELL-002](history/E-SHELL-002.md), [E-REPO-016](history/E-REPO-016.md) |
 | LD-DESK-002 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-REVIEW-001](history/E-REVIEW-001.md); [E-REVIEW-002](history/E-REVIEW-002.md); [E-SHELL-003](history/E-SHELL-003.md): native HTML drag routing. |
 | LD-DESK-003 | Implemented | [E-SHELL-002](history/E-SHELL-002.md) |
 | LD-DESK-004 | Implemented | [E-SHELL-002](history/E-SHELL-002.md) |
-| LD-DESK-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-SESSION-002](history/E-SESSION-002.md); [E-REVIEW-002](history/E-REVIEW-002.md); [E-CI-012](history/E-CI-012.md): local pass; CI pending. |
-| LD-MIG-001 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
-| LD-MIG-002 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
+| LD-DESK-005 | Implemented | [E-SHELL-002](history/E-SHELL-002.md); [E-SESSION-002](history/E-SESSION-002.md); [E-REVIEW-002](history/E-REVIEW-002.md) |
+| LD-MIG-001 | Implemented | [E-SPEC-001](history/E-SPEC-001.md); [E-EVIDENCE-001](history/E-EVIDENCE-001.md) verifies immutable historical deletion provenance; original acceptance remains enforced. |
+| LD-MIG-002 | Implemented | [E-SPEC-001](history/E-SPEC-001.md); [E-EVIDENCE-001](history/E-EVIDENCE-001.md) verifies immutable historical deletion provenance; original acceptance remains enforced. |
 | LD-HOST-001 | Implemented | [E-HOST-001](history/E-HOST-001.md). |
 | LD-VAULT-001 | Implemented | [E-VAULT-001](history/E-VAULT-001.md) |
 | LD-VAULT-002 | Implemented | [E-VAULT-001](history/E-VAULT-001.md); [E-LIFE-002](history/E-LIFE-002.md): chooser in-body failure presentation. |
@@ -64,15 +62,15 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-LIFE-005 | Implemented | [E-LIFE-001](history/E-LIFE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-LIFE-006 | Implemented | [E-WRITE-001](history/E-WRITE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-LIFE-007 | Implemented | [E-PREVIEW-001](history/E-PREVIEW-001.md); [E-MUTATION-001](history/E-MUTATION-001.md); [E-STATE-001](history/E-STATE-001.md); [E-WRITERS-001](history/E-WRITERS-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
-| LD-LIFE-008 | Implemented | [E-CORE-034](history/E-CORE-034.md): native writer qualification, renderer default. [E-CI-010](history/E-CI-010.md): shared injected transport. |
+| LD-LIFE-008 | Implemented | [E-CORE-034](history/E-CORE-034.md): Source/public admission,2068 catalog and 58 actual native writer cases plus both native configurations pass; renderer default remains. |
 | LD-LIFE-009 | Implemented | [E-CORE-034](history/E-CORE-034.md): Original preflight failures repair; retained Problems recovery, refused leave,58 native cases and cold restoration pass. |
-| LD-MIG-003 | Implemented | [E-SPEC-001](history/E-SPEC-001.md): canonical contracts/verification/backlog replace milestone authority; immutable evidence and original acceptance boundaries remain enforced. |
+| LD-MIG-003 | Implemented | [E-SPEC-001](history/E-SPEC-001.md); [E-EVIDENCE-001](history/E-EVIDENCE-001.md) verifies immutable historical deletion provenance; original acceptance remains enforced. |
 | LD-VAULT-007 | Implemented | [E-REVIEW-001](history/E-REVIEW-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-SESSION-004 | Implemented | [E-STATE-001](history/E-STATE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-REC-001 | Implemented | [E-RECOVERY-001](history/E-RECOVERY-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-REC-002 | Implemented | [E-RECOVERY-001](history/E-RECOVERY-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
 | LD-FILE-001 | Implemented | [E-FILES-001](history/E-FILES-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
-| LD-FILE-002 | Implemented | [E-INGESTION-001](history/E-INGESTION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. [E-CI-012](history/E-CI-012.md): local pass; CI pending. |
+| LD-FILE-002 | Implemented | [E-INGESTION-001](history/E-INGESTION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
 | LD-FILE-003 | Implemented | [E-MOVE-001](history/E-MOVE-001.md); [E-INGESTION-001](history/E-INGESTION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
 | LD-FILE-004 | Implemented | [E-IMPORT-001](history/E-IMPORT-001.md); [E-ACTIONS-001](history/E-ACTIONS-001.md); [E-CREATE-001](history/E-CREATE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
 | LD-FILE-005 | Implemented | [E-HTTP-001](history/E-HTTP-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final native file management, overflow/reconciliation, teardown and resource gates pass. |
@@ -84,7 +82,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-NAV-003 | Implemented | [E-NAV-001](history/E-NAV-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-004 | Implemented | [E-NAV-001](history/E-NAV-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-005 | Implemented | [E-NAV-001](history/E-NAV-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
-| LD-NAV-006 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. [E-CI-012](history/E-CI-012.md): local pass; CI pending. |
+| LD-NAV-006 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-007 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-NAV-008 | Implemented | [E-GRAPH-001](history/E-GRAPH-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Final Search, metadata, Graph, navigation and cold persistence gates pass. |
 | LD-INT-001 | Implemented | [E-INTEGRATION-001](history/E-INTEGRATION-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native menus, bounded services, cold/running URL delivery, ownership and ordinary-bundle gates pass. |
@@ -102,12 +100,12 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-POP-004 | Planned | [E-POPOUT-002](history/E-POPOUT-002.md): Shared admission and main-tab save retention pass; [E-POPOUT-003](history/E-POPOUT-003.md) qualifies registry close receipts. Complete native popup teardown remains M7.3. |
 | LD-POP-005 | Implemented | [E-POPOUT-004](history/E-POPOUT-004.md): original ordinary native multi-window editing, save, redock, guarded close and cold reopen gate passed. |
 | LD-POP-006 | Planned | [E-POPOUT-002](history/E-POPOUT-002.md): Top/stacked browser clearance passes at three widths; measured native popup clearance remains M7.3. |
-| LD-CAT-001 | Implemented | [E-CATALOG-001](history/E-CATALOG-001.md); [E-CATALOG-008](history/E-CATALOG-008.md); [E-ICONS-001](history/E-ICONS-001.md); [E-ICONS-002](history/E-ICONS-002.md); [E-CI-014](history/E-CI-014.md): 24 viewport/theme interaction/axe cases, build, cleanup, exclusion and artwork intake. |
-| LD-CAT-002 | Implemented | [E-CATALOG-001](history/E-CATALOG-001.md); [E-CATALOG-008](history/E-CATALOG-008.md); [E-ICONS-001](history/E-ICONS-001.md); [E-ICONS-002](history/E-ICONS-002.md); [E-CI-014](history/E-CI-014.md): 24 viewport/theme interaction/axe cases, build, cleanup, exclusion and artwork intake. |
+| LD-CAT-001 | Implemented | [E-CATALOG-001](history/E-CATALOG-001.md): 24 both-theme/viewport production-component interactions and axe checks, static build, owned cleanup and production exclusion.; [E-CATALOG-008](history/E-CATALOG-008.md).; [E-ICONS-001](history/E-ICONS-001.md), [E-ICONS-002](history/E-ICONS-002.md): qualified file artwork and main intake. |
+| LD-CAT-002 | Implemented | [E-CATALOG-001](history/E-CATALOG-001.md): 24 both-theme/viewport production-component interactions and axe checks, static build, owned cleanup and production exclusion.; [E-CATALOG-008](history/E-CATALOG-008.md).; [E-ICONS-001](history/E-ICONS-001.md), [E-ICONS-002](history/E-ICONS-002.md): qualified file artwork and main intake. |
 | LD-PLUG-001 | Planned | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
-| LD-TERM-001 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): public client and native host; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): source intake; consumer pending. |
-| LD-TERM-002 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): session ownership and scoped cleanup; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): source intake; consumer pending. |
-| LD-TERM-003 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): input, resize and cold restore; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): source intake; consumer pending. |
+| LD-TERM-001 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): 84 catalog cases, 5 focused native cases and the 100-case cold desktop lane; retained processes, scoped admission, preferences and ordinary-bundle exclusion pass. |
+| LD-TERM-002 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): 84 catalog cases, 5 focused native cases and the 100-case cold desktop lane; retained processes, scoped admission, preferences and ordinary-bundle exclusion pass. |
+| LD-TERM-003 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): 84 catalog cases, 5 focused native cases and the 100-case cold desktop lane; retained processes, scoped admission, preferences and ordinary-bundle exclusion pass. |
 | LD-PLUG-002 | Implemented | [E-WEB-001](history/E-WEB-001.md): API rejection/data preservation, 13 cold Web cases, 84 desktop catalog cases and 100 native cases pass. |
 | LD-PLUG-003 | Implemented | [E-PORTABLE-002](history/E-PORTABLE-002.md): Seven portable plugins, native writes/freshness/isolation, real worker/WASM cleanup, 84 catalog and 108 cold native cases pass. |
 | LD-PLUG-004 | Implemented | [E-PORTABLE-002](history/E-PORTABLE-002.md): Seven portable plugins, native writes/freshness/isolation, real worker/WASM cleanup, 84 catalog and 108 cold native cases pass. |
@@ -118,12 +116,12 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-AI-003 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | [E-TEST-001](history/E-TEST-001.md): quiet default, fail-closed modes, complete retained headed runner and explicit native CI gate; all quiet lanes pass. |
-| LD-GOV-010 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md); [E-CI-001](history/E-CI-001.md); [E-CI-014](history/E-CI-014.md): Docker/native separation; E-ICONS-002 main archives, SSH and 2,060 catalog cases. |
+| LD-GOV-010 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md): isolated Docker-first portable validation; native product qualification remains separate. E-ICONS-002 qualifies combined-main archives, SSH controls and 2,060 catalog cases.  [E-CI-001](history/E-CI-001.md): combined CI and dependency intake; hosted checks gate merging. |
 | LD-TASK-001 | Planned | [E-CORE-036](history/E-CORE-036.md): explicit native selection, profile storage and admitted transport intake; composed native proof pending. |
 | LD-TASK-002 | Planned | [E-CORE-036](history/E-CORE-036.md): generated DTOs and existing App observation/journal; full source and installed-plugin acceptance pending. |
 | LD-TASK-003 | Planned | [E-CORE-036](history/E-CORE-036.md): M16.9 retains provider, locale, recovery, public-archive and actual native gates. |
 | LD-CAT-003 | Implemented | E-CORE-014 retains attachment collapse absence after the controlled closed/unmount boundary;  [E-CATALOG-002](history/E-CATALOG-002.md): qualified state inventory; [E-CATALOG-007](history/E-CATALOG-007.md): Lapis Reading review added, suites deferred.; [E-REPO-011](history/E-REPO-011.md); [E-REPO-012](history/E-REPO-012.md); [E-REPO-013](history/E-REPO-013.md). |
-| LD-CAT-005 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md); [E-CI-014](history/E-CI-014.md): Complete render inventory and fail-closed parser regressions. |
+| LD-CAT-005 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md): complete selected-render composition inventory and fail-closed parser regressions. |
 | LD-COMP-001 | Partial | [E-AI-123](history/E-AI-123.md): model library/progress/recovery; [E-AI-124](history/E-AI-124.md): model controls/footer; [E-AI-125](history/E-AI-125.md): inline selection and fresh app checks. Original inference, lifecycle and pairing gates remain. |
 | LD-REPO-001 | Implemented | [E-REPO-002](history/E-REPO-002.md): physical admission, real caller/origin frames and independent history/AI grants; M13.1. |
 | LD-REPO-002 | Implemented | [E-REPO-006](history/E-REPO-006.md): cold native pins/diffs/restart; [M13.2 ledger](backlog.md): transport and presentation history; [E-REPO-056](history/E-REPO-056.md): neutral service compatibility; [E-REPO-016](history/E-REPO-016.md): background work. |

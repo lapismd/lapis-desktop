@@ -10,14 +10,14 @@ qualify metadata/Search; 033/034 qualify editing. Core readers use exact local
 IPC; generic plugin grants deny. Tasks/default gates remain separate. SSH
 options preserve authentication, endpoints and literal arguments. Archive
 rewriting is idempotent only for an exact path redirected to a verified tarball.
-Fixtures pin tools and Server peers; unverified paths/file peers reject.
-[Local intake](local-dependencies.md) governs pins, refreshes, the Bits patch
-and released-cohort gates (E-CI-015/018; LD-GOV-006/008).
+Repeated hooks preserve it; unverified paths/file peer ranges reject.
 
-Native readiness matches split/log-batched receipts without longer deadlines.
-Hosted test logs stream live (E-CI-009). The e2e entry shares early progress,
-then imports runtime instrumentation; ordinary bundles reject its startup
-capture marker.
+The [local dependency intake](local-dependencies.md) contract governs complete
+review refreshes from committed default-checkout source under LD-GOV-006/008.
+
+Native readiness covers split/log-batched receipts without longer deadlines. The
+e2e entry shares early progress, then imports runtime instrumentation; ordinary
+bundle audits reject its startup capture marker.
 
 Canonical owners include planned
 [Review](../backlog/markdown-review-contract.md) and staged
@@ -67,7 +67,7 @@ and adoption MUST require known completed owned runs and immutable container
 identities; failed transport queries prove nothing. Workers MUST drop Linux
 capabilities so permission checks cannot bypass DAC.
 
-The user authorized verified local pnpm archives until the publication gate. The
+E-PARITY-001 qualifies the authorized local archives until publication. The
 ignored overlay verifies checksums/revisions, redirects matching ranges and
 preserves tracked manifests/lockfiles. Fixes stay upstream; no source patches or
 aliases. E-REPO-039–041 retain LD-GOV-004/005 for owned Settings/forge UI; exact
@@ -94,11 +94,11 @@ runs and all failed attempts. An appended record may resolve an older failure;
 it cannot rewrite that result. Use `enclosing-change` for evidence in the change
 being verified rather than inventing a future commit hash.
 
-Evidence paths resolve against current files, actual base-revision deletions, or
-an immutable record's enclosing ancestry, including earlier deletion parents.
-Fresh evidence cannot claim an unrelated historical path. Historical lookup
-rejects later-only or missing paths; removing an obsolete component does not
-authorize rewriting its old evidence.
+Evidence resolves current/base paths or an immutable receipt’s enclosing
+snapshot and deletion parents. A forward provenance correction MUST hash the
+unchanged committed receipt and prove its named paths were removed at an exact
+ancestor. Invented paths, unrelated revisions and changed receipts MUST fail
+closed; fresh evidence cannot claim unrelated historical paths.
 
 ## Change map
 
@@ -114,9 +114,9 @@ the debug acceptance feature and explicit fixture opt-in; ordinary permissions
 remain exact. Bundle audits reject native and renderer proof markers. Native
 tests retain isolated profiles and no Node/Deno app PATH.
 
-`spec-validator.config.mjs` owns normal audits. Bounded `navigation/*.md`
-SUMMARY fragments preserve chapter order/routes; Spec Validator builds/serves
-ignored `spec/.generated/`. `spec:first` checks full JJ changes and CI PRs.
+The executable configuration is `spec-validator.config.mjs`. Its source and
+evidence plugins are also normal check entry points. `spec:first` compares the
+actual Jujutsu change; CI checks the complete pull-request revision range.
 
 The local archive installer validates each checksum, packed package identity,
 version, and source revision before pnpm runs. Its ignored pnpm hook redirects
@@ -310,9 +310,9 @@ public asset fingerprint contract; CSP admits same-origin asset reads, workers
 and WASM compilation without arbitrary JavaScript evaluation or new IPC grants.
 
 The desktop declares its portable editor/Lezer shared modules explicitly through
-registry semver ranges and deduplicates them alongside API, Svelte and one
-Design Core 0.8.0 copy (E-CI-033). Build-owned entries reuse that graph instead
-of resolving private dependency paths.
+registry semver ranges and deduplicates them alongside API and Svelte.
+Build-owned entries reuse that graph instead of resolving private dependency
+paths.
 
 Portable native acceptance observes plugin-owned Apps through a weak reference
 and wraps worker creation/termination only in the e2e renderer entry. Normal
@@ -393,8 +393,8 @@ gates. Hosted prerequisites use exact commits and prepared public exports;
 tracked ranges stay portable. Native crates use the explicit git revisions in
 [dependency intake](local-dependencies.md). Renderer tests preload tsx; receipts
 need full ancestry. Semantic `spec:search` uses current/backlog QMD outside CI.
-Native build heaps use half constrained or physical RAM, capped at 6 GiB.
+Native builds use half constrained or physical RAM, capped at 6 GiB, retaining
+complete headed acceptance.
 
-Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
-Native fixtures install the pinned plugins tree before signing when fflate is
-absent (E-CI-032). Packed Tasks pin (E-CI-034). Audits: E-CI-037/041/043.
+E-AI-066/089 retain LD-GOV-006/005; E-AI-065/E-REPO-045 forbid wildcards.
+E-SHELL-003 retains LD-GOV-002/004/007; physical input stays distinct.

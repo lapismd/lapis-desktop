@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { repositoryFiles } from "./repository-files.mjs";
 import { canonicalContractPath } from "./spec-contracts.mjs";
 import { legacyEvidencePaths } from "./legacy-evidence.mjs";
+import { evidenceFileCorrections } from "./evidence-corrections.mjs";
 import {
   parseEvidence,
   validateEvidence,
@@ -20,61 +21,7 @@ function vcs(root, args) {
   });
 }
 
-function latestFileChange(root, anchor, path) {
-  return vcs(root, [
-    "log",
-    "--no-graph",
-    "--limit",
-    "1",
-    "-r",
-    `::(${anchor}) & files(${JSON.stringify(path)})`,
-    "-T",
-    "commit_id",
-  ]).trim();
-}
-
-function snapshotFiles(root, revision, file) {
-  const parents = vcs(root, [
-    "log",
-    "--no-graph",
-    "-r",
-    `parents(${revision})`,
-    "-T",
-    'commit_id ++ "\\n"',
-  ])
-    .trim()
-    .split("\n")
-    .filter(Boolean);
-  return new Set(
-    [revision, ...parents].flatMap((snapshot) =>
-      vcs(root, ["file", "list", "-r", snapshot, ...(file ? ["--", file] : [])])
-        .trim()
-        .split("\n")
-        .filter(Boolean),
-    ),
-  );
-}
-
-function historicalFiles(root, base, path) {
-  const enclosing = latestFileChange(root, base, path);
-  if (!enclosing) return new Set();
-  const recorded = snapshotFiles(root, enclosing);
-  return {
-    has(file) {
-      if (recorded.has(file)) return true;
-      const earlier = latestFileChange(root, enclosing, file);
-      if (!earlier || !snapshotFiles(root, earlier, file).has(file))
-        return false;
-      recorded.add(file);
-      return true;
-    },
-  };
-}
-
-export function evidenceFindings(
-  root,
-  { checkRevision = true, base = process.env.LAPIS_DESKTOP_BASE ?? "@-" } = {},
-) {
+export function evidenceFindings(root, { checkRevision = true } = {}) {
   if (!existsSync(resolve(root, ".jj")))
     throw new Error("Evidence validation requires Jujutsu metadata.");
   const files = repositoryFiles(root);
@@ -95,6 +42,7 @@ export function evidenceFindings(
         ),
       ),
   );
+  const base = process.env.LAPIS_DESKTOP_BASE ?? "@-";
   const head = process.env.LAPIS_DESKTOP_HEAD ?? "@";
   const previousFiles = new Set(
     vcs(root, ["file", "list", "-r", base]).trim().split("\n"),
@@ -109,10 +57,75 @@ export function evidenceFindings(
     requirements,
     new Set([...previousFiles, ...legacy]),
   );
+  const enclosing = (path) =>
+    vcs(root, [
+      "log",
+      "--no-graph",
+      "-r",
+      `latest(::(${base}) & files(${JSON.stringify(path)}))`,
+      "-T",
+      "commit_id",
+    ]).trim();
+  const corrections = evidenceFileCorrections(evidence, {
+    committed: previousFiles,
+    read,
+    enclosing,
+    isAncestor: (deletion, snapshot) =>
+      !!snapshot &&
+      vcs(root, [
+        "log",
+        "--no-graph",
+        "-r",
+        `${deletion} & ::${snapshot}`,
+        "-T",
+        "commit_id",
+      ]).trim() === deletion,
+    deletedFiles: (revision) => {
+      const after = new Set(
+        vcs(root, ["file", "list", "-r", revision]).trim().split("\n"),
+      );
+      const parents = vcs(root, [
+        "log",
+        "--no-graph",
+        "-r",
+        `parents(${revision})`,
+        "-T",
+        'commit_id ++ "\\n"',
+      ])
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      return new Set(
+        parents
+          .flatMap((parent) =>
+            vcs(root, ["file", "list", "-r", parent]).trim().split("\n"),
+          )
+          .filter((file) => !after.has(file)),
+      );
+    },
+  });
   errors.push(
-    ...evidenceFileErrors(evidence, new Set(files), previousFiles, (path) =>
-      historicalFiles(root, base, path),
-    ),
+    ...evidenceFileErrors(evidence, new Set(files), previousFiles, (path) => {
+      const revision = enclosing(path);
+      if (!revision) return new Set();
+      const parents = vcs(root, [
+        "log",
+        "--no-graph",
+        "-r",
+        `parents(${revision})`,
+        "-T",
+        'commit_id ++ "\\n"',
+      ])
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      return new Set([
+        ...(corrections.get(path) ?? []),
+        ...[revision, ...parents].flatMap((snapshot) =>
+          vcs(root, ["file", "list", "-r", snapshot]).trim().split("\n"),
+        ),
+      ]);
+    }),
   );
   if (checkRevision) {
     const changed = vcs(root, [
