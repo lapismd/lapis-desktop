@@ -92,6 +92,9 @@ test("native Properties pre-Yield refusal retains Problems, protection and expli
   assert.equal(before.length, 1);
   assert.equal(before[0].active, true);
   assert.equal(before[0].dirty, false);
+  // Clean producers now reconcile authoritative saved text while protected.
+  // Refuse that observation once so this case still exercises pre-Yield failure.
+  await probe(browser, "failNextEditingSnapshot", "Note.md");
   await browser.keys(Key.Enter);
   await browser.$('button[aria-label="Open command palette"]').click();
   const input = browser.$('[role="dialog"] input');
@@ -103,6 +106,7 @@ test("native Properties pre-Yield refusal retains Problems, protection and expli
   await browser.$('.cm-content[contenteditable="false"]').waitForDisplayed();
   assert.equal(await status().getText(), "local");
   const refused = await probe(browser, "snapshot");
+  assert.deepEqual(refused.failedEditingSnapshots, ["Note.md"]);
   assert.deepEqual(
     await editorState(),
     before,

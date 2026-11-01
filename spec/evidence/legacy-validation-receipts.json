@@ -1,0 +1,17 @@
+[
+  {
+    "path": "spec/src/history/E-VALIDATION-007.md",
+    "revision": "2c5e28dfd5df2304201803e288da118b620b5c7e",
+    "sha256": "57ab6270f7448a518d72a6a5e1e9a3c6fa8db42c00ca60251f29579c913820cd"
+  },
+  {
+    "path": "spec/src/history/E-VALIDATION-008.md",
+    "revision": "2c5e28dfd5df2304201803e288da118b620b5c7e",
+    "sha256": "a007e1b7eeddad56eb78dfbc7f42346e5c2780230f3d3eb2ad8bab16c4edc9c4"
+  },
+  {
+    "path": "spec/src/history/E-VALIDATION-009.md",
+    "revision": "a07a35e8aeb2b267b5edbf07642619dcacac1b81",
+    "sha256": "2b546ecd74bfd3eb2e6c48f120431da853661cbcaef4014cb48c35a049ef4d86"
+  }
+]

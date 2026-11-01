@@ -254,7 +254,8 @@ export default class NativeLifecycle extends Plugin {
 
   const portable = JSON.parse(
     readFileSync(
-      resolve(".local/m83/portable-candidates/manifest.json"),
+      process.env.LAPIS_DESKTOP_PORTABLE_FIXTURES ??
+        resolve(".local/m83/portable-candidates/manifest.json"),
       "utf8",
     ),
   );

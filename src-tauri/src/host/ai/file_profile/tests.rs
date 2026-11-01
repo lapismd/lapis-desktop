@@ -17,7 +17,7 @@ pub(in crate::host::ai) fn fixture() -> (tempfile::TempDir, PathBuf, PathBuf) {
     } else {
         "x86_64-unknown-linux-gnu"
     };
-    let mut manifest = format!("version = 1\npackage_version = \"0.1.1\"\ntarget = \"{target}\"\n");
+    let mut manifest = format!("version = 1\npackage_version = \"0.2.0\"\ntarget = \"{target}\"\n");
     for name in [
         "lapis-acp",
         "lapis-agent",
@@ -198,4 +198,23 @@ fn bundled_helpers_and_managed_client_need_no_checkout_configuration() {
         launch.prepared.executable,
         temp.path().join("bundle/lapis-acp").canonicalize().unwrap()
     );
+}
+
+#[test]
+fn obsolete_bundle_package_version_remains_rejected() {
+    let (temp, settings, home) = fixture();
+    let path = temp.path().join("bundle/runtime-manifest.toml");
+    let manifest = std::fs::read_to_string(&path).unwrap();
+    assert!(manifest.contains("0.2.0"));
+    std::fs::write(&path, manifest.replace("0.2.0", "0.1.1")).unwrap();
+    let files = FileProfile::default();
+    files.configure(settings, home).unwrap();
+    assert!(
+        files
+            .prepare()
+            .unwrap_err()
+            .to_string()
+            .contains("unsupported_bundle")
+    );
+    assert!(files.targets().is_empty());
 }

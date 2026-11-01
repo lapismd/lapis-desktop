@@ -4,10 +4,9 @@ Saved on **2026-10-24** for future implementation. All delivery tasks are
 **Deferred**. This document records the agreed product direction and proposed
 sequence; it does not start implementation or qualify a feature.
 
-The [canonical contract](../current/markdown-review.md) defines planned
-behavior.
-[M17.1–M17.5](../current/progress/milestones.md#markdown-document-review) own
-status and completion gates. Resume when implementation is requested.
+The [planned contract](markdown-review-contract.md) defines planned behavior.
+This canonical backlog owns future work and acceptance. Resume when
+implementation is requested.
 
 ## Product decision
 
@@ -33,7 +32,7 @@ Recheck their public contracts and qualification before implementation.
 | `design-core`   | `src/shared/chat/index.ts` exports `TranscriptContent`, `TranscriptController` and `CommentComposer`. `src/shared/chat/transcript/text-editor.ts` retains cursor movement while rejecting source edits and routing typing, paste, shortcuts and IME completion into comments. | Expose a document review composition using that same implementation; preserve chat consumers.                                                                  |
 | `mira-mde`      | The transcript uses Mira's editor/preview, including captured code and table readers.                                                                                                                                                                                         | Own missing generic rendering, source mapping or reader hooks; qualify Markdown extensions.                                                                    |
 | `lapis-plugins` | `packages/markdown/src/lib/components/embed/markdown-file-surface.svelte` and `packages/markdown/src/lib/mira/extensions.ts` own document surfaces and extension composition.                                                                                                 | Add Review selection, document commands and capability-aware mounting through public contracts.                                                                |
-| `lapis-notes`   | API/workspace own App, leaf and save/leave lifetimes; `lapis-app-core` owns portable native application policy.                                                                                                                                                               | Define the optional document-review service, draft ownership and native coordination; keep Tauri policy outside the core.                                      |
+| `lapis-notes`   | API/workspace own App, leaf and save/leave lifetimes; lapis-server owns portable native application policy in `lapis-app-core`.                                                                                                                                               | Define the optional document-review service, draft ownership and native coordination; keep Tauri policy outside the core.                                      |
 | `jj-store`      | `crates/jj-review/src/anchors.rs` has revision/file/text anchors; `crates/jj-review/src/resolver.rs` has exact, unchanged, modified, deleted and ambiguous placement. `crates/jj-collab/src/workspace_comments.rs` has frozen file observations.                              | Verify the selected local backend's file-anchor support and add missing bounded public comment operations upstream. Types alone do not prove provider support. |
 | `lapis-desktop` | Native vault/repository admission, automatic backup and history integration already exist.                                                                                                                                                                                    | Supply admitted review transport, package intake, lifecycle composition and native acceptance.                                                                 |
 
@@ -210,3 +209,48 @@ storage or duplicating the transcript renderer.
 Excluded initially: editing text inside Review, simultaneous collaborative
 editing, remote comment synchronization guarantees, binary-document annotations
 and automatic agent dispatch. Existing M10/M13/M14 gaps retain their owners.
+
+## Retained acceptance boundaries
+
+### M17.1 — deferred acceptance
+
+A shared public Markdown review reader supports cursor/selection comments
+without source edits; keyboard, IME, accessibility and affected chat regressions
+pass in production-component stories.
+
+Dependencies: M8.5; requirements:
+LD-REVIEW-001,LD-REVIEW-002,LD-REVIEW-003,LD-REVIEW-005.
+
+### M17.2 — deferred acceptance
+
+An admitted saved Markdown document publishes, restores after cold native
+restart, replies, edits and resolves JJ-backed comments with unchanged document
+bytes and exact failed/unknown-request recovery.
+
+Dependencies: M17.1,M13.1,M14.2; requirements:
+LD-REVIEW-004,LD-REVIEW-006,LD-REVIEW-007,LD-REVIEW-009,LD-REVIEW-010.
+
+### M17.3 — deferred acceptance
+
+Edits, repeated text, renames, copies, deletions and concurrent source changes
+retain original anchors and expose unproved placements without silent
+retargeting, including after restart.
+
+Dependencies: M17.2; requirements: LD-REVIEW-004,LD-REVIEW-005,LD-REVIEW-008.
+
+### M17.4 — deferred acceptance
+
+The supported Markdown matrix, multiple windows, draft/leave recovery and
+affected chat/Preview/Edit consumers pass functional, accessibility and cold
+native acceptance through verified public packages.
+
+Dependencies: M17.3; requirements:
+LD-REVIEW-001,LD-REVIEW-002,LD-REVIEW-003,LD-REVIEW-005,LD-REVIEW-009,LD-REVIEW-010.
+
+### M17.5 — deferred acceptance
+
+Explicit agent handoff delivers exact authorized review-comment revisions and
+links proven answers without duplicate sends after uncertain outcomes; ordinary
+review remains independent of AI.
+
+Dependencies: M17.4,M10.2; requirements: LD-REVIEW-011.

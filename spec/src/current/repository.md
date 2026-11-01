@@ -379,7 +379,7 @@ explicit. Missing metadata uses at most four 50-node pinned operation graph
 pages for at most 64 missing cards. Known cards are reused; stale selection,
 comparison, pin and close responses are fenced. Metadata failure preserves the
 comparison and uses an App toast plus explicit retry. Failed final backup leave
-keeps the ready shell and surfaces through Problems with a toast, not chrome above it.
+keeps the shell; Problems and a toast report failure without extra chrome.
 
 The compact JJ Log and Op Log header selectors choose exact pinned operations,
 not workspaces. Both use public Command View/Popover with ID search, explicit

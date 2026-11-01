@@ -229,7 +229,12 @@ function installPlugins() {
     if (STATICALLY_BUNDLED.has(id)) continue;
     if (flags.only && !flags.only.has(id)) continue;
     const srcDir = join(releaseDir, entry.name, "files");
-    records.push({ id, version: release.version, srcDir, files: release.files });
+    records.push({
+      id,
+      version: release.version,
+      srcDir,
+      files: release.files,
+    });
   }
 
   // 3. Notebook (bundle-ready dist with its own runtime entry). Its pnpm build

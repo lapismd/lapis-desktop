@@ -1,7 +1,8 @@
 # Current compatible dependency and native intake
 
 These records retain source identities and separate portable package intake from
-actual native/provider acceptance. The task ledger alone owns completion.
+actual native/provider acceptance. Current feature verification and the
+canonical backlog own current state.
 
 - [Compatible Docker consumer qualification](E-VALIDATION-003.md)
 - [Qualified public controls and native-turn fixture modes](E-CATALOG-017.md)

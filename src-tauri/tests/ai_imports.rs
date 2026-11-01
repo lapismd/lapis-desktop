@@ -62,7 +62,7 @@ fn actual_cli_and_desktop_snapshots_are_private_stable_and_read_only() {
         f.message(&format!(
             "Review {} with Bearer {}",
             f.home.display(),
-            format!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K")
+            format_args!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K")
         ));
         f.append(json!({"type":"reasoning","summary":[],"encrypted_content":"PRIVATE_REASONING_SHOULD_NEVER_LEAVE_NATIVE"}));
         let original = fs::read(&f.file).unwrap();

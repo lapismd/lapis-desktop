@@ -1,7 +1,7 @@
 # Desktop integration (M7)
 
-M7 adds the native services and delivery required by PLAN.md to the qualified
-Notes profile. Reuse the existing chooser, workspace commands, progress and
+This chapter defines native services and delivery for the qualified Notes
+profile. Reuse the existing chooser, workspace commands, progress and
 notification components. Use the native About panel; do not add replacement
 renderer screens. Deno remains a frozen reference.
 

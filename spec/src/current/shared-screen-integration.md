@@ -1,6 +1,6 @@
 # Shared-screen integration
 
-M15.1 replaces existing Desktop views, initially in isolated workspaces.
+Existing Desktop views mount complete public Agent and Repository screens.
 Complete public screens own layout; the host owns runtime and authority. The
 retired optional chat frame is removed rather than retaining an ignored parallel
 layout.
@@ -41,11 +41,13 @@ temporary workspaces are retired; follow-up fixes use those defaults. Portable
 dependency ranges remain tracked; temporary verified archive cohorts and
 before/after catalogs retain source revisions and separate evidence.
 
-## Milestone gates
+## Outstanding qualification
 
-M15.1 tracks isolated shared-screen adoption of existing views. It has separate
-consumer interaction and cold native gates; original M10, M13, distribution and
-visual-review statuses remain unchanged.
+Remaining consumer interaction, normal bundle audit, static catalog and cold
+native qualification live in
+[AI/shared-screen backlog](../backlog/ai-qualification.md). Integration does not
+qualify unrelated AI, canonical conversation, distribution or visual-review
+boundaries.
 
 ## View registrations
 
@@ -97,7 +99,7 @@ E-AI-097/099 retain grants; E-AI-108/114 retain LD-GOV-006 source attribution.
 Turn-history IPC has one named main-window permission; source-size and App
 ownership audits remain enforced. Publication and baselines stay separate.
 
-### Milestone gates
+### Outstanding qualification
 
 E-REPO-056 retains shared history. E-AI-097–125 cover AI/memory/imports/models.
 M14.8 remains Partial. M10.2–M10.4 retain LD-MIG-002 gates; M13/M13.3 Deferred.

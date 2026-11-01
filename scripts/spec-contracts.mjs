@@ -1,4 +1,4 @@
-// One chapter list keeps spec-first, document roles and task coverage aligned.
+// One chapter list keeps spec-first, document roles and evidence coverage aligned.
 const chapters = [
   "desktop",
   "tasks",
@@ -13,14 +13,13 @@ const chapters = [
   "ai-presentation",
   "repository",
   "repository-navigation",
-  "markdown-review",
   "vault-backup",
   "governance",
   "local-dependencies",
   "migration",
 ];
 export function canonicalContractPattern(prefix = "") {
-  return `^${prefix}current/(?:${chapters.join("|")})\\.md$`;
+  return `^${prefix}(?:current/(?:${chapters.join("|")})|backlog/markdown-review-contract)\\.md$`;
 }
 export const canonicalContractPath = new RegExp(
   canonicalContractPattern("spec/src/"),

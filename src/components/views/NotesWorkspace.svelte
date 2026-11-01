@@ -304,9 +304,5 @@
     <DesktopWorkspaceStartup {tasks} failure={startupFailure} />
     {#if recovery.message}<p role="status">{recovery.message}</p>{/if}
   {/if}
-  <FileConflicts
-    {app}
-    registry={app.fileEditingSessions.textConflicts}
-    disabled={busy}
-  />
+  <FileConflicts {app} disabled={busy} />
 </section>

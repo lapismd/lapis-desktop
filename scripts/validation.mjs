@@ -5,7 +5,7 @@ import { root, localRoot, json } from "./validation/paths.mjs";
 import {
   validationConfig,
   laneInvocations,
-  buildEnvironment,
+  nativeBuildEnvironment,
 } from "./validation/model.mjs";
 import { cleanOwned } from "./validation/leases.mjs";
 import { execute } from "./validation/process.mjs";
@@ -31,12 +31,7 @@ export async function runNative(lane, args = [], directory = root) {
         cwd: directory,
         env: {
           ...process.env,
-          ...buildEnvironment(
-            lane,
-            process.env.LAPIS_DESKTOP_VALIDATION_WORKER === "1"
-              ? process.constrainedMemory()
-              : 0,
-          ),
+          ...nativeBuildEnvironment(lane),
           LAPIS_DESKTOP_VALIDATION_RUNTIME: "native",
           PATH: join(directory, "node_modules/.bin") + ":" + process.env.PATH,
         },

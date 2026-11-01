@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import config from "../../spec-validator.config.mjs";
-import { progressFindings } from "../../scripts/progress.mjs";
+import { evidenceFindings } from "../../scripts/evidence.mjs";
 
 test("AI is a canonical contract in document roles and specification-first", () => {
   assert.ok(
@@ -56,7 +56,7 @@ test("file management is a governed contract in both document roles and spec-fir
     ),
   );
   for (const path of [
-    "current/verification.md",
+    "verification.md",
     "current/index.md",
     "current/writer-audit.md",
     "history/E-FILES-001.md",
@@ -66,9 +66,8 @@ test("file management is a governed contract in both document roles and spec-fir
       false,
     );
 });
-test("progress recognizes requirement IDs from every selected canonical chapter", () => {
-  const result = progressFindings(process.cwd(), {
-    checkSummary: false,
+test("evidence recognizes requirement IDs from current and planned contracts", () => {
+  const result = evidenceFindings(process.cwd(), {
     checkRevision: false,
   });
   assert.deepEqual(result.errors, []);

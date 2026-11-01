@@ -168,7 +168,13 @@ export const VisibleWorkAndCancellation: Story = {
       ),
     );
     await userEvent.click(editor);
-    await userEvent.keyboard("{Control>}{a}{/Control}{Backspace}");
+    const selectAll = /Mac|iPhone|iPad/u.test(navigator.platform)
+      ? "{Meta>}{a}{/Meta}"
+      : "{Control>}{a}{/Control}";
+    await userEvent.keyboard(`${selectAll}{Backspace}`);
+    await expect(
+      within(editor).findByText("Ask about your notes…", { exact: true }),
+    ).resolves.toBeVisible();
     await userEvent.click(await c.findByRole("button", { name: "Stop agent" }));
     await waitFor(() => {
       const group = c.getAllByRole("group", { name: "Sent to" }).at(-1)!;

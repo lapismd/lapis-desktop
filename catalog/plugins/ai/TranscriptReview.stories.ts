@@ -1,3 +1,4 @@
+import { reviewCodeFold } from "../../support/ai/transcript/code-fold-review.ts";
 import {
   findMessageEditor,
   messageEditor,
@@ -136,24 +137,7 @@ export const SwitchWithDraft: Story = {
 export const EmptyConversation: Story = { args: { scenario: "empty" } };
 export const LongCodeBlock: Story = {
   args: { scenario: "long-code" },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-    const more = await canvas.findByRole("button", {
-      name: "Show 40 more lines in typescript code",
-    });
-    await userEvent.click(more);
-    await expect(
-      canvas.getByRole("button", { name: "Show less in typescript code" }),
-    ).toBeVisible();
-    await userEvent.click(
-      canvas.getByRole("button", { name: "Show less in typescript code" }),
-    );
-    await expect(
-      canvas.getByRole("button", {
-        name: "Show 40 more lines in typescript code",
-      }),
-    ).toBeVisible();
-  },
+  play: ({ canvasElement }) => reviewCodeFold(canvasElement),
 };
 export const LoadingConversation: Story = { args: { scenario: "loading" } };
 export const InterruptedTurn: Story = { args: { scenario: "failure" } };

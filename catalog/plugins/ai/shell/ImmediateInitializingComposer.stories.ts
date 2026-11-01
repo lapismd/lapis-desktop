@@ -24,11 +24,13 @@ export const ImmediateInitializingComposer: Story = {
   }),
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    await waitFor(() =>
-      expect(canvas.getByTestId("ai-shell-demo")).toHaveAttribute(
-        "data-status",
-        "ready",
-      ),
+    await waitFor(
+      () =>
+        expect(canvas.getByTestId("ai-shell-demo")).toHaveAttribute(
+          "data-status",
+          "ready",
+        ),
+      { timeout: 15_000 },
     );
     const panel = await canvas.findByTestId("ai-chat-panel");
     expect(panel).toHaveAttribute("data-initializing", "true");

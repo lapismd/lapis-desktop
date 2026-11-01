@@ -30,7 +30,7 @@ fn ordinary_cursor_transcripts_need_no_jj_hook_and_keep_privacy() {
     fs::create_dir_all(path.parent().unwrap()).unwrap();
     let source = format!(
         "{}\n{}\n",
-        json!({"role":"user","message":{"content":[{"type":"text","text":format!("Review {} Bearer {}", home.display(), format!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K"))}]}}),
+        json!({"role":"user","message":{"content":[{"type":"text","text":format!("Review {} Bearer {}", home.display(), format_args!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K"))}]}}),
         json!({"role":"assistant","message":{"content":[{"type":"thinking","thinking":"PRIVATE_REASONING_SENTINEL"},{"type":"text","text":"Visible answer"},{"type":"tool_use","id":"raw-native-tool","name":"read_file","input":{"path":home.join("notes.md")}},{"type":"text","text":"Visible continuation"}]}})
     );
     fs::write(&path, &source).unwrap();
@@ -88,7 +88,7 @@ fn opencode_sqlite_imports_selected_session_without_execution_or_source_writes()
         (
             "prt_one",
             "msg_one",
-            json!({"type":"text","text":format!("Review {} with {}", home.display(), format!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K"))}),
+            json!({"type":"text","text":format!("Review {} with {}", home.display(), format_args!("ghp_{}", "NQLObn7M3OTKBL44TH6K9WxFY39LZM1sDc0K"))}),
         ),
         (
             "prt_two",

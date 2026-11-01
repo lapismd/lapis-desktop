@@ -1,3 +1,4 @@
+import { fixtureJjBinary } from "./native-tools.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -20,7 +21,7 @@ const saved = 'button[aria-label="Vault history: Saved locally"]';
 const details = 'section[aria-label="Vault history details"]';
 function jj(root, ...args) {
   return execFileSync(
-    "/opt/homebrew/bin/jj",
+    fixtureJjBinary(),
     [
       "--no-pager",
       "--config",

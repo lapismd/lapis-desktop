@@ -13,22 +13,22 @@ custom-protocol = ["tauri/custom-protocol"]
 e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
-lapis-app-protocol = { path = "../../lapis-notes/crates/lapis-app-protocol", version = "0.1.0" }
-lapis-app-core = { path = "../../lapis-notes/crates/lapis-app-core", version = "0.1.0" }
-jj-forge = { path = "../../jj-store/crates/jj-forge", version = "0.1.0" }
-jj-vault = { path = "../../jj-store/crates/jj-vault", version = "0.1.0" }
+lapis-app-protocol = { git = "https://github.com/lapismd/lapis-server", rev = "4150cac6f2fef28b128421e4e3a851b848acdcf3", version = "0.1.0" }
+lapis-app-core = { git = "https://github.com/lapismd/lapis-server", rev = "4150cac6f2fef28b128421e4e3a851b848acdcf3", version = "0.1.0" }
+jj-forge = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0" }
+jj-vault = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0" }
 async-trait = "0.1"
 tempfile = "=3.27.0"
 tokio = { version = "1", features = ["rt", "rt-multi-thread", "sync", "net", "io-util", "io-std", "time", "macros"] }
-tauri-plugin-jj-store = { path = "../../jj-store/crates/tauri-plugin-jj-store", version = "0.1.0", features = ["tauri"] }
+tauri-plugin-jj-store = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0", features = ["tauri"] }
 
-jj-store-jj = { path = "../../jj-store/crates/jj-store-jj", version = "0.1.0", default-features = false, features = ["companion"] }
-jj-store-service = { path = "../../jj-store/crates/jj-store-service", version = "0.1.0" }
-jj-store-model = { path = "../../jj-store/crates/jj-store-model", version = "0.1.0" }
+jj-store-jj = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0", default-features = false, features = ["companion"] }
+jj-store-service = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0" }
+jj-store-model = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0" }
 lapis-ai-capture = { git = "https://github.com/lapismd/lapis-ai", tag = "v0.2.0", version = "0.2.0", features = ["opencode-sqlite"] }
-jj-store-capture = { path = "../../jj-store/crates/jj-store-capture", version = "0.1.0", default-features = false }
+jj-store-capture = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0", default-features = false }
 chrono = { version = "0.4", default-features = false, features = ["std"] }
-jj-agent = { path = "../../jj-store/crates/jj-agent", version = "0.1.0" }
+jj-agent = { git = "https://github.com/stevejuma/jj-store", rev = "7a98bd89d2bc77fb6ec41f91186992abb19ba161", version = "0.1.0" }
 
 cap-std = "=4.0.3"
 cap-tempfile = "=4.0.3"
@@ -52,7 +52,7 @@ tauri-plugin-wdio-webdriver = { version = "=1.5.0", optional = true }
 url = "2"
 uuid = { version = "1", features = ["v4", "serde"] }
 
-tauri-plugin-lapis-terminal = { path = "../../lapis-terminal/crates/tauri-plugin-lapis-terminal" }
+tauri-plugin-lapis-terminal = { git = "https://github.com/lapismd/lapis-terminal", rev = "2463f944149d753eaf638cf876393a6f60f50190" }
 
 tauri-plugin-lapis-ai = { git = "https://github.com/lapismd/lapis-ai", tag = "v0.2.0", version = "0.2.0" }
 lapis-ai-app-tools = { git = "https://github.com/lapismd/lapis-ai", tag = "v0.2.0", version = "0.2.0" }

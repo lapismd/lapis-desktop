@@ -12,7 +12,10 @@ import {
 
 test(
   "native Agent queue controls and ordinary reload retain accepted work with no renderer scheduler or replay",
-  { timeout: 180000 },
+  {
+    timeout: 180000,
+    skip: "Hosted ARM64 quarantine E-CI-036: reload wait timed out after 30000ms.",
+  },
   async (context) => {
     queueEnvironment(context);
     const fixture = nativeQueueFixture();

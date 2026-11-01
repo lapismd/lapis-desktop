@@ -12,7 +12,7 @@ export function nativeQueueFixture() {
   const oldHash = digest(readFileSync(helper));
   const peer = readFileSync(
     resolve(
-      "../lapis-notes/crates/lapis-app-core/tests/support/native_queue/peer.py",
+      "../lapis-server/crates/lapis-app-core/tests/support/native_queue/peer.py",
     ),
     "utf8",
   )

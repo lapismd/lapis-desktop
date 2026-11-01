@@ -132,3 +132,7 @@ saved explicit levels remain valid; named-profile overrides remain exact.
 Provider default omits the effort request and its acknowledgement requirement.
 Every explicitly requested effort still requires confirmation and never falls
 back after refusal. It is distinct from requesting reasoning Off.
+
+Deterministic native fixtures target the pinned Lapis AI 0.2.0 bundle format.
+The original 0.1.1 fixture manifest is rejected; inventory, digest and package
+version checks remain enforced, with no helper execution in those unit fixtures.

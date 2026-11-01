@@ -91,7 +91,7 @@ test("nested aggregate builds get a bounded heap only at build dispatch", async 
         { stage: "aggregate", options: "--stack-trace-limit=31" },
         { stage: "build", options: "--max-old-space-size=4096" },
         { stage: "test", options: "--stack-trace-limit=31" },
-        { stage: "build", options: "--stack-trace-limit=31" },
+        { stage: "build", options: "--max-old-space-size=4096" },
       ],
     );
   } finally {

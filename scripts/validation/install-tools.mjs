@@ -31,6 +31,25 @@ const pins = {
     ],
   ],
 };
+const darwinJj = {
+  arm64: [
+    [
+      "jj",
+      "jj-v0.45.1-aarch64-apple-darwin.tar.gz",
+      "51ba42e3d0682616f6eb015045bfe45289b396f03511f9897f645ce8e9272743",
+    ],
+  ],
+};
+export function toolPins(platform, arch, onlyJj) {
+  if (platform === "darwin") {
+    if (!onlyJj || !darwinJj[arch])
+      throw Error("Unsupported container toolchain platform");
+    return darwinJj[arch];
+  }
+  if (platform !== "linux" || !pins[arch])
+    throw Error("Unsupported container toolchain platform");
+  return pins[arch];
+}
 export function archiveMember(members, executable) {
   const matches = members
     .split("\n")
@@ -45,10 +64,9 @@ export function ciToolDirectory(environment = process.env) {
   return join(environment.RUNNER_TEMP, "lapis-desktop-validation-tools");
 }
 export async function install(directory = "/opt/tools", onlyJj = false) {
-  if (process.platform !== "linux" || !pins[process.arch])
-    throw Error("Unsupported container toolchain platform");
+  const selected = toolPins(process.platform, process.arch, onlyJj);
   await mkdir(directory, { recursive: true });
-  for (const [tool, asset, digest] of pins[process.arch]) {
+  for (const [tool, asset, digest] of selected) {
     if (onlyJj && tool !== "jj") continue;
     const owner = tool === "jj" ? "jj-vcs/jj" : "rust-lang/mdBook";
     const version = tool === "jj" ? "0.45.1" : "0.5.4";

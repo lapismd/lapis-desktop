@@ -41,18 +41,12 @@ export const RestoringProfile: Story = {
 };
 export const MissingSavedVault: Story = {
   play: async ({ canvasElement }) => {
-    await launcherAlert(
-      canvasElement,
-      "The saved vault folder has moved",
-    );
+    await launcherAlert(canvasElement, "The saved vault folder has moved");
   },
 };
 export const BlockedClose: Story = {
   parameters: { scenario: "leave-failed" },
   play: async ({ canvasElement }) => {
-    await launcherAlert(
-      canvasElement,
-      "Your session remains available",
-    );
+    await launcherAlert(canvasElement, "Your session remains available");
   },
 };

@@ -1,3 +1,4 @@
+import { fixtureJjBinary } from "./native-tools.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -15,7 +16,7 @@ import { nativeSession } from "./native-session.mjs";
 
 function jj(root, ...args) {
   execFileSync(
-    "/opt/homebrew/bin/jj",
+    fixtureJjBinary(),
     [
       "--no-pager",
       "--config",

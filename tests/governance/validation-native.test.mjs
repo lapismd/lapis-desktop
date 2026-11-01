@@ -202,3 +202,21 @@ test("renderer build heaps stay within half worker memory and do not affect othe
         workerEnvironment(target),
       );
 });
+
+test("native build budgets fall back to physical RAM when no container limit exists", async () => {
+  const { totalmem } = await import("node:os");
+  const { nativeBuildEnvironment, buildEnvironment } = await import(
+    "../../scripts/validation/model.mjs"
+  );
+  const memory = process.constrainedMemory;
+  try {
+    process.constrainedMemory = () => 0;
+    assert.deepEqual(
+      nativeBuildEnvironment("build"),
+      buildEnvironment("build", totalmem()),
+    );
+    assert.deepEqual(nativeBuildEnvironment("test"), {});
+  } finally {
+    process.constrainedMemory = memory;
+  }
+});

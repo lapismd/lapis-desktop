@@ -55,7 +55,7 @@ export async function openNotesSession(
   if (provider.backgroundIndexing)
     session.backgroundIndexing = provider.backgroundIndexing;
   if (editingOwner === "core")
-    session.nativeEditingIntents = createNativeEditingIntents(selected);
+    session.nativeEditingIntents = createNativeEditingIntents(selected, call);
   if (tasksOwner === "core")
     session.nativeTasks = createNativeTasks(selected, call);
   return session;

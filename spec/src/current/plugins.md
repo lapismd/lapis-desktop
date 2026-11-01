@@ -1,12 +1,14 @@
 # Desktop plugins and catalog — [native turns](ai-adapter.md), [queues](ai-queue.md)
 
-Queue states extend E-CORE-033/036 recovery/admission, retaining real
-App/workspace/Agent screens, titles, sidebars, chat reuse and scoped drafts.
-Targets MUST declare safe `default_mode`; sends MUST assert the submitted mode.
-History fixtures model native publication through start/status, never client
-batch scheduling. Metadata stories MUST inject the public session port into the
-real shell and show startup progress/recovery. Stories remain `visual-pending`;
-browser proof is separate from [native acceptance](../history/E-CORE-022.md).
+Catalog draft clearing MUST be platform-neutral; cancellation retains its
+original outcome assertions. Queue states extend E-CORE-033/036
+recovery/admission, retaining real App/workspace/Agent screens, titles,
+sidebars, chat reuse and scoped drafts. Targets MUST declare safe
+`default_mode`; sends MUST assert the submitted mode. History fixtures model
+native publication through start/status, never client batch scheduling. Metadata
+stories MUST inject the public session port into the real shell and show startup
+progress/recovery. Stories remain `visual-pending`; browser proof is separate
+from [native acceptance](../history/E-CORE-022.md).
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned
@@ -15,7 +17,10 @@ selectors; controls MUST await readiness and the absence of their named
 accessible loading status, including `Loading catalog`. Collapse checks await
 closed state/unmount before unchanged absence assertions. E-AI-103 reviews
 independent footer approvals and agent overrides. E-AI-102 covers a single
-composer action through submission in both chat layouts.
+composer action through submission in both chat layouts. Reader acceptance MUST
+reveal a fold control in its viewport before activating it and await its
+resulting state. Fade acceptance MUST scroll away from the bottom before
+asserting below-viewport content.
 
 The active chat/settings profile is [local ACP](ai-local-history.md). Native
 conversation storage controls and catalog fixtures are retired; grouped AI
@@ -46,9 +51,9 @@ E-REPO-043 maps upstream action/count states and external repository reveal to
 production plugin settings/status stories. Fixtures inject providers and record
 intent without real network publication or file-manager launch.
 
-Catalog browser files run serially through the browser-pool option; the outer
-Vitest file option alone does not bound that pool. Existing assertions and
-deadlines remain unchanged.
+Catalog files run serially through the browser-pool option. Hosted CI runs four
+required shards, each retaining both viewports/themes (E-CI-014). The outer
+Vitest file option alone does not bound the browser pool.
 
 The shell reserves a full-width status footer beneath ribbon, sidebars and
 content. Repository/backup controls and Problems occupy the left; activity uses
@@ -135,16 +140,10 @@ native gates stay separate.
 E-CATALOG-008 qualifies scoped preview commands, live identity/index checks,
 cache safeguards and actual cold/HMR proof; all 804 catalog checks pass.
 
-E-REPO-010 maps stacked operation/file cards and unloaded-parent recovery to
-production repository stories. No native plugin capability changes.
-
-E-REPO-009 maps compact history/Op Log headers to production Column Canvas
-composition. Header review covers narrow panes and both themes; the complete
-repository family retains pin, refresh, loading and recovery coverage.
-
-`PLUGIN_MIGRATION.md` authorizes M8–M10 under the original ledger gates.
-Ordinary popup admission remains M7.3. Local links retain public package
-boundaries and owning-repository validation.
+Current contracts govern plugin integration and catalog behavior.
+[AI backlog](../backlog/ai-qualification.md) retains native gaps;
+[windows](windows.md) governs ordinary popup admission. Local links retain
+public exports and owning-repository validation.
 
 ## Requirements
 
@@ -209,18 +208,18 @@ outside M8–M10. Dynamic package signature verification remains required.
 
 ## Terminal host integration
 
-The bundled Terminal uses the local `@lapismd/terminal` built public exports and
-Rust Tauri plugin. The private migration app records this unpublished local link
-as a temporary development prerequisite; distribution must resolve it later.
-Native code reads compatible shell/cwd preferences from admitted vault state,
-validates executable files and confines cwd to that physical vault. The renderer
-submits only opaque target and request identities.
+Terminal uses public `@lapismd/terminal` exports and its Rust plugin.
+E-CI-011/013 pin ordered frames and remount delivery; npm intake remains
+pending. Native policy verifies admitted shell/cwd settings, executables and
+physical-vault cwd; the renderer sends opaque target/request IDs.
 
-App-owned session coordination separates viewport detach from explicit close.
-Confirmed reload suspends its admission after guarded persistence and reconnects
-the same native process; cold restart never launches a shell. Plugin disable,
-vault return and trust revocation release only their window admission. Native
-exit cleanup remains owned by the public terminal plugin.
+App-owned sessions separate detach and close. Guarded reload suspends admission
+and reconnects the same process; cold restart never launches shells. Plugin
+disable, vault return and trust revocation release only their window admission;
+the public plugin owns exit cleanup.
+
+After successful scoped host release, close treats typed stale-handle `denied`
+as resolved. Reload, other errors and failed release still block (E-CI-013).
 
 Terminal settings use the public controlled plugin-settings definition: plugin
 data owns shell/cwd values, subscription cleanup follows plugin disable and the
@@ -397,4 +396,5 @@ catalog fixture enters production. Native Search review adds admitted rebuild
 and lifecycle states (E-CORE-030); App/vault own metadata and status.
 
 E-AI-106/107/110 review header actions, required provider models and shared
-Compute inputs through production stories. Shell lifecycle ReadySessionFailure covers host Problems/toast presentation; native gates remain.
+Compute inputs through production stories. Shell lifecycle ReadySessionFailure
+covers host Problems; native gates remain. Shell boot may take 15s (E-CI-032).

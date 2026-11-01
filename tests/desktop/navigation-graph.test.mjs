@@ -69,15 +69,6 @@ async function observeCanvas(browser) {
     };
   });
 }
-async function labels(browser, mode = "global-view") {
-  return browser.execute(
-    (mode) =>
-      globalThis.__nativeGraphFrames?.[mode]?.labels.map(
-        (node) => node.label,
-      ) ?? [],
-    mode,
-  );
-}
 async function graphPoints(browser, mode) {
   return browser.execute((mode) => {
     const points = globalThis.__nativeGraphFrames?.[mode]?.circles ?? [];
@@ -354,17 +345,25 @@ test("native global/local Graph renders indexed semantics, follows files, naviga
   await browser.$(graph).waitForDisplayed();
   writeFileSync(join(vault, "Delta.md"), "# Delta\n\n[[Alfa]]\n");
   await browser.waitUntil(async () =>
-    (await labels(browser)).includes("Delta"),
+    (await browser.$(`${graph} [data-ui-part="stats"]`).getText()).includes(
+      "7 nodes • 5 links",
+    ),
   );
+  assert.ok((await hoverNodes(browser)).some((node) => node.label === "Delta"));
   renameSync(join(vault, "Delta.md"), join(vault, "Renamed.md"));
-  await browser.waitUntil(
-    async () =>
-      (await labels(browser)).includes("Renamed") &&
-      !(await labels(browser)).includes("Delta"),
-  );
+  await browser.$('[data-path="Renamed.md"]').waitForDisplayed();
+  const renamedLabels = (await hoverNodes(browser)).map((node) => node.label);
+  assert.ok(renamedLabels.includes("Renamed"));
+  assert.equal(renamedLabels.includes("Delta"), false);
   rmSync(join(vault, "Renamed.md"));
-  await browser.waitUntil(
-    async () => !(await labels(browser)).includes("Renamed"),
+  await browser.waitUntil(async () =>
+    (await browser.$(`${graph} [data-ui-part="stats"]`).getText()).includes(
+      "6 nodes • 4 links",
+    ),
+  );
+  assert.equal(
+    (await hoverNodes(browser)).some((node) => node.label === "Renamed"),
+    false,
   );
   await openNodeMenuAction(browser, "Beta");
   await browser.waitUntil(async () =>
