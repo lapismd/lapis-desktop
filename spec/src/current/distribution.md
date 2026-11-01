@@ -49,3 +49,7 @@ First preview install/reinstall/uninstall and real profile/vault retention are
 required. An upgrade without an existing different preview is reported not-run.
 The stable schema-v1 cask and both Linux packages remain unchanged. A later
 approved stable migration owns old-to-new upgrade and rollback qualification.
+
+Candidate installation provisions the same pinned Homebrew setup action used by
+tap CI before invoking trust, audit and native installation. The macOS runner
+image alone does not establish the required Homebrew version.

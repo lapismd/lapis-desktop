@@ -21,6 +21,12 @@ test("preview publication stays manual, disabled by default and protected after 
 test("release packaging requires real Homebrew installation and releases no acceptance binary", () => {
   const steps = workflow.jobs.candidate.steps;
   const build = steps.findIndex((step) => step.run === "pnpm release:prepare");
+  assert.ok(
+    steps.some((step) =>
+      step.uses?.startsWith("Homebrew/actions/setup-homebrew@"),
+    ),
+    "Candidate installation requires the same Homebrew bootstrap as the tap",
+  );
   const install = steps.findIndex((step) =>
     step.run?.includes("test-preview-install.mjs"),
   );

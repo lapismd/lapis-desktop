@@ -119,11 +119,11 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-AI-004 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | [E-TEST-001](history/E-TEST-001.md): quiet default, fail-closed modes, complete retained headed runner and explicit native CI gate; all quiet lanes pass. |
 | LD-GOV-010 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md); [E-CI-001](history/E-CI-001.md); [E-CI-014](history/E-CI-014.md): Docker/native separation; E-ICONS-002 main archives, SSH and 2,060 catalog cases. |
-| LD-REL-001 | Partial | [E-RELEASE-001](history/E-RELEASE-001.md): release tooling qualified; final hosted candidate and publication pending. |
-| LD-REL-002 | Partial | [E-RELEASE-001](history/E-RELEASE-001.md): release tooling qualified; final hosted candidate and publication pending. |
-| LD-REL-003 | Partial | [E-RELEASE-001](history/E-RELEASE-001.md): release tooling qualified; final hosted candidate and publication pending. |
-| LD-REL-004 | Partial | [E-RELEASE-001](history/E-RELEASE-001.md): release tooling qualified; final hosted candidate and publication pending. |
-| LD-REL-005 | Partial | [E-RELEASE-001](history/E-RELEASE-001.md): release tooling qualified; final hosted candidate and publication pending. |
+| LD-REL-001 | Partial | [E-RELEASE-002](history/E-RELEASE-002.md): Homebrew bootstrap. [E-RELEASE-001](history/E-RELEASE-001.md): tooling qualified; final hosted candidate and publication pending. |
+| LD-REL-002 | Partial | [E-RELEASE-002](history/E-RELEASE-002.md): Homebrew bootstrap. [E-RELEASE-001](history/E-RELEASE-001.md): tooling qualified; final hosted candidate and publication pending. |
+| LD-REL-003 | Partial | [E-RELEASE-002](history/E-RELEASE-002.md): Homebrew bootstrap. [E-RELEASE-001](history/E-RELEASE-001.md): tooling qualified; final hosted candidate and publication pending. |
+| LD-REL-004 | Partial | [E-RELEASE-002](history/E-RELEASE-002.md): Homebrew bootstrap. [E-RELEASE-001](history/E-RELEASE-001.md): tooling qualified; final hosted candidate and publication pending. |
+| LD-REL-005 | Partial | [E-RELEASE-002](history/E-RELEASE-002.md): Homebrew bootstrap. [E-RELEASE-001](history/E-RELEASE-001.md): tooling qualified; final hosted candidate and publication pending. |
 | LD-TASK-001 | Planned | [E-CORE-036](history/E-CORE-036.md): explicit native selection, profile storage and admitted transport intake; composed native proof pending. |
 | LD-TASK-002 | Planned | [E-CORE-036](history/E-CORE-036.md): generated DTOs and existing App observation/journal; full source and installed-plugin acceptance pending. |
 | LD-TASK-003 | Planned | [E-CORE-036](history/E-CORE-036.md): M16.9 retains provider, locale, recovery, public-archive and actual native gates. |

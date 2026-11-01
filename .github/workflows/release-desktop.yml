@@ -91,6 +91,7 @@ jobs:
           repository: lapismd/homebrew-tap
           ref: main
           path: .local/release/previous
+      - uses: Homebrew/actions/setup-homebrew@f9676f1ffe2e1a720f81b2c54c51cfb99915ec14
       - name: Install, launch and retain data through Homebrew operations
         run: |
           archive=$(node --input-type=module -e 'import { readIdentity, archiveName } from "./scripts/release/contract.mjs"; console.log(archiveName(readIdentity().version));')
