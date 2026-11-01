@@ -45,7 +45,10 @@ CI for the final source; an infrastructure retry cannot waive that regression.
 E-RELEASE-004 adds one approved ACP renderer-reload quarantine; its exact
 failure, owner and re-enable gate join the candidate limitations and remain
 unqualified. E-RELEASE-006 additionally defers the intermittent first-frame
-progress/clearance case; 15 native cases are now disclosed as quarantined.
+progress/clearance case. E-RELEASE-008 defers the background AI
+admission/cold-reset case after an intermittent readiness failure. E-RELEASE-010
+adds queue admission/readiness and deleted-preview merged-file recreation; 18
+native cases are quarantined.
 
 Qualified assets include all three archives, manifest, per-target build and
 bundle reports, Homebrew receipts, limitations and SHA256SUMS. The protected job

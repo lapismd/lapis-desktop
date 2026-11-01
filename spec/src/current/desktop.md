@@ -14,7 +14,7 @@ assertions/deadlines stay (E-CI-009). Terminal 0.1.2 uses qualified Git sources
 ([intake](local-dependencies.md), E-CI-011/013). Confirmed scoped shutdown
 settles stale denied cleanup only on close. Tasks use the packed pin (E-CI-034);
 Graph uses real hover (E-CI-012). ARM64 quarantines: E-CI-036/044,
-E-RELEASE-004/006. Native gates remain.
+E-RELEASE-004/006/008/010. Native gates remain.
 
 ## Requirements
 
