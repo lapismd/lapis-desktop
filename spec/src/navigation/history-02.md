@@ -201,3 +201,4 @@
 - [Development-only audit exceptions](../history/E-CI-037.md)
 - [Named development audit exceptions](../history/E-CI-038.md)
 - [Dependency audits start with the other lanes](../history/E-CI-041.md)
+- [Catalog merge check allows an immediate audit](../history/E-CI-043.md)

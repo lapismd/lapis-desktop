@@ -65,6 +65,6 @@ test("the existing catalog merge check requires every shard and rejects partial 
     });
     assert.equal(child.status === 0, result === "success", result);
   }
-  for (const name of ["audit", "validate"])
-    assert.ok(jobs[name].needs.includes("storybook-interaction"));
+  assert.ok(jobs.validate.needs.includes("storybook-interaction"));
+  assert.equal(jobs.audit.needs, undefined);
 });

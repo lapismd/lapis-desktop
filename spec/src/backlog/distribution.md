@@ -157,4 +157,6 @@ Desktop. Remove an exception when its listed edges are patched or gone.
 The hosted Dependency audits job starts with the other lanes
 ([E-CI-041](../history/E-CI-041.md)). It does not wait for Governance, Quality,
 tests, Storybook, the native bundle, headed acceptance, or the Linux builds.
-Validate still requires its result.
+Validate still requires its result. The catalog merge unit check requires that
+same split ([E-CI-043](../history/E-CI-043.md)): Validate waits for every shard,
+and Dependency audits has no lane dependency.
