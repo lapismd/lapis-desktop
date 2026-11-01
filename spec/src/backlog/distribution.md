@@ -295,8 +295,8 @@ clear/input mechanism remains to be diagnosed. No move or cold-layout success is
 inferred from the failed run. Startup: 2 pass/1 skip. Feature family: 91 pass/1
 fail/17 skips. The later resource family was not run.
 
-Preserve the original callback, assertions, helper and deadlines. This adds one
-explicit skip, bringing the total to 19 cases (1 startup, 18 feature). The
+Preserve the original callback, assertions, helper and deadlines. E-RELEASE-012
+added one explicit skip, then totaling 19 cases (1 startup, 18 feature). The
 combined rename/move/cold-layout boundary remains unqualified. Owner: Desktop
 native automation; Notes Explorer owns any upstream input defect. Re-enable
 after diagnosing filename replacement, verifying the exact requested value
@@ -305,6 +305,39 @@ reliably on fresh hosted runners with the original outcome assertions and
 deadlines. Other mutation/recovery cases, exact-source full CI and actual
 Homebrew package qualification remain required. Carry this limitation into the
 candidate receipts and release notes; skipped coverage is not passing coverage.
+
+### Vault-return replacement input quarantine
+
+[E-RELEASE-013](../history/E-RELEASE-013.md) quarantines only
+`the chooser returns to the previous vault after cancellation without retaining its old database`.
+It failed PR #8 run 41345056450/job 124963038273 on `d3f33f62` in 5977.988958ms
+at `vault-return.test.mjs:35`. The complete unchanged case passed the preceding
+run 41340718997/job 124950772330 in 7000.684083ms. Only the unrelated Explorer
+case skip and its documentation changed; product, dependency, vault-return and
+shared helper inputs match.
+
+Verified artifact 13099099342 has ZIP SHA-256
+`576fd4ec49e48b623ff3732df0be943cf57ee147044866b7dca7568e5f5e5e8e`. Its actual
+`Welcome.md` contains `# Preserved when returning` followed by the original
+`# Return to this note`. The launcher is visible. The input sequence intended to
+select all and replace the original text before returning; exact
+focus/selection/driver delivery remains undiagnosed. This shares an input
+replacement symptom with E-RELEASE-012, without proving a common root cause. The
+assertion precedes database reopen/release, cancelled picker and return checks,
+so none of those later boundaries is qualified by this failed case. Startup: 2
+pass/1 skip. Feature family: 90 pass/1 fail/18 skips. Later resource checks were
+not run. All 13 other direct gates passed; two aggregates failed downstream.
+
+Keep the complete body, assertions, original deadlines and shared helpers. Total
+current quarantine: 20 cases (1 startup, 19 feature). Owner: Desktop native
+automation, with Notes editing ownership for any upstream selection defect.
+Investigate native focus, select-all acknowledgement and element input delivery
+across both input cases. Re-enable after exact replacement text is established
+before leaving, and the original full case plus native family pass reliably on
+fresh hosted runners with outcome assertions and deadlines intact. This case's
+vault return, cancellation and database lifetime coverage remains unqualified.
+Enabled native CI, exact-main full qualification and ordinary Homebrew package
+acceptance remain required. Carry the gap into candidate notes and receipts.
 
 ## Development audit exceptions
 
