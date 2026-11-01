@@ -261,3 +261,5 @@ this list.
 - [Combined source repair intake](E-CI-004.md)
 
 - [Website product capture scenes](E-SITE-001.md)
+
+- [Final website-media family coverage](E-SITE-002.md)
