@@ -1,5 +1,4 @@
 name: Desktop preview release
-
 on:
   workflow_dispatch:
     inputs:
@@ -7,7 +6,10 @@ on:
         description:
           Prepare a candidate or recover a published release's tap update
         type: choice
-        options: [prepare, publish-candidate, recover-tap]
+        options:
+          - prepare
+          - publish-candidate
+          - recover-tap
         default: prepare
       publish:
         description:
@@ -23,34 +25,39 @@ on:
           Exact published desktop-v<CalVer>-rc.<N> tag for tap recovery
         type: string
         required: false
-
 permissions:
   contents: read
   actions: read
-
 concurrency:
   group: desktop-preview-release
   cancel-in-progress: false
-
 env:
-  HOMEBREW_TAP_REF: 971d0793f9de1f8d124e74cf7a128491c30597b7
-
+  HOMEBREW_TAP_REF: 5948fa8c25a135e79bb4a48e9186397b851db8a8
 jobs:
-  candidate:
-    name: Qualify Desktop preview candidate
+  build:
+    name: Build ordinary preview (${{ matrix.target }})
     if: github.ref == 'refs/heads/main' && inputs.operation == 'prepare'
-    runs-on: macos-15
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            target: aarch64-apple-darwin
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+    runs-on: ${{ matrix.os }}
     timeout-minutes: 180
     env:
       LAPIS_DESKTOP_VALIDATION_RUNTIME: native
       LAPIS_NOTES_VALIDATION_RUNTIME: native
       LAPIS_AI_VALIDATION_RUNTIME: native
-      MACOSX_DEPLOYMENT_TARGET: "15.0"
+      MACOSX_DEPLOYMENT_TARGET:
+        ${{ matrix.target == 'aarch64-apple-darwin' && '15.0' || '' }}
       CARGO_BUILD_JOBS: "2"
+      RELEASE_TARGET: ${{ matrix.target }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    outputs:
-      tag: ${{ steps.identity.outputs.tag }}
-      artifact: ${{ steps.identity.outputs.artifact }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -60,27 +67,111 @@ jobs:
           node-version: 24
       - name: Require successful CI on this exact main source
         run: node scripts/release/gate.mjs
-      - name: Record candidate identity
-        id: identity
-        run: |
-          node --input-type=module <<'JS'
-          import { appendFileSync } from 'node:fs';
-          import { readIdentity } from './scripts/release/contract.mjs';
-          const { tag } = readIdentity();
-          appendFileSync(process.env.GITHUB_OUTPUT, `tag=${tag}\nartifact=desktop-preview-${process.env.GITHUB_SHA}-${process.env.GITHUB_RUN_ATTEMPT}\n`);
-          JS
       - uses: pnpm/action-setup@v6
       - uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          targets: ${{ matrix.target }}
+      - name: Install Linux packaging prerequisites
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev patchelf desktop-file-utils
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci
       - name: Prepare exact pinned source prerequisites
         run: node scripts/ci-siblings.mjs
+      - name: Restore Rust dependency builds
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
+        with:
+          workspaces: |-
+            src-tauri -> target
+            ../lapis-ai -> target
+          shared-key: desktop-${{ runner.os }}-${{ runner.arch }}
+          key:
+            ${{ matrix.target || 'host' }}-${{
+            hashFiles('scripts/ci-sources.json') }}-${{
+            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+          cache-workspace-crates: false
+          cache-on-failure: true
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST
       - name: Build private public exports
         run: node scripts/ci-prepare-links.mjs
       - name: Install and record verified private archives
         run: node scripts/ci-install.mjs --audit
-      - name: Build ordinary release app and signed helper inventory
+      - name: Build ordinary release app and helper inventory
         run: pnpm release:prepare
+      - uses: actions/upload-artifact@v7
+        with:
+          name:
+            desktop-preview-part-${{ matrix.target }}-${{ github.sha }}-${{
+            github.run_attempt }}
+          path: .local/release/parts/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - uses: actions/upload-artifact@v7
+        if: failure()
+        with:
+          name:
+            desktop-preview-build-failure-${{ matrix.target }}-${{ github.sha
+            }}-${{ github.run_attempt }}
+          path: .local/release/source-ci.json
+          if-no-files-found: ignore
+  assemble:
+    name: Assemble complete platform candidate
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8
+        with:
+          pattern:
+            desktop-preview-part-*-${{ github.sha }}-${{ github.run_attempt }}
+          merge-multiple: true
+          path: .local/release/parts
+      - run: node scripts/release/assemble.mjs
+      - uses: actions/upload-artifact@v7
+        with:
+          name:
+            desktop-preview-assembled-${{ github.sha }}-${{ github.run_attempt
+            }}
+          path: .local/release/candidate/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+  install:
+    name: Qualify Homebrew preview (${{ matrix.target }})
+    needs: assemble
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-15
+            target: aarch64-apple-darwin
+          - os: ubuntu-24.04-arm
+            target: aarch64-unknown-linux-gnu
+          - os: ubuntu-24.04
+            target: x86_64-unknown-linux-gnu
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - uses: actions/download-artifact@v8
+        with:
+          name:
+            desktop-preview-assembled-${{ github.sha }}-${{ github.run_attempt
+            }}
+          path: .local/release/candidate
       - uses: actions/checkout@v6
         with:
           repository: lapismd/homebrew-tap
@@ -92,17 +183,76 @@ jobs:
           ref: main
           path: .local/release/previous
       - uses: Homebrew/actions/setup-homebrew@f9676f1ffe2e1a720f81b2c54c51cfb99915ec14
-      - name: Install, launch and retain data through Homebrew operations
+      - name: Install Linux native window observation tools
+        if: runner.os == 'Linux'
         run: |
-          archive=$(node --input-type=module -e 'import { readIdentity, archiveName } from "./scripts/release/contract.mjs"; console.log(archiveName(readIdentity().version));')
-          node .local/release/tap/scripts/test-preview-install.mjs \
-            --manifest .local/release/candidate/desktop-manifest.json \
-            --archive ".local/release/candidate/$archive" \
-            --source "$GITHUB_WORKSPACE" \
-            --previous-manifest .local/release/previous/desktop-preview-manifest.json \
-            --output .local/release/homebrew
-      - name: Seal qualified bytes and receipts
-        run: pnpm release:verify --seal
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-0 libgtk-3-0t64 libayatana-appindicator3-1 xvfb dbus-x11 desktop-file-utils openbox wmctrl x11-utils
+      - name: Install, launch and retain data through Homebrew operations
+        env:
+          RELEASE_TARGET: ${{ matrix.target }}
+        shell: bash
+        run: |
+          archive=$(node --input-type=module -e 'import { readIdentity, archiveName } from "./scripts/release/contract.mjs"; console.log(archiveName(readIdentity().version, process.env.RELEASE_TARGET));')
+          command=(node .local/release/tap/scripts/test-preview-install.mjs
+            --manifest .local/release/candidate/desktop-manifest.json
+            --archive ".local/release/candidate/$archive"
+            --source "$GITHUB_WORKSPACE"
+            --previous-manifest .local/release/previous/desktop-preview-manifest.json
+            --output ".local/release/homebrew/$RELEASE_TARGET")
+          if [[ "$RUNNER_OS" == Linux ]]; then
+            xvfb-run -a dbus-run-session -- "${command[@]}"
+          else
+            "${command[@]}"
+          fi
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name:
+            desktop-preview-receipts-${{ matrix.target }}-${{ github.sha }}-${{
+            github.run_attempt }}
+          path: .local/release/homebrew/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
+  candidate:
+    name: Qualify Desktop preview candidate
+    needs: install
+    runs-on: ubuntu-24.04
+    outputs:
+      tag: ${{ steps.identity.outputs.tag }}
+      artifact: ${{ steps.identity.outputs.artifact }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Record candidate identity
+        id: identity
+        run: |
+          node --input-type=module <<'JS'
+          import { appendFileSync } from 'node:fs';
+          import { readIdentity } from './scripts/release/contract.mjs';
+          const { tag } = readIdentity();
+          appendFileSync(process.env.GITHUB_OUTPUT, `tag=${tag}\nartifact=desktop-preview-${process.env.GITHUB_SHA}-${process.env.GITHUB_RUN_ATTEMPT}\n`);
+          JS
+      - uses: actions/download-artifact@v8
+        with:
+          name:
+            desktop-preview-assembled-${{ github.sha }}-${{ github.run_attempt
+            }}
+          path: .local/release/candidate
+      - uses: actions/download-artifact@v8
+        with:
+          pattern:
+            desktop-preview-receipts-*-${{ github.sha }}-${{ github.run_attempt
+            }}
+          merge-multiple: true
+          path: .local/release/homebrew
+      - name: Seal all three archives and native receipts
+        run: node scripts/release/verify-candidate.mjs --seal
       - uses: actions/upload-artifact@v7
         with:
           name: ${{ steps.identity.outputs.artifact }}
@@ -110,17 +260,6 @@ jobs:
           include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
-      - uses: actions/upload-artifact@v7
-        if: failure()
-        with:
-          name:
-            desktop-preview-failure-${{ github.sha }}-${{ github.run_attempt }}
-          path: |
-            .local/release/source-ci.json
-            .local/release/homebrew/
-          include-hidden-files: true
-          if-no-files-found: ignore
-
   select-candidate:
     name: Select previously qualified bytes
     if:
@@ -142,13 +281,13 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CANDIDATE_RUN_ID: ${{ inputs.candidate_run_id }}
-
   publish:
     name: Approve and publish qualified preview
-    needs: [candidate, select-candidate]
-    if: >-
-      always() && inputs.publish == true && ((inputs.operation == 'prepare' &&
-      needs.candidate.result == 'success') ||
+    needs:
+      - candidate
+      - select-candidate
+    if: |-
+      always() && inputs.publish == true && ((inputs.operation == 'prepare' && needs.candidate.result == 'success') ||
        (inputs.operation == 'publish-candidate' && needs.select-candidate.result
       == 'success'))
     runs-on: ubuntu-24.04
@@ -179,7 +318,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LAPIS_DESKTOP_PUBLISH_APPROVED: "1"
-
   tap-update:
     name: Update Homebrew preview
     needs: publish
@@ -212,7 +350,6 @@ jobs:
         run: node scripts/open-update-pr.mjs --channel preview
         env:
           GH_TOKEN: ${{ steps.app.outputs.token }}
-
   recover-tap:
     name: Recover published preview tap update
     if: github.ref == 'refs/heads/main' && inputs.operation == 'recover-tap'

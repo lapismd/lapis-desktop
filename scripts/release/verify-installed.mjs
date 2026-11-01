@@ -1,21 +1,14 @@
 import assert from "node:assert/strict";
-import { lstatSync, readFileSync, readdirSync } from "node:fs";
+import { lstatSync } from "node:fs";
 import { execFileSync, spawnSync } from "node:child_process";
-import { join, relative } from "node:path";
+import { join } from "node:path";
 import {
   identifier,
   productName,
   helpers,
   validateManifest,
 } from "./contract.mjs";
-export function bundleFiles(directory) {
-  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
-    const path = join(directory, entry.name);
-    if (entry.isSymbolicLink())
-      throw Error(`Unexpected bundle symlink: ${path}`);
-    return entry.isDirectory() ? bundleFiles(path) : [path];
-  });
-}
+import { verifyOrdinary } from "./ordinary.mjs";
 export function verifyInstalled(app, manifest) {
   validateManifest(manifest);
   if (!lstatSync(app).isDirectory() || lstatSync(app).isSymbolicLink())
@@ -54,29 +47,7 @@ export function verifyInstalled(app, manifest) {
     execFileSync("/usr/bin/xattr", ["-r", app], { encoding: "utf8" }),
     /com.apple.quarantine/,
   );
-  const files = bundleFiles(app);
-  for (const path of files)
-    assert.doesNotMatch(
-      relative(app, path),
-      /(?:^|\/)(?:node|deno|wdio)(?:[./-]|$)|lapis-acp-native-fixture|acp-peer\.jsonl/i,
-    );
-  const bytes = readFileSync(executable);
-  for (const marker of [
-    "TAURI_WEBDRIVER_PORT",
-    "wdioTauri",
-    "__wdio_mocks__",
-    "__lapisAcpAcceptance",
-    "__lapisShellStartupAcceptance",
-    "__lapisDistributionAcceptance",
-    "LAPIS_DESKTOP_ACCEPTANCE_",
-    "native-install-acceptance",
-    "__lapisNativeDatabaseAcceptance",
-    "__lapisPopoutProof",
-  ])
-    assert.ok(
-      !bytes.includes(Buffer.from(marker)),
-      `Ordinary app contains acceptance driver: ${marker}`,
-    );
+  const files = verifyOrdinary(app, executable);
   for (const name of helpers) {
     const helper = join(app, "Contents/Resources/lapis-ai", name);
     assert.ok(lstatSync(helper).isFile());

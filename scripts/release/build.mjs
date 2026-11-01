@@ -1,18 +1,23 @@
-import { execFileSync } from "node:child_process";
-import { readFile, writeFile, mkdir, cp } from "node:fs/promises";
+import { readFile, mkdir } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import {
   archiveName,
   createManifest,
-  hash,
-  helpers,
   hostedMain,
   productName,
   readIdentity,
   target,
 } from "./contract.mjs";
 import { verifyInstalled } from "./verify-installed.mjs";
+import {
+  ai,
+  buildMetadata,
+  prepareRuntime,
+  requireSourceCI,
+  run,
+  writePart,
+} from "./build-common.mjs";
 hostedMain();
 if (process.platform !== "darwin" || process.arch !== "arm64")
   throw Error("Preview packaging requires macOS ARM64");
@@ -23,50 +28,10 @@ for (const key of [
 ])
   if (process.env[key] && process.env[key] !== "-")
     throw Error("Preview packaging requires ad-hoc signing");
-const identity = readIdentity(),
-  root = process.cwd(),
-  ai = resolve("../lapis-ai");
-const output = resolve(".local/release/candidate");
-const sourceCI = JSON.parse(
-  await readFile(".local/release/source-ci.json", "utf8"),
-);
-if (
-  sourceCI.sourceCommit !== identity.sourceCommit ||
-  sourceCI.ciResult !== "success"
-)
-  throw Error("Missing exact-source CI qualification");
-const run = (command, args, cwd = root) =>
-  execFileSync(command, args, { cwd, stdio: "inherit" });
-run(
-  "pnpm",
-  [
-    "dev:cargo",
-    "--",
-    "build",
-    "--release",
-    "--locked",
-    ...helpers.flatMap((name) => ["-p", name]),
-  ],
-  ai,
-);
-for (const name of helpers)
-  run("/usr/bin/codesign", [
-    "--force",
-    "--sign",
-    "-",
-    join(ai, "target/release", name),
-  ]);
-const runtime = join(
-  ai,
-  "dist",
-  `desktop-release-${process.env.GITHUB_RUN_ID}-${process.env.GITHUB_RUN_ATTEMPT}`,
-);
-run(
-  "pnpm",
-  ["package:stage", "--", "--profile", "release", "--destination", runtime],
-  ai,
-);
-run("pnpm", ["ai:prepare", "--", "--bundle", runtime]);
+const identity = readIdentity();
+const output = resolve(`.local/release/parts/${target}`);
+await requireSourceCI(identity);
+await prepareRuntime({ sign: true });
 run("pnpm", [
   "exec",
   "tauri",
@@ -105,54 +70,14 @@ run("/usr/bin/ditto", [
 ]);
 const manifest = createManifest(identity, await readFile(archive));
 verifyInstalled(app, manifest);
-await writeFile(
-  join(output, "desktop-manifest.json"),
-  JSON.stringify(manifest, null, 2) + "\n",
-);
-const backlog = await readFile("spec/src/backlog/distribution.md", "utf8");
-const limitations = backlog
-  .split("## Hosted ARM64 case quarantine")[1]
-  ?.split("\n## ")[0]
-  ?.trim();
-if (!limitations)
-  throw Error("Release requires the recorded native RC limitations");
-await writeFile(
-  join(output, "LIMITATIONS.md"),
-  "# Preview qualification limitations\n\n" +
-    limitations +
-    "\n\nThese cases remain unqualified; enabled exact-source CI gates passed.\n",
-);
-const metadata = {
-  schemaVersion: 1,
-  ...identity,
+const metadata = await buildMetadata(
+  identity,
   target,
-  configuration: "src-tauri/tauri.preview.conf.json",
-  signing: "ad-hoc",
-  notarization: "not-performed",
-  sourceCI,
-  sources: JSON.parse(await readFile("scripts/ci-sources.json", "utf8")),
-  privateArchives: JSON.parse(
-    await readFile(".local/ci-install/archives.json", "utf8"),
-  ),
-  registryLockSha256: hash(await readFile("pnpm-lock.yaml")),
-  cargoLockSha256: hash(await readFile("src-tauri/Cargo.lock")),
-  tools: {
-    node: process.version,
-    pnpm: execFileSync("pnpm", ["--version"], { encoding: "utf8" }).trim(),
-    rust: execFileSync("rustc", ["-V"], { encoding: "utf8" }).trim(),
-  },
-  helperProfile: "release",
-  runtimeManifestSha256: hash(
-    await readFile(
-      join(app, "Contents/Resources/lapis-ai/runtime-manifest.toml"),
-    ),
-  ),
-};
-await writeFile(
-  join(output, "build-metadata.json"),
-  JSON.stringify(metadata, null, 2) + "\n",
+  join(app, "Contents/Resources/lapis-ai/runtime-manifest.toml"),
+  { signing: "ad-hoc", notarization: "not-performed" },
 );
-await cp(".local/bundle-check.json", join(output, "bundle-check.json"));
+const bundle = JSON.parse(await readFile(".local/bundle-check.json", "utf8"));
+await writePart(output, manifest.artifacts[0], metadata, bundle);
 console.log(
-  `Prepared ${manifest.tag}; install qualification and publication approval remain required.`,
+  `Built macOS preview ${manifest.tag}; Homebrew qualification remains required.`,
 );

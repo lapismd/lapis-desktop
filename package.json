@@ -61,14 +61,14 @@
     "check:evidence": "node scripts/validation.mjs run check:evidence",
     "spec:index": "spec-validator index",
     "ci:governance": "pnpm spec:check && pnpm spec:first --base \"${LAPIS_DESKTOP_BASE:?}\" --head \"${LAPIS_DESKTOP_HEAD:?}\"",
-    "ci:quality": "pnpm check",
-    "ci:unit": "pnpm test",
+    "ci:quality": "node scripts/ci/run-selected.mjs quality",
+    "ci:unit": "node scripts/ci/run-selected.mjs unit",
     "ci:storybook-static": "pnpm build-storybook",
     "ci:storybook-interaction": "node scripts/ci-catalog.mjs",
     "ci:bundle": "pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle",
     "ci:headed": "pnpm test:desktop:headed",
     "checks": "node scripts/run-turbo.mjs ci:governance ci:storybook-static --summarize && node scripts/run-turbo.mjs ci:storybook-interaction --summarize && node scripts/run-turbo.mjs ci:quality --summarize && node scripts/run-turbo.mjs ci:unit --summarize && node scripts/run-turbo.mjs ci:bundle --summarize",
-    "release:prepare": "node scripts/release/build.mjs",
+    "release:prepare": "node scripts/release/prepare-platform.mjs",
     "release:verify": "node scripts/release/verify-candidate.mjs"
   },
   "dependencies": {

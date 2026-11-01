@@ -208,3 +208,7 @@
 - [Provision candidate Homebrew](../history/E-RELEASE-002.md)
 - [Native watcher shutdown cancellation](../history/E-RELEASE-003.md)
 - [Hosted ACP reload quarantine](../history/E-RELEASE-004.md)
+- [Linux Tauri preview distribution](../history/E-RELEASE-005.md)
+
+- [Cold progress geometry quarantine](../history/E-RELEASE-006.md)
+- [Affected CI gates and Rust caching](../history/E-RELEASE-007.md)

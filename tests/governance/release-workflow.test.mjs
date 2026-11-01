@@ -19,34 +19,40 @@ test("preview publication stays manual, disabled by default and protected after 
   assert.ok(workflow.jobs.publish.steps.some((step) => step.with?.["run-id"]));
 });
 test("release packaging requires real Homebrew installation and releases no acceptance binary", () => {
-  const steps = workflow.jobs.candidate.steps;
-  const build = steps.findIndex((step) => step.run === "pnpm release:prepare");
+  assert.equal(workflow.jobs.build.strategy.matrix.include.length, 3);
+  assert.deepEqual(workflow.jobs.assemble.needs, "build");
+  assert.deepEqual(workflow.jobs.install.needs, "assemble");
+  assert.deepEqual(workflow.jobs.candidate.needs, "install");
+  assert.deepEqual(
+    workflow.jobs.install.strategy.matrix.include,
+    workflow.jobs.build.strategy.matrix.include,
+  );
+  const steps = workflow.jobs.install.steps;
   assert.ok(
     steps.some((step) =>
       step.uses?.startsWith("Homebrew/actions/setup-homebrew@"),
     ),
-    "Candidate installation requires the same Homebrew bootstrap as the tap",
   );
-  const install = steps.findIndex((step) =>
+  const install = steps.find((step) =>
     step.run?.includes("test-preview-install.mjs"),
   );
-  const seal = steps.findIndex(
-    (step) => step.run === "pnpm release:verify --seal",
-  );
-  const upload = steps.findIndex((step) =>
-    step.uses?.startsWith("actions/upload-artifact"),
-  );
-  assert.ok(build >= 0 && install > build && seal > install && upload > seal);
+  assert.ok(install.run.includes("xvfb-run"));
   const previous = steps.find(
     (step) => step.with?.path === ".local/release/previous",
   );
   assert.equal(
     previous.with.ref,
     "main",
-    "Later candidates must qualify upgrades from current tap state",
+    "Qualify upgrades from current tap state",
+  );
+  const final = workflow.jobs.candidate.steps;
+  assert.ok(
+    final.findIndex((s) => s.run?.includes("verify-candidate.mjs --seal")) <
+      final.findIndex((s) => s.uses?.startsWith("actions/upload-artifact")),
   );
   const source = read("scripts/release/build.mjs");
-  assert.match(source, /"--release"/);
+  assert.match(read("scripts/release/build-common.mjs"), /"--release"/);
+  assert.match(read("scripts/release/build-linux.mjs"), /"--no-bundle"/);
   assert.match(source, /"--no-sign"/);
   assert.doesNotMatch(
     source,

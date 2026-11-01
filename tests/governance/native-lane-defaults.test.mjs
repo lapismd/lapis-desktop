@@ -196,8 +196,14 @@ test("the dispatcher refuses without an explicit on-demand request", () => {
 });
 
 test("hosted CI keeps the portable lane set and its documented native runtime", () => {
-  assert.equal(scripts["ci:quality"], "pnpm check");
-  assert.equal(scripts["ci:unit"], "pnpm test");
+  assert.equal(
+    scripts["ci:quality"],
+    "node scripts/ci/run-selected.mjs quality",
+  );
+  assert.equal(scripts["ci:unit"], "node scripts/ci/run-selected.mjs unit");
+  const runner = readFileSync("scripts/ci/run-selected.mjs", "utf8");
+  assert.match(runner, /GITHUB_ACTIONS === "true"/);
+  assert.match(runner, /kind === "unit" \? "test" : "check"/);
   assert.match(scripts["ci:governance"], /^pnpm spec:check && /u);
   assert.match(scripts["ci:governance"], /pnpm spec:first --base /u);
   assert.match(
@@ -205,7 +211,6 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
     /pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle/u,
   );
   for (const task of [
-    "ci:governance",
     "ci:quality",
     "ci:unit",
     "ci:storybook-static",
@@ -218,6 +223,7 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
       1,
       `CI runs ${task} in its own job`,
     );
+  assert.match(ci, /node scripts\/ci\/docs\.mjs/);
   assert.doesNotMatch(ci, /jj@0\.45\.1/u);
   assert.match(ci, /install-tools\.mjs --ci/u);
   assert.match(ci, /LAPIS_DESKTOP_VALIDATION_RUNTIME: native/u);
@@ -237,6 +243,8 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
     [
       ".github/workflows/ci.yml",
       ".github/workflows/publish-storybook-pages.yml",
+      // This CI-only dispatcher observes the preselected runtime and otherwise uses full Docker commands.
+      "scripts/ci/run-selected.mjs",
       "scripts/local-macos-build.mjs",
       "scripts/macos-native-lanes.mjs",
       "scripts/validation.mjs",
