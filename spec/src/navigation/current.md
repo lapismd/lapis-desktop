@@ -39,6 +39,7 @@
 
   - [AI and shared-screen qualification](../backlog/ai-qualification.md)
   - [Vault synchronization and turn history](../backlog/vault-synchronization.md)
+  - [Lapis Sync: future Tauri implementation](../backlog/lapis-sync.md)
   - [Native canonical conversations](../backlog/native-conversations.md)
   - [Distribution and frozen-host retirement](../backlog/distribution.md)
   - [AI tool expansion](../backlog/ai-tool-expansion.md)

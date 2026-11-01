@@ -1,5 +1,10 @@
 # Vault synchronization and turn history
 
+This topic owns Git repository backup/pull/merge/push and its retained provider
+acceptance. The separate encrypted `sync` plugin, native engine and enrolled
+Lapis Server destination are planned in [Lapis Sync](lapis-sync.md). Neither
+feature's qualification completes the other's acceptance boundaries.
+
 Outstanding implementation and qualification are recorded here. Existing feature
 contracts and requirement verification retain the implemented scope. Legacy task
 identities below are provenance, not a separate completion ledger. Preserve each
