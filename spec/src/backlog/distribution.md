@@ -153,3 +153,8 @@ reported no advisories; the full audit blocked `GHSA-3g3m-2fjr-6pw4` (glob
 both under WebdriverIO tooling. Requirement: LD-GOV-006. Limitation: these
 exceptions do not qualify production dependencies and expire 2026-11-30. Owner:
 Desktop. Remove an exception when its listed edges are patched or gone.
+
+The hosted Dependency audits job starts with the other lanes
+([E-CI-041](../history/E-CI-041.md)). It does not wait for Governance, Quality,
+tests, Storybook, the native bundle, headed acceptance, or the Linux builds.
+Validate still requires its result.

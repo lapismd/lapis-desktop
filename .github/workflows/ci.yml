@@ -346,15 +346,6 @@ jobs:
 
   audit:
     name: Dependency audits
-    needs:
-      - governance
-      - quality
-      - unit
-      - storybook-static
-      - storybook-interaction
-      - bundle
-      - headed
-      - linux
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
