@@ -113,3 +113,9 @@ requires current-attempt reports from every selected family: rerun the complete
 workflow after failure, because rerunning only failed jobs cannot reuse earlier
 family results as current execution. Earlier attempts and failures stay
 retained.
+
+Native runtime packaging MUST prepare the pinned AI source checkout's declared
+Node tooling with its frozen lock before importing its bundle verifier. Packed
+application client archives do not supply that source-side TOML tooling. This
+preparation must preserve manifests/locks and avoid rebuilding public exports;
+installer failure remains a real preparation failure.

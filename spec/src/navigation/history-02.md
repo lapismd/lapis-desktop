@@ -226,3 +226,5 @@
 - [CI reliability, isolated families and scheduled validation](../history/E-CI-045.md)
 
 - [Bounded startup and hidden secondary-window diagnostics](../history/E-CI-046.md)
+
+- [Native consumer source-tooling prerequisite](../history/E-CI-047.md)

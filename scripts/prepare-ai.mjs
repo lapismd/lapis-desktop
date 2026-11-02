@@ -2,15 +2,13 @@
 import { spawn } from "node:child_process";
 import { cp, mkdir, readFile, rename, rm, stat } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
 import { parseArgs } from "node:util";
+import { loadAiBundleVerifier } from "./ai-source-tooling.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const source = resolve(root, "../lapis-ai");
 const destination = join(root, "src-tauri/resources/lapis-ai");
-const { verifyBundle } = await import(
-  pathToFileURL(join(source, "scripts/bundle.mjs"))
-);
+const { verifyBundle } = await loadAiBundleVerifier(source);
 const { values } = parseArgs({
   args: process.argv.slice(2).filter((arg) => arg !== "--"),
   options: { bundle: { type: "string" }, reuse: { type: "boolean" } },

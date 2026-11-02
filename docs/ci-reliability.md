@@ -94,3 +94,9 @@ classified in
 [supplemental ownership](../scripts/native-optional-inventory.json); they do not
 enter ordinary defaults or become qualified by a nightly success. New unknown
 files fail required planning until their execution ownership is reviewed.
+
+Native consumers also prepare the pinned AI checkout's declared Node tooling
+before importing its runtime-bundle verifier. The packed application AI client
+does not install the source packer's TOML dependency. A frozen tooling install
+handles a clean consumer without rebuilding JavaScript exports; warm reuse
+retains the existing source-owned tooling.
