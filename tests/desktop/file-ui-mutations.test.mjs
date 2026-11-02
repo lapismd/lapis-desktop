@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -112,7 +113,7 @@ async function notice(browser, text) {
 test(
   "Explorer rename and move preserve collisions, the active editor and restart layout",
   {
-    skip: "Hosted ARM64 quarantine E-RELEASE-012: filename replacement intermittently appended Renamed.md to Note.md.",
+    ...quarantine("explorer-rename-move"),
   },
   async (context) => {
     const { root, vault, session, browser, editor } = await fixture(
@@ -176,10 +177,7 @@ for (const operation of ["rename", "move"]) {
   test(
     `Explorer ${operation} retains a conflicted dirty note before filesystem mutation`,
     {
-      skip:
-        operation === "rename"
-          ? "Hosted ARM64 quarantine E-CI-042: the editor kept the original note beside the draft."
-          : false,
+      ...quarantine("explorer-dirty-rename", operation === "rename"),
     },
     async (context) => {
       const { vault, session, browser, editor } = await fixture(

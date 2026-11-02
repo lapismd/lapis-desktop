@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -138,7 +139,7 @@ test("accessible recovery accepts disk text without saving the discarded draft",
 test(
   "closing a conflicted tab retains its draft and shutdown barrier until recovery",
   {
-    skip: "Hosted ARM64 quarantine E-CI-036: shutdown wait timed out after 5000ms.",
+    ...quarantine("conflicted-tab-close"),
   },
   async (context) => {
     const { session, browser, file } = await fixture(

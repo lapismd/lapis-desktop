@@ -1,0 +1,330 @@
+{
+  "schema": 1,
+  "families": ["smoke", "workspace", "services"],
+  "files": [
+    {
+      "file": "tests/desktop/startup-progress.test.mjs",
+      "family": "smoke",
+      "mode": "startup",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/lifecycle.test.mjs",
+      "family": "smoke",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/notes-lifecycle.test.mjs",
+      "family": "smoke",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/terminal-lifecycle.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/acp-transport.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-user-commands.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-admission.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-native-queue-admission.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-native-queue-owner.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-native-queue-screen.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-notes-binding.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/ai-transcript-backup.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/plugin-assets.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/plugin-distribution.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/plugin-distribution-recovery.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/portable-plugins.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/portable-workers.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/portable-database.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/notes-conflicts.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/tasks-installed.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/editing-recovery.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/preview-conflicts.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/window-chrome.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/popout-host.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/vault-return.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/properties-persistence.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/properties-preflight.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/settings-persistence.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/repository-working-copy.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/plugin-persistence.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/startup-recovery.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-operations.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-watch.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-deletion.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-creation.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-reconciliation.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/system-file-actions.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-ui-mutations.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-import.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/navigation-search.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/navigation-search-settings.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/search-owner.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/search-recovery.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/navigation-metadata.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/metadata-owner.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/navigation-graph.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/integration-ports.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/integration-urls.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/file-http-representation.test.mjs",
+      "family": "services",
+      "mode": "resource",
+      "coldProcess": true
+    },
+    {
+      "file": "tests/desktop/shell.spec.mjs",
+      "family": "smoke",
+      "mode": "wdio",
+      "coldProcess": false
+    },
+    {
+      "file": "tests/desktop/vault.spec.mjs",
+      "family": "smoke",
+      "mode": "wdio",
+      "coldProcess": false
+    },
+    {
+      "file": "tests/desktop/conditional.spec.mjs",
+      "family": "smoke",
+      "mode": "wdio",
+      "coldProcess": false
+    },
+    {
+      "file": "tests/desktop/database.spec.mjs",
+      "family": "smoke",
+      "mode": "wdio",
+      "coldProcess": false
+    },
+    {
+      "file": "tests/desktop/notes.spec.mjs",
+      "family": "smoke",
+      "mode": "wdio",
+      "coldProcess": false
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { chmodSync, mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
@@ -24,7 +25,7 @@ async function fixture(context, name) {
 test(
   "cold shell mounts shared centered progress before importing the application",
   {
-    skip: "Hosted ARM64 quarantine E-RELEASE-006: intermittent initial progress/control clearance measurement.",
+    ...quarantine("startup-progress"),
   },
   async (context) => {
     const { session } = await fixture(context, "shell-first-progress");

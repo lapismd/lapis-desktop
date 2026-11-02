@@ -105,3 +105,25 @@ test("manual CLI exports a real source parent from a fetched colocated checkout"
     `LAPIS_DESKTOP_BASE=${first}\nLAPIS_DESKTOP_HEAD=${second}\n`,
   );
 });
+
+test("scheduled canonical main uses its fixed source SHA and fetched first parent", () => {
+  const context = {
+    eventName: "schedule",
+    parent: base,
+    repository: "lapismd/lapis-desktop",
+    ref: "refs/heads/main",
+  };
+  assert.deepEqual(ciSelection({}, head, context), { base, head });
+  for (const change of [
+    { repository: "other/lapis-desktop" },
+    { repository: undefined },
+    { ref: "refs/heads/feature" },
+    { ref: undefined },
+    { parent: undefined },
+    { parent: "root()" },
+  ])
+    assert.throws(
+      () => ciSelection({}, head, { ...context, ...change }),
+      /canonical|ancestry/u,
+    );
+});

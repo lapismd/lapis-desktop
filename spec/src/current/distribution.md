@@ -88,3 +88,13 @@ archive underneath an earlier successful installation receipt.
 The full existing native feature suite remains tied to the same source on macOS.
 Linux qualifies ordinary installation, resources, startup/window and shutdown;
 it does not claim full Linux feature parity from those smoke checks.
+
+## Complete source qualification profiles
+
+Candidate preparation requires the latest successful full CI attempt for the
+identical main commit, including private/native preparation, every native
+family, all catalog display variants, ordinary bundle audit and both Linux
+targets. An ordinary profile, quarantine diagnostic, artifact, incomplete matrix
+or earlier passing job attempt cannot authorize preparation. Source equality
+requires the exact commit rather than an equal tree. The release build uses the
+configured minimum macOS version before dependency cache restore and build.

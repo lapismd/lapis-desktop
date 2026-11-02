@@ -30,7 +30,12 @@ const metadata = {
   ],
 };
 const plan = (files, options = {}) =>
-  planChanges(files, { root: "/repo", metadata, ...options });
+  planChanges(files, {
+    root: "/repo",
+    metadata,
+    narrowProfiles: true,
+    ...options,
+  });
 test("docs-only edits select specification checks without native/UI/test builds", () => {
   const p = plan([
     "docs/desktop-release.md",
@@ -53,6 +58,9 @@ test("Cargo closure includes dependent application crates and excludes unrelated
   assert.deepEqual(app.unit, ["rust"]);
   assert.ok(app.gates.includes("linux"));
   assert.ok(!app.gates.includes("storybook-interaction"));
+  const serviceTest = plan(["src-tauri/tests/repository_original.rs"]);
+  assert.ok(serviceTest.gates.includes("linux"));
+  assert.ok(!serviceTest.gates.includes("headed"));
 });
 test("renderer, catalog, release and native-test changes select complete consumers", () => {
   assert.ok(
@@ -62,7 +70,12 @@ test("renderer, catalog, release and native-test changes select complete consume
   assert.ok(catalog.gates.includes("storybook-interaction"));
   assert.ok(!catalog.gates.includes("linux"));
   const release = plan(["scripts/release/build-linux.mjs"]);
-  assert.deepEqual(release.gates, ["governance", "quality", "unit"]);
+  assert.deepEqual(release.gates, [
+    "governance",
+    "prerequisites",
+    "quality",
+    "unit",
+  ]);
   assert.deepEqual(release.unit, ["governance"]);
   assert.ok(
     plan(["tests/desktop/startup-progress.test.mjs"]).gates.includes("headed"),
@@ -100,4 +113,107 @@ test("Validate rejects skipped selected gates, failed unselected gates and incom
   ])
     assert.throws(() => validateResults(p, failure));
   assert.throws(() => validateResults({}, result));
+});
+
+test("ordinary catalog and mapped native tests declare exact smaller coverage", () => {
+  const catalog = plan(["catalog/plugins/Launcher.stories.ts"]);
+  assert.equal(catalog.schemaVersion, 2);
+  assert.equal(catalog.profile, "ordinary");
+  assert.equal(catalog.catalogProfile, "ordinary");
+  assert.deepEqual(catalog.nativeFamilies, []);
+  const native = plan(["tests/desktop/metadata-owner.test.mjs"]);
+  assert.equal(native.profile, "ordinary");
+  assert.deepEqual(native.nativeFamilies, ["smoke", "workspace"]);
+  assert.deepEqual(native.dependencyPlatforms, [
+    { os: "macos-15", id: "macos-arm64" },
+  ]);
+  const renderer = plan(["src/components/views/Main.svelte"]);
+  assert.equal(renderer.catalogProfile, "full");
+  assert.deepEqual(renderer.nativeFamilies, ["smoke", "workspace", "services"]);
+});
+
+test("shared harness, shared presentation and unknown native ownership select full qualification", () => {
+  for (const file of [
+    "tests/desktop/native-session.mjs",
+    "tests/desktop/new-unmapped.test.mjs",
+    "src-tauri/src/host/windows/mod.rs",
+    "src-tauri/src/acceptance/acp.rs",
+    ".storybook/preview.ts",
+    "catalog/support/shared.ts",
+  ]) {
+    const selected = plan([file]);
+    assert.equal(selected.profile, "full", file);
+    assert.equal(selected.catalogProfile, "full");
+    assert.deepEqual(selected.gates, gates);
+  }
+  const renamed = plan([
+    "tests/desktop/metadata-owner.test.mjs",
+    "tests/desktop/acp-transport.test.mjs",
+  ]);
+  assert.deepEqual(renamed.nativeFamilies, ["smoke", "workspace", "services"]);
+});
+
+test("private prerequisite platforms cover every selected consumer and docs need none", () => {
+  assert.deepEqual(plan(["README.md"]).dependencyPlatforms, []);
+  assert.ok(!plan(["README.md"]).gates.includes("prerequisites"));
+  const full = plan(["README.md"], { full: true });
+  assert.deepEqual(full.dependencyPlatforms, [
+    { os: "macos-15", id: "macos-arm64" },
+    { os: "ubuntu-24.04", id: "linux-x64" },
+    { os: "ubuntu-24.04-arm", id: "linux-arm64" },
+  ]);
+});
+
+test("full marker cannot be made from incomplete, ordinary or malformed plan fields", () => {
+  const full = plan(["README.md"], { full: true });
+  const results = Object.fromEntries(gates.map((gate) => [gate, "success"]));
+  validateResults(full, results);
+  for (const change of [
+    { schemaVersion: 1 },
+    { profile: "ordinary" },
+    { nativeFamilies: ["smoke"] },
+    { nativeFamilies: [] },
+    { catalogProfile: "ordinary" },
+    { unit: ["governance"] },
+    { quality: [] },
+    { rustPackages: [] },
+    { dependencyPlatforms: [] },
+    { testedRevision: "not-an-exact-source" },
+    { gates: full.gates.filter((gate) => gate !== "prerequisites") },
+  ])
+    assert.throws(() => validateResults({ ...full, ...change }, results));
+  const ordinary = plan(["tests/desktop/metadata-owner.test.mjs"]);
+  assert.throws(() => validateResults({ ...ordinary, full: true }, results));
+  assert.throws(() =>
+    validateResults({ ...ordinary, nativeFamilies: [] }, results),
+  );
+  assert.throws(() =>
+    validateResults(
+      { ...ordinary, nativeFamilies: ["smoke", "unknown"] },
+      results,
+    ),
+  );
+});
+
+test("unqualified ordinary profile rollout preserves full native/catalog scope without expanding docs gates", () => {
+  const native = plan(["tests/desktop/metadata-owner.test.mjs"], {
+    narrowProfiles: false,
+  });
+  assert.equal(native.profile, "ordinary");
+  assert.equal(native.ordinaryProfilesEnabled, false);
+  assert.deepEqual(native.nativeFamilies, ["smoke", "workspace", "services"]);
+  assert.equal(native.catalogProfile, "full");
+  const catalog = plan(["catalog/plugins/Launcher.stories.ts"], {
+    narrowProfiles: false,
+  });
+  assert.equal(catalog.catalogProfile, "full");
+  assert.ok(!catalog.gates.includes("headed"));
+  assert.deepEqual(plan(["README.md"], { narrowProfiles: false }).gates, [
+    "governance",
+  ]);
+  const results = Object.fromEntries(gates.map((gate) => [gate, "success"]));
+  assert.throws(
+    () => validateResults({ ...native, nativeFamilies: ["smoke"] }, results),
+    /Unqualified/u,
+  );
 });

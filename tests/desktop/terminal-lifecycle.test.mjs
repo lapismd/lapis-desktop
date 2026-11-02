@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -167,7 +168,7 @@ async function toggle(session) {
 test(
   "cold Terminal input, viewport resize, hide and renderer reload retain one native shell; restart awaits Start",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: shell output had no $ prompt.",
+    ...quarantine("terminal-cold-reload"),
   },
   async (context) => {
     const { root, vault } = fixture("terminal-reload");
@@ -336,7 +337,7 @@ test("explicit terminal disable and vault return release only admitted shells; u
 test(
   "cancelled close retains the shell until guarded note persistence succeeds",
   {
-    skip: "Hosted ARM64 quarantine E-CI-036: shell output had no $ prompt.",
+    ...quarantine("terminal-cancel-close"),
   },
   async (context) => {
     const { root, vault } = fixture("terminal-cancel");
@@ -363,7 +364,7 @@ test(
 test(
   "switching vaults revokes old handles and starts only inside the newly admitted root",
   {
-    skip: "Hosted ARM64 quarantine E-CI-036: shell output had no $ prompt.",
+    ...quarantine("terminal-vault-switch"),
   },
   async (context) => {
     const { root, vault } = fixture("terminal-isolation");
@@ -412,7 +413,7 @@ test(
 test(
   "revoked physical vault admission stops its shell and permits a guarded cleanup retry",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: shell output had no $ prompt.",
+    ...quarantine("terminal-revoked-vault"),
   },
   async (context) => {
     const { root, vault } = fixture("terminal-revoked");

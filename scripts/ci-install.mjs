@@ -1,19 +1,21 @@
 #!/usr/bin/env node
 import {
+  copyFileSync,
   existsSync,
   mkdirSync,
   readFileSync,
   readdirSync,
+  renameSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { createRequire } from "node:module";
 import { verifyArchiveResolution } from "./archive-resolution.mjs";
 import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { runAudit } from "./ci-audit.mjs";
+import { verifyDependencies } from "./ci-dependency-artifact.mjs";
 
 /** Packages awaiting qualified registry releases keep tracked semver ranges. */
 export const unpublishedRanges = {
@@ -49,15 +51,25 @@ function installProjected() {
   const lockPath = resolve("pnpm-lock.yaml");
   const originalPkg = readFileSync(pkgPath);
   const originalLock = readFileSync(lockPath);
+  const reused = process.env.LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT
+    ? verifyDependencies(process.env.LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT)
+    : null;
   const archives = {};
   const projected = projectUnpublished(
     JSON.parse(originalPkg.toString("utf8")),
-    (relative) => existsSync(resolve(relative, "package.json")),
+    (relative) =>
+      Boolean(reused) || existsSync(resolve(relative, "package.json")),
     (name, relative) => {
-      const directory = resolve(
-        ".local/ci-packages",
-        name.replaceAll(/[@/]/gu, "-"),
-      );
+      const target = `.local/ci-packages/${name.replaceAll(/[@/]/gu, "-")}/package.tgz`;
+      const directory = resolve(target, "..");
+      if (reused) {
+        const entry = reused.find((entry) => entry.name === name);
+        if (!entry) throw Error(`Missing reusable private artifact: ${name}`);
+        mkdirSync(directory, { recursive: true });
+        copyFileSync(entry.path, target);
+        archives[name] = { path: target, version: entry.version };
+        return target;
+      }
       rmSync(directory, { recursive: true, force: true });
       mkdirSync(directory, { recursive: true });
       execFileSync(
@@ -75,43 +87,68 @@ function installProjected() {
       );
       if (tarballs.length !== 1)
         throw Error(`Expected one public archive for ${name}`);
-      const path = `${directory}/${tarballs[0]}`;
+      renameSync(`${directory}/${tarballs[0]}`, resolve(target));
       archives[name] = {
-        path,
+        path: target,
         version: JSON.parse(
           readFileSync(resolve(relative, "package.json"), "utf8"),
         ).version,
       };
-      return path;
+      return target;
     },
   );
   const hook = resolve(".local/ci-packages/pnpmfile.cjs");
-  const semver = createRequire(resolve("../lapis-notes/package.json")).resolve(
-    "semver",
+  mkdirSync(resolve(".local/ci-packages"), { recursive: true });
+  const tools = resolve(".local/ci-package-tools");
+  mkdirSync(tools, { recursive: true });
+  writeFileSync(
+    resolve(tools, "package.json"),
+    JSON.stringify({ private: true, dependencies: { semver: "7.8.5" } }),
+  );
+  execFileSync(
+    "pnpm",
+    [
+      "install",
+      "--ignore-workspace",
+      "--ignore-scripts",
+      "--no-frozen-lockfile",
+    ],
+    { cwd: tools, stdio: "inherit" },
   );
   writeFileSync(
     hook,
-    `const semver = require(${JSON.stringify(semver)});
+    `const semver = require("../ci-package-tools/node_modules/semver");
+const { resolve } = require("node:path");
 const archives = ${JSON.stringify(archives)};
 module.exports = { hooks: { readPackage(pkg) {
   for (const section of ["dependencies", "optionalDependencies"])
     for (const [name, range] of Object.entries(pkg[section] || {})) {
       const artifact = archives[name];
       if (!artifact || range === "file:" + artifact.path) continue;
+      const target = "file:" + resolve(__dirname, "../..", artifact.path);
+      if (range === target) continue;
       if (!semver.satisfies(artifact.version, range)) throw Error("Incompatible private artifact: " + name + " " + range);
-      pkg[section][name] = "file:" + artifact.path;
+      pkg[section][name] = target;
     }
   return pkg;
 } } };
 `,
   );
-  writeFileSync(pkgPath, JSON.stringify(projected, null, 2) + "\n");
+  const projectedText = JSON.stringify(projected, null, 2) + "\n";
+  if (reused && reused.projectedPackage !== projectedText)
+    throw Error("Reusable dependency projection does not match this manifest");
+  writeFileSync(pkgPath, projectedText);
   let status = 1;
   try {
+    if (reused) writeFileSync(lockPath, reused.projectedLock);
     status =
       spawnSync(
         "pnpm",
-        ["install", "--no-frozen-lockfile", `--pnpmfile=${hook}`],
+        [
+          "install",
+          reused ? "--frozen-lockfile" : "--no-frozen-lockfile",
+          `--pnpmfile=${hook}`,
+        ],
         {
           stdio: "inherit",
         },

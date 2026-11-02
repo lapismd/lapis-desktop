@@ -1,4 +1,4 @@
-# Desktop shell
+# Desktop shell and CI
 
 [Adapters](ai-adapter.md): E-CORE-025 defaults; E-CORE-027 recovery.
 LD-FILE-002/003: watch after metadata/views, drain on leave, resume on failure.
@@ -7,15 +7,14 @@ LD-FILE-002/003: watch after metadata/views, drain on leave, resume on failure.
 
 LD-DESK-003 keeps Core AI/History caller/session admission native; renderer
 paths, generations, actors, executables and environment stay denied. Docker
-checks use test bundles/compatible registry packages; real helpers, windows and
-platform resources need native app-build acceptance. Fixtures match admitted
-runtime versions/exact helper hashes. Logs stream; assertions/deadlines stay
-(E-CI-009). Terminal 0.1.2 uses qualified Git sources
-([intake](local-dependencies.md), E-CI-011/013). Confirmed scoped shutdown
-settles stale denied cleanup only on close. Tasks use the packed pin (E-CI-034);
-Graph uses real hover (E-CI-012). ARM64 skips: E-CI-036/042/044,
-E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs family/diagnostic
-execution; native gates remain.
+checks use test bundles/compatible registry packages; helpers/windows/platform
+resources need native app-build acceptance. Fixtures match admitted runtime
+versions/exact helper hashes. Logs stream; assertions/deadlines stay (E-CI-009).
+Terminal 0.1.2 uses qualified Git sources ([intake](local-dependencies.md),
+E-CI-011/013). Confirmed scoped shutdown settles stale denied cleanup only on
+close. Tasks use the packed pin (E-CI-034); Graph uses real hover (E-CI-012).
+ARM64 skips: E-CI-036/042/044, E-RELEASE-004/006/008/010/012/013/014.
+[CI](ci.md) governs family/diagnostic execution; native gates remain.
 
 ## Requirements
 

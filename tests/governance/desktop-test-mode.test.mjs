@@ -5,11 +5,23 @@ import { runDesktopTests } from "../../scripts/desktop-tests.mjs";
 import { buildAcceptanceApp } from "../../scripts/desktop-acceptance.mjs";
 
 test("CI retains explicit headed native acceptance when the local default is quiet", () => {
-  const workflow = readFileSync(".github/workflows/ci.yml", "utf8");
+  const workflow = readFileSync(".github/workflows/ci.yml", "utf8").replace(
+    /\s+/gu,
+    " ",
+  );
   const { scripts } = JSON.parse(readFileSync("package.json", "utf8"));
   assert.equal(scripts["ci:headed"], "pnpm test:desktop:headed");
   assert.match(workflow, /name: Native ARM64 acceptance\b/u);
-  assert.match(workflow, /run-turbo\.mjs ci:headed\b/u);
+  assert.match(workflow, /macos-native-lanes\.mjs headed --operation prepare/u);
+  assert.match(
+    workflow,
+    /macos-native-lanes\.mjs headed --operation execute --family/u,
+  );
+  assert.doesNotMatch(
+    workflow,
+    /run-turbo\.mjs ci:headed\b/u,
+    "Native family execution must be fresh rather than a cached result",
+  );
 });
 
 async function commands(args) {
@@ -36,8 +48,24 @@ test("explicit headed mode retains the complete native acceptance runner", async
   assert.equal(calls.length, 1);
   assert.equal(calls[0][0], process.execPath);
   assert.deepEqual(calls[0][1], ["scripts/desktop-acceptance.mjs"]);
-  assert.equal(calls[0][2].MACOSX_DEPLOYMENT_TARGET, "13.0");
+  if (process.platform === "darwin")
+    assert.equal(calls[0][2].MACOSX_DEPLOYMENT_TARGET, "13.0");
   assert.equal(calls[0][2].CARGO_BUILD_JOBS, "2");
+});
+
+test("headed family execution forwards only validated native selectors", async () => {
+  const flags = [
+    "--operation",
+    "execute",
+    "--family",
+    "services",
+    "--reuse-artifact",
+    "artifact",
+  ];
+  const calls = await commands(["--headed", ...flags]);
+  assert.deepEqual(calls[0][1], ["scripts/desktop-acceptance.mjs", ...flags]);
+  await assert.rejects(commands(["--headless", ...flags]));
+  await assert.rejects(commands(["--headed", "--family", "unknown"]));
 });
 
 test("invalid or conflicting desktop flags fail before any child starts", async () => {

@@ -80,14 +80,19 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
   }
 });
 
-test("hosted native acceptance prepares real artifacts and passes their inventory to every consumer", () => {
-  const ci = readFileSync(".github/workflows/ci.yml", "utf8");
-  const setup = ci.indexOf("node --import tsx scripts/ci-native-fixtures.mjs");
-  const run = ci.indexOf("run: node scripts/run-turbo.mjs ci:headed");
-  assert.ok(setup > 0 && setup < run);
+test("hosted native acceptance prepares verified artifacts before independent consumers", () => {
+  const ci = readFileSync(".github/workflows/ci.yml", "utf8").replace(
+    /\s+/g,
+    " ",
+  );
+  assert.match(ci, /ci-native-fixtures.mjs/);
+  assert.match(ci, /ci-acceptance-artifact.mjs export/);
+  assert.match(ci, /headed --operation prepare/);
+  assert.match(ci, /headed --operation execute --family/);
+  assert.match(ci, /--reuse-artifact/);
   assert.match(
-    ci.slice(setup, run),
-    /LAPIS_DESKTOP_PORTABLE_FIXTURES: .local\/ci-native-plugins\/manifest.json/,
+    readFileSync("scripts/ci-acceptance-artifact.mjs", "utf8"),
+    /verifyFiles/,
   );
   assert.match(
     readFileSync("tests/desktop/distribution-fixtures.mjs", "utf8"),
@@ -161,6 +166,9 @@ test("native Tasks fixtures unpack the packed pin instead of the registry instal
 test("semantic specification search remains an authoring command", () => {
   const pkg = JSON.parse(readFileSync("package.json", "utf8"));
   assert.equal(pkg.scripts["spec:search"], "spec-validator search --semantic");
-  const ci = readFileSync(".github/workflows/ci.yml", "utf8");
+  const ci = readFileSync(".github/workflows/ci.yml", "utf8").replace(
+    /\s+/g,
+    " ",
+  );
   assert.doesNotMatch(ci, /pnpm spec:(?:search|index)/);
 });

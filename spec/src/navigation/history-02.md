@@ -222,3 +222,7 @@
 - [Explorer filename replacement quarantine](../history/E-RELEASE-012.md)
 - [Vault-return replacement input quarantine](../history/E-RELEASE-013.md)
 - [Main queue readiness and Rust backup quarantine](../history/E-RELEASE-014.md)
+
+- [CI reliability, isolated families and scheduled validation](../history/E-CI-045.md)
+
+- [Bounded startup and hidden secondary-window diagnostics](../history/E-CI-046.md)

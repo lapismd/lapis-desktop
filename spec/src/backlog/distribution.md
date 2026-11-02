@@ -27,6 +27,10 @@ deadlines, admission and retry rules. E-CI-013 retains failed attempts and
 separates source from consumer qualification. Every required aggregate must pass
 before merge.
 
+[CI reliability rollout](../current/ci.md) retains the original quarantines.
+ARM64 cause diagnosis, hosted family/nightly execution and cold/warm timing
+comparisons remain required; local diagnostics do not establish those gates.
+
 ## Manual full qualification history
 
 [E-RELEASE-011](../history/E-RELEASE-011.md) records the manual CI blocker on

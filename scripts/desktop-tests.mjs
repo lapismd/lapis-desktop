@@ -1,27 +1,33 @@
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { run } from "./desktop-acceptance.mjs";
+import { parseAcceptanceArgs } from "./native-families.mjs";
+import { nativeBuildEnvironment } from "./native-build-environment.mjs";
 
 /** Quiet checks are distinct from the complete native window/OS gate. */
 export async function runDesktopTests(args, execute = run) {
   const flags = args.filter((argument) => argument !== "--");
+  const headed = flags[0] === "--headed";
   if (
-    flags.length > 1 ||
-    (flags.length === 1 && !["--headless", "--headed"].includes(flags[0]))
+    (!headed &&
+      (flags.length > 1 || (flags.length && flags[0] !== "--headless"))) ||
+    (headed &&
+      flags.slice(1).some((flag) => ["--headed", "--headless"].includes(flag)))
   )
     throw new Error("Choose one desktop mode: --headless or --headed.");
+  const nativeOptions = headed ? flags.slice(1) : [];
+  if (nativeOptions.length) parseAcceptanceArgs(nativeOptions);
   const environment = {
-    ...process.env,
-    MACOSX_DEPLOYMENT_TARGET: "13.0",
+    ...nativeBuildEnvironment(),
     CARGO_BUILD_JOBS: "2",
   };
-  if (flags[0] === "--headed") {
+  if (headed) {
     console.log(
       "Headed desktop acceptance: actual native WebView and OS actions.",
     );
     await execute(
       process.execPath,
-      ["scripts/desktop-acceptance.mjs"],
+      ["scripts/desktop-acceptance.mjs", ...nativeOptions],
       environment,
     );
     return;

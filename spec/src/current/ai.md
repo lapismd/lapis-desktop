@@ -1,4 +1,4 @@
-# Desktop AI and optional compute
+# Desktop AI and optional compute — [diagnostics](native-acceptance.md)
 
 Core chat retains History and exact scope/conversation reuse; restoration never
 submits. E-CORE-022 qualifies fixture/native adoption; E-CORE-025 seals runner

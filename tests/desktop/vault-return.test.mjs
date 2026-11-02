@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
@@ -9,7 +10,7 @@ import { returnToVaults } from "./workspace-navigation.mjs";
 test(
   "the chooser returns to the previous vault after cancellation without retaining its old database",
   {
-    skip: "Hosted ARM64 quarantine E-RELEASE-013: native replacement input intermittently retained the original note body.",
+    ...quarantine("vault-return-input"),
   },
   async (context) => {
     const root = mkdtempSync(

@@ -9,6 +9,10 @@ if (args.length === 0) {
   throw new Error("Usage: run-turbo.mjs <task> [task ...] [Turbo options]");
 }
 
+const freshExecution =
+  process.env.GITHUB_EVENT_NAME === "schedule" ||
+  process.env.LAPIS_CI_PROFILE === "full";
+if (freshExecution && !args.includes("--force")) args.push("--force");
 const concurrency = resolveTurboConcurrency();
 console.log(`Turbo concurrency: ${concurrency}`);
 console.log(

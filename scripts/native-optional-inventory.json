@@ -1,0 +1,239 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "file": "tests/desktop/ai-capture-sources.test.mjs",
+      "scope": "standalone-native",
+      "owner": "ai-capture",
+      "reason": "Standalone native snapshot/capture scenario; not collected by the existing headed, API or live dispatcher."
+    },
+    {
+      "file": "tests/desktop/ai-client-tooling.test.mjs",
+      "scope": "standalone-native",
+      "owner": "ai-client-delivery",
+      "reason": "Standalone client-installation scenario additionally guarded by LAPIS_AI_CLIENT_INSTALL_TEST=1; not a default CI lane."
+    },
+    {
+      "file": "tests/desktop/ai-core-chat.test.mjs",
+      "scope": "standalone-native",
+      "owner": "ai-core-chat",
+      "reason": "Standalone real cold native chat/history scenario; not collected by existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/ai-core-provider-screen.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-core-provider.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-comments.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-compute-lifecycle.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-discussions.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-imports.test.mjs",
+      "scope": "standalone-native",
+      "owner": "ai-local-history",
+      "reason": "Standalone local Codex/Cursor/OpenCode import scenarios with explicit native-AI mode; not collected by existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/ai-local-multi.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-queue.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-recovery.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-streaming.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-local-tools.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-memory.test.mjs",
+      "scope": "standalone-native",
+      "owner": "ai-memory",
+      "reason": "Standalone hidden native Markdown memory persistence/move scenario; not collected by existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/ai-native-queue-provider.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-provider-matrix.test.mjs",
+      "scope": "live-provider",
+      "owner": "ai-provider",
+      "reason": "Explicit-only real agent/provider scenario inventoried by scripts/live-provider-tests.mjs; excluded from default lanes."
+    },
+    {
+      "file": "tests/desktop/ai-setup-api.test.mjs",
+      "scope": "standalone-native",
+      "owner": "ai-setup",
+      "reason": "Standalone hidden native provider/settings/compute setup scenario; not collected by the existing API dispatcher."
+    },
+    {
+      "file": "tests/desktop/ai-turn-owner.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/core-file-service.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/editing-owner.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/popout-workspace.test.mjs",
+      "scope": "standalone-native",
+      "owner": "native-windows",
+      "reason": "Standalone ordinary popout process/editor/resource scenario; distinct from the headed popout-host scenario and absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-admission.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/repository-adoption.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-history",
+      "reason": "Standalone cold repository ancestry adoption scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-backup-identity.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-backup",
+      "reason": "Standalone backup identity/physical relinking scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-backup-leave.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-backup",
+      "reason": "Standalone final-backup failure and guarded-Quit scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-backup-recovery.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/repository-backup-resume.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/repository-backup.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-backup",
+      "reason": "Standalone ordinary external-file/final-save backup scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-history-search.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-history",
+      "reason": "Standalone saved-history Search/restore UI scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-indexed-search.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/repository-live-history.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-history",
+      "reason": "Standalone automatic unpinned JJ Log scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-restore.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-history",
+      "reason": "Standalone stale-preview and file/vault safety-restore scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-service-lifetime.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/repository-storage.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-history",
+      "reason": "Standalone cold root/external history relocation scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-visible.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-history",
+      "reason": "Standalone cold visible dirty-source/pinned history scenario; absent existing dispatchers."
+    },
+    {
+      "file": "tests/desktop/search-onnx.test.mjs",
+      "scope": "onnx",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs --onnx; requires a real model and does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/search-provider.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/tasks-owner.test.mjs",
+      "scope": "api",
+      "owner": "native-api",
+      "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    }
+  ]
+}

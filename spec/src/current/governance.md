@@ -2,7 +2,7 @@
 
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 
-[Shared screens](shared-screen-integration.md) own integration; retained
+[Shared screens](shared-screen-integration.md) own integration;
 [backlog](../backlog.md) retains outstanding acceptance.
 [Local validation](../../../docs/validation.md) defines Docker/native commands,
 isolated archive prerequisites, reports and owned cleanup. E-VALIDATION-001

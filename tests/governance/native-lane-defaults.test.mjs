@@ -208,7 +208,7 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
   assert.match(scripts["ci:governance"], /pnpm spec:first --base /u);
   assert.match(
     scripts["ci:bundle"],
-    /pnpm build && pnpm desktop:bundle --debug && pnpm check:bundle/u,
+    /^pnpm desktop:bundle --debug && pnpm check:bundle$/u,
   );
   for (const task of [
     "ci:quality",
@@ -216,13 +216,17 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
     "ci:storybook-static",
     "ci:storybook-interaction",
     "ci:bundle",
-    "ci:headed",
   ])
     assert.equal(
       ci.match(new RegExp(`run-turbo\\.mjs ${task}\\b`, "g"))?.length,
       1,
       `CI runs ${task} in its own job`,
     );
+  assert.match(
+    ci.replace(/\s+/gu, " "),
+    /macos-native-lanes\.mjs headed --operation execute --family/u,
+  );
+  assert.doesNotMatch(ci, /run-turbo\.mjs ci:headed\b/u);
   assert.match(ci, /node scripts\/ci\/docs\.mjs/);
   assert.doesNotMatch(ci, /jj@0\.45\.1/u);
   assert.match(ci, /install-tools\.mjs --ci/u);

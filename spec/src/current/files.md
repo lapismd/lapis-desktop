@@ -362,3 +362,12 @@ Staged native AI views read portable conversations through the admitted vault
 adapter. Their selected Core service is the only transcript writer. Explicit
 feature/vault close drains accepted work before dependent services retire;
 renderer reload detaches observation while retaining native vault work.
+
+## Quarantined native input diagnostics
+
+The native file/input quarantines preserve their original callbacks, assertions
+and deadlines under explicit stable-ID diagnostic selection. Default commands
+retain their skips. A diagnostic uses fresh isolated state and preserves its
+first failure; passing a later attempt cannot silently re-enable the case or
+qualify missing native input/recovery boundaries. Product file behavior and
+accepted-command retry rules remain unchanged.

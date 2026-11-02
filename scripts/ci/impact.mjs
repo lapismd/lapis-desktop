@@ -1,16 +1,16 @@
 import { posix } from "node:path";
-export const gates = [
-  "governance",
-  "quality",
-  "unit",
-  "storybook-static",
-  "storybook-interaction",
-  "bundle",
-  "headed",
-  "linux",
-  "audit",
-];
-export const unitGroups = ["governance", "renderer", "ai", "rust"];
+import {
+  gates,
+  unitGroups,
+  prerequisitePlatforms,
+  validatePlan,
+} from "./plan-schema.mjs";
+import {
+  nativeFamilies,
+  nativeFamiliesForFile,
+  nativeInventory,
+} from "../native-families.mjs";
+export { gates, unitGroups, validatePlan } from "./plan-schema.mjs";
 export function affectedCrates(files, metadata, root) {
   if (!metadata?.workspace_members?.length) return null;
   const members = metadata.packages.filter((p) =>
@@ -37,11 +37,22 @@ export function affectedCrates(files, metadata, root) {
   } while (size !== selected.size);
   return [...selected].sort();
 }
-export function planChanges(files, { full = false, metadata, root = "" } = {}) {
+export function planChanges(
+  files,
+  {
+    full = false,
+    metadata,
+    root = "",
+    testedRevision = null,
+    narrowProfiles = false,
+  } = {},
+) {
   const selected = new Set(["governance"]),
     units = new Set(),
     quality = new Set(),
-    reasons = [];
+    reasons = [],
+    families = new Set();
+  let catalogProfile = "ordinary";
   let rustPackages = [],
     all = full || !Array.isArray(files) || !files.length;
   const add = (...names) => names.forEach((n) => selected.add(n));
@@ -49,8 +60,11 @@ export function planChanges(files, { full = false, metadata, root = "" } = {}) {
     add("unit");
     names.forEach((n) => units.add(n));
   };
-  const native = () => add("bundle", "headed", "linux");
-  for (const file of files || []) {
+  const native = () => {
+    add("bundle", "headed", "linux");
+    nativeFamilies.forEach((family) => families.add(family));
+  };
+  for (const file of Array.isArray(files) ? files : []) {
     if (
       typeof file !== "string" ||
       file.startsWith("/") ||
@@ -79,11 +93,17 @@ export function planChanges(files, { full = false, metadata, root = "" } = {}) {
       unit("governance", "renderer", "ai");
       quality.add("types");
       native();
+      catalogProfile = "full";
     } else if (
       file.startsWith("catalog/") ||
       file.startsWith(".storybook/") ||
       /^(?:vite|vitest)\.catalog\./.test(file)
     ) {
+      if (!/^catalog\/plugins\/.*\.stories\.ts$/u.test(file)) {
+        all = true;
+        reasons.push(`Shared catalog presentation: ${file}`);
+        continue;
+      }
       add("quality", "storybook-static", "storybook-interaction");
       quality.add("types");
       unit("governance");
@@ -94,16 +114,36 @@ export function planChanges(files, { full = false, metadata, root = "" } = {}) {
         reasons.push("Unresolved native crate ownership");
         continue;
       }
+      if (
+        /^src-tauri\/src\/(?:acceptance\/|host\/(?:windows\/|lifecycle\.rs|state\.rs|database\.rs))/u.test(
+          file,
+        )
+      ) {
+        all = true;
+        reasons.push(`Shared native infrastructure: ${file}`);
+        continue;
+      }
       rustPackages = crates;
       add("quality");
       quality.add("rust");
       unit("rust");
       if (crates.includes("lapis-desktop")) {
+        // Linux executes enabled portable service cases, including ARM64 quarantines.
+        add("linux");
         if (!file.startsWith("src-tauri/tests/")) native();
-        else if (file.includes("/tests/fixtures/")) add("headed");
+        else if (file.includes("/tests/fixtures/")) {
+          add("headed");
+          nativeFamilies.forEach((family) => families.add(family));
+        }
       }
     } else if (file.startsWith("tests/desktop/")) {
+      if (!nativeInventory.files.some((entry) => entry.file === file)) {
+        all = true;
+        reasons.push(`Shared or unmapped native harness: ${file}`);
+        continue;
+      }
       add("headed", "quality");
+      nativeFamiliesForFile(file).forEach((family) => families.add(family));
       unit("governance");
     } else if (file.startsWith("tests/renderer/")) {
       add("quality");
@@ -131,35 +171,51 @@ export function planChanges(files, { full = false, metadata, root = "" } = {}) {
     }
     reasons.push(`Affected consumers: ${file}`);
   }
-  if (all)
-    return {
-      schemaVersion: 1,
+  if (all) {
+    const plan = {
+      schemaVersion: 2,
+      profile: "full",
       full: true,
+      ordinaryProfilesEnabled: narrowProfiles,
+      testedRevision,
       gates: [...gates],
       unit: [...unitGroups],
       quality: ["types", "rust"],
       rustPackages: null,
+      nativeFamilies: [...nativeFamilies],
+      catalogProfile: "full",
+      dependencyPlatforms: prerequisitePlatforms(gates),
       reasons: full ? ["Explicit full qualification", ...reasons] : reasons,
     };
-  return {
-    schemaVersion: 1,
+    return validatePlan(plan);
+  }
+  if (!narrowProfiles) {
+    if (selected.has("headed"))
+      nativeFamilies.forEach((family) => families.add(family));
+    catalogProfile = "full";
+    reasons.push(
+      "Narrow ordinary profiles remain disabled until integrated hosted full/nightly baseline is qualified",
+    );
+  }
+  if (prerequisitePlatforms([...selected]).length) add("prerequisites");
+  return validatePlan({
+    schemaVersion: 2,
+    profile: "ordinary",
     full: false,
+    ordinaryProfilesEnabled: narrowProfiles,
+    testedRevision,
     gates: gates.filter((g) => selected.has(g)),
     unit: unitGroups.filter((g) => units.has(g)),
     quality: ["types", "rust"].filter((g) => quality.has(g)),
     rustPackages,
+    nativeFamilies: nativeFamilies.filter((family) => families.has(family)),
+    catalogProfile,
+    dependencyPlatforms: prerequisitePlatforms([...selected]),
     reasons,
-  };
+  });
 }
 export function validateResults(plan, results) {
-  if (
-    plan?.schemaVersion !== 1 ||
-    !Array.isArray(plan.gates) ||
-    !plan.gates.includes("governance") ||
-    new Set(plan.gates).size !== plan.gates.length ||
-    plan.gates.some((g) => !gates.includes(g))
-  )
-    throw Error("Invalid CI plan");
+  validatePlan(plan);
   for (const gate of gates) {
     const actual = results[gate];
     if (

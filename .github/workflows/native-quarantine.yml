@@ -1,0 +1,86 @@
+name: Native quarantine diagnostics
+on:
+  workflow_dispatch:
+    inputs:
+      cases:
+        description: Comma-separated stable quarantine case IDs (at most five)
+        type: string
+        required: true
+permissions:
+  contents: read
+concurrency:
+  group: native-quarantine-${{ github.ref }}-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+  CARGO_BUILD_JOBS: "2"
+jobs:
+  diagnostic:
+    name: Quarantine diagnostic (not release qualification)
+    runs-on: macos-15
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: pnpm
+      - name: Validate allowlisted cases before preparation
+        env:
+          QUARANTINE_CASES: ${{ inputs.cases }}
+        run:
+          node --input-type=module -e 'import {quarantineArguments} from
+          "./scripts/native-quarantine.mjs"; quarantineArguments(["--cases=" +
+          process.env.QUARANTINE_CASES]);'
+      - name: Install checksum-verified Jujutsu
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Initialize Jujutsu over the actual checked-out revision
+        run: jj git init --colocate .
+      - name: Check out pinned prerequisites
+        run: node scripts/ci-siblings.mjs
+      - uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - name: Select configured macOS deployment minimum
+        run: node scripts/native-build-environment.mjs --github-env
+      - name: Restore compatible e2e dependency builds
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
+        with:
+          workspaces: |-
+            src-tauri -> target
+            ../lapis-ai -> target
+          key:
+            v2-quarantine-e2e-${{ runner.arch }}-${{
+            hashFiles('scripts/ci-sources.json') }}-macos-${{
+            env.MACOSX_DEPLOYMENT_TARGET }}
+          add-job-id-key: true
+          cache-workspace-crates: false
+          cache-on-failure: true
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
+      - name: Build unpublished public packages
+        run: node scripts/ci-prepare-links.mjs
+      - name: Install the verified dependency projection
+        run: node scripts/ci-install.mjs
+      - name: Prepare the pinned native AI runtime
+        run: pnpm ai:prepare -- --reuse
+      - name: Prepare verified native plugin fixtures
+        run: node --import tsx scripts/ci-native-fixtures.mjs
+      - name: Execute selected original bodies with fresh isolated state
+        env:
+          LAPIS_DESKTOP_NATIVE_LANE: "1"
+          LAPIS_DESKTOP_PORTABLE_FIXTURES: .local/ci-native-plugins/manifest.json
+          QUARANTINE_CASES: ${{ inputs.cases }}
+        run: pnpm test:native:macos -- quarantine "--cases=$QUARANTINE_CASES"
+      - name: Summarize fresh diagnostic outcomes
+        if: always()
+        run: node scripts/native-quarantine-summary.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: quarantine-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .local/native-test/
+          if-no-files-found: ignore
+          retention-days: 14

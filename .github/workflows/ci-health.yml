@@ -1,0 +1,37 @@
+name: Nightly validation health
+on:
+  schedule:
+    - cron: "43 */6 * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nightly-validation-health-${{ github.repository }}
+  cancel-in-progress: false
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+jobs:
+  freshness:
+    name: Nightly freshness
+    if:
+      github.repository == 'lapismd/lapis-desktop' && github.ref ==
+      'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+      - name: Check independent scheduled attempt and complete-success freshness
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: node scripts/ci-health.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: nightly-health-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .local/ci-health.json
+          if-no-files-found: error
+          retention-days: 7

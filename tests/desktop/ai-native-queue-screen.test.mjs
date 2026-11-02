@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, writeFileSync } from "node:fs";
@@ -14,7 +15,7 @@ test(
   "native Agent queue controls and ordinary reload retain accepted work with no renderer scheduler or replay",
   {
     timeout: 180000,
-    skip: "Hosted ARM64 quarantine E-CI-036: reload wait timed out after 30000ms.",
+    ...quarantine("queue-screen-reload"),
   },
   async (context) => {
     queueEnvironment(context);

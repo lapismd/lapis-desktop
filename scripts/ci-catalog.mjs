@@ -1,16 +1,21 @@
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { catalogProfile } from "./catalog-profile.mjs";
 
 /** Pass the selected CI shard into the public catalog lane before dispatch. */
 export function ciCatalogArguments(environment = process.env) {
   const shard = environment.LAPIS_DESKTOP_CATALOG_SHARD;
-  if (shard === undefined) return ["test:storybook"];
+  const profile = environment.LAPIS_DESKTOP_CATALOG_PROFILE;
+  if (profile !== undefined) catalogProfile(profile);
+  const args = profile === undefined ? [] : [`--profile=${profile}`];
+  if (shard === undefined)
+    return ["test:storybook", ...(args.length ? ["--", ...args] : [])];
   if (!/^[1-4]$/.test(shard))
     throw new Error(
       "LAPIS_DESKTOP_CATALOG_SHARD must select one of four shards",
     );
-  return ["test:storybook", "--", `--shard=${shard}/4`];
+  return ["test:storybook", "--", `--shard=${shard}/4`, ...args];
 }
 
 async function main() {

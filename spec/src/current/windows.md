@@ -135,3 +135,13 @@ configuration. HTML tab dragging within each window remains WebKit-owned;
 Tauri's native file-drop interception cannot consume its drag updates/drops.
 This is separate from native titlebar movement and does not enable cross-window
 tab transfer, external file imports or new popup admission.
+
+## Secondary-window acceptance diagnostics
+
+The shared foreign-caller fixture remains hidden and unfocused. Its lifetime
+diagnostics retain bounded create/navigation/destroy and driver
+handle/switch/IPC events under the acceptance gate. Enumerating a handle does
+not authorize recreating a vanished window: disappearance and failed switching
+remain failures. The originating race requires real ARM64 evidence; added
+observability alone is not a demonstrated fix or a reason to re-enable a
+quarantine.

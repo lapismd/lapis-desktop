@@ -8,15 +8,9 @@ import {
 } from "node:fs";
 import { resolve, join } from "node:path";
 import { createHash } from "node:crypto";
+import { nativeBuildEnvironment } from "./native-build-environment.mjs";
 const source = resolve("../lapis-ai");
-const configuration = JSON.parse(
-  readFileSync("src-tauri/tauri.conf.json", "utf8"),
-);
-const buildEnvironment = { ...process.env };
-if (process.platform === "darwin") {
-  buildEnvironment.MACOSX_DEPLOYMENT_TARGET =
-    configuration.bundle.macOS.minimumSystemVersion;
-}
+const buildEnvironment = nativeBuildEnvironment();
 const revision = execFileSync(
   "jj",
   ["--no-pager", "log", "-r", "@-", "--no-graph", "-T", "commit_id"],

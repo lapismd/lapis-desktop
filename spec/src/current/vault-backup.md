@@ -341,3 +341,13 @@ Storage relocation explicitly stops and drains the shared History owner before
 change/recovery/rollback, then reselects only stable existing immutable history.
 Reselection cannot start capture or recover a move. If both mutation and
 reselection fail, the original mutation error remains authoritative.
+
+## Initialization diagnostic boundary
+
+Debug-only shared Core initialization diagnostics require explicit
+`LAPIS_APP_BACKUP_DIAGNOSTICS=1`. They emit fixed stages, process/attempt
+identity, elapsed time and safe error category/OS code where available, never
+native error strings or vault paths/data. Public sanitized errors, admission,
+capture order and accepted-work drain remain unchanged. This observability does
+not establish the ARM64 initialization cause or re-enable the Original/Managed
+quarantine; its exact and scoped-group native scenarios remain required.

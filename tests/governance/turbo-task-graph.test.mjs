@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
+import { parse } from "yaml";
 
 import { resolveTurboConcurrency } from "../../scripts/lib/concurrency.mjs";
 import { stepsToRun } from "../../scripts/ci-prepare-links.mjs";
@@ -81,8 +82,12 @@ test("hosted CI builds both Linux release targets and keeps the macOS jobs", () 
     assert.match(ci, new RegExp(target, "u"));
   assert.match(ci, /name: Native bundle\b/u);
   assert.match(ci, /name: Native ARM64 acceptance\b/u);
+  const linuxBuild = parse(ci).jobs.linux.steps.find(
+    (step) => step.name === "Build the Linux release binary",
+  );
+  assert.ok(linuxBuild, "Linux qualification must build its selected target");
   assert.match(
-    ci,
+    linuxBuild.run.replace(/\s+/gu, " "),
     /tauri build --target "\$\{\{ matrix\.target \}\}" --no-bundle/u,
   );
   assert.match(pages, /actions\/checkout@v6/u);

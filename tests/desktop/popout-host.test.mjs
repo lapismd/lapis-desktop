@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { mkdtempSync, readFileSync } from "node:fs";
@@ -7,7 +8,7 @@ import { runPopoutProcess } from "./popout-process.mjs";
 test(
   "related native windows mount the shared popup surface and retire independently",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: native controls were not centered after resize.",
+    ...quarantine("popout-window-retirement"),
   },
   async () => {
     const root = mkdtempSync(

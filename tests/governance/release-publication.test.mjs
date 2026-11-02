@@ -131,6 +131,7 @@ function service({
           name,
           status: "completed",
           conclusion: "success",
+          run_attempt: ci.run_attempt,
         })),
       };
     if (path.includes("ci.yml/runs"))

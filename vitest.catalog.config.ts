@@ -3,6 +3,7 @@ import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { playwright } from "@vitest/browser-playwright";
 import { defineConfig } from "vitest/config";
 import catalog from "./vite.catalog.config";
+import { catalogExclusions } from "./scripts/catalog-profile.mjs";
 
 export default defineConfig({
   ...catalog,
@@ -15,6 +16,7 @@ export default defineConfig({
   ],
   test: {
     name: "desktop-catalog",
+    exclude: catalogExclusions(),
     setupFiles: ["./.storybook/vitest.setup.ts"],
     testTimeout: 60_000,
     fileParallelism: false,

@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -70,7 +71,7 @@ const admit = (session, id) =>
 test(
   "background native admission validates real caller frames, reload scopes, vault closure and cold reset",
   {
-    skip: "Hosted ARM64 quarantine E-RELEASE-008: intermittent second-process renderer readiness acknowledgement.",
+    ...quarantine("ai-admission-cold-reset"),
   },
   async (context) => {
     assert.equal(process.platform, "darwin");
