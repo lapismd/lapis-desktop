@@ -54,6 +54,11 @@ closing one of several admissions preserves the others.
 Backup/window-independent work and hosted acceptance remain separate R1.3 gates
 (E-CORE-003).
 
+Portable native distribution fixtures retain the detached signed envelope next
+to each archive and extracted tree during verified artifact fanout. A clean
+consumer must receive the same envelope used by the original validation path;
+reconstructing or omitting it changes the file-distribution boundary.
+
 R1.3.10 reload revokes native session/resource admission and detaches its shared
 service client while preserving vault-owned capture. Explicit close drains the
 selected owner. Quit preflights vaults retained by earlier reloads before App

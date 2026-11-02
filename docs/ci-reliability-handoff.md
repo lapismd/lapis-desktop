@@ -13,21 +13,20 @@ boundaries, do not weaken failures, keep ordinary bundles free of acceptance
 instrumentation, use owner-repository fixes for shared defects, and require the
 original affected platform before claiming a quarantine is repaired.
 
-| Slice | Planned outcome | Current state |
-| --- | --- | --- |
-| A | Correct Rust cache identities and remove the duplicate renderer build | Implemented; hosted cold/warm comparison remains required |
-| B | Bound readiness and diagnose secondary-window and backup failures | Readiness and safe diagnostics implemented; both ARM64 causes remain unresolved |
-| C | Make quarantine execution explicit, isolated and auditable | Implemented for the original callbacks; no quarantine was re-enabled |
-| D | Produce verified reusable prerequisite and native acceptance artifacts | Implemented with run/attempt/source/toolchain identity and immutable native inputs |
-| E | Split native acceptance into independently reportable families | Implemented as `smoke`, `workspace` and `services`; hosted balancing remains required |
-| F | Add guarded ordinary/full profiles, complete catalog ownership and portable Rust execution | Implemented; narrower ordinary profiles remain disabled |
-| G | Run integrated hosted proof, compare timings and complete the handoff | Local proof is recorded; hosted full/nightly and ARM64 proof remain pending |
+| Slice | Planned outcome                                                                            | Current state                                                                         |
+| ----- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
+| A     | Correct Rust cache identities and remove the duplicate renderer build                      | Implemented; hosted cold/warm comparison remains required                             |
+| B     | Bound readiness and diagnose secondary-window and backup failures                          | Readiness and safe diagnostics implemented; both ARM64 causes remain unresolved       |
+| C     | Make quarantine execution explicit, isolated and auditable                                 | Implemented for the original callbacks; no quarantine was re-enabled                  |
+| D     | Produce verified reusable prerequisite and native acceptance artifacts                     | Implemented with run/attempt/source/toolchain identity and immutable native inputs    |
+| E     | Split native acceptance into independently reportable families                             | Implemented as `smoke`, `workspace` and `services`; hosted balancing remains required |
+| F     | Add guarded ordinary/full profiles, complete catalog ownership and portable Rust execution | Implemented; narrower ordinary profiles remain disabled                               |
+| G     | Run integrated hosted proof, compare timings and complete the handoff                      | Local proof is recorded; hosted full/nightly and ARM64 proof remain pending           |
 
 The secondary jj-store plan contributed scheduling policy only: daily fresh full
-validation, independent freshness monitoring, separate nightly concurrency and
-a conservative rollout before enabling narrower selections. Its unrelated
-Nextest, Git-version and repository-specific architecture was deliberately not
-imported.
+validation, independent freshness monitoring, separate nightly concurrency and a
+conservative rollout before enabling narrower selections. Its unrelated Nextest,
+Git-version and repository-specific architecture was deliberately not imported.
 
 ## Pushed revisions
 
@@ -108,8 +107,8 @@ Complete these steps in order after the environment update:
 8. Keep `LAPIS_CI_NARROW_PROFILES` unset until complete hosted full/nightly
    evidence qualifies the selection. Only then may the repository variable be
    set to `qualified` in a separately reviewed rollout.
-9. Open or link the shared Core diagnostics branch for review if a sibling PR
-   is required. A diagnostics-only revision is not a root-cause repair.
+9. Open or link the shared Core diagnostics branch for review if a sibling PR is
+   required. A diagnostics-only revision is not a root-cause repair.
 
 Quarantines remain unchanged until original enabled scenarios pass on the
 affected platform with normal-family evidence. Release qualification still

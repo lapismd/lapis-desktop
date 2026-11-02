@@ -104,3 +104,14 @@ before importing its runtime-bundle verifier. The packed application AI client
 does not install the source packer's TOML dependency. A frozen tooling install
 handles a clean consumer without rebuilding JavaScript exports; warm reuse
 retains the existing source-owned tooling.
+
+Corrected hosted run `41438438608` and handoff run `41449872787` both retained
+real failures. The latter passed package production, acceptance preparation,
+catalog, bundle and Linux work, then exposed four orchestration defects: hosted
+context leaked into two unit fixtures, WDIO reported exact spec files as file
+URLs, portable fixture fanout omitted detached signed envelopes, and the HTTP
+development-origin case compiled after artifact restore until its original
+300-second test deadline expired. The current repair keeps the assertions and
+deadlines, adds the missing immutable bytes, canonicalizes only path spelling
+and moves that exact e2e compilation into producer preparation. A complete new
+hosted attempt remains required; the earlier attempts stay failed evidence.

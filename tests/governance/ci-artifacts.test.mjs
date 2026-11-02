@@ -234,6 +234,7 @@ test("dependency archives relocate, verify source/identity and reject changed by
 test("acceptance artifacts bind exact source and preserve bundle links/modes with fresh mutable state", () => {
   const temporary = mkdtempSync(join(tmpdir(), "ci-acceptance-artifact-"));
   const oldPath = process.env.PATH;
+  const isolatedEnvironment = {};
   try {
     const root = checkout(temporary);
     const tools = join(temporary, "tools");
@@ -269,9 +270,19 @@ test("acceptance artifacts bind exact source and preserve bundle links/modes wit
       "<!doctype html><p>exact acceptance renderer</p>\n",
     );
     put(root, ".local/native-test/ui/assets/main.js", "export {};\n");
+    put(
+      root,
+      ".local/native-test/http/lapis-desktop",
+      "development acceptance executable TAURI_WEBDRIVER_PORT LAPIS_DESKTOP_ACCEPTANCE_ROOT",
+    );
+    chmodSync(join(root, ".local/native-test/http/lapis-desktop"), 0o755);
     const archive = join(temporary, "wordcount.lapis-plugin"),
       filesDirectory = join(temporary, "plugin-files");
     writeFileSync(archive, "signed public archive");
+    writeFileSync(
+      join(temporary, "release.signed.json"),
+      '{"signed":"portable release"}\n',
+    );
     mkdirSync(filesDirectory);
     writeFileSync(join(filesDirectory, "main.mjs"), "export {};\n");
     put(
@@ -296,12 +307,12 @@ test("acceptance artifacts bind exact source and preserve bundle links/modes wit
       "ordinary app without acceptance instrumentation",
     );
     assert.throws(
-      () => exportAcceptance(artifact, root),
+      () => exportAcceptance(artifact, root, isolatedEnvironment),
       /normal native build/,
     );
     writeFileSync(join(root, binary), acceptedBytes);
-    const manifest = exportAcceptance(artifact, root);
-    const restored = verifyAcceptance(manifest, consumer);
+    const manifest = exportAcceptance(artifact, root, isolatedEnvironment);
+    const restored = verifyAcceptance(manifest, consumer, isolatedEnvironment);
     assert.equal(restored.acceptanceBinary, join(consumer, binary));
     assert.deepEqual(
       inventory(join(root, ".local/native-test/ui")),
@@ -314,8 +325,18 @@ test("acceptance artifacts bind exact source and preserve bundle links/modes wit
     );
     const portable = JSON.parse(readFileSync(restored.portableFixtures));
     assert.ok(portable.entries[0].archive.startsWith(consumer));
+    assert.equal(
+      readFileSync(
+        join(
+          consumer,
+          ".local/ci-native-plugins/resources/wordcount/release.signed.json",
+        ),
+        "utf8",
+      ),
+      '{"signed":"portable release"}\n',
+    );
     assert.throws(
-      () => verifyAcceptance(manifest, consumer),
+      () => verifyAcceptance(manifest, consumer, isolatedEnvironment),
       /destination already exists/,
     );
     const originalTree = execFileSync("git", ["rev-parse", "HEAD^{tree}"], {
@@ -343,9 +364,15 @@ test("acceptance artifacts bind exact source and preserve bundle links/modes wit
       }),
       originalTree,
     );
-    assert.throws(() => verifyAcceptance(manifest, consumer), /build identity/);
+    assert.throws(
+      () => verifyAcceptance(manifest, consumer, isolatedEnvironment),
+      /build identity/,
+    );
     put(consumer, ".node-version", "different\n");
-    assert.throws(() => verifyAcceptance(manifest, consumer), /build identity/);
+    assert.throws(
+      () => verifyAcceptance(manifest, consumer, isolatedEnvironment),
+      /build identity/,
+    );
     assert.equal(buildIdentity(root, "acceptance").sourceCommit.length, 40);
   } finally {
     process.env.PATH = oldPath;

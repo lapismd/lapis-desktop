@@ -108,15 +108,15 @@ authorize rewriting its old evidence.
 | `scripts/`, `tests/governance/`, toolchain, formatting, CI, manifests and lockfiles, `AGENTS.md`, spec-validator configuration | `governance.md`  |
 | Historical source provenance under `spec/evidence/`                                                                            | `migration.md`   |
 
-The native-window workstream maps the native window/chrome modules and popup
-proof acceptance to `windows.md`. M7.1 admits related blank windows only behind
-the debug acceptance feature and explicit fixture opt-in; ordinary permissions
-remain exact. Bundle audits reject native and renderer proof markers. Native
-tests retain isolated profiles and no Node/Deno app PATH.
+Native window/chrome modules and popup proof map to `windows.md`. M7.1 admits
+related blank windows only with the debug acceptance feature and explicit
+fixture opt-in; ordinary permissions remain exact. Bundle audits reject proof
+markers. Native tests retain isolated profiles and no Node/Deno app PATH.
 
 `spec-validator.config.mjs` owns normal audits. Bounded `navigation/*.md`
 SUMMARY fragments preserve chapter order/routes; Spec Validator builds/serves
 ignored `spec/.generated/`. `spec:first` checks full JJ changes and CI PRs.
+`file:` report paths are decoded before fail-closed canonical inventory checks.
 
 The local archive installer validates each checksum, packed package identity,
 version, and source revision before pnpm runs. Its ignored pnpm hook redirects

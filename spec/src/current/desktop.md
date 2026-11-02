@@ -118,10 +118,10 @@ grants.
 Startup reads the public API `path` and `runtime` entrypoints. Runtime identity
 does not need to load optional database or model services.
 
-The native e2e feature uses separate configuration and a test profile. Its
-artifact is never the ordinary application bundle. Browser and Rust tests are
-supporting evidence; neither can replace the actual WebView gate. Builds reject
-catalog imports; shell grouping preserves one main landmark.
+Native e2e uses separate config/profile, never an ordinary bundle. Browser/Rust
+evidence cannot replace WebView. Builds reject catalog imports and retain one
+main landmark. Producers fan out the verified dev-origin HTTP binary; clean
+consumers reuse it outside the test deadline.
 
 Ad-hoc previews follow [distribution](distribution.md). The local bundle gate
 checks identity, architecture and runtime contents without requiring a

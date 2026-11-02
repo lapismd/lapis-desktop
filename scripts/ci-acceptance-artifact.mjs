@@ -13,6 +13,7 @@ import {
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { acceptanceBinary } from "./native-acceptance-binary.mjs";
+import { httpAcceptancePath } from "./http-acceptance.mjs";
 import {
   buildIdentity,
   digest,
@@ -31,6 +32,7 @@ const immutablePaths = [
   ".local/native-tasks/artifact",
   ".local/native-tasks/provenance.json",
   ".local/native-test/ui",
+  ".local/native-test/http",
 ];
 function portableFixtures(root, payload) {
   const selected =
@@ -45,10 +47,15 @@ function portableFixtures(root, payload) {
     assert.match(entry.pluginId, /^[a-z][a-z0-9-]+$/);
     const base = `.local/ci-native-plugins/resources/${entry.pluginId}`;
     const archive = `${base}/bundle.lapis-plugin`,
-      filesDirectory = `${base}/files`;
+      filesDirectory = `${base}/files`,
+      signedRelease = `${base}/release.signed.json`;
     assert.equal(digest(readFileSync(entry.archive)), entry.sha256);
     mkdirSync(safePath(payload, base), { recursive: true });
     cpSync(entry.archive, safePath(payload, archive));
+    cpSync(
+      join(dirname(entry.archive), "release.signed.json"),
+      safePath(payload, signedRelease),
+    );
     cpSync(entry.filesDirectory, safePath(payload, filesDirectory), {
       recursive: true,
     });
@@ -61,7 +68,11 @@ function portableFixtures(root, payload) {
   );
   return path;
 }
-export function exportAcceptance(directory, root = process.cwd()) {
+export function exportAcceptance(
+  directory,
+  root = process.cwd(),
+  environment = process.env,
+) {
   directory = resolve(directory);
   acceptanceBinary(join(root, acceptanceApp, "Contents/MacOS/lapis-desktop"));
   assert.ok(
@@ -82,7 +93,7 @@ export function exportAcceptance(directory, root = process.cwd()) {
   const portable = portableFixtures(root, payload);
   const manifest = {
     schema: 1,
-    provenance: artifactProvenance(root),
+    provenance: artifactProvenance(root, environment),
     identity: buildIdentity(root, "acceptance"),
     paths: immutablePaths,
     portable,
@@ -93,13 +104,17 @@ export function exportAcceptance(directory, root = process.cwd()) {
   return manifestPath;
 }
 /** Restore only verified immutable inputs. Profiles, vaults and private keys are never transferred. */
-export function verifyAcceptance(selected, root = process.cwd()) {
+export function verifyAcceptance(
+  selected,
+  root = process.cwd(),
+  environment = process.env,
+) {
   const manifestPath = resolve(
     selected.endsWith(".json") ? selected : join(selected, "manifest.json"),
   );
   const manifest = JSON.parse(readFileSync(manifestPath));
   assert.equal(manifest.schema, 1);
-  verifyArtifactProvenance(manifest.provenance, root);
+  verifyArtifactProvenance(manifest.provenance, root, environment);
   verifyIdentity(manifest.identity, buildIdentity(root, "acceptance"));
   assert.deepEqual(
     manifest.paths,
@@ -112,6 +127,7 @@ export function verifyAcceptance(selected, root = process.cwd()) {
   acceptanceBinary(
     join(payload, acceptanceApp, "Contents/MacOS/lapis-desktop"),
   );
+  acceptanceBinary(join(payload, httpAcceptancePath));
   // Copying into an existing application bundle can retain stale files. Require fresh destinations.
   for (const path of [...immutablePaths, ".local/ci-native-plugins"])
     assert.ok(
@@ -137,6 +153,7 @@ export function verifyAcceptance(selected, root = process.cwd()) {
   writeFileSync(portable, JSON.stringify(fixtures, null, 2) + "\n");
   return {
     acceptanceBinary: join(root, acceptanceApp, "Contents/MacOS/lapis-desktop"),
+    httpAcceptanceBinary: join(root, httpAcceptancePath),
     portableFixtures: portable,
     identity: manifest.identity,
     manifestPath,

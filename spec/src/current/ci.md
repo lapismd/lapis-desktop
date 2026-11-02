@@ -70,9 +70,15 @@ no cross-platform node_modules or private signing keys are transferred. Native
 preparation builds one debug e2e acceptance artifact. Independent smoke,
 workspace and services runners verify that artifact, retain serial UI execution
 and own fresh mutable profiles/vaults/ports. Preparation is not test execution.
-The stable Native ARM64 acceptance aggregate requires preparation and every
-selected family's complete nonzero stage reports. HTTP/resource checks retain
-their separate development fixture and execute even after feature-stage failure.
+The artifact includes each portable fixture's detached signed release envelope
+and a separately compiled development-origin e2e binary for the exact HTTP
+renderer case. Consumers verify and execute those bytes without compiling inside
+the test deadline. WDIO report identities canonicalize file URLs before exact
+inventory comparison; successful cases cannot fail solely because the runner
+spelled the same spec as a URL. The stable Native ARM64 acceptance aggregate
+requires preparation and every selected family's complete nonzero stage reports.
+HTTP/resource checks retain their separate development fixture and execute even
+after feature-stage failure.
 
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate

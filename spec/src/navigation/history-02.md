@@ -228,3 +228,5 @@
 - [Bounded startup and hidden secondary-window diagnostics](../history/E-CI-046.md)
 
 - [Native consumer source-tooling prerequisite](../history/E-CI-047.md)
+
+- [Hosted native artifact fanout diagnostics](../history/E-CI-048.md)

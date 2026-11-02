@@ -5,6 +5,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -150,8 +151,9 @@ test("a parent TOML module cannot replace the source-owned frozen tooling graph"
     installedFixtureTooling(parent, "untracked-parent-tooling");
     const source = sourceFixture(parent);
     const require = createRequire(join(source, "scripts/bundle.mjs"));
-    assert.ok(
-      require.resolve("@iarna/toml").startsWith(join(parent, "node_modules")),
+    assert.equal(
+      realpathSync(require.resolve("@iarna/toml")),
+      realpathSync(join(parent, "node_modules/@iarna/toml/index.cjs")),
     );
     let installs = 0;
     const verifier = await loadAiBundleVerifier(source, async (cwd, args) => {

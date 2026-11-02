@@ -77,6 +77,8 @@ export async function prepareAcceptance({ execute = run, reuseArtifact } = {}) {
     const prepared = verifyAcceptance(reuseArtifact);
     process.env.LAPIS_DESKTOP_ACCEPTANCE_BINARY = prepared.acceptanceBinary;
     process.env.LAPIS_DESKTOP_PORTABLE_FIXTURES = prepared.portableFixtures;
+    process.env.LAPIS_DESKTOP_HTTP_ACCEPTANCE_BINARY =
+      prepared.httpAcceptanceBinary;
     return {
       ...prepared,
       artifactId: createHash("sha256")
@@ -91,6 +93,9 @@ export async function prepareAcceptance({ execute = run, reuseArtifact } = {}) {
   prepareDistributionFixtures();
   await execute(process.execPath, ["scripts/prepare-acp-acceptance.mjs"]);
   await buildAcceptanceApp(execute);
+  const { prepareHttpAcceptanceBinary } = await import("./http-acceptance.mjs");
+  process.env.LAPIS_DESKTOP_HTTP_ACCEPTANCE_BINARY =
+    await prepareHttpAcceptanceBinary(execute);
   const { buildIdentity } = await import("./ci-artifact-identity.mjs");
   const identity = buildIdentity(process.cwd(), "acceptance");
   return {

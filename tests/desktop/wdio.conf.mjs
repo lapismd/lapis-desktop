@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
 import { nativeInventory } from "../../scripts/native-families.mjs";
+import { nativeWdioSpecPath } from "../../scripts/native-wdio-reports.mjs";
 
 const specFiles = nativeInventory.files
   .filter((entry) => entry.mode === "wdio")
@@ -60,7 +61,7 @@ export const config = {
     });
   },
   after(result, _capabilities, specs) {
-    record({ kind: "spec", result, specs: specs.map((file) => resolve(file)) });
+    record({ kind: "spec", result, specs: specs.map(nativeWdioSpecPath) });
   },
   onComplete(exitCode, _configuration, _capabilities, results) {
     if (!countsPath) return;
