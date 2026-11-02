@@ -1,5 +1,9 @@
 # CI reliability rollout
 
+The durable implementation status and continuation checklist are in
+[CI reliability handoff](ci-reliability-handoff.md). That handoff preserves the
+original slice plan, the nightly-only augmentation and the exact pending steps.
+
 The implementation follows the Desktop plan and borrows daily full validation
 and independent freshness monitoring from the secondary scheduling plan. It does
 not move risk-related checks exclusively to nightly or change product deadlines.
