@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -9,6 +10,7 @@ import {
 } from "node:fs";
 import { join } from "node:path";
 import { nativeSession } from "./native-session.mjs";
+import { openSecondaryWindow } from "./secondary-window.mjs";
 import { nativeFailure } from "./conflict-review.mjs";
 
 function root(name) {
@@ -184,7 +186,7 @@ test("cold packaged ACP commands preserve context, ordered frames, exact permiss
 test(
   "renderer reload reconnects retained work without prompting again; actual exit reaps providers",
   {
-    skip: "Hosted ARM64 quarantine E-RELEASE-004: execute/sync timed out after renderer reload.",
+    ...quarantine("acp-reload"),
   },
   async (context) => {
     const path = root("reload");
@@ -330,23 +332,14 @@ test("compiled provider failure reports an unknown outcome and never replays", a
 test(
   "another actual WebView with ACP command grants cannot observe or affect the main worker",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: the second WebView handle was gone.",
+    ...quarantine("acp-foreign-window"),
   },
   async (context) => {
     const path = root("window-scope");
     const session = await nativeSession("acp-window-scope", path);
     context.after(session.cleanup);
     const info = await open(session, "owned");
-    await control(session, "other-window");
-    await session.browser.waitUntil(async () =>
-      (await session.browser.getWindowHandles()).includes("acp-other"),
-    );
-    await session.browser.switchToWindow("acp-other");
-    await session.browser.waitUntil(() =>
-      session.browser.execute(() =>
-        Boolean(globalThis.__TAURI__?.core?.invoke),
-      ),
-    );
+    const closeSecondary = await openSecondaryWindow(session);
     const outcomes = await session.browser.execute(async (id) => {
       const invoke = globalThis.__TAURI__.core.invoke;
       const results = [];
@@ -370,8 +363,7 @@ test(
       return results;
     }, info.sessionId);
     assert.deepEqual(outcomes, Array(5).fill("denied"));
-    await session.browser.closeWindow();
-    await session.browser.switchToWindow("main");
+    await closeSecondary();
     assert.equal(
       (await send(session, "owned", "still-owned", prompt("isolated"))).record
         .status,
@@ -385,7 +377,7 @@ test(
 test(
   "cancelled application close retains ACP until guarded persistence permits actual exit",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: close ended with SIGKILL.",
+    ...quarantine("acp-cancel-close"),
   },
   async (context) => {
     const path = root("cancelled-close");

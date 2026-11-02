@@ -95,3 +95,13 @@ test("background mode refuses stale acceptance artifacts before they could show 
     rmSync(root, { recursive: true, force: true });
   }
 });
+
+test("startup cancellation accepts only an AbortSignal without changing visibility mode", () => {
+  const signal = new AbortController().signal;
+  assert.equal(nativeSessionMode({ signal }, {}).background, false);
+  assert.equal(
+    nativeSessionMode({ background: true, signal }, {}).background,
+    true,
+  );
+  assert.throws(() => nativeSessionMode({ signal: {} }, {}), /background/u);
+});

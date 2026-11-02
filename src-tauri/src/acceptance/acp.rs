@@ -96,6 +96,7 @@ pub async fn acp_acceptance_control(
     }
     // This hidden caller-isolation fixture grants no AI control or activation.
     if operation == "other-window" {
+        super::secondary_window::record("create-requested");
         return tauri::WebviewWindowBuilder::new(
             &app,
             "acp-other",
@@ -104,8 +105,20 @@ pub async fn acp_acceptance_control(
         .title("ACP isolation acceptance")
         .visible(false)
         .focused(false)
+        .on_navigation(|_| {
+            super::secondary_window::record("navigation");
+            true
+        })
+        .on_page_load(|_, payload| {
+            let stage = if payload.event() == tauri::webview::PageLoadEvent::Finished {
+                "page-finished"
+            } else {
+                "page-started"
+            };
+            super::secondary_window::record(stage);
+        })
         .build()
-        .map(|_| ())
+        .map(|window| super::secondary_window::observe(&window))
         .map_err(|_| Error("window_unavailable").to_string());
     }
     if crate::acceptance::background::native_ai_policy() {
