@@ -260,3 +260,5 @@
 - [Await native reader collections and retain failed reload requests](../history/E-CI-062.md)
 
 - [Close secondary windows without stale driver context selection](../history/E-CI-063.md)
+
+- [Bind Terminal prompt readiness to the newly requested session](../history/E-CI-064.md)

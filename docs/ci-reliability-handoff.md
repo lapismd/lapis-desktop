@@ -167,6 +167,18 @@ explicitly restores `main`. A window missing before that native request still
 fails; there is no recreation, activation, retry or deadline extension. Hosted
 macOS ARM64 proof remains pending.
 
+Run `41690467381` at `a63b4b2e` advanced the services family to the enabled
+Terminal disable/vault-return case. It ran 19 feature cases with seven passed,
+one failed and 11 existing quarantines skipped; both resource cases passed. The
+case directly admitted one retained shell, closed the visible Terminal, then
+requested another visible Terminal. Its shared `open` helper accepted the
+already-retained session because it waited only for a nonzero list, so prompt
+observation began before the newly requested UI session was admitted. Failure
+diagnostics then showed both shells live and the visible output blank. Readiness
+now snapshots prior IDs and requires exactly one newly admitted session before
+retaining the unchanged `$` prompt assertion and deadline. Ambiguous multiple
+admission fails closed; no shell request is retried.
+
 Ordinary run `41618609548` also retained two enabled workspace failures. The
 metadata panel race belongs to `@lapis-notes/api`: a same-leaf open completed
 after panel activation without updating the workspace fallback file. lapis-notes
@@ -195,7 +207,7 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 
 ## Verified local state
 
-- 732 governance and renderer Node tests and 746 AI tests passed without
+- 734 governance and renderer Node tests and 746 AI tests passed without
   failures or skips.
 - All four specification lanes passed: validation, Rust formatting, mdBook and
   spec-first checks.

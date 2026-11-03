@@ -268,6 +268,16 @@ explicitly restores `main`. Failure before the close request remains fatal, and
 the fixture does not recreate, show, focus or retry the window. A complete macOS
 ARM64 rerun is still required.
 
+Run `41690467381` exposed a separate services-family acceptance-helper race. The
+enabled Terminal disable/vault-return case retained one directly admitted shell,
+closed the visible Terminal and requested a new visible session. The shared
+helper treated the retained shell as readiness because it waited only for a
+nonzero session list; diagnostics later showed two live shells while the new
+visible output remained blank. The helper now snapshots prior IDs and waits for
+exactly one new session before applying the unchanged prompt assertion and
+deadline. Multiple new admissions fail closed, and no open or prompt request is
+retried.
+
 Complete paired run `41618655199` at the same `a389fb33` head passed all three
 normal native families and the ARM64 backup diagnostic. The original ignored
 case passed 1/1 in isolation and the scoped `repository_original` binary passed

@@ -107,7 +107,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-PLUG-001 | Planned | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-TERM-001 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): public client and native host; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): source intake; consumer pending. |
 | LD-TERM-002 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): session ownership and scoped cleanup; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): source intake; consumer pending. |
-| LD-TERM-003 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): input, resize and cold restore; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): source intake; consumer pending. |
+| LD-TERM-003 | Implemented | [E-TERMINAL-001](history/E-TERMINAL-001.md): lifecycle; [E-CI-011](history/E-CI-011.md), [E-CI-013](history/E-CI-013.md): intake; [E-CI-064](history/E-CI-064.md): new session; ARM64 pending. |
 | LD-PLUG-002 | Implemented | [E-WEB-001](history/E-WEB-001.md): API rejection/data preservation, 13 cold Web cases, 84 desktop catalog cases and 100 native cases pass. |
 | LD-PLUG-003 | Implemented | [E-PORTABLE-002](history/E-PORTABLE-002.md): Seven portable plugins, native writes/freshness/isolation, real worker/WASM cleanup, 84 catalog and 108 cold native cases pass. |
 | LD-PLUG-004 | Implemented | [E-PORTABLE-002](history/E-PORTABLE-002.md): Seven portable plugins, native writes/freshness/isolation, real worker/WASM cleanup, 84 catalog and 108 cold native cases pass. |
