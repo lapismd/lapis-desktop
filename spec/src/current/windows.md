@@ -30,6 +30,11 @@ popup resize left the native controls off center (E-CI-042).
 
 Portable Linux compilation keeps macOS-only chrome callbacks behind their
 existing OS guards. It does not qualify native-control alignment or dragging.
+Hidden secondary-window acceptance issues one renderer-owned native close and
+boundedly proves that `main` remains while the secondary handle disappears
+before restoring the main driver context. It does not use WebDriver's automatic
+post-close context selection, recreate a missing window, or qualify this macOS
+ARM64 boundary from another platform (E-CI-063).
 
 ## Hosting proof boundary
 

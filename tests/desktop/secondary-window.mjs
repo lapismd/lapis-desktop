@@ -57,14 +57,28 @@ export async function openSecondaryWindow(session, create) {
     await observeHandles("close-enumerated");
     record("close-requested");
     try {
-      await browser.closeWindow();
+      await browser.execute((operation) => {
+        if (operation !== "close-current-window")
+          throw new Error("Unexpected secondary-window close operation");
+        setTimeout(() => {
+          void globalThis.__TAURI__.window.getCurrentWindow().close();
+        }, 0);
+        return true;
+      }, "close-current-window");
+      let postCloseObservations = 0;
+      await browser.waitUntil(async () => {
+        const handles = await browser.getWindowHandles();
+        const closed = handles.includes("main") && !handles.includes(label);
+        if (postCloseObservations++ < 8 || closed)
+          record("post-close-enumerated", { handles });
+        return closed;
+      });
     } catch (error) {
       await observeHandles("close-failed-enumerated");
       record("failed", { operation: "close-secondary" });
       throw error;
     }
     record("close-completed");
-    await observeHandles("post-close-enumerated");
     try {
       await browser.switchToWindow("main");
     } catch (error) {

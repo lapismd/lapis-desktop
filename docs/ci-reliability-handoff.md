@@ -15,7 +15,7 @@ original affected platform before claiming a quarantine is repaired.
 | Slice | Planned outcome                                                                            | Current state                                                                         |
 | ----- | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- |
 | A     | Correct Rust cache identities and remove the duplicate renderer build                      | Implemented; hosted cold/warm comparison remains required                             |
-| B     | Bound readiness and diagnose secondary-window and backup failures                          | Readiness and safe diagnostics implemented; both ARM64 causes remain unresolved       |
+| B     | Bound readiness and diagnose secondary-window and backup failures                          | Driver close cause repaired locally; ARM64 rerun and backup cause remain pending      |
 | C     | Make quarantine execution explicit, isolated and auditable                                 | Implemented for the original callbacks; no quarantine was re-enabled                  |
 | D     | Produce verified reusable prerequisite and native acceptance artifacts                     | Implemented with run/attempt/source/toolchain identity and immutable native inputs    |
 | E     | Split native acceptance into independently reportable families                             | Implemented as `smoke`, `workspace` and `services`; hosted balancing remains required |
@@ -152,8 +152,20 @@ source within the existing case bound before selecting and typing. The metadata
 case created, enumerated and entered IPC in the hidden secondary WebView, then
 reported `no such window` around close/return. Read-only handle observations now
 bracket close and main restoration while preserving the original error. The
-window is never recreated, shown or focused; the ARM64 disappearance remains
-unresolved.
+window is never recreated, shown or focused; at that revision, the ARM64
+disappearance remained unresolved.
+
+Run `41682741473` at `72cf5a89` proved the window did not disappear during
+creation, discovery, switch or IPC. Workspace job `126093490555` ran 82 cases:
+73 passed, one failed and eight existing quarantines skipped. The close request
+destroyed `acp-other` and the next enumeration contained only `main`, but
+WebdriverIO's classic/BiDi close hook selected the handle returned by the close
+response and issued a later `POST /window` for the already-destroyed
+`acp-other`. The fixture now requests one native close from the admitted
+renderer, boundedly observes `main` present and `acp-other` absent, then
+explicitly restores `main`. A window missing before that native request still
+fails; there is no recreation, activation, retry or deadline extension. Hosted
+macOS ARM64 proof remains pending.
 
 Ordinary run `41618609548` also retained two enabled workspace failures. The
 metadata panel race belongs to `@lapis-notes/api`: a same-leaf open completed
@@ -183,7 +195,7 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 
 ## Verified local state
 
-- 727 governance and renderer Node tests and 746 AI tests passed without
+- 732 governance and renderer Node tests and 746 AI tests passed without
   failures or skips.
 - All four specification lanes passed: validation, Rust formatting, mdBook and
   spec-first checks.
@@ -223,9 +235,10 @@ Complete these steps in order:
    shutdown-diagnostic intake. Preserve runs `41601703657`, `41609246251`,
    `41618655199`, `41618609548` and `41630554968`; do not use a failed-job-only
    rerun.
-3. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
-   isolation and normal family order. Retain lifecycle/handle diagnostics. A
-   vanished window remains a failure and must not be recreated automatically.
+3. Run the repaired metadata/ACP secondary-window scenarios on macOS ARM64 in
+   isolation and normal family order. Retain lifecycle/handle diagnostics and
+   run `41682741473` as the stale driver-context evidence. A vanished window
+   remains a failure and must not be recreated automatically.
 4. Retain the first ARM64 backup non-reproduction from run `41618655199`; do not
    remove its quarantine until the separately required reviewed qualification
    boundary is met.

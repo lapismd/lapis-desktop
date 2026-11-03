@@ -258,3 +258,5 @@
 - [Exact changed-file row identities](../history/E-CI-061.md)
 
 - [Await native reader collections and retain failed reload requests](../history/E-CI-062.md)
+
+- [Close secondary windows without stale driver context selection](../history/E-CI-063.md)

@@ -2,11 +2,17 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { openSecondaryWindow } from "../desktop/secondary-window.mjs";
 
-function fixture(failSwitch) {
+function fixture(failSwitch, failClose = false) {
   const operations = [];
   let closed = false;
   const browser = {
-    async execute(callback) {
+    async execute(callback, operation) {
+      if (operation === "close-current-window") {
+        operations.push("close");
+        if (failClose) throw new Error("No such window: acp-other");
+        closed = true;
+        return true;
+      }
       operations.push("invoke");
       return true;
     },
@@ -20,10 +26,6 @@ function fixture(failSwitch) {
     async switchToWindow(label) {
       operations.push(`switch:${label}`);
       if (failSwitch === label) throw new Error(`No such window: ${label}`);
-    },
-    async closeWindow() {
-      operations.push("close");
-      closed = true;
     },
   };
   return { session: { id: "isolated:123", browser }, operations };
@@ -59,6 +61,17 @@ test("an enumerated window that disappears fails without recreation or retry", a
   );
   assert.equal(creations, 1);
   assert.deepEqual(operations, ["enumerate", "switch:acp-other"]);
+});
+
+test("a window that disappears before native close fails without recreation or retry", async () => {
+  const { session, operations } = fixture(undefined, true);
+  let creations = 0;
+  const close = await openSecondaryWindow(session, async () => {
+    creations++;
+  });
+  await assert.rejects(close(), /No such window: acp-other/u);
+  assert.equal(creations, 1);
+  assert.deepEqual(operations.slice(-3), ["enumerate", "close", "enumerate"]);
 });
 
 test("a failed main-window restore retains the original error without recreating", async () => {

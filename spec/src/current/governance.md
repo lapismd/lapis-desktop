@@ -14,12 +14,12 @@ editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for exact
 paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
-`jj` and exact artifact args. E-CI-054–061 retain deadlines, assertions and
-no-retry/quarantine/release policy; bounded diagnostics do not retry; empty
-comparisons continue while unavailable/conflicting fail closed. The Notes fix
-stays upstream until released. [Local intake](local-dependencies.md) governs
-pins, refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs
-stream (E-CI-009). The e2e entry shares early progress, then imports runtime
+`jj` and exact artifact args. E-CI-054–063 retain deadlines, assertions and
+no-retry/quarantine/release policy. Diagnostics/native close never retry; empty
+comparisons continue; unavailable/conflicting fail closed. The Notes fix stays
+upstream until released. [Local intake](local-dependencies.md) governs pins,
+refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs stream
+(E-CI-009). The e2e entry shares early progress, then imports runtime
 instrumentation; ordinary bundles reject its startup capture marker. Canonical
 owners include planned [Review](../backlog/markdown-review-contract.md) and
 staged [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`

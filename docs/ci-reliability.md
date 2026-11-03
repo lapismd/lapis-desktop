@@ -258,6 +258,16 @@ observations now bracket close and main restoration and retain the original
 error. They do not recreate, show, focus or retry the vanished window, and are
 not a root-cause repair.
 
+Run `41682741473` isolated that error to WebdriverIO's post-`closeWindow`
+context handling. The real secondary renderer reached IPC, the native close
+completed, and handle enumeration already showed only `main`; the driver hook
+then selected the destroyed `acp-other` handle returned by the close response.
+Acceptance now requests one native close from the secondary renderer, waits
+within the unchanged bound for `main` present and `acp-other` absent, and
+explicitly restores `main`. Failure before the close request remains fatal, and
+the fixture does not recreate, show, focus or retry the window. A complete macOS
+ARM64 rerun is still required.
+
 Complete paired run `41618655199` at the same `a389fb33` head passed all three
 normal native families and the ARM64 backup diagnostic. The original ignored
 case passed 1/1 in isolation and the scoped `repository_original` binary passed
