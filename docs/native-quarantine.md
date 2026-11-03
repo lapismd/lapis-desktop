@@ -50,10 +50,11 @@ gh workflow run ci.yml --ref <candidate-branch> \
 
 That profile runs every normal family and the selected isolated original bodies
 against the same prepared acceptance artifact. The Rust option restores its
-genuine build resources through that artifact's complete verifier, then
-independently runs the exact Original/Managed case and its scoped integration
-binary. Either diagnostic may fail the workflow, but the presence of any
-diagnostic input suppresses `Full source qualification` and uses separate
+genuine build resources through that artifact's complete verifier, installs the
+checksum-verified pinned `jj` executable used by the unchanged Original fixture,
+then independently runs the exact Original/Managed case and its scoped
+integration binary. Either diagnostic may fail the workflow, but the presence of
+any diagnostic input suppresses `Full source qualification` and uses separate
 concurrency.
 
 Every fresh isolated root contains `quarantine-attempt.json` and
@@ -86,4 +87,7 @@ LAPIS_APP_BACKUP_DIAGNOSTICS=1 cargo test --manifest-path src-tauri/Cargo.toml -
 On Linux omit `--ignored`. For the ARM64 group, first verify this binary's
 ignored inventory contains only the intended quarantine, then use
 `--include-ignored` on that binary alone. Never enable unrelated crate-wide
-ignored helpers. Linux non-reproduction does not resolve the ARM64 cause.
+ignored helpers. The fixture requires the repository-pinned `jj` CLI; an
+`ENOENT` while launching it is a harness failure before backup initialization,
+not affected-platform evidence for the backup cause. Linux non-reproduction does
+not resolve the ARM64 cause.

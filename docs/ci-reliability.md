@@ -147,3 +147,12 @@ The Rust diagnostic now depends on the current-attempt native producer and
 restores resources only through the verified acceptance artifact before Cargo
 inventory. This is a harness repair, not ARM64 backup evidence; the complete
 attempt remains failed and must not be rerun by failed job only.
+
+Paired run `41609246251` at `6a7a1b95` proved that verified resource restoration
+worked, then the exact ignored case failed in its Original repository fixture
+before `start_backup()`: spawning the external stock `jj` executable returned
+`ENOENT` at `repository_original/fixture.rs:27`. No Core initialization stage
+ran, so this is not evidence of the reported backup mechanism. The diagnostic
+job now installs the same checksum-verified pinned Jujutsu tool used elsewhere
+in CI before Cargo inventory. The failed run remains retained and requires a new
+complete attempt.

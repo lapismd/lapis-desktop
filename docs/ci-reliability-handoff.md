@@ -63,6 +63,15 @@ executed. The follow-up uses the already-produced, fully verified acceptance
 artifact to restore those resources; it does not bypass build validation or
 change the backup quarantine.
 
+Paired run `41609246251` at `6a7a1b95` passed verified resource restoration but
+the exact ignored case then failed before backup initialization: the unchanged
+Original fixture could not spawn its external stock `jj` executable and reported
+`ENOENT` at `repository_original/fixture.rs:27`. The follow-up installs the
+repository-pinned, checksum-verified Jujutsu tool before inventory. Retain this
+failed attempt as a second harness result; it is not Core root-cause evidence.
+The same run also retained a separate enabled services-family terminal prompt
+failure for owner investigation.
+
 ## Verified local state
 
 - 718 governance and renderer Node tests and 746 AI tests passed without
@@ -94,8 +103,9 @@ environment or substitute a host fallback for a failed Docker validation lane.
 
 Complete these steps in order:
 
-1. Run a new complete paired attempt after the verified-resource harness repair.
-   Preserve run `41601703657` and do not use a failed-job-only rerun.
+1. Run a new complete paired attempt after the verified-resource and pinned-`jj`
+   harness repairs. Preserve runs `41601703657` and `41609246251`; do not use a
+   failed-job-only rerun.
 2. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
    isolation and normal family order. Retain lifecycle/handle diagnostics. A
    vanished window remains a failure and must not be recreated automatically.

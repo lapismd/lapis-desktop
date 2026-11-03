@@ -1265,6 +1265,8 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.10.0
+      - name: Install pinned Jujutsu tooling
+        run: node scripts/validation/install-tools.mjs --ci
       - name: Select configured macOS deployment minimum
         run: node scripts/native-build-environment.mjs --github-env
       - uses: dtolnay/rust-toolchain@1.99.0

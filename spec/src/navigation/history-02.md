@@ -236,3 +236,5 @@
 - [Paired ARM64 diagnostic execution](../history/E-CI-050.md)
 
 - [Verified resources for ARM64 Rust diagnostics](../history/E-CI-051.md)
+
+- [Pinned Jujutsu for the Original ARM64 fixture](../history/E-CI-052.md)
