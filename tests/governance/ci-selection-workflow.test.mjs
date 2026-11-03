@@ -125,6 +125,15 @@ test("paired ARM64 diagnostics reuse the normal artifact and never qualify a rel
   assert.match(nativeSource, /--reuse-artifact/u);
   assert.match(nativeSource, /macos-native-lanes\.mjs quarantine/u);
   assert.doesNotMatch(nativeSource, /operation prepare/u);
+  const nativeExecution = native.steps.find(
+    (step) =>
+      step.name === "Execute selected original bodies in isolated state",
+  ).run;
+  assert.match(
+    nativeExecution,
+    /--reuse-artifact=\.local\/ci-acceptance-artifact\/manifest\.json/u,
+  );
+  assert.doesNotMatch(nativeExecution, /--reuse-artifact\s/u);
   const rustJob = workflow.jobs["rust-backup-diagnostic"];
   assert.ok(rustJob.needs.includes("native-prepare"));
   const rust = JSON.stringify(rustJob);

@@ -243,4 +243,6 @@
 
 - [Pinned Jujutsu for the Original ARM64 fixture](../history/E-CI-052.md)
 
+- [Exact verified-artifact selector for paired diagnostics](../history/E-CI-053.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

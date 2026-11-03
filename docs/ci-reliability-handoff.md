@@ -70,7 +70,11 @@ Original fixture could not spawn its external stock `jj` executable and reported
 repository-pinned, checksum-verified Jujutsu tool before inventory. Retain this
 failed attempt as a second harness result; it is not Core root-cause evidence.
 The same run also retained a separate enabled services-family terminal prompt
-failure for owner investigation.
+failure and an enabled workspace preview-recovery persistence failure for owner
+investigation. Its paired ACP diagnostic never executed because the workflow
+split `--reuse-artifact` from its value; the fail-closed parser correctly
+rejected that invocation. The follow-up passes the selector as one
+`--reuse-artifact=<manifest>` token.
 
 ## Verified local state
 
@@ -103,9 +107,9 @@ environment or substitute a host fallback for a failed Docker validation lane.
 
 Complete these steps in order:
 
-1. Run a new complete paired attempt after the verified-resource and pinned-`jj`
-   harness repairs. Preserve runs `41601703657` and `41609246251`; do not use a
-   failed-job-only rerun.
+1. Run a new complete paired attempt after the verified-resource, pinned-`jj`
+   and artifact-selector harness repairs. Preserve runs `41601703657` and
+   `41609246251`; do not use a failed-job-only rerun.
 2. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
    isolation and normal family order. Retain lifecycle/handle diagnostics. A
    vanished window remains a failure and must not be recreated automatically.
@@ -113,6 +117,8 @@ Complete these steps in order:
    `LAPIS_APP_BACKUP_DIAGNOSTICS=1`. Linux non-reproduction is not ARM64 proof.
 4. Fix only demonstrated failures in their owning repository and rerun the
    complete workflow; a failed-only rerun cannot qualify the candidate.
+   Reproduce the enabled terminal-reopen and preview-recovery failures at their
+   original narrow boundaries before any change.
 5. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.
