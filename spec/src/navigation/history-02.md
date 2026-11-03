@@ -255,4 +255,6 @@
 
 - [Exact conflict selection and writable preview recovery](../history/E-CI-058.md)
 
+- [Bounded hosted History comparison diagnostics](../history/E-CI-059.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

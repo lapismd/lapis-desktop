@@ -11,6 +11,7 @@ import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 import {
   oldestRevisionContaining,
+  revisionComparisonDiagnostic,
   revisionComparisonState,
 } from "./history-revision-selection.mjs";
 process.env.LAPIS_DESKTOP_ACCEPTANCE_NATIVE_AI = "1";
@@ -119,17 +120,87 @@ async function changedPaths(browser, id) {
   const empty = selected.$("p=No changed files in this comparison.");
   const unavailable = selected.$("p=File changes are unavailable.");
   let state = "pending";
-  await browser.waitUntil(
-    async () => {
-      state = revisionComparisonState({
-        files: await changed.isDisplayed(),
-        empty: await empty.isDisplayed(),
-        unavailable: await unavailable.isDisplayed(),
-      });
-      return state !== "pending";
-    },
-    { timeout: 30000 },
-  );
+  try {
+    await browser.waitUntil(
+      async () => {
+        state = revisionComparisonState({
+          files: await changed.isDisplayed(),
+          empty: await empty.isDisplayed(),
+          unavailable: await unavailable.isDisplayed(),
+        });
+        return state !== "pending";
+      },
+      { timeout: 30000 },
+    );
+  } catch (error) {
+    let diagnostic;
+    try {
+      diagnostic = revisionComparisonDiagnostic(
+        await browser.execute(
+          (selector, expected) => {
+            const rows = Array.from(document.querySelectorAll(selector));
+            const commit = (row) =>
+              row
+                ?.querySelector(
+                  ':scope > .repository-graph-row button[data-side="commit"]',
+                )
+                ?.getAttribute("aria-label")
+                ?.match(/Copy Git commit SHA ([0-9a-f]{40})$/u)?.[1];
+            const target = rows.find((row) => commit(row) === expected);
+            const expanded = rows.find(
+              (row) =>
+                row
+                  .querySelector("button.repository-graph-select")
+                  ?.getAttribute("aria-expanded") === "true",
+            );
+            const changed = target?.querySelector(
+              '[aria-label="Changed files"]',
+            );
+            return {
+              expected,
+              selected: commit(expanded),
+              expanded:
+                target
+                  ?.querySelector("button.repository-graph-select")
+                  ?.getAttribute("aria-expanded") === "true",
+              busy: changed?.getAttribute("aria-busy") === "true",
+              files: Boolean(changed),
+              empty: Boolean(
+                Array.from(target?.querySelectorAll("p") ?? []).find(
+                  (node) =>
+                    node.textContent?.trim() ===
+                    "No changed files in this comparison.",
+                ),
+              ),
+              unavailable: Boolean(
+                Array.from(target?.querySelectorAll("p") ?? []).find(
+                  (node) =>
+                    node.textContent?.trim() ===
+                    "File changes are unavailable.",
+                ),
+              ),
+              paths:
+                changed?.textContent
+                  ?.split("\n")
+                  .map((value) => value.trim())
+                  .filter(Boolean) ?? [],
+            };
+          },
+          `${panel} ol[aria-label="Revision graph"] > li`,
+          id,
+        ),
+      );
+    } catch (diagnosticError) {
+      diagnostic = {
+        expected: id,
+        collectionError: String(diagnosticError).slice(0, 400),
+      };
+    }
+    throw new Error(
+      `Revision comparison did not settle: ${JSON.stringify(diagnostic)}`,
+      { cause: error },
+    );
+  }
   if (state === "unavailable")
     throw new Error(`Revision comparison is unavailable for ${id}`);
   if (state === "empty") return [];
@@ -137,10 +208,19 @@ async function changedPaths(browser, id) {
     async () => (await changed.getAttribute("aria-busy")) === "false",
     { timeout: 30000 },
   );
-  return (await changed.getText())
+  const paths = (await changed.getText())
     .split("\n")
     .map((value) => value.trim())
     .filter(Boolean);
+  console.log(
+    JSON.stringify({
+      kind: "history-comparison",
+      revision: id,
+      state,
+      paths: paths.slice(0, 16).map((path) => path.slice(0, 160)),
+    }),
+  );
+  return paths;
 }
 
 async function previewFile(browser, id) {

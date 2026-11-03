@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   oldestRevisionContaining,
+  revisionComparisonDiagnostic,
   revisionComparisonState,
 } from "../desktop/history-revision-selection.mjs";
 
@@ -54,5 +55,28 @@ test("reports every inspected revision when the file is absent", async () => {
       async (revision) => [`${revision}.md`],
     ),
     /No inspected revision changed transcript\.jsonl; older: older\.md; newer: newer\.md/u,
+  );
+});
+
+test("bounds revision comparison diagnostics without hiding selection state", () => {
+  assert.deepEqual(
+    revisionComparisonDiagnostic({
+      expected: "expected-revision",
+      selected: "selected-revision",
+      expanded: false,
+      busy: true,
+      files: false,
+      empty: false,
+      unavailable: false,
+      paths: ["x".repeat(200), ...Array.from({ length: 20 }, (_, i) => `${i}`)],
+    }),
+    {
+      expected: "expected-revision",
+      selected: "selected-revision",
+      expanded: false,
+      busy: true,
+      state: "pending",
+      paths: ["x".repeat(160), ...Array.from({ length: 15 }, (_, i) => `${i}`)],
+    },
   );
 });

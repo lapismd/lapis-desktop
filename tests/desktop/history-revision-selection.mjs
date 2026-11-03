@@ -25,3 +25,23 @@ export function revisionComparisonState({ files, empty, unavailable }) {
     );
   return visible[0] ?? "pending";
 }
+
+export function revisionComparisonDiagnostic({
+  expected,
+  selected,
+  expanded,
+  busy,
+  files,
+  empty,
+  unavailable,
+  paths = [],
+}) {
+  return {
+    expected,
+    selected: selected ?? null,
+    expanded: Boolean(expanded),
+    busy: Boolean(busy),
+    state: revisionComparisonState({ files, empty, unavailable }),
+    paths: paths.slice(0, 16).map((path) => String(path).slice(0, 160)),
+  };
+}
