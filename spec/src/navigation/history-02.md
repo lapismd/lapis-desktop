@@ -251,4 +251,6 @@
 
 - [Workspace recovery and backup shutdown diagnosis](../history/E-CI-056.md)
 
+- [Clean working-copy comparison continuation](../history/E-CI-057.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

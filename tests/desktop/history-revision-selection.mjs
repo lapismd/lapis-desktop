@@ -12,3 +12,16 @@ export async function oldestRevisionContaining(revisions, path, changedPaths) {
     .join("; ");
   throw new Error(`No inspected revision changed ${path}; ${detail}`);
 }
+
+export function revisionComparisonState({ files, empty, unavailable }) {
+  const visible = [
+    files && "files",
+    empty && "empty",
+    unavailable && "unavailable",
+  ].filter(Boolean);
+  if (visible.length > 1)
+    throw new Error(
+      `Conflicting revision comparison states: ${visible.join(", ")}`,
+    );
+  return visible[0] ?? "pending";
+}

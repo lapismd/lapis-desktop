@@ -180,6 +180,18 @@ inventory if none exists. The 30-second waits, 180-second case deadline, guarded
 restore, exact bytes, cold reopen and no-prompt-replay assertions remain
 unchanged. A new complete workflow attempt is required.
 
+Fresh PR run `41640134092` at `bbc7dfbf` advanced that same enabled case past
+revision publication and retained a different acceptance-helper defect. Its
+native artifact and DOM show the selected `8d8868b5` row was the clean JJ
+working copy, its parent comparison completed, and the UI correctly rendered
+`No changed files in this comparison.` The helper waited only for a non-empty
+Changed files region, so it never continued to the older saved revisions. It now
+treats that explicit empty state as an empty path inventory, continues the same
+oldest-to-newest inspection, and fails closed if comparison is unavailable or
+visible states conflict. The original 30-second comparison boundary, 180-second
+case deadline and restore/no-replay assertions remain unchanged. This failed
+attempt remains retained and a complete new workflow attempt is required.
+
 Complete paired run `41618655199` at the same `a389fb33` head passed all three
 normal native families and the ARM64 backup diagnostic. The original ignored
 case passed 1/1 in isolation and the scoped `repository_original` binary passed

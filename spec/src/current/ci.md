@@ -92,9 +92,12 @@ after feature-stage failure.
 Native restore acceptance selects the revision whose changed-path response
 contains the seeded file. A current status head is not evidence that the head's
 own delta contains that file because independent startup writers may create
-later checkpoints. Missing file-bearing history fails with the inspected
-revision/path inventory; original restore, cold-reopen and no-replay assertions
-and deadlines remain unchanged.
+later checkpoints. The graph may also expose a clean working-copy comparison;
+its explicit no-changed-files state contributes an empty path inventory and
+inspection continues to older saved revisions. An unavailable comparison,
+contradictory visible states or missing file-bearing history fails closed.
+Original restore, cold-reopen and no-replay assertions and deadlines remain
+unchanged.
 
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
