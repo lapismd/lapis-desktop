@@ -98,6 +98,10 @@ async function fixture(context, name) {
 
 async function edit(browser, contents) {
   const editor = browser.$(editable);
+  await editor.waitUntil(
+    async () => (await editor.getAttribute("contenteditable")) === "true",
+    { timeout: 15000 },
+  );
   await editor.click();
   await browser.keys([Key.Command, "a"]);
   await browser.keys(Key.NULL);

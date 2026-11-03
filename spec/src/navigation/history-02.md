@@ -248,3 +248,5 @@
 - [Workspace recovery and backup shutdown diagnosis](../history/E-CI-056.md)
 
 - [Clean working-copy comparison continuation](../history/E-CI-057.md)
+
+- [Exact conflict selection and writable preview recovery](../history/E-CI-058.md)

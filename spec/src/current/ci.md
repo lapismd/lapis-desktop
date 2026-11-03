@@ -93,6 +93,13 @@ contradictory visible states or missing file-bearing history fails closed.
 Original restore, cold-reopen and no-replay assertions and deadlines remain
 unchanged.
 
+Native conflict acceptance selects the exact diagnostic resource when identical
+messages exist for multiple paths. After disk recovery closes its review, later
+preview input waits within the unchanged case deadline until the owning editor's
+protection lease makes it writable; hidden protected input is not accepted as a
+save attempt. Conflict contents, close barriers and final disk assertions remain
+unchanged, and unavailable targets fail closed.
+
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
 jobs. The configured macOS minimum is selected before restore/build and

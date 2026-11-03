@@ -103,6 +103,16 @@ comparison as an empty path inventory and continues to older saved revisions;
 unavailable and contradictory comparison states still fail closed. No deadline,
 restore assertion, retry or quarantine changed.
 
+The same run retained two workspace-family synchronization failures. Graph
+recovery had simultaneous conflicts for `.lapis/lapis-graph.json` and
+`.lapis/app.json`; the shared helper clicked the first generic problem and
+opened the wrong path's review. It now selects the exact encoded diagnostic
+resource. Preview recovery closed its review before the protected editor became
+writable, so its immediate WebDriver input produced no later edit. The owning
+Mira contract already requires writable `contenteditable` state after recovery;
+Desktop now observes that state within the unchanged case deadline. All review,
+disk-content and close-barrier assertions remain intact.
+
 That run also retained two enabled workspace failures. The metadata panel race
 belongs to `@lapis-notes/api`: a same-leaf open completed after panel activation
 without updating the workspace fallback file. lapis-notes PR #79 contains the
@@ -130,7 +140,7 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 
 ## Verified local state
 
-- 722 governance and renderer Node tests and 746 AI tests passed without
+- 723 governance and renderer Node tests and 746 AI tests passed without
   failures or skips.
 - All four specification lanes passed: validation, Rust formatting, mdBook and
   spec-first checks.
@@ -177,7 +187,8 @@ Complete these steps in order:
    complete workflow; a failed-only rerun cannot qualify the candidate. Retain
    ordinary run `41618609548` as the transcript and workspace failure evidence,
    run `41630554968` as the demonstrated backup-stop failure and run
-   `41640134092` as the clean-working-copy acceptance failure.
+   `41640134092` as the clean-working-copy and workspace synchronization
+   failures.
 6. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.
