@@ -98,6 +98,12 @@ per-revision fixture paths and records the expected and actually expanded
 revision plus busy/files/empty/unavailable state (E-CI-059). Diagnostics do not
 retry a selection, extend the 30-second wait or substitute another revision.
 
+Workspace acceptance waits for the complete expected seeded editor source before
+replacement input and retains the exact post-input assertion (E-CI-060).
+Secondary-window diagnostics observe handles before close, after close and on
+main restoration failure without recreating, showing, focusing or retrying a
+vanished window. Original case deadlines and errors remain unchanged.
+
 Native conflict acceptance selects the exact diagnostic resource when identical
 messages exist for multiple paths. After disk recovery closes its review, later
 preview input waits within the unchanged case deadline until the owning editor's

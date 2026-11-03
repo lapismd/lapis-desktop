@@ -205,18 +205,31 @@ not retry, extend the deadline, select a substitute revision or change restore
 and no-replay assertions. The failed run remains retained and a new complete
 attempt is required.
 
-That run retained two workspace-family failures in the same complete attempt.
-The Graph recovery case created conflicts for both `.lapis/lapis-graph.json` and
-`.lapis/app.json`; its shared helper clicked the first generic
-`Review your draft` problem and opened the Graph-settings review instead of the
-requested App-settings review. Conflict navigation now selects the exact encoded
-diagnostic resource group before preserving the same review and disk assertions.
-The preview recovery case closed its conflict view before its protected editor
-became writable, so WebDriver input during the recovery lease produced no later
-edit. The existing owning Mira recovery contract already requires
-`contenteditable=true` before post-recovery input; Desktop now observes that
-state within the unchanged case deadline. No assertion, product behavior, retry
-or quarantine changed.
+Run `41640134092` retained two workspace-family failures in its complete
+attempt. The Graph recovery case created conflicts for both
+`.lapis/lapis-graph.json` and `.lapis/app.json`; its shared helper clicked the
+first generic `Review your draft` problem and opened the Graph-settings review
+instead of the requested App-settings review. Conflict navigation now selects
+the exact encoded diagnostic resource group before preserving the same review
+and disk assertions. The preview recovery case closed its conflict view before
+its protected editor became writable, so WebDriver input during the recovery
+lease produced no later edit. The existing owning Mira recovery contract already
+requires `contenteditable=true` before post-recovery input; Desktop now observes
+that state within the unchanged case deadline. No assertion, product behavior,
+retry or quarantine changed.
+
+Run `41650072646` retained two different enabled workspace failures among 82
+cases: 72 passed, two failed and eight existing quarantines skipped. Explorer
+move typed without first establishing that the complete seeded note was visible,
+producing the exact retained assertion `# Retained local draft# Original note`;
+disk bytes remained the external version and no filesystem mutation began. The
+fixture now requires the complete expected editor source within the existing
+case deadline before replacement input. The metadata case proved the hidden
+secondary WebView was created, enumerated, switched and IPC-ready before
+`no such window` was reported around explicit close/return. Bounded handle
+observations now bracket close and main restoration and retain the original
+error. They do not recreate, show, focus or retry the vanished window, and are
+not a root-cause repair.
 
 Complete paired run `41618655199` at the same `a389fb33` head passed all three
 normal native families and the ARM64 backup diagnostic. The original ignored

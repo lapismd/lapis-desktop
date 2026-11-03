@@ -14,6 +14,16 @@ export async function openSecondaryWindow(session, create) {
         ...detail,
       }),
     );
+  const observeHandles = async (phase) => {
+    try {
+      const handles = await browser.getWindowHandles();
+      record(phase, { handles });
+      return handles;
+    } catch {
+      record(phase, { handlesUnavailable: true });
+      return [];
+    }
+  };
   let observations = 0;
   try {
     record("create-requested");
@@ -44,10 +54,26 @@ export async function openSecondaryWindow(session, create) {
     throw error;
   }
   return async () => {
+    await observeHandles("close-enumerated");
     record("close-requested");
-    await browser.closeWindow();
+    try {
+      await browser.closeWindow();
+    } catch (error) {
+      await observeHandles("close-failed-enumerated");
+      record("failed", { operation: "close-secondary" });
+      throw error;
+    }
     record("close-completed");
-    await browser.switchToWindow("main");
-    record("main-restored");
+    await observeHandles("post-close-enumerated");
+    try {
+      await browser.switchToWindow("main");
+    } catch (error) {
+      await observeHandles("restore-failed-enumerated");
+      record("failed", { operation: "restore-main" });
+      throw error;
+    }
+    record("main-restored", {
+      handles: await observeHandles("main-restored-enumerated"),
+    });
   };
 }

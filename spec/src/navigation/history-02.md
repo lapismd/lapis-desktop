@@ -252,3 +252,5 @@
 - [Exact conflict selection and writable preview recovery](../history/E-CI-058.md)
 
 - [Bounded hosted History comparison diagnostics](../history/E-CI-059.md)
+
+- [Exact editor readiness and secondary close diagnostics](../history/E-CI-060.md)

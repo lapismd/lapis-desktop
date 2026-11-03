@@ -112,8 +112,8 @@ and expected-versus-expanded comparison state. This is diagnostic
 instrumentation only: deadlines, selection assertions, restore bytes, cold
 reopen, no-prompt replay and the single-attempt process boundary remain intact.
 
-The same run retained two workspace-family synchronization failures. Graph
-recovery had simultaneous conflicts for `.lapis/lapis-graph.json` and
+Run `41640134092` also retained two workspace-family synchronization failures.
+Graph recovery had simultaneous conflicts for `.lapis/lapis-graph.json` and
 `.lapis/app.json`; the shared helper clicked the first generic problem and
 opened the wrong path's review. It now selects the exact encoded diagnostic
 resource. Preview recovery closed its review before the protected editor became
@@ -122,14 +122,27 @@ Mira contract already requires writable `contenteditable` state after recovery;
 Desktop now observes that state within the unchanged case deadline. All review,
 disk-content and close-barrier assertions remain intact.
 
-That run also retained two enabled workspace failures. The metadata panel race
-belongs to `@lapis-notes/api`: a same-leaf open completed after panel activation
-without updating the workspace fallback file. lapis-notes PR #79 contains the
-source regression and repair; Desktop must wait for its released registry
-version rather than commit a source alias. The preview conflict case raced its
-post-recovery edit with asynchronous review teardown. Desktop now waits for the
-existing conflict review to unmount after the unchanged recovery action before
-continuing; all content assertions and deadlines remain unchanged.
+Run `41650072646` retained two different enabled workspace failures among 82
+cases: 72 passed, two failed and eight existing quarantines skipped. The move
+case sent replacement input without first establishing that the complete seeded
+note was visible; its exact assertion retained both note bodies while physical
+external bytes stayed unchanged. The fixture now waits for the complete expected
+source within the existing case bound before selecting and typing. The metadata
+case created, enumerated and entered IPC in the hidden secondary WebView, then
+reported `no such window` around close/return. Read-only handle observations now
+bracket close and main restoration while preserving the original error. The
+window is never recreated, shown or focused; the ARM64 disappearance remains
+unresolved.
+
+Ordinary run `41618609548` also retained two enabled workspace failures. The
+metadata panel race belongs to `@lapis-notes/api`: a same-leaf open completed
+after panel activation without updating the workspace fallback file. lapis-notes
+PR #79 contains the source regression and repair; Desktop must wait for its
+released registry version rather than commit a source alias. The preview
+conflict case raced its post-recovery edit with asynchronous review teardown.
+Desktop now waits for the existing conflict review to unmount after the
+unchanged recovery action before continuing; all content assertions and
+deadlines remain unchanged.
 
 Fresh PR run `41630554968` at `c0e62124` proved the Linux Original/Managed
 failure occurs after two successful initialization attempts, at the explicit
@@ -149,7 +162,7 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 
 ## Verified local state
 
-- 724 governance and renderer Node tests and 746 AI tests passed without
+- 727 governance and renderer Node tests and 746 AI tests passed without
   failures or skips.
 - All four specification lanes passed: validation, Rust formatting, mdBook and
   spec-first checks.
@@ -163,6 +176,9 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
   reader tests passed in a separate trusted diagnostic container.
 - The default portable image is still blocked by the unpublished Playwright
   network additions. No host result is recorded as portable-runner parity.
+- Local headed workspace execution refused before launch because the canonical
+  lane requires macOS ARM64. This Linux host result does not qualify either
+  original affected-platform failure.
 
 Historical failed attempts and the limits of each result remain in E-CI-045,
 E-CI-046 and E-CI-047. Do not rewrite those receipts.
