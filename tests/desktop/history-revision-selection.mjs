@@ -26,6 +26,15 @@ export function revisionComparisonPaths(attributes) {
   return attributes;
 }
 
+export async function revisionComparisonRowPaths(rows) {
+  if (!rows || typeof rows.map !== "function")
+    throw new Error("Invalid revision file-row collection");
+  const attributes = await rows.map((row) =>
+    row.getAttribute("data-file-path"),
+  );
+  return revisionComparisonPaths(await Promise.all(attributes));
+}
+
 export function revisionComparisonState({ files, empty, unavailable }) {
   const visible = [
     files && "files",

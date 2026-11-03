@@ -41,7 +41,7 @@ transcript proof; E-CI-058 recovery sync.
 | LD-SESSION-001 | Each Notes session MUST construct one explicitly owned App with an injected direct native Turso provider. It MUST use the shared .lapis state default and public plugin/workspace packages. The compatibility lease MUST span plugin loading through complete owned teardown.                                                                                                                                                                                  |
 | LD-SESSION-002 | M3 MUST prove a real seeded vault in the actual WebView: open a note, edit and save it to disk, display a local attachment, close the database and reopen successfully. Browser mocks or an in-memory database MUST NOT qualify that gate.                                                                                                                                                                                                                     |
 | LD-LIFE-001    | Close, Quit, reload and returning to vaults MUST protect registered writers and await pending note and layout persistence before destructive teardown. Persistence failure MUST leave the owned session available and surface the recoverable error through Problems with a transient notification; it MUST NOT mount chrome above WorkspaceShell.                                                                                                             |
-| LD-LIFE-002    | Native close and Quit MUST wait for a correlated renderer acknowledgement. Duplicate requests MUST share one operation. Failure MUST cancel that request and allow retry; a timeout MUST NOT approve exit. Reload MUST use the same save and teardown boundary.                                                                                                                                                                                                |
+| LD-LIFE-002    | Native close and Quit MUST wait for a correlated renderer acknowledgement; duplicate requests MUST share one operation. Failure MUST cancel that request and allow explicit retry; a reload pressed while its failed acknowledgement remains pending MUST run after cancellation. A timeout MUST NOT approve exit; successful reload MUST discard queued duplicates; all reloads use the same save and teardown boundary.                                      |
 | LD-LIFE-003    | The native profile MUST remember the initialized Notes vault separately from folder admissions. Cold startup and reload MUST restore that physical vault and saved layout. Returning to vaults MUST clear the active Notes preference. Failed restoration MUST show the error inside the shared vault chooser body and preserve the recovery route.                                                                                                            |
 | LD-LIFE-004    | External file edits MUST NOT silently overwrite dirty editor content or be overwritten by a later dirty save. Conflicts MUST remain observable and preserve both the current buffer and external file until an explicit resolution.                                                                                                                                                                                                                            |
 | LD-LIFE-005    | Repeated vault switching MUST release the old workspace, plugins, metadata, editing sessions, compatibility lease, database and subscriptions before admitting another Notes owner.                                                                                                                                                                                                                                                                            |
@@ -236,16 +236,15 @@ Recovery uses the shared themed banner. Editable merges retain the writer guard
 
 ## Safe lifecycle and restoration (M4)
 
-The native owner intercepts window close and application Quit. It emits one
-host-issued request to the main renderer and accepts only its matching result.
-Failure cancels the pending request; unresponsive renderers remain open. The
-renderer installs its listener before acknowledging shell readiness. Explicit
-reload and its keyboard shortcut use this same boundary.
+Native Close/Quit emits one host request and accepts only its matching result.
+Failure cancels it; an unresponsive renderer remains open. The listener is ready
+before the shell. Reload shares this boundary. A deliberate retry pressed before
+failed acknowledgement completes runs after cancellation; success drops queued
+duplicates. This is not an automatic retry.
 
-The Notes owner uses the public editing-session guard and API-owned awaitable
-layout writer. It never writes a second copy of workspace layout. Failed saves
-must complete before any controller/plugin/database teardown begins. A completed
-guard is followed by editing-registry disposal before releasing the session.
+Notes uses the public editing guard and API layout writer; there is no second
+layout copy. Failed saves precede teardown. A completed guard disposes the
+editing registry before session release.
 
 M16.7 selects native editing with `LAPIS_DESKTOP_EDITING_OWNER=core`. Only the
 main local window receives typed intents/snapshots for its admitted vault

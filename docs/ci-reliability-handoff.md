@@ -121,6 +121,18 @@ exact public file-row `data-file-path` identities and rejects malformed or
 duplicate rows. It does not alter the controller, retry selection, extend the
 30-second comparison wait or weaken restore/cold-reopen/no-replay assertions.
 
+Exact-head run `41670185180` at `52d8d94b` then reached those public rows but
+failed because WebdriverIO's element-array `map` is itself asynchronous; the
+reader passed that promise to `Promise.all` as though it were iterable. The
+follow-up awaits the collection and then every attribute without changing the
+exact full-path or fail-closed identity rules. Its smoke family independently
+showed a failed-layout notification becoming visible before the native
+`saved: false` acknowledgement completed. An immediate deliberate second Cmd-R
+was therefore coalesced and lost. Desktop now retains one such reload until the
+matching cancellation completes and discards duplicates after successful save.
+The five-second reload assertion, persistence barrier and no-automatic-retry
+policy remain unchanged.
+
 Run `41640134092` also retained two workspace-family synchronization failures.
 Graph recovery had simultaneous conflicts for `.lapis/lapis-graph.json` and
 `.lapis/app.json`; the shared helper clicked the first generic problem and

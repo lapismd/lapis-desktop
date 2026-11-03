@@ -104,6 +104,15 @@ path, and duplicate or malformed row identities fail closed. The oldest-to-
 newest inspection, original comparison deadline and restore/no-replay assertions
 remain unchanged.
 
+WebdriverIO's element-array `map` is asynchronous. Acceptance MUST await that
+collection before applying exact row validation; treating the map promise as a
+`Promise.all` iterable is a harness failure, not product evidence (E-CI-062).
+The same hosted attempt exposed a separate lifecycle race: a deliberate reload
+pressed after its persistence failure became visible but before native failure
+acknowledgement was silently coalesced. Desktop retains that one user request
+until cancellation completes, while successful reload discards queued duplicate
+presses. The original five-second reload assertion and all save barriers remain.
+
 Workspace acceptance waits for the complete expected seeded editor source before
 replacement input and retains the exact post-input assertion (E-CI-060).
 Secondary-window diagnostics observe handles before close, after close and on

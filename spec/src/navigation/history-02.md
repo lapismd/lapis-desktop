@@ -256,3 +256,5 @@
 - [Exact editor readiness and secondary close diagnostics](../history/E-CI-060.md)
 
 - [Exact changed-file row identities](../history/E-CI-061.md)
+
+- [Await native reader collections and retain failed reload requests](../history/E-CI-062.md)
