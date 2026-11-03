@@ -11,8 +11,10 @@ import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 import {
   oldestRevisionContaining,
+  revisionComparisonPaths,
   revisionComparisonDiagnostic,
   revisionComparisonState,
+  revisionFileRowSelector,
 } from "./history-revision-selection.mjs";
 process.env.LAPIS_DESKTOP_ACCEPTANCE_NATIVE_AI = "1";
 const saved = 'button[aria-label="Vault history: Saved locally"]';
@@ -137,7 +139,7 @@ async function changedPaths(browser, id) {
     try {
       diagnostic = revisionComparisonDiagnostic(
         await browser.execute(
-          (selector, expected) => {
+          (selector, expected, fileRowSelector) => {
             const rows = Array.from(document.querySelectorAll(selector));
             const commit = (row) =>
               row
@@ -179,15 +181,15 @@ async function changedPaths(browser, id) {
                     "File changes are unavailable.",
                 ),
               ),
-              paths:
-                changed?.textContent
-                  ?.split("\n")
-                  .map((value) => value.trim())
-                  .filter(Boolean) ?? [],
+              paths: Array.from(
+                target?.querySelectorAll(fileRowSelector) ?? [],
+                (row) => row.getAttribute("data-file-path"),
+              ),
             };
           },
           `${panel} ol[aria-label="Revision graph"] > li`,
           id,
+          revisionFileRowSelector,
         ),
       );
     } catch (diagnosticError) {
@@ -208,10 +210,10 @@ async function changedPaths(browser, id) {
     async () => (await changed.getAttribute("aria-busy")) === "false",
     { timeout: 30000 },
   );
-  const paths = (await changed.getText())
-    .split("\n")
-    .map((value) => value.trim())
-    .filter(Boolean);
+  const rows = await changed.$$(revisionFileRowSelector);
+  const paths = revisionComparisonPaths(
+    await Promise.all(rows.map((row) => row.getAttribute("data-file-path"))),
+  );
   console.log(
     JSON.stringify({
       kind: "history-comparison",
@@ -279,7 +281,8 @@ test(
     mkdirSync(".local/native-test", { recursive: true });
     const root = mkdtempSync(resolve(".local/native-test/transcript-backup-"));
     const vault = join(root, "Transcript Notes"),
-      id = "7297795f-c00b-475e-b430-5b0e2e11a2e3";
+      id = "7297795f-c00b-475e-b430-5b0e2e11a2e3",
+      transcript = `.lapis/agents/sessions/${id}/transcript.jsonl`;
     const directory = join(vault, `.lapis/agents/sessions/${id}`);
     mkdirSync(directory, { recursive: true });
     writeFileSync(join(vault, "Welcome.md"), "# Local transcript backup\n");
@@ -299,7 +302,7 @@ test(
         createdAt: now,
       }) + "\n";
     const initialText = record("Original local transcript", "original-user");
-    const file = join(directory, "transcript.jsonl");
+    const file = join(vault, transcript);
     writeFileSync(file, initialText);
     const retained = join(root, "profile/ai-backends-v1");
     mkdirSync(retained, { recursive: true });
@@ -320,7 +323,7 @@ test(
     await openHistory(first.browser);
     const initial = await oldestRevisionContaining(
       await revisions(first.browser),
-      "transcript.jsonl",
+      transcript,
       (revision) => changedPaths(first.browser, revision),
     );
     await previewFile(first.browser, initial);

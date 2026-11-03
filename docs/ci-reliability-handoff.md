@@ -112,6 +112,15 @@ and expected-versus-expanded comparison state. This is diagnostic
 instrumentation only: deadlines, selection assertions, restore bytes, cold
 reopen, no-prompt replay and the single-attempt process boundary remain intact.
 
+Exact-head run `41661185466` at `9e3247a1` then proved that both saved
+comparisons completed but the helper represented each Changed files tree as one
+flattened WebDriver text string. Exact membership therefore missed
+`transcript.jsonl` and advanced into the working-copy revision, which correctly
+requires an explicit comparison parent and remained pending. The follow-up reads
+exact public file-row `data-file-path` identities and rejects malformed or
+duplicate rows. It does not alter the controller, retry selection, extend the
+30-second comparison wait or weaken restore/cold-reopen/no-replay assertions.
+
 Run `41640134092` also retained two workspace-family synchronization failures.
 Graph recovery had simultaneous conflicts for `.lapis/lapis-graph.json` and
 `.lapis/app.json`; the shared helper clicked the first generic problem and
@@ -213,7 +222,8 @@ Complete these steps in order:
    ordinary run `41618609548` as the transcript and workspace failure evidence,
    run `41630554968` as the demonstrated backup-stop failure and run
    `41640134092` as the clean-working-copy and workspace synchronization
-   failures, and run `41650072646` as the unresolved History-comparison failure.
+   failures, run `41650072646` as the unresolved History-comparison failure and
+   run `41661185466` as the flattened changed-file identity failure.
 6. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.

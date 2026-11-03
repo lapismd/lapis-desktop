@@ -14,7 +14,7 @@ editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for exact
 paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
-`jj` and exact artifact args. E-CI-054–060 retain deadlines, assertions and
+`jj` and exact artifact args. E-CI-054–061 retain deadlines, assertions and
 no-retry/quarantine/release policy; bounded diagnostics do not retry; empty
 comparisons continue while unavailable/conflicting fail closed. The Notes fix
 stays upstream until released. [Local intake](local-dependencies.md) governs

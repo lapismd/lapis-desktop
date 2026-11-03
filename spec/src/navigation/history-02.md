@@ -259,4 +259,6 @@
 
 - [Exact editor readiness and secondary close diagnostics](../history/E-CI-060.md)
 
+- [Exact changed-file row identities](../history/E-CI-061.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

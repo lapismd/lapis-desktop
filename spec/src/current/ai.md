@@ -24,8 +24,8 @@ E-AI-099 adds compute fit; E-AI-121 adds [indexed imports](ai-imports.md).
 E-AI-122: model search; E-AI-123–125: compute library, status and inline choice.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
-E-CI-054/057/059/060 retain bounded comparison/window diagnostics; native-store
-clauses below preserve the Deferred checkpoint experiment.
+E-CI-054/057/059–061 retain bounded comparison/window diagnostics; native-store
+clauses preserve the Deferred experiment.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and
 [authored writes](ai-authored.md): native admission. E-AI-064: recovery dots;
@@ -285,12 +285,12 @@ qualification alone does not mount the bundled AI plugin or admit execution.
 ## Retained History and Catalog panels
 
 History retains local search, folder/selection, archive/restore/delete and
-unavailable diagnostics. Visibility may precede async revision publication;
-within the existing deadline acceptance still requires a parentless root and a
-saved revision. Catalog retains owner grouping, reserved commands, skill
-precedence/filtering, tool opt-ins and source navigation. Both reuse existing
-presentation with owned subscriptions and stale-result fences. Failures retain
-content through owning App reporting; unmount prevents late publication.
+unavailable diagnostics. Although visibility may precede publication, acceptance
+requires a parentless root and saved revision before its deadline. Transcript
+restore uses exact public row paths, not flattened text. Catalog retains owner
+groups, reserved commands, skill precedence, tool opt-ins and source navigation.
+Both reuse owned presentation/subscriptions and stale-result fences. Failures
+retain content through owning App reporting; unmount fences late publication.
 
 Indexed History hits require a current local record and retain local metadata;
 index-only text matches remain visible. Index failure falls back to local

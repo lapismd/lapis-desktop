@@ -205,6 +205,18 @@ not retry, extend the deadline, select a substitute revision or change restore
 and no-replay assertions. The failed run remains retained and a new complete
 attempt is required.
 
+Exact-head PR run `41661185466` at `9e3247a1` retained the same enabled case
+after the bounded diagnostics made the actual selection path visible. Two saved
+revision comparisons completed, but WebDriver returned each Changed files tree
+as one flattened string containing the heading, count, directories and file
+labels. The helper therefore missed the exact `transcript.jsonl` identity and
+continued to the working-copy revision, whose explicit comparison-parent choice
+correctly leaves automatic comparison pending. Acceptance now reads the public
+`data-ui-part="file-row"` rows and their exact `data-file-path` identities;
+duplicate or malformed identities fail closed. No product controller, retry,
+deadline, restore assertion or no-replay boundary changed. The attempt remains
+failed and a complete new workflow is required.
+
 Run `41640134092` retained two workspace-family failures in its complete
 attempt. The Graph recovery case created conflicts for both
 `.lapis/lapis-graph.json` and `.lapis/app.json`; its shared helper clicked the

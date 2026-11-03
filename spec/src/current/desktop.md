@@ -111,25 +111,24 @@ state, rather than a DOM marker alone, confirms that handshake. These commands
 confer no vault or process authority.
 
 Native acceptance launches its separately identified macOS application bundle
-and brings the real WebView forward before interactions. Hidden WebKit pages
-suspend animation frames and cannot qualify menu completion. Focus permission
-belongs only to the e2e capability; ordinary bundles retain their existing
-grants.
+and brings the real WebView forward before interactions. Hidden WebKit cannot
+qualify menu completion. Focus permission belongs only to the e2e capability;
+ordinary bundles retain their existing grants.
 
-Startup reads the public API `path` and `runtime` entrypoints. Runtime identity
-does not need to load optional database or model services.
+Startup reads public API `path`/`runtime` entrypoints without loading optional
+database or model services.
 
 Native e2e uses separate config/profile, never an ordinary bundle. Browser/Rust
 evidence cannot replace WebView. Builds reject catalog imports and retain one
 main landmark. Producers fan out the verified dev-origin HTTP binary; clean
-consumers reuse it outside the test deadline.
+consumers reuse it outside the test deadline. Changed-file acceptance reads
+public row path identities, not rendered tree text.
 
-Ad-hoc previews follow [distribution](distribution.md). The local bundle gate
-checks identity, architecture and runtime contents without requiring a
-signature. WebDriver's embedded pointer actions dispatch DOM MouseEvents and
-cannot establish AppKit titlebar dragging. Physical native input and persisted
-window positions must qualify that boundary separately; synthetic pointer
-results cannot waive it.
+Ad-hoc previews follow [distribution](distribution.md). The local unsigned
+bundle gate checks identity, architecture and runtime contents. WebDriver's
+embedded pointer actions dispatch DOM MouseEvents and cannot establish AppKit
+titlebar dragging. Physical native input and persisted window positions must
+qualify that boundary separately; synthetic pointer results cannot waive it.
 
 Headed e2e readiness unhides the application and shows/focuses its window before
 the handshake; focus alone cannot unhide a background macOS process. This
