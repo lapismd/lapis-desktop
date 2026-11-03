@@ -94,6 +94,15 @@ delta introduced the transcript. The follow-up selects the oldest actual
 transcript-bearing delta and retains every restore, cold-reopen, no-replay
 assertion and original deadline.
 
+Fresh PR run `41640134092` at `bbc7dfbf` advanced the case through revision
+publication and exposed a separate clean-working-copy condition. The retained
+DOM shows selected revision `8d8868b5` expanded against its parent and correctly
+reported `No changed files in this comparison.` The acceptance helper had waited
+only for a non-empty Changed files region. It now records that explicit empty
+comparison as an empty path inventory and continues to older saved revisions;
+unavailable and contradictory comparison states still fail closed. No deadline,
+restore assertion, retry or quarantine changed.
+
 That run also retained two enabled workspace failures. The metadata panel race
 belongs to `@lapis-notes/api`: a same-leaf open completed after panel activation
 without updating the workspace fallback file. lapis-notes PR #79 contains the
@@ -121,7 +130,7 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 
 ## Verified local state
 
-- 718 governance and renderer Node tests and 746 AI tests passed without
+- 722 governance and renderer Node tests and 746 AI tests passed without
   failures or skips.
 - All four specification lanes passed: validation, Rust formatting, mdBook and
   spec-first checks.
@@ -167,7 +176,8 @@ Complete these steps in order:
 5. Fix only demonstrated failures in their owning repository and rerun the
    complete workflow; a failed-only rerun cannot qualify the candidate. Retain
    ordinary run `41618609548` as the transcript and workspace failure evidence,
-   and run `41630554968` as the demonstrated backup-stop failure.
+   run `41630554968` as the demonstrated backup-stop failure and run
+   `41640134092` as the clean-working-copy acceptance failure.
 6. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.

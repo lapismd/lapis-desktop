@@ -9,7 +9,10 @@ import {
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
-import { oldestRevisionContaining } from "./history-revision-selection.mjs";
+import {
+  oldestRevisionContaining,
+  revisionComparisonState,
+} from "./history-revision-selection.mjs";
 process.env.LAPIS_DESKTOP_ACCEPTANCE_NATIVE_AI = "1";
 const saved = 'button[aria-label="Vault history: Saved locally"]';
 const details = 'section[aria-label="Vault history details"]';
@@ -113,7 +116,23 @@ async function changedPaths(browser, id) {
     `${panel} ol[aria-label="Revision graph"] > li:nth-child(${index + 1})`,
   );
   const changed = selected.$('[aria-label="Changed files"]');
-  await changed.waitForDisplayed({ timeout: 30000 });
+  const empty = selected.$("p=No changed files in this comparison.");
+  const unavailable = selected.$("p=File changes are unavailable.");
+  let state = "pending";
+  await browser.waitUntil(
+    async () => {
+      state = revisionComparisonState({
+        files: await changed.isDisplayed(),
+        empty: await empty.isDisplayed(),
+        unavailable: await unavailable.isDisplayed(),
+      });
+      return state !== "pending";
+    },
+    { timeout: 30000 },
+  );
+  if (state === "unavailable")
+    throw new Error(`Revision comparison is unavailable for ${id}`);
+  if (state === "empty") return [];
   await changed.waitUntil(
     async () => (await changed.getAttribute("aria-busy")) === "false",
     { timeout: 30000 },

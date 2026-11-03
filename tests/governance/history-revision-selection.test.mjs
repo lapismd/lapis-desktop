@@ -1,10 +1,13 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { oldestRevisionContaining } from "../desktop/history-revision-selection.mjs";
+import {
+  oldestRevisionContaining,
+  revisionComparisonState,
+} from "../desktop/history-revision-selection.mjs";
 
 test("selects the oldest file-bearing revision past newer startup checkpoints", async () => {
   const paths = new Map([
-    ["working-copy", ["transcript.jsonl"]],
+    ["working-copy", []],
     ["later-transcript", ["transcript.jsonl"]],
     ["startup-skills", ["SKILL.md"]],
     ["initial-transcript", ["transcript.jsonl"]],
@@ -16,6 +19,30 @@ test("selects the oldest file-bearing revision past newer startup checkpoints", 
       async (revision) => paths.get(revision),
     ),
     "initial-transcript",
+  );
+});
+
+test("distinguishes a clean working copy from loaded and unavailable comparisons", () => {
+  assert.equal(
+    revisionComparisonState({ files: false, empty: false, unavailable: false }),
+    "pending",
+  );
+  assert.equal(
+    revisionComparisonState({ files: false, empty: true, unavailable: false }),
+    "empty",
+  );
+  assert.equal(
+    revisionComparisonState({ files: true, empty: false, unavailable: false }),
+    "files",
+  );
+  assert.equal(
+    revisionComparisonState({ files: false, empty: false, unavailable: true }),
+    "unavailable",
+  );
+  assert.throws(
+    () =>
+      revisionComparisonState({ files: true, empty: true, unavailable: false }),
+    /Conflicting revision comparison states: files, empty/u,
   );
 });
 

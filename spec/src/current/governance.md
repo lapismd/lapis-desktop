@@ -12,10 +12,11 @@ E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
 ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
 editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
-endpoints and literal arguments. Archive rewriting is idempotent only for an
-exact path redirected to a verified tarball. ARM64 diagnostics use hosted SHA,
-pinned `jj` and exact artifact args. E-CI-054/056 retain deadlines, assertions
-and no-retry/quarantine/release policy; the Notes fix stays upstream until
+endpoints and literal arguments. Archive rewriting is idempotent only for exact
+paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
+`jj` and exact artifact args. E-CI-054/056/057 retain deadlines, assertions and
+no-retry/quarantine/release policy; empty History comparisons continue while
+unavailable/conflicting fail closed. The Notes fix stays upstream until
 released. [Local intake](local-dependencies.md) governs pins, refreshes and
 cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs stream (E-CI-009). The
 e2e entry shares early progress, then imports runtime instrumentation; ordinary
@@ -393,8 +394,7 @@ crates use explicit revisions from [dependency intake](local-dependencies.md).
 Paired diagnostics require explicit dispatch, fully verify the normal artifact,
 scope Rust ignores and cannot qualify. Renderer tests preload tsx; receipts need
 full ancestry. Semantic `spec:search` uses current/backlog QMD outside CI.
-Native build heaps use half constrained or physical RAM, capped at 6 GiB.
-
-Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
-Native fixtures install the pinned plugins tree before signing when fflate is
-absent (E-CI-032). Packed Tasks pin (E-CI-034). Audits: E-CI-037/041/043.
+Native build heaps use half constrained or physical RAM, capped at 6 GiB. Four
+catalog shards, both viewports and themes, must all succeed (E-CI-014). Native
+fixtures install the pinned plugins tree before signing when fflate is absent
+(E-CI-032). Packed Tasks pin (E-CI-034). Audits: E-CI-037/041/043.
