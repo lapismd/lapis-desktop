@@ -242,3 +242,5 @@
 - [Exact verified-artifact selector for paired diagnostics](../history/E-CI-053.md)
 
 - [Transcript-bearing checkpoint selection](../history/E-CI-054.md)
+
+- [Hosted diagnostic receipt identity](../history/E-CI-055.md)

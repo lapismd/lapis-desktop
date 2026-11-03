@@ -119,10 +119,11 @@ the unchanged Original repository fixture invokes that external stock CLI.
 Missing fixture tooling is a harness failure and is not ARM64 backup evidence.
 The paired native delegate MUST receive verified reuse as the single parser
 token `--reuse-artifact=<manifest>`; split option/value arguments fail before
-the selected original body and provide no quarantine evidence. Diagnostic inputs
-use separate concurrency and suppress the full-source marker even when all
-ordinary gates pass. Each diagnostic remains a fresh, non-retrying,
-non-qualifying result.
+the selected original body and provide no quarantine evidence. Its hosted
+attempt receipt uses the validated checkout `GITHUB_SHA`; local execution keeps
+the Jujutsu working-copy snapshot. Diagnostic inputs use separate concurrency
+and suppress the full-source marker even when all ordinary gates pass. Each
+diagnostic remains a fresh, non-retrying, non-qualifying result.
 
 ## Scheduled validation and rollout
 
