@@ -6,6 +6,12 @@ disk bytes and review-removal assertions (E-CI-012). Visible deleted-file copy
 alone does not establish that the asynchronous refresh guard has released.
 Hosted Explorer rename kept both note bodies and is quarantined (E-CI-042).
 
+Conflict recovery treats resolved-review removal as part of the existing writer
+lifecycle. Acceptance waits for that review to unmount before beginning a later
+edit, so teardown from the resolved review cannot overwrite the new writer
+state. The original action, exact content assertions and case deadline remain
+authoritative.
+
 E-RELEASE-010 quarantines the intermittent deleted-preview merged-file
 recreation case. Its draft remained visible and the deleted file stayed absent
 in the failed receipt. Reviewed-file recreation and later shutdown from that

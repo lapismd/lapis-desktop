@@ -346,15 +346,18 @@ change/recovery/rollback, then reselects only stable existing immutable history.
 Reselection cannot start capture or recover a move. If both mutation and
 reselection fail, the original mutation error remains authoritative.
 
-## Initialization diagnostic boundary
+## Initialization and shutdown diagnostic boundary
 
-Debug-only shared Core initialization diagnostics require explicit
-`LAPIS_APP_BACKUP_DIAGNOSTICS=1`. They emit fixed stages, process/attempt
-identity, elapsed time and safe error category/OS code where available, never
-native error strings or vault paths/data. Public sanitized errors, admission,
-capture order and accepted-work drain remain unchanged. This observability does
-not establish the ARM64 initialization cause or re-enable the Original/Managed
-quarantine; its exact and scoped-group native scenarios remain required.
+Debug-only shared Core backup diagnostics require explicit
+`LAPIS_APP_BACKUP_DIAGNOSTICS=1`. They emit fixed initialization and shutdown
+stages, process/attempt identity, elapsed time and safe error category/OS code
+where available, never native error strings or vault paths/data. Shutdown
+records cover final capture, watcher release and queue completion using only
+fixed busy, binding, IO, JJ, worker or other categories. Public sanitized
+errors, admission, capture order and accepted-work drain remain unchanged. This
+observability does not establish the ARM64 cause or re-enable the
+Original/Managed quarantine; its exact and scoped-group native scenarios remain
+required.
 
 The hosted ARM64 diagnostic refuses implicit execution and any platform other
 than macOS ARM64. It requires the pinned Core revision, verifies that the scoped

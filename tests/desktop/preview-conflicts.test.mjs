@@ -14,6 +14,7 @@ import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
 import {
   acceptConflictSide,
+  conflictReview,
   nativeFailure,
   openConflictReview,
   reviewedText,
@@ -179,6 +180,7 @@ test("accepting the disk version replaces a preview draft and permits later save
   );
   assert.deepEqual(violations, []);
   await recover(browser, "Use disk version");
+  await browser.$(conflictReview("Target.md")).waitForExist({ reverse: true });
   await browser.waitUntil(async () =>
     (await browser.$(editable).getText()).includes(
       "Reviewed preview disk content",

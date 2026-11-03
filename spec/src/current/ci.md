@@ -123,7 +123,9 @@ the selected original body and provide no quarantine evidence. Its hosted
 attempt receipt uses the validated checkout `GITHUB_SHA`; local execution keeps
 the Jujutsu working-copy snapshot. Diagnostic inputs use separate concurrency
 and suppress the full-source marker even when all ordinary gates pass. Each
-diagnostic remains a fresh, non-retrying, non-qualifying result.
+diagnostic remains a fresh, non-retrying, non-qualifying result. Backup records
+MUST retain both initialization and explicit shutdown stages so a successful
+startup cannot be misclassified when final capture fails.
 
 ## Scheduled validation and rollout
 

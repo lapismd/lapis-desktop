@@ -244,3 +244,5 @@
 - [Transcript-bearing checkpoint selection](../history/E-CI-054.md)
 
 - [Hosted diagnostic receipt identity](../history/E-CI-055.md)
+
+- [Workspace recovery and backup shutdown diagnosis](../history/E-CI-056.md)

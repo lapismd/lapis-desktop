@@ -1283,7 +1283,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "117725a109d387c937a1533ce01b450cbde6b88abceea8473c4d7a85853cda3c"
 dependencies = [
  "lazy_static",
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -2660,8 +2660,8 @@ dependencies = [
  "libc",
  "log",
  "rustversion",
- "windows-link 0.1.3",
- "windows-result 0.3.4",
+ "windows-link 0.2.1",
+ "windows-result 0.4.1",
 ]
 
 [[package]]
@@ -5059,7 +5059,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.61.2",
+ "windows-core 0.62.2",
 ]
 
 [[package]]
@@ -6422,7 +6422,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-core"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=3f79b7c6dc883929ad7810a61e5680a07d33ae0e#3f79b7c6dc883929ad7810a61e5680a07d33ae0e"
+source = "git+https://github.com/lapismd/lapis-server?rev=fd92fb521f9ac49a20bb97293c32f50c5e31cbaa#fd92fb521f9ac49a20bb97293c32f50c5e31cbaa"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
@@ -6461,7 +6461,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-protocol"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=3f79b7c6dc883929ad7810a61e5680a07d33ae0e#3f79b7c6dc883929ad7810a61e5680a07d33ae0e"
+source = "git+https://github.com/lapismd/lapis-server?rev=fd92fb521f9ac49a20bb97293c32f50c5e31cbaa#fd92fb521f9ac49a20bb97293c32f50c5e31cbaa"
 dependencies = [
  "indexmap 2.14.2",
  "schemars 1.2.3",
@@ -8310,8 +8310,8 @@ version = "0.14.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "03da047801ff44bb6a4d407d4860c05fd70bb81714e6b2f3812603d5b145b042"
 dependencies = [
- "heck 0.4.1",
- "itertools 0.11.0",
+ "heck 0.5.0",
+ "itertools 0.14.0",
  "log",
  "multimap",
  "petgraph",
@@ -8332,7 +8332,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "b570b25f7617e43d59005d0990ccb79e950a423952cea19671b7a876da390adf"
 dependencies = [
  "anyhow",
- "itertools 0.11.0",
+ "itertools 0.14.0",
  "proc-macro2",
  "quote",
  "syn 2.0.119",
@@ -12256,7 +12256,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]
