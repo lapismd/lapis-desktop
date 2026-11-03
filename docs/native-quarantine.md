@@ -49,10 +49,12 @@ gh workflow run ci.yml --ref <candidate-branch> \
 ```
 
 That profile runs every normal family and the selected isolated original bodies
-against the same prepared acceptance artifact. The Rust option independently
-runs the exact Original/Managed case and its scoped integration binary. Either
-diagnostic may fail the workflow, but the presence of any diagnostic input
-suppresses `Full source qualification` and uses separate concurrency.
+against the same prepared acceptance artifact. The Rust option restores its
+genuine build resources through that artifact's complete verifier, then
+independently runs the exact Original/Managed case and its scoped integration
+binary. Either diagnostic may fail the workflow, but the presence of any
+diagnostic input suppresses `Full source qualification` and uses separate
+concurrency.
 
 Every fresh isolated root contains `quarantine-attempt.json` and
 `quarantine-results.json`. They record actual source identity, selected cases,

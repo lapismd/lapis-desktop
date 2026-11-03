@@ -3,7 +3,11 @@
 E-RELEASE-014 quarantines one macOS ARM64 Rust Original/Managed reader case
 after intermittent backup initialization failed with a sanitized IO error. Its
 full source-independence and managed-history boundary remains unqualified; Linux
-retains the unchanged case. Production backup and all other gates stay.
+retains the unchanged case. Production backup and all other gates stay. The
+macOS ARM64 diagnostic MUST restore the genuine source-owned AI resource bundle
+from the verified current-attempt acceptance artifact before compiling the
+scoped binary. A missing bundle is a harness failure before inventory, not
+evidence about backup initialization.
 
 ## AI turn observations
 

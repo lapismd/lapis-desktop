@@ -390,10 +390,10 @@ acceptance and both Linux release targets at the exact Node patch. Pages:
 UI; acceptance remains cold/hidden/headed/capture. Hosted prerequisites use
 exact commits and prepared public exports; tracked ranges stay portable. Native
 crates use explicit revisions from [dependency intake](local-dependencies.md).
-Paired diagnostics require explicit dispatch, reuse the normal artifact, scope
-Rust ignores and cannot qualify. Renderer tests preload tsx; receipts need full
-ancestry. Semantic `spec:search` uses current/backlog QMD outside CI. Native
-build heaps use half constrained or physical RAM, capped at 6 GiB.
+Paired diagnostics require explicit dispatch, fully verify the normal artifact,
+scope Rust ignores and cannot qualify. Renderer tests preload tsx; receipts need
+full ancestry. Semantic `spec:search` uses current/backlog QMD outside CI.
+Native build heaps use half constrained or physical RAM, capped at 6 GiB.
 
 Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
 Native fixtures install the pinned plugins tree before signing when fflate is
