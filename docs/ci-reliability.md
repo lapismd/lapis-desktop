@@ -217,6 +217,21 @@ duplicate or malformed identities fail closed. No product controller, retry,
 deadline, restore assertion or no-replay boundary changed. The attempt remains
 failed and a complete new workflow is required.
 
+Exact-head PR run `41670185180` at `52d8d94b` proved that the public file-row
+selector was correct but its WebdriverIO element-array `map` returned an
+asynchronous collection. Passing that map promise directly to `Promise.all`
+failed before any History assertion. The reader now awaits the collection and
+then its attributes before preserving the same exact-path validation.
+
+The same run's smoke family exposed an independent Desktop lifecycle race. The
+failed-layout toast was visible before `lifecycle_result(saved: false)` had
+finished cancelling the native request, so the test's deliberate second Cmd-R
+was coalesced into the still-pending request and never emitted. One reload press
+during a failed pending reload is now dispatched after its matching cancellation
+acknowledgement. Successful reload discards queued duplicate presses, native
+errors remain fail-closed, and the original five-second assertion is unchanged.
+This is user-request retention, not an automatic test retry.
+
 Run `41640134092` retained two workspace-family failures in its complete
 attempt. The Graph recovery case created conflicts for both
 `.lapis/lapis-graph.json` and `.lapis/app.json`; its shared helper clicked the

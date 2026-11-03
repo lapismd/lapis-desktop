@@ -4,8 +4,8 @@ Core chat retains History and exact scope/conversation reuse; restoration never
 submits. E-CORE-022 qualifies fixture/native adoption; E-CORE-025 seals runner
 defaults. R2.3 requires real-provider composer acceptance, teardown before
 reload completion and reload/cold-Quit History recovery without replay.
-Test-only holds may forward saved results after disposal; policy/screens stay
-production. E-CORE-045 targets [queue](ai-queue.md) provider proof.
+Test-only holds may forward saved results after disposal; exact History readers
+await async WebDriver collections (E-CI-062). E-CORE-045 targets queue proof.
 
 [Native fixtures](native-acceptance.md) retain platform credential restrictions
 and share an injected call across editing and Tasks ports (E-CI-010).

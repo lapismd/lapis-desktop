@@ -3,6 +3,7 @@ import test from "node:test";
 import {
   oldestRevisionContaining,
   revisionComparisonPaths,
+  revisionComparisonRowPaths,
   revisionComparisonDiagnostic,
   revisionComparisonState,
   revisionFileRowSelector,
@@ -47,6 +48,26 @@ test("reads exact public file-row identities instead of flattened region text", 
       "Changed files4 .lapis agents sessions transcript.jsonl Welcome.md",
     ].includes("transcript.jsonl"),
     false,
+  );
+});
+
+test("awaits WebdriverIO's asynchronous element-array map before validating rows", async () => {
+  const rows = {
+    async map(read) {
+      return Promise.all(
+        ["session/transcript.jsonl", "Welcome.md"].map((path) =>
+          read({ getAttribute: async () => path }),
+        ),
+      );
+    },
+  };
+  assert.deepEqual(await revisionComparisonRowPaths(rows), [
+    "session/transcript.jsonl",
+    "Welcome.md",
+  ]);
+  await assert.rejects(
+    revisionComparisonRowPaths({}),
+    /Invalid revision file-row collection/u,
   );
 });
 

@@ -11,7 +11,7 @@ import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 import {
   oldestRevisionContaining,
-  revisionComparisonPaths,
+  revisionComparisonRowPaths,
   revisionComparisonDiagnostic,
   revisionComparisonState,
   revisionFileRowSelector,
@@ -211,9 +211,7 @@ async function changedPaths(browser, id) {
     { timeout: 30000 },
   );
   const rows = await changed.$$(revisionFileRowSelector);
-  const paths = revisionComparisonPaths(
-    await Promise.all(rows.map((row) => row.getAttribute("data-file-path"))),
-  );
+  const paths = await revisionComparisonRowPaths(rows);
   console.log(
     JSON.stringify({
       kind: "history-comparison",

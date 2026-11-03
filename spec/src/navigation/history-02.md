@@ -261,4 +261,6 @@
 
 - [Exact changed-file row identities](../history/E-CI-061.md)
 
+- [Await native reader collections and retain failed reload requests](../history/E-CI-062.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)
