@@ -124,3 +124,18 @@ rejected the executable-toolchain mismatch. All hosted setup actions now pin the
 repository's exact `.node-version` value; executable identity verification
 remains unchanged. This attempt is failed evidence, and only a new complete
 workflow can qualify the correction.
+
+Complete PR run `41553468043` and explicit full dispatch `41562361935` at exact
+head `c05f6bc` each passed all 25 jobs in one attempt, including four catalog
+shards, three native families, both Linux targets, Validate and Full source
+qualification. These runs establish current hosted orchestration and exact-head
+full qualification; they do not establish a post-merge nightly, diagnose either
+ARM64 root cause or authorize a release. The paired diagnostic profile now
+reuses one acceptance artifact for normal-family and isolated original-case
+evidence and separately runs the scoped Rust backup investigation without
+issuing a qualification marker.
+
+PR #9 merged that qualified head into canonical `main` as `a7bc2735` on
+2026-11-03. The paired diagnostic profile is a separate post-merge slice; its
+own exact-head complete run, affected-platform evidence and later scheduled-main
+evidence remain required.

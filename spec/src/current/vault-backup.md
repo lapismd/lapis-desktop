@@ -351,3 +351,10 @@ native error strings or vault paths/data. Public sanitized errors, admission,
 capture order and accepted-work drain remain unchanged. This observability does
 not establish the ARM64 initialization cause or re-enable the Original/Managed
 quarantine; its exact and scoped-group native scenarios remain required.
+
+The hosted ARM64 diagnostic refuses implicit execution and any platform other
+than macOS ARM64. It requires the pinned Core revision, verifies that the scoped
+`repository_original` binary has only the intended ignored case, runs that exact
+case alone, then runs only that binary with `--include-ignored`. Both stages use
+the safe Core diagnostics, retain one non-qualifying attempt report and never
+retry automatically or enable unrelated ignored helpers.

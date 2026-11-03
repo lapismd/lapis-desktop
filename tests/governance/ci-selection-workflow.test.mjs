@@ -109,3 +109,27 @@ test("native family aggregation fails closed and packages fan out without source
     /outputs.catalog_profile/,
   );
 });
+
+test("paired ARM64 diagnostics reuse the normal artifact and never qualify a release", () => {
+  const inputs = workflow.on.workflow_dispatch.inputs;
+  assert.equal(inputs.native_diagnostic_cases.default, "");
+  assert.equal(inputs.rust_backup_diagnostic.default, false);
+  assert.match(workflow.concurrency.group, /diagnostic/u);
+  assert.match(workflow.jobs.qualification.if, /native_diagnostic_cases/u);
+  assert.match(workflow.jobs.qualification.if, /rust_backup_diagnostic/u);
+  const native = workflow.jobs["native-quarantine-diagnostic"];
+  assert.ok(native.needs.includes("native-prepare"));
+  assert.ok(native.needs.includes("native-families"));
+  const nativeSource = JSON.stringify(native);
+  assert.match(nativeSource, /native-acceptance-artifact/u);
+  assert.match(nativeSource, /--reuse-artifact/u);
+  assert.match(nativeSource, /macos-native-lanes\.mjs quarantine/u);
+  assert.doesNotMatch(nativeSource, /operation prepare/u);
+  const rust = JSON.stringify(workflow.jobs["rust-backup-diagnostic"]);
+  assert.match(rust, /rust-backup-diagnostic\.mjs/u);
+  assert.match(rust, /LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC/u);
+  assert.ok(
+    !workflow.jobs.validate.needs.includes("native-quarantine-diagnostic"),
+  );
+  assert.ok(!workflow.jobs.validate.needs.includes("rust-backup-diagnostic"));
+});
