@@ -192,6 +192,19 @@ visible states conflict. The original 30-second comparison boundary, 180-second
 case deadline and restore/no-replay assertions remain unchanged. This failed
 attempt remains retained and a complete new workflow attempt is required.
 
+Complete PR run `41650072646` at `a21f3e93` passed the prerequisite and portable
+lanes but retained one enabled services-family failure. The transcript-backup
+case timed out at the unchanged 30-second History comparison boundary. Its
+artifact proves the oldest saved commit already contains `transcript.jsonl`,
+while the final DOM shows the clean working-copy comparison expanded after the
+timeout; it does not retain the intermediate comparison inventories needed to
+identify why inspection advanced. The helper now emits a bounded revision/path
+inventory for each completed comparison and, on timeout, records the expected
+and expanded revision plus busy/files/empty/unavailable state. Diagnostics do
+not retry, extend the deadline, select a substitute revision or change restore
+and no-replay assertions. The failed run remains retained and a new complete
+attempt is required.
+
 That run retained two workspace-family failures in the same complete attempt.
 The Graph recovery case created conflicts for both `.lapis/lapis-graph.json` and
 `.lapis/app.json`; its shared helper clicked the first generic

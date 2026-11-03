@@ -24,7 +24,7 @@ E-AI-099 adds compute fit; E-AI-121 adds [indexed imports](ai-imports.md).
 E-AI-122: model search; E-AI-123–125: compute library, status and inline choice.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
-E-CI-054/057 select transcript deltas past clean working-copy comparisons;
+E-CI-054/057/059 select deltas and retain bounded comparison diagnostics;
 native-store clauses below preserve the Deferred checkpoint experiment.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and

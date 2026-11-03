@@ -103,6 +103,15 @@ comparison as an empty path inventory and continues to older saved revisions;
 unavailable and contradictory comparison states still fail closed. No deadline,
 restore assertion, retry or quarantine changed.
 
+Complete PR run `41650072646` at `a21f3e93` retained the enabled transcript case
+at the same History boundary. The retained repository proves its oldest saved
+commit contains `transcript.jsonl`; the final DOM shows the clean working copy
+expanded only after the 30-second wait expired, but the artifact lacks the
+intermediate path inventories. The follow-up records bounded per-revision paths
+and expected-versus-expanded comparison state. This is diagnostic
+instrumentation only: deadlines, selection assertions, restore bytes, cold
+reopen, no-prompt replay and the single-attempt process boundary remain intact.
+
 The same run retained two workspace-family synchronization failures. Graph
 recovery had simultaneous conflicts for `.lapis/lapis-graph.json` and
 `.lapis/app.json`; the shared helper clicked the first generic problem and
@@ -140,7 +149,7 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 
 ## Verified local state
 
-- 723 governance and renderer Node tests and 746 AI tests passed without
+- 724 governance and renderer Node tests and 746 AI tests passed without
   failures or skips.
 - All four specification lanes passed: validation, Rust formatting, mdBook and
   spec-first checks.
@@ -188,7 +197,7 @@ Complete these steps in order:
    ordinary run `41618609548` as the transcript and workspace failure evidence,
    run `41630554968` as the demonstrated backup-stop failure and run
    `41640134092` as the clean-working-copy and workspace synchronization
-   failures.
+   failures, and run `41650072646` as the unresolved History-comparison failure.
 6. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.

@@ -14,8 +14,8 @@ before later edits. Terminal 0.1.2 uses qualified Git sources
 ([intake](local-dependencies.md), E-CI-011/013). Scoped shutdown settles stale
 denied cleanup only on close. Tasks use packed pin (E-CI-034); Graph uses hover
 (E-CI-012). ARM64 skips: E-CI-036/042/044,
-E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs families and
-E-CI-054/057 transcript proof; E-CI-058 recovery sync.
+E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059
+transcript proof; E-CI-058 recovery sync.
 
 ## Requirements
 

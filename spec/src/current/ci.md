@@ -93,6 +93,11 @@ contradictory visible states or missing file-bearing history fails closed.
 Original restore, cold-reopen and no-replay assertions and deadlines remain
 unchanged.
 
+When that comparison boundary fails, headed acceptance retains bounded
+per-revision fixture paths and records the expected and actually expanded
+revision plus busy/files/empty/unavailable state (E-CI-059). Diagnostics do not
+retry a selection, extend the 30-second wait or substitute another revision.
+
 Native conflict acceptance selects the exact diagnostic resource when identical
 messages exist for multiple paths. After disk recovery closes its review, later
 preview input waits within the unchanged case deadline until the owning editor's
