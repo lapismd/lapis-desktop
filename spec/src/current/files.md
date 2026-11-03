@@ -308,7 +308,9 @@ Internal-mutation acceptance uses the existing Explorer rename and drop actions.
 It verifies collision preservation, admitted dirty-writer flush/recovery, active
 editor retargeting and restored layout against physical files. Browser drop
 delivery exercises the actual component callback; it does not establish a
-physical operating-system drag gesture.
+physical operating-system drag gesture. Replacement input waits within the
+original case bound for the complete seeded editor source, then retains the
+exact resulting-content assertion (E-CI-060).
 
 Attachment import connects the existing Explorer external-file drop action to
 the shared FileManager new-file boundary. Complete binary bytes use exclusive

@@ -16,6 +16,7 @@ import {
   openConflictReview,
   reviewedText,
 } from "./conflict-review.mjs";
+import { waitForEditorContents } from "./editor-readiness.mjs";
 
 async function fixture(context, name) {
   const root = mkdtempSync(
@@ -37,6 +38,7 @@ async function fixture(context, name) {
   await browser.$('[data-path="Note.md"]').click();
   const editor = browser.$('.cm-content[contenteditable="true"]');
   await editor.waitForDisplayed();
+  await waitForEditorContents(browser, editor, "# Original note\n");
   return { root, vault, session, browser, editor };
 }
 async function edit(browser, editor, text) {

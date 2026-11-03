@@ -100,7 +100,9 @@ foreign-window fixture remains available in background mode; AI
 enable/disable/revoke controls remain denied there. Actual Metadata/Search/Graph
 view families also run with explicit native metadata selection; hidden reads
 cannot replace their visible workspace gate. Native Search selection stays
-unavailable in this metadata-only intake.
+unavailable in this metadata-only intake. Bounded driver observations retain
+handles immediately before and after secondary close and when main restoration
+fails (E-CI-060). They never recreate, show, focus or retry a vanished window.
 
 Native fixture tools MUST resolve from the selected runner installation before
 hardening the application PATH. Repository fixtures retain that absolute JJ

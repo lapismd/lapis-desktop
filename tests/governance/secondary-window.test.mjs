@@ -2,8 +2,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { openSecondaryWindow } from "../desktop/secondary-window.mjs";
 
-function fixture(failSwitch = false) {
+function fixture(failSwitch) {
   const operations = [];
+  let closed = false;
   const browser = {
     async execute(callback) {
       operations.push("invoke");
@@ -14,14 +15,15 @@ function fixture(failSwitch = false) {
     },
     async getWindowHandles() {
       operations.push("enumerate");
-      return ["main", "acp-other"];
+      return closed ? ["main"] : ["main", "acp-other"];
     },
     async switchToWindow(label) {
       operations.push(`switch:${label}`);
-      if (failSwitch) throw new Error("No such window: acp-other");
+      if (failSwitch === label) throw new Error(`No such window: ${label}`);
     },
     async closeWindow() {
       operations.push("close");
+      closed = true;
     },
   };
   return { session: { id: "isolated:123", browser }, operations };
@@ -37,11 +39,17 @@ test("caller-isolation fixture owns create, IPC readiness and explicit close wit
     "invoke",
   ]);
   await close();
-  assert.deepEqual(operations.slice(-2), ["close", "switch:main"]);
+  assert.deepEqual(operations.slice(-5), [
+    "enumerate",
+    "close",
+    "enumerate",
+    "switch:main",
+    "enumerate",
+  ]);
 });
 
 test("an enumerated window that disappears fails without recreation or retry", async () => {
-  const { session, operations } = fixture(true);
+  const { session, operations } = fixture("acp-other");
   let creations = 0;
   await assert.rejects(
     openSecondaryWindow(session, async () => {
@@ -51,4 +59,21 @@ test("an enumerated window that disappears fails without recreation or retry", a
   );
   assert.equal(creations, 1);
   assert.deepEqual(operations, ["enumerate", "switch:acp-other"]);
+});
+
+test("a failed main-window restore retains the original error without recreating", async () => {
+  const { session, operations } = fixture("main");
+  let creations = 0;
+  const close = await openSecondaryWindow(session, async () => {
+    creations++;
+  });
+  await assert.rejects(close(), /No such window: main/u);
+  assert.equal(creations, 1);
+  assert.deepEqual(operations.slice(-5), [
+    "enumerate",
+    "close",
+    "enumerate",
+    "switch:main",
+    "enumerate",
+  ]);
 });

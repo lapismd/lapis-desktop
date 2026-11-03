@@ -144,7 +144,8 @@ handle/switch/IPC events under the acceptance gate. Enumerating a handle does
 not authorize recreating a vanished window: disappearance and failed switching
 remain failures. The originating race requires real ARM64 evidence; added
 observability alone is not a demonstrated fix or a reason to re-enable a
-quarantine.
+quarantine. E-CI-060 brackets explicit close and main restoration with read-only
+handle observations while retaining the original driver error and one attempt.
 
 Paired diagnostic dispatch reuses the exact acceptance artifact already executed
 by the normal `smoke`, `workspace` and `services` families. Selected original
