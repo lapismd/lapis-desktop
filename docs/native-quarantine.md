@@ -37,6 +37,23 @@ separate workflow; they do not weaken ordinary native jobs or required
 aggregates. Dispatch and full qualification have distinct concurrency groups.
 Diagnostics never issue a full source qualification marker or publish a release.
 
+Before this new workflow is registered on canonical main, or whenever same-byte
+normal-family comparison is required, dispatch the registered CI workflow with
+its paired diagnostic inputs:
+
+```sh
+gh workflow run ci.yml --ref <candidate-branch> \
+  -f full=true \
+  -f native_diagnostic_cases=acp-foreign-window \
+  -f rust_backup_diagnostic=true
+```
+
+That profile runs every normal family and the selected isolated original bodies
+against the same prepared acceptance artifact. The Rust option independently
+runs the exact Original/Managed case and its scoped integration binary. Either
+diagnostic may fail the workflow, but the presence of any diagnostic input
+suppresses `Full source qualification` and uses separate concurrency.
+
 Every fresh isolated root contains `quarantine-attempt.json` and
 `quarantine-results.json`. They record actual source identity, selected cases,
 run/attempt identity, platform, artifact selection and explicit outcomes. The

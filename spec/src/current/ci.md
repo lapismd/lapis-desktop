@@ -104,6 +104,15 @@ Quarantine diagnostics are separate, explicit, uncached attempts; their results
 cannot satisfy ordinary or full qualification. The approximately ten-minute
 ordinary feedback objective is a measurement target, not an acceptance bypass.
 
+An explicit paired diagnostic dispatch runs the complete normal families and
+selected original quarantined callbacks against one verified acceptance
+artifact. Its optional Rust lane first proves `repository_original` has exactly
+one ignored case, then runs that original alone and the same integration binary
+with `--include-ignored`; crate-wide ignored tests remain prohibited. Diagnostic
+inputs use separate concurrency and suppress the full-source marker even when
+all ordinary gates pass. Each diagnostic remains a fresh, non-retrying,
+non-qualifying result.
+
 ## Scheduled validation and rollout
 
 Canonical main runs full validation daily at 02:17 UTC in a separate concurrency

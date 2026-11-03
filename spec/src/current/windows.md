@@ -145,3 +145,8 @@ not authorize recreating a vanished window: disappearance and failed switching
 remain failures. The originating race requires real ARM64 evidence; added
 observability alone is not a demonstrated fix or a reason to re-enable a
 quarantine.
+
+Paired diagnostic dispatch reuses the exact acceptance artifact already executed
+by the normal `smoke`, `workspace` and `services` families. Selected original
+callbacks then run serially in fresh isolated state; preparation is not repeated
+and no diagnostic result can emit a full-source qualification marker.

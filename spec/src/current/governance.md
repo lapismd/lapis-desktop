@@ -390,11 +390,12 @@ fallback. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit
 cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
 cold/hidden/headed/capture gates. Hosted and portable prerequisites share exact
 reachable commits and prepared public exports; ranges stay portable. Native
-crates use explicit git revisions in [dependency intake](local-dependencies.md).
-Renderer tests preload tsx; receipts need full ancestry. Semantic `spec:search`
-uses current/backlog QMD outside CI. Native build heaps use half constrained or
-physical RAM, capped at 6 GiB.
-
-Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
+crates use explicit revisions from [dependency intake](local-dependencies.md).
+Paired diagnostics require explicit dispatch, fully verify the normal artifact,
+scope Rust ignores and cannot qualify. Renderer tests preload tsx; receipts need
+full ancestry. Await WebDriver maps; semantic `spec:search` uses current/backlog
+QMD outside CI. Native build heaps use half constrained or physical RAM, capped
+at 6 GiB. Four catalog shards, both viewports and themes, must all succeed
+(E-CI-014).
 Native fixtures install the pinned plugins tree before signing when fflate is
 absent (E-CI-032). Packed Tasks pin (E-CI-034). Audits: E-CI-037/041/043.

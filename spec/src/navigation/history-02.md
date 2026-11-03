@@ -237,4 +237,6 @@
 
 - [Immutable Desktop CI tooling image source](../history/E-CI-050.md)
 
+- [Paired ARM64 diagnostic execution](../history/E-CI-065.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

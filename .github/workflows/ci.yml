@@ -11,6 +11,16 @@ on:
         type: boolean
         default: true
         required: false
+      native_diagnostic_cases:
+        description: Paired original native quarantine IDs (at most five)
+        type: string
+        default: ""
+        required: false
+      rust_backup_diagnostic:
+        description: Run the isolated and scoped ARM64 backup diagnostic
+        type: boolean
+        default: false
+        required: false
   schedule:
     - cron: 17 2 * * *
 permissions:
@@ -22,7 +32,9 @@ concurrency:
   group:
     lapis-desktop-ci-${{ github.event_name }}-${{
     github.event.pull_request.number || github.ref }}-${{ github.event_name ==
-    'schedule' && 'nightly' || inputs.full && 'full' || 'ordinary' }}
+    'schedule' && 'nightly' || github.event_name == 'workflow_dispatch' &&
+    (inputs.native_diagnostic_cases != '' || inputs.rust_backup_diagnostic) &&
+    'diagnostic' || inputs.full && 'full' || 'ordinary' }}
   cancel-in-progress: ${{ github.event_name != 'schedule' }}
 env:
   LAPIS_DESKTOP_VALIDATION_RUNTIME: native
@@ -71,6 +83,16 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
+      - name: Validate optional native diagnostic selectors
+        if:
+          github.event_name == 'workflow_dispatch' &&
+          inputs.native_diagnostic_cases != ''
+        env:
+          NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
+        run:
+          node --input-type=module -e 'import {quarantineArguments} from
+          "./scripts/native-quarantine.mjs"; quarantineArguments(["--cases=" +
+          process.env.NATIVE_DIAGNOSTIC_CASES]);'
       - name: Check dependency-aware planning and aggregation
         run: node --test tests/governance/ci-selection.test.mjs
       - id: plan
@@ -862,7 +884,9 @@ jobs:
       - validate
     if:
       always() && needs.changes.result == 'success' &&
-      needs.changes.outputs.full == 'true'
+      needs.changes.outputs.full == 'true' && (github.event_name !=
+      'workflow_dispatch' || (inputs.native_diagnostic_cases == '' &&
+      !inputs.rust_backup_diagnostic))
     runs-on: ubuntu-24.04
     steps:
       - name: Require every full qualification gate
@@ -1155,3 +1179,113 @@ jobs:
           include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 7
+  native-quarantine-diagnostic:
+    name: Paired native quarantine diagnostic (not qualification)
+    runs-on: macos-15
+    timeout-minutes: 40
+    needs:
+      - changes
+      - prerequisites
+      - native-prepare
+      - native-families
+    if:
+      always() && github.event_name == 'workflow_dispatch' &&
+      inputs.native_diagnostic_cases != '' && needs.changes.result == 'success'
+      && needs.prerequisites.result == 'success' && needs.native-prepare.result
+      == 'success'
+    env:
+      LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
+      LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.10.0
+          cache: pnpm
+      - name: Install pinned Jujutsu tooling
+        run: node scripts/validation/install-tools.mjs --ci
+      - name: Check out pinned prerequisites
+        run: node scripts/ci-siblings.mjs
+      - name: Select configured macOS deployment minimum
+        run: node scripts/native-build-environment.mjs --github-env
+      - uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - uses: actions/download-artifact@v8
+        with:
+          name: private-packages-macos-arm64-${{ github.run_attempt }}
+          path: .local/ci-dependency-download
+      - name: Extract verified package artifact
+        run: tar -xf .local/ci-dependency-download/packages.tar -C .local
+      - name: Verify and install prepared private packages
+        env:
+          LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT: .local/ci-dependency-artifact
+        run: node scripts/ci-install.mjs
+      - uses: actions/download-artifact@v8
+        with:
+          name: native-acceptance-artifact-${{ github.run_attempt }}
+          path: .local/ci-acceptance-download
+      - name: Extract the same acceptance artifact used by normal families
+        run: tar -xf .local/ci-acceptance-download/acceptance.tar -C .local
+      - name: Execute selected original bodies in isolated state
+        env:
+          LAPIS_DESKTOP_NATIVE_LANE: "1"
+          NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
+        run: >-
+          node scripts/macos-native-lanes.mjs quarantine
+          "--cases=$NATIVE_DIAGNOSTIC_CASES" --reuse-artifact
+          .local/ci-acceptance-artifact/manifest.json
+      - name: Summarize fresh diagnostic outcomes
+        if: always()
+        run: node scripts/native-quarantine-summary.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: paired-native-quarantine-${{ github.run_attempt }}
+          path: .local/native-test/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
+  rust-backup-diagnostic:
+    name: ARM64 backup diagnostic (not qualification)
+    runs-on: macos-15
+    timeout-minutes: 40
+    needs:
+      - changes
+    if:
+      github.event_name == 'workflow_dispatch' && inputs.rust_backup_diagnostic
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.10.0
+      - name: Select configured macOS deployment minimum
+        run: node scripts/native-build-environment.mjs --github-env
+      - uses: dtolnay/rust-toolchain@1.99.0
+      - name: Restore compatible diagnostic Rust builds
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
+        with:
+          workspaces: src-tauri -> target
+          add-job-id-key: true
+          key:
+            desktop-v2-${{ runner.os }}-${{ runner.arch }}-backup-diagnostic-${{
+            hashFiles('scripts/ci-sources.json') }}
+          cache-workspace-crates: false
+          cache-on-failure: true
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
+      - name: Run the original case alone and its scoped integration group
+        env:
+          LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC: "1"
+        run: node scripts/rust-backup-diagnostic.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rust-backup-diagnostic-${{ github.run_attempt }}
+          path: .local/native-test/rust-backup-diagnostic.json
+          if-no-files-found: error
+          retention-days: 14
