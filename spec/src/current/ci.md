@@ -83,6 +83,13 @@ requires preparation and every selected family's complete nonzero stage reports.
 HTTP/resource checks retain their separate development fixture and execute even
 after feature-stage failure.
 
+Native restore acceptance selects the revision whose changed-path response
+contains the seeded file. A current status head is not evidence that the head's
+own delta contains that file because independent startup writers may create
+later checkpoints. Missing file-bearing history fails with the inspected
+revision/path inventory; original restore, cold-reopen and no-replay assertions
+and deadlines remain unchanged.
+
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
 jobs. The configured macOS minimum is selected before restore/build and

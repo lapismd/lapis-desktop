@@ -76,6 +76,15 @@ split `--reuse-artifact` from its value; the fail-closed parser correctly
 rejected that invocation. The follow-up passes the selector as one
 `--reuse-artifact=<manifest>` token.
 
+Ordinary PR run `41618609548` at `a389fb33` retained a separate enabled
+services-family transcript-backup failure. The preserved DOM and native artifact
+show that the selected `a8989560` checkpoint contained only startup skill-file
+changes, so the History UI correctly omitted `transcript.jsonl`. The test had
+confused the latest post-startup status head with the older checkpoint whose own
+delta introduced the transcript. The follow-up selects the oldest actual
+transcript-bearing delta and retains every restore, cold-reopen, no-replay
+assertion and original deadline.
+
 ## Verified local state
 
 - 718 governance and renderer Node tests and 746 AI tests passed without
@@ -118,7 +127,8 @@ Complete these steps in order:
 4. Fix only demonstrated failures in their owning repository and rerun the
    complete workflow; a failed-only rerun cannot qualify the candidate.
    Reproduce the enabled terminal-reopen and preview-recovery failures at their
-   original narrow boundaries before any change.
+   original narrow boundaries before any change. Retain ordinary run
+   `41618609548` as the transcript-checkpoint test-race failure.
 5. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.

@@ -240,3 +240,5 @@
 - [Pinned Jujutsu for the Original ARM64 fixture](../history/E-CI-052.md)
 
 - [Exact verified-artifact selector for paired diagnostics](../history/E-CI-053.md)
+
+- [Transcript-bearing checkpoint selection](../history/E-CI-054.md)

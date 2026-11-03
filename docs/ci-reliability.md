@@ -167,3 +167,15 @@ kept two live shells but rendered no prompt, and workspace preview recovery left
 the reviewed disk contents instead of its later saved contents. Both passed in
 the ordinary exact-head PR run, remain failures here, and require owner-side
 reproduction rather than retries, assertion changes or new quarantines.
+
+Ordinary PR run `41618609548` at `a389fb33` later failed the enabled services
+family in `ai-transcript-backup.test.mjs`. Its retained native artifact proves
+the selected `a8989560` revision was valid but changed only the two startup
+skill files; `transcript.jsonl` was therefore correctly absent from that
+revision's Changed files list. The acceptance test had treated the latest
+post-startup status head as the revision that introduced the seeded transcript.
+It now inspects actual revision deltas from oldest to newest and selects the
+first transcript-bearing checkpoint, failing with the inspected commit/path
+inventory if none exists. The 30-second waits, 180-second case deadline, guarded
+restore, exact bytes, cold reopen and no-prompt-replay assertions remain
+unchanged. A new complete workflow attempt is required.

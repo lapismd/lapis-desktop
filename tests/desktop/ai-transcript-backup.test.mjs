@@ -9,6 +9,7 @@ import {
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
+import { oldestRevisionContaining } from "./history-revision-selection.mjs";
 process.env.LAPIS_DESKTOP_ACCEPTANCE_NATIVE_AI = "1";
 const saved = 'button[aria-label="Vault history: Saved locally"]';
 const details = 'section[aria-label="Vault history details"]';
@@ -74,6 +75,46 @@ async function selectRevision(browser, id) {
   await select.waitUntil(
     async () => (await select.getAttribute("aria-expanded")) === "true",
   );
+  return index;
+}
+
+async function revisions(browser) {
+  const selector = `${panel} ol[aria-label="Revision graph"] > li`;
+  const ids = await browser.execute(
+    (selector) =>
+      Array.from(document.querySelectorAll(selector))
+        .map(
+          (row) =>
+            row
+              .querySelector(
+                ':scope > .repository-graph-row button[data-side="commit"]',
+              )
+              ?.getAttribute("aria-label")
+              ?.match(/Copy Git commit SHA ([0-9a-f]{40})$/u)?.[1],
+        )
+        .filter(Boolean),
+    selector,
+  );
+  assert.ok(ids.length > 1, "History includes a root and saved revisions");
+  // The oldest graph row is the parentless root, which has no comparison.
+  return ids.slice(0, -1);
+}
+
+async function changedPaths(browser, id) {
+  const index = await selectRevision(browser, id);
+  const selected = browser.$(
+    `${panel} ol[aria-label="Revision graph"] > li:nth-child(${index + 1})`,
+  );
+  const changed = selected.$('[aria-label="Changed files"]');
+  await changed.waitForDisplayed({ timeout: 30000 });
+  await changed.waitUntil(
+    async () => (await changed.getAttribute("aria-busy")) === "false",
+    { timeout: 30000 },
+  );
+  return (await changed.getText())
+    .split("\n")
+    .map((value) => value.trim())
+    .filter(Boolean);
 }
 
 async function previewFile(browser, id) {
@@ -164,13 +205,18 @@ test(
     await first.browser.$("button*=Open Vault").click();
     await ready(first.browser);
     await openChat(first, "Original local transcript");
-    const initial = await checkpoint(first.browser);
+    const initialHead = await checkpoint(first.browser);
     writeFileSync(
       file,
       initialText + record("Later transcript saved externally", "later-user"),
     );
-    await checkpoint(first.browser, initial);
+    await checkpoint(first.browser, initialHead);
     await openHistory(first.browser);
+    const initial = await oldestRevisionContaining(
+      await revisions(first.browser),
+      "transcript.jsonl",
+      (revision) => changedPaths(first.browser, revision),
+    );
     await previewFile(first.browser, initial);
     const diff = await first.browser.$('[aria-label*="Changes to"]').getText();
     assert.match(diff, /Original local transcript/);

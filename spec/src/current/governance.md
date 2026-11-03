@@ -16,10 +16,10 @@ endpoints and literal arguments. Archive rewriting is idempotent only for an
 exact path redirected to a verified tarball. ARM64 diagnostics need pinned `jj`
 and exact artifact args. [Local intake](local-dependencies.md) governs pins,
 refreshes, the Bits patch and released-cohort gates (E-CI-015/018;
-LD-GOV-006/008). Native readiness matches split/log-batched receipts without
-longer deadlines. Hosted test logs stream live (E-CI-009). The e2e entry shares
-early progress, then imports runtime instrumentation; ordinary bundles reject
-its startup capture marker. Canonical owners include planned
+LD-GOV-006/008). Native readiness and E-CI-054 transcript selection retain
+original deadlines. Hosted test logs stream live (E-CI-009). The e2e entry
+shares early progress, then imports runtime instrumentation; ordinary bundles
+reject its startup capture marker. Canonical owners include planned
 [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
