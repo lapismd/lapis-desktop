@@ -97,6 +97,12 @@ When that comparison boundary fails, headed acceptance retains bounded
 per-revision fixture paths and records the expected and actually expanded
 revision plus busy/files/empty/unavailable state (E-CI-059). Diagnostics do not
 retry a selection, extend the 30-second wait or substitute another revision.
+Changed-file discovery reads each public file row's exact `data-file-path`
+identity rather than splitting the rendered region text (E-CI-061). Directory
+labels, counts and layout-dependent WebDriver whitespace cannot be treated as a
+path, and duplicate or malformed row identities fail closed. The oldest-to-
+newest inspection, original comparison deadline and restore/no-replay assertions
+remain unchanged.
 
 Workspace acceptance waits for the complete expected seeded editor source before
 replacement input and retains the exact post-input assertion (E-CI-060).

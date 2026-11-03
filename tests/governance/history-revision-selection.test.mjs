@@ -2,24 +2,51 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   oldestRevisionContaining,
+  revisionComparisonPaths,
   revisionComparisonDiagnostic,
   revisionComparisonState,
+  revisionFileRowSelector,
 } from "../desktop/history-revision-selection.mjs";
 
 test("selects the oldest file-bearing revision past newer startup checkpoints", async () => {
+  const transcript = ".lapis/agents/sessions/session/transcript.jsonl";
   const paths = new Map([
     ["working-copy", []],
-    ["later-transcript", ["transcript.jsonl"]],
+    ["later-transcript", [transcript]],
     ["startup-skills", ["SKILL.md"]],
-    ["initial-transcript", ["transcript.jsonl"]],
+    ["initial-transcript", [transcript]],
   ]);
   assert.equal(
     await oldestRevisionContaining(
       [...paths.keys()],
-      "transcript.jsonl",
+      transcript,
       async (revision) => paths.get(revision),
     ),
     "initial-transcript",
+  );
+});
+
+test("reads exact public file-row identities instead of flattened region text", () => {
+  assert.equal(
+    revisionFileRowSelector,
+    'button[data-ui-part="file-row"][data-file-path]',
+  );
+  assert.deepEqual(
+    revisionComparisonPaths([
+      ".lapis/agents/sessions/session/transcript.jsonl",
+      "Welcome.md",
+    ]),
+    [".lapis/agents/sessions/session/transcript.jsonl", "Welcome.md"],
+  );
+  assert.throws(
+    () => revisionComparisonPaths(["Welcome.md", "Welcome.md"]),
+    /Invalid revision file-row identities/u,
+  );
+  assert.equal(
+    [
+      "Changed files4 .lapis agents sessions transcript.jsonl Welcome.md",
+    ].includes("transcript.jsonl"),
+    false,
   );
 });
 

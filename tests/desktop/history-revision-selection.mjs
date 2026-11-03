@@ -13,6 +13,19 @@ export async function oldestRevisionContaining(revisions, path, changedPaths) {
   throw new Error(`No inspected revision changed ${path}; ${detail}`);
 }
 
+export const revisionFileRowSelector =
+  'button[data-ui-part="file-row"][data-file-path]';
+
+export function revisionComparisonPaths(attributes) {
+  if (
+    !Array.isArray(attributes) ||
+    attributes.some((path) => typeof path !== "string" || path.length === 0) ||
+    new Set(attributes).size !== attributes.length
+  )
+    throw new Error("Invalid revision file-row identities");
+  return attributes;
+}
+
 export function revisionComparisonState({ files, empty, unavailable }) {
   const visible = [
     files && "files",
