@@ -253,4 +253,6 @@
 
 - [Clean working-copy comparison continuation](../history/E-CI-057.md)
 
+- [Exact conflict selection and writable preview recovery](../history/E-CI-058.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

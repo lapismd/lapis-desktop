@@ -192,6 +192,19 @@ visible states conflict. The original 30-second comparison boundary, 180-second
 case deadline and restore/no-replay assertions remain unchanged. This failed
 attempt remains retained and a complete new workflow attempt is required.
 
+That run retained two workspace-family failures in the same complete attempt.
+The Graph recovery case created conflicts for both `.lapis/lapis-graph.json` and
+`.lapis/app.json`; its shared helper clicked the first generic
+`Review your draft` problem and opened the Graph-settings review instead of the
+requested App-settings review. Conflict navigation now selects the exact encoded
+diagnostic resource group before preserving the same review and disk assertions.
+The preview recovery case closed its conflict view before its protected editor
+became writable, so WebDriver input during the recovery lease produced no later
+edit. The existing owning Mira recovery contract already requires
+`contenteditable=true` before post-recovery input; Desktop now observes that
+state within the unchanged case deadline. No assertion, product behavior, retry
+or quarantine changed.
+
 Complete paired run `41618655199` at the same `a389fb33` head passed all three
 normal native families and the ARM64 backup diagnostic. The original ignored
 case passed 1/1 in isolation and the scoped `repository_original` binary passed
