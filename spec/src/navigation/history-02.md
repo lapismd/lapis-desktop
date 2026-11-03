@@ -230,3 +230,5 @@
 - [Native consumer source-tooling prerequisite](../history/E-CI-047.md)
 
 - [Hosted native artifact fanout diagnostics](../history/E-CI-048.md)
+
+- [Exact hosted Node toolchain identity](../history/E-CI-049.md)

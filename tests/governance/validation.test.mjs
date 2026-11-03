@@ -16,14 +16,30 @@ test("hosted CI installs the pinned macOS Jujutsu archive", () => {
   assert.equal(toolPins("linux", "arm64", true)[0][0], "jj");
 });
 
-test("hosted workflows pin Node 24 actions", async () => {
+test("every hosted setup-node action pins the declared Node runtime", async () => {
   const { readdir } = await import("node:fs/promises");
   const dir = new URL("../../.github/workflows/", import.meta.url);
+  const declared = (
+    await readFile(new URL("../../.node-version", import.meta.url), "utf8")
+  ).trim();
   for (const name of await readdir(dir)) {
     if (!/\.ya?ml$/.test(name)) continue;
     const source = await readFile(new URL(name, dir), "utf8");
-    assert.match(source, /node-version: 24/u);
-    assert.doesNotMatch(source, /node-version:\s*20/u);
+    const setupCount = source.match(/uses:\s*actions\/setup-node@v6/gu)?.length;
+    const configured = [
+      ...source.matchAll(/^\s*node-version:\s*([^\s#]+)\s*$/gmu),
+    ].map((match) => match[1]);
+    assert.ok(setupCount, `${name} provisions Node`);
+    assert.equal(
+      configured.length,
+      setupCount,
+      `${name} pins every setup-node action directly`,
+    );
+    assert.deepEqual(
+      [...new Set(configured)],
+      [declared],
+      `${name} uses the exact .node-version runtime`,
+    );
     assert.doesNotMatch(source, /node-version-file:/u);
     assert.doesNotMatch(source, /actions\/checkout@v4/u);
     assert.doesNotMatch(source, /actions\/setup-node@v4/u);

@@ -93,7 +93,11 @@ test("hosted CI builds both Linux release targets and keeps the macOS jobs", () 
   assert.match(pages, /actions\/checkout@v6/u);
   assert.match(pages, /actions\/setup-node@v6/u);
   assert.match(pages, /pnpm\/action-setup@v6/u);
-  assert.match(pages, /node-version: 24/u);
+  const declaredNode = readFileSync(".node-version", "utf8").trim();
+  assert.match(
+    pages,
+    new RegExp(`node-version: ${declaredNode.replaceAll(".", "\\.")}`, "u"),
+  );
   assert.match(
     readFileSync("README.md", "utf8"),
     /https:\/\/lapismd\.github\.io\/lapis-desktop\//u,

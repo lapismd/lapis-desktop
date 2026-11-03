@@ -62,7 +62,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Require successful CI on this exact main source
         run: node scripts/release/gate.mjs
       - uses: pnpm/action-setup@v6
@@ -162,7 +162,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - uses: actions/download-artifact@v8
         with:
           pattern:
@@ -200,7 +200,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - uses: actions/download-artifact@v8
         with:
           name:
@@ -271,7 +271,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Record candidate identity
         id: identity
         run: |
@@ -318,7 +318,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - id: select
         run: node scripts/release/select-candidate.mjs
         env:
@@ -348,7 +348,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - uses: actions/download-artifact@v8
         with:
           name:
@@ -374,7 +374,7 @@ jobs:
           ref: ${{ env.HOMEBREW_TAP_REF }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Verify the published release and generate its preview cask
         run:
           node scripts/update-cask.mjs --channel preview --release
@@ -405,7 +405,7 @@ jobs:
           ref: ${{ env.HOMEBREW_TAP_REF }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Verify the existing public preview
         run:
           node scripts/update-cask.mjs --channel preview --release

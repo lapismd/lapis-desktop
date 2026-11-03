@@ -385,15 +385,15 @@ Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 Local checks use quiet lanes; Docker is default and macOS lanes are opt-in
 (E-VALIDATION-004). Hosted CI runs those lanes, spec:first, the macOS bundle,
-headed acceptance, and `x86_64-unknown-linux-gnu` plus
-`aarch64-unknown-linux-gnu` release binaries as Node 24 jobs. Pages:
-<https://lapismd.github.io/lapis-desktop/>. Hidden WebKit cannot qualify native
-UI. [Acceptance modes](native-acceptance.md) retain cold/hidden/headed/capture
-gates. Hosted prerequisites use exact commits and prepared public exports;
-tracked ranges stay portable. Native crates use the explicit git revisions in
-[dependency intake](local-dependencies.md). Renderer tests preload tsx; receipts
-need full ancestry. Semantic `spec:search` uses current/backlog QMD outside CI.
-Native build heaps use half constrained or physical RAM, capped at 6 GiB.
+headed acceptance and both Linux release targets with the exact tracked Node
+patch. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit cannot
+qualify native UI. [Acceptance modes](native-acceptance.md) retain
+cold/hidden/headed/capture gates. Hosted prerequisites use exact commits and
+prepared public exports; tracked ranges stay portable. Native crates use the
+explicit git revisions in [dependency intake](local-dependencies.md). Renderer
+tests preload tsx; receipts need full ancestry. Semantic `spec:search` uses
+current/backlog QMD outside CI. Native build heaps use half constrained or
+physical RAM, capped at 6 GiB.
 
 Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
 Native fixtures install the pinned plugins tree before signing when fflate is

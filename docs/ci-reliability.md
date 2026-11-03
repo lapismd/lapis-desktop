@@ -115,3 +115,12 @@ development-origin case compiled after artifact restore until its original
 deadlines, adds the missing immutable bytes, canonicalizes only path spelling
 and moves that exact e2e compilation into producer preparation. A complete new
 hosted attempt remains required; the earlier attempts stay failed evidence.
+
+Complete run `41551526412` at `1df3ad9` retained a separate verified-reuse
+failure before Storybook shard 2 executed. Its dependency producer resolved Node
+24.22.1 while that consumer restored Node 24.22.0 from the hosted tool cache
+because every workflow requested the floating major `24`. Verification correctly
+rejected the executable-toolchain mismatch. All hosted setup actions now pin the
+repository's exact `.node-version` value; executable identity verification
+remains unchanged. This attempt is failed evidence, and only a new complete
+workflow can qualify the correction.
