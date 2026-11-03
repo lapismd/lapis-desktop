@@ -1236,8 +1236,8 @@ jobs:
           NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
         run: >-
           node scripts/macos-native-lanes.mjs quarantine
-          "--cases=$NATIVE_DIAGNOSTIC_CASES" --reuse-artifact
-          .local/ci-acceptance-artifact/manifest.json
+          "--cases=$NATIVE_DIAGNOSTIC_CASES"
+          --reuse-artifact=.local/ci-acceptance-artifact/manifest.json
       - name: Summarize fresh diagnostic outcomes
         if: always()
         run: node scripts/native-quarantine-summary.mjs

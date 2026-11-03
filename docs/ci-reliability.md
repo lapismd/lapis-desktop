@@ -156,3 +156,14 @@ ran, so this is not evidence of the reported backup mechanism. The diagnostic
 job now installs the same checksum-verified pinned Jujutsu tool used elsewhere
 in CI before Cargo inventory. The failed run remains retained and requires a new
 complete attempt.
+
+That same run exposed a second paired-harness defect: the native quarantine
+delegate received `--reuse-artifact` and its manifest as separate arguments,
+while its fail-closed parser accepts only `--reuse-artifact=<manifest>`. The
+selected ACP original body therefore did not execute and produced no result
+report. The workflow now supplies the required single token. The run also
+retains two independent enabled-family failures: the services terminal reopen
+kept two live shells but rendered no prompt, and workspace preview recovery left
+the reviewed disk contents instead of its later saved contents. Both passed in
+the ordinary exact-head PR run, remain failures here, and require owner-side
+reproduction rather than retries, assertion changes or new quarantines.

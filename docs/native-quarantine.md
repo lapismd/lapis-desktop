@@ -57,6 +57,11 @@ integration binary. Either diagnostic may fail the workflow, but the presence of
 any diagnostic input suppresses `Full source qualification` and uses separate
 concurrency.
 
+The paired native delegate receives verified reuse as one literal
+`--reuse-artifact=<manifest>` argument. The quarantine parser intentionally
+rejects a split option and value before any original body runs; such a failure
+is retained harness evidence, not a quarantine outcome.
+
 Every fresh isolated root contains `quarantine-attempt.json` and
 `quarantine-results.json`. They record actual source identity, selected cases,
 run/attempt identity, platform, artifact selection and explicit outcomes. The
