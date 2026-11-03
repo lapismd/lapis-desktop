@@ -56,6 +56,13 @@ next post-merge slice adds a non-qualifying paired diagnostic dispatch for the
 original ARM64 secondary-window and backup cases. All quarantines remain
 unchanged; scheduled-main evidence and root-cause repairs remain pending.
 
+Initial paired run `41601703657` failed before Rust test inventory because the
+diagnostic job had not restored the genuine AI resource bundle required by the
+Desktop build script. The retained report shows both original stages were not
+executed. The follow-up uses the already-produced, fully verified acceptance
+artifact to restore those resources; it does not bypass build validation or
+change the backup quarantine.
+
 ## Verified local state
 
 - 718 governance and renderer Node tests and 746 AI tests passed without
@@ -87,9 +94,8 @@ environment or substitute a host fallback for a failed Docker validation lane.
 
 Complete these steps in order:
 
-1. Publish the paired diagnostic workflow slice from a new post-merge branch and
-   run its complete ordinary families and diagnostic jobs in one fresh dispatch.
-   Preserve every prior attempt.
+1. Run a new complete paired attempt after the verified-resource harness repair.
+   Preserve run `41601703657` and do not use a failed-job-only rerun.
 2. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
    isolation and normal family order. Retain lifecycle/handle diagnostics. A
    vanished window remains a failure and must not be recreated automatically.

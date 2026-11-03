@@ -239,4 +239,6 @@
 
 - [Paired ARM64 diagnostic execution](../history/E-CI-065.md)
 
+- [Verified resources for ARM64 Rust diagnostics](../history/E-CI-051.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

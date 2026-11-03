@@ -139,3 +139,11 @@ PR #9 merged that qualified head into canonical `main` as `a7bc2735` on
 2026-11-03. The paired diagnostic profile is a separate post-merge slice; its
 own exact-head complete run, affected-platform evidence and later scheduled-main
 evidence remain required.
+
+Initial paired run `41601703657` at `d11e4d52` retained a pre-inventory Rust
+diagnostic failure: the Tauri build script correctly refused the absent genuine
+`resources/lapis-ai` bundle, so neither the isolated case nor scoped group ran.
+The Rust diagnostic now depends on the current-attempt native producer and
+restores resources only through the verified acceptance artifact before Cargo
+inventory. This is a harness repair, not ARM64 backup evidence; the complete
+attempt remains failed and must not be rerun by failed job only.

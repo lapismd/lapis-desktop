@@ -109,9 +109,13 @@ selected original quarantined callbacks against one verified acceptance
 artifact. Its optional Rust lane first proves `repository_original` has exactly
 one ignored case, then runs that original alone and the same integration binary
 with `--include-ignored`; crate-wide ignored tests remain prohibited. Diagnostic
-inputs use separate concurrency and suppress the full-source marker even when
-all ordinary gates pass. Each diagnostic remains a fresh, non-retrying,
-non-qualifying result.
+Rust MUST depend on the same current-attempt acceptance producer and restore its
+genuine AI resources through the artifact's source, run, attempt, platform,
+toolchain, file, permission and symlink verifier before Cargo inventory. Missing
+or mismatched resources fail before the original case. Diagnostic inputs use
+separate concurrency and suppress the full-source marker even when all ordinary
+gates pass. Each diagnostic remains a fresh, non-retrying, non-qualifying
+result.
 
 ## Scheduled validation and rollout
 
