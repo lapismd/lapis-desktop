@@ -6,12 +6,13 @@ import {
   existsSync,
   mkdirSync,
   readFileSync,
-  readdirSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
+import { packTasksFixture, selectTasksFixture } from "./ci-tasks-fixture.mjs";
+import { verifyDependencies } from "./ci-dependency-artifact.mjs";
 import { buildTasksArtifact } from "../tests/desktop/tasks-installed-artifact.mjs";
 
 const root = process.cwd();
@@ -127,38 +128,19 @@ try {
   rmSync(keyFile, { force: true });
 }
 
-const tasks = resolve("../lapis-plugin-tasks");
 const archiveDirectory = join(output, "tasks");
 mkdirSync(archiveDirectory, { recursive: true });
-execFileSync(
-  "pnpm",
-  [
-    "--config.ignore-scripts=true",
-    "pack",
-    "--pack-destination",
-    archiveDirectory,
-  ],
-  { cwd: tasks, stdio: "inherit" },
-);
-const tarballs = readdirSync(archiveDirectory).filter((name) =>
-  name.endsWith(".tgz"),
-);
-if (tarballs.length !== 1)
-  throw Error("Expected exactly one Tasks public archive");
-const archive = join(archiveDirectory, tarballs[0]);
-const pkg = JSON.parse(readFileSync(join(tasks, "package.json"), "utf8"));
+const artifact = process.env.LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT;
+const task = artifact
+  ? selectTasksFixture(verifyDependencies(artifact), root)
+  : (() => {
+      const entry = packTasksFixture(archiveDirectory, root);
+      return selectTasksFixture(
+        [{ ...entry, path: resolve(archiveDirectory, entry.path) }],
+        root,
+      );
+    })();
 const taskManifest = join(output, "tasks-archives.json");
-writeFileSync(
-  taskManifest,
-  JSON.stringify([
-    {
-      name: pkg.name,
-      version: pkg.version,
-      path: archive,
-      sha256: digest(readFileSync(archive)),
-      source: sources.find((entry) => entry.name === "lapis-plugin-tasks"),
-    },
-  ]),
-);
+writeFileSync(taskManifest, JSON.stringify([task]));
 await buildTasksArtifact(taskManifest);
 console.log(`Prepared native public plugin fixtures in ${root}`);

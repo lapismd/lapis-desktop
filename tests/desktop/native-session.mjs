@@ -2,12 +2,11 @@ import { spawn, execFileSync } from "node:child_process";
 import { createWriteStream, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { resolve, join } from "node:path";
-import { setTimeout as delay } from "node:timers/promises";
 import { remote } from "webdriverio";
 import assert from "node:assert/strict";
 import { focusNativeWindow } from "./native-visibility.mjs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
-import { rendererReadiness } from "./native-readiness.mjs";
+import { waitForNativeReadiness } from "./native-readiness.mjs";
 import {
   nativeSessionMode,
   assertBackgroundAvailability,
@@ -26,9 +25,10 @@ async function availablePort() {
 export async function nativeSession(
   name,
   isolatedRoot,
-  executablePath = resolve(
-    "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
-  ),
+  executablePath = process.env.LAPIS_DESKTOP_ACCEPTANCE_BINARY ??
+    resolve(
+      "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
+    ),
   args = [],
   options = {},
 ) {
@@ -41,6 +41,7 @@ export async function nativeSession(
     );
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
+  const started = performance.now();
   const child = spawn(executable, args, {
     env: {
       ...mode.environment,
@@ -54,20 +55,52 @@ export async function nativeSession(
     stdio: ["ignore", "pipe", "pipe"],
   });
   const log = createWriteStream(join(root, `${name}.log`));
-  let rendererReady = false;
-  const observeReadiness = rendererReadiness();
-  child.stdout.on("data", (chunk) => {
-    rendererReady = observeReadiness(chunk);
-  });
+  log.write(
+    JSON.stringify({
+      kind: "native-startup",
+      session: name,
+      pid: child.pid,
+      phase: "spawn",
+      elapsedMs: Math.round(performance.now() - started),
+    }) + "\n",
+  );
+  const readiness = waitForNativeReadiness(
+    child,
+    async (signal) => {
+      const response = await fetch(`http://127.0.0.1:${port}/status`, {
+        signal: AbortSignal.any([signal, AbortSignal.timeout(1000)]),
+      });
+      return response.ok;
+    },
+    {
+      signal: options.signal,
+      onPhase: (phase) =>
+        log.write(
+          JSON.stringify({
+            kind: "native-startup",
+            session: name,
+            pid: child.pid,
+            phase,
+            elapsedMs: Math.round(performance.now() - started),
+          }) + "\n",
+        ),
+    },
+  );
+  // Startup can fail before setup reaches its await; keep that rejection handled.
+  readiness.catch(() => {});
   child.stdout.pipe(log, { end: false });
   child.stderr.pipe(log, { end: false });
   const exited = new Promise((resolveExit, reject) => {
-    child.once("error", reject);
+    child.once("error", (error) => {
+      log.end();
+      reject(error);
+    });
     child.once("exit", (code, signal) => {
       log.end();
       resolveExit({ code, signal });
     });
   });
+  exited.catch(() => {});
   let browser;
   async function cleanup() {
     if (child.exitCode === null && child.signalCode === null) {
@@ -101,31 +134,15 @@ export async function nativeSession(
       }
       child.kill("SIGTERM");
       const timer = setTimeout(() => child.kill("SIGKILL"), 3000);
-      await exited;
-      clearTimeout(timer);
+      try {
+        await exited;
+      } finally {
+        clearTimeout(timer);
+      }
     }
   }
   try {
-    const deadline = Date.now() + 15000;
-    let listening = false;
-    while ((!listening || !rendererReady) && Date.now() < deadline) {
-      if (child.exitCode !== null)
-        throw new Error("Native process exited before WebDriver readiness.");
-      try {
-        const response = await fetch(`http://127.0.0.1:${port}/status`, {
-          signal: AbortSignal.timeout(1000),
-        });
-        listening = response.ok;
-      } catch {
-        await delay(100);
-      }
-    }
-    assert.equal(listening, true, "Native WebDriver server must start.");
-    assert.equal(
-      rendererReady,
-      true,
-      "Rust must acknowledge the renderer before driver evaluation.",
-    );
+    await readiness;
     browser = await remote({
       hostname: "127.0.0.1",
       port,
@@ -142,6 +159,15 @@ export async function nativeSession(
         ),
       { timeout: 10000 },
     );
+    log.write(
+      JSON.stringify({
+        kind: "native-startup",
+        session: name,
+        pid: child.pid,
+        phase: "shell-ready",
+        elapsedMs: Math.round(performance.now() - started),
+      }) + "\n",
+    );
     if (!mode.background) await focusNativeWindow(browser);
     async function requestClose(quit = false) {
       await browser.execute((quit) => {
@@ -153,6 +179,7 @@ export async function nativeSession(
       }, quit);
     }
     return {
+      id: `${name}:${child.pid}`,
       browser,
       cleanup,
       requestClose,

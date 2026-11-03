@@ -8,7 +8,7 @@ import {
   compareCalendar,
   versionPattern,
 } from "../../scripts/release/contract.mjs";
-import { fullCIJobs } from "../../scripts/release/source-ci.mjs";
+import { fullCIJobs, requireFullCI } from "../../scripts/release/source-ci.mjs";
 import { verifySource } from "../../scripts/release/gate.mjs";
 import { selectCandidate } from "../../scripts/release/select-candidate.mjs";
 const source = "a".repeat(40),
@@ -43,6 +43,7 @@ function sourceServer({
             name,
             status: "completed",
             conclusion: "success",
+            run_attempt: ci.run_attempt,
           })),
         }
       : path.includes("ci.yml/runs")
@@ -171,4 +172,101 @@ test("selective docs-only CI cannot qualify release preparation", async () => {
         }
       : server(path, options);
   await assert.rejects(verifySource(identity, request), /full native/);
+});
+
+test("full release requires preparation, every native family and every current job attempt", async () => {
+  const jobs = fullCIJobs.map((name, index) => ({
+    name,
+    id: index + 1,
+    status: "completed",
+    conclusion: "success",
+    run_attempt: 2,
+  }));
+  const request = (entries) => async (path) =>
+    path.includes("/jobs?")
+      ? { jobs: entries }
+      : { workflow_runs: [{ ...ci, run_attempt: 2 }] };
+  assert.equal((await requireFullCI(source, request(jobs))).ciAttempt, 2);
+  for (const missing of [
+    "Private prerequisites",
+    "Prepare native acceptance",
+    "Native family (workspace)",
+    "Native Linux (x86_64-unknown-linux-gnu)",
+  ]) {
+    await assert.rejects(
+      requireFullCI(
+        source,
+        request(jobs.filter((job) => job.name !== missing)),
+      ),
+      /full native/u,
+    );
+  }
+  for (const conclusion of ["failure", "cancelled", "timed_out", "skipped"]) {
+    const replaced = jobs.map((job) =>
+      job.name === "Native family (services)" ? { ...job, conclusion } : job,
+    );
+    await assert.rejects(
+      requireFullCI(source, request(replaced)),
+      /full native/u,
+    );
+  }
+  await assert.rejects(
+    requireFullCI(
+      source,
+      request(jobs.map((job) => ({ ...job, run_attempt: 1 }))),
+    ),
+    /full native/u,
+  );
+  await assert.rejects(
+    requireFullCI(
+      source,
+      request(jobs.map((job) => ({ ...job, run_attempt: undefined }))),
+    ),
+    /full native/u,
+  );
+});
+
+test("paginated source qualification retains a later failed attempt rather than an earlier pass", async () => {
+  const jobs = fullCIJobs.map((name, index) => ({
+    name,
+    id: index + 1,
+    status: "completed",
+    conclusion: "success",
+    run_attempt: 1,
+  }));
+  const padding = Array.from({ length: 100 - jobs.length }, (_, index) => ({
+    name: `other-${index}`,
+    id: 1000 + index,
+    status: "completed",
+    conclusion: "success",
+    run_attempt: 1,
+  }));
+  const pages = [];
+  const request = async (path) => {
+    if (!path.includes("/jobs?")) return { workflow_runs: [ci] };
+    pages.push(path);
+    return {
+      jobs: path.endsWith("page=1")
+        ? [...jobs, ...padding]
+        : [
+            {
+              ...jobs.find((job) => job.name === "Native family (smoke)"),
+              id: 9999,
+              conclusion: "failure",
+            },
+          ],
+    };
+  };
+  await assert.rejects(requireFullCI(source, request), /full native/u);
+  assert.equal(pages.length, 2);
+  assert.ok(pages.every((path) => path.includes("filter=all")));
+});
+
+test("a later scheduled attempt cannot hide behind earlier release qualification", async () => {
+  for (const conclusion of ["success", "failure", "cancelled"]) {
+    const request = async () => ({
+      workflow_runs: [ci, { ...ci, id: 10, event: "schedule", conclusion }],
+    });
+    await assert.rejects(requireFullCI(source, request), /latest main CI/);
+  }
 });

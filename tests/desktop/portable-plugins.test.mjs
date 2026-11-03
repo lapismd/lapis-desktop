@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -97,7 +98,7 @@ async function assertPortable(browser, id) {
 test(
   "portable Bookmarks and Word Count retain UI writes, native rename freshness and cold state",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: portable state wait timed out after 10000ms.",
+    ...quarantine("portable-bookmarks"),
   },
   async (context) => {
     const { root, vault } = fixture("portable-basic", [

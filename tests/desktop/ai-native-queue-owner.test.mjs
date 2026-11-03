@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
@@ -13,7 +14,10 @@ import {
 
 test(
   "native queue preserves exact admitted capture, Stop/cancel/resume and cold paused recovery without replay",
-  { timeout: 180000 },
+  {
+    timeout: 180000,
+    ...quarantine("queue-owner-cold-recovery"),
+  },
   async (context) => {
     queueEnvironment(context);
     const fixture = nativeQueueFixture();

@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
@@ -14,7 +15,7 @@ test(
   "native queue requires the current local physical-vault admission and refuses browser authority",
   {
     timeout: 90000,
-    skip: "Hosted ARM64 quarantine E-RELEASE-010: intermittent native queue renderer readiness acknowledgement.",
+    ...quarantine("queue-admission"),
   },
   async (context) => {
     queueEnvironment(context);

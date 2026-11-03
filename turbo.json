@@ -34,8 +34,8 @@
       "outputs": ["storybook-static/**"]
     },
     "ci:storybook-interaction": {
-      "env": ["LAPIS_DESKTOP_CATALOG_SHARD"],
-      "outputs": []
+      "env": ["LAPIS_DESKTOP_CATALOG_SHARD", "LAPIS_DESKTOP_CATALOG_PROFILE"],
+      "outputs": [".local/catalog-reports/**"]
     },
     "ci:bundle": {
       "cache": false,

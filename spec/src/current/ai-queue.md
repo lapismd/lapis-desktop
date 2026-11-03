@@ -60,6 +60,13 @@ cohort. Its full body, 90000ms case timeout and shared 15000ms readiness
 deadline remain intact. That case's admission/refusal proof remains unqualified;
 the other enabled native queue cases still gate releases.
 
+E-RELEASE-014 also quarantines the exact capture/Stop/cancel/resume/cold-paused
+recovery case after initial renderer readiness failed before driver evaluation.
+The identical PR tree passed it. Preserve its full body, 180000ms case timeout,
+30000ms operation waits and shared 15000ms readiness deadline. This case's
+complete queue/cold-recovery/no-replay boundary remains unqualified; other
+enabled native and ordinary package checks remain required.
+
 Start with exact renderer transport/declaration regressions, including opaque
 misleading labels, absent metadata, unchanged captures, exact scopes, all five
 commands and typed uncertain refusals without retry. Preserve the extracted

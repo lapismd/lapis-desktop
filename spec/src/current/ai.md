@@ -1,15 +1,14 @@
-# Desktop AI and optional compute
+# Desktop AI and optional compute — [diagnostics](native-acceptance.md)
 
 Core chat retains History and exact scope/conversation reuse; restoration never
 submits. E-CORE-022 qualifies fixture/native adoption; E-CORE-025 seals runner
-defaults. R2.3 keeps actual-provider composer acceptance, teardown before reload
-completion and History recovery after reload/cold Quit without replay. A
-test-only hold may forward a delayed saved result after disposal; policy and
-screens stay production. E-CORE-045 targets [queue](ai-queue.md) provider proof.
+defaults. R2.3 requires real-provider composer acceptance, teardown before
+reload completion and reload/cold-Quit History recovery without replay.
+Test-only holds may forward saved results after disposal; policy/screens stay
+production. E-CORE-045 targets [queue](ai-queue.md) provider proof.
 
 [Native fixtures](native-acceptance.md) retain platform credential restrictions
 and share an injected call across editing and Tasks ports (E-CI-010).
-
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
 shell stories MUST await owned fixtures and use labelled public controls with
@@ -396,5 +395,5 @@ E-AI-105/106/112 refine approvals, chat navigation and menus. LD-AI-002/004,
 execution and import/ACP fixture redaction semantics remain unchanged.
 
 E-AI-110: shared Max VRAM units/host-owned GGUF browsing, separate from import.
-Boot: 15s (E-CI-032). ACP queue/close/windows/reload is unqualified
-(E-CI-042/E-RELEASE-004); E-RELEASE-008/010 defer admission and queue cases.
+Boot: 15s (E-CI-032). Native case gaps: E-CI-042/E-RELEASE-004/008/010/014.
+Admission, ACP queue/close/windows/reload remain unqualified in those cases.

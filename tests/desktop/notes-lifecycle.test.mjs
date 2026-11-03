@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -102,7 +103,7 @@ test("cold Close and application Quit flush unsaved notes and restore the last v
 test(
   "failed note saves block native close, retain the dirty editor and permit retry",
   {
-    skip: "Hosted ARM64 quarantine E-CI-042: dirty text was not the only saved body.",
+    ...quarantine("notes-save-close"),
   },
   async (context) => {
     const { root, vault, file } = fixture("blocked-save");

@@ -27,6 +27,10 @@ deadlines, admission and retry rules. E-CI-013 retains failed attempts and
 separates source from consumer qualification. Every required aggregate must pass
 before merge.
 
+[CI reliability rollout](../current/ci.md) retains quarantines and fixes native
+packaging-tool prerequisites. ARM64 diagnosis, hosted family/nightly execution
+and cold/warm proof remain required; local diagnostics cannot replace them.
+
 ## Manual full qualification history
 
 [E-RELEASE-011](../history/E-RELEASE-011.md) records the manual CI blocker on
@@ -328,8 +332,8 @@ so none of those later boundaries is qualified by this failed case. Startup: 2
 pass/1 skip. Feature family: 90 pass/1 fail/18 skips. Later resource checks were
 not run. All 13 other direct gates passed; two aggregates failed downstream.
 
-Keep the complete body, assertions, original deadlines and shared helpers. Total
-current quarantine: 20 cases (1 startup, 19 feature). Owner: Desktop native
+Keep the complete body, assertions, original deadlines and shared helpers.
+E-RELEASE-013 had 20 quarantines (1 startup, 19 feature). Owner: Desktop native
 automation, with Notes editing ownership for any upstream selection defect.
 Investigate native focus, select-all acknowledgement and element input delivery
 across both input cases. Re-enable after exact replacement text is established
@@ -338,6 +342,33 @@ fresh hosted runners with outcome assertions and deadlines intact. This case's
 vault return, cancellation and database lifetime coverage remains unqualified.
 Enabled native CI, exact-main full qualification and ordinary Homebrew package
 acceptance remain required. Carry the gap into candidate notes and receipts.
+
+### Main queue readiness and Rust backup initialization
+
+[E-RELEASE-014](../history/E-RELEASE-014.md) records main `deac2b39`,
+run 41355656024. Native job 124995048706 failed initial renderer acknowledgement
+before queue driver evaluation; its feature family was 89 pass/1 fail/19 skips,
+startup 2 pass/1 skip and later resources not run. Unit job 124995048827 failed
+`original_and_managed_reads_share_one_client_without_initializing_original_history`
+at `repository_original.rs:51` with sanitized backup-unavailable IO. The PR tree
+is identical: all 17 PR gates passed, including both exact cases. The Rust case
+also passed an isolated run and all 10 parallel-group reproductions (40 tests).
+
+Quarantine only those complete cases. Preserve callbacks, assertions, helpers
+and deadlines. Current native UI total: 21 (1 startup, 20 feature), plus one
+additional Rust quarantine restricted to macOS ARM64; Linux retains that case.
+Its two existing Rust helper ignores remain unchanged. Native artifact
+13103794363 has verified ZIP SHA-256
+`b81ef5ac13235e031cbd63967fefbc0b2971d91e6cb2339351a16075a1808e64`.
+
+Owners: Desktop native automation for queue readiness; Desktop/Core backup
+integration for the Rust case. Neither exact cause is established. Queue
+capture/control/cold recovery and Original/Managed read-source independence
+remain unqualified by these skipped cases. Diagnose readiness/backup startup;
+re-enable each original case after reliable hosted full-family passes with
+assertions/deadlines intact. Preserve all failed attempts. Exact-main full CI
+and three-platform ordinary Homebrew qualification still gate publication; carry
+both gaps into candidate notes and receipts.
 
 ## Development audit exceptions
 

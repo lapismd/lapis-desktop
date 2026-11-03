@@ -4,3 +4,4 @@ pub(crate) mod background;
 pub(crate) mod backup_restore;
 pub(crate) mod integration;
 pub(crate) mod popouts;
+pub(crate) mod secondary_window;

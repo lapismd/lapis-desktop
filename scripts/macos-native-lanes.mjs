@@ -17,6 +17,7 @@
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { nativeBuildEnvironment } from "./native-build-environment.mjs";
 
 /** Explicit opt-in that unlocks the on-demand macOS lanes. */
 export const nativeLaneOptIn = "LAPIS_DESKTOP_NATIVE_LANE";
@@ -26,6 +27,13 @@ export const nativeLaneOptIn = "LAPIS_DESKTOP_NATIVE_LANE";
  * lanes keep their own stricter gate and arguments.
  */
 export const macosNativeLanes = [
+  {
+    name: "quarantine",
+    script: "test:quarantine:diagnostic",
+    delegate: "scripts/native-quarantine.mjs",
+    needs:
+      "explicit original quarantined native scenarios; separate diagnostic result",
+  },
   {
     name: "headed",
     script: "test:desktop:headed",
@@ -106,7 +114,7 @@ async function main() {
   if (!gate.ok) throw new Error(gate.reason);
   const { lane, passthrough } = selectNativeLane(process.argv.slice(2));
   console.log(
-    `Explicitly requested on-demand macOS lane "${lane}" (${lane.needs}); Docker remains the default runtime for standard lanes.`,
+    `Explicitly requested on-demand macOS lane "${lane.name}" (${lane.needs}); Docker remains the default runtime for standard lanes.`,
   );
   console.log(
     "Preserve fresh receipts, record a failed attempt before any deliberate retry, and never present an on-demand native run as Docker CI parity.",
@@ -117,9 +125,8 @@ async function main() {
       ? [lane.delegate, ...passthrough]
       : [lane.script, ...passthrough],
     {
-      ...process.env,
+      ...nativeBuildEnvironment(),
       LAPIS_DESKTOP_VALIDATION_RUNTIME: "native",
-      MACOSX_DEPLOYMENT_TARGET: "13.0",
       CARGO_BUILD_JOBS: "2",
     },
   );

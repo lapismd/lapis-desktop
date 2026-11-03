@@ -6,12 +6,38 @@ import {
   writeFileSync,
 } from "node:fs";
 import { planChanges, gates } from "./impact.mjs";
+import { ciSelection } from "../ci-revisions.mjs";
+const testedRevision = execFileSync("git", ["rev-parse", "HEAD"], {
+  encoding: "utf8",
+}).trim();
+if (
+  !/^[a-f0-9]{40}$/u.test(testedRevision) ||
+  (process.env.GITHUB_SHA && testedRevision !== process.env.GITHUB_SHA)
+)
+  throw Error("The actual tested checkout must match GITHUB_SHA");
 const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
+const eventName = process.env.GITHUB_EVENT_NAME;
 const full =
-  process.env.GITHUB_EVENT_NAME === "workflow_dispatch" &&
-  event.inputs?.full !== "false";
-const base = event.pull_request?.base?.sha ?? event.before;
-const head = event.pull_request?.head?.sha ?? process.env.GITHUB_SHA;
+  eventName === "schedule" ||
+  (eventName === "workflow_dispatch" && event.inputs?.full !== "false");
+let base = event.pull_request?.base?.sha ?? event.before;
+let head = event.pull_request?.head?.sha ?? process.env.GITHUB_SHA;
+if (["schedule", "workflow_dispatch"].includes(eventName)) {
+  const parent = execFileSync(
+    "git",
+    ["rev-parse", "--verify", `${testedRevision}^`],
+    {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+    },
+  ).trim();
+  ({ base, head } = ciSelection(event, testedRevision, {
+    eventName,
+    parent,
+    repository: process.env.GITHUB_REPOSITORY,
+    ref: process.env.GITHUB_REF,
+  }));
+}
 let files, metadata, fallback;
 try {
   if (
@@ -64,7 +90,13 @@ try {
   fallback = error.message;
   files = undefined;
 }
-const plan = planChanges(files, { full, metadata, root: process.cwd() });
+const plan = planChanges(files, {
+  full,
+  metadata,
+  root: process.cwd(),
+  testedRevision,
+  narrowProfiles: process.env.LAPIS_CI_NARROW_PROFILES === "qualified",
+});
 if (fallback) plan.reasons.push(`Full fallback: ${fallback}`);
 plan.range = { base, head };
 mkdirSync(".local", { recursive: true });
@@ -72,6 +104,12 @@ writeFileSync(".local/ci-plan.json", JSON.stringify(plan, null, 2) + "\n");
 const outputs = [
   `plan=${JSON.stringify(plan)}`,
   `full=${plan.full}`,
+  `profile=${plan.profile}`,
+  `ordinary_profiles_enabled=${plan.ordinaryProfilesEnabled}`,
+  `native_families=${JSON.stringify(plan.nativeFamilies)}`,
+  `catalog_profile=${plan.catalogProfile}`,
+  `dependency_platforms=${JSON.stringify(plan.dependencyPlatforms)}`,
+  `tested_revision=${plan.testedRevision}`,
   `unit_groups=${JSON.stringify(plan.unit)}`,
   `quality_groups=${JSON.stringify(plan.quality)}`,
   `rust_packages=${JSON.stringify(plan.rustPackages)}`,
@@ -82,6 +120,7 @@ appendFileSync(process.env.GITHUB_OUTPUT, outputs.join("\n") + "\n");
 appendFileSync(
   process.env.GITHUB_STEP_SUMMARY,
   "## Selected CI gates\n\n" +
+    `Tested checkout: ${plan.testedRevision}\n\nProfile: ${plan.profile}; catalog: ${plan.catalogProfile}; native: ${plan.nativeFamilies.join(", ") || "not selected"}\n\n` +
     plan.gates.map((g) => `- ${g}`).join("\n") +
     "\n\n" +
     plan.reasons.map((r) => `- ${r}`).join("\n") +

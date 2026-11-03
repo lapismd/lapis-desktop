@@ -221,3 +221,14 @@
 - [Manual full CI receipt ancestry](../history/E-RELEASE-011.md)
 - [Explorer filename replacement quarantine](../history/E-RELEASE-012.md)
 - [Vault-return replacement input quarantine](../history/E-RELEASE-013.md)
+- [Main queue readiness and Rust backup quarantine](../history/E-RELEASE-014.md)
+
+- [CI reliability, isolated families and scheduled validation](../history/E-CI-045.md)
+
+- [Bounded startup and hidden secondary-window diagnostics](../history/E-CI-046.md)
+
+- [Native consumer source-tooling prerequisite](../history/E-CI-047.md)
+
+- [Hosted native artifact fanout diagnostics](../history/E-CI-048.md)
+
+- [Exact hosted Node toolchain identity](../history/E-CI-049.md)

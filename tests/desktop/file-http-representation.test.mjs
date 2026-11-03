@@ -1,11 +1,12 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { mkdtempSync, mkdirSync, writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { gzipSync } from "node:zlib";
 import { nativeSession } from "./native-session.mjs";
 import { compressedRenderer } from "./file-http-renderer.mjs";
 import { run } from "../../scripts/desktop-acceptance.mjs";
+import { prepareHttpAcceptanceBinary } from "../../scripts/http-acceptance.mjs";
 
 test("bundled native resources preserve raw bytes and representation lengths for GET, HEAD and binary IPC", async (context) => {
   const root = mkdtempSync(
@@ -89,31 +90,9 @@ test(
     assert.equal(response.headers.get("Cache-Control"), "no-store");
     assert.equal(response.headers.get("ETag"), direct.headers.ETag);
     assert.deepEqual(Buffer.from(await response.arrayBuffer()), fixture.html);
-    const configuration = JSON.parse(
-      readFileSync("src-tauri/tauri.e2e.conf.json", "utf8"),
-    );
-    await run(
-      "cargo",
-      [
-        "build",
-        "--manifest-path",
-        "src-tauri/Cargo.toml",
-        "--locked",
-        "--features",
-        "e2e",
-      ],
-      {
-        ...process.env,
-        CARGO_BUILD_JOBS: "2",
-        TAURI_CONFIG: JSON.stringify(configuration),
-      },
-    );
+    const executable = await prepareHttpAcceptanceBinary(run);
     fixture.records.clear();
-    session = await nativeSession(
-      "gzip-renderer",
-      root,
-      resolve("src-tauri/target/debug/lapis-desktop"),
-    );
+    session = await nativeSession("gzip-renderer", root, executable);
     const state = await session.browser.execute(() => ({
       url: location.href,
       ready: document.documentElement.dataset.shellReady,

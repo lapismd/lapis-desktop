@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -221,7 +222,7 @@ test(
   "deleted preview recovery resets a retired writer and permits native shutdown",
   {
     timeout: 60000,
-    skip: "Hosted ARM64 quarantine E-RELEASE-010: intermittent deleted-preview merged-file recreation timeout.",
+    ...quarantine("deleted-preview-recovery"),
   },
   async (context) => {
     const { browser, session, file } = await fixture(

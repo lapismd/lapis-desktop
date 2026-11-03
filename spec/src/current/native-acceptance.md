@@ -33,7 +33,15 @@ E-RELEASE-012's concatenated filename, this motivates shared native focus,
 selection and input-delivery investigation; neither artifact proves the exact
 driver cause. Preserve both complete callbacks, assertions and deadlines.
 Vault-return/cancellation/database coverage from the new case remains
-unqualified. Total quarantine is 20 cases: 1 startup and 19 feature cases.
+unqualified.
+
+E-RELEASE-014 additionally quarantines the exact native
+queue-owner/cold-recovery case after its first process missed renderer readiness
+before driver evaluation. Its complete callback and deadlines remain intact.
+There are now 21 native UI quarantines: 1 startup and 20 feature cases. A
+separate Rust Original/Managed reader case is ignored only on macOS ARM64 after
+intermittent backup startup; Linux retains it. These cases remain unqualified;
+no production policy changes.
 
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,
@@ -108,3 +116,29 @@ Verified Lapis AI helpers ship as resources; native checks stage them first.
 [dependency intake](local-dependencies.md) retain the pinned helper/crate
 sources. Hosted native acceptance prepares real portable plugin archives and
 Tasks with ephemeral test keys. This does not replace the native product gates.
+
+## Bounded startup and independent diagnostic execution
+
+Startup latches renderer-ready markers before waiting, preserves split-chunk
+parsing and one total 15-second budget, and stops polling once the listener
+responds. Process failure, exit, cancellation and deadline exhaustion reject
+startup and clean up owned listeners/processes. Listening alone does not prove
+renderer IPC readiness; the later shell-ready assertion remains required. Phase
+timings distinguish listener, renderer and shell acknowledgement.
+
+The headed dispatcher accepts `--operation prepare|execute`,
+`--family smoke|workspace|services` and `--reuse-artifact <manifest>`.
+Execution-only mode requires a verified artifact; omitted options retain
+complete-suite behavior. Families remain serial internally and own fresh mutable
+state. Aggregation requires the expected files/stages, actual nonzero executed
+cases and matching source/profile/run/attempt/artifact identities.
+
+Explicit `quarantine --cases=<stable IDs>` dispatch executes up to five selected
+original JavaScript bodies per fresh batch. Unknown/empty selections and zero
+intended executions fail. Default skips, assertions and deadlines remain; no
+automatic retry or result-cache reuse is allowed. The Rust ARM64 diagnostic
+stays separate and narrowly scoped to its integration-test binary. No
+quarantines are re-enabled by this instrumentation. Secondary-window
+disappearance and ARM64 backup initialization remain unresolved until original
+isolated and normal-group scenarios complete on the affected platform after a
+demonstrated repair.

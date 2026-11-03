@@ -33,7 +33,7 @@ monotonic generation fences retired grants. Same-root reload revalidates all
 witnesses before retaining a generation. Stale completion, failed source proof
 and explicit retirement cannot authorize access.
 
-Native product proof exceeds service tests; E-REPO-056 retains LD-REPO-001/002.
+Native proof exceeds service tests (E-REPO-056); ARM64 case gap: E-RELEASE-014.
 
 ## Qualification
 

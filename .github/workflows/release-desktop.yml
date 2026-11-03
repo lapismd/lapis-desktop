@@ -53,8 +53,6 @@ jobs:
       LAPIS_DESKTOP_VALIDATION_RUNTIME: native
       LAPIS_NOTES_VALIDATION_RUNTIME: native
       LAPIS_AI_VALIDATION_RUNTIME: native
-      MACOSX_DEPLOYMENT_TARGET:
-        ${{ matrix.target == 'aarch64-apple-darwin' && '15.0' || '' }}
       CARGO_BUILD_JOBS: "2"
       RELEASE_TARGET: ${{ matrix.target }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,7 +62,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Require successful CI on this exact main source
         run: node scripts/release/gate.mjs
       - uses: pnpm/action-setup@v6
@@ -73,33 +71,62 @@ jobs:
           targets: ${{ matrix.target }}
       - name: Install Linux packaging prerequisites
         if: runner.os == 'Linux'
-        run: |
+        run: >
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl wget file libxdo-dev libssl-dev libayatana-appindicator3-dev librsvg2-dev patchelf desktop-file-utils
+
+          sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential curl
+          wget file libxdo-dev libssl-dev libayatana-appindicator3-dev
+          librsvg2-dev patchelf desktop-file-utils
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci
       - name: Prepare exact pinned source prerequisites
-        run: node scripts/ci-siblings.mjs
+        run:
+          node scripts/ci/timing.mjs run
+          prepare-exact-pinned-source-prerequisites -- /bin/bash -e -o pipefail
+          -c 'node scripts/ci-siblings.mjs'
+      - name: Select configured macOS deployment minimum
+        run: node scripts/native-build-environment.mjs --github-env
+      - name: Start Rust cache timing
+        run: node scripts/ci/timing.mjs start rust-cache
       - name: Restore Rust dependency builds
+        id: rust-cache
         uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
         with:
           workspaces: |-
             src-tauri -> target
             ../lapis-ai -> target
-          shared-key: desktop-${{ runner.os }}-${{ runner.arch }}
+          add-job-id-key: true
           key:
-            ${{ matrix.target || 'host' }}-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
+            desktop-v2-${{ runner.os }}-${{ runner.arch }}-release-ordinary-${{
+            matrix.target }}-${{ hashFiles('scripts/ci-sources.json') }}-${{
             env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
           cache-workspace-crates: false
           cache-on-failure: true
-          env-vars: CARGO CC CFLAGS CXX CMAKE RUST
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
+      - name: Record effective Rust cache identity and restore duration
+        if: always()
+        env:
+          TIMING_RESULT: ${{ steps.rust-cache.outcome }}
+          CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
+          CACHE_IDENTITY:
+            desktop-v2-${{ runner.os }}-${{ runner.arch }}-release-ordinary-${{
+            matrix.target }}-${{ hashFiles('scripts/ci-sources.json') }}-${{
+            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+        run: node scripts/ci/timing.mjs finish rust-cache
       - name: Build private public exports
-        run: node scripts/ci-prepare-links.mjs
+        run:
+          node scripts/ci/timing.mjs run build-private-public-exports --
+          /bin/bash -e -o pipefail -c 'node scripts/ci-prepare-links.mjs'
       - name: Install and record verified private archives
-        run: node scripts/ci-install.mjs --audit
+        run:
+          node scripts/ci/timing.mjs run
+          install-and-record-verified-private-archives -- /bin/bash -e -o
+          pipefail -c 'node scripts/ci-install.mjs --audit'
       - name: Build ordinary release app and helper inventory
-        run: pnpm release:prepare
+        run:
+          node scripts/ci/timing.mjs run
+          build-ordinary-release-app-and-helper-inventory -- /bin/bash -e -o
+          pipefail -c 'pnpm release:prepare'
       - uses: actions/upload-artifact@v7
         with:
           name:
@@ -117,6 +144,14 @@ jobs:
             }}-${{ github.run_attempt }}
           path: .local/release/source-ci.json
           if-no-files-found: ignore
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: timing-build-${{ strategy.job-index }}-${{ github.run_attempt }}
+          path: .local/ci-timing/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 7
   assemble:
     name: Assemble complete platform candidate
     needs: build
@@ -127,7 +162,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - uses: actions/download-artifact@v8
         with:
           pattern:
@@ -165,7 +200,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - uses: actions/download-artifact@v8
         with:
           name:
@@ -185,20 +220,28 @@ jobs:
       - uses: Homebrew/actions/setup-homebrew@f9676f1ffe2e1a720f81b2c54c51cfb99915ec14
       - name: Install Linux native window observation tools
         if: runner.os == 'Linux'
-        run: |
+        run: >
           sudo apt-get update
-          sudo apt-get install -y libwebkit2gtk-4.1-0 libgtk-3-0t64 libayatana-appindicator3-1 xvfb dbus-x11 desktop-file-utils openbox wmctrl x11-utils
+
+          sudo apt-get install -y libwebkit2gtk-4.1-0 libgtk-3-0t64
+          libayatana-appindicator3-1 xvfb dbus-x11 desktop-file-utils openbox
+          wmctrl x11-utils
       - name: Install, launch and retain data through Homebrew operations
         env:
           RELEASE_TARGET: ${{ matrix.target }}
         shell: bash
-        run: |
-          archive=$(node --input-type=module -e 'import { readIdentity, archiveName } from "./scripts/release/contract.mjs"; console.log(archiveName(readIdentity().version, process.env.RELEASE_TARGET));')
+        run: >
+          archive=$(node --input-type=module -e 'import { readIdentity,
+          archiveName } from "./scripts/release/contract.mjs";
+          console.log(archiveName(readIdentity().version,
+          process.env.RELEASE_TARGET));')
+
           command=(node .local/release/tap/scripts/test-preview-install.mjs
             --manifest .local/release/candidate/desktop-manifest.json
             --archive ".local/release/candidate/$archive"
             --source "$GITHUB_WORKSPACE"
-            --previous-manifest .local/release/previous/desktop-preview-manifest.json
+            --previous-manifest
+          .local/release/previous/desktop-preview-manifest.json
             --output ".local/release/homebrew/$RELEASE_TARGET")
           if [[ "$RUNNER_OS" == Linux ]]; then
             xvfb-run -a dbus-run-session -- "${command[@]}"
@@ -228,7 +271,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Record candidate identity
         id: identity
         run: |
@@ -275,7 +318,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - id: select
         run: node scripts/release/select-candidate.mjs
         env:
@@ -286,8 +329,9 @@ jobs:
     needs:
       - candidate
       - select-candidate
-    if: |-
-      always() && inputs.publish == true && ((inputs.operation == 'prepare' && needs.candidate.result == 'success') ||
+    if: >-
+      always() && inputs.publish == true && ((inputs.operation == 'prepare' &&
+      needs.candidate.result == 'success') ||
        (inputs.operation == 'publish-candidate' && needs.select-candidate.result
       == 'success'))
     runs-on: ubuntu-24.04
@@ -304,7 +348,7 @@ jobs:
           ref: ${{ github.sha }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - uses: actions/download-artifact@v8
         with:
           name:
@@ -330,7 +374,7 @@ jobs:
           ref: ${{ env.HOMEBREW_TAP_REF }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Verify the published release and generate its preview cask
         run:
           node scripts/update-cask.mjs --channel preview --release
@@ -361,7 +405,7 @@ jobs:
           ref: ${{ env.HOMEBREW_TAP_REF }}
       - uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 24.10.0
       - name: Verify the existing public preview
         run:
           node scripts/update-cask.mjs --channel preview --release

@@ -3,7 +3,11 @@ export function nativeSessionMode(options = {}, inherited = process.env) {
     !options ||
     typeof options !== "object" ||
     Array.isArray(options) ||
-    Object.keys(options).some((key) => key !== "background") ||
+    Object.keys(options).some(
+      (key) => !["background", "signal"].includes(key),
+    ) ||
+    (options.signal !== undefined &&
+      !(options.signal instanceof AbortSignal)) ||
     (options.background !== undefined &&
       typeof options.background !== "boolean")
   )

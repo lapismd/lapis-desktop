@@ -13,6 +13,7 @@ import {
 import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { nativeSession } from "./native-session.mjs";
+import { openSecondaryWindow } from "./secondary-window.mjs";
 import { createNativeDatabaseProvider } from "../../src/lib/native/database/native-database-provider.ts";
 
 async function fixture(context, owner) {
@@ -151,15 +152,8 @@ test("selected native metadata preserves typed admission, detached reconciliatio
   const admission = await f.call("vault_db_open", {
     sessionId: f.selected.sessionId,
   });
-  await f.call("acp_acceptance_control", { operation: "other-window" });
-  await f.session.browser.waitUntil(async () =>
-    (await f.session.browser.getWindowHandles()).includes("acp-other"),
-  );
-  await f.session.browser.switchToWindow("acp-other");
-  await f.session.browser.waitUntil(() =>
-    f.session.browser.execute(() =>
-      Boolean(globalThis.__TAURI__?.core?.invoke),
-    ),
+  const closeSecondary = await openSecondaryWindow(f.session, () =>
+    f.call("acp_acceptance_control", { operation: "other-window" }),
   );
   await assert.rejects(
     f.call("vault_indexing", {
@@ -170,8 +164,7 @@ test("selected native metadata preserves typed admission, detached reconciliatio
       },
     }),
   );
-  await f.session.browser.closeWindow();
-  await f.session.browser.switchToWindow("main");
+  await closeSecondary();
   assert.ok((await port.call({ kind: "status" })).status);
   for (const request of [
     {

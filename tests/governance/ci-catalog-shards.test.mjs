@@ -69,5 +69,5 @@ test("the existing catalog merge check requires every shard and rejects partial 
     assert.equal(child.status === 0, result === "success", result);
   }
   assert.ok(jobs.validate.needs.includes("storybook-interaction"));
-  assert.deepEqual(jobs.audit.needs, ["changes"]);
+  assert.deepEqual(jobs.audit.needs, ["changes", "prerequisites"]);
 });

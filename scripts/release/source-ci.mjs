@@ -1,8 +1,14 @@
 import { repository } from "./contract.mjs";
+import { nativeFamilies } from "../native-families.mjs";
+import { dependencyPlatforms } from "../ci/plan-schema.mjs";
 export const fullCIJobs = [
   "Full source qualification",
   "Plan affected CI",
   "Governance",
+  "Private prerequisites",
+  ...dependencyPlatforms.map(({ id }) => `Prepare private packages (${id})`),
+  "Prepare native acceptance",
+  ...nativeFamilies.map((family) => `Native family (${family})`),
   "Quality",
   "Unit tests",
   "Dependency audits",
@@ -16,6 +22,8 @@ export const fullCIJobs = [
   "Validate",
 ];
 export async function requireFullCI(sourceCommit, request) {
+  if (!/^[a-f0-9]{40}$/u.test(sourceCommit ?? ""))
+    throw Error("Full qualification requires one exact source commit");
   const response = await request(
     `/repos/${repository}/actions/workflows/ci.yml/runs?head_sha=${sourceCommit}&per_page=100`,
   );
@@ -24,13 +32,16 @@ export async function requireFullCI(sourceCommit, request) {
       (r) =>
         r.head_sha === sourceCommit &&
         r.head_branch === "main" &&
-        ["push", "workflow_dispatch"].includes(r.event),
+        ["push", "workflow_dispatch", "schedule"].includes(r.event),
     )
     .sort((a, b) => b.id - a.id)[0];
   if (
     !latest ||
     latest.status !== "completed" ||
-    latest.conclusion !== "success"
+    latest.conclusion !== "success" ||
+    latest.event === "schedule" ||
+    (latest.run_attempt !== undefined &&
+      (!Number.isInteger(latest.run_attempt) || latest.run_attempt < 1))
   )
     throw Error(
       "The latest main CI run for this exact source commit must pass before qualification",
@@ -51,7 +62,9 @@ export async function requireFullCI(sourceCommit, request) {
     fullCIJobs.some(
       (name) =>
         newest.get(name)?.conclusion !== "success" ||
-        newest.get(name)?.status !== "completed",
+        newest.get(name)?.status !== "completed" ||
+        (latest.run_attempt !== undefined &&
+          newest.get(name)?.run_attempt !== latest.run_attempt),
     )
   )
     throw Error(

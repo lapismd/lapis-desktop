@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
+import { buildIdentity, inventory } from "./ci-artifact-identity.mjs";
 import { pathToFileURL } from "node:url";
 
 const root = process.cwd();
@@ -51,8 +52,27 @@ function run(cwd, command, args) {
   if ((result.status ?? 1) !== 0) process.exit(result.status ?? 1);
 }
 
+const receiptPath = resolve(root, ".local/ci-prepared-links.json");
 export function missingPathPackages() {
-  return jobs.filter((job) => !existsSync(resolve(root, job.marker)));
+  let receipt;
+  try {
+    receipt = JSON.parse(readFileSync(receiptPath));
+  } catch {
+    /* Missing receipts require a build. */
+  }
+  const identity = buildIdentity(root);
+  return jobs.filter((job) => {
+    const marker = resolve(root, job.marker);
+    if (
+      !existsSync(marker) ||
+      JSON.stringify(receipt?.identity) !== JSON.stringify(identity)
+    )
+      return true;
+    return (
+      JSON.stringify(receipt?.outputs?.[job.marker]) !==
+      JSON.stringify(inventory(dirname(marker)))
+    );
+  });
 }
 
 /** Skip a build the sibling checkout does not define, and its install with it. */
@@ -83,4 +103,17 @@ if (
       return Boolean(pkg.scripts?.[script]);
     }))
       run(cwd, command, args);
+  const outputs = Object.fromEntries(
+    jobs.map((job) => {
+      const marker = resolve(root, job.marker);
+      if (!existsSync(marker))
+        throw Error(`Missing built public package: ${job.marker}`);
+      return [job.marker, inventory(dirname(marker))];
+    }),
+  );
+  mkdirSync(dirname(receiptPath), { recursive: true });
+  writeFileSync(
+    receiptPath,
+    JSON.stringify({ identity: buildIdentity(root), outputs }, null, 2) + "\n",
+  );
 }

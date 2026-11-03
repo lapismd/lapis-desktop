@@ -6,26 +6,48 @@ import {
   readFileSync,
   writeFileSync,
   copyFileSync,
+  appendFileSync,
 } from "node:fs";
 import { resolve, join } from "node:path";
 import { spawn } from "node:child_process";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import { fixtureJjBinary } from "../tests/desktop/native-tools.mjs";
-import { prepareDistributionFixtures } from "../tests/desktop/distribution-fixtures.mjs";
 import { nativeBuildEnvironment } from "./validation/model.mjs";
+import { nativeBuildEnvironment as nativeEnvironment } from "./native-build-environment.mjs";
+import {
+  nativeStages,
+  parseAcceptanceArgs,
+  selectNativeFamilies,
+  validNativeCounts,
+} from "./native-families.mjs";
 
 export async function run(command, args, env = process.env) {
   return new Promise((resolveRun, reject) => {
     const child = spawn(command, args, { stdio: "inherit", env });
-    const stop = () => child.kill("SIGTERM");
+    let cancelled = false;
+    const stop = () => {
+      cancelled = true;
+      child.kill("SIGTERM");
+    };
     process.once("SIGINT", stop);
     process.once("SIGTERM", stop);
-    child.once("error", reject);
-    child.once("exit", (code, signal) => {
+    const detach = () => {
       process.removeListener("SIGINT", stop);
       process.removeListener("SIGTERM", stop);
-      if (code === 0) resolveRun();
-      else reject(new Error(`${command} exited with ${signal ?? code}`));
+    };
+    child.once("error", (error) => {
+      detach();
+      reject(error);
+    });
+    child.once("exit", (code, signal) => {
+      detach();
+      if (code === 0 && !cancelled) resolveRun();
+      else {
+        const error = new Error(`${command} exited with ${signal ?? code}`);
+        error.cancelled = cancelled;
+        reject(error);
+      }
     });
   });
 }
@@ -47,120 +69,217 @@ export async function buildAcceptanceApp(execute = run) {
     { ...process.env, ...nativeBuildEnvironment("build") },
   );
 }
-async function acceptance() {
-  if (process.platform !== "darwin" || process.arch !== "arm64")
-    throw new Error("M0.1 native acceptance requires macOS ARM64.");
+
+/** Preparation owns the build; execution-only consumers must verify its complete identity. */
+export async function prepareAcceptance({ execute = run, reuseArtifact } = {}) {
+  if (reuseArtifact) {
+    const { verifyAcceptance } = await import("./ci-acceptance-artifact.mjs");
+    const prepared = verifyAcceptance(reuseArtifact);
+    process.env.LAPIS_DESKTOP_ACCEPTANCE_BINARY = prepared.acceptanceBinary;
+    process.env.LAPIS_DESKTOP_PORTABLE_FIXTURES = prepared.portableFixtures;
+    process.env.LAPIS_DESKTOP_HTTP_ACCEPTANCE_BINARY =
+      prepared.httpAcceptanceBinary;
+    return {
+      ...prepared,
+      artifactId: createHash("sha256")
+        .update(readFileSync(prepared.manifestPath))
+        .digest("hex"),
+    };
+  }
+  const { prepareDistributionFixtures } = await import(
+    "../tests/desktop/distribution-fixtures.mjs"
+  );
+  // Only public fixture material is embedded. The ephemeral signing key stays in memory.
   prepareDistributionFixtures();
+  await execute(process.execPath, ["scripts/prepare-acp-acceptance.mjs"]);
+  await buildAcceptanceApp(execute);
+  const { prepareHttpAcceptanceBinary } = await import("./http-acceptance.mjs");
+  process.env.LAPIS_DESKTOP_HTTP_ACCEPTANCE_BINARY =
+    await prepareHttpAcceptanceBinary(execute);
+  const { buildIdentity } = await import("./ci-artifact-identity.mjs");
+  const identity = buildIdentity(process.cwd(), "acceptance");
+  return {
+    identity,
+    artifactId: createHash("sha256")
+      .update(JSON.stringify(identity))
+      .digest("hex"),
+  };
+}
+
+/** Every family/diagnostic attempt owns fresh mutable state, including geometry. */
+export function createAcceptanceEnvironment({ family = "all" } = {}) {
+  if (!/^[a-z-]+$/u.test(family)) throw Error("Invalid native attempt name");
   mkdirSync(".local/native-test", { recursive: true });
-  const directory = mkdtempSync(resolve(".local/native-test/run-"));
+  const directory = mkdtempSync(resolve(`.local/native-test/${family}-`));
   const vault = join(directory, "vault-笔记 café");
   mkdirSync(vault);
   writeFileSync(join(vault, "Welcome.md"), "# A native vault\n");
   copyFileSync("src-tauri/icons/icon.png", join(vault, "café.png"));
-  await run(process.execPath, ["scripts/prepare-acp-acceptance.mjs"]);
-  await buildAcceptanceApp();
   const bin = join(directory, "bin");
   mkdirSync(bin);
   symlinkSync(process.execPath, join(bin, "node"));
-  const environment = {
-    ...process.env,
-    PATH: `${bin}:/usr/bin:/bin`,
-    LAPIS_DESKTOP_FIXTURE_JJ: fixtureJjBinary(),
-    LAPIS_DESKTOP_ACCEPTANCE_STATE: join(directory, "window-state.json"),
-    LAPIS_DESKTOP_ACCEPTANCE_ROOT: directory,
+  return {
+    directory,
+    environment: {
+      ...nativeEnvironment(),
+      PATH: `${bin}:/usr/bin:/bin`,
+      LAPIS_DESKTOP_FIXTURE_JJ: fixtureJjBinary(),
+      LAPIS_DESKTOP_ACCEPTANCE_STATE: join(directory, "window-state.json"),
+      LAPIS_DESKTOP_ACCEPTANCE_ROOT: directory,
+    },
   };
-  await run(
-    process.execPath,
-    [
-      "--test",
-      "--test-concurrency=1",
-      "tests/desktop/startup-progress.test.mjs",
-    ],
-    environment,
-  );
-  await run(
-    resolve("node_modules/.bin/wdio"),
-    ["run", "tests/desktop/wdio.conf.mjs"],
-    environment,
-  );
-  await run(
-    process.execPath,
-    [
-      // Governance keeps the tsx dev loader for Node acceptance that imports
-      // production modules resolving public built API exports.
-      "--import",
-      "tsx",
-      "--test",
-      "--test-concurrency=1",
-      "tests/desktop/lifecycle.test.mjs",
-      "tests/desktop/notes-lifecycle.test.mjs",
-      "tests/desktop/terminal-lifecycle.test.mjs",
-      "tests/desktop/acp-transport.test.mjs",
-      "tests/desktop/ai-user-commands.test.mjs",
-      "tests/desktop/ai-admission.test.mjs",
-      "tests/desktop/ai-native-queue-admission.test.mjs",
-      "tests/desktop/ai-native-queue-owner.test.mjs",
-      "tests/desktop/ai-native-queue-screen.test.mjs",
-      "tests/desktop/ai-notes-binding.test.mjs",
-      "tests/desktop/ai-transcript-backup.test.mjs",
-      "tests/desktop/plugin-assets.test.mjs",
-      "tests/desktop/plugin-distribution.test.mjs",
-      "tests/desktop/plugin-distribution-recovery.test.mjs",
-      "tests/desktop/portable-plugins.test.mjs",
-      "tests/desktop/portable-workers.test.mjs",
-      "tests/desktop/portable-database.test.mjs",
-      "tests/desktop/notes-conflicts.test.mjs",
-      "tests/desktop/tasks-installed.test.mjs",
-      "tests/desktop/editing-recovery.test.mjs",
-      "tests/desktop/preview-conflicts.test.mjs",
-      "tests/desktop/window-chrome.test.mjs",
-      "tests/desktop/popout-host.test.mjs",
-      "tests/desktop/vault-return.test.mjs",
-      "tests/desktop/properties-persistence.test.mjs",
-      "tests/desktop/properties-preflight.test.mjs",
-      "tests/desktop/settings-persistence.test.mjs",
-      "tests/desktop/repository-working-copy.test.mjs",
-      "tests/desktop/plugin-persistence.test.mjs",
-      "tests/desktop/startup-recovery.test.mjs",
-      "tests/desktop/file-operations.test.mjs",
-      "tests/desktop/file-watch.test.mjs",
-      "tests/desktop/file-deletion.test.mjs",
-      "tests/desktop/file-creation.test.mjs",
-      "tests/desktop/file-reconciliation.test.mjs",
-      "tests/desktop/system-file-actions.test.mjs",
-      "tests/desktop/file-ui-mutations.test.mjs",
-      "tests/desktop/file-import.test.mjs",
-      "tests/desktop/navigation-search.test.mjs",
-      "tests/desktop/navigation-search-settings.test.mjs",
-      "tests/desktop/search-owner.test.mjs",
-      "tests/desktop/search-recovery.test.mjs",
-      "tests/desktop/navigation-metadata.test.mjs",
-      "tests/desktop/metadata-owner.test.mjs",
-      "tests/desktop/navigation-graph.test.mjs",
-      "tests/desktop/integration-ports.test.mjs",
-      "tests/desktop/integration-urls.test.mjs",
-    ],
-    environment,
-  );
-  await run(
-    process.execPath,
-    [
-      "--test",
-      "--test-concurrency=1",
-      "tests/desktop/file-http-representation.test.mjs",
-    ],
-    // The harness builds a development fixture with Cargo. nativeSession still
-    // starts both actual app processes with only /usr/bin:/bin on PATH.
-    { ...environment, PATH: process.env.PATH },
-  );
-  if (!existsSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE))
-    throw new Error("The native window-state plugin did not persist geometry.");
-  console.log(
-    "Cold native geometry and Notes lifecycle acceptance passed with isolated state and no Node/Deno on PATH.",
-  );
-  console.log(
-    `Native state evidence: ${readFileSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE, "utf8")}`,
-  );
+}
+
+export async function executeNativeFamily(
+  family,
+  prepared,
+  execute = run,
+  createEnvironment = createAcceptanceEnvironment,
+) {
+  const { directory, environment } = createEnvironment({ family });
+  const report = {
+    schema: 1,
+    family,
+    status: "running",
+    artifactId: prepared.artifactId,
+    sourceRevision: prepared.identity.sourceCommit,
+    sourceTree: prepared.identity.sourceTree,
+    profile: process.env.LAPIS_CI_PROFILE ?? "full",
+    runId: process.env.GITHUB_RUN_ID ?? directory,
+    runAttempt: process.env.GITHUB_RUN_ATTEMPT ?? "1",
+    startedAt: new Date().toISOString(),
+    stages: nativeStages(family).map((stage) => ({
+      ...stage,
+      status: "not-executed",
+    })),
+  };
+  const reportDirectory = process.env.LAPIS_DESKTOP_NATIVE_REPORTS ?? directory;
+  mkdirSync(reportDirectory, { recursive: true });
+  const reportPath = join(reportDirectory, `native-family-${family}.json`);
+  const save = () =>
+    writeFileSync(reportPath, JSON.stringify(report, null, 2) + "\n");
+  save();
+  const started = performance.now(),
+    failures = [];
+  for (const stage of report.stages) {
+    const stageStarted = performance.now();
+    const countsPath = join(directory, `${stage.id}-counts.json`);
+    stage.status = "running";
+    save();
+    try {
+      if (stage.id === "wdio") {
+        await execute(
+          resolve("node_modules/.bin/wdio"),
+          ["run", "tests/desktop/wdio.conf.mjs"],
+          {
+            ...environment,
+            LAPIS_DESKTOP_NATIVE_COUNTS: countsPath,
+          },
+        );
+      } else {
+        await execute(
+          process.execPath,
+          [
+            ...(stage.id === "feature" ? ["--import", "tsx"] : []),
+            "--test",
+            "--test-concurrency=1",
+            "--test-reporter=spec",
+            "--test-reporter-destination=stdout",
+            "--test-reporter=./scripts/native-count-reporter.mjs",
+            `--test-reporter-destination=${countsPath}`,
+            ...stage.files,
+          ],
+          stage.id === "resource"
+            ? { ...environment, PATH: process.env.PATH }
+            : environment,
+        );
+      }
+      stage.counts = JSON.parse(readFileSync(countsPath, "utf8"));
+      if (!validNativeCounts(stage.counts))
+        throw Error(
+          `Native stage executed no passing cases or retained failures: ${stage.id}`,
+        );
+      if (family === "smoke" && stage.id === "feature") {
+        if (!existsSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE))
+          throw Error(
+            "The native window-state plugin did not persist geometry.",
+          );
+        const geometry = JSON.parse(
+          readFileSync(environment.LAPIS_DESKTOP_ACCEPTANCE_STATE, "utf8"),
+        );
+        if (!(geometry.main?.width > 0 && geometry.main?.height > 0))
+          throw Error("Native geometry evidence is empty");
+      }
+      stage.status = "passed";
+    } catch (error) {
+      stage.status = "failed";
+      stage.error = error.message;
+      if (existsSync(countsPath)) {
+        try {
+          stage.counts = JSON.parse(readFileSync(countsPath, "utf8"));
+        } catch (reportError) {
+          stage.reportError = reportError.message;
+        }
+      }
+      failures.push(error);
+      if (error.cancelled) {
+        stage.status = "cancelled";
+        break;
+      }
+    } finally {
+      stage.durationMs = Math.round(performance.now() - stageStarted);
+      save();
+    }
+  }
+  report.durationMs = Math.round(performance.now() - started);
+  report.status = failures.some((error) => error.cancelled)
+    ? "cancelled"
+    : failures.length
+      ? "failed"
+      : "passed";
+  save();
+  if (process.env.GITHUB_STEP_SUMMARY)
+    appendFileSync(
+      process.env.GITHUB_STEP_SUMMARY,
+      `### Native ${family}: ${report.status}\n\nSource: ${report.sourceRevision}; profile: ${report.profile}; artifact: ${report.artifactId}\n\n` +
+        report.stages
+          .map(
+            (stage) =>
+              `- ${stage.id}: ${stage.status}, ${stage.durationMs} ms; ${JSON.stringify(stage.counts ?? { notExecuted: true })}\n`,
+          )
+          .join(""),
+    );
+  if (failures.length) {
+    const error = new AggregateError(
+      failures,
+      `Native ${family} acceptance failed`,
+    );
+    error.cancelled = report.status === "cancelled";
+    throw error;
+  }
+  return report;
+}
+
+export async function acceptance(args = process.argv.slice(2), execute = run) {
+  const options = parseAcceptanceArgs(args);
+  if (process.platform !== "darwin" || process.arch !== "arm64")
+    throw Error("M0.1 native acceptance requires macOS ARM64.");
+  const prepared = await prepareAcceptance({
+    execute,
+    reuseArtifact: options.reuseArtifact,
+  });
+  if (options.operation === "prepare") return prepared;
+  const failures = [];
+  for (const family of selectNativeFamilies(options.family)) {
+    try {
+      await executeNativeFamily(family, prepared, execute);
+    } catch (error) {
+      if (error.cancelled) throw error;
+      failures.push(error);
+    }
+  }
+  if (failures.length)
+    throw new AggregateError(failures, "Native acceptance families failed");
 }
 if (
   process.argv[1] &&

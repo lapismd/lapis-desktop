@@ -1,3 +1,4 @@
+import { quarantine } from "./native-quarantine.mjs";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import {
@@ -104,7 +105,7 @@ test("startup retry uses a fresh owner after external layout repair and retains 
 test(
   "session Safe Mode preserves configuration across guarded reload and explicit layout reset restores normal startup",
   {
-    skip: "Hosted ARM64 quarantine E-CI-044: Safe Mode reload wait timed out after 5000ms.",
+    ...quarantine("safe-mode-reload"),
   },
   async (context) => {
     const { layout, core, session, browser, configBytes } = await fixture(
