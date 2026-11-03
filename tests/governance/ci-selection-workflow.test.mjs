@@ -130,10 +130,16 @@ test("paired ARM64 diagnostics reuse the normal artifact and never qualify a rel
   const rust = JSON.stringify(rustJob);
   assert.match(rust, /native-acceptance-artifact/u);
   assert.match(rust, /ci-acceptance-artifact\.mjs verify/u);
+  assert.match(rust, /Install pinned Jujutsu tooling/u);
+  assert.match(rust, /validation\/install-tools\.mjs --ci/u);
   assert.match(rust, /rust-backup-diagnostic\.mjs/u);
   assert.match(rust, /LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC/u);
   assert.ok(
     rust.indexOf("ci-acceptance-artifact.mjs verify") <
+      rust.indexOf("rust-backup-diagnostic.mjs"),
+  );
+  assert.ok(
+    rust.indexOf("validation/install-tools.mjs --ci") <
       rust.indexOf("rust-backup-diagnostic.mjs"),
   );
   assert.ok(

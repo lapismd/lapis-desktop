@@ -13,13 +13,13 @@ ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
 editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for an
-exact path redirected to a verified tarball. Fixtures pin tools and Server
-peers; unverified paths/file peers reject. [Local intake](local-dependencies.md)
-governs pins, refreshes, the Bits patch and released-cohort gates (E-CI-015/018;
-LD-GOV-006/008). Native readiness matches split/log-batched receipts without
-longer deadlines. Hosted test logs stream live (E-CI-009). The e2e entry shares
-early progress, then imports runtime instrumentation; ordinary bundles reject
-its startup capture marker. Canonical owners include planned
+exact path redirected to a verified tarball. ARM64 Original requires pinned `jj`
+for evidence. [Local intake](local-dependencies.md) governs pins, refreshes, the
+Bits patch and released-cohort gates (E-CI-015/018; LD-GOV-006/008). Native
+readiness matches split/log-batched receipts without longer deadlines. Hosted
+test logs stream live (E-CI-009). The e2e entry shares early progress, then
+imports runtime instrumentation; ordinary bundles reject its startup capture
+marker. Canonical owners include planned
 [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).

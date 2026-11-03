@@ -361,4 +361,8 @@ than macOS ARM64. It requires the pinned Core revision, verifies that the scoped
 `repository_original` binary has only the intended ignored case, runs that exact
 case alone, then runs only that binary with `--include-ignored`. Both stages use
 the safe Core diagnostics, retain one non-qualifying attempt report and never
-retry automatically or enable unrelated ignored helpers.
+retry automatically or enable unrelated ignored helpers. The lane installs the
+checksum-verified repository-pinned Jujutsu executable before inventory because
+the original fixture creates a real stock repository with that CLI. Failure to
+launch the fixture executable precedes backup initialization and cannot qualify
+the quarantine or establish its reported mechanism.

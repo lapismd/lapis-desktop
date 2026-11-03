@@ -112,10 +112,13 @@ with `--include-ignored`; crate-wide ignored tests remain prohibited. Diagnostic
 Rust MUST depend on the same current-attempt acceptance producer and restore its
 genuine AI resources through the artifact's source, run, attempt, platform,
 toolchain, file, permission and symlink verifier before Cargo inventory. Missing
-or mismatched resources fail before the original case. Diagnostic inputs use
-separate concurrency and suppress the full-source marker even when all ordinary
-gates pass. Each diagnostic remains a fresh, non-retrying, non-qualifying
-result.
+or mismatched resources fail before the original case. Before inventory, the
+lane MUST install and verify the repository-pinned Jujutsu executable because
+the unchanged Original repository fixture invokes that external stock CLI.
+Missing fixture tooling is a harness failure and is not ARM64 backup evidence.
+Diagnostic inputs use separate concurrency and suppress the full-source marker
+even when all ordinary gates pass. Each diagnostic remains a fresh,
+non-retrying, non-qualifying result.
 
 ## Scheduled validation and rollout
 

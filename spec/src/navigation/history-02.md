@@ -241,4 +241,6 @@
 
 - [Verified resources for ARM64 Rust diagnostics](../history/E-CI-051.md)
 
+- [Pinned Jujutsu for the Original ARM64 fixture](../history/E-CI-052.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)
