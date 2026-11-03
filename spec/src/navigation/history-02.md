@@ -263,4 +263,6 @@
 
 - [Await native reader collections and retain failed reload requests](../history/E-CI-062.md)
 
+- [Close secondary windows without stale driver context selection](../history/E-CI-063.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

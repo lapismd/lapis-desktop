@@ -102,7 +102,12 @@ view families also run with explicit native metadata selection; hidden reads
 cannot replace their visible workspace gate. Native Search selection stays
 unavailable in this metadata-only intake. Bounded driver observations retain
 handles immediately before and after secondary close and when main restoration
-fails (E-CI-060). They never recreate, show, focus or retry a vanished window.
+fails (E-CI-060). The fixture requests one native close from the admitted
+secondary renderer, then observes until `main` is present and the secondary
+handle is absent before explicitly restoring `main` (E-CI-063). It MUST NOT use
+a driver close hook that selects a handle returned by the close response. It
+never recreates, shows, focuses or retries a vanished window; disappearance
+before the native close request remains an immediate failure.
 
 Native fixture tools MUST resolve from the selected runner installation before
 hardening the application PATH. Repository fixtures retain that absolute JJ
