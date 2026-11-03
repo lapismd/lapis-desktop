@@ -179,3 +179,14 @@ first transcript-bearing checkpoint, failing with the inspected commit/path
 inventory if none exists. The 30-second waits, 180-second case deadline, guarded
 restore, exact bytes, cold reopen and no-prompt-replay assertions remain
 unchanged. A new complete workflow attempt is required.
+
+Complete paired run `41618655199` at the same `a389fb33` head passed all three
+normal native families and the ARM64 backup diagnostic. The original ignored
+case passed 1/1 in isolation and the scoped `repository_original` binary passed
+4/4 with Core diagnostics enabled; all fixed initialization stages reported
+success. This is affected-platform non-reproduction, not a root-cause repair,
+quarantine removal or qualification. The paired ACP job still stopped before the
+original callback: its attempt receipt invoked `jj log @` even though Actions
+provides a Git-only checkout. Hosted receipts now use the already validated
+40-hex `GITHUB_SHA`; local diagnostics retain their Jujutsu snapshot. A complete
+new attempt remains required.

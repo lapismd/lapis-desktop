@@ -76,6 +76,15 @@ split `--reuse-artifact` from its value; the fail-closed parser correctly
 rejected that invocation. The follow-up passes the selector as one
 `--reuse-artifact=<manifest>` token.
 
+Complete paired run `41618655199` at `a389fb33` passed every normal native
+family and the ARM64 backup diagnostic. The original case passed 1/1 alone and
+the scoped Original integration group passed 4/4 with every fixed Core
+initialization stage successful. This is affected-platform non-reproduction, not
+a root-cause repair or authority to remove the Rust quarantine. The paired ACP
+diagnostic still did not execute: its receipt tried `jj log @` in the Git-only
+Actions checkout. The follow-up records validated `GITHUB_SHA` for hosted
+attempts and retains Jujutsu snapshot capture locally.
+
 Ordinary PR run `41618609548` at `a389fb33` retained a separate enabled
 services-family transcript-backup failure. The preserved DOM and native artifact
 show that the selected `a8989560` checkpoint contained only startup skill-file
@@ -116,14 +125,16 @@ environment or substitute a host fallback for a failed Docker validation lane.
 
 Complete these steps in order:
 
-1. Run a new complete paired attempt after the verified-resource, pinned-`jj`
-   and artifact-selector harness repairs. Preserve runs `41601703657` and
-   `41609246251`; do not use a failed-job-only rerun.
+1. Run a new complete paired attempt after the verified-resource, pinned-`jj`,
+   artifact-selector and hosted-source-receipt repairs. Preserve runs
+   `41601703657`, `41609246251` and `41618655199`; do not use a failed-job-only
+   rerun.
 2. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
    isolation and normal family order. Retain lifecycle/handle diagnostics. A
    vanished window remains a failure and must not be recreated automatically.
-3. Run the original ARM64 backup case and its scoped integration group with
-   `LAPIS_APP_BACKUP_DIAGNOSTICS=1`. Linux non-reproduction is not ARM64 proof.
+3. Retain the first ARM64 backup non-reproduction from run `41618655199`; do not
+   remove its quarantine until the separately required reviewed qualification
+   boundary is met.
 4. Fix only demonstrated failures in their owning repository and rerun the
    complete workflow; a failed-only rerun cannot qualify the candidate.
    Reproduce the enabled terminal-reopen and preview-recovery failures at their

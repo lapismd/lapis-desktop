@@ -247,4 +247,6 @@
 
 - [Transcript-bearing checkpoint selection](../history/E-CI-054.md)
 
+- [Hosted diagnostic receipt identity](../history/E-CI-055.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)
