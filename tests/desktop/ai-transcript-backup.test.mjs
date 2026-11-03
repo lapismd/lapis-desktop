@@ -80,20 +80,27 @@ async function selectRevision(browser, id) {
 
 async function revisions(browser) {
   const selector = `${panel} ol[aria-label="Revision graph"] > li`;
-  const ids = await browser.execute(
-    (selector) =>
-      Array.from(document.querySelectorAll(selector))
-        .map(
-          (row) =>
-            row
-              .querySelector(
-                ':scope > .repository-graph-row button[data-side="commit"]',
-              )
-              ?.getAttribute("aria-label")
-              ?.match(/Copy Git commit SHA ([0-9a-f]{40})$/u)?.[1],
-        )
-        .filter(Boolean),
-    selector,
+  let ids;
+  await browser.waitUntil(
+    async () => {
+      ids = await browser.execute(
+        (selector) =>
+          Array.from(document.querySelectorAll(selector))
+            .map(
+              (row) =>
+                row
+                  .querySelector(
+                    ':scope > .repository-graph-row button[data-side="commit"]',
+                  )
+                  ?.getAttribute("aria-label")
+                  ?.match(/Copy Git commit SHA ([0-9a-f]{40})$/u)?.[1],
+            )
+            .filter(Boolean),
+        selector,
+      );
+      return ids.length > 1;
+    },
+    { timeout: 30000 },
   );
   assert.ok(ids.length > 1, "History includes a root and saved revisions");
   // The oldest graph row is the parentless root, which has no comparison.

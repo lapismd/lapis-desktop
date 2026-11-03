@@ -138,8 +138,9 @@ compiler exception admits one `state_referenced_locally` diagnostic for
 
 All jj-store crates use git revision `7a98bd89d2bc77fb6ec41f91186992abb19ba161`.
 Native application crates use lapis-server
-`4150cac6f2fef28b128421e4e3a851b848acdcf3`, restoring projection engines through
-exact owning Plugins, Tasks and Docs Git commits. Terminal Rust uses
+`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa`, retaining safe opt-in backup
+initialization and shutdown diagnostics while restoring projection engines
+through exact owning Plugins, Tasks and Docs Git commits. Terminal Rust uses
 `2463f944149d753eaf638cf876393a6f60f50190`, retaining attachment/ordered capture
 repairs and PR #12's fenced detach/remount sink. Its source race, real PTY
 stress, 109 Rust tests, strict Clippy and hosted gate pass; E-CI-013 keeps the

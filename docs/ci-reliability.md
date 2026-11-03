@@ -58,12 +58,12 @@ recreating the foreign window. Readiness now stops polling after the listener
 responds and retains one 15-second deadline plus the shell-ready assertion.
 
 Backup diagnostics live in shared Core commit
-`3f79b7c6dc883929ad7810a61e5680a07d33ae0e`. In a debug diagnostic environment,
-`LAPIS_APP_BACKUP_DIAGNOSTICS=1` reports fixed initialization stages and safe
-error categories without native paths, credentials or error strings. The
-original ARM64 case and its scoped integration-test group must still run after
-intake; Linux non-reproduction does not resolve that failure or remove its
-quarantine.
+`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa`. In a debug diagnostic environment,
+`LAPIS_APP_BACKUP_DIAGNOSTICS=1` reports fixed initialization and shutdown
+stages with safe error categories, without native paths, credentials or error
+strings. The original ARM64 case and its scoped integration-test group must
+still run after intake; Linux non-reproduction does not resolve that failure or
+remove its quarantine.
 
 ## Artifact and retry boundaries
 
@@ -190,3 +190,22 @@ original callback: its attempt receipt invoked `jj log @` even though Actions
 provides a Git-only checkout. Hosted receipts now use the already validated
 40-hex `GITHUB_SHA`; local diagnostics retain their Jujutsu snapshot. A complete
 new attempt remains required.
+
+Ordinary run `41618609548` also retained two enabled workspace failures. The
+metadata panel activated while a same-leaf open was still completing and kept
+the prior file; the owning `@lapis-notes/api` regression failed before its
+source repair and now passes in lapis-notes PR #79. Desktop must consume a
+released registry package before that repair can qualify the native case. The
+preview conflict case began its later edit before the resolved review finished
+unmounting, so a stale review cleanup overwrote that edit. Acceptance now waits
+for the existing conflict review to disappear after the unchanged disk-version
+action, before performing and asserting the later edit. It does not extend a
+deadline, weaken an assertion or change product behavior.
+
+Fresh run `41630554968` at `c0e62124` narrowed the remaining Linux Rust failure.
+Both concurrent backup attempts completed every initialization stage through
+`HistoryIndexing`; the unchanged Original/Managed case then failed at its
+explicit `stop_backup` call. Its local exact case passed 1/1 and scoped group
+passed 4/4 with diagnostics, which are non-reproductions. Shared Core now adds
+fixed safe shutdown stages through final capture at `8a063516`; a new complete
+consumer run is required and the ARM64 quarantine remains unchanged.

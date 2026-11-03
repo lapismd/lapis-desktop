@@ -284,13 +284,13 @@ qualification alone does not mount the bundled AI plugin or admit execution.
 
 ## Retained History and Catalog panels
 
-History retains local-first conversation search, folder scope, active selection,
-archive/restore/delete and unavailable-record diagnostics. Catalog retains owner
-grouping, reserved commands, skill precedence, filtering, explicit tool opt-ins
-and source-file navigation. Both reuse the existing tree, toolbar and workspace
-presentation, with plugin-owned subscriptions and stale-result fences. Action
-failures retain current content and report through the owning App; unmount
-releases listeners and prevents late refresh publication.
+History retains local search, folder/selection, archive/restore/delete and
+unavailable diagnostics. Visibility may precede async revision publication;
+within the existing deadline acceptance still requires a parentless root and a
+saved revision. Catalog retains owner grouping, reserved commands, skill
+precedence/filtering, tool opt-ins and source navigation. Both reuse existing
+presentation with owned subscriptions and stale-result fences. Failures retain
+content through owning App reporting; unmount prevents late publication.
 
 Indexed History hits require a current local record and retain local metadata;
 index-only text matches remain visible. Index failure falls back to local

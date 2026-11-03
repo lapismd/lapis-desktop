@@ -43,6 +43,12 @@ separate Rust Original/Managed reader case is ignored only on macOS ARM64 after
 intermittent backup startup; Linux retains it. These cases remain unqualified;
 no production policy changes.
 
+Enabled conflict-recovery acceptance MUST observe completion of the existing
+review lifecycle before beginning a later edit. After invoking the unchanged
+resolution action, it waits for that review to unmount, then performs and
+asserts the later edit under the original case deadline. It MUST NOT race review
+cleanup, loosen content assertions or manufacture a replacement review.
+
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,
 vault lifetime and cold admission reset without visible UI or animation claims.

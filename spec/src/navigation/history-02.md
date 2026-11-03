@@ -249,4 +249,6 @@
 
 - [Hosted diagnostic receipt identity](../history/E-CI-055.md)
 
+- [Workspace recovery and backup shutdown diagnosis](../history/E-CI-056.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

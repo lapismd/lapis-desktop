@@ -46,9 +46,9 @@ qualified head `c05f6bcde1180fb2fb4a24ec962f6092a2f8ea03` contains:
   used by artifact producers and consumers.
 
 Shared Core branch `fix/backup-initialization-diagnostics-20261102` contains
-`3f79b7c6dc883929ad7810a61e5680a07d33ae0e`, which adds safe, opt-in backup
-initialization stage diagnostics. Desktop pins that reachable revision. Core
-`main` remains unchanged by this work.
+`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa`, which adds safe, opt-in backup
+initialization and shutdown stage diagnostics. Desktop pins that reachable
+revision. Core `main` remains unchanged by this work.
 
 Continuation update: Desktop head `c05f6bc` passed complete PR run `41553468043`
 and explicit full run `41562361935`, 25/25 jobs each, before PR #9 merged. The
@@ -94,6 +94,31 @@ delta introduced the transcript. The follow-up selects the oldest actual
 transcript-bearing delta and retains every restore, cold-reopen, no-replay
 assertion and original deadline.
 
+That run also retained two enabled workspace failures. The metadata panel race
+belongs to `@lapis-notes/api`: a same-leaf open completed after panel activation
+without updating the workspace fallback file. lapis-notes PR #79 contains the
+source regression and repair; Desktop must wait for its released registry
+version rather than commit a source alias. The preview conflict case raced its
+post-recovery edit with asynchronous review teardown. Desktop now waits for the
+existing conflict review to unmount after the unchanged recovery action before
+continuing; all content assertions and deadlines remain unchanged.
+
+Fresh PR run `41630554968` at `c0e62124` proved the Linux Original/Managed
+failure occurs after two successful initialization attempts, at the explicit
+`stop_backup` call. Local Linux exact and scoped cases passed and do not qualify
+that hosted failure. Core PR #16 extends safe opt-in diagnostics through final
+capture, watcher release and queue completion at `fd92fb52`; this is diagnostic
+instrumentation, not a repair.
+
+Paired run `41630557543` retained the affected-platform boundaries separately.
+Its original ARM64 backup case passed 1/1 and scoped group passed 4/4 with all
+initialization stages complete; that single non-reproduction neither repairs the
+cause nor removes the quarantine. Its original ACP foreign-window body executed
+and failed because the second WebView handle was gone. The enabled services
+family also read the History graph before the second saved revision published;
+the follow-up waits within the existing 30-second boundary for the unchanged
+root-plus-saved-revisions assertion before selecting the transcript delta.
+
 ## Verified local state
 
 - 718 governance and renderer Node tests and 746 AI tests passed without
@@ -125,31 +150,34 @@ environment or substitute a host fallback for a failed Docker validation lane.
 
 Complete these steps in order:
 
-1. Run a new complete paired attempt after the verified-resource, pinned-`jj`,
-   artifact-selector and hosted-source-receipt repairs. Preserve runs
-   `41601703657`, `41609246251` and `41618655199`; do not use a failed-job-only
+1. Release the merged lapis-notes PR #79 source repair through version PR #71
+   after its release candidate is validated, then consume that published semver
+   package in Desktop. Do not commit a local source alias or projected package
+   workaround.
+2. Run a new complete paired attempt after the preview synchronization and Core
+   shutdown-diagnostic intake. Preserve runs `41601703657`, `41609246251`,
+   `41618655199`, `41618609548` and `41630554968`; do not use a failed-job-only
    rerun.
-2. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
+3. Run the original metadata/ACP secondary-window scenarios on macOS ARM64 in
    isolation and normal family order. Retain lifecycle/handle diagnostics. A
    vanished window remains a failure and must not be recreated automatically.
-3. Retain the first ARM64 backup non-reproduction from run `41618655199`; do not
+4. Retain the first ARM64 backup non-reproduction from run `41618655199`; do not
    remove its quarantine until the separately required reviewed qualification
    boundary is met.
-4. Fix only demonstrated failures in their owning repository and rerun the
-   complete workflow; a failed-only rerun cannot qualify the candidate.
-   Reproduce the enabled terminal-reopen and preview-recovery failures at their
-   original narrow boundaries before any change. Retain ordinary run
-   `41618609548` as the transcript-checkpoint test-race failure.
-5. Obtain one complete explicit full run on the exact candidate SHA, then at
+5. Fix only demonstrated failures in their owning repository and rerun the
+   complete workflow; a failed-only rerun cannot qualify the candidate. Retain
+   ordinary run `41618609548` as the transcript and workspace failure evidence,
+   and run `41630554968` as the demonstrated backup-stop failure.
+6. Obtain one complete explicit full run on the exact candidate SHA, then at
    least one complete scheduled run from canonical `main`. Scheduled evidence
    never authorizes release by itself.
-6. Compare cold and warm hosted preparation, effective Rust cache identities,
+7. Compare cold and warm hosted preparation, effective Rust cache identities,
    compiled-crate work, artifact transfer and family/catalog durations. Report
    measured values; do not infer a speedup from cache-hit labels.
-7. Keep `LAPIS_CI_NARROW_PROFILES` unset until complete hosted full/nightly
+8. Keep `LAPIS_CI_NARROW_PROFILES` unset until complete hosted full/nightly
    evidence qualifies the selection. Only then may the repository variable be
    set to `qualified` in a separately reviewed rollout.
-8. Keep the shared Core diagnostics PR separate from any demonstrated root-cause
+9. Keep the shared Core diagnostics PR separate from any demonstrated root-cause
    repair. A diagnostics-only revision is not a repair.
 
 Quarantines remain unchanged until original enabled scenarios pass on the

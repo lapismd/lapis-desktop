@@ -108,3 +108,12 @@ every reported initialization stage completed successfully. This is an
 affected-platform non-reproduction, not a root-cause repair or authority to
 remove the quarantine. The same run's ACP diagnostic stopped before its body
 because its hosted receipt attempted `jj log @` in the Git-only checkout.
+
+Fresh Linux run `41630554968` at `c0e62124` completed both initialization
+attempts through `HistoryIndexing`, then failed the unchanged case at its
+explicit `stop_backup` call. Local Linux exact (1/1) and scoped (4/4) executions
+passed with diagnostics and do not qualify the hosted failure. Core
+`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa` extends the same opt-in safe records
+through final capture, watcher release and queue completion. Run the unchanged
+exact and scoped cases on macOS ARM64 against that pin; do not remove the
+quarantine based on Linux success or diagnostics alone.
