@@ -229,7 +229,8 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
   assert.doesNotMatch(ci, /run-turbo\.mjs ci:headed\b/u);
   assert.match(ci, /node scripts\/ci\/docs\.mjs/);
   assert.doesNotMatch(ci, /jj@0\.45\.1/u);
-  assert.match(ci, /install-tools\.mjs --ci/u);
+  assert.doesNotMatch(ci, /install-tools\.mjs --ci/u);
+  assert.match(ci, /\.\/\.github\/actions\/setup-ci-tools/u);
   assert.match(ci, /LAPIS_DESKTOP_VALIDATION_RUNTIME: native/u);
   assert.match(ci, /runs-on: macos-15/u);
   const selectors = [

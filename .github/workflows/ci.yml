@@ -102,6 +102,27 @@ jobs:
           name: ci-plan-${{ github.run_attempt }}
           path: .local/ci-plan.json
           include-hidden-files: true
+  ci-tools:
+    name: Prepare verified CI tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    container:
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:0000000000000000000000000000000000000000000000000000000000000000
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Export image-owned cross-platform tools
+        run: |
+          node scripts/ci/tool-artifact.mjs export \
+            .local/ci-tools /opt/lapis-desktop-ci/tools
+          tar -cf .local/tools.tar -C .local ci-tools
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ci-tools-${{ github.run_attempt }}
+          path: .local/tools.tar
+          if-no-files-found: error
+          retention-days: 7
   governance:
     name: Governance
     runs-on: ubuntu-latest
@@ -117,12 +138,7 @@ jobs:
           node-version: 24.15.0
           cache: pnpm
           cache-dependency-path: .github/ci-docs/pnpm-lock.yaml
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
-      - name: Install mdBook
-        uses: taiki-e/install-action@v2
-        with:
-          tool: mdbook@0.5.4
+      - uses: ./.github/actions/setup-ci-tools
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
@@ -133,6 +149,7 @@ jobs:
         run: node scripts/ci/docs.mjs
     needs:
       - changes
+      - ci-tools
     if: needs.changes.outputs.governance == 'true'
     env:
       LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
@@ -153,8 +170,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
@@ -193,10 +209,6 @@ jobs:
             hashFiles('scripts/ci-sources.json') }}-${{
             env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
         run: node scripts/ci/timing.mjs finish rust-cache
-      - name: Install mdBook
-        uses: taiki-e/install-action@v2
-        with:
-          tool: mdbook@0.5.4
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
@@ -237,6 +249,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.quality == 'true'
     env:
@@ -260,8 +273,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
@@ -339,6 +351,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.unit == 'true'
     env:
@@ -361,8 +374,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - uses: actions/download-artifact@v8
@@ -397,6 +409,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.storybook_static == 'true'
     env:
@@ -430,8 +443,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - uses: actions/download-artifact@v8
@@ -477,6 +489,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.storybook_interaction == 'true'
   storybook-interaction:
@@ -510,8 +523,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
@@ -578,6 +590,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.bundle == 'true'
     env:
@@ -649,8 +662,7 @@ jobs:
           node-version: 24.15.0
           cache: pnpm
         if: needs.changes.outputs.linux == 'true'
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
         if: needs.changes.outputs.linux == 'true'
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
@@ -779,6 +791,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: always() && needs.changes.result == 'success'
     env:
@@ -799,8 +812,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - uses: actions/download-artifact@v8
@@ -826,6 +838,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.audit == 'true'
     env:
@@ -902,6 +915,7 @@ jobs:
     timeout-minutes: 25
     needs:
       - changes
+      - ci-tools
     if: needs.changes.outputs.prerequisites == 'true'
     strategy:
       fail-fast: false
@@ -918,8 +932,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Build pinned private public exports
@@ -979,6 +992,7 @@ jobs:
     timeout-minutes: 60
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.headed == 'true'
     env:
@@ -997,8 +1011,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Select configured macOS deployment minimum
@@ -1101,6 +1114,7 @@ jobs:
     timeout-minutes: 40
     needs:
       - changes
+      - ci-tools
       - prerequisites
       - native-prepare
     if: needs.changes.outputs.headed == 'true'
@@ -1123,8 +1137,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Select configured macOS deployment minimum
@@ -1185,6 +1198,7 @@ jobs:
     timeout-minutes: 40
     needs:
       - changes
+      - ci-tools
       - prerequisites
       - native-prepare
       - native-families
@@ -1205,8 +1219,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Select configured macOS deployment minimum
@@ -1255,6 +1268,7 @@ jobs:
     timeout-minutes: 40
     needs:
       - changes
+      - ci-tools
       - native-prepare
     if:
       github.event_name == 'workflow_dispatch' && inputs.rust_backup_diagnostic
@@ -1265,8 +1279,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Select configured macOS deployment minimum
         run: node scripts/native-build-environment.mjs --github-env
       - uses: dtolnay/rust-toolchain@1.99.0

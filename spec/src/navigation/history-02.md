@@ -237,7 +237,6 @@
 - [Exact hosted Node toolchain identity](../history/E-CI-049.md)
 
 - [Immutable Desktop CI tooling image source](../history/E-CI-050.md)
-
 - [Paired ARM64 diagnostic execution](../history/E-CI-065.md)
 
 - [Verified resources for ARM64 Rust diagnostics](../history/E-CI-051.md)
@@ -269,5 +268,7 @@
 - [Bind Terminal prompt readiness to the newly requested session](../history/E-CI-064.md)
 
 - [Exact Node runtime for paired ARM64 diagnostics](../history/E-CI-066.md)
+
+- [Verified Desktop CI tool artifact adoption](../history/E-CI-067.md)
 
 - [Image-owned publication verification](../history/E-CI-068.md)

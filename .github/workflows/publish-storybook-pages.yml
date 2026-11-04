@@ -22,10 +22,32 @@ env:
   LAPIS_DESKTOP_VALIDATION_RUNTIME: native
 
 jobs:
+  ci-tools:
+    name: Prepare verified CI tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    container:
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:0000000000000000000000000000000000000000000000000000000000000000
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Export image-owned cross-platform tools
+        run: |
+          node scripts/ci/tool-artifact.mjs export \
+            .local/ci-tools /opt/lapis-desktop-ci/tools
+          tar -cf .local/tools.tar -C .local ci-tools
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ci-tools-${{ github.run_attempt }}
+          path: .local/tools.tar
+          if-no-files-found: error
+          retention-days: 7
   build:
     name: Build static Storybook
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    needs: ci-tools
     steps:
       - name: Check out the default branch
         uses: actions/checkout@v6
@@ -39,8 +61,7 @@ jobs:
           node-version: 24.15.0
           cache: pnpm
 
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
 
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs

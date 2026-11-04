@@ -3,7 +3,6 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import {
   archiveMember,
-  ciToolDirectory,
   toolPins,
 } from "../../scripts/validation/install-tools.mjs";
 
@@ -79,14 +78,6 @@ test("unpublished packages stay registry ranges until install projection", async
   assert.throws(
     () => projectUnpublished(manifest, () => false),
     /Missing unpublished/,
-  );
-});
-
-test("hosted CI installs Jujutsu only into runner-owned temporary paths", () => {
-  assert.throws(() => ciToolDirectory({}), /runner-owned/);
-  assert.equal(
-    ciToolDirectory({ RUNNER_TEMP: "/tmp/runner", GITHUB_PATH: "/tmp/paths" }),
-    "/tmp/runner/lapis-desktop-validation-tools",
   );
 });
 

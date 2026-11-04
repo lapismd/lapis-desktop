@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { parse } from "yaml";
 
 import {
   imageReference,
@@ -59,4 +60,45 @@ test("image publication stays manual, protected and multi-architecture", async (
     /run:\s*node --test[^\n]*validation\.test\.mjs/u,
   );
   assert.doesNotMatch(workflow, /\bpush:\s*\n/u);
+});
+
+test("published image feeds verified current-attempt tools to every consumer", async () => {
+  const reference = imageReference(await loadImageManifest());
+  const workflows = [
+    ".github/workflows/ci.yml",
+    ".github/workflows/native-quarantine.yml",
+    ".github/workflows/publish-storybook-pages.yml",
+    ".github/workflows/release-desktop.yml",
+  ];
+  let consumers = 0;
+  for (const path of workflows) {
+    const source = await readFile(path, "utf8"),
+      workflow = parse(source),
+      producer = workflow.jobs["ci-tools"];
+    assert.equal(producer.container.image, reference, `${path} pins the image`);
+    assert.doesNotMatch(source, /install-tools\.mjs --ci/u);
+    assert.doesNotMatch(source, /taiki-e\/install-action/u);
+    for (const [name, job] of Object.entries(workflow.jobs)) {
+      if (
+        !(job.steps ?? []).some(
+          (step) => step.uses === "./.github/actions/setup-ci-tools",
+        )
+      )
+        continue;
+      consumers++;
+      assert.ok(
+        (Array.isArray(job.needs) ? job.needs : [job.needs]).includes(
+          "ci-tools",
+        ),
+        `${path} ${name} requires its producer`,
+      );
+    }
+  }
+  assert.equal(consumers, 14);
+  const action = await readFile(
+    ".github/actions/setup-ci-tools/action.yml",
+    "utf8",
+  );
+  assert.match(action, /ci-tools-\$\{\{ github\.run_attempt \}\}/u);
+  assert.match(action, /scripts\/ci\/tool-artifact\.mjs verify/u);
 });
