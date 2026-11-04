@@ -31,21 +31,13 @@
           "paths": [".>@wdio/cli>@wdio/config>glob>minimatch"]
         },
         {
-          "version": "5.1.9",
-          "paths": [".>@wdio/cli>create-wdio>ejs>jake>filelist>minimatch"]
-        },
-        {
-          "version": "3.1.5",
-          "paths": [".>@wdio/cli>create-wdio>recursive-readdir>minimatch"]
-        },
-        {
           "version": "10.2.6",
           "paths": [".>webdriverio>archiver>readdir-glob>minimatch"]
         }
       ],
       "status": "approved",
       "expires": "2026-11-30",
-      "reason": "Development-only WebdriverIO tooling on minimatch 3, 5, 9 and 10. The production audit reported no advisories. Minimatch 11 is not a drop-in replacement for those edges. Remove this exception when every listed edge is patched or gone.",
+      "reason": "Development-only WebdriverIO tooling on minimatch 9 and 10. The advisory no longer classifies the former minimatch 3 and 5 edges as vulnerable, and the production audit reported no advisories. Minimatch 11 is not a drop-in replacement for the retained edges. Remove this exception when every listed edge is patched or gone.",
       "approvedBy": "User, 2026-10-31"
     }
   ]

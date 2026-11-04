@@ -376,9 +376,9 @@ Native dependency refresh records the clean owning source revision and its
 qualification separately from consumer checks. E-CORE-047 qualifies the cd997c2c
 pin. Update only required lock graph edges; locked checks and packaged ACP
 acceptance must retain existing gates. Native privacy uses the shared scanner
-policy and released transitive versions. E-AI-030 records the compatible
-macro/TOML lock selection, both native profiles and the real-policy fixture; no
-registry patch or synthetic policy substitutes.
+policy and released transitive versions; E-DEPENDENCIES-004 refreshes current
+upstream findings. E-AI-030 records compatible macro/TOML lock selection, both
+native profiles and the real-policy fixture; no registry patch or substitute.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.

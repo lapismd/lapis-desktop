@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import { auditFindings } from "../../scripts/ci-audit.mjs";
 
@@ -108,5 +109,48 @@ test("incomplete reports and obsolete exceptions fail closed", () => {
     auditFindings(report({}), report({}), policy).some((line) =>
       line.includes("stale"),
     ),
+  );
+});
+
+test("current minimatch policy matches only the advisory's retained findings", () => {
+  const config = JSON.parse(
+    readFileSync("config/dependency-audit.json", "utf8"),
+  );
+  const rules = {
+    exceptions: config.exceptions.filter(
+      ({ advisory }) => advisory === "GHSA-g3hv-75wg-m249",
+    ),
+  };
+  const minimatch = {
+    github_advisory_id: "GHSA-g3hv-75wg-m249",
+    module_name: "minimatch",
+    severity: "moderate",
+    findings: [
+      {
+        version: "9.0.9",
+        paths: [".>@wdio/cli>@wdio/config>glob>minimatch"],
+      },
+      {
+        version: "10.2.6",
+        paths: [".>webdriverio>archiver>readdir-glob>minimatch"],
+      },
+    ],
+  };
+  assert.deepEqual(assess(minimatch, report({}), rules), []);
+  assert.ok(
+    assess(
+      {
+        ...minimatch,
+        findings: [
+          ...minimatch.findings,
+          {
+            version: "3.1.5",
+            paths: [".>@wdio/cli>create-wdio>recursive-readdir>minimatch"],
+          },
+        ],
+      },
+      report({}),
+      rules,
+    ).length,
   );
 });
