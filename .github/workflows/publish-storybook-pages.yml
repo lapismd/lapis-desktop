@@ -36,7 +36,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
 
       - name: Install Jujutsu into the runner temp directory

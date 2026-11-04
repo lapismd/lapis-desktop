@@ -232,3 +232,5 @@
 - [Hosted native artifact fanout diagnostics](../history/E-CI-048.md)
 
 - [Exact hosted Node toolchain identity](../history/E-CI-049.md)
+
+- [Immutable Desktop CI tooling image source](../history/E-CI-050.md)

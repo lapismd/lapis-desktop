@@ -186,6 +186,12 @@ native cache independently. Workspace isolation remains intact. Legacy native
 cache adoption requires the exact old key, owned volume labels and a retained
 migration receipt; normal Cargo source fingerprints remain authoritative.
 
+Hosted tooling uses the same separation. The manually published
+`lapis-desktop-ci` image layers pinned Rust and Desktop system prerequisites on
+the shared Lapis image and embeds checksum-verified Linux ARM64/x64 and macOS
+ARM64 Jujutsu/mdBook payloads. Image publication creates no release candidate;
+consumers remain disabled until a reviewed immutable registry digest is pinned.
+
 `E-VALIDATION-001` already qualifies the cache/image-key regressions, mounted
 cache bootstrap exclusion and complete runner/lease/guard suite. JavaScript
 metadata edits no longer rebuild tool images or invalidate identical native

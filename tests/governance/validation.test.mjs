@@ -7,12 +7,15 @@ import {
   toolPins,
 } from "../../scripts/validation/install-tools.mjs";
 
-test("hosted CI installs the pinned macOS Jujutsu archive", () => {
+test("hosted CI pins complete macOS tooling for image fanout", () => {
   assert.equal(
     toolPins("darwin", "arm64", true)[0][1],
     "jj-v0.45.1-aarch64-apple-darwin.tar.gz",
   );
-  assert.throws(() => toolPins("darwin", "arm64", false), /Unsupported/);
+  assert.deepEqual(
+    toolPins("darwin", "arm64", false).map(([tool]) => tool),
+    ["jj", "mdBook"],
+  );
   assert.equal(toolPins("linux", "arm64", true)[0][0], "jj");
 });
 

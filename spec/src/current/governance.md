@@ -383,11 +383,11 @@ registry patch or synthetic policy substitutes.
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-Local checks use quiet lanes; Docker is default and macOS lanes are opt-in
-(E-VALIDATION-004). Hosted CI runs those lanes, spec:first, the macOS bundle,
-headed acceptance and both Linux release targets with the exact tracked Node
-patch. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit cannot
-qualify native UI. [Acceptance modes](native-acceptance.md) retain
+Local Docker checks are quiet; macOS lanes are opt-in (E-VALIDATION-004). Hosted
+CI runs spec:first, macOS bundle/acceptance, both Linux targets and the exact
+Node patch. A digest-pinned tool image carries verified macOS tools without
+source or secrets. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden
+WebKit cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
 cold/hidden/headed/capture gates. Hosted prerequisites use exact commits and
 prepared public exports; tracked ranges stay portable. Native crates use the
 explicit git revisions in [dependency intake](local-dependencies.md). Renderer

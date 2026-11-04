@@ -69,7 +69,7 @@ export default defineConfig(
         rules: [
           {
             pattern:
-              "^(?:scripts/ci/|tests/governance/ci-selection|\\.github/workflows/ci\\.yml$)",
+              "^(?:\\.ci/|scripts/ci/|tests/governance/ci-selection|\\.github/workflows/ci\\.yml$)",
             chapters: ["spec/src/current/ci.md"],
           },
           {
