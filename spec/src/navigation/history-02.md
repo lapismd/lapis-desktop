@@ -132,6 +132,7 @@
 - [Parallel hosted CI](../history/E-VALIDATION-007.md)
 - [Sibling install projection](../history/E-VALIDATION-008.md)
 - [Linux release binaries and Storybook Pages](../history/E-VALIDATION-009.md)
+- [Reachable portable sources and one private projection](../history/E-VALIDATION-010.md)
 - [Actual provider reload-detach preflight](../history/E-CORE-024.md)
 - [Trusted native target default modes](../history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](../history/E-CORE-026.md)

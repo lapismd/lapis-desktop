@@ -8,6 +8,7 @@ import {
   laneInvocations,
   workerEnvironment,
   bootstrapIgnore,
+  projectArchives,
   specFirstArgs,
 } from "./model.mjs";
 import { execute } from "./process.mjs";
@@ -131,12 +132,7 @@ try {
       lockPath = join(root, "pnpm-lock.yaml");
     const original = await readFile(packagePath),
       lock = await readFile(lockPath);
-    const pkg = JSON.parse(original);
-    pkg.devDependencies = { ...pkg.devDependencies, ...overrides };
-    pkg.pnpm = {
-      ...pkg.pnpm,
-      overrides: { ...pkg.pnpm?.overrides, ...overrides },
-    };
+    const pkg = projectArchives(JSON.parse(original), overrides);
     try {
       await writeFile(packagePath, JSON.stringify(pkg));
       await execute(

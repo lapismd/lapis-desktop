@@ -8,7 +8,43 @@ import {
   exportNativeSources,
   restoreNativeSources,
 } from "../../scripts/validation/native-sources.mjs";
-import { bootstrapIgnore, laneImage } from "../../scripts/validation/model.mjs";
+import {
+  bootstrapIgnore,
+  laneImage,
+  projectArchives,
+} from "../../scripts/validation/model.mjs";
+
+test("portable shared sources match hosted preparation sources", async () => {
+  const native = JSON.parse(
+    await readFile("scripts/validation/native-sources.json", "utf8"),
+  );
+  const hosted = JSON.parse(await readFile("scripts/ci-sources.json", "utf8"));
+  const revision = (sources, name) =>
+    sources.find((source) => source.name === name)?.revision;
+  for (const name of ["lapis-notes", "lapis-ai", "jj-store", "lapis-plugins"]) {
+    assert.match(revision(native, name), /^[a-f0-9]{40}$/u);
+    assert.equal(revision(native, name), revision(hosted, name));
+  }
+});
+
+test("portable archives replace their declared root ranges without duplicate contexts", () => {
+  const manifest = {
+    dependencies: { "@lapismd/ai": "^0.2.0" },
+    devDependencies: { tool: "1.0.0" },
+    pnpm: { overrides: { existing: "2.0.0" } },
+  };
+  const projected = projectArchives(manifest, {
+    "@lapismd/ai": "file:/input/ai.tgz",
+  });
+  assert.equal(projected.dependencies["@lapismd/ai"], "file:/input/ai.tgz");
+  assert.equal(projected.devDependencies["@lapismd/ai"], undefined);
+  assert.deepEqual(projected.pnpm.overrides, { existing: "2.0.0" });
+  assert.deepEqual(manifest.dependencies, { "@lapismd/ai": "^0.2.0" });
+  assert.throws(
+    () => projectArchives(manifest, { missing: "file:/input/missing.tgz" }),
+    /not declared/,
+  );
+});
 
 test("native aggregate and protocol lanes select the pinned Rust toolchain", () => {
   for (const lane of [

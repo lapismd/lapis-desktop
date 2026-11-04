@@ -61,8 +61,10 @@ writer remain prohibited.
 Portable validation MUST declare every unpublished or linked package as a
 checksum-pinned archive prerequisite, resolve an isolated projected lock before
 frozen installation and restore tracked dependency files before checking the
-source. The current inventory below and distribution backlog govern remaining
-transitions; private prerequisites do not qualify registry-only distribution.
+source. The projection replaces each declared root range in its existing
+dependency section and MUST NOT add a duplicate development or peer context. The
+current inventory below and distribution backlog govern remaining transitions;
+private prerequisites do not qualify registry-only distribution.
 
 A dynamically installed plugin retains its signed build source and exact archive
 hash. A documentation-only successor is equivalent only after verifying
@@ -103,7 +105,11 @@ Notes' private App Profile is built from Notes
 Its verified 35,323-byte archive has SHA-256
 `c963d3d1f2517eceb7e3ccdc1d69f2acbe5b7777cf714d35bc1860d84d0c37fa`. Hosted CI
 builds this same committed public boundary, without source aliases, bundled
-node_modules or a second chat writer.
+node_modules or a second chat writer. Portable validation MUST export that same
+reachable commit rather than an abandoned or source-local identity
+(E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources MUST also
+match the exact reachable commits used by hosted preparation; no fallback or
+equal-tree substitution is allowed.
 
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History

@@ -388,11 +388,11 @@ CI runs spec:first, macOS bundle/acceptance, both Linux targets and the exact
 Node patch. A digest-pinned tool image carries verified macOS tools without
 source or secrets. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden
 WebKit cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
-cold/hidden/headed/capture gates. Hosted prerequisites use exact commits and
-prepared public exports; tracked ranges stay portable. Native crates use the
-explicit git revisions in [dependency intake](local-dependencies.md). Renderer
-tests preload tsx; receipts need full ancestry. Semantic `spec:search` uses
-current/backlog QMD outside CI. Native build heaps use half constrained or
+cold/hidden/headed/capture gates. Hosted and portable prerequisites share exact
+reachable commits and prepared public exports; ranges stay portable. Native
+crates use explicit git revisions in [dependency intake](local-dependencies.md).
+Renderer tests preload tsx; receipts need full ancestry. Semantic `spec:search`
+uses current/backlog QMD outside CI. Native build heaps use half constrained or
 physical RAM, capped at 6 GiB.
 
 Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
