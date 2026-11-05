@@ -41,7 +41,7 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
       "@lapismd/agent-ui": "^0.2.0",
       "@lapismd/repository-ui": "^0.1.1",
       "@lapismd/design-core": "^0.8.0",
-      "@lapis-notes/workspace": "^0.3.1",
+      "@lapis-notes/workspace": "^0.3.4",
       "@lapismd/terminal": "^0.1.2",
       "@lapis-notes/bases": "^0.2.0",
       "@lapis-notes/history": "^0.2.0",
@@ -62,7 +62,7 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
   assert.deepEqual(manifest, original);
   assert.equal(projected.dependencies["@lapismd/repository-ui"], "^0.1.1");
   assert.equal(projected.dependencies["@lapismd/design-core"], "^0.8.0");
-  assert.equal(projected.dependencies["@lapis-notes/workspace"], "^0.3.1");
+  assert.equal(projected.dependencies["@lapis-notes/workspace"], "^0.3.4");
   assert.equal(projected.dependencies["@lapismd/terminal"], "^0.1.2");
   assert.equal(projected.dependencies["@lapismd/agent-ui"], "^0.2.0");
   assert.equal(projected.dependencies["@lapis-notes/bases"], "^0.2.0");
@@ -108,20 +108,37 @@ test("native fixtures install plugins before importing the release signer", () =
   assert.match(source, /node_modules\/fflate\/package\.json/);
 });
 
-test("Design Core 0.8.0 is the only resolved copy so API has one peer context", () => {
+test("the released Notes cohort has one current Design Core and API peer context", () => {
   const workspace = readFileSync("pnpm-workspace.yaml", "utf8");
   const lock = readFileSync("pnpm-lock.yaml", "utf8");
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
-  assert.match(workspace, /"@lapismd\/design-core": "0\.8\.0"/);
+  const source = JSON.parse(readFileSync("scripts/ci-sources.json", "utf8"));
+  const nativeSource = JSON.parse(
+    readFileSync("scripts/validation/native-sources.json", "utf8"),
+  );
+  const notesRevision = "40b9ba8ee569a737a0ace77870a094972ee6f768";
+  assert.equal(
+    source.find((entry) => entry.name === "lapis-notes")?.revision,
+    notesRevision,
+  );
+  assert.equal(
+    nativeSource.find((entry) => entry.name === "lapis-notes")?.revision,
+    notesRevision,
+  );
+  assert.match(workspace, /"@lapismd\/design-core": "0\.10\.1"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
-  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.2.3");
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.2.6");
+  assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.2");
+  assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.1.7");
+  assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.3.4");
+  assert.equal(manifest.dependencies["@lapismd/ai-host"], "^0.3.0");
   assert.equal(manifest.dependencies["@lapismd/mira"], "~0.1.4");
-  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.8.0");
+  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.10.1");
   assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
-  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.2\.3\([^']+\)':$/gm);
+  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.2\.6\([^']+\)':$/gm);
   assert.equal(contexts?.length, 1);
-  assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.7\./);
-  assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.7\./);
+  assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.[0-9]\./);
+  assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.[0-9]\./);
 });
 
 test("native Tasks fixtures unpack the packed pin instead of the registry install", () => {

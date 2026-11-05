@@ -85,14 +85,13 @@ retain their owning contracts.
 
 ## Current registry and private inputs
 
-E-CI-030 selects the published cohort on the API 0.2.3 intake from E-CI-017.
-E-DEPENDENCIES-002 refreshes compatible UI/Markdown patches while retaining the
-private Profile/API source pair. Declared minima are API 0.2.3, UI 0.1.6,
-Markdown 0.2.1, Workspace 0.3.1, Mira ~0.1.4, Core ^0.8.0, Agent UI ^0.2.0,
-Repository UI ^0.1.1, Bases ^0.2.0, History ^0.2.0, Tasks ^0.1.1 and Terminal
-0.1.2. Mira companions remain ~0.0.3. API stays the published 0.2.3 package and
-is not republished. Final frozen-graph, audit, portable and hosted native
-qualification remains pending; a declared minimum is not consumer acceptance.
+E-DEPENDENCIES-005 selects the released Notes framework cohort from source
+`40b9ba8ee569a737a0ace77870a094972ee6f768`. Declared minima are API 0.2.6, File
+Explorer 0.2.2, UI 0.1.7, Workspace 0.3.4, AI Host 0.3.0, Design Core 0.10.1,
+Markdown 0.2.1, Mira ~0.1.4, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases
+^0.2.0, History ^0.2.0, Tasks ^0.1.1 and Terminal 0.1.2. Mira companions remain
+~0.0.3. Final frozen-graph, audit, portable and hosted native qualification
+remains pending; a declared minimum is not consumer acceptance.
 
 E-CI-017's intermediate API 0.2.3/Core 0.7.3 input passed full quality, 596 Node
 and 746 policy cases, 259 Linux Rust tests, all 2,128 cold catalog cases,
@@ -100,16 +99,14 @@ renderer and static builds. Two Rust tests retain their existing ignores; four
 macOS-only cases are not collected on Linux. Those passes do not transfer to
 this selected cohort.
 
-Notes' private App Profile is built from Notes
-`e99baa742483ace8177b22fbdec3eed11867eedc` and must depend on API 0.2.3 exactly.
-Its verified 35,323-byte archive has SHA-256
-`c963d3d1f2517eceb7e3ccdc1d69f2acbe5b7777cf714d35bc1860d84d0c37fa`. Hosted CI
-builds this same committed public boundary, without source aliases, bundled
-node_modules or a second chat writer. Portable validation MUST export that same
-reachable commit rather than an abandoned or source-local identity
-(E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources MUST also
-match the exact reachable commits used by hosted preparation; no fallback or
-equal-tree substitution is allowed.
+Notes' private App Profile is built from the same Notes
+`40b9ba8ee569a737a0ace77870a094972ee6f768` release source as the published
+framework cohort. Hosted CI builds this committed public boundary without source
+aliases, bundled node_modules or a second chat writer. Portable validation MUST
+export that same reachable commit rather than an abandoned or source-local
+identity (E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources
+MUST also match the exact reachable commits used by hosted preparation; no
+fallback or equal-tree substitution is allowed.
 
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History
@@ -123,14 +120,14 @@ are App Profile and AI. Both remain intentionally private. JJ Conversations
 registry ranges and verify every active private archive import route; the
 resulting graph does not qualify registry-only application distribution.
 
-Design Core ^0.8.0 is the published range. The root pnpm override resolves every
-`@lapismd/design-core` copy to 0.8.0, including peers declared as `^0.7.x`, so
-`@lapis-notes/api` has one peer context (E-CI-033). Every Bits copy retains the
+Design Core ^0.10.1 is the published range. The root pnpm override resolves
+every `@lapismd/design-core` copy to 0.10.1, including compatible older peer
+ranges, so `@lapis-notes/api` has one peer context. Every Bits copy retains the
 exact root patch below. `@dnd-kit/dom` and `@dnd-kit/svelte` are selected at
-0.4.x, resolving the recorded 0.4.0 source, because API 0.2.3 peers require
-`^0.4.0`. Peer warnings stay visible; do not suppress them. API 0.2.3 still
+0.4.x, resolving the recorded 0.4.0 source, because API 0.2.6 peers require
+`^0.4.0`. Peer warnings stay visible; do not suppress them. API 0.2.6 still
 peers Mira `~0.1.3` while Desktop selects `~0.1.4`. Do not silence that warning
-and do not move Desktop back to Mira 0.1.3 or Design Core 0.7.4. The approved
+and do not move Desktop back to Mira 0.1.3 or Design Core 0.8.0. The approved
 compiler exception admits one `state_referenced_locally` diagnostic for
 `@dnd-kit/svelte@0.4.0` `dist/core/context/DragDropProvider.svelte`, SHA-256
 `9750aa31f409e0f6be0e70b3fef6c8d8e8e447ff25b150fbc2dd4bec4781eaab`, through

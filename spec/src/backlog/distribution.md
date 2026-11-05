@@ -116,13 +116,13 @@ archive prerequisite. Preserve portable tracked ranges and validate the
 resulting consumer; do not conceal the missing package through a source alias or
 copied implementation.
 
-Workspace 0.3.1, Terminal 0.1.2, Mira ~0.1.4 and Core ^0.7.4 are published.
-E-CI-017 removes the Workspace and Terminal npm projections. E-CI-030 removes
-the Agent UI, Bases, History and Tasks npm projections while retaining native
-plugin fixture sources and qualified Rust git pins. AI, App Profile and JJ
-Conversations remain private archive prerequisites. This does not qualify
-registry-only distribution. Final released-cohort consumer qualification remains
-pending.
+Workspace 0.3.4, API 0.2.6, UI 0.1.7, File Explorer 0.2.2, AI Host 0.3.0,
+Terminal 0.1.2, Mira ~0.1.4 and Core 0.10.1 are published. E-CI-017 removes the
+Workspace and Terminal npm projections. E-CI-030 removes the Agent UI, Bases,
+History and Tasks npm projections while retaining native plugin fixture sources
+and qualified Rust git pins. AI, App Profile and JJ Conversations remain private
+archive prerequisites. This does not qualify registry-only distribution. Final
+released-cohort consumer qualification remains pending.
 
 UI and Tasks' earlier required-peer audits retained low KaTeX advisory
 GHSA-238p-pmpm-9mq7 through Mira's old math adapters. Mira 0.1.4 and Core 0.7.4

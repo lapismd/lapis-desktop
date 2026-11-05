@@ -217,6 +217,7 @@
 
 - [Dependency automation CI rebase](../history/E-DEPENDENCIES-003.md)
 - [Current minimatch advisory finding refresh](../history/E-DEPENDENCIES-004.md)
+- [Released Notes framework cohort intake](../history/E-DEPENDENCIES-005.md)
 - [Background AI cold readiness quarantine](../history/E-RELEASE-008.md)
 - [RC quarantine and dependency integration](../history/E-RELEASE-009.md)
 - [Queue readiness and deleted-preview quarantine](../history/E-RELEASE-010.md)
