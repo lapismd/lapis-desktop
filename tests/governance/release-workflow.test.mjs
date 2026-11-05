@@ -16,6 +16,13 @@ test("trial builds stay manual, untested and outside preview publication", () =>
   assert.equal(trial.permissions.contents, "read");
   const source = read(".github/workflows/trial-desktop.yml");
   assert.match(source, /desktop-trial-\$\{GITHUB_SHA\}/);
+  assert.match(source, /--target "\$GITHUB_SHA"/);
+  assert.match(source, /--repo "\$GH_REPO"/);
+  assert.ok(
+    trial.jobs.publish.steps.some((step) =>
+      step.uses?.startsWith("actions/checkout@"),
+    ),
+  );
   assert.match(source, /--prerelease/);
   assert.doesNotMatch(
     source,

@@ -281,3 +281,4 @@
 
 - [Repair the release-candidate native failures](../history/E-CI-072.md)
 - [Publish an untested desktop trial build](../history/E-CI-073.md)
+- [Publish trial archives from the built commit](../history/E-CI-074.md)
