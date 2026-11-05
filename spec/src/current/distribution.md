@@ -21,17 +21,20 @@ remains in the [distribution backlog](../backlog/distribution.md).
 
 `.github/workflows/release-desktop.yml` accepts prepare, publish-candidate or
 recover-tap. Prepare requires a passing full exact-source CI run; selective
-green runs cannot qualify a release. Full CI remains manually dispatchable;
-`publish` defaults false. Promotion selects an unexpired artifact from a
-successful preparation on the same main commit, so review without publication
-does not require a rebuild. Platform builds produce three ordinary archives from
-the same source. Every job pins `.node-version` directly, including tap-only
-jobs whose checked-out repository does not contain that file. E-CI-050 aligns
-that exact Node patch with the separately published Desktop CI image source;
-release consumers cannot adopt an unpublished tag or a mutable reference. The
-workflow authenticates that digest-pinned pull with package-read-only workflow
-authority and restores Jujutsu and mdBook only from its source/run/attempt-bound
-image artifact. Its container producer trusts only the exact mounted
+green runs cannot qualify a release. A separate manual trial workflow builds the
+same ordinary archives without tests, Homebrew qualification, or the protected
+publication environment. Its prerelease uses a `desktop-trial-` tag and cannot
+authorize preview publication. Full CI remains manually dispatchable; `publish`
+defaults false. Promotion selects an unexpired artifact from a successful
+preparation on the same main commit, so review without publication does not
+require a rebuild. Platform builds produce three ordinary archives from the same
+source. Every job pins `.node-version` directly, including tap-only jobs whose
+checked-out repository does not contain that file. E-CI-050 aligns that exact
+Node patch with the separately published Desktop CI image source; release
+consumers cannot adopt an unpublished tag or a mutable reference. The workflow
+authenticates that digest-pinned pull with package-read-only workflow authority
+and restores Jujutsu and mdBook only from its source/run/attempt-bound image
+artifact. Its container producer trusts only the exact mounted
 `GITHUB_WORKSPACE` before resolving checked-out Git provenance; wildcard trust
 is prohibited. Neither the image nor artifact contains the credential.
 Preparation then assembles the complete manifest before testing each archive

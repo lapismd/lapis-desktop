@@ -395,6 +395,6 @@ workflow identity with package-read permission; credentials never enter the
 image or artifact. Hidden WebKit cannot qualify
 [native acceptance](native-acceptance.md). Native revisions follow
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
-Semantic `spec:search` uses current/backlog QMD outside CI. Pages:
-<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Linux
-native jobs free unused runner SDK trees before WebKit and Rust restore.
+Semantic `spec:search` uses current/backlog QMD outside CI:
+<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Trial
+builds cannot qualify. Linux frees unused SDK trees before restore.

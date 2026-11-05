@@ -65,6 +65,18 @@ test("public preview identities agree and unhosted release operations reject", (
   assert.throws(() =>
     hostedMain({ ...env, GITHUB_REF: "refs/heads/unreviewed" }),
   );
+  assert.throws(
+    () => hostedMain({ ...env, LAPIS_DESKTOP_TRIAL: "1" }),
+    /hosted trial workflow/,
+  );
+  assert.doesNotThrow(() =>
+    hostedMain({
+      ...env,
+      GITHUB_REF: "refs/heads/unreviewed",
+      LAPIS_DESKTOP_TRIAL: "1",
+      GITHUB_WORKFLOW: "Desktop trial build",
+    }),
+  );
   const manifest = createManifest(identity, Buffer.from("archive"));
   assert.equal(validateManifest(manifest).artifacts[0].size, 7);
   for (const change of [

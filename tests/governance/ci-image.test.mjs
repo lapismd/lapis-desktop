@@ -71,6 +71,7 @@ test("consumer image pulls use the workflow token", async () => {
     ".github/workflows/native-quarantine.yml",
     ".github/workflows/publish-storybook-pages.yml",
     ".github/workflows/release-desktop.yml",
+    ".github/workflows/trial-desktop.yml",
   ]) {
     const workflow = parse(await readFile(path, "utf8"));
     const container = workflow.jobs["ci-tools"]?.container;
@@ -97,6 +98,7 @@ test("published image feeds verified current-attempt tools to every consumer", a
     ".github/workflows/native-quarantine.yml",
     ".github/workflows/publish-storybook-pages.yml",
     ".github/workflows/release-desktop.yml",
+    ".github/workflows/trial-desktop.yml",
   ];
   const consumers = [];
   for (const path of workflows) {
@@ -147,6 +149,7 @@ test("published image feeds verified current-attempt tools to every consumer", a
     ".github/workflows/native-quarantine.yml:diagnostic",
     ".github/workflows/publish-storybook-pages.yml:build",
     ".github/workflows/release-desktop.yml:build",
+    ".github/workflows/trial-desktop.yml:build",
   ]);
   const action = await readFile(
     ".github/actions/setup-ci-tools/action.yml",
