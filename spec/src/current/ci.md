@@ -133,10 +133,14 @@ vanished window. Original case deadlines and errors remain unchanged.
 
 Native conflict acceptance selects the exact diagnostic resource when identical
 messages exist for multiple paths. After disk recovery closes its review, later
-preview input waits within the unchanged case deadline until the owning editor's
-protection lease makes it writable; hidden protected input is not accepted as a
-save attempt. Conflict contents, close barriers and final disk assertions remain
-unchanged, and unavailable targets fail closed.
+preview input waits within the unchanged case deadline until the recovered
+editor is saved, shows the disk text and is writable, then until the replacement
+is visible and dirty or already stored. Hidden protected input is not a save.
+Conflict contents, close barriers and final disk assertions remain unchanged,
+and unavailable targets fail closed. A Terminal list refused because no vault is
+admitted is an empty baseline for the request that has not opened. Every other
+list error still fails. The prompt assertion, deadline and single attempt stay
+unchanged.
 
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
@@ -147,11 +151,13 @@ and execution durations and cache reuse; hosted cold/warm comparisons remain
 required before claiming performance or reliability improvements.
 
 Linux x86_64 executes portable Rust service tests and explicitly verifies the
-Original/Managed reader case ran successfully. Linux release builds remain
-separate evidence and cannot qualify the ARM64 backup quarantine or macOS UI.
-Quarantine diagnostics are separate, explicit, uncached attempts; their results
-cannot satisfy ordinary or full qualification. The approximately ten-minute
-ordinary feedback objective is a measurement target, not an acceptance bypass.
+Original/Managed reader case ran successfully. Linux native jobs free unused
+preinstalled runner SDK trees before WebKit installation and Rust cache restore.
+Linux release builds remain separate evidence and cannot qualify the ARM64
+backup quarantine or macOS UI. Quarantine diagnostics are separate, explicit,
+uncached attempts; their results cannot satisfy ordinary or full qualification.
+The approximately ten-minute ordinary feedback objective is a measurement
+target, not an acceptance bypass.
 
 An explicit paired diagnostic dispatch runs the complete normal families and
 selected original quarantined callbacks against one verified acceptance

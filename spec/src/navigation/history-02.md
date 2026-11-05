@@ -278,3 +278,5 @@
 - [Container checkout provenance trust](../history/E-CI-070.md)
 
 - [Whole-stack catalog shard evidence](../history/E-CI-071.md)
+
+- [Repair the release-candidate native failures](../history/E-CI-072.md)

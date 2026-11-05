@@ -672,6 +672,11 @@ jobs:
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
         if: needs.changes.outputs.linux == 'true'
+      - name: Free unused runner disk
+        if: needs.changes.outputs.linux == 'true'
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /usr/share/swift /opt/hostedtoolcache/CodeQL
+          df -h /
       - name: Install Linux WebKit build dependencies
         run: >
           sudo apt-get update

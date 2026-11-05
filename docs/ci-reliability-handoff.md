@@ -251,6 +251,18 @@ passes 4/4 locally and E-CI-071 adds the missing evidence coverage without
 rewriting prior receipts. The run remains failed evidence; another complete
 attempt is required.
 
+Exact-head run `41967585158` at `dc5d702d` then failed three independent jobs.
+Services called `plugin:lapis-terminal|list` before admission and treated that
+expected refusal as a family failure. Workspace recovered the preview disk
+bytes, then closed before the later edit was observable as dirty. Linux x64
+exhausted the runner disk during Rust cache restore after the WebKit install.
+Run `42002578749` on older main failed a different workspace case that this
+candidate already passed. Those attempts stay retained. E-CI-072 corrects the
+empty Terminal baseline, requires the recovered preview editor to accept the
+later edit before close, and removes unused runner trees before the Linux
+install. It does not change assertions, deadlines, quarantines or release
+authority. A new complete workflow is still required before publication.
+
 ## Local execution boundary
 
 Continue from the checked-out sibling repositories in the local workspace. Run

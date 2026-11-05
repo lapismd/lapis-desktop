@@ -396,4 +396,5 @@ image or artifact. Hidden WebKit cannot qualify
 [native acceptance](native-acceptance.md). Native revisions follow
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
 Semantic `spec:search` uses current/backlog QMD outside CI. Pages:
-<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043.
+<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Linux
+native jobs free unused runner SDK trees before WebKit and Rust restore.

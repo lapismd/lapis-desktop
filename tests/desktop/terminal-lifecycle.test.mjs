@@ -15,7 +15,10 @@ import { TERMINAL_CELL_METRICS } from "@lapismd/terminal";
 import { nativeSession } from "./native-session.mjs";
 import { reloadNotes, returnToVaults } from "./workspace-navigation.mjs";
 import { nativeFailure } from "./conflict-review.mjs";
-import { waitForNewTerminalSession } from "./terminal-session-readiness.mjs";
+import {
+  readExistingTerminalSessions,
+  waitForNewTerminalSession,
+} from "./terminal-session-readiness.mjs";
 
 function fixture(name, settings = { shell: "/bin/sh", cwd: "" }) {
   const root = mkdtempSync(
@@ -38,7 +41,7 @@ async function list(session) {
   );
 }
 async function open(session) {
-  const previous = await list(session);
+  const previous = await readExistingTerminalSessions(() => list(session));
   await session.browser.$('button[aria-label="Open Terminal"]').click();
   await session.browser.$('[aria-label="Terminal input"]').waitForExist();
   const info = await waitForNewTerminalSession(

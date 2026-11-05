@@ -160,3 +160,25 @@ test("paired ARM64 diagnostics reuse the normal artifact and never qualify a rel
   );
   assert.ok(!workflow.jobs.validate.needs.includes("rust-backup-diagnostic"));
 });
+test("Linux native jobs free unused runner trees before WebKit and Rust restore", () => {
+  const steps = workflow.jobs.linux.steps;
+  const free = steps.findIndex(
+    (step) => step.name === "Free unused runner disk",
+  );
+  const webkit = steps.findIndex(
+    (step) => step.name === "Install Linux WebKit build dependencies",
+  );
+  const restore = steps.findIndex(
+    (step) => step.name === "Restore Rust dependency builds",
+  );
+  assert.ok(free >= 0 && free < webkit && webkit < restore);
+  for (const path of [
+    "/usr/share/dotnet",
+    "/usr/local/lib/android",
+    "/opt/ghc",
+    "/usr/local/share/boost",
+    "/usr/share/swift",
+    "/opt/hostedtoolcache/CodeQL",
+  ])
+    assert.match(steps[free].run, new RegExp(path.replaceAll("/", "\\/")));
+});
