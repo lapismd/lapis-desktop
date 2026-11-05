@@ -276,3 +276,5 @@
 - [Published Desktop CI image adoption](../history/E-CI-069.md)
 
 - [Container checkout provenance trust](../history/E-CI-070.md)
+
+- [Whole-stack catalog shard evidence](../history/E-CI-071.md)

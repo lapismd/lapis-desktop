@@ -243,6 +243,14 @@ image export and tar boundary after this repair. The failed run remains
 evidence; a new complete workflow attempt is required and failed-job-only reruns
 cannot qualify the release.
 
+Fresh exact-head run `41966843177` proved the repaired producer and consumer:
+tool export, upload, download and verification all passed. Governance then
+failed its whole-PR evidence comparison because the earlier changed catalog
+shard regression was not named by a fresh receipt. The unchanged regression
+passes 4/4 locally and E-CI-071 adds the missing evidence coverage without
+rewriting prior receipts. The run remains failed evidence; another complete
+attempt is required.
+
 ## Local execution boundary
 
 Continue from the checked-out sibling repositories in the local workspace. Run
