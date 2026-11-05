@@ -53,10 +53,13 @@ const app = resolve(
 const { verifyBundle } = await import(
   pathToFileURL(join(ai, "scripts/bundle.mjs"))
 );
+// Deep ad-hoc signature covers nested frameworks so macOS can launch without a Developer ID.
+run("/usr/bin/codesign", ["--force", "--deep", "--sign", "-", app]);
 await verifyBundle(join(app, "Contents/Resources/lapis-ai"));
-// Nested helper bytes and their inventory are final. Sign only the outer app.
+// Outer signature last, without rewriting nested helper bytes.
 run("/usr/bin/codesign", ["--force", "--sign", "-", app]);
 await verifyBundle(join(app, "Contents/Resources/lapis-ai"));
+run("/usr/bin/xattr", ["-cr", app]);
 run(process.execPath, ["scripts/check-bundle.mjs", app]);
 await mkdir(output, { recursive: true });
 const archive = join(output, archiveName(identity.version));
