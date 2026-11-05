@@ -136,21 +136,25 @@ test("paired ARM64 diagnostics reuse the normal artifact and never qualify a rel
   assert.doesNotMatch(nativeExecution, /--reuse-artifact\s/u);
   const rustJob = workflow.jobs["rust-backup-diagnostic"];
   assert.ok(rustJob.needs.includes("native-prepare"));
+  assert.ok(rustJob.needs.includes("ci-tools"));
   const rust = JSON.stringify(rustJob);
   assert.match(rust, /native-acceptance-artifact/u);
   assert.match(rust, /ci-acceptance-artifact\.mjs verify/u);
-  assert.match(rust, /Install pinned Jujutsu tooling/u);
-  assert.match(rust, /validation\/install-tools\.mjs --ci/u);
+  const toolsIndex = rustJob.steps.findIndex(
+    (step) => step.uses === "./.github/actions/setup-ci-tools",
+  );
+  const diagnosticIndex = rustJob.steps.findIndex((step) =>
+    step.run?.includes("rust-backup-diagnostic.mjs"),
+  );
+  assert.ok(toolsIndex >= 0, "The diagnostic must use verified CI tools");
+  assert.doesNotMatch(rust, /validation\/install-tools\.mjs --ci/u);
   assert.match(rust, /rust-backup-diagnostic\.mjs/u);
   assert.match(rust, /LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC/u);
   assert.ok(
     rust.indexOf("ci-acceptance-artifact.mjs verify") <
       rust.indexOf("rust-backup-diagnostic.mjs"),
   );
-  assert.ok(
-    rust.indexOf("validation/install-tools.mjs --ci") <
-      rust.indexOf("rust-backup-diagnostic.mjs"),
-  );
+  assert.ok(diagnosticIndex >= 0 && toolsIndex < diagnosticIndex);
   assert.ok(
     !workflow.jobs.validate.needs.includes("native-quarantine-diagnostic"),
   );
