@@ -8,6 +8,7 @@ on:
         required: true
 permissions:
   contents: read
+  packages: read
 concurrency:
   group: native-quarantine-${{ github.ref }}-${{ github.run_id }}
   cancel-in-progress: false
@@ -15,10 +16,36 @@ env:
   LAPIS_DESKTOP_VALIDATION_RUNTIME: native
   CARGO_BUILD_JOBS: "2"
 jobs:
+  ci-tools:
+    name: Prepare verified CI tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    container:
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Export image-owned cross-platform tools
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          node scripts/ci/tool-artifact.mjs export \
+            .local/ci-tools /opt/lapis-desktop-ci/tools
+          tar -cf .local/tools.tar -C .local ci-tools
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ci-tools-${{ github.run_attempt }}
+          path: .local/tools.tar
+          if-no-files-found: error
+          retention-days: 7
   diagnostic:
     name: Quarantine diagnostic (not release qualification)
     runs-on: macos-15
     timeout-minutes: 60
+    needs: ci-tools
     steps:
       - uses: actions/checkout@v6
         with:
@@ -35,8 +62,7 @@ jobs:
           node --input-type=module -e 'import {quarantineArguments} from
           "./scripts/native-quarantine.mjs"; quarantineArguments(["--cases=" +
           process.env.QUARANTINE_CASES]);'
-      - name: Install checksum-verified Jujutsu
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Initialize Jujutsu over the actual checked-out revision
         run: jj git init --colocate .
       - name: Check out pinned prerequisites

@@ -11,10 +11,21 @@ on:
         type: boolean
         default: true
         required: false
+      native_diagnostic_cases:
+        description: Paired original native quarantine IDs (at most five)
+        type: string
+        default: ""
+        required: false
+      rust_backup_diagnostic:
+        description: Run the isolated and scoped ARM64 backup diagnostic
+        type: boolean
+        default: false
+        required: false
   schedule:
     - cron: 17 2 * * *
 permissions:
   contents: read
+  packages: read
 defaults:
   run:
     shell: bash
@@ -22,7 +33,9 @@ concurrency:
   group:
     lapis-desktop-ci-${{ github.event_name }}-${{
     github.event.pull_request.number || github.ref }}-${{ github.event_name ==
-    'schedule' && 'nightly' || inputs.full && 'full' || 'ordinary' }}
+    'schedule' && 'nightly' || github.event_name == 'workflow_dispatch' &&
+    (inputs.native_diagnostic_cases != '' || inputs.rust_backup_diagnostic) &&
+    'diagnostic' || inputs.full && 'full' || 'ordinary' }}
   cancel-in-progress: ${{ github.event_name != 'schedule' }}
 env:
   LAPIS_DESKTOP_VALIDATION_RUNTIME: native
@@ -71,6 +84,16 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
+      - name: Validate optional native diagnostic selectors
+        if:
+          github.event_name == 'workflow_dispatch' &&
+          inputs.native_diagnostic_cases != ''
+        env:
+          NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
+        run:
+          node --input-type=module -e 'import {quarantineArguments} from
+          "./scripts/native-quarantine.mjs"; quarantineArguments(["--cases=" +
+          process.env.NATIVE_DIAGNOSTIC_CASES]);'
       - name: Check dependency-aware planning and aggregation
         run: node --test tests/governance/ci-selection.test.mjs
       - id: plan
@@ -80,6 +103,31 @@ jobs:
           name: ci-plan-${{ github.run_attempt }}
           path: .local/ci-plan.json
           include-hidden-files: true
+  ci-tools:
+    name: Prepare verified CI tools
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    container:
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Export image-owned cross-platform tools
+        run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          node scripts/ci/tool-artifact.mjs export \
+            .local/ci-tools /opt/lapis-desktop-ci/tools
+          tar -cf .local/tools.tar -C .local ci-tools
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ci-tools-${{ github.run_attempt }}
+          path: .local/tools.tar
+          if-no-files-found: error
+          retention-days: 7
   governance:
     name: Governance
     runs-on: ubuntu-latest
@@ -95,12 +143,7 @@ jobs:
           node-version: 24.15.0
           cache: pnpm
           cache-dependency-path: .github/ci-docs/pnpm-lock.yaml
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
-      - name: Install mdBook
-        uses: taiki-e/install-action@v2
-        with:
-          tool: mdbook@0.5.4
+      - uses: ./.github/actions/setup-ci-tools
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
@@ -111,6 +154,7 @@ jobs:
         run: node scripts/ci/docs.mjs
     needs:
       - changes
+      - ci-tools
     if: needs.changes.outputs.governance == 'true'
     env:
       LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
@@ -131,8 +175,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
@@ -171,10 +214,6 @@ jobs:
             hashFiles('scripts/ci-sources.json') }}-${{
             env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
         run: node scripts/ci/timing.mjs finish rust-cache
-      - name: Install mdBook
-        uses: taiki-e/install-action@v2
-        with:
-          tool: mdbook@0.5.4
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
       - name: Select the actual pull-request or push revision range
@@ -215,6 +254,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.quality == 'true'
     env:
@@ -238,8 +278,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
@@ -317,6 +356,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.unit == 'true'
     env:
@@ -339,8 +379,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - uses: actions/download-artifact@v8
@@ -375,6 +414,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.storybook_static == 'true'
     env:
@@ -408,8 +448,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - uses: actions/download-artifact@v8
@@ -455,6 +494,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.storybook_interaction == 'true'
   storybook-interaction:
@@ -488,8 +528,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Set up Rust
@@ -556,6 +595,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.bundle == 'true'
     env:
@@ -627,12 +667,16 @@ jobs:
           node-version: 24.15.0
           cache: pnpm
         if: needs.changes.outputs.linux == 'true'
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
         if: needs.changes.outputs.linux == 'true'
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
         if: needs.changes.outputs.linux == 'true'
+      - name: Free unused runner disk
+        if: needs.changes.outputs.linux == 'true'
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /usr/local/share/boost /usr/share/swift /opt/hostedtoolcache/CodeQL
+          df -h /
       - name: Install Linux WebKit build dependencies
         run: >
           sudo apt-get update
@@ -757,6 +801,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: always() && needs.changes.result == 'success'
     env:
@@ -777,8 +822,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install Jujutsu into the runner temp directory
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - uses: actions/download-artifact@v8
@@ -804,6 +848,7 @@ jobs:
           retention-days: 7
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.audit == 'true'
     env:
@@ -862,7 +907,9 @@ jobs:
       - validate
     if:
       always() && needs.changes.result == 'success' &&
-      needs.changes.outputs.full == 'true'
+      needs.changes.outputs.full == 'true' && (github.event_name !=
+      'workflow_dispatch' || (inputs.native_diagnostic_cases == '' &&
+      !inputs.rust_backup_diagnostic))
     runs-on: ubuntu-24.04
     steps:
       - name: Require every full qualification gate
@@ -878,6 +925,7 @@ jobs:
     timeout-minutes: 25
     needs:
       - changes
+      - ci-tools
     if: needs.changes.outputs.prerequisites == 'true'
     strategy:
       fail-fast: false
@@ -894,8 +942,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Build pinned private public exports
@@ -955,6 +1002,7 @@ jobs:
     timeout-minutes: 60
     needs:
       - changes
+      - ci-tools
       - prerequisites
     if: needs.changes.outputs.headed == 'true'
     env:
@@ -973,8 +1021,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Select configured macOS deployment minimum
@@ -1077,6 +1124,7 @@ jobs:
     timeout-minutes: 40
     needs:
       - changes
+      - ci-tools
       - prerequisites
       - native-prepare
     if: needs.changes.outputs.headed == 'true'
@@ -1099,8 +1147,7 @@ jobs:
         with:
           node-version: 24.15.0
           cache: pnpm
-      - name: Install pinned Jujutsu tooling
-        run: node scripts/validation/install-tools.mjs --ci
+      - uses: ./.github/actions/setup-ci-tools
       - name: Check out pinned prerequisites
         run: node scripts/ci-siblings.mjs
       - name: Select configured macOS deployment minimum
@@ -1155,3 +1202,126 @@ jobs:
           include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 7
+  native-quarantine-diagnostic:
+    name: Paired native quarantine diagnostic (not qualification)
+    runs-on: macos-15
+    timeout-minutes: 40
+    needs:
+      - changes
+      - ci-tools
+      - prerequisites
+      - native-prepare
+      - native-families
+    if:
+      always() && github.event_name == 'workflow_dispatch' &&
+      inputs.native_diagnostic_cases != '' && needs.changes.result == 'success'
+      && needs.prerequisites.result == 'success' && needs.native-prepare.result
+      == 'success'
+    env:
+      LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
+      LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+          cache: pnpm
+      - uses: ./.github/actions/setup-ci-tools
+      - name: Check out pinned prerequisites
+        run: node scripts/ci-siblings.mjs
+      - name: Select configured macOS deployment minimum
+        run: node scripts/native-build-environment.mjs --github-env
+      - uses: dtolnay/rust-toolchain@1.99.0
+        with:
+          components: clippy,rustfmt
+      - uses: actions/download-artifact@v8
+        with:
+          name: private-packages-macos-arm64-${{ github.run_attempt }}
+          path: .local/ci-dependency-download
+      - name: Extract verified package artifact
+        run: tar -xf .local/ci-dependency-download/packages.tar -C .local
+      - name: Verify and install prepared private packages
+        env:
+          LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT: .local/ci-dependency-artifact
+        run: node scripts/ci-install.mjs
+      - uses: actions/download-artifact@v8
+        with:
+          name: native-acceptance-artifact-${{ github.run_attempt }}
+          path: .local/ci-acceptance-download
+      - name: Extract the same acceptance artifact used by normal families
+        run: tar -xf .local/ci-acceptance-download/acceptance.tar -C .local
+      - name: Execute selected original bodies in isolated state
+        env:
+          LAPIS_DESKTOP_NATIVE_LANE: "1"
+          NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
+        run: >-
+          node scripts/macos-native-lanes.mjs quarantine
+          "--cases=$NATIVE_DIAGNOSTIC_CASES"
+          --reuse-artifact=.local/ci-acceptance-artifact/manifest.json
+      - name: Summarize fresh diagnostic outcomes
+        if: always()
+        run: node scripts/native-quarantine-summary.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: paired-native-quarantine-${{ github.run_attempt }}
+          path: .local/native-test/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
+  rust-backup-diagnostic:
+    name: ARM64 backup diagnostic (not qualification)
+    runs-on: macos-15
+    timeout-minutes: 40
+    needs:
+      - changes
+      - ci-tools
+      - native-prepare
+    if:
+      github.event_name == 'workflow_dispatch' && inputs.rust_backup_diagnostic
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+      - uses: ./.github/actions/setup-ci-tools
+      - name: Select configured macOS deployment minimum
+        run: node scripts/native-build-environment.mjs --github-env
+      - uses: dtolnay/rust-toolchain@1.99.0
+      - name: Restore compatible diagnostic Rust builds
+        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
+        with:
+          workspaces: src-tauri -> target
+          add-job-id-key: true
+          key:
+            desktop-v2-${{ runner.os }}-${{ runner.arch }}-backup-diagnostic-${{
+            hashFiles('scripts/ci-sources.json') }}
+          cache-workspace-crates: false
+          cache-on-failure: true
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
+      - uses: actions/download-artifact@v8
+        with:
+          name: native-acceptance-artifact-${{ github.run_attempt }}
+          path: .local/ci-acceptance-download
+      - name: Extract verified acceptance resources
+        run: tar -xf .local/ci-acceptance-download/acceptance.tar -C .local
+      - name: Restore the genuine AI bundle from the verified artifact
+        run:
+          node scripts/ci-acceptance-artifact.mjs verify
+          .local/ci-acceptance-artifact/manifest.json
+      - name: Run the original case alone and its scoped integration group
+        env:
+          LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC: "1"
+        run: node scripts/rust-backup-diagnostic.mjs
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: rust-backup-diagnostic-${{ github.run_attempt }}
+          path: .local/native-test/rust-backup-diagnostic.json
+          if-no-files-found: error
+          retention-days: 14

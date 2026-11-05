@@ -8,13 +8,16 @@ LD-FILE-002/003: watch after metadata/views, drain on leave, resume on failure.
 LD-DESK-003 keeps Core AI/History caller/session admission native; renderer
 paths, generations, actors, executables and environment stay denied. Docker
 checks use test bundles/compatible registry packages; helpers/windows/platform
-resources need native app-build acceptance. Fixtures match admitted runtime
-versions/exact helper hashes. Logs stream; assertions/deadlines stay (E-CI-009).
-Terminal 0.1.2 uses qualified Git sources ([intake](local-dependencies.md),
-E-CI-011/013). Confirmed scoped shutdown settles stale denied cleanup only on
-close. Tasks use the packed pin (E-CI-034); Graph uses real hover (E-CI-012).
-ARM64 skips: E-CI-036/042/044, E-RELEASE-004/006/008/010/012/013/014.
-[CI](ci.md) governs family/diagnostic execution; native gates remain.
+resources need native acceptance. Fixtures match runtime versions/hashes. Logs
+stream; E-CI-009/056 keep assertions/deadlines and wait for review teardown
+before later edits. Terminal 0.1.2 uses qualified Git sources
+([intake](local-dependencies.md), E-CI-011/013). Scoped shutdown settles stale
+denied cleanup only on close. Tasks use packed pin (E-CI-034); Graph uses hover
+(E-CI-012). ARM64 skips: E-CI-036/042/044,
+E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059/060
+transcript proof; E-CI-058 recovery sync; E-CI-063/064 native close/readiness;
+E-CI-072: unadmitted Terminal list is empty; recovered preview edits must be
+dirty before close.
 
 ## Requirements
 
@@ -40,7 +43,7 @@ ARM64 skips: E-CI-036/042/044, E-RELEASE-004/006/008/010/012/013/014.
 | LD-SESSION-001 | Each Notes session MUST construct one explicitly owned App with an injected direct native Turso provider. It MUST use the shared .lapis state default and public plugin/workspace packages. The compatibility lease MUST span plugin loading through complete owned teardown.                                                                                                                                                                                  |
 | LD-SESSION-002 | M3 MUST prove a real seeded vault in the actual WebView: open a note, edit and save it to disk, display a local attachment, close the database and reopen successfully. Browser mocks or an in-memory database MUST NOT qualify that gate.                                                                                                                                                                                                                     |
 | LD-LIFE-001    | Close, Quit, reload and returning to vaults MUST protect registered writers and await pending note and layout persistence before destructive teardown. Persistence failure MUST leave the owned session available and surface the recoverable error through Problems with a transient notification; it MUST NOT mount chrome above WorkspaceShell.                                                                                                             |
-| LD-LIFE-002    | Native close and Quit MUST wait for a correlated renderer acknowledgement. Duplicate requests MUST share one operation. Failure MUST cancel that request and allow retry; a timeout MUST NOT approve exit. Reload MUST use the same save and teardown boundary.                                                                                                                                                                                                |
+| LD-LIFE-002    | Native close and Quit MUST wait for a correlated renderer acknowledgement; duplicate requests MUST share one operation. Failure MUST cancel that request and allow explicit retry; a reload pressed while its failed acknowledgement remains pending MUST run after cancellation. A timeout MUST NOT approve exit; successful reload MUST discard queued duplicates; all reloads use the same save and teardown boundary.                                      |
 | LD-LIFE-003    | The native profile MUST remember the initialized Notes vault separately from folder admissions. Cold startup and reload MUST restore that physical vault and saved layout. Returning to vaults MUST clear the active Notes preference. Failed restoration MUST show the error inside the shared vault chooser body and preserve the recovery route.                                                                                                            |
 | LD-LIFE-004    | External file edits MUST NOT silently overwrite dirty editor content or be overwritten by a later dirty save. Conflicts MUST remain observable and preserve both the current buffer and external file until an explicit resolution.                                                                                                                                                                                                                            |
 | LD-LIFE-005    | Repeated vault switching MUST release the old workspace, plugins, metadata, editing sessions, compatibility lease, database and subscriptions before admitting another Notes owner.                                                                                                                                                                                                                                                                            |
@@ -110,25 +113,24 @@ state, rather than a DOM marker alone, confirms that handshake. These commands
 confer no vault or process authority.
 
 Native acceptance launches its separately identified macOS application bundle
-and brings the real WebView forward before interactions. Hidden WebKit pages
-suspend animation frames and cannot qualify menu completion. Focus permission
-belongs only to the e2e capability; ordinary bundles retain their existing
-grants.
+and brings the real WebView forward before interactions. Hidden WebKit cannot
+qualify menu completion. Focus permission belongs only to the e2e capability;
+ordinary bundles retain their existing grants.
 
-Startup reads the public API `path` and `runtime` entrypoints. Runtime identity
-does not need to load optional database or model services.
+Startup reads public API `path`/`runtime` entrypoints without loading optional
+database or model services.
 
 Native e2e uses separate config/profile, never an ordinary bundle. Browser/Rust
 evidence cannot replace WebView. Builds reject catalog imports and retain one
 main landmark. Producers fan out the verified dev-origin HTTP binary; clean
-consumers reuse it outside the test deadline.
+consumers reuse it outside the test deadline. Changed-file acceptance reads
+public row path identities, not rendered tree text.
 
-Ad-hoc previews follow [distribution](distribution.md). The local bundle gate
-checks identity, architecture and runtime contents without requiring a
-signature. WebDriver's embedded pointer actions dispatch DOM MouseEvents and
-cannot establish AppKit titlebar dragging. Physical native input and persisted
-window positions must qualify that boundary separately; synthetic pointer
-results cannot waive it.
+Ad-hoc previews follow [distribution](distribution.md). The local unsigned
+bundle gate checks identity, architecture and runtime contents. WebDriver's
+embedded pointer actions dispatch DOM MouseEvents and cannot establish AppKit
+titlebar dragging. Physical native input and persisted window positions must
+qualify that boundary separately; synthetic pointer results cannot waive it.
 
 Headed e2e readiness unhides the application and shows/focuses its window before
 the handshake; focus alone cannot unhide a background macOS process. This
@@ -236,16 +238,15 @@ Recovery uses the shared themed banner. Editable merges retain the writer guard
 
 ## Safe lifecycle and restoration (M4)
 
-The native owner intercepts window close and application Quit. It emits one
-host-issued request to the main renderer and accepts only its matching result.
-Failure cancels the pending request; unresponsive renderers remain open. The
-renderer installs its listener before acknowledging shell readiness. Explicit
-reload and its keyboard shortcut use this same boundary.
+Native Close/Quit emits one host request and accepts only its matching result.
+Failure cancels it; an unresponsive renderer remains open. The listener is ready
+before the shell. Reload shares this boundary. A deliberate retry pressed before
+failed acknowledgement completes runs after cancellation; success drops queued
+duplicates. This is not an automatic retry.
 
-The Notes owner uses the public editing-session guard and API-owned awaitable
-layout writer. It never writes a second copy of workspace layout. Failed saves
-must complete before any controller/plugin/database teardown begins. A completed
-guard is followed by editing-registry disposal before releasing the session.
+Notes uses the public editing guard and API layout writer; there is no second
+layout copy. Failed saves precede teardown. A completed guard disposes the
+editing registry before session release.
 
 M16.7 selects native editing with `LAPIS_DESKTOP_EDITING_OWNER=core`. Only the
 main local window receives typed intents/snapshots for its admitted vault

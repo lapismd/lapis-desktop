@@ -29,10 +29,15 @@ the same source. Every job pins `.node-version` directly, including tap-only
 jobs whose checked-out repository does not contain that file. E-CI-050 aligns
 that exact Node patch with the separately published Desktop CI image source;
 release consumers cannot adopt an unpublished tag or a mutable reference. The
-workflow assembles the complete manifest before testing each archive through the
-pinned tap's temporary installer, then seals those exact bytes with their
-per-target receipts. Native installation and window/quit checks run only on
-ephemeral GitHub runners; no developer profile or installed application is
+workflow authenticates that digest-pinned pull with package-read-only workflow
+authority and restores Jujutsu and mdBook only from its source/run/attempt-bound
+image artifact. Its container producer trusts only the exact mounted
+`GITHUB_WORKSPACE` before resolving checked-out Git provenance; wildcard trust
+is prohibited. Neither the image nor artifact contains the credential.
+Preparation then assembles the complete manifest before testing each archive
+through the pinned tap's temporary installer and sealing those exact bytes with
+their per-target receipts. Native installation and window/quit checks run only
+on ephemeral GitHub runners; no developer profile or installed application is
 replaced.
 
 The source-owned smoke uses external AppKit/CoreGraphics on macOS and X11

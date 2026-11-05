@@ -4,8 +4,8 @@ Core chat retains History and exact scope/conversation reuse; restoration never
 submits. E-CORE-022 qualifies fixture/native adoption; E-CORE-025 seals runner
 defaults. R2.3 requires real-provider composer acceptance, teardown before
 reload completion and reload/cold-Quit History recovery without replay.
-Test-only holds may forward saved results after disposal; policy/screens stay
-production. E-CORE-045 targets [queue](ai-queue.md) provider proof.
+Test-only holds may forward saved results after disposal; exact History readers
+await async WebDriver collections (E-CI-062). E-CORE-045 targets queue proof.
 
 [Native fixtures](native-acceptance.md) retain platform credential restrictions
 and share an injected call across editing and Tasks ports (E-CI-010).
@@ -24,7 +24,8 @@ E-AI-099 adds compute fit; E-AI-121 adds [indexed imports](ai-imports.md).
 E-AI-122: model search; E-AI-123–125: compute library, status and inline choice.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
-Native-store clauses below preserve the Deferred checkpoint experiment.
+E-CI-054/057/059–061 retain bounded comparison/window diagnostics; native-store
+clauses preserve the Deferred experiment.
 
 [Presentation](ai-presentation.md), [tools](ai-tools.md) and
 [authored writes](ai-authored.md): native admission. E-AI-064: recovery dots;
@@ -283,13 +284,13 @@ qualification alone does not mount the bundled AI plugin or admit execution.
 
 ## Retained History and Catalog panels
 
-History retains local-first conversation search, folder scope, active selection,
-archive/restore/delete and unavailable-record diagnostics. Catalog retains owner
-grouping, reserved commands, skill precedence, filtering, explicit tool opt-ins
-and source-file navigation. Both reuse the existing tree, toolbar and workspace
-presentation, with plugin-owned subscriptions and stale-result fences. Action
-failures retain current content and report through the owning App; unmount
-releases listeners and prevents late refresh publication.
+History retains local search, folder/selection, archive/restore/delete and
+unavailable diagnostics. Although visibility may precede publication, acceptance
+requires a parentless root and saved revision before its deadline. Transcript
+restore uses exact public row paths, not flattened text. Catalog retains owner
+groups, reserved commands, skill precedence, tool opt-ins and source navigation.
+Both reuse owned presentation/subscriptions and stale-result fences. Failures
+retain content through owning App reporting; unmount fences late publication.
 
 Indexed History hits require a current local record and retain local metadata;
 index-only text matches remain visible. Index failure falls back to local

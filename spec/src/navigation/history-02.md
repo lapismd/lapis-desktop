@@ -217,6 +217,7 @@
 
 - [Dependency automation CI rebase](../history/E-DEPENDENCIES-003.md)
 - [Current minimatch advisory finding refresh](../history/E-DEPENDENCIES-004.md)
+- [Released Notes framework cohort intake](../history/E-DEPENDENCIES-005.md)
 - [Background AI cold readiness quarantine](../history/E-RELEASE-008.md)
 - [RC quarantine and dependency integration](../history/E-RELEASE-009.md)
 - [Queue readiness and deleted-preview quarantine](../history/E-RELEASE-010.md)
@@ -236,5 +237,46 @@
 - [Exact hosted Node toolchain identity](../history/E-CI-049.md)
 
 - [Immutable Desktop CI tooling image source](../history/E-CI-050.md)
+- [Paired ARM64 diagnostic execution](../history/E-CI-065.md)
+
+- [Verified resources for ARM64 Rust diagnostics](../history/E-CI-051.md)
+
+- [Pinned Jujutsu for the Original ARM64 fixture](../history/E-CI-052.md)
+
+- [Exact verified-artifact selector for paired diagnostics](../history/E-CI-053.md)
+
+- [Transcript-bearing checkpoint selection](../history/E-CI-054.md)
+
+- [Hosted diagnostic receipt identity](../history/E-CI-055.md)
+
+- [Workspace recovery and backup shutdown diagnosis](../history/E-CI-056.md)
+
+- [Clean working-copy comparison continuation](../history/E-CI-057.md)
+
+- [Exact conflict selection and writable preview recovery](../history/E-CI-058.md)
+
+- [Bounded hosted History comparison diagnostics](../history/E-CI-059.md)
+
+- [Exact editor readiness and secondary close diagnostics](../history/E-CI-060.md)
+
+- [Exact changed-file row identities](../history/E-CI-061.md)
+
+- [Await native reader collections and retain failed reload requests](../history/E-CI-062.md)
+
+- [Close secondary windows without stale driver context selection](../history/E-CI-063.md)
+
+- [Bind Terminal prompt readiness to the newly requested session](../history/E-CI-064.md)
+
+- [Exact Node runtime for paired ARM64 diagnostics](../history/E-CI-066.md)
+
+- [Verified Desktop CI tool artifact adoption](../history/E-CI-067.md)
 
 - [Image-owned publication verification](../history/E-CI-068.md)
+
+- [Published Desktop CI image adoption](../history/E-CI-069.md)
+
+- [Container checkout provenance trust](../history/E-CI-070.md)
+
+- [Whole-stack catalog shard evidence](../history/E-CI-071.md)
+
+- [Repair the release-candidate native failures](../history/E-CI-072.md)

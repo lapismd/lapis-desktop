@@ -43,6 +43,12 @@ separate Rust Original/Managed reader case is ignored only on macOS ARM64 after
 intermittent backup startup; Linux retains it. These cases remain unqualified;
 no production policy changes.
 
+Enabled conflict-recovery acceptance MUST observe completion of the existing
+review lifecycle before beginning a later edit. After invoking the unchanged
+resolution action, it waits for that review to unmount, then performs and
+asserts the later edit under the original case deadline. It MUST NOT race review
+cleanup, loosen content assertions or manufacture a replacement review.
+
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,
 vault lifetime and cold admission reset without visible UI or animation claims.
@@ -94,7 +100,14 @@ foreign-window fixture remains available in background mode; AI
 enable/disable/revoke controls remain denied there. Actual Metadata/Search/Graph
 view families also run with explicit native metadata selection; hidden reads
 cannot replace their visible workspace gate. Native Search selection stays
-unavailable in this metadata-only intake.
+unavailable in this metadata-only intake. Bounded driver observations retain
+handles immediately before and after secondary close and when main restoration
+fails (E-CI-060). The fixture requests one native close from the admitted
+secondary renderer, then observes until `main` is present and the secondary
+handle is absent before explicitly restoring `main` (E-CI-063). It MUST NOT use
+a driver close hook that selects a handle returned by the close response. It
+never recreates, shows, focuses or retries a vanished window; disappearance
+before the native close request remains an immediate failure.
 
 Native fixture tools MUST resolve from the selected runner installation before
 hardening the application PATH. Repository fixtures retain that absolute JJ

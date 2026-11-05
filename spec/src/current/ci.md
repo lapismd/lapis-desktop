@@ -73,21 +73,74 @@ The recorded executable version remains part of artifact identity. Desktop's
 tooling image is manually published for Linux ARM64/x64 from immutable bases,
 contains no repository source, credentials or package graph, and carries
 checksum-verified Linux and macOS ARM64 Jujutsu/mdBook payloads. Consumers MUST
-pin its registry digest; an unpublished tag cannot enter qualification. The
-publisher builds a local image first and runs its Jujutsu-dependent source
-checks inside that image; a clean host never downloads those tools as fallback.
-Native preparation builds one debug e2e acceptance artifact. Independent smoke,
-workspace and services runners verify that artifact, retain serial UI execution
-and own fresh mutable profiles/vaults/ports. Preparation is not test execution.
-The artifact includes each portable fixture's detached signed release envelope
-and a separately compiled development-origin e2e binary for the exact HTTP
-renderer case. Consumers verify and execute those bytes without compiling inside
-the test deadline. WDIO report identities canonicalize file URLs before exact
-inventory comparison; successful cases cannot fail solely because the runner
-spelled the same spec as a URL. The stable Native ARM64 acceptance aggregate
-requires preparation and every selected family's complete nonzero stage reports.
+pin its registry digest and authenticate the pull with the ephemeral workflow
+token; an unpublished tag cannot enter qualification and no credential enters
+the image or exported payload. The publisher builds a local image first and runs
+Jujutsu-dependent source checks inside it; a clean host never downloads those
+tools or falls back. Each workflow exports the image-owned bytes once, binds
+them to the current repository, source, run and attempt, and transfers one
+mode/hash-verified cross-platform artifact. Consumers reject a missing producer,
+foreign attempt, changed digest, extra file, unsupported platform or
+non-executable payload. Native preparation builds one debug e2e acceptance
+artifact. Independent smoke, workspace and services runners verify that
+artifact, retain serial UI execution and own fresh mutable
+profiles/vaults/ports. Preparation is not test execution. The artifact includes
+each portable fixture's detached signed release envelope and a separately
+compiled development-origin e2e binary for the exact HTTP renderer case.
+Consumers verify and execute those bytes without compiling inside the test
+deadline. WDIO report identities canonicalize file URLs before exact inventory
+comparison; successful cases cannot fail solely because the runner spelled the
+same spec as a URL. The stable Native ARM64 acceptance aggregate requires
+preparation and every selected family's complete nonzero stage reports.
 HTTP/resource checks retain their separate development fixture and execute even
 after feature-stage failure.
+
+Native restore acceptance selects the revision whose changed-path response
+contains the seeded file. A current status head is not evidence that the head's
+own delta contains that file because independent startup writers may create
+later checkpoints. The graph may also expose a clean working-copy comparison;
+its explicit no-changed-files state contributes an empty path inventory and
+inspection continues to older saved revisions. An unavailable comparison,
+contradictory visible states or missing file-bearing history fails closed.
+Original restore, cold-reopen and no-replay assertions and deadlines remain
+unchanged.
+
+When that comparison boundary fails, headed acceptance retains bounded
+per-revision fixture paths and records the expected and actually expanded
+revision plus busy/files/empty/unavailable state (E-CI-059). Diagnostics do not
+retry a selection, extend the 30-second wait or substitute another revision.
+Changed-file discovery reads each public file row's exact `data-file-path`
+identity rather than splitting the rendered region text (E-CI-061). Directory
+labels, counts and layout-dependent WebDriver whitespace cannot be treated as a
+path, and duplicate or malformed row identities fail closed. The oldest-to-
+newest inspection, original comparison deadline and restore/no-replay assertions
+remain unchanged.
+
+WebdriverIO's element-array `map` is asynchronous. Acceptance MUST await that
+collection before applying exact row validation; treating the map promise as a
+`Promise.all` iterable is a harness failure, not product evidence (E-CI-062).
+The same hosted attempt exposed a separate lifecycle race: a deliberate reload
+pressed after its persistence failure became visible but before native failure
+acknowledgement was silently coalesced. Desktop retains that one user request
+until cancellation completes, while successful reload discards queued duplicate
+presses. The original five-second reload assertion and all save barriers remain.
+
+Workspace acceptance waits for the complete expected seeded editor source before
+replacement input and retains the exact post-input assertion (E-CI-060).
+Secondary-window diagnostics observe handles before close, after close and on
+main restoration failure without recreating, showing, focusing or retrying a
+vanished window. Original case deadlines and errors remain unchanged.
+
+Native conflict acceptance selects the exact diagnostic resource when identical
+messages exist for multiple paths. After disk recovery closes its review, later
+preview input waits within the unchanged case deadline until the recovered
+editor is saved, shows the disk text and is writable, then until the replacement
+is visible and dirty or already stored. Hidden protected input is not a save.
+Conflict contents, close barriers and final disk assertions remain unchanged,
+and unavailable targets fail closed. A Terminal list refused because no vault is
+admitted is an empty baseline for the request that has not opened. Every other
+list error still fails. The prompt assertion, deadline and single attempt stay
+unchanged.
 
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
@@ -98,11 +151,35 @@ and execution durations and cache reuse; hosted cold/warm comparisons remain
 required before claiming performance or reliability improvements.
 
 Linux x86_64 executes portable Rust service tests and explicitly verifies the
-Original/Managed reader case ran successfully. Linux release builds remain
-separate evidence and cannot qualify the ARM64 backup quarantine or macOS UI.
-Quarantine diagnostics are separate, explicit, uncached attempts; their results
-cannot satisfy ordinary or full qualification. The approximately ten-minute
-ordinary feedback objective is a measurement target, not an acceptance bypass.
+Original/Managed reader case ran successfully. Linux native jobs free unused
+preinstalled runner SDK trees before WebKit installation and Rust cache restore.
+Linux release builds remain separate evidence and cannot qualify the ARM64
+backup quarantine or macOS UI. Quarantine diagnostics are separate, explicit,
+uncached attempts; their results cannot satisfy ordinary or full qualification.
+The approximately ten-minute ordinary feedback objective is a measurement
+target, not an acceptance bypass.
+
+An explicit paired diagnostic dispatch runs the complete normal families and
+selected original quarantined callbacks against one verified acceptance
+artifact. Its optional Rust lane first proves `repository_original` has exactly
+one ignored case, then runs that original alone and the same integration binary
+with `--include-ignored`; crate-wide ignored tests remain prohibited. Diagnostic
+Rust MUST depend on the same current-attempt acceptance producer and restore its
+genuine AI resources through the artifact's source, run, attempt, platform,
+toolchain, file, permission and symlink verifier before Cargo inventory. Missing
+or mismatched resources fail before the original case. Before inventory, the
+lane MUST install and verify the repository-pinned Jujutsu executable because
+the unchanged Original repository fixture invokes that external stock CLI.
+Missing fixture tooling is a harness failure and is not ARM64 backup evidence.
+The paired native delegate MUST receive verified reuse as the single parser
+token `--reuse-artifact=<manifest>`; split option/value arguments fail before
+the selected original body and provide no quarantine evidence. Its hosted
+attempt receipt uses the validated checkout `GITHUB_SHA`; local execution keeps
+the Jujutsu working-copy snapshot. Diagnostic inputs use separate concurrency
+and suppress the full-source marker even when all ordinary gates pass. Each
+diagnostic remains a fresh, non-retrying, non-qualifying result. Backup records
+MUST retain both initialization and explicit shutdown stages so a successful
+startup cannot be misclassified when final capture fails.
 
 ## Scheduled validation and rollout
 
@@ -127,7 +204,9 @@ Artifacts retain attempt-specific names and producer provenance. Qualification
 requires current-attempt reports from every selected family: rerun the complete
 workflow after failure, because rerunning only failed jobs cannot reuse earlier
 family results as current execution. Earlier attempts and failures stay
-retained.
+retained. Image-backed producer jobs explicitly trust only their mounted
+workspace before resolving the checked-out commit; checkout trust written under
+a temporary home is not inherited by later container steps.
 
 Native runtime packaging MUST prepare the pinned AI source checkout's declared
 Node tooling with its frozen lock before importing its bundle verifier. Packed

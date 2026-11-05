@@ -12,16 +12,19 @@ E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
 ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
 editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
-endpoints and literal arguments. Archive rewriting is idempotent only for an
-exact path redirected to a verified tarball. Fixtures pin tools and Server
-peers; unverified paths/file peers reject. [Local intake](local-dependencies.md)
-governs pins, refreshes, the Bits patch and released-cohort gates (E-CI-015/018;
-LD-GOV-006/008). Native readiness matches split/log-batched receipts without
-longer deadlines. Hosted test logs stream live (E-CI-009). The e2e entry shares
-early progress, then imports runtime instrumentation; ordinary bundles reject
-its startup capture marker. Canonical owners include planned
-[Review](../backlog/markdown-review-contract.md) and staged
-[native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
+endpoints and literal arguments. Archive rewriting is idempotent only for exact
+paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
+`jj` and exact artifact args. E-CI-054–064 retain deadlines, assertions and
+no-retry/quarantine/release policy. Diagnostics/native close never retry; empty
+comparisons continue; unavailable/conflicting fail closed. The Notes fix stays
+upstream until released. [Local intake](local-dependencies.md) governs pins,
+refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs stream
+(E-CI-009). Whole-stack validation covers every protected path changed from its
+base. Container producers trust only the exact mounted workspace; wildcard Git
+trust is prohibited. The e2e entry shares early progress, then imports runtime
+instrumentation; ordinary bundles reject its startup capture marker. Canonical
+owners include planned [Review](../backlog/markdown-review-contract.md) and
+staged [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
 The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import
@@ -381,20 +384,17 @@ upstream findings. E-AI-030 records compatible macro/TOML lock selection, both
 native profiles and the real-policy fixture; no registry patch or substitute.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
-Seeding stays exclusive; ordinary AI execution remains unavailable. Local Docker
-checks are quiet; macOS lanes are opt-in (E-VALIDATION-004). Hosted CI runs
-spec:first, macOS bundle/acceptance, both Linux targets and the exact Node
-patch. A digest-pinned tool image carries verified macOS tools and runs
-publisher checks inside itself without source, secrets, host downloads or
-fallback. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit
-cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
-cold/hidden/headed/capture gates. Hosted and portable prerequisites share exact
-reachable commits and prepared public exports; ranges stay portable. Native
-crates use explicit git revisions in [dependency intake](local-dependencies.md).
-Renderer tests preload tsx; receipts need full ancestry. Semantic `spec:search`
-uses current/backlog QMD outside CI. Native build heaps use half constrained or
-physical RAM, capped at 6 GiB.
+Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-Four catalog shards, both viewports and themes, must all succeed (E-CI-014).
-Native fixtures install the pinned plugins tree before signing when fflate is
-absent (E-CI-032). Packed Tasks pin (E-CI-034). Audits: E-CI-037/041/043.
+[CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
+identities, complete catalog modes and non-qualifying diagnostics. Its
+digest-pinned image runs publisher checks inside itself and exports one
+current-attempt, mode/hash-verified Linux and macOS tool artifact without
+source, secrets, host downloads or fallback. Image pulls use only ephemeral
+workflow identity with package-read permission; credentials never enter the
+image or artifact. Hidden WebKit cannot qualify
+[native acceptance](native-acceptance.md). Native revisions follow
+[dependency intake](local-dependencies.md); receipts retain full ancestry.
+Semantic `spec:search` uses current/backlog QMD outside CI. Pages:
+<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Linux
+native jobs free unused runner SDK trees before WebKit and Rust restore.

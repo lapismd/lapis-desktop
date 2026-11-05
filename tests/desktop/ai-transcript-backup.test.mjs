@@ -9,6 +9,13 @@ import {
 } from "node:fs";
 import { join, resolve } from "node:path";
 import { nativeSession } from "./native-session.mjs";
+import {
+  oldestRevisionContaining,
+  revisionComparisonRowPaths,
+  revisionComparisonDiagnostic,
+  revisionComparisonState,
+  revisionFileRowSelector,
+} from "./history-revision-selection.mjs";
 process.env.LAPIS_DESKTOP_ACCEPTANCE_NATIVE_AI = "1";
 const saved = 'button[aria-label="Vault history: Saved locally"]';
 const details = 'section[aria-label="Vault history details"]';
@@ -74,6 +81,146 @@ async function selectRevision(browser, id) {
   await select.waitUntil(
     async () => (await select.getAttribute("aria-expanded")) === "true",
   );
+  return index;
+}
+
+async function revisions(browser) {
+  const selector = `${panel} ol[aria-label="Revision graph"] > li`;
+  let ids;
+  await browser.waitUntil(
+    async () => {
+      ids = await browser.execute(
+        (selector) =>
+          Array.from(document.querySelectorAll(selector))
+            .map(
+              (row) =>
+                row
+                  .querySelector(
+                    ':scope > .repository-graph-row button[data-side="commit"]',
+                  )
+                  ?.getAttribute("aria-label")
+                  ?.match(/Copy Git commit SHA ([0-9a-f]{40})$/u)?.[1],
+            )
+            .filter(Boolean),
+        selector,
+      );
+      return ids.length > 1;
+    },
+    { timeout: 30000 },
+  );
+  assert.ok(ids.length > 1, "History includes a root and saved revisions");
+  // The oldest graph row is the parentless root, which has no comparison.
+  return ids.slice(0, -1);
+}
+
+async function changedPaths(browser, id) {
+  const index = await selectRevision(browser, id);
+  const selected = browser.$(
+    `${panel} ol[aria-label="Revision graph"] > li:nth-child(${index + 1})`,
+  );
+  const changed = selected.$('[aria-label="Changed files"]');
+  const empty = selected.$("p=No changed files in this comparison.");
+  const unavailable = selected.$("p=File changes are unavailable.");
+  let state = "pending";
+  try {
+    await browser.waitUntil(
+      async () => {
+        state = revisionComparisonState({
+          files: await changed.isDisplayed(),
+          empty: await empty.isDisplayed(),
+          unavailable: await unavailable.isDisplayed(),
+        });
+        return state !== "pending";
+      },
+      { timeout: 30000 },
+    );
+  } catch (error) {
+    let diagnostic;
+    try {
+      diagnostic = revisionComparisonDiagnostic(
+        await browser.execute(
+          (selector, expected, fileRowSelector) => {
+            const rows = Array.from(document.querySelectorAll(selector));
+            const commit = (row) =>
+              row
+                ?.querySelector(
+                  ':scope > .repository-graph-row button[data-side="commit"]',
+                )
+                ?.getAttribute("aria-label")
+                ?.match(/Copy Git commit SHA ([0-9a-f]{40})$/u)?.[1];
+            const target = rows.find((row) => commit(row) === expected);
+            const expanded = rows.find(
+              (row) =>
+                row
+                  .querySelector("button.repository-graph-select")
+                  ?.getAttribute("aria-expanded") === "true",
+            );
+            const changed = target?.querySelector(
+              '[aria-label="Changed files"]',
+            );
+            return {
+              expected,
+              selected: commit(expanded),
+              expanded:
+                target
+                  ?.querySelector("button.repository-graph-select")
+                  ?.getAttribute("aria-expanded") === "true",
+              busy: changed?.getAttribute("aria-busy") === "true",
+              files: Boolean(changed),
+              empty: Boolean(
+                Array.from(target?.querySelectorAll("p") ?? []).find(
+                  (node) =>
+                    node.textContent?.trim() ===
+                    "No changed files in this comparison.",
+                ),
+              ),
+              unavailable: Boolean(
+                Array.from(target?.querySelectorAll("p") ?? []).find(
+                  (node) =>
+                    node.textContent?.trim() ===
+                    "File changes are unavailable.",
+                ),
+              ),
+              paths: Array.from(
+                target?.querySelectorAll(fileRowSelector) ?? [],
+                (row) => row.getAttribute("data-file-path"),
+              ),
+            };
+          },
+          `${panel} ol[aria-label="Revision graph"] > li`,
+          id,
+          revisionFileRowSelector,
+        ),
+      );
+    } catch (diagnosticError) {
+      diagnostic = {
+        expected: id,
+        collectionError: String(diagnosticError).slice(0, 400),
+      };
+    }
+    throw new Error(
+      `Revision comparison did not settle: ${JSON.stringify(diagnostic)}`,
+      { cause: error },
+    );
+  }
+  if (state === "unavailable")
+    throw new Error(`Revision comparison is unavailable for ${id}`);
+  if (state === "empty") return [];
+  await changed.waitUntil(
+    async () => (await changed.getAttribute("aria-busy")) === "false",
+    { timeout: 30000 },
+  );
+  const rows = await changed.$$(revisionFileRowSelector);
+  const paths = await revisionComparisonRowPaths(rows);
+  console.log(
+    JSON.stringify({
+      kind: "history-comparison",
+      revision: id,
+      state,
+      paths: paths.slice(0, 16).map((path) => path.slice(0, 160)),
+    }),
+  );
+  return paths;
 }
 
 async function previewFile(browser, id) {
@@ -132,7 +279,8 @@ test(
     mkdirSync(".local/native-test", { recursive: true });
     const root = mkdtempSync(resolve(".local/native-test/transcript-backup-"));
     const vault = join(root, "Transcript Notes"),
-      id = "7297795f-c00b-475e-b430-5b0e2e11a2e3";
+      id = "7297795f-c00b-475e-b430-5b0e2e11a2e3",
+      transcript = `.lapis/agents/sessions/${id}/transcript.jsonl`;
     const directory = join(vault, `.lapis/agents/sessions/${id}`);
     mkdirSync(directory, { recursive: true });
     writeFileSync(join(vault, "Welcome.md"), "# Local transcript backup\n");
@@ -152,7 +300,7 @@ test(
         createdAt: now,
       }) + "\n";
     const initialText = record("Original local transcript", "original-user");
-    const file = join(directory, "transcript.jsonl");
+    const file = join(vault, transcript);
     writeFileSync(file, initialText);
     const retained = join(root, "profile/ai-backends-v1");
     mkdirSync(retained, { recursive: true });
@@ -164,13 +312,18 @@ test(
     await first.browser.$("button*=Open Vault").click();
     await ready(first.browser);
     await openChat(first, "Original local transcript");
-    const initial = await checkpoint(first.browser);
+    const initialHead = await checkpoint(first.browser);
     writeFileSync(
       file,
       initialText + record("Later transcript saved externally", "later-user"),
     );
-    await checkpoint(first.browser, initial);
+    await checkpoint(first.browser, initialHead);
     await openHistory(first.browser);
+    const initial = await oldestRevisionContaining(
+      await revisions(first.browser),
+      transcript,
+      (revision) => changedPaths(first.browser, revision),
+    );
     await previewFile(first.browser, initial);
     const diff = await first.browser.$('[aria-label*="Changes to"]').getText();
     assert.match(diff, /Original local transcript/);

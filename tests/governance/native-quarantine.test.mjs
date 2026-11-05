@@ -15,6 +15,7 @@ import {
 import {
   quarantineArguments,
   quarantineCommand,
+  quarantineSourceSnapshot,
 } from "../../scripts/native-quarantine.mjs";
 
 const entry = nativeQuarantines[0];
@@ -63,6 +64,36 @@ test("selectors target complete original titles and reject broad or empty execut
   const command = quarantineCommand(selected);
   assert.ok(command.includes(entry.file));
   assert.ok(command.includes("--test-concurrency=1"));
+});
+
+test("hosted receipts use the checked-out Actions SHA without requiring a jj repo", () => {
+  const source = "a".repeat(40);
+  let localCalls = 0;
+  assert.equal(
+    quarantineSourceSnapshot(
+      { GITHUB_ACTIONS: "true", GITHUB_SHA: source },
+      () => {
+        localCalls++;
+      },
+    ),
+    source,
+  );
+  assert.equal(localCalls, 0);
+  assert.equal(
+    quarantineSourceSnapshot({}, () => {
+      localCalls++;
+      return "local-jj-snapshot";
+    }),
+    "local-jj-snapshot",
+  );
+  assert.equal(localCalls, 1);
+  for (const invalid of [undefined, "0".repeat(40), "not-a-commit"])
+    assert.throws(() =>
+      quarantineSourceSnapshot({
+        GITHUB_ACTIONS: "true",
+        GITHUB_SHA: invalid,
+      }),
+    );
 });
 
 test("zero, skipped, failed or duplicated intended cases never establish diagnostic success", () => {

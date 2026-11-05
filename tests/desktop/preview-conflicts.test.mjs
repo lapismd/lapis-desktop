@@ -14,6 +14,7 @@ import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
 import {
   acceptConflictSide,
+  conflictReview,
   nativeFailure,
   openConflictReview,
   reviewedText,
@@ -97,6 +98,10 @@ async function fixture(context, name) {
 
 async function edit(browser, contents) {
   const editor = browser.$(editable);
+  await editor.waitUntil(
+    async () => (await editor.getAttribute("contenteditable")) === "true",
+    { timeout: 15000 },
+  );
   await editor.click();
   await browser.keys([Key.Command, "a"]);
   await browser.keys(Key.NULL);
@@ -104,6 +109,31 @@ async function edit(browser, contents) {
 }
 async function diskVersion(browser, contents) {
   await reviewedText(browser, "Target.md", "Disk version", contents);
+}
+async function replaceSavedPreview(browser, file, contents) {
+  const surface = browser.$(`${card} [data-editable-markdown-preview]`);
+  const editor = browser.$(editable);
+  await browser.waitUntil(
+    async () =>
+      (await surface.getAttribute("data-editing")) === "true" &&
+      (await surface.getAttribute("data-save-state")) === "saved" &&
+      (await editor.getAttribute("contenteditable")) === "true" &&
+      (await editor.getText()).includes(readFileSync(file, "utf8").trim()),
+    { timeout: 15000 },
+  );
+  await edit(browser, contents);
+  await browser.waitUntil(
+    async () => {
+      if ((await editor.getText()).trim() !== contents.trim()) return false;
+      if (readFileSync(file, "utf8") === contents) return true;
+      const state = await surface.getAttribute("data-save-state");
+      return state === "dirty" || state === "saving";
+    },
+    {
+      timeout: 15000,
+      timeoutMsg: "Preview recovery must accept the later edit",
+    },
+  );
 }
 async function recover(browser, name) {
   await acceptConflictSide(
@@ -179,13 +209,9 @@ test("accepting the disk version replaces a preview draft and permits later save
   );
   assert.deepEqual(violations, []);
   await recover(browser, "Use disk version");
-  await browser.waitUntil(async () =>
-    (await browser.$(editable).getText()).includes(
-      "Reviewed preview disk content",
-    ),
-  );
+  await browser.$(conflictReview("Target.md")).waitForExist({ reverse: true });
   assert.equal(readFileSync(file, "utf8"), "Reviewed preview disk content\n");
-  await edit(browser, "Saved after preview recovery\n");
+  await replaceSavedPreview(browser, file, "Saved after preview recovery\n");
   await session.close();
   assert.equal(readFileSync(file, "utf8"), "Saved after preview recovery\n");
 });

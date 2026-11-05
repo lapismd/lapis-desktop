@@ -37,6 +37,36 @@ separate workflow; they do not weaken ordinary native jobs or required
 aggregates. Dispatch and full qualification have distinct concurrency groups.
 Diagnostics never issue a full source qualification marker or publish a release.
 
+Before this new workflow is registered on canonical main, or whenever same-byte
+normal-family comparison is required, dispatch the registered CI workflow with
+its paired diagnostic inputs:
+
+```sh
+gh workflow run ci.yml --ref <candidate-branch> \
+  -f full=true \
+  -f native_diagnostic_cases=acp-foreign-window \
+  -f rust_backup_diagnostic=true
+```
+
+That profile runs every normal family and the selected isolated original bodies
+against the same prepared acceptance artifact. The Rust option restores its
+genuine build resources through that artifact's complete verifier, installs the
+checksum-verified pinned `jj` executable used by the unchanged Original fixture,
+then independently runs the exact Original/Managed case and its scoped
+integration binary. Either diagnostic may fail the workflow, but the presence of
+any diagnostic input suppresses `Full source qualification` and uses separate
+concurrency.
+
+The paired native delegate receives verified reuse as one literal
+`--reuse-artifact=<manifest>` argument. The quarantine parser intentionally
+rejects a split option and value before any original body runs; such a failure
+is retained harness evidence, not a quarantine outcome.
+
+GitHub Actions checks out a Git repository without Jujutsu workspace metadata.
+Hosted attempt receipts therefore use the validated 40-hex `GITHUB_SHA`; local
+diagnostics retain the Jujutsu working-copy commit. Neither source changes
+artifact verification, original callback selection or qualification policy.
+
 Every fresh isolated root contains `quarantine-attempt.json` and
 `quarantine-results.json`. They record actual source identity, selected cases,
 run/attempt identity, platform, artifact selection and explicit outcomes. The
@@ -67,4 +97,23 @@ LAPIS_APP_BACKUP_DIAGNOSTICS=1 cargo test --manifest-path src-tauri/Cargo.toml -
 On Linux omit `--ignored`. For the ARM64 group, first verify this binary's
 ignored inventory contains only the intended quarantine, then use
 `--include-ignored` on that binary alone. Never enable unrelated crate-wide
-ignored helpers. Linux non-reproduction does not resolve the ARM64 cause.
+ignored helpers. The fixture requires the repository-pinned `jj` CLI; an
+`ENOENT` while launching it is a harness failure before backup initialization,
+not affected-platform evidence for the backup cause. Linux non-reproduction does
+not resolve the ARM64 cause.
+
+Paired run `41618655199` at `a389fb33` passed the isolated ARM64 backup case
+(1/1) and the scoped `repository_original` group (4/4) with diagnostics enabled;
+every reported initialization stage completed successfully. This is an
+affected-platform non-reproduction, not a root-cause repair or authority to
+remove the quarantine. The same run's ACP diagnostic stopped before its body
+because its hosted receipt attempted `jj log @` in the Git-only checkout.
+
+Fresh Linux run `41630554968` at `c0e62124` completed both initialization
+attempts through `HistoryIndexing`, then failed the unchanged case at its
+explicit `stop_backup` call. Local Linux exact (1/1) and scoped (4/4) executions
+passed with diagnostics and do not qualify the hosted failure. Core
+`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa` extends the same opt-in safe records
+through final capture, watcher release and queue completion. Run the unchanged
+exact and scoped cases on macOS ARM64 against that pin; do not remove the
+quarantine based on Linux success or diagnostics alone.

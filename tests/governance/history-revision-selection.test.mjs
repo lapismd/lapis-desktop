@@ -1,0 +1,130 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import {
+  oldestRevisionContaining,
+  revisionComparisonPaths,
+  revisionComparisonRowPaths,
+  revisionComparisonDiagnostic,
+  revisionComparisonState,
+  revisionFileRowSelector,
+} from "../desktop/history-revision-selection.mjs";
+
+test("selects the oldest file-bearing revision past newer startup checkpoints", async () => {
+  const transcript = ".lapis/agents/sessions/session/transcript.jsonl";
+  const paths = new Map([
+    ["working-copy", []],
+    ["later-transcript", [transcript]],
+    ["startup-skills", ["SKILL.md"]],
+    ["initial-transcript", [transcript]],
+  ]);
+  assert.equal(
+    await oldestRevisionContaining(
+      [...paths.keys()],
+      transcript,
+      async (revision) => paths.get(revision),
+    ),
+    "initial-transcript",
+  );
+});
+
+test("reads exact public file-row identities instead of flattened region text", () => {
+  assert.equal(
+    revisionFileRowSelector,
+    'button[data-ui-part="file-row"][data-file-path]',
+  );
+  assert.deepEqual(
+    revisionComparisonPaths([
+      ".lapis/agents/sessions/session/transcript.jsonl",
+      "Welcome.md",
+    ]),
+    [".lapis/agents/sessions/session/transcript.jsonl", "Welcome.md"],
+  );
+  assert.throws(
+    () => revisionComparisonPaths(["Welcome.md", "Welcome.md"]),
+    /Invalid revision file-row identities/u,
+  );
+  assert.equal(
+    [
+      "Changed files4 .lapis agents sessions transcript.jsonl Welcome.md",
+    ].includes("transcript.jsonl"),
+    false,
+  );
+});
+
+test("awaits WebdriverIO's asynchronous element-array map before validating rows", async () => {
+  const rows = {
+    async map(read) {
+      return Promise.all(
+        ["session/transcript.jsonl", "Welcome.md"].map((path) =>
+          read({ getAttribute: async () => path }),
+        ),
+      );
+    },
+  };
+  assert.deepEqual(await revisionComparisonRowPaths(rows), [
+    "session/transcript.jsonl",
+    "Welcome.md",
+  ]);
+  await assert.rejects(
+    revisionComparisonRowPaths({}),
+    /Invalid revision file-row collection/u,
+  );
+});
+
+test("distinguishes a clean working copy from loaded and unavailable comparisons", () => {
+  assert.equal(
+    revisionComparisonState({ files: false, empty: false, unavailable: false }),
+    "pending",
+  );
+  assert.equal(
+    revisionComparisonState({ files: false, empty: true, unavailable: false }),
+    "empty",
+  );
+  assert.equal(
+    revisionComparisonState({ files: true, empty: false, unavailable: false }),
+    "files",
+  );
+  assert.equal(
+    revisionComparisonState({ files: false, empty: false, unavailable: true }),
+    "unavailable",
+  );
+  assert.throws(
+    () =>
+      revisionComparisonState({ files: true, empty: true, unavailable: false }),
+    /Conflicting revision comparison states: files, empty/u,
+  );
+});
+
+test("reports every inspected revision when the file is absent", async () => {
+  await assert.rejects(
+    oldestRevisionContaining(
+      ["newer", "older"],
+      "transcript.jsonl",
+      async (revision) => [`${revision}.md`],
+    ),
+    /No inspected revision changed transcript\.jsonl; older: older\.md; newer: newer\.md/u,
+  );
+});
+
+test("bounds revision comparison diagnostics without hiding selection state", () => {
+  assert.deepEqual(
+    revisionComparisonDiagnostic({
+      expected: "expected-revision",
+      selected: "selected-revision",
+      expanded: false,
+      busy: true,
+      files: false,
+      empty: false,
+      unavailable: false,
+      paths: ["x".repeat(200), ...Array.from({ length: 20 }, (_, i) => `${i}`)],
+    }),
+    {
+      expected: "expected-revision",
+      selected: "selected-revision",
+      expanded: false,
+      busy: true,
+      state: "pending",
+      paths: ["x".repeat(160), ...Array.from({ length: 15 }, (_, i) => `${i}`)],
+    },
+  );
+});

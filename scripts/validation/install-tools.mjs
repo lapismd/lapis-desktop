@@ -1,12 +1,5 @@
 import { createHash } from "node:crypto";
-import {
-  appendFile,
-  chmod,
-  mkdir,
-  readFile,
-  rm,
-  writeFile,
-} from "node:fs/promises";
+import { chmod, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
 import { resolve, join } from "node:path";
 import { pathToFileURL } from "node:url";
@@ -70,11 +63,6 @@ export function archiveMember(members, executable) {
   if (matches.length !== 1)
     throw Error("Archive must contain exactly one root executable");
   return matches[0];
-}
-export function ciToolDirectory(environment = process.env) {
-  if (!environment.RUNNER_TEMP || !environment.GITHUB_PATH)
-    throw Error("CI tool installation requires runner-owned temporary paths");
-  return join(environment.RUNNER_TEMP, "lapis-desktop-validation-tools");
 }
 export async function install(
   directory = "/opt/tools",
@@ -156,9 +144,5 @@ if (
   const bundle = process.argv.find((value) => value.startsWith("--bundle="));
   if (bundle) {
     await installBundle(bundle.slice("--bundle=".length));
-  } else if (process.argv.includes("--ci")) {
-    const directory = ciToolDirectory();
-    await install(directory, true);
-    await appendFile(process.env.GITHUB_PATH, directory + "\n");
   } else await install();
 }

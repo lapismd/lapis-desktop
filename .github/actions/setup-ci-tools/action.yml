@@ -1,0 +1,17 @@
+name: Set up verified Desktop CI tools
+description:
+  Restore the current-attempt Jujutsu and mdBook payload from the pinned Desktop
+  image
+runs:
+  using: composite
+  steps:
+    - name: Download current-attempt CI tools
+      uses: actions/download-artifact@v8
+      with:
+        name: ci-tools-${{ github.run_attempt }}
+        path: .local/ci-tools-download
+    - name: Extract and verify CI tools
+      shell: bash
+      run: |
+        tar -xf .local/ci-tools-download/tools.tar -C .local
+        node scripts/ci/tool-artifact.mjs verify .local/ci-tools

@@ -109,3 +109,76 @@ test("native family aggregation fails closed and packages fan out without source
     /outputs.catalog_profile/,
   );
 });
+
+test("paired ARM64 diagnostics reuse the normal artifact and never qualify a release", () => {
+  const inputs = workflow.on.workflow_dispatch.inputs;
+  assert.equal(inputs.native_diagnostic_cases.default, "");
+  assert.equal(inputs.rust_backup_diagnostic.default, false);
+  assert.match(workflow.concurrency.group, /diagnostic/u);
+  assert.match(workflow.jobs.qualification.if, /native_diagnostic_cases/u);
+  assert.match(workflow.jobs.qualification.if, /rust_backup_diagnostic/u);
+  const native = workflow.jobs["native-quarantine-diagnostic"];
+  assert.ok(native.needs.includes("native-prepare"));
+  assert.ok(native.needs.includes("native-families"));
+  const nativeSource = JSON.stringify(native);
+  assert.match(nativeSource, /native-acceptance-artifact/u);
+  assert.match(nativeSource, /--reuse-artifact/u);
+  assert.match(nativeSource, /macos-native-lanes\.mjs quarantine/u);
+  assert.doesNotMatch(nativeSource, /operation prepare/u);
+  const nativeExecution = native.steps.find(
+    (step) =>
+      step.name === "Execute selected original bodies in isolated state",
+  ).run;
+  assert.match(
+    nativeExecution,
+    /--reuse-artifact=\.local\/ci-acceptance-artifact\/manifest\.json/u,
+  );
+  assert.doesNotMatch(nativeExecution, /--reuse-artifact\s/u);
+  const rustJob = workflow.jobs["rust-backup-diagnostic"];
+  assert.ok(rustJob.needs.includes("native-prepare"));
+  assert.ok(rustJob.needs.includes("ci-tools"));
+  const rust = JSON.stringify(rustJob);
+  assert.match(rust, /native-acceptance-artifact/u);
+  assert.match(rust, /ci-acceptance-artifact\.mjs verify/u);
+  const toolsIndex = rustJob.steps.findIndex(
+    (step) => step.uses === "./.github/actions/setup-ci-tools",
+  );
+  const diagnosticIndex = rustJob.steps.findIndex((step) =>
+    step.run?.includes("rust-backup-diagnostic.mjs"),
+  );
+  assert.ok(toolsIndex >= 0, "The diagnostic must use verified CI tools");
+  assert.doesNotMatch(rust, /validation\/install-tools\.mjs --ci/u);
+  assert.match(rust, /rust-backup-diagnostic\.mjs/u);
+  assert.match(rust, /LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC/u);
+  assert.ok(
+    rust.indexOf("ci-acceptance-artifact.mjs verify") <
+      rust.indexOf("rust-backup-diagnostic.mjs"),
+  );
+  assert.ok(diagnosticIndex >= 0 && toolsIndex < diagnosticIndex);
+  assert.ok(
+    !workflow.jobs.validate.needs.includes("native-quarantine-diagnostic"),
+  );
+  assert.ok(!workflow.jobs.validate.needs.includes("rust-backup-diagnostic"));
+});
+test("Linux native jobs free unused runner trees before WebKit and Rust restore", () => {
+  const steps = workflow.jobs.linux.steps;
+  const free = steps.findIndex(
+    (step) => step.name === "Free unused runner disk",
+  );
+  const webkit = steps.findIndex(
+    (step) => step.name === "Install Linux WebKit build dependencies",
+  );
+  const restore = steps.findIndex(
+    (step) => step.name === "Restore Rust dependency builds",
+  );
+  assert.ok(free >= 0 && free < webkit && webkit < restore);
+  for (const path of [
+    "/usr/share/dotnet",
+    "/usr/local/lib/android",
+    "/opt/ghc",
+    "/usr/local/share/boost",
+    "/usr/share/swift",
+    "/opt/hostedtoolcache/CodeQL",
+  ])
+    assert.match(steps[free].run, new RegExp(path.replaceAll("/", "\\/")));
+});

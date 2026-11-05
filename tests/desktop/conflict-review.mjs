@@ -6,12 +6,17 @@ export const nativeFailure =
 export const conflictReview = (path) =>
   `section[aria-label="File conflict: ${path}"]`;
 
+export const conflictProblemResource = (path) =>
+  `lapis-file-conflict:${encodeURIComponent(path)}`;
+
 export async function openConflictReview(browser, path) {
   const review = browser.$(conflictReview(path));
   if (!(await review.isDisplayed())) {
-    const problem = browser.$(
-      "//button[contains(., 'Review your draft') or contains(., 'Review the retained draft')]",
-    );
+    const problem = browser
+      .$(
+        `li.ui-workspace-problems__group[data-resource="${conflictProblemResource(path)}"]`,
+      )
+      .$("button.ui-workspace-problems__row");
     await problem.waitForDisplayed({ timeout: 15000 });
     await problem.click();
   }

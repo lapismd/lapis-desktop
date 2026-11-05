@@ -47,6 +47,24 @@ export function quarantineCommand(selected) {
   ];
 }
 
+export function quarantineSourceSnapshot(
+  environment = process.env,
+  localSnapshot = () =>
+    execFileSync(
+      "jj",
+      ["--no-pager", "log", "-r", "@", "--no-graph", "-T", "commit_id"],
+      { encoding: "utf8" },
+    ).trim(),
+) {
+  if (environment.GITHUB_ACTIONS === "true") {
+    const source = environment.GITHUB_SHA;
+    if (!/^[a-f0-9]{40}$/u.test(source ?? "") || /^0+$/u.test(source))
+      throw new Error("Hosted quarantine diagnostics need a valid GITHUB_SHA.");
+    return source;
+  }
+  return localSnapshot();
+}
+
 export async function runQuarantine(args) {
   const { selected, reuseArtifact } = quarantineArguments(args);
   const { nativeLaneGate } = await import("./macos-native-lanes.mjs");
@@ -65,13 +83,7 @@ export async function runQuarantine(args) {
     report,
     JSON.stringify(quarantineResults(selected, []), null, 2) + "\n",
   );
-  const sourceSnapshot = execFileSync(
-    "jj",
-    ["--no-pager", "log", "-r", "@", "--no-graph", "-T", "commit_id"],
-    {
-      encoding: "utf8",
-    },
-  ).trim();
+  const sourceSnapshot = quarantineSourceSnapshot();
   const attempt = {
     schema: 1,
     source: prepared.identity.sourceCommit,

@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { parse } from "yaml";
 
 import {
   imageReference,
@@ -12,9 +13,12 @@ import {
   toolPins,
 } from "../../scripts/validation/install-tools.mjs";
 
+const publishedDigest =
+  "sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927";
+
 test("Desktop CI image source pins every tool and base", async () => {
   const manifest = validateImageManifest(await loadImageManifest());
-  assert.equal(manifest.digest, null);
+  assert.equal(manifest.digest, publishedDigest);
   const dockerfile = await readFile(".ci/desktop-ci.Dockerfile", "utf8");
   assert.ok(dockerfile.includes(manifest.baseImage));
   assert.ok(dockerfile.includes(manifest.rustImage));
@@ -26,13 +30,13 @@ test("Desktop CI image source pins every tool and base", async () => {
     );
 });
 
-test("unpublished image cannot become a consumer reference", async () => {
+test("published image has one immutable consumer reference", async () => {
   const manifest = await loadImageManifest();
-  assert.throws(() => imageReference(manifest), /digest/u);
   assert.equal(
-    imageReference({ ...manifest, digest: `sha256:${"a".repeat(64)}` }),
-    `${manifest.image}@sha256:${"a".repeat(64)}`,
+    imageReference(manifest),
+    `${manifest.image}@${publishedDigest}`,
   );
+  assert.throws(() => imageReference({ ...manifest, digest: null }), /digest/u);
 });
 
 test("image publication stays manual, protected and multi-architecture", async () => {
@@ -59,4 +63,95 @@ test("image publication stays manual, protected and multi-architecture", async (
     /run:\s*node --test[^\n]*validation\.test\.mjs/u,
   );
   assert.doesNotMatch(workflow, /\bpush:\s*\n/u);
+});
+
+test("consumer image pulls use the workflow token", async () => {
+  for (const path of [
+    ".github/workflows/ci.yml",
+    ".github/workflows/native-quarantine.yml",
+    ".github/workflows/publish-storybook-pages.yml",
+    ".github/workflows/release-desktop.yml",
+  ]) {
+    const workflow = parse(await readFile(path, "utf8"));
+    const container = workflow.jobs["ci-tools"]?.container;
+    assert.equal(
+      workflow.permissions?.packages,
+      "read",
+      `${path} grants only package read access`,
+    );
+    assert.deepEqual(
+      container?.credentials,
+      {
+        username: "${{ github.actor }}",
+        password: "${{ secrets.GITHUB_TOKEN }}",
+      },
+      `${path} authenticates its immutable image pull`,
+    );
+  }
+});
+
+test("published image feeds verified current-attempt tools to every consumer", async () => {
+  const reference = imageReference(await loadImageManifest());
+  const workflows = [
+    ".github/workflows/ci.yml",
+    ".github/workflows/native-quarantine.yml",
+    ".github/workflows/publish-storybook-pages.yml",
+    ".github/workflows/release-desktop.yml",
+  ];
+  const consumers = [];
+  for (const path of workflows) {
+    const source = await readFile(path, "utf8"),
+      workflow = parse(source),
+      producer = workflow.jobs["ci-tools"];
+    assert.equal(producer.container.image, reference, `${path} pins the image`);
+    const exportStep = producer.steps.find(
+      (step) => step.name === "Export image-owned cross-platform tools",
+    );
+    assert.match(
+      exportStep?.run ?? "",
+      /git config --global --add safe\.directory "\$GITHUB_WORKSPACE"/u,
+      `${path} trusts its container-mounted checkout before reading provenance`,
+    );
+    assert.doesNotMatch(source, /install-tools\.mjs --ci/u);
+    assert.doesNotMatch(source, /taiki-e\/install-action/u);
+    for (const [name, job] of Object.entries(workflow.jobs)) {
+      if (
+        !(job.steps ?? []).some(
+          (step) => step.uses === "./.github/actions/setup-ci-tools",
+        )
+      )
+        continue;
+      consumers.push(`${path}:${name}`);
+      assert.ok(
+        (Array.isArray(job.needs) ? job.needs : [job.needs]).includes(
+          "ci-tools",
+        ),
+        `${path} ${name} requires its producer`,
+      );
+    }
+  }
+  assert.deepEqual(consumers, [
+    ".github/workflows/ci.yml:governance",
+    ".github/workflows/ci.yml:quality",
+    ".github/workflows/ci.yml:unit",
+    ".github/workflows/ci.yml:storybook-static",
+    ".github/workflows/ci.yml:storybook-interaction-shards",
+    ".github/workflows/ci.yml:bundle",
+    ".github/workflows/ci.yml:linux",
+    ".github/workflows/ci.yml:audit",
+    ".github/workflows/ci.yml:dependency-packages",
+    ".github/workflows/ci.yml:native-prepare",
+    ".github/workflows/ci.yml:native-families",
+    ".github/workflows/ci.yml:native-quarantine-diagnostic",
+    ".github/workflows/ci.yml:rust-backup-diagnostic",
+    ".github/workflows/native-quarantine.yml:diagnostic",
+    ".github/workflows/publish-storybook-pages.yml:build",
+    ".github/workflows/release-desktop.yml:build",
+  ]);
+  const action = await readFile(
+    ".github/actions/setup-ci-tools/action.yml",
+    "utf8",
+  );
+  assert.match(action, /ci-tools-\$\{\{ github\.run_attempt \}\}/u);
+  assert.match(action, /scripts\/ci\/tool-artifact\.mjs verify/u);
 });
