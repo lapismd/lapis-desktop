@@ -73,8 +73,10 @@ The recorded executable version remains part of artifact identity. Desktop's
 tooling image is manually published for Linux ARM64/x64 from immutable bases,
 contains no repository source, credentials or package graph, and carries
 checksum-verified Linux and macOS ARM64 Jujutsu/mdBook payloads. Consumers MUST
-pin its registry digest; an unpublished tag cannot enter qualification. Native
-preparation builds one debug e2e acceptance artifact. Independent smoke,
+pin its registry digest; an unpublished tag cannot enter qualification. The
+publisher builds a local image first and runs its Jujutsu-dependent source
+checks inside that image; a clean host never downloads those tools as fallback.
+Native preparation builds one debug e2e acceptance artifact. Independent smoke,
 workspace and services runners verify that artifact, retain serial UI execution
 and own fresh mutable profiles/vaults/ports. Preparation is not test execution.
 The artifact includes each portable fixture's detached signed release envelope

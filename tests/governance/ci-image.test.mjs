@@ -46,5 +46,17 @@ test("image publication stays manual, protected and multi-architecture", async (
   assert.match(workflow, /provenance: mode=max/u);
   assert.match(workflow, /sbom: true/u);
   assert.match(workflow, /actions\/attest-build-provenance@v4/u);
+  assert.match(
+    workflow.replace(/\s+/gu, " "),
+    /docker build .*desktop-ci\.Dockerfile .*lapis-desktop-ci:verification/u,
+  );
+  assert.match(
+    workflow.replace(/\s+/gu, " "),
+    /docker run .*lapis-desktop-ci:verification node --test tests\/governance\/ci-image\.test\.mjs tests\/governance\/validation\.test\.mjs/u,
+  );
+  assert.doesNotMatch(
+    workflow,
+    /run:\s*node --test[^\n]*validation\.test\.mjs/u,
+  );
   assert.doesNotMatch(workflow, /\bpush:\s*\n/u);
 });

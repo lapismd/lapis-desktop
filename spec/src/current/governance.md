@@ -381,13 +381,13 @@ upstream findings. E-AI-030 records compatible macro/TOML lock selection, both
 native profiles and the real-policy fixture; no registry patch or substitute.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
-Seeding stays exclusive; ordinary AI execution remains unavailable.
-
-Local Docker checks are quiet; macOS lanes are opt-in (E-VALIDATION-004). Hosted
-CI runs spec:first, macOS bundle/acceptance, both Linux targets and the exact
-Node patch. A digest-pinned tool image carries verified macOS tools without
-source or secrets. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden
-WebKit cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
+Seeding stays exclusive; ordinary AI execution remains unavailable. Local Docker
+checks are quiet; macOS lanes are opt-in (E-VALIDATION-004). Hosted CI runs
+spec:first, macOS bundle/acceptance, both Linux targets and the exact Node
+patch. A digest-pinned tool image carries verified macOS tools and runs
+publisher checks inside itself without source, secrets, host downloads or
+fallback. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit
+cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
 cold/hidden/headed/capture gates. Hosted and portable prerequisites share exact
 reachable commits and prepared public exports; ranges stay portable. Native
 crates use explicit git revisions in [dependency intake](local-dependencies.md).
