@@ -376,23 +376,23 @@ Native dependency refresh records the clean owning source revision and its
 qualification separately from consumer checks. E-CORE-047 qualifies the cd997c2c
 pin. Update only required lock graph edges; locked checks and packaged ACP
 acceptance must retain existing gates. Native privacy uses the shared scanner
-policy and released transitive versions. E-AI-030 records the compatible
-macro/TOML lock selection, both native profiles and the real-policy fixture; no
-registry patch or synthetic policy substitutes.
+policy and released transitive versions; E-DEPENDENCIES-004 refreshes current
+upstream findings. E-AI-030 records compatible macro/TOML lock selection, both
+native profiles and the real-policy fixture; no registry patch or substitute.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-Local checks use quiet lanes; Docker is default and macOS lanes are opt-in
-(E-VALIDATION-004). Hosted CI runs those lanes, spec:first, the macOS bundle,
-headed acceptance and both Linux release targets with the exact tracked Node
-patch. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit cannot
-qualify native UI. [Acceptance modes](native-acceptance.md) retain
-cold/hidden/headed/capture gates. Hosted prerequisites use exact commits and
-prepared public exports; tracked ranges stay portable. Native crates use the
-explicit git revisions in [dependency intake](local-dependencies.md). Renderer
-tests preload tsx; receipts need full ancestry. Semantic `spec:search` uses
-current/backlog QMD outside CI. Native build heaps use half constrained or
+Local Docker checks are quiet; macOS lanes are opt-in (E-VALIDATION-004). Hosted
+CI runs spec:first, macOS bundle/acceptance, both Linux targets and the exact
+Node patch. A digest-pinned tool image carries verified macOS tools without
+source or secrets. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden
+WebKit cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
+cold/hidden/headed/capture gates. Hosted and portable prerequisites share exact
+reachable commits and prepared public exports; ranges stay portable. Native
+crates use explicit git revisions in [dependency intake](local-dependencies.md).
+Renderer tests preload tsx; receipts need full ancestry. Semantic `spec:search`
+uses current/backlog QMD outside CI. Native build heaps use half constrained or
 physical RAM, capped at 6 GiB.
 
 Four catalog shards, both viewports and themes, must all succeed (E-CI-014).

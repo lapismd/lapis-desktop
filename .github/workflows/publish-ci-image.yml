@@ -1,0 +1,82 @@
+name: Publish Desktop CI image
+
+on:
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: Enter PUBLISH_DESKTOP_CI_IMAGE after source review
+        required: true
+        type: string
+
+permissions:
+  attestations: write
+  contents: read
+  id-token: write
+  packages: write
+
+concurrency:
+  group: publish-desktop-ci-image
+  cancel-in-progress: false
+
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+
+jobs:
+  publish:
+    if: inputs.approval == 'PUBLISH_DESKTOP_CI_IMAGE'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+      - uses: pnpm/action-setup@v6
+      - name: Verify image source contract
+        run:
+          node --test tests/governance/ci-image.test.mjs
+          tests/governance/validation.test.mjs
+      - uses: docker/setup-buildx-action@v4
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Read immutable image tag
+        id: image
+        run: |
+          tag="$(node -p 'require("./.ci/desktop-ci.json").tag')"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+      - name: Resolve image metadata
+        id: metadata
+        uses: docker/metadata-action@v6
+        with:
+          images: ghcr.io/lapismd/lapis-desktop-ci
+          tags: type=raw,value=${{ steps.image.outputs.tag }}
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.version=${{ steps.image.outputs.tag }}
+      - name: Build and publish multi-architecture image
+        id: build
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: .ci/desktop-ci.Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: ${{ steps.metadata.outputs.tags }}
+          labels: ${{ steps.metadata.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          provenance: mode=max
+          sbom: true
+      - name: Attest published image provenance
+        uses: actions/attest-build-provenance@v4
+        with:
+          subject-name: ghcr.io/lapismd/lapis-desktop-ci
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+      - name: Report immutable consumer reference
+        run: |
+          echo "ghcr.io/lapismd/lapis-desktop-ci@${{ steps.build.outputs.digest }}" >> "$GITHUB_STEP_SUMMARY"

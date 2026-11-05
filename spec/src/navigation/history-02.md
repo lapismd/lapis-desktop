@@ -132,6 +132,7 @@
 - [Parallel hosted CI](../history/E-VALIDATION-007.md)
 - [Sibling install projection](../history/E-VALIDATION-008.md)
 - [Linux release binaries and Storybook Pages](../history/E-VALIDATION-009.md)
+- [Reachable portable sources and one private projection](../history/E-VALIDATION-010.md)
 - [Actual provider reload-detach preflight](../history/E-CORE-024.md)
 - [Trusted native target default modes](../history/E-CORE-025.md)
 - [E-CORE-026: Qualified Notes target-mode inputs](../history/E-CORE-026.md)
@@ -215,6 +216,7 @@
 - [Compatible first-party dependency intake](../history/E-DEPENDENCIES-002.md)
 
 - [Dependency automation CI rebase](../history/E-DEPENDENCIES-003.md)
+- [Current minimatch advisory finding refresh](../history/E-DEPENDENCIES-004.md)
 - [Background AI cold readiness quarantine](../history/E-RELEASE-008.md)
 - [RC quarantine and dependency integration](../history/E-RELEASE-009.md)
 - [Queue readiness and deleted-preview quarantine](../history/E-RELEASE-010.md)
@@ -232,3 +234,5 @@
 - [Hosted native artifact fanout diagnostics](../history/E-CI-048.md)
 
 - [Exact hosted Node toolchain identity](../history/E-CI-049.md)
+
+- [Immutable Desktop CI tooling image source](../history/E-CI-050.md)

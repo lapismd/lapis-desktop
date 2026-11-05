@@ -70,7 +70,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
       - name: Check dependency-aware planning and aggregation
         run: node --test tests/governance/ci-selection.test.mjs
       - id: plan
@@ -92,7 +92,7 @@ jobs:
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
           cache-dependency-path: .github/ci-docs/pnpm-lock.yaml
       - name: Install Jujutsu into the runner temp directory
@@ -129,7 +129,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install Jujutsu into the runner temp directory
         run: node scripts/validation/install-tools.mjs --ci
@@ -236,7 +236,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install Jujutsu into the runner temp directory
         run: node scripts/validation/install-tools.mjs --ci
@@ -337,7 +337,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install Jujutsu into the runner temp directory
         run: node scripts/validation/install-tools.mjs --ci
@@ -406,7 +406,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install Jujutsu into the runner temp directory
         run: node scripts/validation/install-tools.mjs --ci
@@ -486,7 +486,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install Jujutsu into the runner temp directory
         run: node scripts/validation/install-tools.mjs --ci
@@ -577,7 +577,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
       - uses: actions/download-artifact@v8
         with:
           name: ci-plan-${{ github.run_attempt }}
@@ -624,7 +624,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
         if: needs.changes.outputs.linux == 'true'
       - name: Install Jujutsu into the runner temp directory
@@ -775,7 +775,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install Jujutsu into the runner temp directory
         run: node scripts/validation/install-tools.mjs --ci
@@ -829,7 +829,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
       - name: Aggregate selected blocking validation lanes
         env:
           PLANNER_RESULT: ${{ needs.changes.result }}
@@ -892,7 +892,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci
@@ -971,7 +971,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci
@@ -1097,7 +1097,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci

@@ -69,7 +69,11 @@ Consumers verify source/configuration/tool identities and hashes before install;
 no cross-platform node_modules or private signing keys are transferred. Native
 and non-native workflows provision the exact `.node-version` patch so concurrent
 jobs cannot resolve different Node releases while sharing verified artifacts.
-The recorded executable version remains part of artifact identity. Native
+The recorded executable version remains part of artifact identity. Desktop's
+tooling image is manually published for Linux ARM64/x64 from immutable bases,
+contains no repository source, credentials or package graph, and carries
+checksum-verified Linux and macOS ARM64 Jujutsu/mdBook payloads. Consumers MUST
+pin its registry digest; an unpublished tag cannot enter qualification. Native
 preparation builds one debug e2e acceptance artifact. Independent smoke,
 workspace and services runners verify that artifact, retain serial UI execution
 and own fresh mutable profiles/vaults/ports. Preparation is not test execution.
