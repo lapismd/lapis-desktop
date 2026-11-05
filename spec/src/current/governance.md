@@ -388,7 +388,9 @@ Seeding stays exclusive; ordinary AI execution remains unavailable.
 identities, complete catalog modes and non-qualifying diagnostics. Its
 digest-pinned image runs publisher checks inside itself and exports one
 current-attempt, mode/hash-verified Linux and macOS tool artifact without
-source, secrets, host downloads or fallback. Hidden WebKit cannot qualify
+source, secrets, host downloads or fallback. Image pulls use only ephemeral
+workflow identity with package-read permission; credentials never enter the
+image or artifact. Hidden WebKit cannot qualify
 [native acceptance](native-acceptance.md). Native revisions follow
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
 Semantic `spec:search` uses current/backlog QMD outside CI. Pages:

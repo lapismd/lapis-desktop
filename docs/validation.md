@@ -191,10 +191,11 @@ Hosted tooling uses the same separation. The manually published
 the shared Lapis image and embeds checksum-verified Linux ARM64/x64 and macOS
 ARM64 Jujutsu/mdBook payloads. Image publication creates no release candidate;
 consumers remain disabled until a reviewed immutable registry digest is pinned.
-Every adopting workflow exports those bytes once and consumers verify the
-current source/run/attempt, image digest, complete file inventory, modes and
-platform before adding them to `PATH`. Failure never contacts the upstream
-release endpoints.
+Every adopting workflow authenticates the digest-pinned pull with its ephemeral
+workflow token, exports those bytes once and verifies the current
+source/run/attempt, image digest, complete file inventory, modes and platform
+before adding them to `PATH`. The image and artifact contain no credential, and
+failure never contacts the upstream release endpoints.
 
 `E-VALIDATION-001` already qualifies the cache/image-key regressions, mounted
 cache bootstrap exclusion and complete runner/lease/guard suite. JavaScript

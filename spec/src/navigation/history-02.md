@@ -272,3 +272,5 @@
 - [Verified Desktop CI tool artifact adoption](../history/E-CI-067.md)
 
 - [Image-owned publication verification](../history/E-CI-068.md)
+
+- [Published Desktop CI image adoption](../history/E-CI-069.md)
