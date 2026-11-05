@@ -1203,7 +1203,7 @@ jobs:
       - uses: pnpm/action-setup@v6
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
           cache: pnpm
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci
@@ -1264,7 +1264,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.10.0
+          node-version: 24.15.0
       - name: Install pinned Jujutsu tooling
         run: node scripts/validation/install-tools.mjs --ci
       - name: Select configured macOS deployment minimum

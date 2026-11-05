@@ -267,4 +267,6 @@
 
 - [Bind Terminal prompt readiness to the newly requested session](../history/E-CI-064.md)
 
+- [Exact Node runtime for paired ARM64 diagnostics](../history/E-CI-066.md)
+
 - [Image-owned publication verification](../history/E-CI-068.md)

@@ -382,21 +382,14 @@ upstream findings. E-AI-030 records compatible macro/TOML lock selection, both
 native profiles and the real-policy fixture; no registry patch or substitute.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
-Seeding stays exclusive; ordinary AI execution remains unavailable. Local Docker
-checks are quiet; macOS lanes are opt-in (E-VALIDATION-004). Hosted CI runs
-spec:first, macOS bundle/acceptance, both Linux targets and the exact Node
-patch. A digest-pinned tool image carries verified macOS tools and runs
-publisher checks inside itself without source, secrets, host downloads or
-fallback. Pages: <https://lapismd.github.io/lapis-desktop/>. Hidden WebKit
-cannot qualify native UI. [Acceptance modes](native-acceptance.md) retain
-cold/hidden/headed/capture gates. Hosted and portable prerequisites share exact
-reachable commits and prepared public exports; ranges stay portable. Native
-crates use explicit revisions from [dependency intake](local-dependencies.md).
-Paired diagnostics require explicit dispatch, fully verify the normal artifact,
-scope Rust ignores and cannot qualify. Renderer tests preload tsx; receipts need
-full ancestry. Await WebDriver maps; semantic `spec:search` uses current/backlog
-QMD outside CI. Native build heaps use half constrained or physical RAM, capped
-at 6 GiB. Four catalog shards, both viewports and themes, must all succeed
-(E-CI-014). Native fixtures install the pinned plugins tree before signing when
-fflate is absent (E-CI-032). Packed Tasks pin (E-CI-034). Audits:
-E-CI-037/041/043.
+Seeding stays exclusive; ordinary AI execution remains unavailable.
+
+[CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
+identities, complete catalog modes and non-qualifying diagnostics. Its
+digest-pinned image runs publisher checks inside itself and exports one
+current-attempt, mode/hash-verified Linux and macOS tool artifact without
+source, secrets, host downloads or fallback. Hidden WebKit cannot qualify
+[native acceptance](native-acceptance.md). Native revisions follow
+[dependency intake](local-dependencies.md); receipts retain full ancestry.
+Semantic `spec:search` uses current/backlog QMD outside CI. Pages:
+<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043.
