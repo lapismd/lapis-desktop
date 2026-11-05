@@ -38,6 +38,7 @@ jobs:
           fetch-depth: 0
       - name: Export image-owned cross-platform tools
         run: |
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           node scripts/ci/tool-artifact.mjs export \
             .local/ci-tools /opt/lapis-desktop-ci/tools
           tar -cf .local/tools.tar -C .local ci-tools

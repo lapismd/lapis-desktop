@@ -228,6 +228,21 @@ root-plus-saved-revisions assertion before selecting the transcript delta.
 Historical failed attempts and the limits of each result remain in E-CI-045,
 E-CI-046 and E-CI-047. Do not rewrite those receipts.
 
+Release qualification update on 2026-11-05: protected run `41961289374`
+published the reviewed multi-architecture Desktop CI image, and all adopting
+workflows pin OCI index
+`sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927`. PR
+#14 exact-head run `41964547796` retained the first integrated consumer failure.
+The authenticated image pull completed, but checkout had written its
+safe-directory entry under a temporary home; the producer step then failed
+`git rev-parse HEAD` for the mounted checkout and was cancelled at its existing
+10-minute job bound before artifact upload. Every producer now explicitly trusts
+only its exact `GITHUB_WORKSPACE` before resolving provenance. A disposable
+ordinary Git checkout reproduced the original rejection and passed the genuine
+image export and tar boundary after this repair. The failed run remains
+evidence; a new complete workflow attempt is required and failed-job-only reruns
+cannot qualify the release.
+
 ## Local execution boundary
 
 Continue from the checked-out sibling repositories in the local workspace. Run

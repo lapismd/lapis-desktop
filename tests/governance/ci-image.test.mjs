@@ -104,6 +104,14 @@ test("published image feeds verified current-attempt tools to every consumer", a
       workflow = parse(source),
       producer = workflow.jobs["ci-tools"];
     assert.equal(producer.container.image, reference, `${path} pins the image`);
+    const exportStep = producer.steps.find(
+      (step) => step.name === "Export image-owned cross-platform tools",
+    );
+    assert.match(
+      exportStep?.run ?? "",
+      /git config --global --add safe\.directory "\$GITHUB_WORKSPACE"/u,
+      `${path} trusts its container-mounted checkout before reading provenance`,
+    );
     assert.doesNotMatch(source, /install-tools\.mjs --ci/u);
     assert.doesNotMatch(source, /taiki-e\/install-action/u);
     for (const [name, job] of Object.entries(workflow.jobs)) {

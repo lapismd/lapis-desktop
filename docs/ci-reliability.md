@@ -79,7 +79,9 @@ attempt-suffixed names. **Rerun the complete workflow**, not only failed jobs,
 when seeking full qualification: previous successful family/producer jobs do not
 become current execution. Earlier attempt artifacts remain retained.
 Full/nightly Turbo runs force test execution; dependency caches still reuse
-compatible compiled outputs.
+compatible compiled outputs. Containerized tool producers explicitly trust only
+their exact mounted `GITHUB_WORKSPACE` before reading the checked-out Git
+commit; they never use wildcard safe-directory configuration.
 
 ## Evidence still required
 

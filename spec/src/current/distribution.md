@@ -31,7 +31,9 @@ that exact Node patch with the separately published Desktop CI image source;
 release consumers cannot adopt an unpublished tag or a mutable reference. The
 workflow authenticates that digest-pinned pull with package-read-only workflow
 authority and restores Jujutsu and mdBook only from its source/run/attempt-bound
-image artifact. Neither the image nor artifact contains the credential.
+image artifact. Its container producer trusts only the exact mounted
+`GITHUB_WORKSPACE` before resolving checked-out Git provenance; wildcard trust
+is prohibited. Neither the image nor artifact contains the credential.
 Preparation then assembles the complete manifest before testing each archive
 through the pinned tap's temporary installer and sealing those exact bytes with
 their per-target receipts. Native installation and window/quit checks run only

@@ -195,7 +195,10 @@ Every adopting workflow authenticates the digest-pinned pull with its ephemeral
 workflow token, exports those bytes once and verifies the current
 source/run/attempt, image digest, complete file inventory, modes and platform
 before adding them to `PATH`. The image and artifact contain no credential, and
-failure never contacts the upstream release endpoints.
+failure never contacts the upstream release endpoints. Because checkout writes
+its trust entry under a temporary home, each containerized producer explicitly
+trusts only the exact mounted `GITHUB_WORKSPACE` before reading Git provenance;
+wildcard repository trust is prohibited.
 
 `E-VALIDATION-001` already qualifies the cache/image-key regressions, mounted
 cache bootstrap exclusion and complete runner/lease/guard suite. JavaScript
