@@ -5,6 +5,27 @@ import { parse } from "yaml";
 const read = (file) =>
   readFileSync(new URL(`../../${file}`, import.meta.url), "utf8");
 const workflow = parse(read(".github/workflows/release-desktop.yml"));
+test("trial builds stay manual, untested and outside preview publication", () => {
+  const trial = parse(read(".github/workflows/trial-desktop.yml"));
+  assert.equal(trial.name, "Desktop trial build");
+  assert.deepEqual(Object.keys(trial.on), ["workflow_dispatch"]);
+  assert.equal(trial.env.LAPIS_DESKTOP_TRIAL, "1");
+  assert.equal(trial.jobs.build.strategy.matrix.include.length, 3);
+  assert.deepEqual(trial.jobs.publish.needs, "build");
+  assert.equal(trial.jobs.publish.permissions.contents, "write");
+  assert.equal(trial.permissions.contents, "read");
+  const source = read(".github/workflows/trial-desktop.yml");
+  assert.match(source, /desktop-trial-\$\{GITHUB_SHA\}/);
+  assert.match(source, /--prerelease/);
+  assert.doesNotMatch(
+    source,
+    /gate\.mjs|test-preview-install|desktop-preview-release|node --test/,
+  );
+  assert.doesNotMatch(
+    read(".github/workflows/release-desktop.yml"),
+    /LAPIS_DESKTOP_TRIAL/,
+  );
+});
 test("preview publication stays manual, disabled by default and protected after candidate qualification", () => {
   assert.deepEqual(Object.keys(workflow.on), ["workflow_dispatch"]);
   assert.equal(workflow.on.workflow_dispatch.inputs.publish.default, false);

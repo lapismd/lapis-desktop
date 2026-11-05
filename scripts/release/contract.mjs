@@ -154,11 +154,15 @@ export function compareCalendar(a, b) {
   return 0;
 }
 export function hostedMain(env = process.env) {
-  if (
-    env.GITHUB_ACTIONS !== "true" ||
-    env.GITHUB_REPOSITORY !== repository ||
-    env.GITHUB_REF !== "refs/heads/main" ||
-    !/^[a-f0-9]{40}$/.test(env.GITHUB_SHA)
-  )
+  const hosted =
+    env.GITHUB_ACTIONS === "true" &&
+    env.GITHUB_REPOSITORY === repository &&
+    /^[a-f0-9]{40}$/.test(env.GITHUB_SHA ?? "");
+  if (env.LAPIS_DESKTOP_TRIAL === "1") {
+    if (!hosted || env.GITHUB_WORKFLOW !== "Desktop trial build")
+      throw Error("Trial builds require the hosted trial workflow");
+    return;
+  }
+  if (!hosted || env.GITHUB_REF !== "refs/heads/main")
     throw Error("Desktop release operations require the hosted main workflow");
 }

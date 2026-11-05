@@ -9,6 +9,15 @@ export const run = (command, args, cwd = root) =>
   execFileSync(command, args, { cwd, stdio: "inherit" });
 
 export async function requireSourceCI(identity) {
+  if (process.env.LAPIS_DESKTOP_TRIAL === "1") {
+    if (process.env.GITHUB_WORKFLOW !== "Desktop trial build")
+      throw Error("Trial builds require the hosted trial workflow");
+    return {
+      sourceCommit: identity.sourceCommit,
+      ciResult: "trial",
+      qualification: "untested-trial",
+    };
+  }
   const sourceCI = JSON.parse(
     await readFile(".local/release/source-ci.json", "utf8"),
   );
