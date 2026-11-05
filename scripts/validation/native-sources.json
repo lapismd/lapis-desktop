@@ -1,15 +1,15 @@
 [
   {
     "name": "lapis-notes",
-    "revision": "cd997c2cf92ecfa1ce16de1f49ec085d58d026d5"
+    "revision": "e99baa742483ace8177b22fbdec3eed11867eedc"
   },
   {
     "name": "lapis-ai",
-    "revision": "6548afe0f47c6fa2ff71d326a5f6e8ce4ebbebd8"
+    "revision": "9a98293c26524c9320acdd9767e34e8ffdd7170c"
   },
   {
     "name": "jj-store",
-    "revision": "4e74e423966180576da89229e02da49dcd014dfd"
+    "revision": "7a98bd89d2bc77fb6ec41f91186992abb19ba161"
   },
   {
     "name": "agent-redaction",
@@ -17,7 +17,7 @@
   },
   {
     "name": "lapis-plugins",
-    "revision": "5e0dffc3eb29efed5508c4914acca6b6bba0027f"
+    "revision": "879581d1549187bdbac2d75b40d02e0df46e721a"
   },
   {
     "name": "lapis-terminal",

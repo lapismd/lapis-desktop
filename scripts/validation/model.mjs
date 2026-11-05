@@ -72,6 +72,20 @@ export function validateArchives(entries) {
   }
   return entries;
 }
+
+export function projectArchives(manifest, archives) {
+  const projected = structuredClone(manifest);
+  for (const [name, target] of Object.entries(archives)) {
+    const section = [
+      "dependencies",
+      "devDependencies",
+      "optionalDependencies",
+    ].find((candidate) => Object.hasOwn(projected[candidate] ?? {}, name));
+    if (!section) throw Error(`Archive is not declared by the root: ${name}`);
+    projected[section][name] = target;
+  }
+  return projected;
+}
 const nativeLanes = new Set([
   "check",
   "check:all",
