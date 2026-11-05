@@ -397,4 +397,4 @@ image or artifact. Hidden WebKit cannot qualify
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
 Semantic `spec:search` uses current/backlog QMD outside CI:
 <https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Trial
-builds cannot qualify. Linux frees unused SDK trees before restore.
+builds cannot qualify. macOS deep-signs and clears quarantine.
