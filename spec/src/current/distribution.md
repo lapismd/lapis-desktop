@@ -2,9 +2,10 @@
 
 Desktop owns packaging and release qualification; `lapismd/homebrew-tap` owns
 installation and generated casks. Preview targets Apple Silicon macOS 15+ and
-Linux ARM64/x64 on Ubuntu 24.04. macOS is ad-hoc signed and unnotarized. Linux
-requires system WebKitGTK 4.1, GTK 3 and Ayatana AppIndicator. Stable cutover
-remains in the [distribution backlog](../backlog/distribution.md).
+Linux ARM64/x64 on Ubuntu 24.04. macOS is deep ad-hoc signed,
+quarantine-cleared, and unnotarized. Linux requires system WebKitGTK 4.1, GTK 3
+and Ayatana AppIndicator. Stable cutover remains in the
+[distribution backlog](../backlog/distribution.md).
 
 ## Requirements
 

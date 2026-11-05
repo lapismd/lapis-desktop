@@ -82,6 +82,8 @@ test("release packaging requires real Homebrew installation and releases no acce
   assert.match(read("scripts/release/build-common.mjs"), /"--release"/);
   assert.match(read("scripts/release/build-linux.mjs"), /"--no-bundle"/);
   assert.match(source, /"--no-sign"/);
+  assert.match(source, /"--force", "--deep", "--sign", "-"/);
+  assert.match(source, /\["-cr", app\]/);
   assert.doesNotMatch(
     source,
     /"--debug"|"--features"|local-macos-build|native-test/,
