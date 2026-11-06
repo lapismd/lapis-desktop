@@ -38,10 +38,13 @@ unqualified.
 E-RELEASE-014 additionally quarantines the exact native
 queue-owner/cold-recovery case after its first process missed renderer readiness
 before driver evaluation. Its complete callback and deadlines remain intact.
-There are now 21 native UI quarantines: 1 startup and 20 feature cases. A
-separate Rust Original/Managed reader case is ignored only on macOS ARM64 after
-intermittent backup startup; Linux retains it. These cases remain unqualified;
-no production policy changes.
+E-CI-076 additionally quarantines the Graph failed-write recovery case after
+macOS ARM64 Close stayed blocked on `.lapis/lapis-graph.json` and an earlier run
+timed out in the `.lapis/app.json` review. Its complete callback and deadlines
+remain intact. That recovery boundary stays unqualified. There are now 22 native
+UI quarantines: 1 startup and 21 feature cases. A separate Rust Original/Managed
+reader case is ignored only on macOS ARM64 after intermittent backup startup;
+Linux retains it. These cases remain unqualified; no production policy changes.
 
 Enabled conflict-recovery acceptance MUST observe completion of the existing
 review lifecycle before beginning a later edit. After invoking the unchanged
