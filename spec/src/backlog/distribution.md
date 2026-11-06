@@ -355,7 +355,7 @@ is identical: all 17 PR gates passed, including both exact cases. The Rust case
 also passed an isolated run and all 10 parallel-group reproductions (40 tests).
 
 Quarantine only those complete cases. Preserve callbacks, assertions, helpers
-and deadlines. Current native UI total: 21 (1 startup, 20 feature), plus one
+and deadlines. Current native UI total: 22 (1 startup, 21 feature), plus one
 additional Rust quarantine restricted to macOS ARM64; Linux retains that case.
 Its two existing Rust helper ignores remain unchanged. Native artifact
 13103794363 has verified ZIP SHA-256
