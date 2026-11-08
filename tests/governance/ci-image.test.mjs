@@ -73,7 +73,7 @@ test("image publication stays manual, protected and multi-architecture", async (
   );
   assert.match(
     workflow.replace(/\s+/gu, " "),
-    /docker run .*lapis-desktop-ci:verification node --test tests\/governance\/ci-image\.test\.mjs tests\/governance\/validation\.test\.mjs/u,
+    /docker run .*lapis-desktop-ci:verification node --test tests\/governance\/ci-image-source\.test\.mjs tests\/governance\/validation\.test\.mjs/u,
   );
   assert.doesNotMatch(
     workflow,
