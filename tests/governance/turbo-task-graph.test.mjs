@@ -59,6 +59,12 @@ test("Cargo and catalog browser tasks stay in separate Turbo invocations", () =>
   assert.ok(!scripts.checks.includes("test:desktop:headed"));
 });
 
+test("Turbo propagates the verified offline Vectorscan selection", () => {
+  const turbo = JSON.parse(readFileSync("turbo.json", "utf8"));
+  assert.ok(turbo.globalEnv.includes("VECTORSCAN_PREBUILT_DIR"));
+  assert.ok(turbo.globalEnv.includes("VECTORSCAN_OFFLINE"));
+});
+
 test("hosted CI projects unpublished packages and restores the tracked lock", () => {
   const ci = readFileSync(".github/workflows/ci.yml", "utf8");
   assert.match(ci, /node scripts\/ci-prepare-links\.mjs/u);
