@@ -387,8 +387,8 @@ AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 [CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
-identities, complete catalog modes and non-qualifying diagnostics. Its
-digest-pinned image runs publisher checks inside itself and exports one
+identities, complete catalog modes and non-qualifying diagnostics. Its reviewed
+`2026.11.2` digest-pinned image runs publisher checks and exports one
 current-attempt, mode/hash-verified Linux and macOS tool artifact without
 source, secrets, host downloads or fallback. Image pulls use only ephemeral
 workflow identity with package-read permission; credentials never enter the

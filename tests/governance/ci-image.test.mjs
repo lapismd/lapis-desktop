@@ -17,7 +17,9 @@ import {
 const publishingSource = process.env.LAPIS_DESKTOP_CI_IMAGE_SOURCE === "1";
 const previousDigest =
   "sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927";
-const publishedDigest = publishingSource ? null : previousDigest;
+const currentDigest =
+  "sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce";
+const publishedDigest = publishingSource ? null : currentDigest;
 
 test("Desktop CI image source pins every tool and base", async () => {
   const manifest = validateImageManifest(await loadImageManifest());
