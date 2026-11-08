@@ -281,3 +281,7 @@
 
 - [Repair the release-candidate native failures](../history/E-CI-072.md)
 - [Publish an untested desktop trial build](../history/E-CI-073.md)
+- [Offline Vectorscan CI image payload](../history/E-CI-077.md)
+- [Dependency-free CI image publication checks](../history/E-CI-078.md)
+- [Published offline Desktop CI image adoption](../history/E-CI-079.md)
+- [Propagate offline native inputs through Turbo](../history/E-CI-080.md)

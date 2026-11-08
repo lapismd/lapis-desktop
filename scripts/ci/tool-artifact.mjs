@@ -26,20 +26,26 @@ import {
   loadImageManifest,
   validateImageManifest,
 } from "./image.mjs";
+import { vectorscanPin } from "../validation/install-tools.mjs";
 
 export const toolPlatforms = ["linux-x64", "linux-arm64", "darwin-arm64"];
 const executables = ["jj", "mdbook"];
 
 function verifyBundle(root) {
   const manifest = JSON.parse(readFileSync(join(root, "manifest.json")));
-  assert.equal(manifest.schemaVersion, 1);
+  assert.equal(manifest.schemaVersion, 2);
   assert.deepEqual(
     Object.keys(manifest.platforms).sort(),
     [...toolPlatforms].sort(),
   );
   for (const platform of toolPlatforms) {
+    const [os, arch] = platform.split("-");
+    const vectorscan = vectorscanPin(
+      os === "darwin" ? "darwin" : "linux",
+      arch,
+    );
     assert.deepEqual(
-      Object.keys(manifest.platforms[platform]).sort(),
+      Object.keys(manifest.platforms[platform].executables).sort(),
       executables,
     );
     for (const executable of executables) {
@@ -49,12 +55,22 @@ function verifyBundle(root) {
       assert.ok(stat.mode & 0o111, "CI tool payload must remain executable");
       assert.equal(
         digest(readFileSync(file)),
-        manifest.platforms[platform][executable],
+        manifest.platforms[platform].executables[executable],
         `CI tool payload digest changed: ${platform}/${executable}`,
       );
     }
+    assert.deepEqual(Object.keys(manifest.platforms[platform].archives), [
+      vectorscan.asset,
+    ]);
+    const archive = safePath(root, `${platform}/${vectorscan.asset}`);
+    assert.ok(lstatSync(archive).isFile(), "Vectorscan archive must be a file");
+    assert.equal(
+      digest(readFileSync(archive)),
+      manifest.platforms[platform].archives[vectorscan.asset],
+      `Vectorscan archive digest changed: ${platform}`,
+    );
   }
-  assert.equal(inventory(root).length, 7, "Unexpected CI tool payload file");
+  assert.equal(inventory(root).length, 10, "Unexpected CI tool payload file");
   return manifest;
 }
 
@@ -133,6 +149,12 @@ export async function verifyTools(
   }
   if (environment.GITHUB_PATH)
     writeFileSync(environment.GITHUB_PATH, directory + "\n", { flag: "a" });
+  if (environment.GITHUB_ENV)
+    writeFileSync(
+      environment.GITHUB_ENV,
+      `VECTORSCAN_PREBUILT_DIR=${directory}\nVECTORSCAN_OFFLINE=1\n`,
+      { flag: "a" },
+    );
   return { directory, image: manifest.image };
 }
 

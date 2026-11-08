@@ -19,12 +19,12 @@ no-retry/quarantine/release policy. Diagnostics/native close never retry; empty
 comparisons continue; unavailable/conflicting fail closed. The Notes fix stays
 upstream until released. [Local intake](local-dependencies.md) governs pins,
 refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs stream
-(E-CI-009). Whole-stack validation covers every protected path changed from its
-base. Container producers trust only the exact mounted workspace; wildcard Git
-trust is prohibited. The e2e entry shares early progress, then imports runtime
-instrumentation; ordinary bundles reject its startup capture marker. Canonical
-owners include planned [Review](../backlog/markdown-review-contract.md) and
-staged [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
+(E-CI-009). Whole-stack validation covers changed protected paths. Producers
+trust the mounted workspace, never wildcard Git; source checks use built-ins.
+The e2e entry shares early progress, then imports runtime instrumentation;
+ordinary bundles reject its startup capture marker. Canonical owners include
+planned [Review](../backlog/markdown-review-contract.md) and staged
+[native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
 The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import
@@ -387,12 +387,12 @@ AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 [CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
-identities, complete catalog modes and non-qualifying diagnostics. Its
-digest-pinned image runs publisher checks inside itself and exports one
+identities, complete catalog modes and non-qualifying diagnostics. Its reviewed
+`2026.11.2` digest-pinned image runs publisher checks and exports one
 current-attempt, mode/hash-verified Linux and macOS tool artifact without
-source, secrets, host downloads or fallback. Image pulls use only ephemeral
-workflow identity with package-read permission; credentials never enter the
-image or artifact. Hidden WebKit cannot qualify
+source, secrets, host downloads or fallback. Turbo propagates its verified
+offline selection. Image pulls use ephemeral package-read authority; credentials
+never enter the image or artifact. Hidden WebKit cannot qualify
 [native acceptance](native-acceptance.md). Native revisions follow
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
 Semantic `spec:search` uses current/backlog QMD outside CI:

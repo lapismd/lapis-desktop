@@ -4,7 +4,7 @@ FROM rust:1.99.0-slim-bookworm@sha256:2c3a22f0a5533ea2dd5a16627bc841228151faa2d4
 FROM ghcr.io/lapismd/lapis-ci@sha256:91341a81cc9306eed818c4c433cd29ed11d2ea64c703f32685391befe0eca503
 
 LABEL org.opencontainers.image.title="Lapis Desktop CI" \
-      org.opencontainers.image.description="Pinned Desktop build tools and verified macOS ARM64 tool payloads" \
+      org.opencontainers.image.description="Pinned Desktop build tools and verified cross-platform native payloads" \
       org.opencontainers.image.source="https://github.com/lapismd/lapis-desktop" \
       org.opencontainers.image.licenses="Apache-2.0"
 

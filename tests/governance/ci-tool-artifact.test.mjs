@@ -18,6 +18,7 @@ import {
   verifyTools,
 } from "../../scripts/ci/tool-artifact.mjs";
 import { digest } from "../../scripts/ci-artifact-identity.mjs";
+import { vectorscanPin } from "../../scripts/validation/install-tools.mjs";
 
 const image = {
   schemaVersion: 1,
@@ -39,7 +40,7 @@ const image = {
 function source(root) {
   const platforms = {};
   for (const platform of toolPlatforms) {
-    platforms[platform] = {};
+    platforms[platform] = { executables: {}, archives: {} };
     mkdirSync(join(root, platform), { recursive: true });
     for (const [name, version] of [
       ["jj", "jj 0.45.1"],
@@ -48,12 +49,18 @@ function source(root) {
       const path = join(root, platform, name);
       writeFileSync(path, `#!/bin/sh\necho '${version}'\n`);
       chmodSync(path, 0o755);
-      platforms[platform][name] = digest(readFileSync(path));
+      platforms[platform].executables[name] = digest(readFileSync(path));
     }
+    const [os, arch] = platform.split("-");
+    const archive = vectorscanPin(os === "darwin" ? "darwin" : "linux", arch);
+    const archivePath = join(root, platform, archive.asset);
+    writeFileSync(archivePath, "test Vectorscan archive");
+    archive.digest = digest(readFileSync(archivePath));
+    platforms[platform].archives[archive.asset] = archive.digest;
   }
   writeFileSync(
     join(root, "manifest.json"),
-    JSON.stringify({ schemaVersion: 1, platforms }, null, 2) + "\n",
+    JSON.stringify({ schemaVersion: 2, platforms }, null, 2) + "\n",
   );
 }
 
@@ -63,6 +70,7 @@ test("CI tool artifacts retain image, run, attempt, bytes and modes", async () =
     const tools = join(temporary, "source"),
       artifact = join(temporary, "artifact"),
       githubPath = join(temporary, "github-path"),
+      githubEnvironment = join(temporary, "github-environment"),
       environment = {
         GITHUB_ACTIONS: "true",
         GITHUB_REPOSITORY: "lapismd/lapis-desktop",
@@ -72,9 +80,11 @@ test("CI tool artifacts retain image, run, attempt, bytes and modes", async () =
         GITHUB_RUN_ID: "41932220425",
         GITHUB_RUN_ATTEMPT: "1",
         GITHUB_PATH: githubPath,
+        GITHUB_ENV: githubEnvironment,
       };
     mkdirSync(tools);
     writeFileSync(githubPath, "");
+    writeFileSync(githubEnvironment, "");
     source(tools);
     await exportTools(artifact, tools, process.cwd(), environment, image);
     const result = await verifyTools(
@@ -87,6 +97,10 @@ test("CI tool artifacts retain image, run, attempt, bytes and modes", async () =
     );
     assert.match(result.directory, /linux-x64$/u);
     assert.equal(readFileSync(githubPath, "utf8"), result.directory + "\n");
+    assert.equal(
+      readFileSync(githubEnvironment, "utf8"),
+      `VECTORSCAN_PREBUILT_DIR=${result.directory}\nVECTORSCAN_OFFLINE=1\n`,
+    );
     await assert.rejects(
       verifyTools(
         artifact,
