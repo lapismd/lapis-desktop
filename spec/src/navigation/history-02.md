@@ -281,3 +281,4 @@
 
 - [Repair the release-candidate native failures](../history/E-CI-072.md)
 - [Publish an untested desktop trial build](../history/E-CI-073.md)
+- [Offline Vectorscan CI image payload](../history/E-CI-077.md)

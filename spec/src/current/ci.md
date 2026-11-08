@@ -72,18 +72,21 @@ jobs cannot resolve different Node releases while sharing verified artifacts.
 The recorded executable version remains part of artifact identity. Desktop's
 tooling image is manually published for Linux ARM64/x64 from immutable bases,
 contains no repository source, credentials or package graph, and carries
-checksum-verified Linux and macOS ARM64 Jujutsu/mdBook payloads. Consumers MUST
-pin its registry digest and authenticate the pull with the ephemeral workflow
-token; an unpublished tag cannot enter qualification and no credential enters
-the image or exported payload. The publisher builds a local image first and runs
+checksum-verified Linux and macOS ARM64 Jujutsu/mdBook payloads plus each
+supported runner's original Vectorscan archive. Consumers MUST pin its registry
+digest and authenticate the pull with the ephemeral workflow token; an
+unpublished tag cannot enter qualification and no credential enters the image or
+exported payload. The publisher builds a local image first and runs
 Jujutsu-dependent source checks inside it; a clean host never downloads those
 tools or falls back. Each workflow exports the image-owned bytes once, binds
 them to the current repository, source, run and attempt, and transfers one
 mode/hash-verified cross-platform artifact. Consumers reject a missing producer,
 foreign attempt, changed digest, extra file, unsupported platform or
-non-executable payload. Native preparation builds one debug e2e acceptance
-artifact. Independent smoke, workspace and services runners verify that
-artifact, retain serial UI execution and own fresh mutable
+non-executable payload. After verification they force Vectorscan's crate-owned
+offline mode and select only that platform's archive directory; ordinary jobs
+MUST NOT download this native dependency. Native preparation builds one debug
+e2e acceptance artifact. Independent smoke, workspace and services runners
+verify that artifact, retain serial UI execution and own fresh mutable
 profiles/vaults/ports. Preparation is not test execution. The artifact includes
 each portable fixture's detached signed release envelope and a separately
 compiled development-origin e2e binary for the exact HTTP renderer case.

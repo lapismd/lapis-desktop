@@ -11,10 +11,13 @@ import {
 import {
   bundlePlatforms,
   toolPins,
+  vectorscanPin,
 } from "../../scripts/validation/install-tools.mjs";
 
-const publishedDigest =
+const publishingSource = process.env.LAPIS_DESKTOP_CI_IMAGE_SOURCE === "1";
+const previousDigest =
   "sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927";
+const publishedDigest = publishingSource ? null : previousDigest;
 
 test("Desktop CI image source pins every tool and base", async () => {
   const manifest = validateImageManifest(await loadImageManifest());
@@ -23,15 +26,29 @@ test("Desktop CI image source pins every tool and base", async () => {
   assert.ok(dockerfile.includes(manifest.baseImage));
   assert.ok(dockerfile.includes(manifest.rustImage));
   assert.doesNotMatch(dockerfile, /(?:FROM|image:)\s+[^\n]*:latest\b/u);
-  for (const platform of bundlePlatforms)
+  for (const platform of bundlePlatforms) {
     assert.deepEqual(
       toolPins(...platform, false).map(([tool]) => tool),
       ["jj", "mdBook"],
     );
+    for (const pin of toolPins(...platform, false)) {
+      assert.match(pin[2], /^[a-f0-9]{64}$/u);
+      assert.match(pin[3], /^\d+$/u);
+    }
+    const archive = vectorscanPin(...platform);
+    assert.match(archive.asset, /^vectorscan-0\.1\.1-.+\.tar\.gz$/u);
+    assert.match(archive.digest, /^[a-f0-9]{64}$/u);
+    assert.match(archive.assetId, /^\d+$/u);
+  }
 });
 
 test("published image has one immutable consumer reference", async () => {
   const manifest = await loadImageManifest();
+  if (publishingSource) {
+    assert.equal(manifest.digest, null);
+    assert.throws(() => imageReference(manifest), /digest/u);
+    return;
+  }
   assert.equal(
     imageReference(manifest),
     `${manifest.image}@${publishedDigest}`,
@@ -92,7 +109,10 @@ test("consumer image pulls use the workflow token", async () => {
 });
 
 test("published image feeds verified current-attempt tools to every consumer", async () => {
-  const reference = imageReference(await loadImageManifest());
+  const manifest = await loadImageManifest();
+  const reference = publishingSource
+    ? `${manifest.image}@${previousDigest}`
+    : imageReference(manifest);
   const workflows = [
     ".github/workflows/ci.yml",
     ".github/workflows/native-quarantine.yml",

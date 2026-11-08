@@ -189,16 +189,18 @@ migration receipt; normal Cargo source fingerprints remain authoritative.
 Hosted tooling uses the same separation. The manually published
 `lapis-desktop-ci` image layers pinned Rust and Desktop system prerequisites on
 the shared Lapis image and embeds checksum-verified Linux ARM64/x64 and macOS
-ARM64 Jujutsu/mdBook payloads. Image publication creates no release candidate;
-consumers remain disabled until a reviewed immutable registry digest is pinned.
-Every adopting workflow authenticates the digest-pinned pull with its ephemeral
-workflow token, exports those bytes once and verifies the current
-source/run/attempt, image digest, complete file inventory, modes and platform
-before adding them to `PATH`. The image and artifact contain no credential, and
-failure never contacts the upstream release endpoints. Because checkout writes
-its trust entry under a temporary home, each containerized producer explicitly
-trusts only the exact mounted `GITHUB_WORKSPACE` before reading Git provenance;
-wildcard repository trust is prohibited.
+ARM64 Jujutsu/mdBook payloads plus the exact original Vectorscan archive for
+each runner. Image publication creates no release candidate; consumers remain
+disabled until a reviewed immutable registry digest is pinned. Every adopting
+workflow authenticates the digest-pinned pull with its ephemeral workflow token,
+exports those bytes once and verifies the current source/run/attempt, image
+digest, complete file inventory, modes and platform before adding tools to
+`PATH` and selecting the Vectorscan directory in forced offline mode. The image
+and artifact contain no credential, and failure never contacts the upstream
+release endpoints. Because checkout writes its trust entry under a temporary
+home, each containerized producer explicitly trusts only the exact mounted
+`GITHUB_WORKSPACE` before reading Git provenance; wildcard repository trust is
+prohibited.
 
 `E-VALIDATION-001` already qualifies the cache/image-key regressions, mounted
 cache bootstrap exclusion and complete runner/lease/guard suite. JavaScript
