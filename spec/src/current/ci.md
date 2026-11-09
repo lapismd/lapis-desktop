@@ -139,13 +139,18 @@ vanished window. Original case deadlines and errors remain unchanged.
 Native conflict acceptance selects the exact diagnostic resource when identical
 messages exist for multiple paths. After disk recovery closes its review, later
 preview input waits within the unchanged case deadline until the recovered
-editor is saved, shows the disk text and is writable, then until the replacement
-is visible and dirty or already stored. Hidden protected input is not a save.
-Conflict contents, close barriers and final disk assertions remain unchanged,
-and unavailable targets fail closed. A Terminal list refused because no vault is
-admitted is an empty baseline for the request that has not opened. Every other
-list error still fails. The prompt assertion, deadline and single attempt stay
-unchanged.
+editor is saved, shows the disk text and is writable. The actual CodeMirror
+content element must then own document focus before the existing replacement
+input is delivered, and the replacement must become visible and dirty or already
+stored. Hidden, protected or unfocused input is not a save. When canonical
+plugin data also owns a compatibility mirror, acceptance waits for the initial
+mirror and then requires it to equal recovered canonical plugin data before
+another write or Close. An already synchronized mirror satisfies that boundary;
+otherwise acceptance recovers its exact conflict. Conflict contents, close
+barriers, deadlines and final disk assertions remain unchanged, and unavailable
+targets fail closed. A Terminal list refused because no vault is admitted is an
+empty baseline for the request that has not opened. Every other list error still
+fails. The prompt assertion, deadline and single attempt stay unchanged.
 
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate

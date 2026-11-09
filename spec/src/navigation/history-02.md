@@ -287,3 +287,5 @@
 - [Dependency-free CI image publication checks](../history/E-CI-078.md)
 - [Published offline Desktop CI image adoption](../history/E-CI-079.md)
 - [Propagate offline native inputs through Turbo](../history/E-CI-080.md)
+- [Recover every native writer before post-conflict input](../history/E-CI-081.md)
+- [Accept verified plugin mirror synchronization](../history/E-CI-082.md)

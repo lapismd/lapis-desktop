@@ -46,8 +46,14 @@ no production policy changes.
 Enabled conflict-recovery acceptance MUST observe completion of the existing
 review lifecycle before beginning a later edit. After invoking the unchanged
 resolution action, it waits for that review to unmount, then performs and
-asserts the later edit under the original case deadline. It MUST NOT race review
-cleanup, loosen content assertions or manufacture a replacement review.
+asserts the later edit under the original case deadline. The recovered
+CodeMirror content element MUST own document focus before WebDriver delivers
+that input. A plugin-data fault that also creates the governed compatibility
+mirror MUST prove that mirror matches recovered canonical data before another
+write or Close. It MAY observe that equality directly when canonical recovery
+already synchronized the mirror; otherwise it MUST recover the mirror's exact
+conflict. Acceptance MUST NOT race review cleanup, ignore a retained writer,
+loosen content assertions or manufacture a replacement review.
 
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,

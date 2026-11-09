@@ -1,23 +1,23 @@
 # Desktop shell and CI
 
-[Adapters](ai-adapter.md): E-CORE-025 defaults; E-CORE-027 recovery.
-LD-FILE-002/003: watch after metadata/views, drain on leave, resume on failure.
+[Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
+metadata/views, drain on leave, resume on failure.
 [Search/Graph](navigation.md), [plugins/Terminal](plugins.md) and
 [history](repository.md) own contracts.
 
-LD-DESK-003 keeps Core AI/History caller/session admission native; renderer
-paths, generations, actors, executables and environment stay denied. Docker
-checks use test bundles/compatible registry packages; helpers/windows/platform
-resources need native acceptance. Fixtures match runtime versions/hashes. Logs
-stream; E-CI-009/056 keep assertions/deadlines and wait for review teardown
-before later edits. Terminal 0.1.2 uses qualified Git sources
-([intake](local-dependencies.md), E-CI-011/013). Scoped shutdown settles stale
-denied cleanup only on close. Tasks use packed pin (E-CI-034); Graph uses hover
+LD-DESK-003 keeps AI/History admission native; renderer
+paths/generations/actors/executables/environment stay denied. Docker uses
+compatible bundles; helpers/windows/platform resources require native
+acceptance. Fixtures match versions/hashes; logs stream. E-CI-009/056 keep
+assertions/deadlines and wait for review teardown before edits. Terminal 0.1.2
+uses qualified Git ([intake](local-dependencies.md), E-CI-011/013). Denied
+cleanup settles only on close. Tasks use pin (E-CI-034); Graph uses hover
 (E-CI-012). ARM64 skips: E-CI-036/042/044,
 E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059/060
 transcript proof; E-CI-058 recovery sync; E-CI-063/064 native close/readiness;
-E-CI-072: unadmitted Terminal list is empty; recovered preview edits must be
-dirty before close.
+E-CI-072: unadmitted Terminal list is empty; recovered preview edits are dirty
+before close. E-CI-081/082 require focused CodeMirror input and mirror equality
+before later writes or Close; synchronized mirrors need no review UI.
 
 ## Requirements
 
