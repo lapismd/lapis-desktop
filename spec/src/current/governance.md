@@ -48,7 +48,8 @@ grant exposes only host-admitted operations; extra individual, default, wildcard
 and remote plugin grants remain denied. E-AI-042 keeps LD-GOV-001/002/004
 ownership, evidence and JJ gates; local files cannot qualify deferred
 native-store capture or app-tool integration. E-CI-081 observes focus and every
-writer without retries, longer deadlines or weaker assertions.
+writer without retries, longer deadlines or weaker assertions. E-CI-082 accepts
+only a proved synchronized mirror or its exact conflict recovery.
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

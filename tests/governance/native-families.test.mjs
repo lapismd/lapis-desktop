@@ -19,6 +19,7 @@ import {
   validateNativeInventory,
   validateNativeReports,
 } from "../../scripts/native-families.mjs";
+import { recover as recoverPluginDataMirror } from "../desktop/plugin-data-recovery.mjs";
 
 // Original headed scope is a review boundary, not an expected execution count.
 const original = JSON.parse(
@@ -93,10 +94,10 @@ test("native conflict recovery proves every writer and focused input boundary", 
 
   const mirror = readFileSync("tests/desktop/plugin-data-recovery.mjs", "utf8");
   assert.match(mirror, /openConflictReview\(browser, resource\)/);
-  assert.match(
-    mirror,
-    /JSON\.stringify\(JSON\.parse\(readFileSync\(path, "utf8"\)\)\)/,
-  );
+  assert.match(mirror, /matches\(path, expected\)/);
+  assert.match(mirror, /conflictProblemResource\(resource\)/);
+  assert.match(mirror, /isExisting\(\)/);
+  assert.match(mirror, /mirror must match recovered canonical data/);
 
   const preview = readFileSync(
     "tests/desktop/preview-conflicts.test.mjs",
@@ -104,6 +105,33 @@ test("native conflict recovery proves every writer and focused input boundary", 
   );
   assert.match(preview, /document\.activeElement === element/);
   assert.match(preview, /Preview editor must own native input focus/);
+});
+
+test("an already synchronized plugin mirror needs no manufactured review", async (context) => {
+  const directory = mkdtempSync(join(tmpdir(), "lapis-plugin-mirror-"));
+  context.after(() => rmSync(directory, { recursive: true, force: true }));
+  const path = join(directory, "lapis-graph.json");
+  const expected = { filters: { showTags: false } };
+  writeFileSync(path, JSON.stringify(expected));
+  const waits = [];
+  const browser = {
+    async waitUntil(condition, options) {
+      assert.equal(await condition(), true);
+      waits.push(options.timeoutMsg);
+    },
+    $() {
+      return {
+        async waitForExist(options) {
+          assert.deepEqual(options, { reverse: true });
+        },
+      };
+    },
+  };
+  await recoverPluginDataMirror(browser, path, "lapis-graph", expected);
+  assert.deepEqual(waits, [
+    "Plugin data mirror must synchronize or expose its exact conflict",
+    "Plugin data mirror must match recovered canonical data",
+  ]);
 });
 
 test("execution requires a verified artifact and selectors reject unknown or ambiguous work", () => {

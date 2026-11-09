@@ -144,8 +144,9 @@ content element must then own document focus before the existing replacement
 input is delivered, and the replacement must become visible and dirty or already
 stored. Hidden, protected or unfocused input is not a save. When canonical
 plugin data also owns a compatibility mirror, acceptance waits for the initial
-mirror, recovers both exact conflicts and requires the mirror to equal recovered
-canonical plugin data before another write or Close. Conflict contents, close
+mirror and then requires it to equal recovered canonical plugin data before
+another write or Close. An already synchronized mirror satisfies that boundary;
+otherwise acceptance recovers its exact conflict. Conflict contents, close
 barriers, deadlines and final disk assertions remain unchanged, and unavailable
 targets fail closed. A Terminal list refused because no vault is admitted is an
 empty baseline for the request that has not opened. Every other list error still

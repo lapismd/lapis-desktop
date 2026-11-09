@@ -10,14 +10,14 @@ paths/generations/actors/executables/environment stay denied. Docker uses
 compatible bundles; helpers/windows/platform resources require native
 acceptance. Fixtures match versions/hashes; logs stream. E-CI-009/056 keep
 assertions/deadlines and wait for review teardown before edits. Terminal 0.1.2
-uses qualified Git sources ([intake](local-dependencies.md), E-CI-011/013).
-Shutdown settles denied cleanup only on close. Tasks use pin (E-CI-034); Graph
-uses hover (E-CI-012). ARM64 skips: E-CI-036/042/044,
+uses qualified Git ([intake](local-dependencies.md), E-CI-011/013). Denied
+cleanup settles only on close. Tasks use pin (E-CI-034); Graph uses hover
+(E-CI-012). ARM64 skips: E-CI-036/042/044,
 E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059/060
 transcript proof; E-CI-058 recovery sync; E-CI-063/064 native close/readiness;
 E-CI-072: unadmitted Terminal list is empty; recovered preview edits are dirty
-before close. E-CI-081 requires focused CodeMirror input and recovery of both
-plugin-data writers before later writes or Close.
+before close. E-CI-081/082 require focused CodeMirror input and mirror equality
+before later writes or Close; synchronized mirrors need no review UI.
 
 ## Requirements
 
