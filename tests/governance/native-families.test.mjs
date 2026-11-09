@@ -86,6 +86,26 @@ test("mapped native tests include smoke; unknown production or harness ownership
   );
 });
 
+test("native conflict recovery proves every writer and focused input boundary", () => {
+  const graph = readFileSync("tests/desktop/navigation-graph.test.mjs", "utf8");
+  assert.match(graph, /mirror\.wait\(browser, directory, pluginId\)/);
+  assert.match(graph, /mirror\.recover\(browser, compatibility, pluginId/);
+
+  const mirror = readFileSync("tests/desktop/plugin-data-recovery.mjs", "utf8");
+  assert.match(mirror, /openConflictReview\(browser, resource\)/);
+  assert.match(
+    mirror,
+    /JSON\.stringify\(JSON\.parse\(readFileSync\(path, "utf8"\)\)\)/,
+  );
+
+  const preview = readFileSync(
+    "tests/desktop/preview-conflicts.test.mjs",
+    "utf8",
+  );
+  assert.match(preview, /document\.activeElement === element/);
+  assert.match(preview, /Preview editor must own native input focus/);
+});
+
 test("execution requires a verified artifact and selectors reject unknown or ambiguous work", () => {
   assert.equal(parseAcceptanceArgs([]).operation, "all");
   assert.equal(parseAcceptanceArgs(["--operation", "prepare"]).family, "all");

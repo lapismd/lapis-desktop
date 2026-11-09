@@ -103,6 +103,14 @@ async function edit(browser, contents) {
     { timeout: 15000 },
   );
   await editor.click();
+  await browser.waitUntil(
+    async () =>
+      browser.execute(
+        (element) => document.activeElement === element,
+        await editor,
+      ),
+    { timeoutMsg: "Preview editor must own native input focus" },
+  );
   await browser.keys([Key.Command, "a"]);
   await browser.keys(Key.NULL);
   await editor.addValue(contents);

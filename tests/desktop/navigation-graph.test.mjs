@@ -23,6 +23,7 @@ import {
   reviewedText,
   saveConflictResult,
 } from "./conflict-review.mjs";
+import * as mirror from "./plugin-data-recovery.mjs";
 
 const graph = '[data-ui-component="graph"][data-ui-part="global-view"]';
 const local = '[data-ui-component="graph"][data-ui-part="local-view"]';
@@ -442,6 +443,7 @@ test("Graph failed writes block Close and disk recovery refreshes controls befor
   );
   const external = JSON.parse(readFileSync(path, "utf8"));
   const directory = join(vault, ".lapis");
+  const compatibility = await mirror.wait(browser, directory, pluginId);
   context.after(() => chmodSync(directory, 0o700));
   chmodSync(directory, 0o500);
   await browser.$(`${graph} [aria-label="Show tags"]`).click();
@@ -471,6 +473,8 @@ test("Graph failed writes block Close and disk recovery refreshes controls befor
   await browser
     .$(conflictReview(".lapis/app.json"))
     .waitForExist({ reverse: true });
+  const recovered = external.pluginData[pluginId];
+  await mirror.recover(browser, compatibility, pluginId, recovered);
   assert.equal(
     await browser
       .$(`${graph} [aria-label="Show tags"]`)

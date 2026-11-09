@@ -45,11 +45,10 @@ Actual mounted admission/recovery qualification retains the M10.2 gate; the
 existing e2e transport fixture is independent. Notes owns the lazy native
 factory and optional bundled registration. The main window's exact ACP-session
 grant exposes only host-admitted operations; extra individual, default, wildcard
-and remote plugin grants remain denied.
-
-E-AI-042 follows the user's local-file priority. LD-GOV-001/002/004 retain
-source ownership, evidence and original JJ milestone gates; file-backed AI does
-not qualify deferred native-store capture or application-tool integration.
+and remote plugin grants remain denied. E-AI-042 keeps LD-GOV-001/002/004
+ownership, evidence and JJ gates; local files cannot qualify deferred
+native-store capture or app-tool integration. E-CI-081 observes focus and every
+writer without retries, longer deadlines or weaker assertions.
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -107,6 +107,9 @@ identity reconciliation in the owning API package.
 Graph permission-failure acceptance waits for the opened Graph layout to be
 committed before faulting its settings writer. This isolates the intended
 settings recovery from an unrelated debounced layout write and preserves every
-original close, disk-byte and live-control assertion.
+original close, disk-byte and live-control assertion. When the same fault
+retains the Graph compatibility mirror, acceptance recovers both exact resources
+and proves the mirror equals the recovered canonical plugin data before another
+write or Close.
 
 Search labels include visible result text while retaining explicit file paths.
