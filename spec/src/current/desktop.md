@@ -120,17 +120,17 @@ ordinary bundles retain their existing grants.
 Startup reads public API `path`/`runtime` entrypoints without loading optional
 database or model services.
 
-Native e2e uses separate config/profile, never an ordinary bundle. Browser/Rust
-evidence cannot replace WebView. Builds reject catalog imports and retain one
-main landmark. Producers fan out the verified dev-origin HTTP binary; clean
-consumers reuse it outside the test deadline. Changed-file acceptance reads
-public row path identities, not rendered tree text.
+Native e2e uses separate config/profile, never an ordinary bundle; browser/Rust
+cannot replace WebView. Builds reject catalog imports and retain one main
+landmark. Producers share the verified dev-origin HTTP binary; clean consumers
+reuse it outside the deadline. Changed-file acceptance reads public row path
+identities. Its e2e-only hook reads an open Markdown editor's exact dirty state;
+absence fails closed; it cannot create, focus, show or repair it.
 
-Ad-hoc previews follow [distribution](distribution.md). The local unsigned
-bundle gate checks identity, architecture and runtime contents. WebDriver's
-embedded pointer actions dispatch DOM MouseEvents and cannot establish AppKit
-titlebar dragging. Physical native input and persisted window positions must
-qualify that boundary separately; synthetic pointer results cannot waive it.
+Ad-hoc previews follow [distribution](distribution.md). Local unsigned gates
+check identity, architecture and runtime contents. WebDriver DOM MouseEvents
+cannot prove AppKit dragging; physical input and persisted positions qualify
+separately, and synthetic results cannot waive it.
 
 Headed e2e readiness unhides the application and shows/focuses its window before
 the handshake; focus alone cannot unhide a background macOS process. This

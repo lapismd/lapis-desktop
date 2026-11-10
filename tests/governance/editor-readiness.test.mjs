@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   editorContentsReady,
+  editorIsClean,
   waitForEditorContents,
 } from "../desktop/editor-readiness.mjs";
 
@@ -31,4 +33,29 @@ test("editor readiness waits within one bound until exact source is visible", as
   await waitForEditorContents(browser, editor, "# Original note\n");
   assert.deepEqual(options, { timeout: 10_000 });
   assert.deepEqual(values, []);
+});
+
+test("clean deletion readiness rejects an absent or dirty editor", async (context) => {
+  const reconciliation = readFileSync(
+    "tests/desktop/file-reconciliation.test.mjs",
+    "utf8",
+  );
+  assert.match(reconciliation, /editorIsClean\(browser, "Renamed\.md"\)/);
+  const previous = globalThis.__lapisPluginAcceptance;
+  context.after(() => {
+    if (previous === undefined) delete globalThis.__lapisPluginAcceptance;
+    else globalThis.__lapisPluginAcceptance = previous;
+  });
+  let dirty = null;
+  globalThis.__lapisPluginAcceptance = { fileDirty: () => dirty };
+  const browser = {
+    execute(operation, path) {
+      return operation(path);
+    },
+  };
+  assert.equal(await editorIsClean(browser, "Renamed.md"), false);
+  dirty = true;
+  assert.equal(await editorIsClean(browser, "Renamed.md"), false);
+  dirty = false;
+  assert.equal(await editorIsClean(browser, "Renamed.md"), true);
 });

@@ -149,10 +149,10 @@ are bounded and SQL file/extension authority remains denied. Pin Rust Turso to
 0.7.2 with built-in FTS and without the alternate global allocator. Public API
 consumption continues through the M1 committed-source archives.
 
-M3 Notes intake consumes the public Source Editor and Markdown registry packages
-alongside those verified core archives. The desktop owns its initial plugin
-profile, App construction and teardown; it does not import the private Notes
-application profile or expose acceptance instrumentation in production.
+M3 uses verified public Source Editor/Markdown registry packages. Desktop owns
+plugin/App lifecycle; it never imports the private Notes profile or ships
+acceptance hooks. E2E reads only editor dirty state; absent is unavailable,
+exact `false` is clean, and ordinary bundles reject it.
 
 Native acceptance launchers inspect the actual executable for both the embedded
 driver and isolated-profile feature markers before spawning it. A normal Cargo

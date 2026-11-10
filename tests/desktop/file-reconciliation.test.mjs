@@ -19,6 +19,7 @@ import {
   openConflictReview,
   reviewedText,
 } from "./conflict-review.mjs";
+import { editorIsClean } from "./editor-readiness.mjs";
 
 test("external file changes reconcile the real Explorer and clean editor through rename and deletion", async (context) => {
   const root = mkdtempSync(
@@ -53,10 +54,11 @@ test("external file changes reconcile the real Explorer and clean editor through
   await browser.keys([Key.Command, "a"]);
   await browser.keys(Key.NULL);
   await editor.addValue("# Saved after external rename\n");
-  await browser.waitUntil(() =>
-    readFileSync(join(vault, "Renamed.md"), "utf8").includes(
-      "Saved after external rename",
-    ),
+  await browser.waitUntil(
+    async () =>
+      readFileSync(join(vault, "Renamed.md"), "utf8").includes(
+        "Saved after external rename",
+      ) && (await editorIsClean(browser, "Renamed.md")),
   );
   assert.equal(existsSync(join(vault, "Note.md")), false);
   rmSync(join(vault, "Renamed.md"));

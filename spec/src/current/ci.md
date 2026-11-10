@@ -152,6 +152,12 @@ targets fail closed. A Terminal list refused because no vault is admitted is an
 empty baseline for the request that has not opened. Every other list error still
 fails. The prompt assertion, deadline and single attempt stay unchanged.
 
+Clean external-deletion acceptance requires both the expected saved disk bytes
+and the exact editor's clean acknowledgement before deleting that file. Explorer
+projection or disk bytes alone cannot prove that its writer has settled. The
+e2e-only observation stays inside the existing wait and does not extend its
+deadline; dirty or unavailable editors fail closed.
+
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
 jobs. The configured macOS minimum is selected before restore/build and
