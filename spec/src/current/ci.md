@@ -178,8 +178,15 @@ preinstalled runner SDK trees before WebKit installation and Rust cache restore.
 Linux release builds remain separate evidence and cannot qualify the ARM64
 backup quarantine or macOS UI. Quarantine diagnostics are separate, explicit,
 uncached attempts; their results cannot satisfy ordinary or full qualification.
-The approximately ten-minute ordinary feedback objective is a measurement
-target, not an acceptance bypass.
+
+The Original/Managed reader failure in Linux job `130024094859` was reproduced
+locally as a completed jj-store session/relink command leaving the next command
+spuriously `Busy`. Desktop and Core pin the owning explicit-unlock repair
+recorded by E-CI-085. True overlapping same-binding commands remain `Busy`; no
+retry, deadline, assertion, process boundary or quarantine changes. Linux
+reproduction and repair do not qualify the retained macOS ARM64 quarantine. The
+approximately ten-minute ordinary feedback objective is a measurement target,
+not an acceptance bypass.
 
 An explicit paired diagnostic dispatch runs the complete normal families and
 selected original quarantined callbacks against one verified acceptance

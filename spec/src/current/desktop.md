@@ -309,8 +309,8 @@ untouched; only explicit reset uses Workspace reset/flush before restarting. The
 banner remains below the tabs. Message-plus-stack diagnostics retain their
 message when WebKit supplies a stack without it.
 
-M5 watch ownership lives in `files.md`; M7 native integration lives in
-`integration.md`. Watch resources remain separate from projection.
+M5 watch ownership maps to `files.md`; M7 native integration maps to
+`integration.md`.
 
 Explorer imports and mutations share FileManager writer protection. Cold native
 checks retain dirty conflict bytes before rename, move or deletion and retry
@@ -326,4 +326,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-[Native qualification](native-acceptance.md) retains AI/repository gates.
+[Native qualification](native-acceptance.md) retains native gates; E-CI-085
+changes only the pinned command-lease source.

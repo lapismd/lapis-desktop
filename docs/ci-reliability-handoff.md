@@ -45,10 +45,12 @@ qualified head `c05f6bcde1180fb2fb4a24ec962f6092a2f8ea03` contains:
 - `c05f6bcde1180fb2fb4a24ec962f6092a2f8ea03` — pin the hosted Node toolchain
   used by artifact producers and consumers.
 
-Shared Core branch `fix/backup-initialization-diagnostics-20261102` contains
-`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa`, which adds safe, opt-in backup
-initialization and shutdown stage diagnostics. Desktop pins that reachable
-revision. Core `main` remains unchanged by this work.
+Shared Core branch `fix/vault-command-lease-release-20261110` contains
+`8bc547eb5d60150882c87d3893a9eb48afbfb6c6`, which retains safe, opt-in backup
+initialization and shutdown stage diagnostics and adopts jj-store
+`449de49476e3564ae9620f3f4c75dc0a38b498ac`. That owning revision explicitly
+releases completed command leases. Desktop pins both reachable revisions; their
+pull requests remain pending until complete hosted qualification.
 
 Continuation update: Desktop head `c05f6bc` passed complete PR run `41553468043`
 and explicit full run `41562361935`, 25/25 jobs each, before PR #9 merged. The
@@ -192,9 +194,11 @@ deadlines remain unchanged.
 Fresh PR run `41630554968` at `c0e62124` proved the Linux Original/Managed
 failure occurs after two successful initialization attempts, at the explicit
 `stop_backup` call. Local Linux exact and scoped cases passed and do not qualify
-that hosted failure. Core PR #16 extends safe opt-in diagnostics through final
-capture, watcher release and queue completion at `fd92fb52`; this is diagnostic
-instrumentation, not a repair.
+that hosted failure. Later PR #17 job `130024094859` reproduced the original
+pair locally: a completed session/relink lease could remain busy. jj-store
+`449de494` explicitly releases that lease, and Core `8bc547eb` adopts it while
+retaining safe diagnostics. The exact pinned Desktop pair passed 100 consecutive
+local iterations; affected-platform and complete-workflow qualification remain.
 
 Paired run `41630557543` retained the affected-platform boundaries separately.
 Its original ARM64 backup case passed 1/1 and scoped group passed 4/4 with all

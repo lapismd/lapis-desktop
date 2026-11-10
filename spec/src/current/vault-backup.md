@@ -359,6 +359,15 @@ observability does not establish the ARM64 cause or re-enable the
 Original/Managed quarantine; its exact and scoped-group native scenarios remain
 required.
 
+The Linux Original/Managed failure was reproduced as the same binding remaining
+spuriously busy after a completed backup session or relink command. Desktop pins
+jj-store `449de49476e3564ae9620f3f4c75dc0a38b498ac`, whose command lease
+explicitly unlocks on drop, through Core
+`8bc547eb5d60150882c87d3893a9eb48afbfb6c6`. True overlapping same-binding
+commands retain the existing non-blocking busy result. The repair adds no retry,
+deadline or fallback and does not remove the macOS ARM64 quarantine; E-CI-085
+records its source and consumer evidence.
+
 The hosted ARM64 diagnostic refuses implicit execution and any platform other
 than macOS ARM64. It requires the pinned Core revision, verifies that the scoped
 `repository_original` binary has only the intended ignored case, runs that exact
