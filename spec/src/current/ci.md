@@ -185,8 +185,9 @@ spuriously `Busy`. Desktop and Core pin the owning explicit-unlock repair
 recorded by E-CI-085. True overlapping same-binding commands remain `Busy`; no
 retry, deadline, assertion, process boundary or quarantine changes. Linux
 reproduction and repair do not qualify the retained macOS ARM64 quarantine. The
-approximately ten-minute ordinary feedback objective is a measurement target,
-not an acceptance bypass.
+current exact dependency refresh is recorded by E-CI-086 without changing that
+boundary. The approximately ten-minute ordinary feedback objective is a
+measurement target, not an acceptance bypass.
 
 An explicit paired diagnostic dispatch runs the complete normal families and
 selected original quarantined callbacks against one verified acceptance

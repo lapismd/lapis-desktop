@@ -17,7 +17,7 @@
   {
     "name": "jj-store",
     "repository": "stevejuma/jj-store",
-    "revision": "449de49476e3564ae9620f3f4c75dc0a38b498ac"
+    "revision": "076e418cecbe204925aea874bef8aa8a680269a9"
   },
   {
     "name": "lapis-plugin-tasks",
@@ -27,6 +27,6 @@
   {
     "name": "lapis-server",
     "repository": "lapismd/lapis-server",
-    "revision": "8bc547eb5d60150882c87d3893a9eb48afbfb6c6"
+    "revision": "153c496608a80f4ea9a2c86c3611d7e78627d77b"
   }
 ]

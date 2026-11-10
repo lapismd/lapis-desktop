@@ -375,12 +375,12 @@ Terminal's public component types, preventing duplicate snippet identities.
 Registry icon imports remain portable. Local archive refresh retains payload
 verification and records each source repair before consumer qualification.
 
-Native dependency refresh records the clean owning source revision separately
-from consumer checks. E-CI-085 pins the completed-command lease repair without
-changing admission, retries, deadlines, assertions or the ARM64 quarantine.
-Locked checks and packaged ACP acceptance retain existing gates. E-CORE-047,
-E-DEPENDENCIES-004 and E-AI-030 retain their prior source, privacy, lock/profile
-and real-policy qualification; no registry patch or substitute is introduced.
+Dependency refresh records clean owning sources. E-CI-085 pins the command-lease
+repair without changing admission, retries, deadlines, assertions or the ARM64
+quarantine. E-CI-086 advances only exact revisions. Locked checks and packaged
+ACP acceptance retain existing gates. E-CORE-047, E-DEPENDENCIES-004 and
+E-AI-030 retain their prior source, privacy, lock/profile and real-policy
+qualification; no registry patch or substitute is introduced.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.

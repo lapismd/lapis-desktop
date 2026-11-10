@@ -46,11 +46,12 @@ qualified head `c05f6bcde1180fb2fb4a24ec962f6092a2f8ea03` contains:
   used by artifact producers and consumers.
 
 Shared Core branch `fix/vault-command-lease-release-20261110` contains
-`8bc547eb5d60150882c87d3893a9eb48afbfb6c6`, which retains safe, opt-in backup
+`153c496608a80f4ea9a2c86c3611d7e78627d77b`, which retains safe, opt-in backup
 initialization and shutdown stage diagnostics and adopts jj-store
-`449de49476e3564ae9620f3f4c75dc0a38b498ac`. That owning revision explicitly
-releases completed command leases. Desktop pins both reachable revisions; their
-pull requests remain pending until complete hosted qualification.
+`076e418cecbe204925aea874bef8aa8a680269a9`. That owning revision retains the
+explicit release of completed command leases. Desktop pins both reachable
+revisions; their pull requests remain pending until complete hosted
+qualification.
 
 Continuation update: Desktop head `c05f6bc` passed complete PR run `41553468043`
 and explicit full run `41562361935`, 25/25 jobs each, before PR #9 merged. The
@@ -196,7 +197,7 @@ failure occurs after two successful initialization attempts, at the explicit
 `stop_backup` call. Local Linux exact and scoped cases passed and do not qualify
 that hosted failure. Later PR #17 job `130024094859` reproduced the original
 pair locally: a completed session/relink lease could remain busy. jj-store
-`449de494` explicitly releases that lease, and Core `8bc547eb` adopts it while
+`076e418c` retains the explicit release, and Core `153c4966` adopts it while
 retaining safe diagnostics. The exact pinned Desktop pair passed 100 consecutive
 local iterations; affected-platform and complete-workflow qualification remain.
 

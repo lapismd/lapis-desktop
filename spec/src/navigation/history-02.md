@@ -293,3 +293,4 @@
 - [Await clean editor acknowledgement before external deletion](../history/E-CI-083.md)
 - [Require exact cold lifecycle replacement input](../history/E-CI-084.md)
 - [Release completed native backup command leases](../history/E-CI-085.md)
+- [Qualify rebased command-lease dependency pins](../history/E-CI-086.md)

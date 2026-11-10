@@ -361,12 +361,12 @@ required.
 
 The Linux Original/Managed failure was reproduced as the same binding remaining
 spuriously busy after a completed backup session or relink command. Desktop pins
-jj-store `449de49476e3564ae9620f3f4c75dc0a38b498ac`, whose command lease
+jj-store `076e418cecbe204925aea874bef8aa8a680269a9`, whose command lease
 explicitly unlocks on drop, through Core
-`8bc547eb5d60150882c87d3893a9eb48afbfb6c6`. True overlapping same-binding
+`153c496608a80f4ea9a2c86c3611d7e78627d77b`. True overlapping same-binding
 commands retain the existing non-blocking busy result. The repair adds no retry,
 deadline or fallback and does not remove the macOS ARM64 quarantine; E-CI-085
-records its source and consumer evidence.
+records its source evidence and E-CI-086 records the exact-pin refresh.
 
 The hosted ARM64 diagnostic refuses implicit execution and any platform other
 than macOS ARM64. It requires the pinned Core revision, verifies that the scoped

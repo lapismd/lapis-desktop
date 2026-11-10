@@ -5591,7 +5591,7 @@ dependencies = [
 [[package]]
 name = "jj-agent"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "hex",
  "jj-store-model",
@@ -5605,7 +5605,7 @@ dependencies = [
 [[package]]
 name = "jj-collab"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "emojis",
@@ -5668,7 +5668,7 @@ dependencies = [
 [[package]]
 name = "jj-forge"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "dirs",
@@ -5689,7 +5689,7 @@ dependencies = [
 [[package]]
 name = "jj-history-service"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "jj-store-jj",
@@ -5749,7 +5749,7 @@ dependencies = [
 [[package]]
 name = "jj-review"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "hex",
  "jj-agent",
@@ -5764,7 +5764,7 @@ dependencies = [
 [[package]]
 name = "jj-store-adapters"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "jj-store-model",
@@ -5781,7 +5781,7 @@ dependencies = [
 [[package]]
 name = "jj-store-capture"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "jj-agent",
@@ -5799,7 +5799,7 @@ dependencies = [
 [[package]]
 name = "jj-store-core"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "futures",
@@ -5817,7 +5817,7 @@ dependencies = [
 [[package]]
 name = "jj-store-git"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "base64 0.23.1",
@@ -5839,7 +5839,7 @@ dependencies = [
 [[package]]
 name = "jj-store-jj"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "base64 0.23.1",
@@ -5880,7 +5880,7 @@ dependencies = [
 [[package]]
 name = "jj-store-model"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "hex",
  "schemars 1.2.3",
@@ -5892,7 +5892,7 @@ dependencies = [
 [[package]]
 name = "jj-store-native"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "jj-agent",
@@ -5908,7 +5908,7 @@ dependencies = [
 [[package]]
 name = "jj-store-object"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "base64 0.23.1",
@@ -5931,7 +5931,7 @@ dependencies = [
 [[package]]
 name = "jj-store-read-index"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "hex",
  "redb",
@@ -5945,7 +5945,7 @@ dependencies = [
 [[package]]
 name = "jj-store-service"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "base64 0.23.1",
@@ -5982,7 +5982,7 @@ dependencies = [
 [[package]]
 name = "jj-store-wal"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "async-trait",
  "futures",
@@ -6006,7 +6006,7 @@ dependencies = [
 [[package]]
 name = "jj-vault"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "jj-store-jj",
  "regex",
@@ -6021,7 +6021,7 @@ dependencies = [
 [[package]]
 name = "jj-work"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "hex",
  "jj-store-model",
@@ -6033,7 +6033,7 @@ dependencies = [
 [[package]]
 name = "jj-workflow"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "globset",
  "hex",
@@ -6428,7 +6428,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-core"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=8bc547eb5d60150882c87d3893a9eb48afbfb6c6#8bc547eb5d60150882c87d3893a9eb48afbfb6c6"
+source = "git+https://github.com/lapismd/lapis-server?rev=153c496608a80f4ea9a2c86c3611d7e78627d77b#153c496608a80f4ea9a2c86c3611d7e78627d77b"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
@@ -6446,6 +6446,7 @@ dependencies = [
  "lapis-docs-projection",
  "lapis-plugin-services",
  "lapis-task-services",
+ "lapis-terminal-service",
  "libc",
  "md5",
  "notify",
@@ -6469,7 +6470,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-protocol"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=8bc547eb5d60150882c87d3893a9eb48afbfb6c6#8bc547eb5d60150882c87d3893a9eb48afbfb6c6"
+source = "git+https://github.com/lapismd/lapis-server?rev=153c496608a80f4ea9a2c86c3611d7e78627d77b#153c496608a80f4ea9a2c86c3611d7e78627d77b"
 dependencies = [
  "indexmap 2.14.2",
  "schemars 1.2.3",
@@ -6588,6 +6589,17 @@ version = "0.1.2"
 source = "git+https://github.com/lapismd/lapis-terminal?rev=2463f944149d753eaf638cf876393a6f60f50190#2463f944149d753eaf638cf876393a6f60f50190"
 dependencies = [
  "lapis-terminal-engine",
+ "libc",
+ "portable-pty",
+ "serde",
+ "uuid",
+]
+
+[[package]]
+name = "lapis-terminal-service"
+version = "0.1.0"
+source = "git+https://github.com/lapismd/terminal-host?rev=e240ad5f8e891a3b30336aca49926992a08bde42#e240ad5f8e891a3b30336aca49926992a08bde42"
+dependencies = [
  "libc",
  "portable-pty",
  "serde",
@@ -10626,7 +10638,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-jj-store"
 version = "0.2.0"
-source = "git+https://github.com/stevejuma/jj-store?rev=449de49476e3564ae9620f3f4c75dc0a38b498ac#449de49476e3564ae9620f3f4c75dc0a38b498ac"
+source = "git+https://github.com/stevejuma/jj-store?rev=076e418cecbe204925aea874bef8aa8a680269a9#076e418cecbe204925aea874bef8aa8a680269a9"
 dependencies = [
  "jj-history-service",
  "schemars 1.2.3",
@@ -10845,7 +10857,7 @@ dependencies = [
  "serde_with",
  "swift-rs",
  "thiserror 2.0.21",
- "toml 1.1.8+spec-1.1.0",
+ "toml 0.9.12+spec-1.1.0",
  "url",
  "urlpattern",
  "uuid",
