@@ -15,6 +15,7 @@ import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
 import { reloadNotes, returnToVaults } from "./workspace-navigation.mjs";
+import { waitForEditorContents } from "./editor-readiness.mjs";
 
 const acceptance = process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
 function fixture(name) {
@@ -42,13 +43,16 @@ async function openNote(session) {
   await browser.$('[data-path="Notes/Daily.md"]').click();
   await browser.$('.cm-content[contenteditable="true"]').waitForDisplayed();
 }
-async function edit(session, content) {
+async function replaceEditor(session, expected, content) {
   const { browser } = session;
   const editor = browser.$('.cm-content[contenteditable="true"]');
+  await editor.waitForDisplayed();
+  await waitForEditorContents(browser, editor, expected);
   await editor.click();
   await browser.keys([Key.Command, "a"]);
   await browser.keys(Key.NULL);
   await editor.addValue(content);
+  assert.equal((await editor.getText()).trim(), content.trim());
 }
 async function editorText(session, content) {
   await session.browser.waitUntil(async () =>
@@ -68,7 +72,7 @@ test("cold Close and application Quit flush unsaved notes and restore the last v
   context.after(first.cleanup);
   await choose(first, root, vault);
   await openNote(first);
-  await edit(first, "# Saved by Close — café\n");
+  await replaceEditor(first, "# Initial note\n", "# Saved by Close — café\n");
   await first.close();
   assert.equal(readFileSync(file, "utf8"), "# Saved by Close — café\n");
   const layout = JSON.parse(
@@ -79,8 +83,11 @@ test("cold Close and application Quit flush unsaved notes and restore the last v
   const second = await nativeSession("restored-quit", root);
   context.after(second.cleanup);
   await ready(second);
-  await editorText(second, "Saved by Close — café");
-  await edit(second, "# Saved by Quit — 笔记\n");
+  await replaceEditor(
+    second,
+    "# Saved by Close — café\n",
+    "# Saved by Quit — 笔记\n",
+  );
   await second.close(true);
   assert.equal(readFileSync(file, "utf8"), "# Saved by Quit — 笔记\n");
 
@@ -113,7 +120,11 @@ test(
     await choose(session, root, vault);
     await openNote(session);
     chmodSync(join(vault, "Notes"), 0o555);
-    await edit(session, "# Dirty text must survive\n");
+    await replaceEditor(
+      session,
+      "# Initial note\n",
+      "# Dirty text must survive\n",
+    );
     await session.requestClose();
     await session.browser
       .$(
@@ -230,8 +241,9 @@ test("repeated vault switching saves pending edits, releases each old database a
       false,
     );
     await session.browser.$(`[data-path="${note}"]`).click();
+    const previous = readFileSync(join(target, note), "utf8");
     const content = `# Saved before switch ${++switchCount}\n`;
-    await edit(session, content);
+    await replaceEditor(session, previous, content);
     await returnToVaults(session.browser);
     await session.browser.$("button*=Open Vault").waitForDisplayed();
     assert.equal(await session.browser.$(".notes-session").isExisting(), false);

@@ -16,8 +16,8 @@ cleanup settles only on close. Tasks use pin (E-CI-034); Graph uses hover
 E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059/060
 transcript proof; E-CI-058 recovery sync; E-CI-063/064 native close/readiness;
 E-CI-072: unadmitted Terminal list is empty; recovered preview edits are dirty
-before close. E-CI-081/082 require focused CodeMirror input and mirror equality
-before later writes or Close; synchronized mirrors need no review UI.
+before close. E-CI-081/082/084 require exact ready/focused CodeMirror input and
+mirror equality before replacement/Close; synced mirrors need no review UI.
 
 ## Requirements
 
@@ -120,17 +120,17 @@ ordinary bundles retain their existing grants.
 Startup reads public API `path`/`runtime` entrypoints without loading optional
 database or model services.
 
-Native e2e uses separate config/profile, never an ordinary bundle. Browser/Rust
-evidence cannot replace WebView. Builds reject catalog imports and retain one
-main landmark. Producers fan out the verified dev-origin HTTP binary; clean
-consumers reuse it outside the test deadline. Changed-file acceptance reads
-public row path identities, not rendered tree text.
+Native e2e uses separate config/profile, never an ordinary bundle; browser/Rust
+cannot replace WebView. Builds reject catalog imports and retain one main
+landmark. Producers share the verified dev-origin HTTP binary; clean consumers
+reuse it outside the deadline. Changed-file acceptance reads public row path
+identities. Its e2e-only hook reads an open Markdown editor's exact dirty state;
+absence fails closed; it cannot create, focus, show or repair it.
 
-Ad-hoc previews follow [distribution](distribution.md). The local unsigned
-bundle gate checks identity, architecture and runtime contents. WebDriver's
-embedded pointer actions dispatch DOM MouseEvents and cannot establish AppKit
-titlebar dragging. Physical native input and persisted window positions must
-qualify that boundary separately; synthetic pointer results cannot waive it.
+Ad-hoc previews follow [distribution](distribution.md). Local unsigned gates
+check identity, architecture and runtime contents. WebDriver DOM MouseEvents
+cannot prove AppKit dragging; physical input and persisted positions qualify
+separately, and synthetic results cannot waive it.
 
 Headed e2e readiness unhides the application and shows/focuses its window before
 the handshake; focus alone cannot unhide a background macOS process. This

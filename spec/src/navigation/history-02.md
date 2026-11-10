@@ -289,3 +289,5 @@
 - [Propagate offline native inputs through Turbo](../history/E-CI-080.md)
 - [Recover every native writer before post-conflict input](../history/E-CI-081.md)
 - [Accept verified plugin mirror synchronization](../history/E-CI-082.md)
+- [Await clean editor acknowledgement before external deletion](../history/E-CI-083.md)
+- [Require exact cold lifecycle replacement input](../history/E-CI-084.md)

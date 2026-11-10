@@ -18,3 +18,11 @@ export async function waitForEditorContents(
     { timeout },
   );
 }
+
+export async function editorIsClean(browser, path) {
+  const dirty = await browser.execute(
+    (target) => globalThis.__lapisPluginAcceptance.fileDirty(target),
+    path,
+  );
+  return dirty === false;
+}

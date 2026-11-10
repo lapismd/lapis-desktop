@@ -69,6 +69,15 @@ export function installPluginAcceptance(): ReturnType<
             return leaf.view.editor.getValue();
         return null;
       },
+      fileDirty(path: string) {
+        for (const leaf of application().workspace.getLeavesOfType("markdown"))
+          if (
+            leaf.view instanceof MarkdownView &&
+            leaf.view.file?.path === path
+          )
+            return leaf.view.editor.hasUnsavedChanges;
+        return null;
+      },
       async run(id: string) {
         const result = await application().commands.executeCommand(id);
         return typeof result === "boolean" || typeof result === "string"

@@ -55,6 +55,17 @@ already synchronized the mirror; otherwise it MUST recover the mirror's exact
 conflict. Acceptance MUST NOT race review cleanup, ignore a retained writer,
 loosen content assertions or manufacture a replacement review.
 
+The clean external rename/delete case MUST observe both its expected saved bytes
+and the exact editor reporting no unsaved changes before the external deletion.
+That observation MUST share the existing save wait and deadline. A missing or
+dirty editor MUST NOT qualify merely because Explorer already projected the
+rename or later deletion.
+
+Cold Close/Quit lifecycle input MUST wait for the exact expected editor source
+before replacement and MUST observe the exact requested editor contents before
+closing. It MUST keep the existing case deadline and single input attempt;
+prepending the replacement to a late source load MUST fail.
+
 The explicit `test:desktop:api` lane uses a hidden native WebView for IPC-only
 checks with macOS activation prohibited. It verifies native caller/frame policy,
 vault lifetime and cold admission reset without visible UI or animation claims.

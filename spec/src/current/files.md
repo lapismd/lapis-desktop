@@ -263,6 +263,12 @@ acceptance covers clean and dirty external changes plus failed-leave restart;
 the complete internal-operation, import, native-action and aggregate gate
 qualification remains open.
 
+Clean external-deletion acceptance must not treat matching durable bytes alone
+as proof that the preceding save has completed. Before deleting an externally
+renamed open file, the existing bounded wait must observe both the expected disk
+content and the exact editor reporting no unsaved changes. A missing or dirty
+editor fails closed, preserving the writer-protection boundary.
+
 Source regressions now protect Explorer deletion through FileManager and add
 explicit new-file creation intent. Native creation stages complete bounded bytes
 and atomically publishes without replacing a destination, including one arriving

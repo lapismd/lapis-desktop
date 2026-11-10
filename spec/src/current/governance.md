@@ -14,17 +14,17 @@ editing. Core readers use exact local IPC; generic plugin grants deny.
 Tasks/default gates remain separate. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for exact
 paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
-`jj` and exact artifact args. E-CI-054–064 retain deadlines, assertions and
-no-retry/quarantine/release policy. Diagnostics/native close never retry; empty
-comparisons continue; unavailable/conflicting fail closed. The Notes fix stays
-upstream until released. [Local intake](local-dependencies.md) governs pins,
-refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs stream
-(E-CI-009). Whole-stack validation covers changed protected paths. Producers
-trust the mounted workspace, never wildcard Git; source checks use built-ins.
-The e2e entry shares early progress, then imports runtime instrumentation;
-ordinary bundles reject its startup capture marker. Canonical owners include
-planned [Review](../backlog/markdown-review-contract.md) and staged
-[native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
+`jj` and exact args. E-CI-054–064/084 retain deadlines/assertions, exact editor
+readiness and no-retry/quarantine/release policy. Native close never retries;
+empty comparisons continue; unavailable/conflicting fail closed. The Notes fix
+stays upstream until released. [Local intake](local-dependencies.md) governs
+pins, refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs
+stream (E-CI-009). Whole-stack validation covers changed protected paths.
+Producers trust the mounted workspace, never wildcard Git; source checks use
+built-ins. The e2e entry shares early progress, then imports runtime
+instrumentation; ordinary bundles reject its startup capture marker. Canonical
+owners include planned [Review](../backlog/markdown-review-contract.md) and
+staged [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
 The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import
@@ -149,10 +149,10 @@ are bounded and SQL file/extension authority remains denied. Pin Rust Turso to
 0.7.2 with built-in FTS and without the alternate global allocator. Public API
 consumption continues through the M1 committed-source archives.
 
-M3 Notes intake consumes the public Source Editor and Markdown registry packages
-alongside those verified core archives. The desktop owns its initial plugin
-profile, App construction and teardown; it does not import the private Notes
-application profile or expose acceptance instrumentation in production.
+M3 uses verified public Source Editor/Markdown registry packages. Desktop owns
+plugin/App lifecycle; it never imports the private Notes profile or ships
+acceptance hooks. E2E reads only editor dirty state; absent is unavailable,
+exact `false` is clean, and ordinary bundles reject it.
 
 Native acceptance launchers inspect the actual executable for both the embedded
 driver and isolated-profile feature markers before spawning it. A normal Cargo
