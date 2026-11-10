@@ -295,3 +295,4 @@
 - [Release completed native backup command leases](../history/E-CI-085.md)
 - [Qualify rebased command-lease dependency pins](../history/E-CI-086.md)
 - [Preserve qualification across the rebased Core identity](../history/E-CI-087.md)
+- [Preserve qualification across the second Core rebase](../history/E-CI-088.md)

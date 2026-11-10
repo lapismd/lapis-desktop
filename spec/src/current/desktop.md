@@ -326,5 +326,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-[Native qualification](native-acceptance.md) retains native gates; E-CI-085–087
+[Native qualification](native-acceptance.md) retains native gates; E-CI-085–088
 record the lease and Core pins.

@@ -6428,7 +6428,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-core"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=b0b15878b9e6bfa7e44ca488942eadcae3cd7be1#b0b15878b9e6bfa7e44ca488942eadcae3cd7be1"
+source = "git+https://github.com/lapismd/lapis-server?rev=530a6c425e9183f93ee74c0b16bb4111fdc838f0#530a6c425e9183f93ee74c0b16bb4111fdc838f0"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
@@ -6470,7 +6470,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-protocol"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=b0b15878b9e6bfa7e44ca488942eadcae3cd7be1#b0b15878b9e6bfa7e44ca488942eadcae3cd7be1"
+source = "git+https://github.com/lapismd/lapis-server?rev=530a6c425e9183f93ee74c0b16bb4111fdc838f0#530a6c425e9183f93ee74c0b16bb4111fdc838f0"
 dependencies = [
  "indexmap 2.14.2",
  "schemars 1.2.3",
