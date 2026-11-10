@@ -58,7 +58,7 @@ recreating the foreign window. Readiness now stops polling after the listener
 responds and retains one 15-second deadline plus the shell-ready assertion.
 
 Backup diagnostics and the adopted command-lease repair live in shared Core
-commit `153c496608a80f4ea9a2c86c3611d7e78627d77b`. In a debug diagnostic
+commit `b0b15878b9e6bfa7e44ca488942eadcae3cd7be1`. In a debug diagnostic
 environment, `LAPIS_APP_BACKUP_DIAGNOSTICS=1` reports fixed initialization and
 shutdown stages with safe error categories, without native paths, credentials or
 error strings. The original ARM64 case and its scoped integration-test group

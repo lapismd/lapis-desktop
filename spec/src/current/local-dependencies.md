@@ -135,7 +135,7 @@ compiler exception admits one `state_referenced_locally` diagnostic for
 
 All jj-store crates use git revision `076e418cecbe204925aea874bef8aa8a680269a9`.
 Native application crates use lapis-server
-`153c496608a80f4ea9a2c86c3611d7e78627d77b`, retaining safe opt-in backup
+`b0b15878b9e6bfa7e44ca488942eadcae3cd7be1`, retaining safe opt-in backup
 initialization and shutdown diagnostics and adopting explicit completed-command
 lease release. The Rust graph aligns `rustix` 1.1.6, Tauri 2.12.5 and
 tauri-build 2.7.4 with those exact owning sources. Projection engines remain

@@ -377,10 +377,11 @@ verification and records each source repair before consumer qualification.
 
 Dependency refresh records clean owning sources. E-CI-085 pins the command-lease
 repair without changing admission, retries, deadlines, assertions or the ARM64
-quarantine. E-CI-086 advances only exact revisions. Locked checks and packaged
-ACP acceptance retain existing gates. E-CORE-047, E-DEPENDENCIES-004 and
-E-AI-030 retain their prior source, privacy, lock/profile and real-policy
-qualification; no registry patch or substitute is introduced.
+quarantine. E-CI-086 advances only exact revisions; E-CI-087 preserves the same
+gates while refreshing the rebased Core identity. Locked checks and packaged ACP
+acceptance retain existing gates. E-CORE-047, E-DEPENDENCIES-004 and E-AI-030
+retain their prior source, privacy, lock/profile and real-policy qualification;
+no registry patch or substitute is introduced.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.

@@ -294,3 +294,4 @@
 - [Require exact cold lifecycle replacement input](../history/E-CI-084.md)
 - [Release completed native backup command leases](../history/E-CI-085.md)
 - [Qualify rebased command-lease dependency pins](../history/E-CI-086.md)
+- [Preserve qualification across the rebased Core identity](../history/E-CI-087.md)

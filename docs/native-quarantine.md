@@ -113,7 +113,7 @@ Fresh Linux run `41630554968` at `c0e62124` completed both initialization
 attempts through `HistoryIndexing`, then failed the unchanged case at its
 explicit `stop_backup` call. Local Linux exact (1/1) and scoped (4/4) executions
 passed with diagnostics and do not qualify the hosted failure. Core
-`153c496608a80f4ea9a2c86c3611d7e78627d77b` retains those opt-in safe records and
+`b0b15878b9e6bfa7e44ca488942eadcae3cd7be1` retains those opt-in safe records and
 adopts jj-store `076e418cecbe204925aea874bef8aa8a680269a9` after the same
 original pair reproduced a completed-command lease remaining busy locally. The
 owning repair explicitly unlocks completed session and relink leases while true
