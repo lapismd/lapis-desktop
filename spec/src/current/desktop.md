@@ -16,8 +16,8 @@ cleanup settles only on close. Tasks use pin (E-CI-034); Graph uses hover
 E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059/060
 transcript proof; E-CI-058 recovery sync; E-CI-063/064 native close/readiness;
 E-CI-072: unadmitted Terminal list is empty; recovered preview edits are dirty
-before close. E-CI-081/082 require focused CodeMirror input and mirror equality
-before later writes or Close; synchronized mirrors need no review UI.
+before close. E-CI-081/082/084 require exact ready/focused CodeMirror input and
+mirror equality before replacement/Close; synced mirrors need no review UI.
 
 ## Requirements
 

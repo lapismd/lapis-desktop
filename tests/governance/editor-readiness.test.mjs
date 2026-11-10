@@ -59,3 +59,15 @@ test("clean deletion readiness rejects an absent or dirty editor", async (contex
   dirty = false;
   assert.equal(await editorIsClean(browser, "Renamed.md"), true);
 });
+
+test("cold lifecycle replacement waits for exact source and exact input", () => {
+  const lifecycle = readFileSync(
+    "tests/desktop/notes-lifecycle.test.mjs",
+    "utf8",
+  );
+  assert.match(lifecycle, /waitForEditorContents\(browser, editor, expected\)/);
+  assert.match(
+    lifecycle,
+    /assert\.equal\(\s*\(await editor\.getText\(\)\)\.trim\(\),\s*content\.trim\(\)/,
+  );
+});

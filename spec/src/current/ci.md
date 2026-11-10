@@ -158,6 +158,12 @@ projection or disk bytes alone cannot prove that its writer has settled. The
 e2e-only observation stays inside the existing wait and does not extend its
 deadline; dirty or unavailable editors fail closed.
 
+Cold lifecycle replacement input likewise waits for the complete expected editor
+source, then requires the exact requested replacement to be visible before Close
+or Quit. The existing case deadline and one input attempt remain; an incomplete
+selection that later prepends the original source is a harness failure, not
+successful writer qualification.
+
 Rust cache keys use one effective variant/target/source-pin identity, retain
 toolchain/manifest/lock/build-environment hashing and explicitly discriminate
 jobs. The configured macOS minimum is selected before restore/build and
