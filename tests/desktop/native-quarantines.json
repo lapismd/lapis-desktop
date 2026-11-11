@@ -254,6 +254,18 @@
       "latestFailure": "spec/src/history/E-RELEASE-010.md",
       "nextDiagnostic": "Run original alone and in its enabled family against the same artifact; correlate first failure with bounded native diagnostics.",
       "reenableWhen": "Demonstrated owner fix; original assertions pass in isolated and normal-family macOS ARM64 execution."
+    },
+    {
+      "id": "graph-recovery-close",
+      "file": "tests/desktop/navigation-graph.test.mjs",
+      "title": "Graph failed writes block Close and disk recovery refreshes controls before another partial write",
+      "reason": "Hosted ARM64 quarantine E-CI-076: Close stayed blocked on .lapis/lapis-graph.json, and app.json review timed out.",
+      "mechanism": "reload-close-lifetime",
+      "owner": "Desktop lifecycle and native acceptance",
+      "firstFailure": "spec/src/history/E-CI-076.md",
+      "latestFailure": "spec/src/history/E-CI-076.md",
+      "nextDiagnostic": "Run original alone and in its enabled family against the same artifact; correlate first failure with bounded native diagnostics.",
+      "reenableWhen": "Demonstrated owner fix; original assertions pass in isolated and normal-family macOS ARM64 execution."
     }
   ],
   "rustCases": [

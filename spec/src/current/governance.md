@@ -375,13 +375,13 @@ Terminal's public component types, preventing duplicate snippet identities.
 Registry icon imports remain portable. Local archive refresh retains payload
 verification and records each source repair before consumer qualification.
 
-Native dependency refresh records the clean owning source revision and its
-qualification separately from consumer checks. E-CORE-047 qualifies the cd997c2c
-pin. Update only required lock graph edges; locked checks and packaged ACP
-acceptance must retain existing gates. Native privacy uses the shared scanner
-policy and released transitive versions; E-DEPENDENCIES-004 refreshes current
-upstream findings. E-AI-030 records compatible macro/TOML lock selection, both
-native profiles and the real-policy fixture; no registry patch or substitute.
+Dependency refresh records clean owning sources. E-CI-085 pins the command-lease
+repair without changing admission, retries, deadlines, assertions or the ARM64
+quarantine. E-CI-086 advances only exact revisions; E-CI-087/088 preserve the
+same gates across subsequent Core rebases. Locked checks and packaged ACP
+acceptance retain existing gates. E-CORE-047, E-DEPENDENCIES-004 and E-AI-030
+retain their prior source, privacy, lock/profile and real-policy qualification;
+no registry patch or substitute is introduced.
 
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.

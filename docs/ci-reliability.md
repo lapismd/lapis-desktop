@@ -57,13 +57,19 @@ native lifecycle, driver handles, switching and IPC without showing/focusing or
 recreating the foreign window. Readiness now stops polling after the listener
 responds and retains one 15-second deadline plus the shell-ready assertion.
 
-Backup diagnostics live in shared Core commit
-`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa`. In a debug diagnostic environment,
-`LAPIS_APP_BACKUP_DIAGNOSTICS=1` reports fixed initialization and shutdown
-stages with safe error categories, without native paths, credentials or error
-strings. The original ARM64 case and its scoped integration-test group must
-still run after intake; Linux non-reproduction does not resolve that failure or
-remove its quarantine.
+Backup diagnostics and the adopted command-lease repair live in shared Core
+commit `530a6c425e9183f93ee74c0b16bb4111fdc838f0`. In a debug diagnostic
+environment, `LAPIS_APP_BACKUP_DIAGNOSTICS=1` reports fixed initialization and
+shutdown stages with safe error categories, without native paths, credentials or
+error strings. The original ARM64 case and its scoped integration-test group
+must still run after intake; Linux non-reproduction does not resolve that
+failure or remove its quarantine.
+
+Linux PR #17 job `130024094859` supplied a reproducible failure: a completed
+jj-store session/relink command could leave the next same-binding command
+spuriously busy. jj-store `076e418cecbe204925aea874bef8aa8a680269a9` retains the
+explicit command-lease release. Genuine overlapping commands retain the original
+non-blocking busy result, and ARM64 qualification remains required.
 
 ## Artifact and retry boundaries
 

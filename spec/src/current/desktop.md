@@ -11,13 +11,13 @@ compatible bundles; helpers/windows/platform resources require native
 acceptance. Fixtures match versions/hashes; logs stream. E-CI-009/056 keep
 assertions/deadlines and wait for review teardown before edits. Terminal 0.1.2
 uses qualified Git ([intake](local-dependencies.md), E-CI-011/013). Denied
-cleanup settles only on close. Tasks use pin (E-CI-034); Graph uses hover
-(E-CI-012). ARM64 skips: E-CI-036/042/044,
-E-RELEASE-004/006/008/010/012/013/014. [CI](ci.md) governs E-CI-054/057/059/060
-transcript proof; E-CI-058 recovery sync; E-CI-063/064 native close/readiness;
-E-CI-072: unadmitted Terminal list is empty; recovered preview edits are dirty
-before close. E-CI-081/082/084 require exact ready/focused CodeMirror input and
-mirror equality before replacement/Close; synced mirrors need no review UI.
+cleanup settles only on close. Tasks use pin (E-CI-034); Graph hover (E-CI-012).
+ARM64 skips: E-CI-036/042/044/076, E-RELEASE-004/006/008/010/012/013/014.
+[CI](ci.md) governs E-CI-054/057/059/060 transcript proof; E-CI-058 recovery
+sync; E-CI-063/064 native close/readiness; E-CI-072: unadmitted Terminal list is
+empty; recovered preview edits are dirty before close. E-CI-081/082/084 require
+exact ready/focused CodeMirror input and mirror equality before
+replacement/Close; synced mirrors need no review UI.
 
 ## Requirements
 
@@ -309,8 +309,8 @@ untouched; only explicit reset uses Workspace reset/flush before restarting. The
 banner remains below the tabs. Message-plus-stack diagnostics retain their
 message when WebKit supplies a stack without it.
 
-M5 watch ownership lives in `files.md`; M7 native integration lives in
-`integration.md`. Watch resources remain separate from projection.
+M5 watch ownership maps to `files.md`; M7 native integration maps to
+`integration.md`.
 
 Explorer imports and mutations share FileManager writer protection. Cold native
 checks retain dirty conflict bytes before rename, move or deletion and retry
@@ -326,4 +326,5 @@ Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
 
-[Native qualification](native-acceptance.md) retains AI/repository gates.
+[Native qualification](native-acceptance.md) retains native gates; E-CI-085–088
+record the lease and Core pins.

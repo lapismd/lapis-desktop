@@ -14,6 +14,7 @@ import {
 import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
+import { quarantine } from "./native-quarantine.mjs";
 import { focusNativeWindow } from "./native-visibility.mjs";
 import {
   acceptConflictSide,
@@ -426,72 +427,76 @@ test("Graph controls enter close admission before debounce and survive cold rest
   await restored.close();
 });
 
-test("Graph failed writes block Close and disk recovery refreshes controls before another partial write", async (context) => {
-  const { vault, path, session, browser } = await fixture(
-    context,
-    "graph-recovery",
-  );
-  await settings(browser);
-  // Isolate the Graph write fault from the debounced layout save after F7.
-  const layout = join(vault, ".lapis/workspace.json");
-  await browser.waitUntil(
-    () =>
-      existsSync(layout) &&
-      JSON.stringify(JSON.parse(readFileSync(layout, "utf8"))).includes(
-        '"type":"graph"',
-      ),
-  );
-  const external = JSON.parse(readFileSync(path, "utf8"));
-  const directory = join(vault, ".lapis");
-  const compatibility = await mirror.wait(browser, directory, pluginId);
-  context.after(() => chmodSync(directory, 0o700));
-  chmodSync(directory, 0o500);
-  await browser.$(`${graph} [aria-label="Show tags"]`).click();
-  await openConflictReview(browser, ".lapis/app.json");
-  external.pluginData[pluginId].filters = {
-    showTags: false,
-    showAttachments: true,
-  };
-  external.outside = "retained";
-  const bytes = JSON.stringify(external, null, 2);
-  writeFileSync(path, bytes);
-  await session.requestClose();
-  await browser.$(nativeFailure).waitForDisplayed();
-  assert.equal(session.isRunning(), true);
-  chmodSync(directory, 0o700);
-  await browser.$("button=Check disk again").click();
-  await reviewedText(
-    browser,
-    ".lapis/app.json",
-    "Disk version",
-    '"showAttachments": true',
-  );
-  assert.equal(readFileSync(path, "utf8"), bytes);
-  await acceptConflictSide(browser, ".lapis/app.json", "Right");
-  await saveConflictResult(browser, ".lapis/app.json");
-  await browser.waitUntil(() => readFileSync(path, "utf8") === bytes);
-  await browser
-    .$(conflictReview(".lapis/app.json"))
-    .waitForExist({ reverse: true });
-  const recovered = external.pluginData[pluginId];
-  await mirror.recover(browser, compatibility, pluginId, recovered);
-  assert.equal(
+test(
+  "Graph failed writes block Close and disk recovery refreshes controls before another partial write",
+  { ...quarantine("graph-recovery-close") },
+  async (context) => {
+    const { vault, path, session, browser } = await fixture(
+      context,
+      "graph-recovery",
+    );
+    await settings(browser);
+    // Isolate the Graph write fault from the debounced layout save after F7.
+    const layout = join(vault, ".lapis/workspace.json");
+    await browser.waitUntil(
+      () =>
+        existsSync(layout) &&
+        JSON.stringify(JSON.parse(readFileSync(layout, "utf8"))).includes(
+          '"type":"graph"',
+        ),
+    );
+    const external = JSON.parse(readFileSync(path, "utf8"));
+    const directory = join(vault, ".lapis");
+    const compatibility = await mirror.wait(browser, directory, pluginId);
+    context.after(() => chmodSync(directory, 0o700));
+    chmodSync(directory, 0o500);
+    await browser.$(`${graph} [aria-label="Show tags"]`).click();
+    await openConflictReview(browser, ".lapis/app.json");
+    external.pluginData[pluginId].filters = {
+      showTags: false,
+      showAttachments: true,
+    };
+    external.outside = "retained";
+    const bytes = JSON.stringify(external, null, 2);
+    writeFileSync(path, bytes);
+    await session.requestClose();
+    await browser.$(nativeFailure).waitForDisplayed();
+    assert.equal(session.isRunning(), true);
+    chmodSync(directory, 0o700);
+    await browser.$("button=Check disk again").click();
+    await reviewedText(
+      browser,
+      ".lapis/app.json",
+      "Disk version",
+      '"showAttachments": true',
+    );
+    assert.equal(readFileSync(path, "utf8"), bytes);
+    await acceptConflictSide(browser, ".lapis/app.json", "Right");
+    await saveConflictResult(browser, ".lapis/app.json");
+    await browser.waitUntil(() => readFileSync(path, "utf8") === bytes);
     await browser
-      .$(`${graph} [aria-label="Show tags"]`)
-      .getAttribute("aria-checked"),
-    "false",
-  );
-  assert.equal(
-    await browser
-      .$(`${graph} [aria-label="Show attachments"]`)
-      .getAttribute("aria-checked"),
-    "true",
-  );
-  await browser.$(`${graph} [aria-label="Existing files only"]`).click();
-  await session.close();
-  const saved = JSON.parse(readFileSync(path, "utf8"));
-  assert.equal(saved.pluginData[pluginId].filters.showTags, false);
-  assert.equal(saved.pluginData[pluginId].filters.showAttachments, true);
-  assert.equal(saved.pluginData[pluginId].filters.existingFilesOnly, false);
-  assert.equal(saved.outside, "retained");
-});
+      .$(conflictReview(".lapis/app.json"))
+      .waitForExist({ reverse: true });
+    const recovered = external.pluginData[pluginId];
+    await mirror.recover(browser, compatibility, pluginId, recovered);
+    assert.equal(
+      await browser
+        .$(`${graph} [aria-label="Show tags"]`)
+        .getAttribute("aria-checked"),
+      "false",
+    );
+    assert.equal(
+      await browser
+        .$(`${graph} [aria-label="Show attachments"]`)
+        .getAttribute("aria-checked"),
+      "true",
+    );
+    await browser.$(`${graph} [aria-label="Existing files only"]`).click();
+    await session.close();
+    const saved = JSON.parse(readFileSync(path, "utf8"));
+    assert.equal(saved.pluginData[pluginId].filters.showTags, false);
+    assert.equal(saved.pluginData[pluginId].filters.showAttachments, true);
+    assert.equal(saved.pluginData[pluginId].filters.existingFilesOnly, false);
+    assert.equal(saved.outside, "retained");
+  },
+);

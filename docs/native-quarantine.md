@@ -113,7 +113,10 @@ Fresh Linux run `41630554968` at `c0e62124` completed both initialization
 attempts through `HistoryIndexing`, then failed the unchanged case at its
 explicit `stop_backup` call. Local Linux exact (1/1) and scoped (4/4) executions
 passed with diagnostics and do not qualify the hosted failure. Core
-`fd92fb521f9ac49a20bb97293c32f50c5e31cbaa` extends the same opt-in safe records
-through final capture, watcher release and queue completion. Run the unchanged
-exact and scoped cases on macOS ARM64 against that pin; do not remove the
-quarantine based on Linux success or diagnostics alone.
+`530a6c425e9183f93ee74c0b16bb4111fdc838f0` retains those opt-in safe records and
+adopts jj-store `076e418cecbe204925aea874bef8aa8a680269a9` after the same
+original pair reproduced a completed-command lease remaining busy locally. The
+owning repair explicitly unlocks completed session and relink leases while true
+overlapping commands remain busy. Run the unchanged exact and scoped cases on
+macOS ARM64 against that pin; do not remove the quarantine based on Linux repair
+evidence alone.

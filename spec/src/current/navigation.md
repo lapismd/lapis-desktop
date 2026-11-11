@@ -26,6 +26,12 @@ another write, and indexing/navigation retains the query after cold restart.
 Both original cases pass unchanged; hidden API and browser checks remain
 separate evidence.
 
+E-CI-076 quarantines one macOS ARM64 Graph recovery case. Main run 42841059098
+timed out while reviewing `.lapis/app.json`; scheduled run 42194475791 left
+Close blocked on an unresolved `.lapis/lapis-graph.json` conflict and the
+harness sent SIGKILL. Its callback, assertions and deadlines stay intact, and
+that failed-write recovery boundary remains unqualified.
+
 ## Requirements
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                             |
