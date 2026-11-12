@@ -75,7 +75,7 @@ test("hosted CI projects unpublished packages and restores the tracked lock", ()
   assert.match(install, /writeFileSync\(lockPath, originalLock\)/u);
 });
 
-test("hosted CI builds both Linux release targets and keeps the macOS jobs", () => {
+test("hosted CI tests on Linux and keeps only the macOS bundle build", () => {
   const ci = readFileSync(".github/workflows/ci.yml", "utf8");
   const pages = readFileSync(
     ".github/workflows/publish-storybook-pages.yml",
@@ -87,8 +87,12 @@ test("hosted CI builds both Linux release targets and keeps the macOS jobs", () 
   ])
     assert.match(ci, new RegExp(target, "u"));
   assert.match(ci, /name: Native bundle\b/u);
-  assert.match(ci, /name: Native ARM64 acceptance\b/u);
-  const linuxBuild = parse(ci).jobs.linux.steps.find(
+  assert.doesNotMatch(ci, /name: Native ARM64 acceptance\b/u);
+  const workflow = parse(ci);
+  assert.equal(workflow.jobs.quality["runs-on"], "ubuntu-24.04");
+  assert.equal(workflow.jobs.unit["runs-on"], "ubuntu-24.04");
+  assert.equal(workflow.jobs.bundle["runs-on"], "macos-15");
+  const linuxBuild = workflow.jobs.linux.steps.find(
     (step) => step.name === "Build the Linux release binary",
   );
   assert.ok(linuxBuild, "Linux qualification must build its selected target");

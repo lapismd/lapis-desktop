@@ -1,5 +1,13 @@
 # CI reliability implementation handoff
 
+## Superseding policy — 2026-11-12
+
+The user directed that hosted tests run only on Linux and macOS runners be
+build-only. E-CI-091 removes hosted native families/diagnostics and macOS
+release runtime receipts while retaining all three build artifacts, local native
+entry points, assertions, deadlines and quarantines. The older continuation
+steps below remain historical diagnosis; do not dispatch them as hosted gates.
+
 This document preserves the implementation plan, delivered revisions and
 remaining work after Desktop PR #9. It is the continuation point for a local
 workspace; local chat history and uploaded attachments are not required.

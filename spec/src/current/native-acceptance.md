@@ -1,5 +1,13 @@
 # Native acceptance modes
 
+Hosted CI and release qualification currently execute tests only on Linux. macOS
+runners build private-package projections and ordinary application artifacts;
+they do not run this chapter's headed, hidden-WebView, quarantine or Rust
+diagnostic cases. The explicit local macOS lanes and their complete assertions,
+deadlines, inventories and quarantines remain available for investigation, but
+they cannot satisfy hosted or release gates. Linux and browser results do not
+qualify macOS native behavior.
+
 Portable native checks retain unsupported credential ports outside macOS; only
 the supported Keychain backend constructs its device service identity.
 
@@ -12,19 +20,19 @@ E-RELEASE-008 quarantines the background AI admission/cold-reset case after an
 intermittent second-process readiness failure on an unchanged tree. Its complete
 body and 15-second readiness deadline remain intact. Caller/frame, reload-scope,
 vault-closure and cold-reset coverage from that case remains unqualified; the
-other enabled native cases still gate releases.
+other native cases retain their local acceptance contracts.
 
 E-RELEASE-010 additionally quarantines the exact queue admission/readiness and
 deleted-preview merged-file recreation cases. Their complete bodies and all
-deadlines remain intact. Ordinary packaged-app acceptance and all other enabled
-native cases remain required; these two skipped cases do not qualify their
-original admission/refusal or deleted-file recovery/shutdown boundaries.
+deadlines remain intact. Ordinary Linux packaged-app acceptance remains
+required; other native cases retain their local contracts. These two skipped
+cases do not qualify their original admission/refusal or deleted-file
+recovery/shutdown boundaries.
 
 E-RELEASE-012 additionally quarantines the complete Explorer rename/move/layout
 case after intermittent filename input appended to the old name. Preserve its
 callback, assertions and deadlines. Its rename, move and cold-layout boundary
-remains unqualified; other enabled native cases and ordinary package checks
-remain required.
+remains unqualified; ordinary Linux package checks remain required.
 
 E-RELEASE-013 quarantines the exact vault-return/cancel/database case after its
 replacement input left the original body behind the new text. It passed in the

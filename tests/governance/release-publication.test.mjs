@@ -6,6 +6,7 @@ import { join, basename } from "node:path";
 import {
   createArtifact,
   createManifest,
+  qualificationTargets,
   releaseTargets,
 } from "../../scripts/release/contract.mjs";
 import {
@@ -74,6 +75,8 @@ async function candidate(context) {
       normalAutomationMarkers: 0,
       architectures: artifact.architecture,
     });
+    if (!qualificationTargets.some(({ target }) => target === artifact.target))
+      continue;
     await json(`homebrew-${artifact.target}-homebrew.json`, {
       ...binding,
       ok: true,
@@ -193,8 +196,11 @@ test("candidate verification rejects changed bytes, missing inventory and forged
     join(directory, manifest.artifacts[0].file),
     "qualified archive",
   );
+  const qualified = manifest.artifacts.find(
+    (item) => item.platform === "linux",
+  );
   await writeFile(
-    join(directory, `homebrew-${manifest.artifacts[0].target}-homebrew.json`),
+    join(directory, `homebrew-${qualified.target}-homebrew.json`),
     JSON.stringify({ ok: false }),
   );
   await sealCandidate(directory);

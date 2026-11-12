@@ -1,5 +1,13 @@
 # CI reliability rollout
 
+## Current hosted execution policy
+
+As of 2026-11-12, all executable hosted tests run on Linux. macOS runners are
+build-only for private-package projections and ordinary application artifacts.
+The native-family and diagnostic descriptions below document retained local
+machinery and earlier attempts; they are not current hosted or release gates.
+Linux/browser success cannot qualify macOS native behavior. See E-CI-091.
+
 The durable implementation status and continuation checklist are in
 [CI reliability handoff](ci-reliability-handoff.md). That handoff preserves the
 original slice plan, the nightly-only augmentation and the exact pending steps.

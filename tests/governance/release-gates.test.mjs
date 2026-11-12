@@ -183,10 +183,10 @@ test("selective docs-only CI cannot qualify release preparation", async () => {
           ],
         }
       : server(path, options);
-  await assert.rejects(verifySource(identity, request), /full native/);
+  await assert.rejects(verifySource(identity, request), /full Linux test/);
 });
 
-test("full release requires preparation, every native family and every current job attempt", async () => {
+test("full release requires every Linux test and platform build from one current attempt", async () => {
   const jobs = fullCIJobs.map((name, index) => ({
     name,
     id: index + 1,
@@ -201,8 +201,8 @@ test("full release requires preparation, every native family and every current j
   assert.equal((await requireFullCI(source, request(jobs))).ciAttempt, 2);
   for (const missing of [
     "Private prerequisites",
-    "Prepare native acceptance",
-    "Native family (workspace)",
+    "Quality",
+    "Native bundle",
     "Native Linux (x86_64-unknown-linux-gnu)",
   ]) {
     await assert.rejects(
@@ -210,16 +210,16 @@ test("full release requires preparation, every native family and every current j
         source,
         request(jobs.filter((job) => job.name !== missing)),
       ),
-      /full native/u,
+      /full Linux test/u,
     );
   }
   for (const conclusion of ["failure", "cancelled", "timed_out", "skipped"]) {
     const replaced = jobs.map((job) =>
-      job.name === "Native family (services)" ? { ...job, conclusion } : job,
+      job.name === "Unit tests" ? { ...job, conclusion } : job,
     );
     await assert.rejects(
       requireFullCI(source, request(replaced)),
-      /full native/u,
+      /full Linux test/u,
     );
   }
   await assert.rejects(
@@ -227,14 +227,14 @@ test("full release requires preparation, every native family and every current j
       source,
       request(jobs.map((job) => ({ ...job, run_attempt: 1 }))),
     ),
-    /full native/u,
+    /full Linux test/u,
   );
   await assert.rejects(
     requireFullCI(
       source,
       request(jobs.map((job) => ({ ...job, run_attempt: undefined }))),
     ),
-    /full native/u,
+    /full Linux test/u,
   );
 });
 
@@ -262,14 +262,14 @@ test("paginated source qualification retains a later failed attempt rather than 
         ? [...jobs, ...padding]
         : [
             {
-              ...jobs.find((job) => job.name === "Native family (smoke)"),
+              ...jobs.find((job) => job.name === "Quality"),
               id: 9999,
               conclusion: "failure",
             },
           ],
     };
   };
-  await assert.rejects(requireFullCI(source, request), /full native/u);
+  await assert.rejects(requireFullCI(source, request), /full Linux test/u);
   assert.equal(pages.length, 2);
   assert.ok(pages.every((path) => path.includes("filter=all")));
 });

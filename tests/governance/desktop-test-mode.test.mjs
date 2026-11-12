@@ -4,24 +4,16 @@ import { readFileSync } from "node:fs";
 import { runDesktopTests } from "../../scripts/desktop-tests.mjs";
 import { buildAcceptanceApp } from "../../scripts/desktop-acceptance.mjs";
 
-test("CI retains explicit headed native acceptance when the local default is quiet", () => {
+test("hosted CI excludes headed native acceptance while the explicit local lane remains", () => {
   const workflow = readFileSync(".github/workflows/ci.yml", "utf8").replace(
     /\s+/gu,
     " ",
   );
   const { scripts } = JSON.parse(readFileSync("package.json", "utf8"));
   assert.equal(scripts["ci:headed"], "pnpm test:desktop:headed");
-  assert.match(workflow, /name: Native ARM64 acceptance\b/u);
-  assert.match(workflow, /macos-native-lanes\.mjs headed --operation prepare/u);
-  assert.match(
-    workflow,
-    /macos-native-lanes\.mjs headed --operation execute --family/u,
-  );
-  assert.doesNotMatch(
-    workflow,
-    /run-turbo\.mjs ci:headed\b/u,
-    "Native family execution must be fresh rather than a cached result",
-  );
+  assert.doesNotMatch(workflow, /Native ARM64 acceptance/u);
+  assert.doesNotMatch(workflow, /macos-native-lanes\.mjs/u);
+  assert.doesNotMatch(workflow, /run-turbo\.mjs ci:headed\b/u);
 });
 
 async function commands(args) {

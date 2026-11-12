@@ -28,6 +28,9 @@ export const releaseTargets = [
     label: "linux-x64",
   },
 ];
+export const qualificationTargets = releaseTargets.filter(
+  ({ platform }) => platform === "linux",
+);
 export function targetInfo(value) {
   const item = releaseTargets.find((entry) => entry.target === value);
   if (!item) throw Error("Unsupported preview target");

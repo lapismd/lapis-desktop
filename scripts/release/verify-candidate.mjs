@@ -1,7 +1,7 @@
 import { cp } from "node:fs/promises";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
-import { hostedMain, releaseTargets } from "./contract.mjs";
+import { hostedMain, qualificationTargets } from "./contract.mjs";
 import { sealCandidate, verifyCandidate } from "./candidate.mjs";
 const { values } = parseArgs({
   options: {
@@ -11,7 +11,7 @@ const { values } = parseArgs({
 });
 hostedMain();
 if (values.seal) {
-  for (const { target } of releaseTargets)
+  for (const { target } of qualificationTargets)
     for (const phase of ["install", "reinstall", "homebrew"])
       await cp(
         `.local/release/homebrew/${target}/${phase}.json`,

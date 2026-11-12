@@ -213,8 +213,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - os: macos-15
-            target: aarch64-apple-darwin
           - os: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
           - os: ubuntu-24.04
@@ -270,11 +268,7 @@ jobs:
             --previous-manifest
           .local/release/previous/desktop-preview-manifest.json
             --output ".local/release/homebrew/$RELEASE_TARGET")
-          if [[ "$RUNNER_OS" == Linux ]]; then
-            xvfb-run -a dbus-run-session -- "${command[@]}"
-          else
-            "${command[@]}"
-          fi
+          xvfb-run -a dbus-run-session -- "${command[@]}"
       - uses: actions/upload-artifact@v7
         if: always()
         with:
@@ -321,7 +315,7 @@ jobs:
             }}
           merge-multiple: true
           path: .local/release/homebrew
-      - name: Seal all three archives and native receipts
+      - name: Seal three archives and Linux runtime receipts
         run: node scripts/release/verify-candidate.mjs --seal
       - uses: actions/upload-artifact@v7
         with:

@@ -11,16 +11,6 @@ on:
         type: boolean
         default: true
         required: false
-      native_diagnostic_cases:
-        description: Paired original native quarantine IDs (at most five)
-        type: string
-        default: ""
-        required: false
-      rust_backup_diagnostic:
-        description: Run the isolated and scoped ARM64 backup diagnostic
-        type: boolean
-        default: false
-        required: false
   schedule:
     - cron: 17 2 * * *
 permissions:
@@ -34,8 +24,7 @@ concurrency:
     lapis-desktop-ci-${{ github.event_name }}-${{
     github.event.pull_request.number || github.ref }}-${{ github.event_name ==
     'schedule' && 'nightly' || github.event_name == 'workflow_dispatch' &&
-    (inputs.native_diagnostic_cases != '' || inputs.rust_backup_diagnostic) &&
-    'diagnostic' || inputs.full && 'full' || 'ordinary' }}
+    inputs.full && 'full' || 'ordinary' }}
   cancel-in-progress: ${{ github.event_name != 'schedule' }}
 env:
   LAPIS_DESKTOP_VALIDATION_RUNTIME: native
@@ -68,12 +57,10 @@ jobs:
       storybook_static: ${{ steps.plan.outputs.storybook_static }}
       storybook_interaction: ${{ steps.plan.outputs.storybook_interaction }}
       bundle: ${{ steps.plan.outputs.bundle }}
-      headed: ${{ steps.plan.outputs.headed }}
       linux: ${{ steps.plan.outputs.linux }}
       audit: ${{ steps.plan.outputs.audit }}
       profile: ${{ steps.plan.outputs.profile }}
       catalog_profile: ${{ steps.plan.outputs.catalog_profile }}
-      native_families: ${{ steps.plan.outputs.native_families }}
       prerequisites: ${{ steps.plan.outputs.prerequisites }}
       dependency_platforms: ${{ steps.plan.outputs.dependency_platforms }}
       tested_revision: ${{ steps.plan.outputs.tested_revision }}
@@ -84,16 +71,6 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24.15.0
-      - name: Validate optional native diagnostic selectors
-        if:
-          github.event_name == 'workflow_dispatch' &&
-          inputs.native_diagnostic_cases != ''
-        env:
-          NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
-        run:
-          node --input-type=module -e 'import {quarantineArguments} from
-          "./scripts/native-quarantine.mjs"; quarantineArguments(["--cases=" +
-          process.env.NATIVE_DIAGNOSTIC_CASES]);'
       - name: Check dependency-aware planning and aggregation
         run: node --test tests/governance/ci-selection.test.mjs
       - id: plan
@@ -161,7 +138,7 @@ jobs:
       LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
   quality:
     name: Quality
-    runs-on: macos-15
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Check out the repository
@@ -183,8 +160,6 @@ jobs:
         with:
           components: clippy,rustfmt
         if: needs.changes.outputs.rust == 'true'
-      - name: Select configured macOS deployment minimum
-        run: node scripts/native-build-environment.mjs --github-env
       - name: Start Rust cache timing
         run: node scripts/ci/timing.mjs start rust-cache
         if: needs.changes.outputs.rust == 'true'
@@ -198,11 +173,10 @@ jobs:
           add-job-id-key: true
           key:
             desktop-v2-${{ runner.os }}-${{ runner.arch }}-quality-host-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
-            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+            hashFiles('scripts/ci-sources.json') }}
           cache-workspace-crates: false
           cache-on-failure: true
-          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST
         if: needs.changes.outputs.rust == 'true'
       - name: Record effective Rust cache identity and restore duration
         if: always() && (needs.changes.outputs.rust == 'true')
@@ -211,8 +185,7 @@ jobs:
           CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
           CACHE_IDENTITY:
             desktop-v2-${{ runner.os }}-${{ runner.arch }}-quality-host-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
-            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+            hashFiles('scripts/ci-sources.json') }}
         run: node scripts/ci/timing.mjs finish rust-cache
       - name: Initialize Jujutsu over the checked-out Git revision
         run: jj git init --colocate .
@@ -220,7 +193,7 @@ jobs:
         run: node scripts/ci-revisions.mjs
       - uses: actions/download-artifact@v8
         with:
-          name: private-packages-macos-arm64-${{ github.run_attempt }}
+          name: private-packages-linux-x64-${{ github.run_attempt }}
           path: .local/ci-dependency-download
       - name: Extract verified package artifact
         run: tar -xf .local/ci-dependency-download/packages.tar -C .local
@@ -264,7 +237,7 @@ jobs:
       LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
   unit:
     name: Unit tests
-    runs-on: macos-15
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
       - name: Check out the repository
@@ -286,8 +259,6 @@ jobs:
         with:
           components: clippy,rustfmt
         if: needs.changes.outputs.rust == 'true'
-      - name: Select configured macOS deployment minimum
-        run: node scripts/native-build-environment.mjs --github-env
       - name: Start Rust cache timing
         run: node scripts/ci/timing.mjs start rust-cache
         if: needs.changes.outputs.rust == 'true'
@@ -301,11 +272,10 @@ jobs:
           add-job-id-key: true
           key:
             desktop-v2-${{ runner.os }}-${{ runner.arch }}-unit-host-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
-            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+            hashFiles('scripts/ci-sources.json') }}
           cache-workspace-crates: false
           cache-on-failure: true
-          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
+          env-vars: CARGO CC CFLAGS CXX CMAKE RUST
         if: needs.changes.outputs.rust == 'true'
       - name: Record effective Rust cache identity and restore duration
         if: always() && (needs.changes.outputs.rust == 'true')
@@ -314,12 +284,11 @@ jobs:
           CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
           CACHE_IDENTITY:
             desktop-v2-${{ runner.os }}-${{ runner.arch }}-unit-host-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
-            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
+            hashFiles('scripts/ci-sources.json') }}
         run: node scripts/ci/timing.mjs finish rust-cache
       - uses: actions/download-artifact@v8
         with:
-          name: private-packages-macos-arm64-${{ github.run_attempt }}
+          name: private-packages-linux-x64-${{ github.run_attempt }}
           path: .local/ci-dependency-download
       - name: Extract verified package artifact
         run: tar -xf .local/ci-dependency-download/packages.tar -C .local
@@ -601,45 +570,6 @@ jobs:
     env:
       LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
       LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-  headed:
-    name: Native ARM64 acceptance
-    runs-on: ubuntu-24.04
-    needs:
-      - changes
-      - native-prepare
-      - native-families
-    if:
-      always() && needs.changes.result == 'success' &&
-      needs.changes.outputs.headed == 'true'
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.15.0
-      - uses: actions/download-artifact@v8
-        with:
-          name: ci-plan-${{ github.run_attempt }}
-          path: .local
-      - uses: actions/download-artifact@v8
-        with:
-          pattern: native-family-*-${{ github.run_attempt }}
-          path: .local/native-family-reports
-      - name: Require preparation and every selected family report
-        env:
-          PREPARATION: ${{ needs.native-prepare.result }}
-          FAMILIES: ${{ needs.native-families.result }}
-        run: >-
-          test "$PREPARATION" = success
-
-          test "$FAMILIES" = success
-
-          node scripts/native-families.mjs aggregate .local/ci-plan.json
-          .local/native-family-reports
-    env:
-      LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-      LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
   linux:
     name: Native Linux (${{ matrix.target }})
     runs-on:
@@ -865,7 +795,6 @@ jobs:
       - storybook-static
       - storybook-interaction
       - bundle
-      - headed
       - linux
       - audit
       - prerequisites
@@ -907,9 +836,7 @@ jobs:
       - validate
     if:
       always() && needs.changes.result == 'success' &&
-      needs.changes.outputs.full == 'true' && (github.event_name !=
-      'workflow_dispatch' || (inputs.native_diagnostic_cases == '' &&
-      !inputs.rust_backup_diagnostic))
+      needs.changes.outputs.full == 'true'
     runs-on: ubuntu-24.04
     steps:
       - name: Require every full qualification gate
@@ -996,332 +923,3 @@ jobs:
     env:
       LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
       LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-  native-prepare:
-    name: Prepare native acceptance
-    runs-on: macos-15
-    timeout-minutes: 60
-    needs:
-      - changes
-      - ci-tools
-      - prerequisites
-    if: needs.changes.outputs.headed == 'true'
-    env:
-      LAPIS_DESKTOP_PORTABLE_FIXTURES: .local/ci-native-plugins/manifest.json
-      LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-      LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-      LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT: .local/ci-dependency-artifact
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v6
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.15.0
-          cache: pnpm
-      - uses: ./.github/actions/setup-ci-tools
-      - name: Check out pinned prerequisites
-        run: node scripts/ci-siblings.mjs
-      - name: Select configured macOS deployment minimum
-        run: node scripts/native-build-environment.mjs --github-env
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@1.99.0
-        with:
-          components: clippy,rustfmt
-      - name: Start Rust cache timing
-        run: node scripts/ci/timing.mjs start rust-cache
-      - name: Restore Rust dependency builds
-        id: rust-cache
-        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
-        with:
-          workspaces: |-
-            src-tauri -> target
-            ../lapis-ai -> target
-          add-job-id-key: true
-          key:
-            desktop-v2-${{ runner.os }}-${{ runner.arch }}-acceptance-host-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
-            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
-          cache-workspace-crates: false
-          cache-on-failure: true
-          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
-      - name: Record effective Rust cache identity and restore duration
-        if: always()
-        env:
-          TIMING_RESULT: ${{ steps.rust-cache.outcome }}
-          CACHE_HIT: ${{ steps.rust-cache.outputs.cache-hit }}
-          CACHE_IDENTITY:
-            desktop-v2-${{ runner.os }}-${{ runner.arch }}-acceptance-host-${{
-            hashFiles('scripts/ci-sources.json') }}-${{
-            env.MACOSX_DEPLOYMENT_TARGET || 'system' }}
-        run: node scripts/ci/timing.mjs finish rust-cache
-      - uses: actions/download-artifact@v8
-        with:
-          name: private-packages-macos-arm64-${{ github.run_attempt }}
-          path: .local/ci-dependency-download
-      - name: Extract verified package artifact
-        run: tar -xf .local/ci-dependency-download/packages.tar -C .local
-      - name: Verify and install prepared private packages
-        env:
-          LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT: .local/ci-dependency-artifact
-        run:
-          node scripts/ci/timing.mjs run
-          verify-and-install-prepared-private-packages -- /bin/bash -e -o
-          pipefail -c 'node scripts/ci-install.mjs'
-      - name: Prepare pinned native AI runtime
-        run:
-          node scripts/ci/timing.mjs run prepare-pinned-native-ai-runtime --
-          /bin/bash -e -o pipefail -c 'pnpm ai:prepare -- --reuse'
-      - name: Prepare verified native plugin fixtures
-        run:
-          node scripts/ci/timing.mjs run prepare-verified-native-plugin-fixtures
-          -- /bin/bash -e -o pipefail -c 'node --import tsx
-          scripts/ci-native-fixtures.mjs'
-      - name: Build acceptance artifact once
-        env:
-          LAPIS_DESKTOP_NATIVE_LANE: "1"
-        run:
-          node scripts/ci/timing.mjs run build-acceptance-artifact-once --
-          /bin/bash -e -o pipefail -c 'node scripts/macos-native-lanes.mjs
-          headed --operation prepare'
-      - name: Export acceptance bundle and immutable fixtures
-        run: >-
-          node scripts/ci/timing.mjs run
-          export-acceptance-bundle-and-immutable-fixtures -- /bin/bash -e -o
-          pipefail -c 'node scripts/ci-acceptance-artifact.mjs export
-          .local/ci-acceptance-artifact
-
-          tar -cf .local/acceptance.tar -C .local ci-acceptance-artifact'
-      - uses: actions/upload-artifact@v7
-        with:
-          name: native-acceptance-artifact-${{ github.run_attempt }}
-          path: .local/acceptance.tar
-          if-no-files-found: error
-          retention-days: 7
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: native-preparation-diagnostics
-          path: .local/native-test/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 7
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name:
-            timing-native-prepare-${{ strategy.job-index }}-${{
-            github.run_attempt }}
-          path: .local/ci-timing/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 7
-  native-families:
-    name: Native family (${{ matrix.family }})
-    runs-on: macos-15
-    timeout-minutes: 40
-    needs:
-      - changes
-      - ci-tools
-      - prerequisites
-      - native-prepare
-    if: needs.changes.outputs.headed == 'true'
-    strategy:
-      fail-fast: false
-      matrix:
-        family: ${{ fromJSON(needs.changes.outputs.native_families) }}
-    env:
-      LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-      LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-      LAPIS_DESKTOP_NATIVE_REPORTS: .local/native-test/reports
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v6
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: 24.15.0
-          cache: pnpm
-      - uses: ./.github/actions/setup-ci-tools
-      - name: Check out pinned prerequisites
-        run: node scripts/ci-siblings.mjs
-      - name: Select configured macOS deployment minimum
-        run: node scripts/native-build-environment.mjs --github-env
-      - name: Set up Rust
-        uses: dtolnay/rust-toolchain@1.99.0
-        with:
-          components: clippy,rustfmt
-      - uses: actions/download-artifact@v8
-        with:
-          name: private-packages-macos-arm64-${{ github.run_attempt }}
-          path: .local/ci-dependency-download
-      - name: Extract verified package artifact
-        run: tar -xf .local/ci-dependency-download/packages.tar -C .local
-      - name: Verify and install prepared private packages
-        env:
-          LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT: .local/ci-dependency-artifact
-        run:
-          node scripts/ci/timing.mjs run
-          verify-and-install-prepared-private-packages -- /bin/bash -e -o
-          pipefail -c 'node scripts/ci-install.mjs'
-      - uses: actions/download-artifact@v8
-        with:
-          name: native-acceptance-artifact-${{ github.run_attempt }}
-          path: .local/ci-acceptance-download
-      - name: Extract acceptance artifact preserving modes and symlinks
-        run: tar -xf .local/ci-acceptance-download/acceptance.tar -C .local
-      - name: Run independently isolated native family
-        env:
-          LAPIS_DESKTOP_NATIVE_LANE: "1"
-        run:
-          node scripts/ci/timing.mjs run
-          run-independently-isolated-native-family -- /bin/bash -e -o pipefail
-          -c 'node scripts/macos-native-lanes.mjs headed --operation execute
-          --family "${{ matrix.family }}" --reuse-artifact
-          .local/ci-acceptance-artifact/manifest.json'
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: native-family-${{ matrix.family }}-${{ github.run_attempt }}
-          path: .local/native-test/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 7
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name:
-            timing-native-families-${{ strategy.job-index }}-${{
-            github.run_attempt }}
-          path: .local/ci-timing/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 7
-  native-quarantine-diagnostic:
-    name: Paired native quarantine diagnostic (not qualification)
-    runs-on: macos-15
-    timeout-minutes: 40
-    needs:
-      - changes
-      - ci-tools
-      - prerequisites
-      - native-prepare
-      - native-families
-    if:
-      always() && github.event_name == 'workflow_dispatch' &&
-      inputs.native_diagnostic_cases != '' && needs.changes.result == 'success'
-      && needs.prerequisites.result == 'success' && needs.native-prepare.result
-      == 'success'
-    env:
-      LAPIS_DESKTOP_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-      LAPIS_CI_PROFILE: ${{ needs.changes.outputs.profile }}
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.15.0
-          cache: pnpm
-      - uses: ./.github/actions/setup-ci-tools
-      - name: Check out pinned prerequisites
-        run: node scripts/ci-siblings.mjs
-      - name: Select configured macOS deployment minimum
-        run: node scripts/native-build-environment.mjs --github-env
-      - uses: dtolnay/rust-toolchain@1.99.0
-        with:
-          components: clippy,rustfmt
-      - uses: actions/download-artifact@v8
-        with:
-          name: private-packages-macos-arm64-${{ github.run_attempt }}
-          path: .local/ci-dependency-download
-      - name: Extract verified package artifact
-        run: tar -xf .local/ci-dependency-download/packages.tar -C .local
-      - name: Verify and install prepared private packages
-        env:
-          LAPIS_DESKTOP_CI_DEPENDENCY_ARTIFACT: .local/ci-dependency-artifact
-        run: node scripts/ci-install.mjs
-      - uses: actions/download-artifact@v8
-        with:
-          name: native-acceptance-artifact-${{ github.run_attempt }}
-          path: .local/ci-acceptance-download
-      - name: Extract the same acceptance artifact used by normal families
-        run: tar -xf .local/ci-acceptance-download/acceptance.tar -C .local
-      - name: Execute selected original bodies in isolated state
-        env:
-          LAPIS_DESKTOP_NATIVE_LANE: "1"
-          NATIVE_DIAGNOSTIC_CASES: ${{ inputs.native_diagnostic_cases }}
-        run: >-
-          node scripts/macos-native-lanes.mjs quarantine
-          "--cases=$NATIVE_DIAGNOSTIC_CASES"
-          --reuse-artifact=.local/ci-acceptance-artifact/manifest.json
-      - name: Summarize fresh diagnostic outcomes
-        if: always()
-        run: node scripts/native-quarantine-summary.mjs
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: paired-native-quarantine-${{ github.run_attempt }}
-          path: .local/native-test/
-          include-hidden-files: true
-          if-no-files-found: ignore
-          retention-days: 14
-  rust-backup-diagnostic:
-    name: ARM64 backup diagnostic (not qualification)
-    runs-on: macos-15
-    timeout-minutes: 40
-    needs:
-      - changes
-      - ci-tools
-      - native-prepare
-    if:
-      github.event_name == 'workflow_dispatch' && inputs.rust_backup_diagnostic
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.15.0
-      - uses: ./.github/actions/setup-ci-tools
-      - name: Select configured macOS deployment minimum
-        run: node scripts/native-build-environment.mjs --github-env
-      - uses: dtolnay/rust-toolchain@1.99.0
-      - name: Restore compatible diagnostic Rust builds
-        uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0
-        with:
-          workspaces: src-tauri -> target
-          add-job-id-key: true
-          key:
-            desktop-v2-${{ runner.os }}-${{ runner.arch }}-backup-diagnostic-${{
-            hashFiles('scripts/ci-sources.json') }}
-          cache-workspace-crates: false
-          cache-on-failure: true
-          env-vars: CARGO CC CFLAGS CXX CMAKE RUST MACOSX_DEPLOYMENT_TARGET
-      - uses: actions/download-artifact@v8
-        with:
-          name: native-acceptance-artifact-${{ github.run_attempt }}
-          path: .local/ci-acceptance-download
-      - name: Extract verified acceptance resources
-        run: tar -xf .local/ci-acceptance-download/acceptance.tar -C .local
-      - name: Restore the genuine AI bundle from the verified artifact
-        run:
-          node scripts/ci-acceptance-artifact.mjs verify
-          .local/ci-acceptance-artifact/manifest.json
-      - name: Run the original case alone and its scoped integration group
-        env:
-          LAPIS_DESKTOP_RUST_BACKUP_DIAGNOSTIC: "1"
-        run: node scripts/rust-backup-diagnostic.mjs
-      - uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: rust-backup-diagnostic-${{ github.run_attempt }}
-          path: .local/native-test/rust-backup-diagnostic.json
-          if-no-files-found: error
-          retention-days: 14

@@ -1,4 +1,3 @@
-import { nativeFamilies } from "../native-families.mjs";
 export const gates = [
   "governance",
   "prerequisites",
@@ -7,7 +6,6 @@ export const gates = [
   "storybook-static",
   "storybook-interaction",
   "bundle",
-  "headed",
   "linux",
   "audit",
 ];
@@ -19,16 +17,15 @@ export const dependencyPlatforms = [
 ];
 export function prerequisitePlatforms(selected) {
   const ids = new Set();
+  if (selected.includes("bundle")) ids.add("macos-arm64");
   if (
-    ["quality", "unit", "bundle", "headed"].some((gate) =>
-      selected.includes(gate),
-    )
-  )
-    ids.add("macos-arm64");
-  if (
-    ["storybook-static", "storybook-interaction", "audit"].some((gate) =>
-      selected.includes(gate),
-    )
+    [
+      "quality",
+      "unit",
+      "storybook-static",
+      "storybook-interaction",
+      "audit",
+    ].some((gate) => selected.includes(gate))
   )
     ids.add("linux-x64");
   if (selected.includes("linux")) {
@@ -57,7 +54,8 @@ export function validatePlan(plan) {
     !plan.gates.includes("governance") ||
     !subset(plan.unit, unitGroups) ||
     !subset(plan.quality, ["types", "rust"]) ||
-    !subset(plan.nativeFamilies, nativeFamilies) ||
+    !Array.isArray(plan.nativeFamilies) ||
+    plan.nativeFamilies.length !== 0 ||
     !["ordinary", "full"].includes(plan.catalogProfile) ||
     !equal(plan.dependencyPlatforms, prerequisitePlatforms(plan.gates)) ||
     plan.gates.includes("prerequisites") !==
@@ -74,18 +72,7 @@ export function validatePlan(plan) {
       !/^[a-f0-9]{40}$/u.test(plan.testedRevision ?? ""))
   )
     throw Error("Invalid CI plan");
-  if (
-    plan.gates.includes("headed")
-      ? !plan.nativeFamilies.includes("smoke")
-      : plan.nativeFamilies.length !== 0
-  )
-    throw Error("Incomplete native family selection");
-  if (
-    !plan.ordinaryProfilesEnabled &&
-    (plan.catalogProfile !== "full" ||
-      (plan.gates.includes("headed") &&
-        !equal(plan.nativeFamilies, nativeFamilies)))
-  )
+  if (!plan.ordinaryProfilesEnabled && plan.catalogProfile !== "full")
     throw Error(
       "Unqualified narrow ordinary profiles cannot remove existing coverage",
     );
@@ -95,7 +82,7 @@ export function validatePlan(plan) {
       !equal(plan.unit, unitGroups) ||
       !equal(plan.quality, ["types", "rust"]) ||
       plan.rustPackages !== null ||
-      !equal(plan.nativeFamilies, nativeFamilies) ||
+      plan.nativeFamilies.length !== 0 ||
       plan.catalogProfile !== "full")
   )
     throw Error("Full qualification requires the complete CI inventory");

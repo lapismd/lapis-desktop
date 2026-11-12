@@ -87,7 +87,6 @@ test("image publication stays manual, protected and multi-architecture", async (
 test("consumer image pulls use the workflow token", async () => {
   for (const path of [
     ".github/workflows/ci.yml",
-    ".github/workflows/native-quarantine.yml",
     ".github/workflows/publish-storybook-pages.yml",
     ".github/workflows/release-desktop.yml",
     ".github/workflows/trial-desktop.yml",
@@ -117,7 +116,6 @@ test("published image feeds verified current-attempt tools to every consumer", a
     : imageReference(manifest);
   const workflows = [
     ".github/workflows/ci.yml",
-    ".github/workflows/native-quarantine.yml",
     ".github/workflows/publish-storybook-pages.yml",
     ".github/workflows/release-desktop.yml",
     ".github/workflows/trial-desktop.yml",
@@ -164,11 +162,6 @@ test("published image feeds verified current-attempt tools to every consumer", a
     ".github/workflows/ci.yml:linux",
     ".github/workflows/ci.yml:audit",
     ".github/workflows/ci.yml:dependency-packages",
-    ".github/workflows/ci.yml:native-prepare",
-    ".github/workflows/ci.yml:native-families",
-    ".github/workflows/ci.yml:native-quarantine-diagnostic",
-    ".github/workflows/ci.yml:rust-backup-diagnostic",
-    ".github/workflows/native-quarantine.yml:diagnostic",
     ".github/workflows/publish-storybook-pages.yml:build",
     ".github/workflows/release-desktop.yml:build",
     ".github/workflows/trial-desktop.yml:build",

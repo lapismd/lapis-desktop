@@ -12,23 +12,23 @@ as newly authored.
 
 ## Requirements
 
-| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-CI-001 | CI MUST use actual PR/push ranges, include rename sources and destinations, and select complete dependent gates. Docs-only changes MUST validate specification/evidence without building private packages or native helpers, subject to the trusted dependency-author spec exemption. Unknown paths, shared configuration, missing history and explicit full requests MUST select all gates.                                                                                                                                                |
-| LD-CI-002 | Rust build caching MUST bind to platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch; floating selectors cannot qualify verified reuse. Caches MAY reuse dependency outputs, but MUST NOT replace selected tests or cold native process acceptance. Ordinary bundles MUST still be rebuilt/audited and reject acceptance drivers; helper inventory/signing and final artifact hashes remain authoritative. |
-| LD-CI-003 | Full CI MUST remain explicitly dispatchable. Release preparation and publication MUST require successful full native/feature qualification for the identical main commit, including all platform builds and enabled native cases. A selective docs-only green run MUST NOT qualify a release. GitHub Releases MUST continue to publish each approved version's same qualified bytes, with RC versions marked prerelease.                                                                                                                    |
-| LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve all required check names, including both Linux targets.                                                                                                                                                                                                                                                                      |
+| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| LD-CI-001 | CI MUST use actual PR/push ranges, include rename sources and destinations, and select complete dependent gates. Docs-only changes MUST validate specification/evidence without building private packages or native helpers, subject to the trusted dependency-author spec exemption. Unknown paths, shared configuration, missing history and explicit full requests MUST select all gates.                                                                                                                                         |
+| LD-CI-002 | Rust build caching MUST bind to platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch; floating selectors cannot qualify verified reuse. Caches MAY reuse dependency outputs, but MUST NOT replace selected Linux tests. Ordinary bundles MUST still be rebuilt/audited and reject acceptance drivers; helper inventory/signing and final artifact hashes remain authoritative.                      |
+| LD-CI-003 | Full CI MUST remain explicitly dispatchable. Every executable test, quality, catalog and Rust lane MUST run on Linux; macOS runners MUST be limited to private-package and ordinary application builds. Release preparation and publication MUST require successful full Linux test and three-platform build qualification for the identical main commit. A selective docs-only green run MUST NOT qualify a release; GitHub Releases MUST publish each approved version's same qualified bytes, with RC versions marked prerelease. |
+| LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve both required Linux target checks. macOS build success MUST NOT be represented as test or native acceptance success.                                                                                                                                                                                                  |
 
 The planner selects whole test families rather than removing assertions. Desktop
 currently owns one Rust application crate, `lapis-desktop`; its changes select
-native unit/Clippy, bundle, Linux builds and real app acceptance. Cargo
-workspace dependency closure includes transitive consumers when more crates are
-present. Catalog-only changes do not rebuild native apps. Production renderer
-changes include catalog and native consumers. An inventoried native test-only
-change selects cold smoke plus its complete family; unmapped harness, shared
-infrastructure and unknown ownership select full coverage. Release-tool tests
-run without unrelated feature/browser suites; actual candidate preparation still
-qualifies all three installed packages.
+native unit/Clippy, bundle and Linux builds. Cargo workspace dependency closure
+includes transitive consumers when more crates are present. Catalog-only changes
+do not rebuild native apps. Production renderer changes include catalog and
+native consumers. An inventoried native test-only change selects static
+governance, the ordinary macOS build and both Linux native targets; it does not
+dispatch the macOS body. Unmapped harness, shared infrastructure and unknown
+ownership select the full Linux test/build profile. Release-tool tests run
+without unrelated feature/browser suites.
 
 A small published, locked docs toolchain supplies spec-validator, TypeScript,
 Svelte parsing and formatting. It installs no private app package and starts no
@@ -45,23 +45,23 @@ The normal required job names and Validate remain stable. Unselected required
 Linux matrix contexts use lightweight Ubuntu acknowledgements with all build
 steps skipped and explicit not-selected summaries. A separate Full source
 qualification job succeeds only for a complete plan after Validate; release
-preparation checks that marker as well as all native results. Four Storybook
-shards must all pass whenever selected. Audits start after the lightweight
-planner, independently of the other validation gates. The plan, reasons and
-actual job results remain visible in CI summaries. Explicit full qualification
-runs all gates even if only documentation changed. Cache misses preserve
-correctness and are reported as misses, not test passes.
+preparation checks that marker and all Linux test/platform-build results. Four
+Storybook shards must all pass whenever selected. Audits start after the
+lightweight planner, independently of the other validation gates. The plan,
+reasons and actual job results remain visible in CI summaries. Explicit full
+qualification runs all gates even if only documentation changed. Cache misses
+preserve correctness and are reported as misses, not test passes.
 
 ## Reliability and feedback profiles
 
 Schema 2 records the actual checked-out Git revision separately from the PR
-source range, profile, selected native families, catalog profile and private
-prerequisite platforms. Rename sources and destinations both contribute. An
-ordinary success cannot create the full-source marker. Missing, cancelled,
-failed or incomplete selected reports fail their stable aggregate. Full
-qualification requires every native family, all four catalog display modes,
-ordinary bundle audits and both Linux platform builds on the exact main SHA.
-Release checks inspect current job attempts across all result pages.
+source range, profile, an empty hosted native-family inventory, catalog profile
+and private prerequisite platforms. Rename sources and destinations both
+contribute. An ordinary success cannot create the full-source marker. Missing,
+cancelled, failed or incomplete selected reports fail their stable aggregate.
+Full qualification requires all four catalog display modes, ordinary macOS
+bundle audits and both Linux platform builds on the exact main SHA. Release
+checks inspect current job attempts across all result pages.
 
 Private package producers build public exports once per selected platform and
 transfer verified relocatable archives and their projected dependency graph.
@@ -86,19 +86,13 @@ artifact. Consumers reject a missing producer, foreign attempt, changed digest,
 extra file, unsupported platform or non-executable payload. After verification
 they force Vectorscan's crate-owned offline mode and select only that platform's
 archive directory. Turbo MUST pass both values into every selected child task;
-ordinary jobs MUST NOT download this native dependency. Native preparation
-builds one debug e2e acceptance artifact. Independent smoke, workspace and
-services runners verify that artifact, retain serial UI execution and own fresh
-mutable profiles/vaults/ports. Preparation is not test execution. The artifact
-includes each portable fixture's detached signed release envelope and a
-separately compiled development-origin e2e binary for the exact HTTP renderer
-case. Consumers verify and execute those bytes without compiling inside the test
-deadline. WDIO report identities canonicalize file URLs before exact inventory
-comparison; successful cases cannot fail solely because the runner spelled the
-same spec as a URL. The stable Native ARM64 acceptance aggregate requires
-preparation and every selected family's complete nonzero stage reports.
-HTTP/resource checks retain their separate development fixture and execute even
-after feature-stage failure.
+ordinary jobs MUST NOT download this native dependency. Hosted native
+preparation, family execution, quarantine diagnostics and the Native ARM64
+aggregate are disabled. Their local entry points, inventories, assertions,
+deadlines and quarantine records remain intact. Linux tests and browser/catalog
+results cannot qualify macOS WebView, focus, window, lifecycle, Keychain or
+backup behavior. A macOS bundle build proves only compilation, packaging and the
+ordinary-bundle audit.
 
 A listener-confirmed native startup that exhausts its renderer-acknowledgement
 budget remains failed. Before cleanup, its harness MAY make one bounded driver
@@ -182,8 +176,8 @@ Linux x86_64 executes portable Rust service tests and explicitly verifies the
 Original/Managed reader case ran successfully. Linux native jobs free unused
 preinstalled runner SDK trees before WebKit installation and Rust cache restore.
 Linux release builds remain separate evidence and cannot qualify the ARM64
-backup quarantine or macOS UI. Quarantine diagnostics are separate, explicit,
-uncached attempts; their results cannot satisfy ordinary or full qualification.
+backup quarantine or macOS UI. Local quarantine diagnostics remain explicit,
+uncached and non-qualifying.
 
 The Original/Managed reader failure in Linux job `130024094859` was reproduced
 locally as a completed jj-store session/relink command leaving the next command
@@ -196,27 +190,10 @@ the two rebased Core identities without changing that boundary. The
 approximately ten-minute ordinary feedback objective is a measurement target,
 not an acceptance bypass.
 
-An explicit paired diagnostic dispatch runs the complete normal families and
-selected original quarantined callbacks against one verified acceptance
-artifact. Its optional Rust lane first proves `repository_original` has exactly
-one ignored case, then runs that original alone and the same integration binary
-with `--include-ignored`; crate-wide ignored tests remain prohibited. Diagnostic
-Rust MUST depend on the same current-attempt acceptance producer and restore its
-genuine AI resources through the artifact's source, run, attempt, platform,
-toolchain, file, permission and symlink verifier before Cargo inventory. Missing
-or mismatched resources fail before the original case. Before inventory, the
-lane MUST install and verify the repository-pinned Jujutsu executable because
-the unchanged Original repository fixture invokes that external stock CLI.
-Missing fixture tooling is a harness failure and is not ARM64 backup evidence.
-The paired native delegate MUST receive verified reuse as the single parser
-token `--reuse-artifact=<manifest>`; split option/value arguments fail before
-the selected original body and provide no quarantine evidence. Its hosted
-attempt receipt uses the validated checkout `GITHUB_SHA`; local execution keeps
-the Jujutsu working-copy snapshot. Diagnostic inputs use separate concurrency
-and suppress the full-source marker even when all ordinary gates pass. Each
-diagnostic remains a fresh, non-retrying, non-qualifying result. Backup records
-MUST retain both initialization and explicit shutdown stages so a successful
-startup cannot be misclassified when final capture fails.
+The former hosted paired diagnostic dispatch is unavailable under the Linux-only
+test policy. Any local macOS investigation remains a fresh, non-retrying,
+non-qualifying result and MUST retain original callbacks, deadlines, resource
+verification, exact selectors and earlier failures.
 
 ## Scheduled validation and rollout
 
@@ -229,19 +206,17 @@ within 30 hours and a complete success within 48 hours, with failed, missing,
 access-denied and incomplete evidence reported distinctly. Prior-nightly success
 on another revision cannot qualify a release candidate.
 
-Narrower ordinary native/catalog profiles stay disabled until a complete hosted
+Narrower ordinary catalog profiles stay disabled until a complete hosted
 full/nightly baseline passes. `LAPIS_CI_NARROW_PROFILES=qualified` explicitly
-enables the inventoried narrower selections; absent that setting, affected
-native and catalog gates retain all families/display modes. Required
-risk-related PR checks are never deferred exclusively to nightly. The optional
-diagnostic workflow stays explicitly dispatched while original failure causes
-are unresolved.
+enables the inventoried narrower catalog selections; absent that setting,
+affected catalog gates retain all display modes. Required risk-related PR checks
+are never deferred exclusively to nightly.
 
 Artifacts retain attempt-specific names and producer provenance. Qualification
-requires current-attempt reports from every selected family: rerun the complete
-workflow after failure, because rerunning only failed jobs cannot reuse earlier
-family results as current execution. Earlier attempts and failures stay
-retained. Image-backed producer jobs explicitly trust only their mounted
+requires current-attempt reports from every selected Linux test and build gate:
+rerun the complete workflow after failure, because rerunning only failed jobs
+cannot reuse earlier results as current execution. Earlier attempts and failures
+stay retained. Image-backed producer jobs explicitly trust only their mounted
 workspace before resolving the checked-out commit; checkout trust written under
 a temporary home is not inherited by later container steps.
 

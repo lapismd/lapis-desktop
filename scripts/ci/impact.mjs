@@ -5,11 +5,7 @@ import {
   prerequisitePlatforms,
   validatePlan,
 } from "./plan-schema.mjs";
-import {
-  nativeFamilies,
-  nativeFamiliesForFile,
-  nativeInventory,
-} from "../native-families.mjs";
+import { nativeInventory } from "../native-families.mjs";
 export { gates, unitGroups, validatePlan } from "./plan-schema.mjs";
 export function affectedCrates(files, metadata, root) {
   if (!metadata?.workspace_members?.length) return null;
@@ -50,8 +46,7 @@ export function planChanges(
   const selected = new Set(["governance"]),
     units = new Set(),
     quality = new Set(),
-    reasons = [],
-    families = new Set();
+    reasons = [];
   let catalogProfile = "ordinary";
   let rustPackages = [],
     all = full || !Array.isArray(files) || !files.length;
@@ -61,8 +56,7 @@ export function planChanges(
     names.forEach((n) => units.add(n));
   };
   const native = () => {
-    add("bundle", "headed", "linux");
-    nativeFamilies.forEach((family) => families.add(family));
+    add("bundle", "linux");
   };
   for (const file of Array.isArray(files) ? files : []) {
     if (
@@ -131,10 +125,7 @@ export function planChanges(
         // Linux executes enabled portable service cases, including ARM64 quarantines.
         add("linux");
         if (!file.startsWith("src-tauri/tests/")) native();
-        else if (file.includes("/tests/fixtures/")) {
-          add("headed");
-          nativeFamilies.forEach((family) => families.add(family));
-        }
+        else if (file.includes("/tests/fixtures/")) add("quality");
       }
     } else if (file.startsWith("tests/desktop/")) {
       if (!nativeInventory.files.some((entry) => entry.file === file)) {
@@ -142,8 +133,7 @@ export function planChanges(
         reasons.push(`Shared or unmapped native harness: ${file}`);
         continue;
       }
-      add("headed", "quality");
-      nativeFamiliesForFile(file).forEach((family) => families.add(family));
+      add("quality", "bundle", "linux");
       unit("governance");
     } else if (file.startsWith("tests/renderer/")) {
       add("quality");
@@ -182,7 +172,7 @@ export function planChanges(
       unit: [...unitGroups],
       quality: ["types", "rust"],
       rustPackages: null,
-      nativeFamilies: [...nativeFamilies],
+      nativeFamilies: [],
       catalogProfile: "full",
       dependencyPlatforms: prerequisitePlatforms(gates),
       reasons: full ? ["Explicit full qualification", ...reasons] : reasons,
@@ -190,8 +180,6 @@ export function planChanges(
     return validatePlan(plan);
   }
   if (!narrowProfiles) {
-    if (selected.has("headed"))
-      nativeFamilies.forEach((family) => families.add(family));
     catalogProfile = "full";
     reasons.push(
       "Narrow ordinary profiles remain disabled until integrated hosted full/nightly baseline is qualified",
@@ -208,7 +196,7 @@ export function planChanges(
     unit: unitGroups.filter((g) => units.has(g)),
     quality: ["types", "rust"].filter((g) => quality.has(g)),
     rustPackages,
-    nativeFamilies: nativeFamilies.filter((family) => families.has(family)),
+    nativeFamilies: [],
     catalogProfile,
     dependencyPlatforms: prerequisitePlatforms([...selected]),
     reasons,
