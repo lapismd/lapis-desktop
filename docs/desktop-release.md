@@ -17,8 +17,11 @@ version.
 
 Regular CI selects affected gates. Before packaging, require full CI on the
 exact main commit, including all enabled native feature tests and all platform
-builds. A selective docs-only green run cannot qualify a release. If needed,
-dispatch:
+builds. Qualification selects the latest exact-source push or manual full-CI
+attempt. A newer failed push/manual attempt still blocks an older pass.
+Scheduled nightlies remain independent health evidence: they cannot authorize a
+release and do not mask valid push/manual qualification. A selective docs-only
+green run cannot qualify a release. If needed, dispatch:
 
 ```sh
 gh workflow run ci.yml --repo lapismd/lapis-desktop --ref main -F full=true
