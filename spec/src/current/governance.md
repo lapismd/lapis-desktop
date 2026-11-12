@@ -293,8 +293,8 @@ handlers. The instrumentation lives only in the external acceptance driver and
 is absent from every application bundle. The owning Graph package retains its
 data and settings lifecycle qualification.
 
-E-GRAPH-002 retains final-cohort failures and source-owned startup ordering
-qualification. Close timeout diagnostics preserve the unchanged native deadline.
+E-GRAPH-002 retains final failures and source-owned startup ordering. DOM
+capture after failure cannot retry/pass acceptance or change deadlines.
 
 M7 native integration has a dedicated canonical chapter and mapped source/tests;
 its evidence retains targeted results and every deferred full qualification
@@ -389,12 +389,12 @@ Seeding stays exclusive; ordinary AI execution remains unavailable.
 [CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
 identities, complete catalog modes and non-qualifying diagnostics. Its reviewed
 `2026.11.2` digest-pinned image runs publisher checks and exports one
-current-attempt, mode/hash-verified Linux and macOS tool artifact without
-source, secrets, host downloads or fallback. Turbo propagates its verified
-offline selection. Image pulls use ephemeral package-read authority; credentials
-never enter the image or artifact. Hidden WebKit cannot qualify
+current-attempt, mode/hash-verified Linux/macOS tool artifact without source,
+secrets, host downloads or fallback. Turbo propagates its verified offline
+selection. Ephemeral package-read authority pulls it; credentials never enter
+the image or artifact. Hidden WebKit cannot qualify
 [native acceptance](native-acceptance.md). Native revisions follow
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
-Semantic `spec:search` uses current/backlog QMD outside CI:
+Semantic `spec:search` uses QMD outside CI:
 <https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Trial
 builds cannot qualify. macOS deep-signs and clears quarantine.

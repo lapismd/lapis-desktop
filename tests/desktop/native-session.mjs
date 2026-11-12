@@ -6,7 +6,10 @@ import { remote } from "webdriverio";
 import assert from "node:assert/strict";
 import { focusNativeWindow } from "./native-visibility.mjs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
-import { waitForNativeReadiness } from "./native-readiness.mjs";
+import {
+  attachStartupDiagnostic,
+  waitForNativeReadiness,
+} from "./native-readiness.mjs";
 import {
   nativeSessionMode,
   assertBackgroundAvailability,
@@ -42,6 +45,7 @@ export async function nativeSession(
   const root = isolatedRoot ?? process.env.LAPIS_DESKTOP_ACCEPTANCE_ROOT;
   const port = await availablePort();
   const started = performance.now();
+  let startupPhase = "spawn";
   const child = spawn(executable, args, {
     env: {
       ...mode.environment,
@@ -74,7 +78,8 @@ export async function nativeSession(
     },
     {
       signal: options.signal,
-      onPhase: (phase) =>
+      onPhase: (phase) => {
+        startupPhase = phase;
         log.write(
           JSON.stringify({
             kind: "native-startup",
@@ -83,7 +88,8 @@ export async function nativeSession(
             phase,
             elapsedMs: Math.round(performance.now() - started),
           }) + "\n",
-        ),
+        );
+      },
     },
   );
   // Startup can fail before setup reaches its await; keep that rejection handled.
@@ -102,13 +108,27 @@ export async function nativeSession(
   });
   exited.catch(() => {});
   let browser;
-  async function cleanup() {
+  const connectBrowser = (timeout = 10000) =>
+    remote({
+      hostname: "127.0.0.1",
+      port,
+      path: "/",
+      logLevel: "error",
+      capabilities: { browserName: "tauri", webSocketUrl: false },
+      connectionRetryCount: 0,
+      connectionRetryTimeout: timeout,
+    });
+  async function cleanup(startupFailure) {
     if (child.exitCode === null && child.signalCode === null) {
       if (browser) {
         let timer;
         try {
           const diagnostic = await Promise.race([
             browser.execute(() => ({
+              readyState: document.readyState,
+              dataset: { ...document.documentElement.dataset },
+              boot: document.getElementById("boot")?.innerText,
+              app: document.getElementById("app")?.innerText,
               body: document.body.innerText,
               activeElement: document.activeElement?.outerHTML.slice(0, 2000),
               graphFrames: globalThis.__nativeGraphFrames ?? null,
@@ -121,7 +141,20 @@ export async function nativeSession(
           if (diagnostic)
             writeFileSync(
               join(root, `${name}.dom.log`),
-              JSON.stringify(diagnostic, null, 2).slice(0, 256 * 1024),
+              JSON.stringify(
+                {
+                  startupFailure:
+                    startupFailure instanceof Error
+                      ? {
+                          name: startupFailure.name,
+                          message: startupFailure.message,
+                        }
+                      : undefined,
+                  ...diagnostic,
+                },
+                null,
+                2,
+              ).slice(0, 256 * 1024),
             );
         } catch (error) {
           console.error(
@@ -143,15 +176,7 @@ export async function nativeSession(
   }
   try {
     await readiness;
-    browser = await remote({
-      hostname: "127.0.0.1",
-      port,
-      path: "/",
-      logLevel: "error",
-      capabilities: { browserName: "tauri", webSocketUrl: false },
-      connectionRetryCount: 0,
-      connectionRetryTimeout: 10000,
-    });
+    browser = await connectBrowser();
     await browser.waitUntil(
       () =>
         browser.execute(
@@ -208,7 +233,17 @@ export async function nativeSession(
       },
     };
   } catch (error) {
-    await cleanup();
+    browser = await attachStartupDiagnostic(
+      browser,
+      startupPhase,
+      () => connectBrowser(2000),
+      (diagnosticError) =>
+        console.error(
+          `Native startup diagnostic unavailable: ${name}`,
+          diagnosticError,
+        ),
+    );
+    await cleanup(error);
     throw error;
   }
 }

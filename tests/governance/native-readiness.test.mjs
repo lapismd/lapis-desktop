@@ -1,6 +1,9 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { rendererReadiness } from "../desktop/native-readiness.mjs";
+import {
+  attachStartupDiagnostic,
+  rendererReadiness,
+} from "../desktop/native-readiness.mjs";
 
 test("native readiness retains a receipt split across output chunks", () => {
   const receipt = rendererReadiness();
@@ -16,6 +19,42 @@ test("native readiness finds a receipt before a large output tail", () => {
     receipt(Buffer.from("lapis-desktop: renderer ready\n" + "x".repeat(4096))),
     true,
   );
+});
+
+test("startup diagnostics attach once only after listener confirmation", async () => {
+  const existing = {};
+  let connections = 0;
+  const connect = async () => {
+    connections++;
+    return { diagnostic: true };
+  };
+  assert.equal(
+    await attachStartupDiagnostic(existing, "listening", connect),
+    existing,
+  );
+  assert.equal(
+    await attachStartupDiagnostic(undefined, "spawn", connect),
+    undefined,
+  );
+  assert.deepEqual(
+    await attachStartupDiagnostic(undefined, "listening", connect),
+    { diagnostic: true },
+  );
+  assert.equal(connections, 1);
+
+  const failures = [];
+  assert.equal(
+    await attachStartupDiagnostic(
+      undefined,
+      "listening",
+      async () => {
+        throw new Error("driver unavailable");
+      },
+      (error) => failures.push(error.message),
+    ),
+    undefined,
+  );
+  assert.deepEqual(failures, ["driver unavailable"]);
 });
 
 import { EventEmitter } from "node:events";
