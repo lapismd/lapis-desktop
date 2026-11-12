@@ -55,7 +55,11 @@ No cases are automatically retried or re-enabled. The metadata window case stays
 enabled; its disappearance remains a real failure. New bounded diagnostics show
 native lifecycle, driver handles, switching and IPC without showing/focusing or
 recreating the foreign window. Readiness now stops polling after the listener
-responds and retains one 15-second deadline plus the shell-ready assertion.
+responds and retains one 15-second deadline plus the shell-ready assertion. If
+that listener-confirmed renderer acknowledgement fails, the already-failed run
+makes one bounded driver attachment only to retain renderer phase and DOM state
+before cleanup. This diagnostic cannot retry startup, extend the deadline or
+turn the failed case into a pass.
 
 Backup diagnostics and the adopted command-lease repair live in shared Core
 commit `530a6c425e9183f93ee74c0b16bb4111fdc838f0`. In a debug diagnostic

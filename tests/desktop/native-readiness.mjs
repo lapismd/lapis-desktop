@@ -11,6 +11,22 @@ export function rendererReadiness() {
   };
 }
 
+/** Attach one bounded driver only to retain state after startup already failed. */
+export async function attachStartupDiagnostic(
+  browser,
+  phase,
+  connect,
+  report = () => {},
+) {
+  if (browser || phase !== "listening") return browser;
+  try {
+    return await connect();
+  } catch (error) {
+    report(error);
+    return undefined;
+  }
+}
+
 /** One startup budget; a confirmed listener is never polled again. */
 export async function waitForNativeReadiness(
   child,

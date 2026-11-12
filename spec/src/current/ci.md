@@ -100,6 +100,12 @@ preparation and every selected family's complete nonzero stage reports.
 HTTP/resource checks retain their separate development fixture and execute even
 after feature-stage failure.
 
+A listener-confirmed native startup that exhausts its renderer-acknowledgement
+budget remains failed. Before cleanup, its harness MAY make one bounded driver
+attachment solely to retain startup phase and DOM state. The attachment occurs
+only after the original failure and MUST NOT restart the app, retry acceptance,
+extend the readiness deadline or substitute diagnostic state for a pass.
+
 Native restore acceptance selects the revision whose changed-path response
 contains the seeded file. A current status head is not evidence that the head's
 own delta contains that file because independent startup writers may create

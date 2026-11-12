@@ -297,3 +297,4 @@
 - [Preserve qualification across the rebased Core identity](../history/E-CI-087.md)
 - [Preserve qualification across the second Core rebase](../history/E-CI-088.md)
 - [Keep scheduled CI separate from release authority](../history/E-CI-089.md)
+- [Retain native renderer state after startup failure](../history/E-CI-090.md)

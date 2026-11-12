@@ -230,11 +230,11 @@ not waive M4's close/save/conflict/session-restoration gate.
 
 ## Notes startup presentation
 
-Startup reports actual awaited vault, configuration, plugin, layout and metadata
-operations through the existing shared startup component. No simulated time or
-minimum delays are added. Design Core owns progress bars, tasks and semantics.
-Recovery uses the shared themed banner. Editable merges retain the writer guard
-(`files.md`).
+Startup reports awaited vault, configuration, plugin, layout and metadata
+through the shared startup component. No simulated time/minimum delays are
+added. Design Core owns progress, tasks and semantics. Recovery uses its themed
+banner. Native acceptance diagnostics follow `ci.md`. Editable merges retain the
+writer guard (`files.md`).
 
 ## Safe lifecycle and restoration (M4)
 
