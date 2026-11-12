@@ -274,11 +274,21 @@ test("paginated source qualification retains a later failed attempt rather than 
   assert.ok(pages.every((path) => path.includes("filter=all")));
 });
 
-test("a later scheduled attempt cannot hide behind earlier release qualification", async () => {
+test("scheduled evidence cannot mask the latest authoritative qualification", async () => {
   for (const conclusion of ["success", "failure", "cancelled"]) {
-    const request = async () => ({
-      workflow_runs: [ci, { ...ci, id: 10, event: "schedule", conclusion }],
-    });
-    await assert.rejects(requireFullCI(source, request), /latest main CI/);
+    const result = await requireFullCI(
+      source,
+      sourceServer({
+        runs: [ci, { ...ci, id: 10, event: "schedule", conclusion }],
+      }),
+    );
+    assert.equal(result.ciRun, ci.id);
   }
+  await assert.rejects(
+    requireFullCI(
+      source,
+      sourceServer({ runs: [{ ...ci, id: 10, event: "schedule" }] }),
+    ),
+    /latest main CI/,
+  );
 });

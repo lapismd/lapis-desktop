@@ -19,12 +19,12 @@ readiness and no-retry/quarantine/release policy. Native close never retries;
 empty comparisons continue; unavailable/conflicting fail closed. The Notes fix
 stays upstream until released. [Local intake](local-dependencies.md) governs
 pins, refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs
-stream (E-CI-009). Whole-stack validation covers changed protected paths.
-Producers trust the mounted workspace, never wildcard Git; source checks use
-built-ins. The e2e entry shares early progress, then imports runtime
-instrumentation; ordinary bundles reject its startup capture marker. Canonical
-owners include planned [Review](../backlog/markdown-review-contract.md) and
-staged [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
+stream; release authority excludes scheduled health runs (E-CI-009/089).
+Whole-stack validation covers protected changes. Producers trust only the
+mounted workspace; source checks use built-ins. E2e imports runtime
+instrumentation; ordinary bundles reject its startup marker. Canonical owners
+include planned [Review](../backlog/markdown-review-contract.md) and staged
+[native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
 The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import

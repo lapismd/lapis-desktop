@@ -32,14 +32,13 @@ export async function requireFullCI(sourceCommit, request) {
       (r) =>
         r.head_sha === sourceCommit &&
         r.head_branch === "main" &&
-        ["push", "workflow_dispatch", "schedule"].includes(r.event),
+        ["push", "workflow_dispatch"].includes(r.event),
     )
     .sort((a, b) => b.id - a.id)[0];
   if (
     !latest ||
     latest.status !== "completed" ||
     latest.conclusion !== "success" ||
-    latest.event === "schedule" ||
     (latest.run_attempt !== undefined &&
       (!Number.isInteger(latest.run_attempt) || latest.run_attempt < 1))
   )

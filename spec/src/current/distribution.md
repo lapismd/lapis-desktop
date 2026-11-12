@@ -11,7 +11,7 @@ and Ayatana AppIndicator. Stable cutover remains in the
 
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-REL-001 | Candidate preparation MUST run manually from hosted main and require the latest successful main CI run for the identical source commit. Public app, Rust and package versions MUST agree on forward CalVer with an rc suffix; the numeric macOS bundle version MUST equal its base. Preview MUST retain its distinct bundle/profile identity and MUST NOT register stable URL schemes.                                                                                                                                                 |
+| LD-REL-001 | Candidate preparation MUST run manually from hosted main and require the latest successful authoritative CI for the identical source commit. Authority MUST consider push and manual full-CI attempts only; scheduled evidence MUST NOT qualify or mask the latest push/manual attempt. Public app, Rust and package versions MUST agree on forward CalVer with an rc suffix; the numeric macOS bundle version MUST equal its base. Preview MUST retain its distinct bundle/profile identity and MUST NOT register stable URL schemes. |
 | LD-REL-002 | Release packaging MUST use ordinary release binaries without e2e instrumentation, release-built bundled AI helpers and verified pinned private public archives. All preparation, assembly, publication and recovery jobs MUST use the exact tracked Node patch. Nested signing MUST finish before helper checksum inventory; the outer bundle MUST be signed last without changing helper bytes. Build metadata MUST record source/toolchain identities, archive hashes and exact-source native CI, including existing RC limitations. |
 | LD-REL-003 | Schema-v2 `desktop-manifest.json` MUST bind runtime tauri, channel preview, lapismd/lapis-desktop, source commit and desktop-v tag to canonical versioned macOS ARM64 ZIP and Linux ARM64/x64 tar.gz archives with actual sizes and SHA-256. Final candidates MUST contain all three targets, per-target build metadata and native Homebrew receipts under a complete checksum inventory. Altered, incomplete or mismatched assets MUST fail closed.                                                                                   |
 | LD-REL-004 | Publication MUST default off and require desktop-preview-release approval after candidate qualification. It MUST promote the same tested bytes without rebuilding, publish a source-bound public prerelease, and never replace differing tag or asset contents. Interrupted draft uploads MAY resume only with identical existing bytes. Publication MUST verify public downloads before starting tap updates.                                                                                                                         |
@@ -22,18 +22,22 @@ and Ayatana AppIndicator. Stable cutover remains in the
 
 `.github/workflows/release-desktop.yml` accepts prepare, publish-candidate or
 recover-tap. Prepare requires a passing full exact-source CI run; selective
-green runs cannot qualify a release. A separate manual trial workflow builds the
-same ordinary archives without tests, Homebrew qualification, or the protected
-publication environment. Its prerelease uses a `desktop-trial-` tag created on
-the built commit and cannot authorize preview publication. Full CI remains
-manually dispatchable; `publish` defaults false. Promotion selects an unexpired
-artifact from a successful preparation on the same main commit, so review
-without publication does not require a rebuild. Platform builds produce three
-ordinary archives from the same source. Every job pins `.node-version` directly,
-including tap-only jobs whose checked-out repository does not contain that file.
-E-CI-050 aligns that exact Node patch with the separately published Desktop CI
-image source; release consumers pin reviewed image `2026.11.2` by digest and
-cannot adopt an unpublished tag or a mutable reference. The workflow
+green runs cannot qualify a release. The latest exact-source push or manual
+full-CI attempt remains authoritative, so a later failed authoritative attempt
+cannot hide behind an earlier pass. Scheduled runs are excluded before this
+selection: they remain health evidence and can neither authorize preparation nor
+mask valid push/manual qualification. A separate manual trial workflow builds
+the same ordinary archives without tests, Homebrew qualification, or the
+protected publication environment. Its prerelease uses a `desktop-trial-` tag
+created on the built commit and cannot authorize preview publication. Full CI
+remains manually dispatchable; `publish` defaults false. Promotion selects an
+unexpired artifact from a successful preparation on the same main commit, so
+review without publication does not require a rebuild. Platform builds produce
+three ordinary archives from the same source. Every job pins `.node-version`
+directly, including tap-only jobs whose checked-out repository does not contain
+that file. E-CI-050 aligns that exact Node patch with the separately published
+Desktop CI image source; release consumers pin reviewed image `2026.11.2` by
+digest and cannot adopt an unpublished tag or a mutable reference. The workflow
 authenticates that digest-pinned pull with package-read-only workflow authority
 and restores Jujutsu and mdBook only from its source/run/attempt-bound image
 artifact. Its container producer trusts only the exact mounted
@@ -107,9 +111,11 @@ it does not claim full Linux feature parity from those smoke checks.
 ## Complete source qualification profiles
 
 Candidate preparation requires the latest successful full CI attempt for the
-identical main commit, including private/native preparation, every native
-family, all catalog display variants, ordinary bundle audit and both Linux
-targets. An ordinary profile, quarantine diagnostic, artifact, incomplete matrix
-or earlier passing job attempt cannot authorize preparation. Source equality
-requires the exact commit rather than an equal tree. The release build uses the
+identical main commit among authoritative push and manual attempts, including
+private/native preparation, every native family, all catalog display variants,
+ordinary bundle audit and both Linux targets. Scheduled runs are monitored
+independently and do not participate in release-authority ordering. An ordinary
+profile, quarantine diagnostic, artifact, incomplete matrix or earlier passing
+authoritative job attempt cannot authorize preparation. Source equality requires
+the exact commit rather than an equal tree. The release build uses the
 configured minimum macOS version before dependency cache restore and build.
