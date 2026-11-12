@@ -68,9 +68,21 @@
   onMount(() => {
     let disposed = false;
     const unregisterStartup = registerNotesReadiness(root!, startup);
+    // Existing stories keep deterministic chrome through persisted fixture data.
+    // Responsive scenarios explicitly override this preference.
+    let configuration = files[".lapis/app.json"] ?? "{}";
+    try {
+      configuration = JSON.stringify({
+        "workspace.mobile.mode": "never",
+        ...JSON.parse(configuration),
+      });
+    } catch {
+      // Preserve malformed configuration fixtures for startup recovery stories.
+    }
     const boot = createVaultSession(
       new MemoryVaultAdapter({
         ...files,
+        ".lapis/app.json": configuration,
         "Welcome.md": "# A desktop catalog\n\nEdit this disposable note.\n",
       }),
       {

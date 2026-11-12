@@ -11,10 +11,10 @@ await async WebDriver collections (E-CI-062). E-CORE-045 targets queue proof.
 and share an injected call across editing and Tasks ports (E-CI-010).
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
-shell stories MUST await owned fixtures and use labelled public controls with
-platform-neutral draft clearing. Native fixtures MUST declare target default
-modes and assert submitted modes. Core: E-CORE-001/003/016;
-[native selection and observation](ai-adapter.md).
+shell stories MUST await owned fixtures and platform-neutral sent-draft clearing
+after successful sends before editing the next prompt, using labelled public
+controls. Native fixtures MUST declare target default modes and assert submitted
+modes. Core: E-CORE-001/003/016; [native selection](ai-adapter.md).
 
 [Local AI setup](ai-setup.md) governs independent ACP clients, binding-frozen
 bootstrap/skills, native credentials/tools and explicit optional compute.

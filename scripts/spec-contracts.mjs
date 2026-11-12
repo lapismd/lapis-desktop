@@ -1,6 +1,7 @@
 // One chapter list keeps spec-first, document roles and evidence coverage aligned.
 const chapters = [
   "desktop",
+  "mobile-layout",
   "tasks",
   "background",
   "files",

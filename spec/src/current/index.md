@@ -12,6 +12,7 @@ cross-repository release state and exact resume steps.
 - [Preview distribution](distribution.md)
 - [Local dependency intake](local-dependencies.md)
 - [Desktop shell](desktop.md)
+- [Notes mobile layout](mobile-layout.md)
 - [Native Tasks](tasks.md)
 - [Background activity and responsiveness](background.md)
 - [File management](files.md)

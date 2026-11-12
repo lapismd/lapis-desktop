@@ -106,3 +106,70 @@ export const PluginFileIcon: StoryObj<typeof PluginFileIconsDemo> = {
     );
   },
 };
+
+export const ResponsiveLayout: Story = {
+  tags: ["visual-pending"],
+  render: () => ({
+    Component: NotesDemo,
+    props: {
+      files: {
+        ".lapis/app.json": JSON.stringify({
+          "workspace.mobile.mode": "always",
+        }),
+      },
+    },
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const mobile = () =>
+      canvasElement.querySelector('[data-ui-component="workspace-mobile"]');
+    await waitFor(
+      () =>
+        expect(
+          canvasElement.querySelector('[data-notes-ready="true"]'),
+        ).not.toBeNull(),
+      { timeout: 30_000 },
+    );
+    await expect(mobile()).toBeVisible();
+    const chooseMode = async (mode: string) => {
+      if (mobile())
+        await userEvent.click(
+          canvas.getAllByRole("button", { name: "Open more actions" })[0],
+        );
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Open settings" }),
+      );
+      const workspace = canvas.queryByRole("button", { name: "Workspace" });
+      if (workspace && workspace.getBoundingClientRect().width)
+        await userEvent.click(workspace);
+      await userEvent.click(
+        canvas.getByRole("combobox", { name: "Mobile layout" }),
+      );
+      await userEvent.click(
+        within(document.body).getByRole("option", { name: mode }),
+      );
+      const close = canvas.getByRole("button", { name: "Close settings" });
+      await waitFor(() =>
+        expect(getComputedStyle(close).pointerEvents).not.toBe("none"),
+      );
+      await userEvent.click(close);
+    };
+    await chooseMode("Never");
+    await waitFor(() => expect(mobile()).toBeNull());
+    await chooseMode("Always");
+    await waitFor(() => expect(mobile()).toBeVisible());
+    const host = canvasElement.querySelector<HTMLElement>(".notes-demo")!;
+    const previous = host.style.width;
+    try {
+      host.style.width = "390px";
+      await chooseMode("Auto");
+      await waitFor(() => expect(mobile()).toBeVisible());
+      host.style.width = "900px";
+      await waitFor(() => expect(mobile()).toBeNull());
+      host.style.width = "495px";
+      await waitFor(() => expect(mobile()).toBeVisible());
+    } finally {
+      host.style.width = previous;
+    }
+  },
+};

@@ -1,8 +1,7 @@
 # Verification
 
-[E-CORE-026](history/E-CORE-026.md) qualifies the matching Notes pin and three
-native policy cases under LD-GOV-006/010 and LD-AI-002; UI and provider
-acceptance retain their original gates.
+[E-CORE-026](history/E-CORE-026.md): Notes pin and three native policy cases
+pass under LD-GOV-006/010 and LD-AI-002; UI/provider gates remain.
 
 E-AI-115 covers root-context Markdown alignment under LD-AI-002/LD-CAT-003;
 package intake and focused stories retain their gates.
@@ -56,6 +55,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-DB-003 | Implemented | Historical M3 receipts retain [E-DB-001](history/E-DB-001.md). [E-CORE-016](history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-DB-004 | Implemented | Historical M3 receipts retain [E-DB-001](history/E-DB-001.md). [E-CORE-016](history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-SESSION-001 | Implemented | [E-SESSION-002](history/E-SESSION-002.md) |
+| LD-SESSION-005 | Partial | [E-MOBILE-003](history/E-MOBILE-003.md) |
 | LD-SESSION-002 | Implemented | [E-SESSION-002](history/E-SESSION-002.md) |
 | LD-LIFE-001 | Implemented | [E-LIFE-001](history/E-LIFE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass; [E-LIFE-002](history/E-LIFE-002.md): ready-session Problems/toast presentation; [E-LIFE-003](history/E-LIFE-003.md): headed native exact requalification. |
 | LD-LIFE-002 | Implemented | [E-LIFE-001](history/E-LIFE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
@@ -114,7 +114,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-INSTALL-001 | Implemented | [E-INSTALL-001](history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. |
 | LD-INSTALL-002 | Implemented | [E-INSTALL-001](history/E-INSTALL-001.md): Signed native install/update/uninstall, shared API/Svelte identity, restart/failure recovery, service/runtime rejection and bundled-ID protection pass; all 113 native and 84 catalog cases pass. [E-CORE-018](history/E-CORE-018.md) separately tracks the shared verifier intake and native compatibility. |
 | LD-AI-001 | Partial | [E-AI-002](history/E-AI-002.md): Reusable adapter passes; production orchestration and tools/credentials retain M10.2-M10.3 gates.; [E-AI-094](history/E-AI-094.md): saved agent context and negotiated permissions.  [E-AI-095](history/E-AI-095.md): shared discovery/cache and progress. [E-RELEASE-004](history/E-RELEASE-004.md): ACP reload quarantined; hosted qualification pending. [E-RELEASE-008](history/E-RELEASE-008.md): background admission/cold-reset case quarantined; enabled native proof pending. |
-| LD-AI-002 | Partial | [E-AI-011](history/E-AI-011.md): Memory/tool policy qualified; mounted UI and native recovery remain required., [E-REPO-016](history/E-REPO-016.md); [E-AI-093](history/E-AI-093.md): transcripts, guarded backup replacement, retained UI.; [E-AI-094](history/E-AI-094.md): saved context and permissions. [E-AI-095](history/E-AI-095.md): discovery/cache/progress. [E-CI-054](history/E-CI-054.md): transcript checkpoint. [E-CI-057](history/E-CI-057.md): clean worktree; rerun pending. |
+| LD-AI-002 | Partial | [E-AI-011](history/E-AI-011.md): Memory/tool policy qualified; mounted UI and native recovery remain required., [E-REPO-016](history/E-REPO-016.md); [E-AI-093](history/E-AI-093.md): transcripts, guarded backup replacement, retained UI.; [E-AI-094](history/E-AI-094.md): saved context and permissions. [E-AI-095](history/E-AI-095.md): discovery/cache/progress. [E-CI-054](history/E-CI-054.md): transcript checkpoint. [E-CI-057](history/E-CI-057.md): clean worktree; rerun pending.  [E-MOBILE-003](history/E-MOBILE-003.md) |
 | LD-AI-003 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | E-TEST-001: quiet default/headed runner. [E-CI-091](history/E-CI-091.md): Linux-only tests. [E-CI-097](history/E-CI-097.md): root DAC child. |

@@ -1,4 +1,7 @@
-import { findMessageEditor } from "../../support/ai/message-editor.ts";
+import {
+  findMessageEditor,
+  messageEditor,
+} from "../../support/ai/message-editor.ts";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, within, waitFor } from "storybook/test";
 import TranscriptReviewDemo from "../../support/ai/transcript/TranscriptReviewDemo.svelte";
@@ -145,6 +148,9 @@ export const IndependentParticipants: Story = {
         ).toContain(
           `${formatAgentMention(name!.toLowerCase(), name!)} ${prompt}`,
         ),
+      );
+      await waitFor(() =>
+        expect(messageEditor(canvas)).not.toHaveTextContent(prompt!),
       );
       await waitFor(() =>
         expect(

@@ -184,3 +184,11 @@ Remove each hunk only after a released upstream version contains the equivalent
 repair, a fresh unpatched install passes the original regression and all
 affected lifecycle/focus lanes, and every consumer updates its root mapping. The
 patch does not waive native acceptance, audit, distribution or visual gates.
+
+## Mobile shell integration
+
+The mobile source intake follows [E-MOBILE-003](../history/E-MOBILE-003.md). The
+Core range and existing global cohort override select released 0.12.4 for
+portable resolution. The new mobile contracts and Notes host bindings require
+the owning Core and Notes package releases before ordinary registry acceptance.
+Source/archive browser qualification is separate from that release gate.

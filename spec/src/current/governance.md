@@ -1,4 +1,4 @@
-# Governance — [CI tooling](ci.md), [native turns](ai-adapter.md)
+# Governance — [CI tooling](ci.md), [native turns](ai-adapter.md), [mobile layout](mobile-layout.md)
 
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 

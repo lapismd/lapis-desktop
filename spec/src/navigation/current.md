@@ -5,6 +5,7 @@
     - [Native acceptance modes](../current/native-acceptance.md)
   - [Preview distribution](../current/distribution.md)
   - [Desktop shell](../current/desktop.md)
+  - [Notes mobile layout](../current/mobile-layout.md)
   - [Native Tasks](../current/tasks.md)
   - [Native workspace windows](../current/windows.md)
   - [Desktop plugins and catalog](../current/plugins.md)
