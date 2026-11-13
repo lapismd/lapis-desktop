@@ -87,7 +87,7 @@ retain their owning contracts.
 
 E-DEPENDENCIES-005 selects the released Notes framework cohort from source
 `40b9ba8ee569a737a0ace77870a094972ee6f768`. Declared minima are API 0.2.6, File
-Explorer 0.2.2, UI 0.1.7, Workspace 0.3.4, AI Host 0.3.0, Design Core 0.10.1,
+Explorer 0.2.2, UI 0.1.7, Workspace 0.3.4, AI Host 0.3.0, Design Core 0.12.4,
 Markdown 0.2.1, Mira ~0.1.4, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases
 ^0.2.0, History ^0.2.0, Tasks ^0.1.1 and Terminal 0.1.2. Mira companions remain
 ~0.0.3. Final frozen-graph, audit, portable and hosted native qualification
@@ -120,8 +120,8 @@ are App Profile and AI. Both remain intentionally private. JJ Conversations
 registry ranges and verify every active private archive import route; the
 resulting graph does not qualify registry-only application distribution.
 
-Design Core ^0.10.1 is the published range. The root pnpm override resolves
-every `@lapismd/design-core` copy to 0.10.1, including compatible older peer
+Design Core ^0.12.1 is the published range. The root pnpm override resolves
+every `@lapismd/design-core` copy to 0.12.4, including compatible older peer
 ranges, so `@lapis-notes/api` has one peer context. Every Bits copy retains the
 exact root patch below. `@dnd-kit/dom` and `@dnd-kit/svelte` are selected at
 0.4.x, resolving the recorded 0.4.0 source, because API 0.2.6 peers require
