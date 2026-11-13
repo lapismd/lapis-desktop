@@ -106,3 +106,93 @@ export const PluginFileIcon: StoryObj<typeof PluginFileIconsDemo> = {
     );
   },
 };
+
+export const ResponsiveLayout: Story = {
+  tags: ["visual-pending"],
+  render: () => ({
+    Component: NotesDemo,
+    props: {
+      files: {
+        ".lapis/app.json": JSON.stringify({
+          "workspace.mobile.mode": "always",
+        }),
+      },
+    },
+  }),
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const mobile = () =>
+      canvasElement.querySelector('[data-ui-component="workspace-mobile"]');
+    const waitForMobile = async (present: boolean) => {
+      await waitFor(
+        () =>
+          present
+            ? expect(mobile()).not.toBeNull()
+            : expect(mobile()).toBeNull(),
+        { timeout: 30_000 },
+      );
+      if (present) await expect(mobile()).toBeVisible();
+    };
+    await waitFor(
+      () =>
+        expect(
+          canvasElement.querySelector('[data-notes-ready="true"]'),
+        ).not.toBeNull(),
+      { timeout: 30_000 },
+    );
+    await waitForMobile(true);
+    const chooseMode = async (mode: string) => {
+      if (mobile())
+        await userEvent.click(
+          canvas.getAllByRole("button", { name: "Open more actions" })[0],
+        );
+      await userEvent.click(
+        canvas.getByRole("button", { name: "Open settings" }),
+      );
+      const workspace = canvas.queryByRole("button", { name: "Workspace" });
+      if (workspace && workspace.getBoundingClientRect().width)
+        await userEvent.click(workspace);
+      await userEvent.click(
+        canvas.getByRole("combobox", { name: "Mobile layout" }),
+      );
+      await userEvent.click(
+        within(document.body).getByRole("option", { name: mode }),
+      );
+      const close = canvas.getByRole("button", { name: "Close settings" });
+      await waitFor(() =>
+        expect(getComputedStyle(close).pointerEvents).not.toBe("none"),
+      );
+      await userEvent.click(close);
+    };
+    await chooseMode("Never");
+    await waitForMobile(false);
+    await chooseMode("Always");
+    await waitForMobile(true);
+    const host = canvasElement.querySelector<HTMLElement>(".notes-demo")!;
+    const shell = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="app-shell"]',
+    )!;
+    const previousHost = host.style.width;
+    const previousShell = shell.style.width;
+    const setWidth = (px: string) => {
+      host.style.width = px;
+      host.style.maxWidth = px;
+      shell.style.width = px;
+      shell.style.maxWidth = px;
+    };
+    try {
+      setWidth("390px");
+      await chooseMode("Auto");
+      await waitForMobile(true);
+      setWidth("900px");
+      await waitForMobile(false);
+      setWidth("495px");
+      await waitForMobile(true);
+    } finally {
+      host.style.width = previousHost;
+      host.style.maxWidth = "";
+      shell.style.width = previousShell;
+      shell.style.maxWidth = "";
+    }
+  },
+};

@@ -17,3 +17,8 @@ Historical evidence in the book navigation retains commands, failures and source
 identities. The source migration inventory is immutable provenance, not a task
 ledger. Shared core/hosted work belongs to the
 [Server backlog](https://github.com/lapismd/lapis-server/blob/main/spec/src/backlog.md).
+
+Mobile shell registry and native adoption remain separate from the scoped source
+qualification in [E-MOBILE-003](history/E-MOBILE-003.md). The owning Core and
+App Profile releases must precede ordinary registry intake; no installed native
+application was replaced or qualified by browser acceptance.

@@ -57,6 +57,7 @@ test("Cargo closure includes dependent application crates and excludes unrelated
   const app = plan(["src-tauri/src/watch/mod.rs"]);
   assert.deepEqual(app.unit, ["rust"]);
   assert.ok(app.gates.includes("linux"));
+  assert.ok(!app.gates.includes("bundle"));
   assert.ok(!app.gates.includes("storybook-interaction"));
   const serviceTest = plan(["src-tauri/tests/repository_original.rs"]);
   assert.ok(serviceTest.gates.includes("linux"));
@@ -64,8 +65,12 @@ test("Cargo closure includes dependent application crates and excludes unrelated
 });
 test("renderer, catalog, release and native-test changes select complete consumers", () => {
   const renderer = plan(["src/components/views/Main.svelte"]);
-  assert.ok(renderer.gates.includes("bundle"));
+  assert.ok(!renderer.gates.includes("bundle"));
   assert.ok(renderer.gates.includes("linux"));
+  assert.deepEqual(renderer.dependencyPlatforms, [
+    { os: "ubuntu-24.04", id: "linux-x64" },
+    { os: "ubuntu-24.04-arm", id: "linux-arm64" },
+  ]);
   const catalog = plan(["catalog/plugins/Example.stories.ts"]);
   assert.ok(catalog.gates.includes("storybook-interaction"));
   assert.ok(!catalog.gates.includes("linux"));
@@ -78,10 +83,11 @@ test("renderer, catalog, release and native-test changes select complete consume
   ]);
   assert.deepEqual(release.unit, ["governance"]);
   const native = plan(["tests/desktop/startup-progress.test.mjs"]);
-  assert.ok(native.gates.includes("bundle"));
+  assert.ok(!native.gates.includes("bundle"));
   assert.ok(native.gates.includes("linux"));
 });
 test("unknown/shared changes, missing crate ownership and explicit full requests fail closed", () => {
+  const linuxGates = gates.filter((gate) => gate !== "bundle");
   for (const files of [
     ["package.json"],
     ["src-tauri/Cargo.lock"],
@@ -89,10 +95,20 @@ test("unknown/shared changes, missing crate ownership and explicit full requests
     ["unknown/new.file"],
     ["../escape.md"],
     [],
-  ])
-    assert.deepEqual(plan(files).gates, gates);
-  assert.equal(plan(["README.md"], { full: true }).full, true);
-  assert.equal(planChanges(["src-tauri/src/lib.rs"]).full, true);
+  ]) {
+    const selected = plan(files);
+    assert.equal(selected.full, false);
+    assert.ok(!selected.gates.includes("bundle"));
+    assert.deepEqual(selected.gates, linuxGates);
+    assert.deepEqual(selected.dependencyPlatforms, [
+      { os: "ubuntu-24.04", id: "linux-x64" },
+      { os: "ubuntu-24.04-arm", id: "linux-arm64" },
+    ]);
+  }
+  const explicit = plan(["README.md"], { full: true });
+  assert.equal(explicit.full, true);
+  assert.ok(explicit.gates.includes("bundle"));
+  assert.equal(planChanges(["src-tauri/src/lib.rs"]).full, false);
   // Rename detection supplies both paths; moving code to docs cannot hide its former impact.
   assert.ok(
     plan(["src-tauri/src/old.rs", "docs/old.md"]).gates.includes("linux"),
@@ -125,7 +141,6 @@ test("ordinary catalog and mapped native tests declare exact smaller coverage", 
   assert.equal(native.profile, "ordinary");
   assert.deepEqual(native.nativeFamilies, []);
   assert.deepEqual(native.dependencyPlatforms, [
-    { os: "macos-15", id: "macos-arm64" },
     { os: "ubuntu-24.04", id: "linux-x64" },
     { os: "ubuntu-24.04-arm", id: "linux-arm64" },
   ]);
@@ -134,7 +149,8 @@ test("ordinary catalog and mapped native tests declare exact smaller coverage", 
   assert.deepEqual(renderer.nativeFamilies, []);
 });
 
-test("shared harness, shared presentation and unknown native ownership select full qualification", () => {
+test("shared harness, shared presentation and unknown native ownership select complete Linux coverage", () => {
+  const linuxGates = gates.filter((gate) => gate !== "bundle");
   for (const file of [
     "tests/desktop/native-session.mjs",
     "tests/desktop/new-unmapped.test.mjs",
@@ -144,9 +160,11 @@ test("shared harness, shared presentation and unknown native ownership select fu
     "catalog/support/shared.ts",
   ]) {
     const selected = plan([file]);
-    assert.equal(selected.profile, "full", file);
+    assert.equal(selected.profile, "ordinary", file);
+    assert.equal(selected.full, false, file);
     assert.equal(selected.catalogProfile, "full");
-    assert.deepEqual(selected.gates, gates);
+    assert.ok(!selected.gates.includes("bundle"), file);
+    assert.deepEqual(selected.gates, linuxGates);
   }
   const renamed = plan([
     "tests/desktop/metadata-owner.test.mjs",

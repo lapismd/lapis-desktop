@@ -12,23 +12,24 @@ as newly authored.
 
 ## Requirements
 
-| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| LD-CI-001 | CI MUST use actual PR/push ranges, include rename sources and destinations, and select complete dependent gates. Docs-only changes MUST validate specification/evidence without building private packages or native helpers, subject to the trusted dependency-author spec exemption. Unknown paths, shared configuration, missing history and explicit full requests MUST select all gates.                                                                                                                                         |
-| LD-CI-002 | Rust build caching MUST bind to platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch; floating selectors cannot qualify verified reuse. Caches MAY reuse dependency outputs, but MUST NOT replace selected Linux tests. Ordinary bundles MUST still be rebuilt/audited and reject acceptance drivers; helper inventory/signing and final artifact hashes remain authoritative.                      |
-| LD-CI-003 | Full CI MUST remain explicitly dispatchable. Every executable test, quality, catalog and Rust lane MUST run on Linux; macOS runners MUST be limited to private-package and ordinary application builds. Release preparation and publication MUST require successful full Linux test and three-platform build qualification for the identical main commit. A selective docs-only green run MUST NOT qualify a release; GitHub Releases MUST publish each approved version's same qualified bytes, with RC versions marked prerelease. |
-| LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve both required Linux target checks. macOS build success MUST NOT be represented as test or native acceptance success.                                                                                                                                                                                                  |
+| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-CI-001 | CI MUST use actual PR/push ranges, include rename sources and destinations, and select complete dependent gates. Docs-only changes MUST validate specification/evidence without building private packages or native helpers, subject to the trusted dependency-author spec exemption. Unknown paths, shared configuration and missing history MUST select every Linux gate without macOS packaging. Explicit full requests MUST select all gates including packaging.                                                              |
+| LD-CI-002 | Rust build caching MUST bind to platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch; floating selectors cannot qualify verified reuse. Caches MAY reuse dependency outputs, but MUST NOT replace selected Linux tests. Ordinary bundles MUST still be rebuilt/audited and reject acceptance drivers; helper inventory/signing and final artifact hashes remain authoritative.                    |
+| LD-CI-003 | Full CI MUST remain explicitly dispatchable. Every executable test, quality, catalog and Rust lane MUST run on Linux. Ordinary pull-request and main required checks MUST be Linux-only; macOS runners MUST be packaging-only for explicit full, trial and release publication. Release preparation MUST require successful full Linux tests and three-platform packaging of the identical main commit, not a docs-only green run, and GitHub Releases MUST publish those same qualified bytes with RC versions marked prerelease. |
+| LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve both required Linux target checks. Ordinary Validate MUST NOT require macOS jobs. macOS packaging success MUST NOT be represented as test or native acceptance success.                                                                                                                                             |
 
 The planner selects whole test families rather than removing assertions. Desktop
 currently owns one Rust application crate, `lapis-desktop`; its changes select
-native unit/Clippy, bundle and Linux builds. Cargo workspace dependency closure
-includes transitive consumers when more crates are present. Catalog-only changes
-do not rebuild native apps. Production renderer changes include catalog and
+native unit/Clippy and Linux builds. Cargo workspace dependency closure includes
+transitive consumers when more crates are present. Catalog-only changes do not
+rebuild native apps. Production renderer changes include catalog and Linux
 native consumers. An inventoried native test-only change selects static
-governance, the ordinary macOS build and both Linux native targets; it does not
-dispatch the macOS body. Unmapped harness, shared infrastructure and unknown
-ownership select the full Linux test/build profile. Release-tool tests run
-without unrelated feature/browser suites.
+governance and both Linux native targets; it does not dispatch macOS packaging.
+Unmapped harness, shared infrastructure and unknown ownership select every Linux
+test/build gate without macOS packaging. Explicit full, trial and release
+publication still package on macOS. Release-tool tests run without unrelated
+feature/browser suites.
 
 A small published, locked docs toolchain supplies spec-validator, TypeScript,
 Svelte parsing and formatting. It installs no private app package and starts no
@@ -60,14 +61,16 @@ and private prerequisite platforms. Rename sources and destinations both
 contribute. An ordinary success cannot create the full-source marker. Missing,
 cancelled, failed or incomplete selected reports fail their stable aggregate.
 Full qualification requires all four catalog display modes, ordinary macOS
-bundle audits and both Linux platform builds on the exact main SHA. Release
-checks inspect current job attempts across all result pages.
+packaging and both Linux platform builds on the exact main SHA. Release checks
+inspect current job attempts across all result pages.
 
 Private package producers build public exports once per selected platform and
 transfer verified relocatable archives and their projected dependency graph.
-Consumers verify source/configuration/tool identities and hashes before install;
-no cross-platform node_modules or private signing keys are transferred. Native
-and non-native workflows provision the exact `.node-version` patch so concurrent
+Ordinary required consumers select Linux platforms only; macOS private-package
+archives are produced only when packaging is selected. Consumers verify
+source/configuration/tool identities and hashes before install; no
+cross-platform node_modules or private signing keys are transferred. Native and
+non-native workflows provision the exact `.node-version` patch so concurrent
 jobs cannot resolve different Node releases while sharing verified artifacts.
 The recorded executable version remains part of artifact identity. Desktop's
 tooling image is manually published for Linux ARM64/x64 from immutable bases,

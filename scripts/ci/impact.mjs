@@ -56,7 +56,7 @@ export function planChanges(
     names.forEach((n) => units.add(n));
   };
   const native = () => {
-    add("bundle", "linux");
+    add("linux");
   };
   for (const file of Array.isArray(files) ? files : []) {
     if (
@@ -133,7 +133,7 @@ export function planChanges(
         reasons.push(`Shared or unmapped native harness: ${file}`);
         continue;
       }
-      add("quality", "bundle", "linux");
+      add("quality", "linux");
       unit("governance");
     } else if (file.startsWith("tests/renderer/")) {
       add("quality");
@@ -162,19 +162,22 @@ export function planChanges(
     reasons.push(`Affected consumers: ${file}`);
   }
   if (all) {
+    const selectedGates = full
+      ? [...gates]
+      : gates.filter((gate) => gate !== "bundle");
     const plan = {
       schemaVersion: 2,
-      profile: "full",
-      full: true,
+      profile: full ? "full" : "ordinary",
+      full,
       ordinaryProfilesEnabled: narrowProfiles,
       testedRevision,
-      gates: [...gates],
+      gates: selectedGates,
       unit: [...unitGroups],
       quality: ["types", "rust"],
       rustPackages: null,
       nativeFamilies: [],
       catalogProfile: "full",
-      dependencyPlatforms: prerequisitePlatforms(gates),
+      dependencyPlatforms: prerequisitePlatforms(selectedGates),
       reasons: full ? ["Explicit full qualification", ...reasons] : reasons,
     };
     return validatePlan(plan);

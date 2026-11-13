@@ -1,5 +1,8 @@
 # File management (M5)
 
+Notes shell composition follows [mobile layout](mobile-layout.md) without a
+host-forced display mode; file and native adapter authority is unchanged.
+
 Native missing-file recovery waits for the captured review's disk-accept action
 to become enabled after refresh, then retains exact draft, deletion, renamed
 disk bytes and review-removal assertions (E-CI-012). Visible deleted-file copy

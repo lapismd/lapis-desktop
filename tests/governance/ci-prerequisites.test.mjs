@@ -123,7 +123,7 @@ test("the released Notes cohort has one current Design Core and API peer context
     nativeSource.find((entry) => entry.name === "lapis-notes")?.revision,
     notesRevision,
   );
-  assert.match(workspace, /"@lapismd\/design-core": "0\.10\.1"/);
+  assert.match(workspace, /"@lapismd\/design-core": "0\.13\.0"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
   assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.2.6");
   assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.2");
@@ -131,7 +131,7 @@ test("the released Notes cohort has one current Design Core and API peer context
   assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.3.4");
   assert.equal(manifest.dependencies["@lapismd/ai-host"], "^0.3.0");
   assert.equal(manifest.dependencies["@lapismd/mira"], "~0.1.4");
-  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.10.1");
+  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.12.1");
   assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
   const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.2\.6\([^']+\)':$/gm);
   assert.equal(contexts?.length, 1);

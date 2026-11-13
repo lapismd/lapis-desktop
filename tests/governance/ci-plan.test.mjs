@@ -108,17 +108,24 @@ test("CI planner binds actual checkout separately from PR head and includes rena
 
 test("missing history and explicit full dispatch conservatively select complete qualification", (context) => {
   const { actual, invoke } = fixture(context);
-  for (const [event, eventName] of [
-    [{ before: "0".repeat(40) }, "push"],
-    [{ inputs: { full: "true" } }, "workflow_dispatch"],
-  ]) {
-    const result = invoke(event, { eventName });
-    assert.equal(result.status, 0, result.stderr);
-    assert.equal(result.plan().profile, "full");
-    assert.equal(result.plan().catalogProfile, "full");
-    assert.equal(result.plan().testedRevision, actual);
-    assert.deepEqual(result.plan().nativeFamilies, []);
-  }
+  const missing = invoke({ before: "0".repeat(40) }, { eventName: "push" });
+  assert.equal(missing.status, 0, missing.stderr);
+  assert.equal(missing.plan().profile, "ordinary");
+  assert.equal(missing.plan().full, false);
+  assert.ok(!missing.plan().gates.includes("bundle"));
+  assert.equal(missing.plan().catalogProfile, "full");
+  assert.equal(missing.plan().testedRevision, actual);
+  assert.deepEqual(missing.plan().nativeFamilies, []);
+  const explicit = invoke(
+    { inputs: { full: "true" } },
+    { eventName: "workflow_dispatch" },
+  );
+  assert.equal(explicit.status, 0, explicit.stderr);
+  assert.equal(explicit.plan().profile, "full");
+  assert.ok(explicit.plan().gates.includes("bundle"));
+  assert.equal(explicit.plan().catalogProfile, "full");
+  assert.equal(explicit.plan().testedRevision, actual);
+  assert.deepEqual(explicit.plan().nativeFamilies, []);
 });
 
 test("CI planner rejects a mislabeled checkout instead of qualifying another source", (context) => {

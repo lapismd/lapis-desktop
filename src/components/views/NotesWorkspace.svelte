@@ -283,7 +283,6 @@
         {app}
         popoutHost={popouts?.host ?? null}
         {workspaceNavigation}
-        displayMode="desktop"
         workspaceLabel={session.profile?.name}
       />
     </div>

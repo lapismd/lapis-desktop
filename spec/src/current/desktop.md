@@ -1,9 +1,9 @@
 # Desktop shell and CI
 
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
-metadata/views, drain on leave, resume on failure.
-[Search/Graph](navigation.md), [plugins/Terminal](plugins.md) and
-[history](repository.md) own contracts.
+metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),
+[plugins](plugins.md), [history](repository.md),
+[mobile layout](mobile-layout.md).
 
 LD-DESK-003 keeps AI/History admission native; renderer
 paths/generations/actors/executables/environment stay denied. Docker uses
