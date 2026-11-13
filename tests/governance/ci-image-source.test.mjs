@@ -18,8 +18,18 @@ const publishingSource = process.env.LAPIS_DESKTOP_CI_IMAGE_SOURCE === "1";
 test("Desktop CI image source pins every tool, archive and base", async () => {
   const manifest = validateImageManifest(await loadImageManifest());
   const dockerfile = await readFile(".ci/desktop-ci.Dockerfile", "utf8");
+  const verifier = await readFile("scripts/ci/verify-image.mjs", "utf8");
   assert.ok(dockerfile.includes(manifest.baseImage));
   assert.ok(dockerfile.includes(manifest.rustImage));
+  assert.equal(manifest.versions.git, "2.56.1");
+  assert.match(dockerfile, /ARG GIT_VERSION=2\.56\.1/u);
+  assert.match(dockerfile, /git-\$\{GIT_VERSION\}\.tar\.xz/u);
+  assert.match(
+    dockerfile,
+    /f0b0bf89264b9bd2e1c640363e7529643989da76281600473c50745cd34a607f/u,
+  );
+  assert.match(verifier, /\["--no-pager", "git", "fetch"\]/u);
+  assert.match(verifier, /HOME: compatibilityRoot/u);
   assert.doesNotMatch(dockerfile, /(?:FROM|image:)\s+[^\n]*:latest\b/u);
   for (const platform of bundlePlatforms) {
     assert.deepEqual(

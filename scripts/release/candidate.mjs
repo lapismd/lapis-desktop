@@ -4,6 +4,7 @@ import {
   hash,
   validateManifest,
   repository,
+  qualificationTargets,
   releaseTargets,
   targetInfo,
 } from "./contract.mjs";
@@ -55,9 +56,11 @@ export async function verifyCandidate(directory, sourceCommit) {
     ...manifest.artifacts.flatMap((a) => [
       a.file,
       `bundle-check-${a.target}.json`,
-      ...["homebrew", "install", "reinstall"].map(
-        (phase) => `homebrew-${a.target}-${phase}.json`,
-      ),
+      ...(qualificationTargets.some(({ target }) => target === a.target)
+        ? ["homebrew", "install", "reinstall"].map(
+            (phase) => `homebrew-${a.target}-${phase}.json`,
+          )
+        : []),
     ]),
     "desktop-manifest.json",
     "build-metadata.json",
@@ -148,6 +151,8 @@ export async function verifyCandidate(directory, sourceCommit) {
       bundle.architectures !== info.architecture
     )
       throw Error("Candidate requires ordinary bundle audit evidence");
+    if (!qualificationTargets.some(({ target }) => target === artifact.target))
+      continue;
     const install = await json(`homebrew-${artifact.target}-homebrew.json`);
     if (
       !bound(install) ||

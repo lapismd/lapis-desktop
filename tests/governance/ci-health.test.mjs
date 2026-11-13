@@ -121,7 +121,7 @@ test("subset success and old job attempts cannot impersonate complete nightly co
   const latest = run(11),
     previous = run(10, 24);
   for (const transform of [
-    (items) => items.filter((job) => job.name !== "Native family (services)"),
+    (items) => items.filter((job) => job.name !== "Unit tests"),
     (items) => items.map((job) => ({ ...job, run_attempt: 1 })),
     (items) => items.map((job) => ({ ...job, head_sha: "f".repeat(40) })),
     (items) =>

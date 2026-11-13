@@ -51,9 +51,17 @@ test("release packaging requires real Homebrew installation and releases no acce
   assert.deepEqual(workflow.jobs.assemble.needs, "build");
   assert.deepEqual(workflow.jobs.install.needs, "assemble");
   assert.deepEqual(workflow.jobs.candidate.needs, "install");
-  assert.deepEqual(
-    workflow.jobs.install.strategy.matrix.include,
-    workflow.jobs.build.strategy.matrix.include,
+  assert.equal(workflow.jobs.install.strategy.matrix.include.length, 2);
+  assert.ok(
+    workflow.jobs.install.strategy.matrix.include.every(
+      ({ os, target }) => os.startsWith("ubuntu-") && target.includes("linux"),
+    ),
+  );
+  assert.ok(
+    workflow.jobs.build.strategy.matrix.include.some(
+      ({ os, target }) =>
+        os === "macos-15" && target === "aarch64-apple-darwin",
+    ),
   );
   const steps = workflow.jobs.install.steps;
   assert.ok(

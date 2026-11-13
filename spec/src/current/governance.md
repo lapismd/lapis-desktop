@@ -20,10 +20,10 @@ empty comparisons continue; unavailable/conflicting fail closed. The Notes fix
 stays upstream until released. [Local intake](local-dependencies.md) governs
 pins, refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs
 stream; release authority excludes scheduled health runs (E-CI-009/089).
-Whole-stack validation covers protected changes. Producers trust only the
-mounted workspace; source checks use built-ins. E2e imports runtime
-instrumentation; ordinary bundles reject its startup marker. Canonical owners
-include planned [Review](../backlog/markdown-review-contract.md) and staged
+Whole-stack validation covers protected changes. Image jobs trust only their
+exact mounted workspace; source checks use built-ins. E2e imports
+instrumentation; bundles reject its startup marker. Canonical owners include
+planned [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
@@ -51,24 +51,24 @@ native-store capture or app-tool integration. E-CI-081 observes focus and every
 writer without retries, longer deadlines or weaker assertions. E-CI-082 accepts
 only a proved synchronized mirror or its exact conflict recovery.
 
-| ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                              |
-| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                                                                                                                                                                                                                                  |
-| LD-GOV-002 | Protected behavior and tooling changes MUST update their mapped canonical chapters in the same Jujutsu change. Unmapped protected paths MUST fail closed.                                                                                                                                                                                                                                                                                                |
-| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit acceptance review. Committed evidence MUST remain immutable.                                                                                                                                                                                                                                  |
-| LD-GOV-004 | Current feature chapters and verification MUST own behavior and requirement status. Canonical backlog topics MUST own outstanding implementation and qualification, retaining dependencies and original acceptance boundaries. Passing evidence MUST match the claimed boundary; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                    |
-| LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                                                                       |
-| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, with documented pinned private public-build prerequisites in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                            |
-| LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                            |
-| LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006. |
-| LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit headed option MUST retain the complete native WebView/window/OS suite. Headless success MUST NOT substitute for a native acceptance gate; invalid mode flags MUST reject before launching children.                                                                                    |
-| LD-GOV-010 | Portable validation MUST default to isolated Docker execution of exact tracked Jujutsu snapshots and ancestry, with pinned tools, bounded resources and heap limits at build dispatch, checksummed explicit prerequisites, keyed caches and retained reports. Docker failures MUST NOT fall back to the host. Native macOS application/window and visual-approval gates MUST remain separate; CI MAY explicitly select its provisioned native runtime.   |
+| ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                                                                                                                                                                                                                                           |
+| LD-GOV-002 | Protected behavior and tooling changes MUST update their mapped canonical chapters in the same Jujutsu change. Unmapped protected paths MUST fail closed.                                                                                                                                                                                                                                                                                                         |
+| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit acceptance review. Committed evidence MUST remain immutable.                                                                                                                                                                                                                                           |
+| LD-GOV-004 | Current feature chapters and verification MUST own behavior and requirement status. Canonical backlog topics MUST own outstanding implementation and qualification, retaining dependencies and original acceptance boundaries. Passing evidence MUST match the claimed boundary; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                             |
+| LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                                                                                |
+| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, with documented pinned private public-build prerequisites in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                                     |
+| LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                                     |
+| LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006.          |
+| LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit local headed option MUST retain the complete native WebView/window/OS suite. Hosted executable tests MUST run only on Linux; macOS runners MUST be build-only. Linux/headless success MUST NOT be described as macOS native evidence; invalid mode flags MUST reject before launching children. |
+| LD-GOV-010 | Portable validation MUST default to isolated Docker execution of exact tracked Jujutsu snapshots and ancestry, with pinned tools, bounded resources and heap limits at build dispatch, checksummed explicit prerequisites, keyed caches and retained reports. Docker failures MUST NOT fall back to the host. Native macOS application/window and visual-approval gates MUST remain separate; CI MAY explicitly select its provisioned native runtime.            |
 
 Checkout leases MUST remain held for created, running, paused or uncertain
 workers; only a proven-absent recorded owner permits adoption. Release, cleanup
 and adoption MUST require known completed owned runs and immutable container
 identities; failed transport queries prove nothing. Workers MUST drop Linux
-capabilities so permission checks cannot bypass DAC.
+capabilities; root harnesses MUST run exact DAC cases as non-root children.
 
 The user authorized verified local pnpm archives until the publication gate. The
 ignored overlay verifies checksums/revisions, redirects matching ranges and
@@ -332,9 +332,9 @@ set.
 The private AI public-build link is a temporary migration prerequisite alongside
 Terminal. Native ACP test policy, controls, compiled provider and channel driver
 are feature-gated acceptance inputs. Ordinary bundle audits reject their markers
-and resources. Shared acceptance-entry and dependency-audit changes retain the
-full consuming native/governance lanes; fixture passes do not qualify AI product
-UI, models, tools, credentials or compute.
+and resources. Dependency-audit changes retain full consumer lanes. The frozen
+graph resolves `@hono/node-server` 2.1.6 without an exception. Fixture passes do
+not qualify AI product UI, models, tools, credentials or compute.
 
 Native builds recreate ignored autogenerated application permissions from their
 current feature-specific command list. Switching from acceptance to ordinary
@@ -387,12 +387,12 @@ AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 [CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
-identities, complete catalog modes and non-qualifying diagnostics. Its reviewed
-`2026.11.2` digest-pinned image runs publisher checks and exports one
-current-attempt, mode/hash-verified Linux/macOS tool artifact without source,
-secrets, host downloads or fallback. Turbo propagates its verified offline
-selection. Ephemeral package-read authority pulls it; credentials never enter
-the image or artifact. Hidden WebKit cannot qualify
+identities, catalog modes and diagnostics. Its reviewed `2026.11.3` digest pins
+checksum-verified Git compatible with Jujutsu and proves a local fetch
+(E-CI-095). Publisher checks export one verified Linux/macOS tool artifact
+without source, secrets, downloads or fallback. Turbo propagates its verified
+offline selection. Package read authority pulls it; credentials never enter the
+image/artifact. Hidden WebKit cannot qualify
 [native acceptance](native-acceptance.md). Native revisions follow
 [dependency intake](local-dependencies.md); receipts retain full ancestry.
 Semantic `spec:search` uses QMD outside CI:

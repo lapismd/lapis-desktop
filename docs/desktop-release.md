@@ -16,12 +16,13 @@ preparation checks the actual published baseline again. Do not reuse a published
 version.
 
 Regular CI selects affected gates. Before packaging, require full CI on the
-exact main commit, including all enabled native feature tests and all platform
-builds. Qualification selects the latest exact-source push or manual full-CI
-attempt. A newer failed push/manual attempt still blocks an older pass.
-Scheduled nightlies remain independent health evidence: they cannot authorize a
-release and do not mask valid push/manual qualification. A selective docs-only
-green run cannot qualify a release. If needed, dispatch:
+exact main commit, including all Linux test lanes and all platform builds. macOS
+is build-only: no macOS native, WebView, install or Homebrew runtime test is
+executed or inferred from Linux. Qualification selects the latest exact-source
+push or manual full-CI attempt. A newer failed push/manual attempt still blocks
+an older pass. Scheduled nightlies remain independent health evidence: they
+cannot authorize a release and do not mask valid push/manual qualification. A
+selective docs-only green run cannot qualify a release. If needed, dispatch:
 
 ```sh
 gh workflow run ci.yml --repo lapismd/lapis-desktop --ref main -F full=true
@@ -34,11 +35,11 @@ gh workflow run release-desktop.yml --repo lapismd/lapis-desktop --ref main \
   -f operation=prepare -F publish=false
 ```
 
-Review the qualified artifact and its native receipts. Preparation builds
+Review the qualified artifact and its Linux native receipts. Preparation builds
 release-mode native helpers and the ordinary app, signs nested helpers before
-their inventory and the outer app last, audits each bundle, and tests all three
-archives through native Homebrew installation, reinstall and uninstall. macOS
-uses an application directory containing spaces; Linux uses an XDG application
+their inventory and the outer app last, audits each bundle, and tests both Linux
+archives through native Homebrew installation, reinstall and uninstall. The
+macOS archive has build/audit evidence only. Linux uses an XDG application
 directory containing spaces. The Linux tar.gz retains the ordinary executable,
 its exact Tauri resource tree, release-built AI helpers, icon and preview
 desktop entry. Profile/vault bytes are checked across those operations. The
@@ -80,9 +81,8 @@ instead.
 Configure `HOMEBREW_TAP_APP_ID` and `HOMEBREW_TAP_APP_PRIVATE_KEY` in this
 repository. The GitHub App must be restricted to the tap with Contents and Pull
 requests write permissions. The workflow opens a two-file preview cask/manifest
-PR and enables squash auto-merge. Tap checks and all three Native installation
-jobs remain required. Each supported platform also verifies preview
-installation.
+PR and enables squash auto-merge. Tap checks and both Linux native installation
+jobs remain required. macOS installation remains unqualified.
 
 Once the generated PR merges:
 

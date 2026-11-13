@@ -175,10 +175,10 @@ vault. Capability-based filesystem resolution provides an additional containment
 boundary if a path changes after validation. Reads accept only regular files;
 listings omit symbolic links and special files.
 
-Atomic replacement preserves existing permissions and honors a supplied valid
-modification time. Creation times are filesystem-owned. A power loss after the
-rename is outside M2's process-interruption guarantee. Pre-release application
-state may be reset; ordinary note-write integrity still applies.
+Atomic writes keep existing mode and valid mtime; creation time is
+filesystem-owned. Power loss after rename is outside M2. Pre-release state may
+reset; ordinary note integrity remains. Permission tests keep all assertions;
+root harnesses run the exact case as UID/GID 65534 and require child success.
 
 The `lapis-vault` protocol serves only supported image, audio, video, and PDF
 attachments, with a restrictive response CSP. Neither raw HTML nor scripts are

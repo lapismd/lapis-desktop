@@ -1,5 +1,4 @@
 import { repository } from "./contract.mjs";
-import { nativeFamilies } from "../native-families.mjs";
 import { dependencyPlatforms } from "../ci/plan-schema.mjs";
 export const fullCIJobs = [
   "Full source qualification",
@@ -7,15 +6,12 @@ export const fullCIJobs = [
   "Governance",
   "Private prerequisites",
   ...dependencyPlatforms.map(({ id }) => `Prepare private packages (${id})`),
-  "Prepare native acceptance",
-  ...nativeFamilies.map((family) => `Native family (${family})`),
   "Quality",
   "Unit tests",
   "Dependency audits",
   "Static Storybook",
   "Storybook interactions",
   "Native bundle",
-  "Native ARM64 acceptance",
   ...[1, 2, 3, 4].map((n) => `Storybook interactions (shard ${n}/4)`),
   "Native Linux (aarch64-unknown-linux-gnu)",
   "Native Linux (x86_64-unknown-linux-gnu)",
@@ -67,7 +63,7 @@ export async function requireFullCI(sourceCommit, request) {
     )
   )
     throw Error(
-      "Release requires full native/feature CI on this exact source; dispatch CI with full=true",
+      "Release requires full Linux test and platform build CI on this exact source; dispatch CI with full=true",
     );
   return {
     sourceCommit,

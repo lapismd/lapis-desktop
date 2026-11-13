@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync, readdirSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
+import { parse } from "yaml";
 import { validationConfig } from "../../scripts/validation/model.mjs";
 import {
   macosNativeLanes,
@@ -195,7 +196,7 @@ test("the dispatcher refuses without an explicit on-demand request", () => {
   ]);
 });
 
-test("hosted CI keeps the portable lane set and its documented native runtime", () => {
+test("hosted CI keeps tests on Linux and excludes on-demand macOS lanes", () => {
   assert.equal(
     scripts["ci:quality"],
     "node scripts/ci/run-selected.mjs quality",
@@ -222,17 +223,17 @@ test("hosted CI keeps the portable lane set and its documented native runtime", 
       1,
       `CI runs ${task} in its own job`,
     );
-  assert.match(
-    ci.replace(/\s+/gu, " "),
-    /macos-native-lanes\.mjs headed --operation execute --family/u,
-  );
+  assert.doesNotMatch(ci, /macos-native-lanes\.mjs/u);
   assert.doesNotMatch(ci, /run-turbo\.mjs ci:headed\b/u);
   assert.match(ci, /node scripts\/ci\/docs\.mjs/);
   assert.doesNotMatch(ci, /jj@0\.45\.1/u);
   assert.doesNotMatch(ci, /install-tools\.mjs --ci/u);
   assert.match(ci, /\.\/\.github\/actions\/setup-ci-tools/u);
   assert.match(ci, /LAPIS_DESKTOP_VALIDATION_RUNTIME: native/u);
-  assert.match(ci, /runs-on: macos-15/u);
+  const workflow = parse(read(".github/workflows/ci.yml"));
+  assert.equal(workflow.jobs.quality["runs-on"], "ubuntu-24.04");
+  assert.equal(workflow.jobs.unit["runs-on"], "ubuntu-24.04");
+  assert.equal(workflow.jobs.bundle["runs-on"], "macos-15");
   const selectors = [
     ...walk(resolve(root, "scripts")),
     ".github/workflows/ci.yml",

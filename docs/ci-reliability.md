@@ -1,5 +1,20 @@
 # CI reliability rollout
 
+## Current hosted execution policy
+
+As of 2026-11-12, all executable hosted tests run on Linux. macOS runners are
+build-only for private-package projections and ordinary application artifacts.
+The native-family and diagnostic descriptions below document retained local
+machinery and earlier attempts; they are not current hosted or release gates.
+Linux/browser success cannot qualify macOS native behavior. See E-CI-091. Linux
+Quality and Unit run inside the immutable Desktop CI image, which already
+contains their pinned Rust and GTK/WebKit build prerequisites. The image also
+pins Git at a version compatible with its Jujutsu binary and proves a real local
+`jj git fetch` during construction; consumer jobs never repair that toolchain at
+runtime. A permission-sensitive Rust case keeps its original assertions when the
+container starts as root by re-executing the exact case as UID/GID 65534;
+failure to launch or satisfy the assertions fails the parent test.
+
 The durable implementation status and continuation checklist are in
 [CI reliability handoff](ci-reliability-handoff.md). That handoff preserves the
 original slice plan, the nightly-only augmentation and the exact pending steps.
@@ -89,9 +104,9 @@ attempt-suffixed names. **Rerun the complete workflow**, not only failed jobs,
 when seeking full qualification: previous successful family/producer jobs do not
 become current execution. Earlier attempt artifacts remain retained.
 Full/nightly Turbo runs force test execution; dependency caches still reuse
-compatible compiled outputs. Containerized tool producers explicitly trust only
-their exact mounted `GITHUB_WORKSPACE` before reading the checked-out Git
-commit; they never use wildcard safe-directory configuration.
+compatible compiled outputs. Containerized tool producers and consumers
+explicitly trust only their exact mounted `GITHUB_WORKSPACE` before reading the
+checked-out Git commit; they never use wildcard safe-directory configuration.
 
 ## Evidence still required
 

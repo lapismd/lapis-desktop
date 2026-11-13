@@ -80,11 +80,12 @@ await writeFile(
   join(output, "LIMITATIONS.md"),
   "# Preview qualification limitations\n\n" +
     limitations +
-    "\n\nThese cases remain unqualified; enabled exact-source CI gates passed.\n" +
+    "\n\nThese cases remain unqualified; enabled exact-source Linux CI gates passed.\n" +
+    "\nThe macOS ARM64 archive is build-only. No macOS tests, installed-app smoke checks, native WebView acceptance or Homebrew lifecycle checks ran, and Linux results do not qualify macOS behavior.\n" +
     "\nLinux ARM64/x64 qualifies installation, resource integrity, ordinary native window and graceful quit on Ubuntu 24.04 (glibc 2.39). " +
     "System WebKitGTK 4.1, GTK 3 and Ayatana AppIndicator are required. Full Linux native feature parity remains unqualified.\n" +
     "\nUpgrade is not run on a platform until a previous different published preview exists; see each native receipt.\n",
 );
 console.log(
-  `Assembled all three platform archives for ${manifest.tag}; native qualification remains required.`,
+  `Assembled all three platform archives for ${manifest.tag}; Linux runtime qualification remains required and macOS is build-only.`,
 );

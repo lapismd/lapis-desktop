@@ -99,9 +99,9 @@ test("CI planner binds actual checkout separately from PR head and includes rena
   const selected = result.plan();
   assert.equal(selected.testedRevision, actual);
   assert.equal(selected.range.head, head);
-  assert.deepEqual(selected.nativeFamilies, ["smoke", "workspace"]);
+  assert.deepEqual(selected.nativeFamilies, []);
   assert.equal(selected.profile, "ordinary");
-  assert.match(result.output, /native_families=\["smoke","workspace"\]/u);
+  assert.match(result.output, /native_families=\[\]/u);
   assert.match(result.output, new RegExp(`tested_revision=${actual}`, "u"));
   assert.match(result.summary, new RegExp(actual, "u"));
 });
@@ -117,11 +117,7 @@ test("missing history and explicit full dispatch conservatively select complete 
     assert.equal(result.plan().profile, "full");
     assert.equal(result.plan().catalogProfile, "full");
     assert.equal(result.plan().testedRevision, actual);
-    assert.deepEqual(result.plan().nativeFamilies, [
-      "smoke",
-      "workspace",
-      "services",
-    ]);
+    assert.deepEqual(result.plan().nativeFamilies, []);
   }
 });
 
@@ -165,11 +161,7 @@ test("ordinary CI narrowing requires the explicit qualified rollout setting", (c
     );
     assert.equal(result.status, 0, result.stderr);
     assert.equal(result.plan().ordinaryProfilesEnabled, false);
-    assert.deepEqual(result.plan().nativeFamilies, [
-      "smoke",
-      "workspace",
-      "services",
-    ]);
+    assert.deepEqual(result.plan().nativeFamilies, []);
     assert.equal(result.plan().catalogProfile, "full");
   }
 });

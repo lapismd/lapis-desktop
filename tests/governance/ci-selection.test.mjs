@@ -63,9 +63,9 @@ test("Cargo closure includes dependent application crates and excludes unrelated
   assert.ok(!serviceTest.gates.includes("headed"));
 });
 test("renderer, catalog, release and native-test changes select complete consumers", () => {
-  assert.ok(
-    plan(["src/components/views/Main.svelte"]).gates.includes("headed"),
-  );
+  const renderer = plan(["src/components/views/Main.svelte"]);
+  assert.ok(renderer.gates.includes("bundle"));
+  assert.ok(renderer.gates.includes("linux"));
   const catalog = plan(["catalog/plugins/Example.stories.ts"]);
   assert.ok(catalog.gates.includes("storybook-interaction"));
   assert.ok(!catalog.gates.includes("linux"));
@@ -77,9 +77,9 @@ test("renderer, catalog, release and native-test changes select complete consume
     "unit",
   ]);
   assert.deepEqual(release.unit, ["governance"]);
-  assert.ok(
-    plan(["tests/desktop/startup-progress.test.mjs"]).gates.includes("headed"),
-  );
+  const native = plan(["tests/desktop/startup-progress.test.mjs"]);
+  assert.ok(native.gates.includes("bundle"));
+  assert.ok(native.gates.includes("linux"));
 });
 test("unknown/shared changes, missing crate ownership and explicit full requests fail closed", () => {
   for (const files of [
@@ -95,9 +95,9 @@ test("unknown/shared changes, missing crate ownership and explicit full requests
   assert.equal(planChanges(["src-tauri/src/lib.rs"]).full, true);
   // Rename detection supplies both paths; moving code to docs cannot hide its former impact.
   assert.ok(
-    plan(["src-tauri/src/old.rs", "docs/old.md"]).gates.includes("headed"),
+    plan(["src-tauri/src/old.rs", "docs/old.md"]).gates.includes("linux"),
   );
-  assert.ok(plan(["public/product.md"]).gates.includes("headed"));
+  assert.ok(plan(["public/product.md"]).gates.includes("linux"));
 });
 test("Validate rejects skipped selected gates, failed unselected gates and incomplete plans", () => {
   const p = plan(["README.md"]),
@@ -107,8 +107,8 @@ test("Validate rejects skipped selected gates, failed unselected gates and incom
   validateResults(p, result);
   for (const failure of [
     { ...result, governance: "skipped" },
-    { ...result, headed: "failure" },
-    { ...result, headed: "cancelled" },
+    { ...result, bundle: "failure" },
+    { ...result, bundle: "cancelled" },
     { ...result, unit: undefined },
   ])
     assert.throws(() => validateResults(p, failure));
@@ -123,13 +123,15 @@ test("ordinary catalog and mapped native tests declare exact smaller coverage", 
   assert.deepEqual(catalog.nativeFamilies, []);
   const native = plan(["tests/desktop/metadata-owner.test.mjs"]);
   assert.equal(native.profile, "ordinary");
-  assert.deepEqual(native.nativeFamilies, ["smoke", "workspace"]);
+  assert.deepEqual(native.nativeFamilies, []);
   assert.deepEqual(native.dependencyPlatforms, [
     { os: "macos-15", id: "macos-arm64" },
+    { os: "ubuntu-24.04", id: "linux-x64" },
+    { os: "ubuntu-24.04-arm", id: "linux-arm64" },
   ]);
   const renderer = plan(["src/components/views/Main.svelte"]);
   assert.equal(renderer.catalogProfile, "full");
-  assert.deepEqual(renderer.nativeFamilies, ["smoke", "workspace", "services"]);
+  assert.deepEqual(renderer.nativeFamilies, []);
 });
 
 test("shared harness, shared presentation and unknown native ownership select full qualification", () => {
@@ -150,7 +152,7 @@ test("shared harness, shared presentation and unknown native ownership select fu
     "tests/desktop/metadata-owner.test.mjs",
     "tests/desktop/acp-transport.test.mjs",
   ]);
-  assert.deepEqual(renamed.nativeFamilies, ["smoke", "workspace", "services"]);
+  assert.deepEqual(renamed.nativeFamilies, []);
 });
 
 test("private prerequisite platforms cover every selected consumer and docs need none", () => {
@@ -172,7 +174,6 @@ test("full marker cannot be made from incomplete, ordinary or malformed plan fie
     { schemaVersion: 1 },
     { profile: "ordinary" },
     { nativeFamilies: ["smoke"] },
-    { nativeFamilies: [] },
     { catalogProfile: "ordinary" },
     { unit: ["governance"] },
     { quality: [] },
@@ -184,9 +185,6 @@ test("full marker cannot be made from incomplete, ordinary or malformed plan fie
     assert.throws(() => validateResults({ ...full, ...change }, results));
   const ordinary = plan(["tests/desktop/metadata-owner.test.mjs"]);
   assert.throws(() => validateResults({ ...ordinary, full: true }, results));
-  assert.throws(() =>
-    validateResults({ ...ordinary, nativeFamilies: [] }, results),
-  );
   assert.throws(() =>
     validateResults(
       { ...ordinary, nativeFamilies: ["smoke", "unknown"] },
@@ -201,7 +199,7 @@ test("unqualified ordinary profile rollout preserves full native/catalog scope w
   });
   assert.equal(native.profile, "ordinary");
   assert.equal(native.ordinaryProfilesEnabled, false);
-  assert.deepEqual(native.nativeFamilies, ["smoke", "workspace", "services"]);
+  assert.deepEqual(native.nativeFamilies, []);
   assert.equal(native.catalogProfile, "full");
   const catalog = plan(["catalog/plugins/Launcher.stories.ts"], {
     narrowProfiles: false,
@@ -212,8 +210,7 @@ test("unqualified ordinary profile rollout preserves full native/catalog scope w
     "governance",
   ]);
   const results = Object.fromEntries(gates.map((gate) => [gate, "success"]));
-  assert.throws(
-    () => validateResults({ ...native, nativeFamilies: ["smoke"] }, results),
-    /Unqualified/u,
+  assert.throws(() =>
+    validateResults({ ...native, nativeFamilies: ["smoke"] }, results),
   );
 });

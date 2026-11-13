@@ -80,16 +80,14 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
   }
 });
 
-test("hosted native acceptance prepares verified artifacts before independent consumers", () => {
+test("hosted CI excludes macOS acceptance preparation and execution", () => {
   const ci = readFileSync(".github/workflows/ci.yml", "utf8").replace(
     /\s+/g,
     " ",
   );
-  assert.match(ci, /ci-native-fixtures.mjs/);
-  assert.match(ci, /ci-acceptance-artifact.mjs export/);
-  assert.match(ci, /headed --operation prepare/);
-  assert.match(ci, /headed --operation execute --family/);
-  assert.match(ci, /--reuse-artifact/);
+  assert.doesNotMatch(ci, /ci-native-fixtures.mjs/);
+  assert.doesNotMatch(ci, /ci-acceptance-artifact.mjs/);
+  assert.doesNotMatch(ci, /macos-native-lanes.mjs/);
   assert.match(
     readFileSync("scripts/ci-acceptance-artifact.mjs", "utf8"),
     /verifyFiles/,

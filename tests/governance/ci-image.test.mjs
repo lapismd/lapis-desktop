@@ -16,9 +16,9 @@ import {
 
 const publishingSource = process.env.LAPIS_DESKTOP_CI_IMAGE_SOURCE === "1";
 const previousDigest =
-  "sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927";
-const currentDigest =
   "sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce";
+const currentDigest =
+  "sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858";
 const publishedDigest = publishingSource ? null : currentDigest;
 
 test("Desktop CI image source pins every tool and base", async () => {
@@ -77,6 +77,8 @@ test("image publication stays manual, protected and multi-architecture", async (
     workflow.replace(/\s+/gu, " "),
     /docker run .*lapis-desktop-ci:verification node --test tests\/governance\/ci-image-source\.test\.mjs tests\/governance\/validation\.test\.mjs/u,
   );
+  assert.match(workflow, /--user "\$\(id -u\):\$\(id -g\)"/u);
+  assert.match(workflow, /--env HOME=\/tmp/u);
   assert.doesNotMatch(
     workflow,
     /run:\s*node --test[^\n]*validation\.test\.mjs/u,
@@ -85,28 +87,40 @@ test("image publication stays manual, protected and multi-architecture", async (
 });
 
 test("consumer image pulls use the workflow token", async () => {
+  const manifest = await loadImageManifest();
+  const reference = `${manifest.image}@${publishingSource ? previousDigest : currentDigest}`;
   for (const path of [
     ".github/workflows/ci.yml",
-    ".github/workflows/native-quarantine.yml",
     ".github/workflows/publish-storybook-pages.yml",
     ".github/workflows/release-desktop.yml",
     ".github/workflows/trial-desktop.yml",
   ]) {
     const workflow = parse(await readFile(path, "utf8"));
-    const container = workflow.jobs["ci-tools"]?.container;
     assert.equal(
       workflow.permissions?.packages,
       "read",
       `${path} grants only package read access`,
     );
-    assert.deepEqual(
-      container?.credentials,
-      {
-        username: "${{ github.actor }}",
-        password: "${{ secrets.GITHUB_TOKEN }}",
-      },
-      `${path} authenticates its immutable image pull`,
-    );
+    const imageJobs =
+      path === ".github/workflows/ci.yml"
+        ? ["ci-tools", "quality", "unit"]
+        : ["ci-tools"];
+    for (const name of imageJobs) {
+      const container = workflow.jobs[name]?.container;
+      assert.equal(
+        container?.image,
+        reference,
+        `${path}:${name} pins the immutable image`,
+      );
+      assert.deepEqual(
+        container?.credentials,
+        {
+          username: "${{ github.actor }}",
+          password: "${{ secrets.GITHUB_TOKEN }}",
+        },
+        `${path}:${name} authenticates its immutable image pull`,
+      );
+    }
   }
 });
 
@@ -117,7 +131,6 @@ test("published image feeds verified current-attempt tools to every consumer", a
     : imageReference(manifest);
   const workflows = [
     ".github/workflows/ci.yml",
-    ".github/workflows/native-quarantine.yml",
     ".github/workflows/publish-storybook-pages.yml",
     ".github/workflows/release-desktop.yml",
     ".github/workflows/trial-desktop.yml",
@@ -164,11 +177,6 @@ test("published image feeds verified current-attempt tools to every consumer", a
     ".github/workflows/ci.yml:linux",
     ".github/workflows/ci.yml:audit",
     ".github/workflows/ci.yml:dependency-packages",
-    ".github/workflows/ci.yml:native-prepare",
-    ".github/workflows/ci.yml:native-families",
-    ".github/workflows/ci.yml:native-quarantine-diagnostic",
-    ".github/workflows/ci.yml:rust-backup-diagnostic",
-    ".github/workflows/native-quarantine.yml:diagnostic",
     ".github/workflows/publish-storybook-pages.yml:build",
     ".github/workflows/release-desktop.yml:build",
     ".github/workflows/trial-desktop.yml:build",
@@ -178,5 +186,15 @@ test("published image feeds verified current-attempt tools to every consumer", a
     "utf8",
   );
   assert.match(action, /ci-tools-\$\{\{ github\.run_attempt \}\}/u);
+  const trustWorkspace =
+      'git config --global --add safe.directory "$GITHUB_WORKSPACE"',
+    trustIndex = action.indexOf(trustWorkspace),
+    verifyIndex = action.indexOf("scripts/ci/tool-artifact.mjs verify");
+  assert.ok(trustIndex >= 0, "consumer trusts its exact mounted workspace");
+  assert.ok(
+    trustIndex < verifyIndex,
+    "consumer trusts the workspace before reading artifact provenance",
+  );
+  assert.doesNotMatch(action, /safe\.directory ["']?\*["']?/u);
   assert.match(action, /scripts\/ci\/tool-artifact\.mjs verify/u);
 });

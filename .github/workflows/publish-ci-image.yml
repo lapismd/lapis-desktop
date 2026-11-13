@@ -41,7 +41,8 @@ jobs:
           lapis-desktop-ci:verification .
       - name: Verify publication behavior inside the image
         run: >-
-          docker run --rm --env LAPIS_DESKTOP_CI_IMAGE_SOURCE=1 --volume
+          docker run --rm --user "$(id -u):$(id -g)" --env HOME=/tmp --env
+          LAPIS_DESKTOP_CI_IMAGE_SOURCE=1 --volume
           "$GITHUB_WORKSPACE:/workspace" --workdir /workspace
           lapis-desktop-ci:verification node --test
           tests/governance/ci-image-source.test.mjs

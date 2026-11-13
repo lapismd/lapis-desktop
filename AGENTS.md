@@ -217,11 +217,12 @@ dynamically distributable first-party plugins (development provenance) into a
 vault's `.lapis/` directory; it is macOS ARM64 only, refuses a real signing
 identity, is excluded from every default lane
 (`tests/governance/local-macos-build-exclusion.test.mjs`), and never replaces an
-installed app or a user profile. Hosted CI runs the same portable lane set plus
-headed acceptance on a macOS runner with its provisioned native runtime, because
-that platform provides no Docker daemon; a native or on-demand run is never
-Docker CI parity and must be labelled in evidence. Docker errors never trigger
-host fallback. Shared-package archives remain explicit private prerequisites;
-never transfer dirty sibling sources or user profiles. Use `pnpm check`,
-`pnpm test`, and `pnpm spec:check` for foundation qualification. Do not publish,
-replace installed applications, or reuse a user's profile for tests.
+installed app or a user profile. Hosted CI runs all executable test, quality,
+catalog and Rust lanes on Linux. macOS runners build private-package projections
+and ordinary application artifacts only; they do not execute tests or native
+acceptance. Explicit local macOS lanes remain non-qualifying. Docker errors
+never trigger host fallback. Shared-package archives remain explicit private
+prerequisites; never transfer dirty sibling sources or user profiles. Use
+`pnpm check`, `pnpm test`, and `pnpm spec:check` for foundation qualification.
+Do not publish, replace installed applications, or reuse a user's profile for
+tests.

@@ -31,51 +31,22 @@ attempt. Stop a batch after five fresh target executions against one artifact; a
 demonstrated fix may receive a separate batch of up to five, including its
 normal family. A changed artifact starts a distinct batch.
 
-Run **Native quarantine diagnostics** through Actions workflow dispatch to
-execute the same path on hosted ARM64. Its failures remain failures in that
-separate workflow; they do not weaken ordinary native jobs or required
-aggregates. Dispatch and full qualification have distinct concurrency groups.
-Diagnostics never issue a full source qualification marker or publish a release.
-
-Before this new workflow is registered on canonical main, or whenever same-byte
-normal-family comparison is required, dispatch the registered CI workflow with
-its paired diagnostic inputs:
-
-```sh
-gh workflow run ci.yml --ref <candidate-branch> \
-  -f full=true \
-  -f native_diagnostic_cases=acp-foreign-window \
-  -f rust_backup_diagnostic=true
-```
-
-That profile runs every normal family and the selected isolated original bodies
-against the same prepared acceptance artifact. The Rust option restores its
-genuine build resources through that artifact's complete verifier, installs the
-checksum-verified pinned `jj` executable used by the unchanged Original fixture,
-then independently runs the exact Original/Managed case and its scoped
-integration binary. Either diagnostic may fail the workflow, but the presence of
-any diagnostic input suppresses `Full source qualification` and uses separate
-concurrency.
-
-The paired native delegate receives verified reuse as one literal
-`--reuse-artifact=<manifest>` argument. The quarantine parser intentionally
-rejects a split option and value before any original body runs; such a failure
-is retained harness evidence, not a quarantine outcome.
-
-GitHub Actions checks out a Git repository without Jujutsu workspace metadata.
-Hosted attempt receipts therefore use the validated 40-hex `GITHUB_SHA`; local
-diagnostics retain the Jujutsu working-copy commit. Neither source changes
-artifact verification, original callback selection or qualification policy.
+Hosted CI exposes no native diagnostic input or macOS quarantine workflow under
+the Linux-only test policy. Local diagnostics retain Jujutsu working-copy source
+identity and accept verified reuse only as one literal
+`--reuse-artifact=<manifest>` argument. A split option and value fails before an
+original body runs and is harness evidence, not a quarantine outcome.
 
 Every fresh isolated root contains `quarantine-attempt.json` and
 `quarantine-results.json`. They record actual source identity, selected cases,
 run/attempt identity, platform, artifact selection and explicit outcomes. The
 report distinguishes passed, failed, skipped, not-selected and not-executed;
 zero execution, skipped intended cases, duplicate execution, missing reports and
-runner failures all prevent success. The workflow uploads fresh per-attempt
-results and native logs even after failure, with bounded retention. An
-interrupted attempt's initial report records selected cases as not executed
-until the runner finishes writing results.
+runner failures all prevent success. Retain fresh per-attempt results and native
+logs even after failure. An interrupted attempt's initial report records
+selected cases as not executed until the runner finishes writing results.
+
+These commands are local investigation tools and cannot qualify CI or a release.
 
 A diagnostic pass leaves the ordinary quarantine in place. Re-enable an original
 case only in an explicit reviewed change after a demonstrated owner fix and
