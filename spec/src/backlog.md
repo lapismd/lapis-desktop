@@ -18,7 +18,10 @@ identities. The source migration inventory is immutable provenance, not a task
 ledger. Shared core/hosted work belongs to the
 [Server backlog](https://github.com/lapismd/lapis-server/blob/main/spec/src/backlog.md).
 
-Mobile shell registry and native adoption remain separate from the scoped source
-qualification in [E-MOBILE-003](history/E-MOBILE-003.md). The owning Core and
-App Profile releases must precede ordinary registry intake; no installed native
-application was replaced or qualified by browser acceptance.
+Mobile shell source qualification remains in
+[E-MOBILE-003](history/E-MOBILE-003.md); released registry intake and the
+private App Profile projection are recorded in
+[E-MOBILE-006](history/E-MOBILE-006.md). App Profile and AI intentionally remain
+private prerequisites. Native-window acceptance and registry-only distribution
+remain outstanding; browser acceptance does not qualify or replace an installed
+native application.

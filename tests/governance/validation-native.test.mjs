@@ -14,14 +14,22 @@ import {
   projectArchives,
 } from "../../scripts/validation/model.mjs";
 
-test("portable shared sources match hosted preparation sources", async () => {
+test("portable sources retain the native Notes pin while hosted renderer sources advance", async () => {
   const native = JSON.parse(
     await readFile("scripts/validation/native-sources.json", "utf8"),
   );
   const hosted = JSON.parse(await readFile("scripts/ci-sources.json", "utf8"));
   const revision = (sources, name) =>
     sources.find((source) => source.name === name)?.revision;
-  for (const name of ["lapis-notes", "lapis-ai", "jj-store", "lapis-plugins"]) {
+  assert.equal(
+    revision(native, "lapis-notes"),
+    "40b9ba8ee569a737a0ace77870a094972ee6f768",
+  );
+  assert.equal(
+    revision(hosted, "lapis-notes"),
+    "cdad0cde972f64bc0f20896d493c97268cc97b51",
+  );
+  for (const name of ["lapis-ai", "jj-store", "lapis-plugins"]) {
     assert.match(revision(native, name), /^[a-f0-9]{40}$/u);
     assert.equal(revision(native, name), revision(hosted, name));
   }
