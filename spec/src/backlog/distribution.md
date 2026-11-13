@@ -106,23 +106,21 @@ consumer installs the explicit root patch and frozen hash. E-CI-015 and
 upstream-equivalence removal gate. A local patch or prepared source alone does
 not establish a published Core replacement or final Desktop acceptance.
 
-The current private application requests @lapis-notes/app-profile at ^0.0.0,
-which is absent from npm. CI has a pinned private public-build prerequisite.
-History ^0.2.0, Agent UI ^0.2.0, Repository UI ^0.1.1, Bases ^0.2.0 and Tasks
-^0.1.1 are published registry ranges. AI and JJ Conversations remain unpublished
-clients. Before a normal registry-only candidate, reconcile that profile's
-owning package and supported public consumption or keep its explicit private
-archive prerequisite. Preserve portable tracked ranges and validate the
-resulting consumer; do not conceal the missing package through a source alias or
-copied implementation.
+The application retains two intentionally private public-build prerequisites:
+App Profile ^0.0.0 and AI ^0.2.0. Hosted CI pins their owning sources and
+verifies public archive payloads. JJ Conversations ^0.1.0, History ^0.2.0, Agent
+UI ^0.2.3, Repository UI ^0.1.1, Bases ^0.2.0 and Tasks ^0.1.1 use published
+registry ranges. Before registry-only distribution, qualify supported public
+consumption or the explicit private distribution contract. Preserve portable
+manifests; source aliases and copied implementations remain prohibited.
 
-Workspace 0.3.4, API 0.2.6, UI 0.1.7, File Explorer 0.2.2, AI Host 0.3.0,
-Terminal 0.1.2, Mira ~0.1.4 and Core 0.10.1 are published. E-CI-017 removes the
-Workspace and Terminal npm projections. E-CI-030 removes the Agent UI, Bases,
-History and Tasks npm projections while retaining native plugin fixture sources
-and qualified Rust git pins. AI, App Profile and JJ Conversations remain private
-archive prerequisites. This does not qualify registry-only distribution. Final
-released-cohort consumer qualification remains pending.
+[E-MOBILE-006](../history/E-MOBILE-006.md) records the released Notes mobile
+cohort and rebuilt private App Profile intake. The current version inventory
+belongs to [local dependencies](../current/local-dependencies.md). E-CI-017
+removed Workspace and Terminal npm projections; E-CI-030 removed Agent UI,
+Bases, History and Tasks projections. Native plugin fixture sources and
+qualified Rust git pins remain independent. Actual native application acceptance
+and registry-only distribution remain outstanding.
 
 UI and Tasks' earlier required-peer audits retained low KaTeX advisory
 GHSA-238p-pmpm-9mq7 through Mira's old math adapters. Mira 0.1.4 and Core 0.7.4
@@ -132,7 +130,7 @@ selected cohort still needs its own Desktop audit.
 
 ### Remaining npm archive prerequisites
 
-CI prepares these three packages from the full commits in
+CI prepares these two packages from the full commits in
 `scripts/ci-sources.json`; `scripts/ci-install.mjs` selects their package
 boundaries. That source list also keeps native plugin fixture checkouts and
 qualified Rust git pins after their npm projections are removed. Remove each

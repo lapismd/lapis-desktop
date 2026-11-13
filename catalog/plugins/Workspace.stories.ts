@@ -196,3 +196,76 @@ export const ResponsiveLayout: Story = {
     }
   },
 };
+
+export const MobileActions: Story = {
+  render: ResponsiveLayout.render,
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    const closeSidebar = async () => {
+      const close = canvas.getByRole("button", { name: "Close sidebar" });
+      await waitFor(() =>
+        expect(getComputedStyle(close).pointerEvents).not.toBe("none"),
+      );
+      await userEvent.click(close);
+    };
+    await waitFor(
+      () =>
+        expect(
+          canvasElement.querySelector('[data-notes-ready="true"]'),
+        ).not.toBeNull(),
+      { timeout: 30_000 },
+    );
+    await waitFor(() =>
+      expect(
+        canvasElement.querySelector('[data-ui-component="workspace-mobile"]'),
+      ).not.toBeNull(),
+    );
+    const search = canvas.getByRole("button", { name: "Open search sidebar" });
+    await expect(search).toBeEnabled();
+    await userEvent.click(search);
+    const selector = await canvas.findByRole("combobox", {
+      name: "Select left sidebar tab",
+    });
+    await expect(selector).toHaveAttribute("data-ui-component", "select");
+    await expect(selector).toHaveTextContent("Search");
+    await closeSidebar();
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Create new note" }),
+    );
+    const editor = await canvas.findByRole("textbox", {
+      name: "Markdown editor",
+    });
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open left sidebar" }),
+    );
+    await userEvent.click(
+      canvas.getByRole("combobox", { name: "Select left sidebar tab" }),
+    );
+    await userEvent.click(
+      within(document.body).getByRole("option", { name: "Files" }),
+    );
+    await expect(
+      await canvas.findByRole("button", { name: "Untitled.md" }),
+    ).toBeVisible();
+    await closeSidebar();
+    await expect(editor).toBeVisible();
+    await userEvent.click(
+      canvas.getAllByRole("button", { name: "Open more actions" })[0],
+    );
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Open command palette" }),
+    );
+    await expect(
+      await within(document.body).findByRole("dialog", {
+        name: "Command Palette",
+      }),
+    ).toBeVisible();
+    await userEvent.keyboard("{Escape}");
+    await waitFor(() =>
+      expect(getComputedStyle(editor).pointerEvents).not.toBe("none"),
+    );
+    await userEvent.click(editor);
+    await userEvent.keyboard("Mobile note");
+    await expect(editor).toHaveTextContent("Mobile note");
+  },
+};

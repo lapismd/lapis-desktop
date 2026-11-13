@@ -6,9 +6,9 @@ App/workspace/Agent screens, titles, sidebars, chat reuse and scoped drafts.
 Targets MUST declare safe `default_mode`; sends MUST assert it. History fixtures
 use native start/status publication, never client scheduling. Metadata stories
 MUST inject the public session port into the real shell with startup
-progress/recovery. Mobile fixtures follow [their contract](mobile-layout.md).
-Stories stay `visual-pending`; browser proof remains separate from
-[native acceptance](../history/E-CORE-022.md).
+progress/recovery. [Mobile fixtures](mobile-layout.md) verify App-owned actions
+and responsive settings. Stories stay `visual-pending`; browser proof is
+separate from [native acceptance](../history/E-CORE-022.md).
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned

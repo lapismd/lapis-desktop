@@ -55,7 +55,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-DB-003 | Implemented | Historical M3 receipts retain [E-DB-001](history/E-DB-001.md). [E-CORE-016](history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-DB-004 | Implemented | Historical M3 receipts retain [E-DB-001](history/E-DB-001.md). [E-CORE-016](history/E-CORE-016.md) tracks R1.3.8 / M16.3 high-level shared-service replacement; native intake passes with the explicitly accepted pre-existing Markdown image exception; failed UI evidence remains recorded. |
 | LD-SESSION-001 | Implemented | [E-SESSION-002](history/E-SESSION-002.md) |
-| LD-SESSION-005 | Partial | [E-MOBILE-003](history/E-MOBILE-003.md) |
+| LD-SESSION-005 | Partial | [E-MOBILE-003](history/E-MOBILE-003.md), [E-MOBILE-006](history/E-MOBILE-006.md); native-window acceptance remains pending. |
 | LD-SESSION-002 | Implemented | [E-SESSION-002](history/E-SESSION-002.md) |
 | LD-LIFE-001 | Implemented | [E-LIFE-001](history/E-LIFE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass; [E-LIFE-002](history/E-LIFE-002.md): ready-session Problems/toast presentation; [E-LIFE-003](history/E-LIFE-003.md): headed native exact requalification. |
 | LD-LIFE-002 | Implemented | [E-LIFE-001](history/E-LIFE-001.md); [E-QUALIFICATION-002](history/E-QUALIFICATION-002.md): Native/source gates and writer audit pass. |
