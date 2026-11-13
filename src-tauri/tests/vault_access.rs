@@ -2,7 +2,29 @@ use lapis_app_core::vault::{VaultRoot, WriteOptions};
 use lapis_desktop::vault::VaultManager;
 use std::fs;
 use std::io::{self, Read};
+#[cfg(unix)]
+use std::os::unix::process::CommandExt;
+#[cfg(unix)]
+use std::process::Command;
 use tempfile::tempdir;
+
+#[cfg(unix)]
+fn delegate_permission_test_when_root(test_name: &str) -> bool {
+    // SAFETY: `geteuid` only reads the process identity and has no preconditions.
+    if unsafe { libc::geteuid() } != 0 {
+        return false;
+    }
+    let status = Command::new(std::env::current_exe().unwrap())
+        .uid(65_534)
+        .gid(65_534)
+        .arg(test_name)
+        .arg("--exact")
+        .arg("--nocapture")
+        .status()
+        .unwrap();
+    assert!(status.success(), "unprivileged permission test failed");
+    true
+}
 
 #[test]
 fn cancellation_does_not_admit_or_change_recent_profiles() {
@@ -196,6 +218,9 @@ fn symlink_reads_writes_lists_and_new_parents_cannot_escape() {
 #[test]
 fn permission_failures_preserve_notes_and_existing_modes() {
     use std::os::unix::fs::{MetadataExt, PermissionsExt};
+    if delegate_permission_test_when_root("permission_failures_preserve_notes_and_existing_modes") {
+        return;
+    }
     let root = tempdir().unwrap();
     let vault = VaultRoot::open(root.path()).unwrap();
     let note = root.path().join("note.md");

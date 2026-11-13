@@ -11,7 +11,9 @@ Quality and Unit run inside the immutable Desktop CI image, which already
 contains their pinned Rust and GTK/WebKit build prerequisites. The image also
 pins Git at a version compatible with its Jujutsu binary and proves a real local
 `jj git fetch` during construction; consumer jobs never repair that toolchain at
-runtime.
+runtime. A permission-sensitive Rust case keeps its original assertions when the
+container starts as root by re-executing the exact case as UID/GID 65534;
+failure to launch or satisfy the assertions fails the parent test.
 
 The durable implementation status and continuation checklist are in
 [CI reliability handoff](ci-reliability-handoff.md). That handoff preserves the

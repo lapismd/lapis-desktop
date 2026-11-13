@@ -224,6 +224,9 @@ cannot reuse earlier results as current execution. Earlier attempts and failures
 stay retained. Image-backed producer and consumer jobs explicitly trust only
 their exact mounted workspace before resolving the checked-out commit; checkout
 trust written under a temporary home is not inherited by later container steps.
+An image-backed unit process with effective UID 0 MUST run an exact
+permission-sensitive case in an unprivileged child. Child launch or assertion
+failure MUST fail the parent; the case is never skipped or weakened.
 
 Native runtime packaging MUST prepare the pinned AI source checkout's declared
 Node tooling with its frozen lock before importing its bundle verifier. Packed

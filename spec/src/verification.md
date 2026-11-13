@@ -47,7 +47,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-HOST-001 | Implemented | [E-HOST-001](history/E-HOST-001.md). [E-DEPENDENCIES-002](history/E-DEPENDENCIES-002.md): compatible UI/Markdown patch intake; native CI remains required. |
 | LD-VAULT-001 | Implemented | [E-VAULT-001](history/E-VAULT-001.md) |
 | LD-VAULT-002 | Implemented | [E-VAULT-001](history/E-VAULT-001.md); [E-LIFE-002](history/E-LIFE-002.md): chooser in-body failure presentation. |
-| LD-VAULT-003 | Implemented | [E-VAULT-001](history/E-VAULT-001.md); [E-SESSION-002](history/E-SESSION-002.md) |
+| LD-VAULT-003 | Implemented | [E-VAULT-001](history/E-VAULT-001.md); [E-SESSION-002](history/E-SESSION-002.md); [E-CI-097](history/E-CI-097.md) |
 | LD-VAULT-004 | Implemented | [E-VAULT-001](history/E-VAULT-001.md) |
 | LD-VAULT-005 | Implemented | [E-VAULT-001](history/E-VAULT-001.md) |
 | LD-VAULT-006 | Implemented | [E-VAULT-001](history/E-VAULT-001.md); [E-REVIEW-001](history/E-REVIEW-001.md); [E-LIFE-002](history/E-LIFE-002.md): chooser in-body failure alert. |
@@ -117,7 +117,7 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-AI-002 | Partial | [E-AI-011](history/E-AI-011.md): Memory/tool policy qualified; mounted UI and native recovery remain required., [E-REPO-016](history/E-REPO-016.md); [E-AI-093](history/E-AI-093.md): transcripts, guarded backup replacement, retained UI.; [E-AI-094](history/E-AI-094.md): saved context and permissions. [E-AI-095](history/E-AI-095.md): discovery/cache/progress. [E-CI-054](history/E-CI-054.md): transcript checkpoint. [E-CI-057](history/E-CI-057.md): clean worktree; rerun pending. |
 | LD-AI-003 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](history/E-AI-094.md): saved agent context and negotiated permissions. |
-| LD-GOV-009 | Implemented | E-TEST-001: quiet default/headed runner. [E-CI-091](history/E-CI-091.md): Linux-only hosted tests; macOS local only. |
+| LD-GOV-009 | Implemented | E-TEST-001: quiet default/headed runner. [E-CI-091](history/E-CI-091.md): Linux-only tests. [E-CI-097](history/E-CI-097.md): root DAC child. |
 | LD-GOV-010 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md); [E-CI-001](history/E-CI-001.md); [E-CI-014](history/E-CI-014.md): Docker/native boundaries; E-ICONS-002 archive/SSH/catalog; [E-CI-095](history/E-CI-095.md)/[096](history/E-CI-096.md): Git/JJ image. |
 | LD-CI-001 | Partial | E-RELEASE-007: closure; E-DEPENDENCIES-003: exemption; E-RELEASE-011: ancestry; E-CI-045: profiles/nightly; [E-CI-091](history/E-CI-091.md): Linux-only selection. Hosted proof pending. |
 | LD-CI-002 | Partial | [E-RELEASE-007](history/E-RELEASE-007.md); [E-CI-045](history/E-CI-045.md); E-CI-047–055/065–070/077–080; [E-CI-094](history/E-CI-094.md)/[095](history/E-CI-095.md)/[096](history/E-CI-096.md); [E-VALIDATION-010](history/E-VALIDATION-010.md). Rerun pending. |

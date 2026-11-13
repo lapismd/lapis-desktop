@@ -68,7 +68,7 @@ Checkout leases MUST remain held for created, running, paused or uncertain
 workers; only a proven-absent recorded owner permits adoption. Release, cleanup
 and adoption MUST require known completed owned runs and immutable container
 identities; failed transport queries prove nothing. Workers MUST drop Linux
-capabilities so permission checks cannot bypass DAC.
+capabilities; root harnesses MUST run exact DAC cases as non-root children.
 
 The user authorized verified local pnpm archives until the publication gate. The
 ignored overlay verifies checksums/revisions, redirects matching ranges and
