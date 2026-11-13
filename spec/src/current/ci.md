@@ -218,9 +218,9 @@ Artifacts retain attempt-specific names and producer provenance. Qualification
 requires current-attempt reports from every selected Linux test and build gate:
 rerun the complete workflow after failure, because rerunning only failed jobs
 cannot reuse earlier results as current execution. Earlier attempts and failures
-stay retained. Image-backed producer jobs explicitly trust only their mounted
-workspace before resolving the checked-out commit; checkout trust written under
-a temporary home is not inherited by later container steps.
+stay retained. Image-backed producer and consumer jobs explicitly trust only
+their exact mounted workspace before resolving the checked-out commit; checkout
+trust written under a temporary home is not inherited by later container steps.
 
 Native runtime packaging MUST prepare the pinned AI source checkout's declared
 Node tooling with its frozen lock before importing its bundle verifier. Packed

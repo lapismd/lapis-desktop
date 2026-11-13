@@ -184,5 +184,15 @@ test("published image feeds verified current-attempt tools to every consumer", a
     "utf8",
   );
   assert.match(action, /ci-tools-\$\{\{ github\.run_attempt \}\}/u);
+  const trustWorkspace =
+      'git config --global --add safe.directory "$GITHUB_WORKSPACE"',
+    trustIndex = action.indexOf(trustWorkspace),
+    verifyIndex = action.indexOf("scripts/ci/tool-artifact.mjs verify");
+  assert.ok(trustIndex >= 0, "consumer trusts its exact mounted workspace");
+  assert.ok(
+    trustIndex < verifyIndex,
+    "consumer trusts the workspace before reading artifact provenance",
+  );
+  assert.doesNotMatch(action, /safe\.directory ["']?\*["']?/u);
   assert.match(action, /scripts\/ci\/tool-artifact\.mjs verify/u);
 });

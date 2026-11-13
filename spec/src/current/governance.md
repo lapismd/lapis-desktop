@@ -20,10 +20,10 @@ empty comparisons continue; unavailable/conflicting fail closed. The Notes fix
 stays upstream until released. [Local intake](local-dependencies.md) governs
 pins, refreshes and cohort gates (E-CI-015/018; LD-GOV-006/008). Hosted logs
 stream; release authority excludes scheduled health runs (E-CI-009/089).
-Whole-stack validation covers protected changes. Producers trust only the
-mounted workspace; source checks use built-ins. E2e imports runtime
-instrumentation; ordinary bundles reject its startup marker. Canonical owners
-include planned [Review](../backlog/markdown-review-contract.md) and staged
+Whole-stack validation covers protected changes. Image jobs trust only their
+exact mounted workspace; source checks use built-ins. E2e imports
+instrumentation; bundles reject its startup marker. Canonical owners include
+planned [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
 (E-PLAN-005; LD-GOV-001/002/004).
 
