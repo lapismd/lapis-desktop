@@ -46,6 +46,11 @@ desktop entry. Profile/vault bytes are checked across those operations. The
 first release honestly reports that upgrade coverage has no previous preview.
 Later releases use the prior published preview for upgrades.
 
+The Linux window probe stays inside one 60-second observation budget. A `wmctrl`
+status-1 response before Openbox publishes its EWMH client list means
+not-yet-observable and is polled again; missing tools, other statuses, an early
+app exit, an absent or undersized window and deadline expiry remain failures.
+
 `build-metadata.json` records per-target metadata and the actual CI run,
 toolchain, pinned prerequisite sources, private archive content hashes and lock
 hashes. App Profile and the AI client remain explicit private public-build

@@ -14,6 +14,7 @@ import { dirname, join, resolve } from "node:path";
 import { parseArgs } from "node:util";
 import { validateManifest } from "./contract.mjs";
 import { linuxBinary, verifyLinuxBundle } from "./verify-linux.mjs";
+import { listWindows } from "./window-observation.mjs";
 
 if (
   process.platform !== "linux" ||
@@ -100,7 +101,7 @@ try {
       await realpath(`/proc/${child.pid}/exe`),
       join(app, linuxBinary),
     );
-    const rows = run("wmctrl", ["-lpG"]).trim().split("\n");
+    const rows = listWindows(run);
     for (const row of rows) {
       const [id, , pid, , , width, height] = row.trim().split(/\s+/);
       if (

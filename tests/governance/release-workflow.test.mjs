@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { readFileSync } from "node:fs";
 import { parse } from "yaml";
+import { listWindows } from "../../scripts/release/window-observation.mjs";
 const read = (file) =>
   readFileSync(new URL(`../../${file}`, import.meta.url), "utf8");
 const workflow = parse(read(".github/workflows/release-desktop.yml"));
@@ -95,6 +96,31 @@ test("release packaging requires real Homebrew installation and releases no acce
   assert.doesNotMatch(
     source,
     /"--debug"|"--features"|local-macos-build|native-test/,
+  );
+});
+test("Linux window observation retries before the EWMH client list exists", () => {
+  const unavailable = Object.assign(Error("client list unavailable"), {
+    status: 1,
+  });
+  assert.deepEqual(
+    listWindows(() => {
+      throw unavailable;
+    }),
+    [],
+  );
+  assert.deepEqual(
+    listWindows(() => "0x01 0 123 0 0 800 600 host Lapis Notes Preview\n"),
+    ["0x01 0 123 0 0 800 600 host Lapis Notes Preview"],
+  );
+});
+test("Linux window observation preserves non-transient tool failures", () => {
+  const missing = Object.assign(Error("wmctrl missing"), { code: "ENOENT" });
+  assert.throws(
+    () =>
+      listWindows(() => {
+        throw missing;
+      }),
+    missing,
   );
 });
 test("tap automation uses a restricted installation token and recovery has no publication step", () => {
