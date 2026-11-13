@@ -16,7 +16,7 @@ import {
 
 const publishingSource = process.env.LAPIS_DESKTOP_CI_IMAGE_SOURCE === "1";
 const previousDigest =
-  "sha256:789e6a92ae0ff217b195112ff2766bfaf6aa9a7f8d81021ebf3fce4976597927";
+  "sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce";
 const currentDigest =
   "sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce";
 const publishedDigest = publishingSource ? null : currentDigest;
@@ -77,6 +77,8 @@ test("image publication stays manual, protected and multi-architecture", async (
     workflow.replace(/\s+/gu, " "),
     /docker run .*lapis-desktop-ci:verification node --test tests\/governance\/ci-image-source\.test\.mjs tests\/governance\/validation\.test\.mjs/u,
   );
+  assert.match(workflow, /--user "\$\(id -u\):\$\(id -g\)"/u);
+  assert.match(workflow, /--env HOME=\/tmp/u);
   assert.doesNotMatch(
     workflow,
     /run:\s*node --test[^\n]*validation\.test\.mjs/u,

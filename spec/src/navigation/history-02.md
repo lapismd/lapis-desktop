@@ -302,3 +302,4 @@
 - [Resolve the AI Host Hono production advisories](../history/E-CI-092.md)
 - [Format the Linux CI policy documentation](../history/E-CI-093.md)
 - [Trust image consumers and resolve patched Hono](../history/E-CI-094.md)
+- [Pin compatible Git and Jujutsu in the CI image](../history/E-CI-095.md)

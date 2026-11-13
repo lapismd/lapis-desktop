@@ -188,11 +188,13 @@ migration receipt; normal Cargo source fingerprints remain authoritative.
 
 Hosted tooling uses the same separation. The manually published
 `lapis-desktop-ci` image layers pinned Rust and Desktop system prerequisites on
-the shared Lapis image and embeds checksum-verified Linux ARM64/x64 and macOS
-ARM64 Jujutsu/mdBook payloads plus the exact original Vectorscan archive for
-each runner. Image publication creates no release candidate; consumers remain
-disabled until a reviewed immutable registry digest is pinned. The reviewed
-`2026.11.2` image is pinned by digest in every current workflow. Every adopting
+the shared Lapis image, builds checksum-verified Git 2.56.1 and embeds verified
+Linux ARM64/x64 and macOS ARM64 Jujutsu/mdBook payloads plus the exact original
+Vectorscan archive for each runner. Its build runs a local Jujutsu fetch smoke,
+so Git/Jujutsu incompatibility fails before publication. Image publication
+creates no release candidate; consumers remain disabled until a reviewed
+immutable registry digest is pinned. The reviewed `2026.11.2` image remains
+pinned while `2026.11.3` is in its protected publication handoff. Every adopting
 workflow authenticates that pull with its ephemeral workflow token, exports
 those bytes once and verifies the current source/run/attempt, image digest,
 complete file inventory, modes and platform before adding tools to `PATH` and

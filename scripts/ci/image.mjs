@@ -25,6 +25,7 @@ export function validateImageManifest(
     node: "24.15.0",
     pnpm: "10.34.5",
     playwright: "1.61.1",
+    git: "2.56.1",
     mdbook: "0.5.4",
     jj: "0.45.1",
     rust: "1.99.0",
