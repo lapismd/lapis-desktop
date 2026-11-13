@@ -79,26 +79,25 @@ unpublished tag cannot enter qualification and no credential enters the image or
 exported payload. The image MUST pin a checksum-verified Git version compatible
 with its Jujutsu binary and execute a real local Jujutsu fetch during image
 verification; consumer jobs MUST NOT download or substitute either tool. The
-current `2026.11.2` image remains pinned at
-`sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce`. The
-`2026.11.3` source remains unpublished until the protected publisher returns its
-immutable digest. The publisher builds a local image first and runs
-Jujutsu-dependent source checks inside it; a clean host never downloads those
-tools or falls back. Each workflow exports the image-owned bytes once, binds
-them to the current repository, source, run and attempt, and transfers one
-mode/hash-verified cross-platform artifact. Linux Quality and Unit execute
-inside that pinned image so their Rust checks and tests receive its fixed
-GTK/WebKit build libraries without a runner download. Consumers reject a missing
-producer, foreign attempt, changed digest, extra file, unsupported platform or
-non-executable payload. After verification they force Vectorscan's crate-owned
-offline mode and select only that platform's archive directory. Turbo MUST pass
-both values into every selected child task; ordinary jobs MUST NOT download this
-native dependency. Hosted native preparation, family execution, quarantine
-diagnostics and the Native ARM64 aggregate are disabled. Their local entry
-points, inventories, assertions, deadlines and quarantine records remain intact.
-Linux tests and browser/catalog results cannot qualify macOS WebView, focus,
-window, lifecycle, Keychain or backup behavior. A macOS bundle build proves only
-compilation, packaging and the ordinary-bundle audit.
+current `2026.11.3` image is pinned at
+`sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858`. The
+publisher builds a local image first and runs Jujutsu-dependent source checks
+inside it; a clean host never downloads those tools or falls back. Each workflow
+exports the image-owned bytes once, binds them to the current repository,
+source, run and attempt, and transfers one mode/hash-verified cross-platform
+artifact. Linux Quality and Unit execute inside that pinned image so their Rust
+checks and tests receive its fixed GTK/WebKit build libraries without a runner
+download. Consumers reject a missing producer, foreign attempt, changed digest,
+extra file, unsupported platform or non-executable payload. After verification
+they force Vectorscan's crate-owned offline mode and select only that platform's
+archive directory. Turbo MUST pass both values into every selected child task;
+ordinary jobs MUST NOT download this native dependency. Hosted native
+preparation, family execution, quarantine diagnostics and the Native ARM64
+aggregate are disabled. Their local entry points, inventories, assertions,
+deadlines and quarantine records remain intact. Linux tests and browser/catalog
+results cannot qualify macOS WebView, focus, window, lifecycle, Keychain or
+backup behavior. A macOS bundle build proves only compilation, packaging and the
+ordinary-bundle audit.
 
 A listener-confirmed native startup that exhausts its renderer-acknowledgement
 budget remains failed. Before cleanup, its harness MAY make one bounded driver

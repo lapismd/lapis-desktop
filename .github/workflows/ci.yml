@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     container:
-      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -141,7 +141,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     container:
-      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
@@ -245,7 +245,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     container:
-      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}

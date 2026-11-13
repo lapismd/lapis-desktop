@@ -303,3 +303,4 @@
 - [Format the Linux CI policy documentation](../history/E-CI-093.md)
 - [Trust image consumers and resolve patched Hono](../history/E-CI-094.md)
 - [Pin compatible Git and Jujutsu in the CI image](../history/E-CI-095.md)
+- [Adopt the published compatible Desktop CI image](../history/E-CI-096.md)

@@ -36,9 +36,9 @@ review without publication does not require a rebuild. Platform builds produce
 three ordinary archives from the same source. Every job pins `.node-version`
 directly, including tap-only jobs whose checked-out repository does not contain
 that file. E-CI-050 aligns that exact Node patch with the separately published
-Desktop CI image source. Release consumers retain reviewed image `2026.11.2`
-while `2026.11.3` is unpublished, then adopt only its reviewed registry digest;
-no mutable reference is allowed. The image pins checksum-verified Git compatible
+Desktop CI image source. Release consumers pin reviewed image `2026.11.3` at
+`sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858`; no
+mutable reference is allowed. The image pins checksum-verified Git compatible
 with its Jujutsu binary and verifies a real local fetch before publication. The
 workflow authenticates that digest-pinned pull with package-read-only workflow
 authority and restores Jujutsu and mdBook only from its source/run/attempt-bound

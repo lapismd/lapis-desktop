@@ -18,7 +18,7 @@ const publishingSource = process.env.LAPIS_DESKTOP_CI_IMAGE_SOURCE === "1";
 const previousDigest =
   "sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce";
 const currentDigest =
-  "sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce";
+  "sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858";
 const publishedDigest = publishingSource ? null : currentDigest;
 
 test("Desktop CI image source pins every tool and base", async () => {

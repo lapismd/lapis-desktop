@@ -193,17 +193,18 @@ Linux ARM64/x64 and macOS ARM64 Jujutsu/mdBook payloads plus the exact original
 Vectorscan archive for each runner. Its build runs a local Jujutsu fetch smoke,
 so Git/Jujutsu incompatibility fails before publication. Image publication
 creates no release candidate; consumers remain disabled until a reviewed
-immutable registry digest is pinned. The reviewed `2026.11.2` image remains
-pinned while `2026.11.3` is in its protected publication handoff. Every adopting
-workflow authenticates that pull with its ephemeral workflow token, exports
-those bytes once and verifies the current source/run/attempt, image digest,
-complete file inventory, modes and platform before adding tools to `PATH` and
-selecting the Vectorscan directory in forced offline mode. The image and
-artifact contain no credential. Turbo propagates both Vectorscan values to its
-child tasks, so failure never contacts the upstream release endpoints. Because
-checkout writes its trust entry under a temporary home, each containerized
-producer explicitly trusts only the exact mounted `GITHUB_WORKSPACE` before
-reading Git provenance; wildcard repository trust is prohibited.
+immutable registry digest is pinned. The reviewed `2026.11.3` image is pinned at
+`sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858`. Every
+adopting workflow authenticates that pull with its ephemeral workflow token,
+exports those bytes once and verifies the current source/run/attempt, image
+digest, complete file inventory, modes and platform before adding tools to
+`PATH` and selecting the Vectorscan directory in forced offline mode. The image
+and artifact contain no credential. Turbo propagates both Vectorscan values to
+its child tasks, so failure never contacts the upstream release endpoints.
+Because checkout writes its trust entry under a temporary home, each
+containerized producer explicitly trusts only the exact mounted
+`GITHUB_WORKSPACE` before reading Git provenance; wildcard repository trust is
+prohibited.
 
 `E-VALIDATION-001` already qualifies the cache/image-key regressions, mounted
 cache bootstrap exclusion and complete runner/lease/guard suite. JavaScript
