@@ -228,6 +228,7 @@
 - [Retry transient Linux window-list readiness](../history/E-RELEASE-019.md)
 - [Resume exact interrupted draft publication](../history/E-RELEASE-020.md)
 - [Keep draft discovery behind protected publication](../history/E-RELEASE-021.md)
+- [Preserve capacity-blocked full qualification](../history/E-RELEASE-022.md)
 
 - [CI reliability, isolated families and scheduled validation](../history/E-CI-045.md)
 
