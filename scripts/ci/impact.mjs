@@ -162,19 +162,22 @@ export function planChanges(
     reasons.push(`Affected consumers: ${file}`);
   }
   if (all) {
+    const selectedGates = full
+      ? [...gates]
+      : gates.filter((gate) => gate !== "bundle");
     const plan = {
       schemaVersion: 2,
-      profile: "full",
-      full: true,
+      profile: full ? "full" : "ordinary",
+      full,
       ordinaryProfilesEnabled: narrowProfiles,
       testedRevision,
-      gates: [...gates],
+      gates: selectedGates,
       unit: [...unitGroups],
       quality: ["types", "rust"],
       rustPackages: null,
       nativeFamilies: [],
       catalogProfile: "full",
-      dependencyPlatforms: prerequisitePlatforms(gates),
+      dependencyPlatforms: prerequisitePlatforms(selectedGates),
       reasons: full ? ["Explicit full qualification", ...reasons] : reasons,
     };
     return validatePlan(plan);
