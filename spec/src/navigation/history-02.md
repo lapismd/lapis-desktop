@@ -229,6 +229,7 @@
 - [Resume exact interrupted draft publication](../history/E-RELEASE-020.md)
 - [Keep draft discovery behind protected publication](../history/E-RELEASE-021.md)
 - [Preserve capacity-blocked full qualification](../history/E-RELEASE-022.md)
+- [Own compute-model picker focus readiness](../history/E-RELEASE-023.md)
 
 - [CI reliability, isolated families and scheduled validation](../history/E-CI-045.md)
 

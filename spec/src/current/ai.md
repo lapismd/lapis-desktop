@@ -21,7 +21,7 @@ bootstrap/skills, native credentials/tools and explicit optional compute.
 Existing local conversations and private drafts remain supported. E-AI-098
 aligns provider/compute settings with the Agents page's full-width cards.
 E-AI-099 adds compute fit; E-AI-121 adds [indexed imports](ai-imports.md).
-E-AI-122: model search; E-AI-123–125: compute library, status and inline choice.
+E-AI-122: search; E-AI-123–125: compute states; E-RELEASE-023: picker focus.
 
 [Local ACP/file storage](ai-local-history.md): E-AI-093/096 scoped drafts.
 E-CI-054/057/059–061 retain bounded comparison/window diagnostics; native-store
