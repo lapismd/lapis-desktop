@@ -162,26 +162,29 @@ test("promotion selects only qualified unexpired artifacts from the same source 
         ? { artifacts: [artifact] }
         : path.includes("/git/ref/tags/")
           ? { object: { type: "commit", sha: source } }
-          : path.endsWith("/releases?per_page=100")
-            ? [
-                {
-                  tag_name: identity.tag,
-                  target_commitish: source,
-                  draft: true,
-                  prerelease: true,
-                },
-              ]
-            : sourceServer({
-                runs: [{ ...ci, head_sha: recoverySource }],
-              })(path, options);
+          : path.includes("/releases/tags/")
+            ? null
+            : path.endsWith("/releases?per_page=100")
+              ? Promise.reject(
+                  Error("Read-only workflow tokens cannot enumerate drafts"),
+                )
+              : sourceServer({
+                  runs: [{ ...ci, head_sha: recoverySource }],
+                })(path, options);
   assert.deepEqual(
     await selectCandidate("42", recoverySource, recoveryRequest),
     { runId: "42", artifact: artifact.name, sourceCommit: source },
   );
   await assert.rejects(
     selectCandidate("42", recoverySource, async (path, options) =>
-      path.endsWith("/releases?per_page=100")
-        ? []
+      path.includes("/git/ref/tags/") ? null : recoveryRequest(path, options),
+    ),
+    /interrupted draft/,
+  );
+  await assert.rejects(
+    selectCandidate("42", recoverySource, async (path, options) =>
+      path.includes("/releases/tags/")
+        ? { tag_name: identity.tag, draft: false }
         : recoveryRequest(path, options),
     ),
     /interrupted draft/,
