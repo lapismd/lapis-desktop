@@ -306,3 +306,4 @@
 - [Pin compatible Git and Jujutsu in the CI image](../history/E-CI-095.md)
 - [Adopt the published compatible Desktop CI image](../history/E-CI-096.md)
 - [Preserve permission-denial tests in root CI containers](../history/E-CI-097.md)
+- [Await launcher empty-state readiness](../history/E-CI-098.md)
