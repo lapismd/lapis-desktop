@@ -21,9 +21,7 @@
   ],
   "contractReview": "The released Notes cohort keeps one Design Core peer context. After mobile-layout intake selected registry Core 0.12.4 and range ^0.12.1, the governance pin and local-dependency minima must name that same override and range. Historical 0.10.1 receipts stay immutable.",
   "acceptanceReview": "Hosted Unit tests on 63d127ca failed 1 of 756 cases because ci-prerequisites still required workspace override 0.10.1. The exact file now passes 7/7 after the pin matches 0.12.4 and ^0.12.1. Fresh hosted unit remains required. E-MOBILE-003 is unchanged.",
-  "remaining": [
-    "Pass hosted Unit tests on the repaired commit before merge."
-  ],
+  "remaining": ["Pass hosted Unit tests on the repaired commit before merge."],
   "runs": [
     {
       "name": "hosted-unit-before",
