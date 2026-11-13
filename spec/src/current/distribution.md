@@ -59,6 +59,11 @@ adds no driver, profile override or fixture to the ordinary application. This
 boundary does not prove all editor/provider behavior; the separate original
 exact-source CI and its documented skips remain authoritative.
 
+Linux X11 observation MUST treat only `wmctrl` status 1 before Openbox publishes
+its EWMH client list as not-yet-observable inside the existing 60-second
+deadline. Missing tools, timeouts, other statuses, early application exit,
+absent or undersized windows and deadline expiry MUST fail qualification.
+
 E-RELEASE-003 records the native watcher shutdown regression found while
 qualifying the preview branch. Candidate preparation still requires successful
 CI for the final source; an infrastructure retry cannot waive that regression.
