@@ -140,6 +140,11 @@ jobs:
     name: Quality
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    container:
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
@@ -239,6 +244,11 @@ jobs:
     name: Unit tests
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    container:
+      image: ghcr.io/lapismd/lapis-desktop-ci@sha256:8461639d06b7c4d82c31ead342d782195f789b88e8cde9e69424663a827f0cce
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6

@@ -85,6 +85,8 @@ test("image publication stays manual, protected and multi-architecture", async (
 });
 
 test("consumer image pulls use the workflow token", async () => {
+  const manifest = await loadImageManifest();
+  const reference = `${manifest.image}@${publishingSource ? previousDigest : currentDigest}`;
   for (const path of [
     ".github/workflows/ci.yml",
     ".github/workflows/publish-storybook-pages.yml",
@@ -92,20 +94,31 @@ test("consumer image pulls use the workflow token", async () => {
     ".github/workflows/trial-desktop.yml",
   ]) {
     const workflow = parse(await readFile(path, "utf8"));
-    const container = workflow.jobs["ci-tools"]?.container;
     assert.equal(
       workflow.permissions?.packages,
       "read",
       `${path} grants only package read access`,
     );
-    assert.deepEqual(
-      container?.credentials,
-      {
-        username: "${{ github.actor }}",
-        password: "${{ secrets.GITHUB_TOKEN }}",
-      },
-      `${path} authenticates its immutable image pull`,
-    );
+    const imageJobs =
+      path === ".github/workflows/ci.yml"
+        ? ["ci-tools", "quality", "unit"]
+        : ["ci-tools"];
+    for (const name of imageJobs) {
+      const container = workflow.jobs[name]?.container;
+      assert.equal(
+        container?.image,
+        reference,
+        `${path}:${name} pins the immutable image`,
+      );
+      assert.deepEqual(
+        container?.credentials,
+        {
+          username: "${{ github.actor }}",
+          password: "${{ secrets.GITHUB_TOKEN }}",
+        },
+        `${path}:${name} authenticates its immutable image pull`,
+      );
+    }
   }
 });
 

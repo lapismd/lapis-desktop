@@ -7,6 +7,8 @@ build-only for private-package projections and ordinary application artifacts.
 The native-family and diagnostic descriptions below document retained local
 machinery and earlier attempts; they are not current hosted or release gates.
 Linux/browser success cannot qualify macOS native behavior. See E-CI-091.
+Linux Quality and Unit run inside the immutable Desktop CI image, which already
+contains their pinned Rust and GTK/WebKit build prerequisites.
 
 The durable implementation status and continuation checklist are in
 [CI reliability handoff](ci-reliability-handoff.md). That handoff preserves the

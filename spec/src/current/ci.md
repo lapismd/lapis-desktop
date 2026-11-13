@@ -82,7 +82,9 @@ publisher builds a local image first and runs Jujutsu-dependent source checks
 inside it; a clean host never downloads those tools or falls back. Each workflow
 exports the image-owned bytes once, binds them to the current repository,
 source, run and attempt, and transfers one mode/hash-verified cross-platform
-artifact. Consumers reject a missing producer, foreign attempt, changed digest,
+artifact. Linux Quality and Unit execute inside that pinned image so their Rust
+checks and tests receive its fixed GTK/WebKit build libraries without a runner
+download. Consumers reject a missing producer, foreign attempt, changed digest,
 extra file, unsupported platform or non-executable payload. After verification
 they force Vectorscan's crate-owned offline mode and select only that platform's
 archive directory. Turbo MUST pass both values into every selected child task;
