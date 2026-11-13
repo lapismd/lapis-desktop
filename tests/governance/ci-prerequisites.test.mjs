@@ -123,7 +123,7 @@ test("the released Notes cohort has one current Design Core and API peer context
     nativeSource.find((entry) => entry.name === "lapis-notes")?.revision,
     notesRevision,
   );
-  assert.match(workspace, /"@lapismd\/design-core": "0\.12\.4"/);
+  assert.match(workspace, /"@lapismd\/design-core": "0\.13\.0"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
   assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.2.6");
   assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.2");

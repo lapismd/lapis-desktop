@@ -123,6 +123,16 @@ export const ResponsiveLayout: Story = {
     const canvas = within(canvasElement);
     const mobile = () =>
       canvasElement.querySelector('[data-ui-component="workspace-mobile"]');
+    const waitForMobile = async (present: boolean) => {
+      await waitFor(
+        () =>
+          present
+            ? expect(mobile()).not.toBeNull()
+            : expect(mobile()).toBeNull(),
+        { timeout: 30_000 },
+      );
+      if (present) await expect(mobile()).toBeVisible();
+    };
     await waitFor(
       () =>
         expect(
@@ -130,7 +140,7 @@ export const ResponsiveLayout: Story = {
         ).not.toBeNull(),
       { timeout: 30_000 },
     );
-    await expect(mobile()).toBeVisible();
+    await waitForMobile(true);
     const chooseMode = async (mode: string) => {
       if (mobile())
         await userEvent.click(
@@ -155,21 +165,34 @@ export const ResponsiveLayout: Story = {
       await userEvent.click(close);
     };
     await chooseMode("Never");
-    await waitFor(() => expect(mobile()).toBeNull());
+    await waitForMobile(false);
     await chooseMode("Always");
-    await waitFor(() => expect(mobile()).toBeVisible());
+    await waitForMobile(true);
     const host = canvasElement.querySelector<HTMLElement>(".notes-demo")!;
-    const previous = host.style.width;
+    const shell = canvasElement.querySelector<HTMLElement>(
+      '[data-ui-component="app-shell"]',
+    )!;
+    const previousHost = host.style.width;
+    const previousShell = shell.style.width;
+    const setWidth = (px: string) => {
+      host.style.width = px;
+      host.style.maxWidth = px;
+      shell.style.width = px;
+      shell.style.maxWidth = px;
+    };
     try {
-      host.style.width = "390px";
+      setWidth("390px");
       await chooseMode("Auto");
-      await waitFor(() => expect(mobile()).toBeVisible());
-      host.style.width = "900px";
-      await waitFor(() => expect(mobile()).toBeNull());
-      host.style.width = "495px";
-      await waitFor(() => expect(mobile()).toBeVisible());
+      await waitForMobile(true);
+      setWidth("900px");
+      await waitForMobile(false);
+      setWidth("495px");
+      await waitForMobile(true);
     } finally {
-      host.style.width = previous;
+      host.style.width = previousHost;
+      host.style.maxWidth = "";
+      shell.style.width = previousShell;
+      shell.style.maxWidth = "";
     }
   },
 };

@@ -312,3 +312,4 @@
 - [Await launcher empty-state readiness](../history/E-CI-098.md)
 - [Mobile layout integration](../history/E-MOBILE-003.md)
 - [Align the Design Core cohort pin with mobile layout](../history/E-MOBILE-004.md)
+- [Wait for App-owned mobile chrome after shell start](../history/E-MOBILE-005.md)
