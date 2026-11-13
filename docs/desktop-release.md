@@ -73,15 +73,15 @@ gh workflow run release-desktop.yml --repo lapismd/lapis-desktop --ref main \
   -f operation=publish-candidate -f candidate_run_id=<PREPARATION_RUN_ID> -F publish=true
 ```
 
-The source must still match main and the qualified artifact must be unexpired.
-Alternatively, prepare with `publish=true` to request approval in the same run.
-The `desktop-preview-release` environment requires stevejuma's approval, permits
-main only and disallows administrator bypass. Approve the exact run's qualified
-artifact. The protected job promotes those same bytes without rebuilding,
-creates `desktop-v<version>`, publishes a GitHub prerelease, and checks its
-public downloads. Existing differing tags/assets cause failure; do not delete or
-replace a release to conceal a bad candidate. Advance the candidate version
-instead.
+Initial publication requires the candidate source to match main and the
+qualified artifact to be unexpired. Alternatively, prepare with `publish=true`
+to request approval in the same run. The `desktop-preview-release` environment
+requires stevejuma's approval, permits main only and disallows administrator
+bypass. Approve the exact run's qualified artifact. The protected job promotes
+those same bytes without rebuilding, creates `desktop-v<version>`, publishes a
+GitHub prerelease, and checks its public downloads. Existing differing
+tags/assets cause failure; do not delete or replace a release to conceal a bad
+candidate. Advance the candidate version instead.
 
 Configure `HOMEBREW_TAP_APP_ID` and `HOMEBREW_TAP_APP_PRIVATE_KEY` in this
 repository. The GitHub App must be restricted to the tap with Contents and Pull
@@ -117,9 +117,33 @@ bound to target and SHA-256.
 
 ## Recovery
 
-Retry a failed protected publish job within its original run to resume identical
-draft uploads. The job refuses to overwrite different bytes. Publication failure
-never permits rebuilding a replacement under the same version.
+Preserve a failed protected publication attempt and dispatch a wholly new
+`publish-candidate` workflow for the same preparation run; never rerun only the
+failed job. The publisher discovers drafts through the releases collection,
+verifies existing asset bytes and resumes the unique compatible draft by its
+release ID. It leaves empty duplicate drafts untouched and refuses changed or
+ambiguous drafts. Publication failure never permits rebuilding a replacement
+under the same version.
+
+If the publisher itself needs repair, merge that repair only after explicit full
+PR qualification and require full exact-main CI for the repair revision. A new
+protected run may then select the original preparation only when the original
+exact-source tag and draft already exist. The candidate's source, sealed bytes
+and preparation run remain unchanged; the later revision supplies qualified
+recovery code, not a replacement candidate.
+
+For a user-authorized protected run, inspect its exact pending deployment and
+approve only the returned environment ID:
+
+```sh
+gh api repos/lapismd/lapis-desktop/actions/runs/<RUN_ID>/pending_deployments
+gh api --method POST \
+  repos/lapismd/lapis-desktop/actions/runs/<RUN_ID>/pending_deployments \
+  -F 'environment_ids[]=<ENVIRONMENT_ID>' -f state=approved \
+  -f comment='Approved exact qualified preview publication'
+```
+
+Do not approve unrelated environments or bypass the protected boundary.
 
 If publication succeeded but the tap update failed, recover it independently:
 

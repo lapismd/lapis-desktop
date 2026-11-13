@@ -46,6 +46,12 @@ test("preview publication stays manual, disabled by default and protected after 
   assert.ok(publishing.includes("publish.mjs"));
   assert.doesNotMatch(publishing, /tauri.*build|release:prepare|ci-install/);
   assert.ok(workflow.jobs.publish.steps.some((step) => step.with?.["run-id"]));
+  assert.equal(
+    workflow.jobs.publish.steps.find((step) =>
+      step.run?.includes("publish.mjs"),
+    ).env.CANDIDATE_SOURCE_COMMIT,
+    "${{ needs.select-candidate.outputs.source || github.sha }}",
+  );
 });
 test("release packaging requires real Homebrew installation and releases no acceptance binary", () => {
   assert.equal(workflow.jobs.build.strategy.matrix.include.length, 3);

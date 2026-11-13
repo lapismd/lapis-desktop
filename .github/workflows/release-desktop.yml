@@ -332,6 +332,7 @@ jobs:
     outputs:
       run-id: ${{ steps.select.outputs.run-id }}
       artifact: ${{ steps.select.outputs.artifact }}
+      source: ${{ steps.select.outputs.source }}
       tag: ${{ steps.select.outputs.tag }}
     steps:
       - uses: actions/checkout@v6
@@ -383,6 +384,8 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           LAPIS_DESKTOP_PUBLISH_APPROVED: "1"
+          CANDIDATE_SOURCE_COMMIT:
+            ${{ needs.select-candidate.outputs.source || github.sha }}
   tap-update:
     name: Update Homebrew preview
     needs: publish

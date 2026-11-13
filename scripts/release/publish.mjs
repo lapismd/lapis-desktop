@@ -1,7 +1,6 @@
 import { readFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { execFileSync } from "node:child_process";
 import { hostedMain, hash, repository } from "./contract.mjs";
 import { verifyCandidate } from "./candidate.mjs";
 import { requireFullCI } from "./source-ci.mjs";
@@ -34,25 +33,7 @@ export async function publishCandidate(
   let release = await request(`${api}/releases/tags/${manifest.tag}`, {
     optional: true,
   });
-  if (
-    release &&
-    (release.tag_name !== manifest.tag || release.prerelease !== true)
-  )
-    throw Error("Existing release has a different channel");
   const notes = await readFile(join(directory, "LIMITATIONS.md"), "utf8");
-  if (!release)
-    release = await request(`${api}/releases`, {
-      method: "POST",
-      body: {
-        tag_name: manifest.tag,
-        target_commitish: sourceCommit,
-        name: `Lapis Notes Preview ${manifest.version}`,
-        draft: true,
-        prerelease: true,
-        make_latest: "false",
-        body: `Preview for Apple Silicon macOS 15+ (ad-hoc signed, unnotarized) and Ubuntu 24.04 ARM64/x64 (WebKitGTK 4.1, GTK 3 and Ayatana AppIndicator required).\n\nSource: ${sourceCommit}\nCI: ${metadata.sourceCI.ciUrl}\n\nInstall using the verified Homebrew preview cask after its update PR merges.\n\n${notes}`,
-      },
-    });
   const local = new Map(
     await Promise.all(
       files.map(async (file) => [file, await readFile(join(directory, file))]),
@@ -81,11 +62,62 @@ export async function publishCandidate(
       throw Error("Release is missing qualified assets");
     return seen;
   }
-  const present = await verifyAssets(release, !release.draft);
+  function verifyRelease(current) {
+    if (
+      current.tag_name !== manifest.tag ||
+      current.prerelease !== true ||
+      current.target_commitish !== sourceCommit
+    )
+      throw Error("Existing release has a different channel or source");
+  }
+  let present;
+  if (release) {
+    verifyRelease(release);
+    present = await verifyAssets(release, true);
+  } else {
+    const releases = await request(`${api}/releases?per_page=100`);
+    const candidates = [];
+    for (const current of releases.filter(
+      ({ tag_name }) => tag_name === manifest.tag,
+    )) {
+      verifyRelease(current);
+      if (!current.draft)
+        throw Error("Published release lookup was inconsistent");
+      candidates.push({
+        release: current,
+        present: await verifyAssets(current, false),
+      });
+    }
+    if (candidates.length) {
+      const mostAssets = Math.max(
+        ...candidates.map(({ present: assets }) => assets.size),
+      );
+      const matches = candidates.filter(
+        ({ present: assets }) => assets.size === mostAssets,
+      );
+      if (matches.length !== 1)
+        throw Error("Multiple compatible draft releases are ambiguous");
+      ({ release, present } = matches[0]);
+    } else {
+      release = await request(`${api}/releases`, {
+        method: "POST",
+        body: {
+          tag_name: manifest.tag,
+          target_commitish: sourceCommit,
+          name: `Lapis Notes Preview ${manifest.version}`,
+          draft: true,
+          prerelease: true,
+          make_latest: "false",
+          body: `Preview for Apple Silicon macOS 15+ (ad-hoc signed, unnotarized) and Ubuntu 24.04 ARM64/x64 (WebKitGTK 4.1, GTK 3 and Ayatana AppIndicator required).\n\nSource: ${sourceCommit}\nCI: ${metadata.sourceCI.ciUrl}\n\nInstall using the verified Homebrew preview cask after its update PR merges.\n\n${notes}`,
+        },
+      });
+      present = new Set();
+    }
+  }
   if (release.draft) {
     for (const [name, file] of names)
       if (!present.has(name))
-        await upload(manifest.tag, join(directory, file), name);
+        await upload(release.id, join(directory, file), name);
     release = await request(`${api}/releases/${release.id}`);
     await verifyAssets(release, true);
     release = await request(`${api}/releases/${release.id}`, {
@@ -103,15 +135,28 @@ async function main() {
   const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN;
   const result = await publishCandidate(
     resolve(".local/release/candidate"),
-    process.env.GITHUB_SHA,
+    process.env.CANDIDATE_SOURCE_COMMIT ?? process.env.GITHUB_SHA,
     {
       request: github(token),
-      upload: async (tag, file, name) =>
-        execFileSync(
-          "gh",
-          ["release", "upload", tag, file, "--repo", repository],
-          { stdio: "inherit" },
-        ),
+      upload: async (releaseId, file, name) => {
+        if (!Number.isSafeInteger(releaseId) || releaseId <= 0)
+          throw Error("Invalid draft release ID");
+        const response = await fetch(
+          `https://uploads.github.com/repos/${repository}/releases/${releaseId}/assets?name=${encodeURIComponent(name)}`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              Accept: "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+              "Content-Type": "application/octet-stream",
+            },
+            body: await readFile(file),
+          },
+        );
+        if (!response.ok)
+          throw Error(`Release asset upload failed: ${response.status}`);
+      },
       assetBytes: async (asset, draft, tag) => {
         const publicUrl = `https://github.com/${repository}/releases/download/${tag}/${asset.name}`;
         if (!draft && asset.browser_download_url !== publicUrl)

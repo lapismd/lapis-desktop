@@ -226,6 +226,7 @@
 - [Vault-return replacement input quarantine](../history/E-RELEASE-013.md)
 - [Main queue readiness and Rust backup quarantine](../history/E-RELEASE-014.md)
 - [Retry transient Linux window-list readiness](../history/E-RELEASE-019.md)
+- [Resume exact interrupted draft publication](../history/E-RELEASE-020.md)
 
 - [CI reliability, isolated families and scheduled validation](../history/E-CI-045.md)
 
