@@ -132,6 +132,13 @@ exact-source tag and draft already exist. The candidate's source, sealed bytes
 and preparation run remain unchanged; the later revision supplies qualified
 recovery code, not a replacement candidate.
 
+Candidate selection before approval keeps repository contents read-only. It
+verifies the original tag still targets the candidate source and that the tag
+has not become a public release. GitHub does not expose drafts to that token;
+draft enumeration, exact asset verification and immutable release-ID selection
+therefore occur only inside the environment-protected publisher, which retains
+the sole contents-write permission.
+
 For a user-authorized protected run, inspect its exact pending deployment and
 approve only the returned environment ID:
 

@@ -24,19 +24,14 @@ export async function selectCandidate(runId, sourceCommit, request) {
     const tagRef = await request(`/repos/${repository}/git/ref/tags/${tag}`, {
       optional: true,
     });
-    const releases = await request(
-      `/repos/${repository}/releases?per_page=100`,
+    const publicRelease = await request(
+      `/repos/${repository}/releases/tags/${tag}`,
+      { optional: true },
     );
     if (
       tagRef?.object?.type !== "commit" ||
       tagRef.object.sha !== run.head_sha ||
-      !releases.some(
-        (release) =>
-          release.tag_name === tag &&
-          release.target_commitish === run.head_sha &&
-          release.draft === true &&
-          release.prerelease === true,
-      )
+      publicRelease !== null
     )
       throw Error(
         "Cross-source publication is limited to an existing interrupted draft",

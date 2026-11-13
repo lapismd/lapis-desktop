@@ -36,12 +36,17 @@ commit, so review without publication does not require a rebuild. After an
 interrupted publication, a later fully qualified main repair may select that
 same candidate only when its exact source-bound tag and draft already exist. The
 candidate source remains authoritative; the repair revision cannot select
-another candidate, create a cross-source release or bypass its own full CI.
-Platform builds produce three ordinary archives from the same source. Every job
-pins `.node-version` directly, including tap-only jobs whose checked-out
-repository does not contain that file. E-CI-050 aligns that exact Node patch
-with the separately published Desktop CI image source. Release consumers pin
-reviewed image `2026.11.3` at
+another candidate, create a cross-source release or bypass its own full CI. The
+pre-approval selector retains repository read authority: it requires the exact
+candidate-source tag and refuses an already public release. GitHub hides drafts
+from that token, so only the environment-protected, write-scoped publisher
+enumerates exact-tag drafts, verifies source/channel/assets and selects the
+compatible release ID. The selector MUST NOT gain unprotected contents-write
+authority merely to inspect drafts. Platform builds produce three ordinary
+archives from the same source. Every job pins `.node-version` directly,
+including tap-only jobs whose checked-out repository does not contain that file.
+E-CI-050 aligns that exact Node patch with the separately published Desktop CI
+image source. Release consumers pin reviewed image `2026.11.3` at
 `sha256:ae8bcdde66e170bae0bc334d47ada879c345912ac3581e1ec8d766c3e4b1a858`; no
 mutable reference is allowed. The image pins checksum-verified Git compatible
 with its Jujutsu binary and verifies a real local fetch before publication. The

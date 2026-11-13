@@ -40,6 +40,7 @@ test("preview publication stays manual, disabled by default and protected after 
   assert.equal(workflow.jobs.publish.environment, "desktop-preview-release");
   assert.equal(workflow.jobs.publish.permissions.contents, "write");
   assert.equal(workflow.permissions.contents, "read");
+  assert.equal(workflow.jobs["select-candidate"].permissions, undefined);
   assert.ok(workflow.jobs.publish.if.includes("inputs.publish == true"));
   const publishing = JSON.stringify(workflow.jobs.publish);
   assert.ok(publishing.includes("download-artifact"));
