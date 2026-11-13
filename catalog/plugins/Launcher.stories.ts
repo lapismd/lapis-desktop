@@ -190,9 +190,9 @@ export const NoMatchingRecents: Story = {
       name: "Search recent vaults",
     });
     await userEvent.type(search, "No matching vault");
-    await expect(
-      await body.findByText("No matching recent vaults"),
-    ).toBeVisible();
+    await waitFor(() =>
+      expect(body.getByText("No matching recent vaults")).toBeVisible(),
+    );
   },
 };
 export const AppearanceSettings: Story = {
