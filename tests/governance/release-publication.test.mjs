@@ -122,6 +122,7 @@ function service({
   const state = {
     tag: wrongTag ? { object: { type: "commit", sha: "b".repeat(40) } } : null,
     release: null,
+    releases: [],
     bytes: new Map(),
     uploads: 0,
     publicizations: 0,
@@ -148,42 +149,56 @@ function service({
       state.tag = { object: { type: "commit", sha: options.body.sha } };
       return state.tag;
     }
-    if (path.includes("/releases/tags/")) return state.release;
+    if (path.includes("/releases/tags/"))
+      return state.releases.find((release) => !release.draft) ?? null;
+    if (path.endsWith("/releases?per_page=100")) return state.releases;
     if (path.endsWith("/releases") && options.method === "POST") {
       state.release = {
         ...options.body,
-        id: 1,
+        id: state.releases.length + 1,
         assets: [],
         html_url:
           "https://github.com/lapismd/lapis-desktop/releases/tag/" + tag,
       };
+      state.releases.push(state.release);
       return state.release;
     }
-    if (path.endsWith("/releases/1")) {
+    const releaseId = Number(path.match(/\/releases\/(\d+)$/)?.[1]);
+    if (releaseId) {
+      const release = state.releases.find(({ id }) => id === releaseId);
+      if (!release) throw Error(`Unknown release ${releaseId}`);
       if (options.method === "PATCH") {
         state.publicizations++;
-        Object.assign(state.release, options.body);
+        Object.assign(release, options.body);
       }
-      return state.release;
+      state.release = release;
+      return release;
     }
     throw Error(`Unexpected API request ${path}`);
   };
-  state.upload = async (_, file, name) => {
+  state.upload = async (releaseId, file, name) => {
     if (interrupt && state.uploads === 1) {
       interrupt = false;
       throw Error("Interrupted upload");
     }
+    const release = Number.isSafeInteger(releaseId)
+      ? state.releases.find(({ id }) => id === releaseId)
+      : state.releases.find(({ tag_name }) => tag_name === releaseId);
+    assert.ok(release, "Uploads target an existing release");
     assert.equal(basename(file), name);
     assert.ok(
-      !state.bytes.has(name),
+      !release.assets.some((asset) => asset.name === name),
       "Uploads never overwrite an existing asset",
     );
     const bytes = await readFile(file);
-    state.bytes.set(name, bytes);
+    state.bytes.set(`${release.id}:${name}`, bytes);
     state.uploads++;
-    state.release.assets.push({ id: state.uploads, name, size: bytes.length });
+    release.assets.push({ id: state.uploads, name, size: bytes.length });
   };
-  state.assetBytes = async (asset) => state.bytes.get(asset.name);
+  state.assetBytes = async (asset) => {
+    const release = state.releases.find(({ assets }) => assets.includes(asset));
+    return state.bytes.get(`${release.id}:${asset.name}`);
+  };
   return state;
 }
 test("candidate verification rejects changed bytes, missing inventory and forged native receipts", async (context) => {
@@ -269,8 +284,39 @@ test("interrupted draft upload resumes identical assets without clobbering", asy
     /Interrupted/,
   );
   assert.equal(server.release.draft, true);
+  server.releases.push({ ...server.release, id: 2, assets: [] });
   await publishCandidate(directory, source, server);
   assert.equal(server.publicizations, 1);
+  assert.equal(server.releases[0].draft, false);
+  assert.equal(server.releases[1].draft, true);
+  assert.equal(server.releases[1].assets.length, 0);
+});
+test("ambiguous duplicate drafts fail closed without uploading", async (context) => {
+  const { directory } = await candidate(context),
+    server = service();
+  await assert.rejects(
+    publishCandidate(directory, source, {
+      ...server,
+      request: async (path, options) => {
+        if (path.endsWith("/releases?per_page=100")) {
+          const draft = {
+            tag_name: tag,
+            target_commitish: source,
+            prerelease: true,
+            draft: true,
+            assets: [],
+          };
+          return [
+            { ...draft, id: 1 },
+            { ...draft, id: 2 },
+          ];
+        }
+        return server.request(path, options);
+      },
+    }),
+    /ambiguous/,
+  );
+  assert.equal(server.uploads, 0);
 });
 test("changed tags, failed source CI and altered existing assets never publish", async (context) => {
   const { directory } = await candidate(context);

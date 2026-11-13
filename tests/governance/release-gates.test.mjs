@@ -154,6 +154,38 @@ test("promotion selects only qualified unexpired artifacts from the same source 
     (await selectCandidate("42", source, request())).artifact,
     artifact.name,
   );
+  const recoverySource = "b".repeat(40);
+  const recoveryRequest = async (path, options) =>
+    path.endsWith("/actions/runs/42")
+      ? run
+      : path.endsWith("artifacts?per_page=100")
+        ? { artifacts: [artifact] }
+        : path.includes("/git/ref/tags/")
+          ? { object: { type: "commit", sha: source } }
+          : path.endsWith("/releases?per_page=100")
+            ? [
+                {
+                  tag_name: identity.tag,
+                  target_commitish: source,
+                  draft: true,
+                  prerelease: true,
+                },
+              ]
+            : sourceServer({
+                runs: [{ ...ci, head_sha: recoverySource }],
+              })(path, options);
+  assert.deepEqual(
+    await selectCandidate("42", recoverySource, recoveryRequest),
+    { runId: "42", artifact: artifact.name, sourceCommit: source },
+  );
+  await assert.rejects(
+    selectCandidate("42", recoverySource, async (path, options) =>
+      path.endsWith("/releases?per_page=100")
+        ? []
+        : recoveryRequest(path, options),
+    ),
+    /interrupted draft/,
+  );
   for (const invalid of [
     { ...run, head_sha: "b".repeat(40) },
     { ...run, conclusion: "failure" },
