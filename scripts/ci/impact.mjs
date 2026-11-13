@@ -56,7 +56,7 @@ export function planChanges(
     names.forEach((n) => units.add(n));
   };
   const native = () => {
-    add("bundle", "linux");
+    add("linux");
   };
   for (const file of Array.isArray(files) ? files : []) {
     if (
@@ -133,7 +133,7 @@ export function planChanges(
         reasons.push(`Shared or unmapped native harness: ${file}`);
         continue;
       }
-      add("quality", "bundle", "linux");
+      add("quality", "linux");
       unit("governance");
     } else if (file.startsWith("tests/renderer/")) {
       add("quality");

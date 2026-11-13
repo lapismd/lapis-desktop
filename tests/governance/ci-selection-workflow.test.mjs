@@ -63,7 +63,7 @@ test("all executable test and quality jobs run on Linux", () => {
   );
 });
 
-test("macOS is limited to prerequisite and ordinary bundle production", () => {
+test("macOS is limited to packaging jobs", () => {
   assert.equal(workflow.jobs.bundle["runs-on"], "macos-15");
   const macConsumers = [...source.matchAll(/runs-on: macos-15/gu)];
   assert.equal(macConsumers.length, 1);

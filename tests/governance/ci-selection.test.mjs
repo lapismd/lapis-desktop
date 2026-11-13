@@ -57,6 +57,7 @@ test("Cargo closure includes dependent application crates and excludes unrelated
   const app = plan(["src-tauri/src/watch/mod.rs"]);
   assert.deepEqual(app.unit, ["rust"]);
   assert.ok(app.gates.includes("linux"));
+  assert.ok(!app.gates.includes("bundle"));
   assert.ok(!app.gates.includes("storybook-interaction"));
   const serviceTest = plan(["src-tauri/tests/repository_original.rs"]);
   assert.ok(serviceTest.gates.includes("linux"));
@@ -64,8 +65,12 @@ test("Cargo closure includes dependent application crates and excludes unrelated
 });
 test("renderer, catalog, release and native-test changes select complete consumers", () => {
   const renderer = plan(["src/components/views/Main.svelte"]);
-  assert.ok(renderer.gates.includes("bundle"));
+  assert.ok(!renderer.gates.includes("bundle"));
   assert.ok(renderer.gates.includes("linux"));
+  assert.deepEqual(renderer.dependencyPlatforms, [
+    { os: "ubuntu-24.04", id: "linux-x64" },
+    { os: "ubuntu-24.04-arm", id: "linux-arm64" },
+  ]);
   const catalog = plan(["catalog/plugins/Example.stories.ts"]);
   assert.ok(catalog.gates.includes("storybook-interaction"));
   assert.ok(!catalog.gates.includes("linux"));
@@ -78,7 +83,7 @@ test("renderer, catalog, release and native-test changes select complete consume
   ]);
   assert.deepEqual(release.unit, ["governance"]);
   const native = plan(["tests/desktop/startup-progress.test.mjs"]);
-  assert.ok(native.gates.includes("bundle"));
+  assert.ok(!native.gates.includes("bundle"));
   assert.ok(native.gates.includes("linux"));
 });
 test("unknown/shared changes, missing crate ownership and explicit full requests fail closed", () => {
@@ -125,7 +130,6 @@ test("ordinary catalog and mapped native tests declare exact smaller coverage", 
   assert.equal(native.profile, "ordinary");
   assert.deepEqual(native.nativeFamilies, []);
   assert.deepEqual(native.dependencyPlatforms, [
-    { os: "macos-15", id: "macos-arm64" },
     { os: "ubuntu-24.04", id: "linux-x64" },
     { os: "ubuntu-24.04-arm", id: "linux-arm64" },
   ]);
