@@ -31,6 +31,7 @@
   } = $props();
   let open = $state(false);
   let trigger = $state<HTMLButtonElement>(null!);
+  let searchInput = $state<HTMLInputElement | null>(null);
   const rows = $derived(
     computeModelChoices(models, hardware, memoryLimit, value),
   );
@@ -80,10 +81,15 @@
     <Popover.Content
       align="end"
       class="compute-model-picker__menu"
+      onOpenAutoFocus={(event) => {
+        event.preventDefault();
+        searchInput?.focus();
+      }}
       style="--ui-popover-width: max(var(--bits-popover-anchor-width), min(42rem, calc(100vw - 2rem))); --ui-popover-padding: 0; --ui-command-view-list-max-height: min(24rem, 50dvh)"
     >
       <CommandView.Root label="Search local models" loop>
         <CommandView.Input
+          bind:ref={searchInput}
           aria-label="Search local models"
           placeholder="Search models…"
         />
