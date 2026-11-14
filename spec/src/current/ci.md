@@ -43,7 +43,9 @@ resource before compiling the Desktop crate, including workspace-wide
 selections. Independent Rust package selections retain their existing
 preparation scope. Missing package exports or failed resource preparation MUST
 fail qualification. Clean-checkout regression evidence is retained in
-[E-CI-102](../history/E-CI-102.md).
+[E-CI-102](../history/E-CI-102.md). The direct Linux x86_64 Cargo step retains
+this same prerequisite; its real workflow command is probed in a fresh directory
+by [E-CI-103](../history/E-CI-103.md).
 
 Trusted dependency PR authors, including on human reruns, skip the docs runner's
 specification validation, build and spec-first phases through the shared author

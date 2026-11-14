@@ -700,6 +700,8 @@ jobs:
           run-portable-rust-service-tests-on-linux-x86-64 -- /bin/bash -e -o
           pipefail -c 'set -o pipefail
 
+          node scripts/prepare-bundled-skills.mjs
+
           cargo test --manifest-path src-tauri/Cargo.toml --locked --
           --nocapture 2>&1 | tee .local/linux-rust-tests.log
 

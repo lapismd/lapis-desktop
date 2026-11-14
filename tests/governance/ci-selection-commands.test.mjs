@@ -11,6 +11,7 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { parse } from "yaml";
 import {
   unitCommands,
   qualityCommands,
@@ -42,7 +43,7 @@ test("Rust selection tests only the selected package closure", () => {
     }).some(([, args]) => args.includes("scripts/prepare-bundled-skills.mjs")),
   );
 });
-for (const kind of ["unit", "quality"]) {
+for (const kind of ["unit", "quality", "linux"]) {
   test(`${kind} native selection prepares packaged skills before Cargo on a clean checkout`, () => {
     const cwd = mkdtempSync(join(tmpdir(), "lapis-ci-skills-"));
     try {
@@ -72,6 +73,30 @@ for (const kind of ["unit", "quality"]) {
         probe,
         `import assert from "node:assert/strict"; import { readFileSync } from "node:fs"; assert.deepEqual(JSON.parse(readFileSync("src-tauri/resources/bundled-skills.json", "utf8")), ${JSON.stringify(skills)});`,
       );
+      if (kind === "linux") {
+        mkdirSync(join(cwd, ".local"));
+        mkdirSync(join(cwd, "scripts/ci"));
+        cpSync("scripts/ci/timing.mjs", join(cwd, "scripts/ci/timing.mjs"));
+        const bin = join(cwd, "bin");
+        mkdirSync(bin);
+        writeFileSync(
+          join(bin, "cargo"),
+          `#!${process.execPath}\n${readFileSync(probe, "utf8")}\nconsole.log("test original_and_managed_reads_share_one_client_without_initializing_original_history ... ok");\n`,
+          { mode: 0o755 },
+        );
+        const workflow = parse(
+          readFileSync(".github/workflows/ci.yml", "utf8"),
+        );
+        const step = workflow.jobs.linux.steps.find(
+          (item) =>
+            item.name === "Run portable Rust service tests on Linux x86_64",
+        );
+        execFileSync("bash", ["-e", "-o", "pipefail", "-c", step.run], {
+          cwd,
+          env: { ...process.env, PATH: `${bin}:${process.env.PATH}` },
+        });
+        return;
+      }
       const commands =
         kind === "unit"
           ? unitCommands({ LAPIS_CI_UNIT_GROUPS: '["rust"]' })
