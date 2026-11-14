@@ -202,9 +202,9 @@ Local links do not bypass source checks. Deno desktop remains frozen. Retain
 license notices and attribution when moving plugin code. Retire old active
 distribution/story registrations only after replacements pass.
 
-Roles/CV, Docs, Tasks, both Sync variants and the parked Community plugin remain
-excluded. Application signing, publication and other-platform distribution stay
-outside M8–M10. Dynamic package signature verification remains required.
+Roles/CV, Docs, Tasks, [both Sync variants](../backlog/lapis-sync.md) and parked
+Community remain excluded. Signing, publication and other-platform distribution
+stay outside M8–M10. Dynamic package signature verification remains required.
 
 ## Terminal host integration
 
