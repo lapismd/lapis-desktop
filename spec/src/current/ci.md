@@ -38,6 +38,13 @@ application. Documentation validation retains full ancestry and immutable
 receipt checks. Default developer `check`/`test` commands keep their full
 behavior.
 
+Selected hosted Rust tests and Clippy MUST prepare the public plugin skill
+resource before compiling the Desktop crate, including workspace-wide
+selections. Independent Rust package selections retain their existing
+preparation scope. Missing package exports or failed resource preparation MUST
+fail qualification. Clean-checkout regression evidence is retained in
+[E-CI-102](../history/E-CI-102.md).
+
 Trusted dependency PR authors, including on human reruns, skip the docs runner's
 specification validation, build and spec-first phases through the shared author
 policy. Formatting and selected functional gates remain required. Human and
