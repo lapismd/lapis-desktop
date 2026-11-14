@@ -7,13 +7,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends git python3 cur
 COPY install-tools.mjs /opt/install-tools.mjs
 RUN node /opt/install-tools.mjs
 RUN git config --system user.name 'LapisMD validation' && git config --system user.email 'validation@localhost' && git config --system --add safe.directory '*'
-RUN mkdir -p /input /results /work/lapis-desktop
+RUN useradd --uid 10001 --create-home validation && mkdir -p /input /results /work/lapis-desktop/src-tauri/target /cache/pnpm /cache/cargo && chown -R 10001:10001 /input /results /work /cache
+ENV HOME=/home/validation
 WORKDIR /work/lapis-desktop
+USER 10001:10001
 
 FROM ui AS full
+USER root
 COPY --from=rust /usr/local/cargo /usr/local/cargo
 COPY --from=rust /usr/local/rustup /usr/local/rustup
 ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/cache/cargo CARGO_BUILD_JOBS=4
 ENV PATH=/usr/local/cargo/bin:$PATH
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential pkg-config clang cmake protobuf-compiler libssl-dev libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libayatana-appindicator3-dev patchelf libxdo-dev && rm -rf /var/lib/apt/lists/*
 RUN rustup component add rustfmt clippy --toolchain 1.99.0
+USER 10001:10001

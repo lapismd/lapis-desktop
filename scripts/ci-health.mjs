@@ -3,7 +3,6 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { github } from "./release/github.mjs";
 import { fullCIJobs } from "./release/source-ci.mjs";
-import { nativeFamilies } from "./native-families.mjs";
 
 export const nightlyRepository = "lapismd/lapis-desktop";
 export const nightlyWorkflow = ".github/workflows/ci.yml";
@@ -86,11 +85,15 @@ async function completeEvidence(request, run) {
   const artifacts = await pages(request, `${root}/artifacts?`, "artifacts");
   const required = [
     `ci-plan-${run.run_attempt}`,
-    ...nativeFamilies.map(
-      (family) => `native-family-${family}-${run.run_attempt}`,
-    ),
+    "portable-rust-x86_64-unknown-linux-gnu",
+    "native-linux-aarch64-unknown-linux-gnu",
+    "native-linux-x86_64-unknown-linux-gnu",
   ];
   const validArtifact = (artifact, name) =>
+    Number.isFinite(Date.parse(artifact.created_at)) &&
+    Date.parse(artifact.created_at) >=
+      Date.parse(run.run_started_at ?? run.created_at) &&
+    Date.parse(artifact.created_at) <= Date.parse(run.updated_at) &&
     artifact.name === name &&
     Number.isSafeInteger(artifact.id) &&
     artifact.id > 0 &&

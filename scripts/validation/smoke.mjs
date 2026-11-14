@@ -6,6 +6,7 @@ import { join } from "node:path";
 import { chromium, webkit } from "@playwright/test";
 
 assert.equal(process.platform, "linux");
+assert.notEqual(process.getuid(), 0, "Docker validation must run unprivileged");
 const directory = await mkdtemp(join(tmpdir(), "desktop-permission-smoke-"));
 const denied = join(directory, "denied");
 try {

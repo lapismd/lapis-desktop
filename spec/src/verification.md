@@ -3,8 +3,8 @@
 [E-CORE-026](history/E-CORE-026.md): Notes pin and three native policy cases
 pass under LD-GOV-006/010 and LD-AI-002; UI/provider gates remain.
 
-E-AI-115 covers root-context Markdown alignment under LD-AI-002/LD-CAT-003;
-package intake and focused stories retain their gates.
+E-AI-115: root-context Markdown alignment (LD-AI-002/LD-CAT-003); package intake
+and focused stories remain gated.
 
 E-REPO-012/013 retain manual previews and visual gates.
 
@@ -118,11 +118,12 @@ E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
 | LD-AI-003 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required. |
 | LD-AI-004 | Partial | [E-PLUGINS-003](history/E-PLUGINS-003.md): Authorized scope; product gate remains required.; [E-AI-093](history/E-AI-093.md): local ACP transcripts, guarded backup replacement and retained agent UI.; [E-AI-094](history/E-AI-094.md): saved agent context and negotiated permissions. |
 | LD-GOV-009 | Implemented | E-TEST-001: quiet default/headed runner. [E-CI-091](history/E-CI-091.md): Linux-only tests. [E-CI-097](history/E-CI-097.md): root DAC child. |
-| LD-GOV-010 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md); [E-CI-001](history/E-CI-001.md); [E-CI-014](history/E-CI-014.md): Docker/native boundaries; E-ICONS-002 archive/SSH/catalog; [E-CI-095](history/E-CI-095.md)/[096](history/E-CI-096.md): Git/JJ image. |
+| LD-GOV-010 | Implemented | [E-VALIDATION-001](history/E-VALIDATION-001.md); [E-CI-001](history/E-CI-001.md); [E-CI-014](history/E-CI-014.md): Docker/native; E-ICONS-002 archive/SSH/catalog; [E-CI-095](history/E-CI-095.md)/[096](history/E-CI-096.md): Git/JJ image; E-CI-101. |
 | LD-CI-001 | Partial | E-RELEASE-007: closure; E-DEPENDENCIES-003: exemption; E-RELEASE-011: ancestry; E-CI-045: profiles/nightly; [E-CI-091](history/E-CI-091.md): Linux-only selection. Hosted proof pending. |
 | LD-CI-002 | Partial | [E-RELEASE-007](history/E-RELEASE-007.md); [E-CI-045](history/E-CI-045.md); E-CI-047–055/065–070/077–080; [E-CI-094](history/E-CI-094.md)/[095](history/E-CI-095.md)/[096](history/E-CI-096.md); [E-VALIDATION-010](history/E-VALIDATION-010.md). Rerun pending. |
 | LD-CI-003 | Partial | E-RELEASE-007/011, E-CI-045/091: current-attempt Linux/three-build qualification. [E-RELEASE-022](history/E-RELEASE-022.md): macOS capacity block; fresh attempt pending. |
 | LD-CI-004 | Partial | E-RELEASE-007, E-DEPENDENCIES-003, E-CI-045/048–065/070–072/081/085–090/092/094–096: fail-closed aggregation and repairs. [E-RELEASE-022](history/E-RELEASE-022.md): cancelled selected bundle rejected. |
+| LD-CI-005 | Implemented | [Evidence](history/E-CI-101.md) |
 | LD-REL-001 | Implemented | E-RELEASE-001/002/005 and [E-CI-089](history/E-CI-089.md): tooling, platforms and authoritative CI. [E-RELEASE-020](history/E-RELEASE-020.md): exact-main full CI and preparation passed. |
 | LD-REL-002 | Partial | [E-RELEASE-005](history/E-RELEASE-005.md): three-platform release tooling. [E-RELEASE-003](history/E-RELEASE-003.md): watcher shutdown; [E-RELEASE-004](history/E-RELEASE-004.md): ACP reload quarantine. [E-RELEASE-002](history/E-RELEASE-002.md): Homebrew. [E-RELEASE-001](history/E-RELEASE-001.md): tooling. [E-CI-049](history/E-CI-049.md): Node pin. Final hosted candidate/publication pending. [E-RELEASE-006](history/E-RELEASE-006.md): initial cold progress quarantined; enabled proof pending. [E-RELEASE-008](history/E-RELEASE-008.md): background admission/cold-reset quarantined; enabled proof pending. [E-RELEASE-010](history/E-RELEASE-010.md): queue admission/deleted-preview recovery quarantined; enabled proof pending. [E-RELEASE-012](history/E-RELEASE-012.md): Explorer input quarantined. [E-RELEASE-013](history/E-RELEASE-013.md): vault-return input quarantined. [E-RELEASE-014](history/E-RELEASE-014.md): Rust quarantine. [E-CI-076](history/E-CI-076.md): 22 UI quarantines. |
 | LD-REL-003 | Implemented | E-RELEASE-001/002/005 and E-CI-091: tooling, archives and receipts. [E-RELEASE-020](history/E-RELEASE-020.md): sealed candidate checksums independently verified. |

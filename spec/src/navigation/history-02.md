@@ -317,3 +317,4 @@
 - [Align the Design Core cohort pin with mobile layout](../history/E-MOBILE-004.md)
 - [Wait for App-owned mobile chrome after shell start](../history/E-MOBILE-005.md)
 - [Adopt the published Notes mobile cohort](../history/E-MOBILE-006.md)
+- [Use active portable artifacts for nightly health](../history/E-CI-101.md)

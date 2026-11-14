@@ -16,16 +16,15 @@ paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
 `jj` and exact args. E-CI-054–064/084 retain deadlines/assertions, exact editor
 readiness and no-retry/quarantine/release policy. Native close never retries;
 empty comparisons continue; unavailable/conflicting fail closed.
-[Local intake](local-dependencies.md) governs pins and cohort gates
-(E-CI-015/018; LD-GOV-006/008). JavaScript/private-profile and Rust pins are
-independent; renderer refreshes retain qualified Rust sources. Hosted logs
-stream; release authority excludes scheduled health runs (E-CI-009/089).
-Whole-stack validation covers protected changes. Image jobs trust only their
-exact mounted workspace; source checks use built-ins. E2e imports
-instrumentation; bundles reject its startup marker. Canonical owners include
-planned [Review](../backlog/markdown-review-contract.md) and staged
-[native queues](ai-queue.md), registered in `scripts/spec-contracts.mjs`
-(E-PLAN-005; LD-GOV-001/002/004).
+[Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
+LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
+renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005
+health grants no release authority (E-CI-009/089). Protected changes require
+full checks. Images trust only the exact mounted workspace; source checks use
+built-ins. E2e imports instrumentation; bundles reject its startup marker.
+Planned [Review](../backlog/markdown-review-contract.md) and staged
+[native queues](ai-queue.md) are canonical owners registered in
+`scripts/spec-contracts.mjs` (E-PLAN-005; LD-GOV-001/002/004).
 
 The catalog uses `.storybook`, `catalog/plugins` and `catalog/support`. Import
 audits resolve relative paths before distinguishing the repository's development

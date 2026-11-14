@@ -36,14 +36,17 @@ function jobs(source) {
 function artifacts(source) {
   return [
     `ci-plan-${source.run_attempt}`,
-    `native-family-smoke-${source.run_attempt}`,
-    `native-family-workspace-${source.run_attempt}`,
-    `native-family-services-${source.run_attempt}`,
+    "portable-rust-x86_64-unknown-linux-gnu",
+    "native-linux-aarch64-unknown-linux-gnu",
+    "native-linux-x86_64-unknown-linux-gnu",
   ].map((name, index) => ({
     id: index + 1,
     name,
     expired: false,
     size_in_bytes: 100,
+    created_at: new Date(
+      Date.parse(source.run_started_at) + 1000,
+    ).toISOString(),
     workflow_run: { head_sha: source.head_sha },
   }));
 }
@@ -284,4 +287,60 @@ test("independent health schedule has read-only permissions and no coordinator d
   assert.ok(!workflow.includes("needs:"));
   assert.ok(!workflow.includes("write"));
   assert.ok(!workflow.includes("workflow_run:"));
+});
+
+test("portable full CI evidence is healthy without retired native-family artifacts", async () => {
+  const latest = run();
+  const names = [
+    `ci-plan-${latest.run_attempt}`,
+    "portable-rust-x86_64-unknown-linux-gnu",
+    "native-linux-aarch64-unknown-linux-gnu",
+    "native-linux-x86_64-unknown-linux-gnu",
+  ];
+  const { request } = service([latest], {
+    transformArtifacts: () =>
+      names.map((name, index) => ({
+        id: index + 1,
+        name,
+        expired: false,
+        size_in_bytes: 100,
+        created_at: new Date(
+          Date.parse(latest.run_started_at) + 1000,
+        ).toISOString(),
+        workflow_run: { head_sha: latest.head_sha },
+      })),
+  });
+  const result = await health(request);
+  assert.equal(result.status, "healthy");
+  assert.equal(result.releaseQualified, false);
+  assert.deepEqual(
+    result.latestAttempt.artifacts.map((entry) => entry.name),
+    names,
+  );
+});
+
+test("portable artifacts cannot reuse earlier attempts or unknown creation identity", async () => {
+  const latest = run();
+  for (const created_at of [undefined, "invalid", date(2), date(0)]) {
+    const result = await health(
+      service([latest], {
+        transformArtifacts: (items) =>
+          items.map((item) => ({ ...item, created_at })),
+      }).request,
+    );
+    assert.equal(result.status, "missing-evidence");
+  }
+});
+
+test("each active portable artifact remains required", async () => {
+  for (const missing of artifacts(run()).map((item) => item.name)) {
+    const result = await health(
+      service([run()], {
+        transformArtifacts: (items) =>
+          items.filter((item) => item.name !== missing),
+      }).request,
+    );
+    assert.equal(result.status, "missing-evidence");
+    assert.deepEqual(result.latestAttempt.missingArtifacts, [missing]);
+  }
 });
