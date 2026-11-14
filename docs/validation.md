@@ -104,11 +104,11 @@ To move load off the Mac, save ignored `.local/validation/config.json`:
 The Docker context supplies the SSH endpoint. No local path needs to exist on
 the remote machine: inputs and reports are streamed. Omit `transport` for
 ordinary Docker context transport. `LAPIS_DESKTOP_VALIDATION_CONTEXT` overrides
-the saved context. CPU, memory and shared memory are bounded. Workers drop all
-Linux capabilities; the smoke proves that a denied-directory write fails,
-including when cache ownership keeps the worker UID at root. One lease per
-checkout keeps its aggregate runs sequential; independent repositories can run
-separately.
+the saved context. CPU, memory and shared memory are bounded. Workers run as an
+unprivileged user and drop all Linux capabilities; the smoke proves that a
+denied-directory write fails. Image identities keep caches from an older worker
+UID separate. One lease per checkout keeps its aggregate runs sequential;
+independent repositories can run separately.
 
 For an agent that requires an owned foreground connection, set the private
 `sshMultiplexing` option to `false`. An optional absolute `sshControlPath` can

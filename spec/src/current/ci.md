@@ -18,6 +18,7 @@ as newly authored.
 | LD-CI-002 | Rust build caching MUST bind to platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch; floating selectors cannot qualify verified reuse. Caches MAY reuse dependency outputs, but MUST NOT replace selected Linux tests. Ordinary bundles MUST still be rebuilt/audited and reject acceptance drivers; helper inventory/signing and final artifact hashes remain authoritative.                    |
 | LD-CI-003 | Full CI MUST remain explicitly dispatchable. Every executable test, quality, catalog and Rust lane MUST run on Linux. Ordinary pull-request and main required checks MUST be Linux-only; macOS runners MUST be packaging-only for explicit full, trial and release publication. Release preparation MUST require successful full Linux tests and three-platform packaging of the identical main commit, not a docs-only green run, and GitHub Releases MUST publish those same qualified bytes with RC versions marked prerelease. |
 | LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve both required Linux target checks. Ordinary Validate MUST NOT require macOS jobs. macOS packaging success MUST NOT be represented as test or native acceptance success.                                                                                                                                             |
+| LD-CI-005 | Read-only nightly health MUST require a canonical scheduled attempt within 30 hours and complete full-CI success within 48 hours. Required jobs and active portable artifacts MUST match the source and current attempt. Missing, expired, malformed or foreign evidence MUST fail closed. Health MUST NOT authorize releases or require retired on-demand native-family artifacts.                                                                                                                                                |
 
 The planner selects whole test families rather than removing assertions. Desktop
 currently owns one Rust application crate, `lapis-desktop`; its changes select
@@ -212,7 +213,11 @@ Scheduled runs validate only: they cannot publish, sign or authorize a release.
 A separate read-only health workflow every six hours requires a nightly attempt
 within 30 hours and a complete success within 48 hours, with failed, missing,
 access-denied and incomplete evidence reported distinctly. Prior-nightly success
-on another revision cannot qualify a release candidate.
+on another revision cannot qualify a release candidate. The active portable
+evidence set is the attempt-named CI plan, portable Rust report and both Linux
+target artifacts. Static artifact names MUST bind to the current run window
+through creation timestamps between its start and completion. Retired on-demand
+native-family archives are not part of this hosted profile.
 
 Narrower ordinary catalog profiles stay disabled until a complete hosted
 full/nightly baseline passes. `LAPIS_CI_NARROW_PROFILES=qualified` explicitly
@@ -236,3 +241,10 @@ Node tooling with its frozen lock before importing its bundle verifier. Packed
 application client archives do not supply that source-side TOML tooling. This
 preparation must preserve manifests/locks and avoid rebuilding public exports;
 installer failure remains a real preparation failure.
+
+Portable Docker workers run as the dedicated unprivileged validation user with
+all Linux capabilities dropped. Input, result, source and newly keyed cache
+directories must be writable by that user. Permission tests execute their real
+DAC assertions directly; the harness must not depend on switching UID after
+capabilities are dropped. Both UI and full images retain this boundary, while
+image identity invalidates caches created under the previous worker identity.
