@@ -63,6 +63,14 @@ pub fn validate_name(name: &str) -> io::Result<()> {
 }
 
 impl VaultManager {
+    /// Already-admitted desktop vaults only; never exposes recent paths as authority.
+    pub fn admitted(&self) -> Vec<VaultDescriptor> {
+        self.sessions
+            .values()
+            .map(|entry| entry.descriptor.clone())
+            .collect()
+    }
+
     pub fn new(profile_directory: &Path) -> io::Result<Self> {
         std::fs::create_dir_all(profile_directory)?;
         let profile_dir = Dir::open_ambient_dir(profile_directory, ambient_authority())?;

@@ -60,6 +60,11 @@ await cp(
   `src-tauri/target/${target}/release/lapis-desktop`,
   join(app, linuxBinary),
 );
+await cp(
+  "src-tauri/resources/lapis-cli",
+  join(app, "lib", productName, "lapis-cli"),
+  { recursive: true },
+);
 await cp("src-tauri/resources/lapis-ai", join(app, linuxRuntime), {
   recursive: true,
 });

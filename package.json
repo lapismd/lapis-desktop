@@ -70,7 +70,8 @@
     "ci:headed": "pnpm test:desktop:headed",
     "checks": "node scripts/run-turbo.mjs ci:governance ci:storybook-static --summarize && node scripts/run-turbo.mjs ci:storybook-interaction --summarize && node scripts/run-turbo.mjs ci:quality --summarize && node scripts/run-turbo.mjs ci:unit --summarize && node scripts/run-turbo.mjs ci:bundle --summarize",
     "release:prepare": "node scripts/release/prepare-platform.mjs",
-    "release:verify": "node scripts/release/verify-candidate.mjs"
+    "release:verify": "node scripts/release/verify-candidate.mjs",
+    "cli:prepare": "node scripts/prepare-cli.mjs"
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.3.0",
@@ -82,9 +83,9 @@
     "@lapis-notes/markdown": "^0.2.1",
     "@lapis-notes/search": "^0.1.6",
     "@lapis-notes/source-editor": "^0.1.3",
-    "@lapis-notes/ui": "^0.1.9",
+    "@lapis-notes/ui": "^0.1.10",
     "@lapis-notes/workspace": "^0.4.0",
-    "@lapismd/design-core": "^0.13.0",
+    "@lapismd/design-core": "^0.13.2",
     "@lapismd/mira": "~0.1.5",
     "@lapismd/mira-editor": "~0.0.3",
     "@lapismd/mira-plugin-ai": "~0.0.3",

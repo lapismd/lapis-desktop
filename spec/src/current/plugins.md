@@ -385,16 +385,8 @@ Start.
 The AI plugin owns the Agents Settings category and its forge-style client
 table. Disabling AI removes both AI preferences and Agents registrations.
 
-E-AI-089 adopts reviewed chat presentation in the existing AI plugin. Plugin
-identity, App ownership, disposal and public host boundaries are unchanged.
-Native conversations augment normal ACP; no replacement plugin is introduced.
-
-E-AI-095 extends the existing Native Notes binding and workspace-lifecycle
-review stories with provider-discovery counters and bottom-panel/draft
-assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
-catalog fixture enters production. Native Search review adds admitted rebuild
-and lifecycle states (E-CORE-030); App/vault own metadata and status.
-
-E-AI-106/107/110 review header actions, required provider models and shared
-Compute inputs through production stories. Shell lifecycle ReadySessionFailure
-covers host Problems; native gates remain. Shell boot may take 15s (E-CI-032).
+General → Advanced CLI cases use the public UI compound and native command
+adapter. Native calls are fixtures; plays cover install, removal, repair and
+scoped read-only consent.
+[Retained catalog qualification](../verification-notes.md) preserves the
+previous presentation and lifecycle receipts.

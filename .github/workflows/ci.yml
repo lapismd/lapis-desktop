@@ -212,7 +212,8 @@ jobs:
       - name: Prepare the pinned native AI runtime
         run:
           node scripts/ci/timing.mjs run prepare-the-pinned-native-ai-runtime --
-          /bin/bash -e -o pipefail -c 'pnpm ai:prepare -- --reuse'
+          /bin/bash -e -o pipefail -c 'pnpm cli:prepare -- --reuse && pnpm
+          ai:prepare -- --reuse'
         if: needs.changes.outputs.rust == 'true'
       - name: Run formatting, type, and source checks
         run:
@@ -316,7 +317,8 @@ jobs:
       - name: Prepare the pinned native AI runtime
         run:
           node scripts/ci/timing.mjs run prepare-the-pinned-native-ai-runtime --
-          /bin/bash -e -o pipefail -c 'pnpm ai:prepare -- --reuse'
+          /bin/bash -e -o pipefail -c 'pnpm cli:prepare -- --reuse && pnpm
+          ai:prepare -- --reuse'
         if: needs.changes.outputs.rust == 'true'
       - name: Run unit tests
         run:
@@ -688,7 +690,7 @@ jobs:
           'x86_64-unknown-linux-gnu'
         run:
           node scripts/ci/timing.mjs run prepare-portable-native-resources --
-          pnpm ai:prepare -- --reuse
+          pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse
       - name: Run portable Rust service tests on Linux x86_64
         if:
           needs.changes.outputs.linux == 'true' && matrix.target ==

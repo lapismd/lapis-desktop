@@ -312,19 +312,10 @@ message when WebKit supplies a stack without it.
 M5 watch ownership maps to `files.md`; M7 native integration maps to
 `integration.md`.
 
-Explorer imports and mutations share FileManager writer protection. Cold native
-checks retain dirty conflict bytes before rename, move or deletion and retry
-existing actions after explicit recovery. Clean rename/move retargets the active
-editor and saved layout through restart; view rebinding follows guard release.
-
-New-file intent uses native exclusive creation when available. State overwrite
-APIs keep their separate semantics. Creation cannot project success after a
-collision or failed write.
-
-Existing Explorer menus use admitted macOS open/reveal/system-trash ports.
-Capability checks retain unsupported behavior and local-trash fallback. Shared
-Vault projection handles successful system trash once, without a second deletion
-or replacement action surface.
+[File integration](files.md) retains native mutation and writer protection.
 
 [Native qualification](native-acceptance.md) retains native gates; E-CI-085–088
 record the lease and Core pins.
+
+CLI main-window authority, native credential custody and disabled loopback
+access follow [LD-CLI-001/002/003](integration.md).

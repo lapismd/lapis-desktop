@@ -393,3 +393,7 @@ retain their skips. A diagnostic uses fresh isolated state and preserves its
 first failure; passing a later attempt cannot silently re-enable the case or
 qualify missing native input/recovery boundaries. Product file behavior and
 accepted-command retry rules remain unchanged.
+
+Notes workspace setup registers the shared CLI page through its owning settings
+controller. CLI content access attaches existing admitted Core vault clients;
+closing a vault revokes its grants and preserves the original writer guards.

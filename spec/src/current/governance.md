@@ -385,15 +385,13 @@ no registry patch or substitute is introduced.
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-[CI governance](ci.md) keeps Docker default, macOS opt-in, exact Node/tool
-identities, catalog modes and diagnostics. Its reviewed `2026.11.3` digest pins
-checksum-verified Git compatible with Jujutsu and proves a local fetch
-(E-CI-095). Publisher checks export one verified Linux/macOS tool artifact
-without source, secrets, downloads or fallback. Turbo propagates its verified
-offline selection. Package read authority pulls it; credentials never enter the
-image/artifact. Hidden WebKit cannot qualify
-[native acceptance](native-acceptance.md). Native revisions follow
-[dependency intake](local-dependencies.md); receipts retain full ancestry.
-Semantic `spec:search` uses QMD outside CI:
-<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Trial
-builds cannot qualify. macOS deep-signs and clears quarantine.
+CLI preparation verifies the retrievable Core pin and stages a release binary
+with target/source/checksum identity. Packaging checks the resource and exact
+main-window grants. Temporary public UI archives qualify local consumers before
+governed registry release adoption. [CI governance](ci.md),
+[native acceptance](native-acceptance.md),
+[dependency intake](local-dependencies.md) and
+[retained CI tool qualification](../verification-notes.md) keep their gates.
+
+CLI staging tests model immutable-source cache reuse across two revisions;
+source-specific output and a build-schema marker prevent stale-binary adoption.

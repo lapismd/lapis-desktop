@@ -4,9 +4,9 @@
   "version": "2026.31.6-rc.1",
   "identifier": "com.lapismd.lapis-desktop.preview",
   "build": {
-    "beforeDevCommand": "pnpm ai:prepare -- --reuse && pnpm exec vite",
+    "beforeDevCommand": "pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse && pnpm exec vite",
     "devUrl": "http://127.0.0.1:1431",
-    "beforeBuildCommand": "pnpm ai:prepare -- --reuse && pnpm build",
+    "beforeBuildCommand": "pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse && pnpm build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -50,7 +50,8 @@
       "minimumSystemVersion": "13.0"
     },
     "resources": {
-      "resources/lapis-ai/": "lapis-ai/"
+      "resources/lapis-ai/": "lapis-ai/",
+      "resources/lapis-cli/": "lapis-cli/"
     }
   }
 }

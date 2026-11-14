@@ -37,16 +37,32 @@ function elf(machine = 183) {
   bytes.writeUInt16LE(machine, 18);
   return bytes;
 }
-async function fixture(context) {
+const pinnedCliSource = (
+  await readFile(new URL("../../src-tauri/Cargo.toml", import.meta.url), "utf8")
+).match(/lapis-app-core = .*rev = "([a-f0-9]{40})"/)?.[1];
+async function fixture(context, cli = {}) {
   const root = await mkdtemp(join(tmpdir(), "lapis-preview-linux-"));
   context.after(() => rm(root, { recursive: true, force: true }));
   for (const file of [
     linuxBinary,
+    `lib/${productName}/lapis-cli/lapis`,
     ...helpers.map((name) => `${linuxRuntime}/${name}`),
   ]) {
     await mkdir(dirname(join(root, file)), { recursive: true });
     await writeFile(join(root, file), elf(), { mode: 0o755 });
   }
+  await writeFile(
+    join(root, `lib/${productName}/lapis-cli/manifest.json`),
+    JSON.stringify({
+      buildSchema: 1,
+      sourceRevision: pinnedCliSource,
+      target,
+      profile: "release",
+      version: "0.1.0",
+      sha256: hash(elf()),
+      ...cli,
+    }),
+  );
   await mkdir(dirname(join(root, linuxDesktop)), { recursive: true });
   await writeFile(
     join(root, linuxDesktop),
@@ -140,5 +156,22 @@ test("Linux inventory rejects extra files, missing resources, changed profile an
     const { root, metadata } = await fixture(context);
     await mutation(root, metadata);
     assert.throws(() => verifyLinuxBundle(root, identity, target));
+  }
+});
+
+test("Linux rejects a stale CLI source even when its complete package inventory matches", async (context) => {
+  const { root } = await fixture(context, { sourceRevision: "b".repeat(40) });
+  assert.throws(() => verifyLinuxBundle(root, identity, target), /CLI source/);
+});
+
+test("Linux refuses CLI profile, target and checksum mismatches inside an intact inventory", async (context) => {
+  for (const cli of [
+    { buildSchema: 0 },
+    { profile: "debug" },
+    { target: "x86_64-unknown-linux-gnu" },
+    { sha256: "0".repeat(64) },
+  ]) {
+    const { root } = await fixture(context, cli);
+    assert.throws(() => verifyLinuxBundle(root, identity, target), /CLI/);
   }
 });

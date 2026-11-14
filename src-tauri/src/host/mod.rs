@@ -1,4 +1,5 @@
 pub(crate) mod ai;
+pub(crate) mod cli;
 pub(crate) mod database;
 pub(crate) mod indexing;
 pub(crate) mod integration;
@@ -65,6 +66,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::integration::raise(app);
         }))
         .manage(crate::host::integration::IntegrationState::default())
+        .manage(crate::host::cli::ContentListener::default())
         .manage(commands_state())
         .manage(crate::host::lifecycle::NativeLifecycle::default())
         .manage(crate::host::windows::popups::NativeWorkspaceWindows::default())
@@ -125,6 +127,8 @@ pub fn run() -> tauri::Result<()> {
     };
     builder
         .invoke_handler(tauri::generate_handler![
+            cli::installation::desktop_cli_installation,
+            cli::access::desktop_cli_access,
             #[cfg(feature = "e2e")]
             crate::acceptance::acp::acp_acceptance_control,
             crate::host::terminal::desktop_terminal_admit,

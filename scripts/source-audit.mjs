@@ -186,6 +186,8 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "core:event:allow-listen",
     "core:event:allow-unlisten",
     "allow-shell-info",
+    "allow-desktop-cli-installation",
+    "allow-desktop-cli-access",
     "allow-shell-ready",
     "allow-desktop-workspace-windows",
     "allow-desktop-clipboard-read",

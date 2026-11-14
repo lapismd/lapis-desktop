@@ -29,6 +29,7 @@ const immutablePaths = [
   acceptanceApp,
   ".local/acp/native",
   "src-tauri/resources/lapis-ai",
+  "src-tauri/resources/lapis-cli",
   ".local/native-tasks/artifact",
   ".local/native-tasks/provenance.json",
   ".local/native-test/ui",

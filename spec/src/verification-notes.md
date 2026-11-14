@@ -141,3 +141,60 @@ Later Core and dependency records retain their individual acceptance scopes:
 
 [E-CORE-045](history/E-CORE-045.md): provider queue/cold recovery pass.
 [E-CORE-047](history/E-CORE-047.md): R7 cohort pass.
+
+[E-CORE-026](history/E-CORE-026.md): Notes pin and three native policy cases
+pass under LD-GOV-006/010 and LD-AI-002; UI/provider gates remain.
+
+E-AI-115 covers root-context Markdown alignment under LD-AI-002/LD-CAT-003;
+package intake and focused stories retain their gates.
+
+E-REPO-012/013 retain manual previews and visual gates.
+
+E-CI-014: local navigation/shard checks pass; final hosted catalog is pending.
+
+## Retained CI tool qualification
+
+[CI governance](current/ci.md) keeps Docker default, macOS opt-in, exact
+Node/tool identities, catalog modes and diagnostics. Its reviewed `2026.11.3`
+digest pins checksum-verified Git compatible with Jujutsu and proves a local
+fetch (E-CI-095). Publisher checks export one verified Linux/macOS tool artifact
+without source, secrets, downloads or fallback. Turbo propagates its verified
+offline selection. Package read authority pulls it; credentials never enter the
+image/artifact. Hidden WebKit cannot qualify
+[native acceptance](current/native-acceptance.md). Native revisions follow
+[dependency intake](current/local-dependencies.md); receipts retain full
+ancestry. Semantic `spec:search` uses QMD outside CI:
+<https://lapismd.github.io/lapis-desktop/>. Audits: E-CI-037/041/043/072. Trial
+builds cannot qualify. macOS deep-signs and clears quarantine.
+
+## Retained plugin catalog qualification
+
+E-AI-089 adopts reviewed chat presentation in the existing AI plugin. Plugin
+identity, App ownership, disposal and public host boundaries are unchanged.
+Native conversations augment normal ACP; no replacement plugin is introduced.
+
+E-AI-095 extends the existing Native Notes binding and workspace-lifecycle
+review stories with provider-discovery counters and bottom-panel/draft
+assertions. LD-CAT-001/003 ownership and native gates remain unchanged; no
+catalog fixture enters production. Native Search review adds admitted rebuild
+and lifecycle states (E-CORE-030); App/vault own metadata and status.
+
+E-AI-106/107/110 review header actions, required provider models and shared
+Compute inputs through production stories. Shell lifecycle ReadySessionFailure
+covers host Problems; native gates remain. Shell boot may take 15s (E-CI-032).
+
+## Retained Explorer qualification
+
+Explorer imports and mutations share FileManager writer protection. Cold native
+checks retain dirty conflict bytes before rename, move or deletion and retry
+existing actions after explicit recovery. Clean rename/move retargets the active
+editor and saved layout through restart; view rebinding follows guard release.
+
+New-file intent uses native exclusive creation when available. State overwrite
+APIs keep their separate semantics. Creation cannot project success after a
+collision or failed write.
+
+Existing Explorer menus use admitted macOS open/reveal/system-trash ports.
+Capability checks retain unsupported behavior and local-trash fallback. Shared
+Vault projection handles successful system trash once, without a second deletion
+or replacement action surface.

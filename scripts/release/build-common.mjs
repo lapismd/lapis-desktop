@@ -30,6 +30,7 @@ export async function requireSourceCI(identity) {
 }
 
 export async function prepareRuntime({ sign = false } = {}) {
+  run("pnpm", ["cli:prepare"]);
   run(
     "pnpm",
     [
@@ -89,6 +90,9 @@ export async function buildMetadata(
       rust: execFileSync("rustc", ["-V"], { encoding: "utf8" }).trim(),
     },
     helperProfile: "release",
+    cliManifest: JSON.parse(
+      await readFile("src-tauri/resources/lapis-cli/manifest.json", "utf8"),
+    ),
     runtimeManifestSha256: hash(await readFile(runtimeManifest)),
     ...extra,
   };

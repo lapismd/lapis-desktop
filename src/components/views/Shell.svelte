@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { createDesktopCliSettings } from "../../lib/native/cli-settings.ts";
   import { onMount, tick } from "svelte";
   import VaultLauncher from "../vaults/VaultLauncher.svelte";
   import { createNativePluginAssetServer } from "../../lib/native/plugin-assets.ts";
@@ -236,6 +237,7 @@
       nativeChat={coreChat
         ? (app) => createNativeChatHost(app, selected!)
         : undefined}
+      cliSettings={createDesktopCliSettings()}
       createRepository={() => createNativeRepository(selected!)}
       createPopouts={createPopouts
         ? (app) => createPopouts!(app, selected!)

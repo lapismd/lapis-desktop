@@ -248,3 +248,7 @@ directories must be writable by that user. Permission tests execute their real
 DAC assertions directly; the harness must not depend on switching UID after
 capabilities are dropped. Both UI and full images retain this boundary, while
 image identity invalidates caches created under the previous worker identity.
+
+CLI packaging is prepared alongside native AI prerequisites in CI. The CLI
+resource and source/hash manifest enter immutable acceptance inventories. macOS
+build checks do not execute the CLI or qualify native runtime.
