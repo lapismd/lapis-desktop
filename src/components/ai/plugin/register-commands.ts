@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import type { Plugin } from "@lapis-notes/api";
 import type { AiApplication } from "../../../lib/ai/plugin/application.ts";
-import { seedBundledSkills } from "../../../lib/ai/skills/seed.ts";
 import { seedReservedCommands } from "../../../lib/ai/commands/seed.ts";
 import { conversationMemoryScope } from "../../../lib/ai/memory/paths.ts";
 import { confirmForgetDerivedMemory } from "../memory/forget-confirmation.ts";
@@ -20,7 +19,7 @@ export function registerAiCommands(plugin: Plugin, host: AiApplication): void {
       },
     });
   add("update-bundled-skills", "Update bundled skills", async () => {
-    await seedBundledSkills(plugin.app.vault, { overwrite: true });
+    await plugin.app.commands.executeCommand("app:update-plugin-skills");
     host.skills.invalidate();
   });
   add("update-reserved-commands", "Update reserved commands", async () => {

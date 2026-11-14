@@ -23,4 +23,6 @@ src-tauri/resources/lapis-ai/
 # Specification search cache
 .qmd/index.sqlite*
 
+/src-tauri/resources/bundled-skills.json
+
 /src-tauri/resources/lapis-cli/

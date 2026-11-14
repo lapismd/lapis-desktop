@@ -9,16 +9,13 @@ export function bundledSkillVaultPath(name: string): string {
 
 export async function seedBundledSkills(
   vault: Vault,
-  options: { overwrite?: boolean } = {},
+  _options: { overwrite?: boolean } = {},
 ): Promise<void> {
   for (const [name, markdown] of Object.entries(BUNDLED_SKILL_MARKDOWN)) {
     const path = bundledSkillVaultPath(name);
     const existing = vault.getFileByPath(path);
-    if (existing && !options.overwrite) continue;
-    if (existing) {
-      await vault.modify(existing, markdown);
-      continue;
-    }
+    // Older seeded directories have no installation receipt and remain user-owned.
+    if (existing) continue;
     await vault.mkpath(`.agents/skills/${name}`);
     await vault.create(path, markdown);
   }

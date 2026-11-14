@@ -1,5 +1,6 @@
 pub(crate) mod editing;
 pub(crate) mod files;
+pub(crate) mod skills;
 pub(crate) mod tasks;
 pub(crate) mod watch;
 

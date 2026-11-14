@@ -6,8 +6,8 @@ unfence on refusal and await detach.
 
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),
-[plugins](plugins.md), [history](repository.md),
-[mobile layout](mobile-layout.md).
+[plugins](plugins.md), [history](repository.md), [mobile](mobile-layout.md),
+[skills](skills.md).
 
 LD-DESK-003 keeps AI/History admission native; renderer
 paths/generations/actors/executables/environment stay denied. Docker uses
@@ -318,8 +318,8 @@ M5 watch ownership maps to `files.md`; M7 native integration maps to
 
 [File integration](files.md) retains native mutation and writer protection.
 
-[Native qualification](native-acceptance.md) retains native gates; E-CI-085–088
-record the lease and Core pins.
+[Native gates](native-acceptance.md); E-CI-085–088 record the lease and Core
+pins.
 
 CLI main-window authority, native credential custody and disabled loopback
 access follow [LD-CLI-001/002/003](integration.md). Its current release identity

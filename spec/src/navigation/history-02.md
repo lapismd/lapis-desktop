@@ -359,3 +359,4 @@
 - [Scope Sync delivery to the manual encrypted MVP](../history/E-PLAN-009.md)
 
 - [Remove unused deepmerge audit approval](../history/E-DEPENDENCIES-006.md)
+- [Plugin-contributed skills](../history/E-SKILL-001.md)

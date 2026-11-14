@@ -1,3 +1,4 @@
+import { createSkillManagement } from "../native/skill-management.ts";
 import {
   createVaultSession,
   NativeDesktopVaultAdapter,
@@ -52,6 +53,7 @@ export async function openNotesSession(
     },
     appDatabaseProvider: provider,
   });
+  session.skillManagement = createSkillManagement(selected, call);
   if (provider.backgroundIndexing)
     session.backgroundIndexing = provider.backgroundIndexing;
   if (editingOwner === "core")

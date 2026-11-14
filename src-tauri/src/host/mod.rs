@@ -192,6 +192,7 @@ pub fn run() -> tauri::Result<()> {
             crate::host::vault::editing::vault_editing_intents,
             crate::host::vault::editing::vault_editing_snapshot,
             crate::host::vault::tasks::vault_tasks,
+            crate::host::vault::skills::vault_skills,
             crate::host::vault::watch::vault_watch_start,
             crate::host::vault::watch::vault_watch_stop,
             crate::host::database::vault_db_open,
@@ -206,6 +207,7 @@ pub fn run() -> tauri::Result<()> {
             }
             crate::host::state::initialize(app.handle())?;
             crate::host::repository::initialize(app.handle())?;
+            app.manage(crate::host::vault::skills::bundled(app.handle())?);
             crate::host::ai::owner::initialize(app.handle())?;
             #[cfg(not(feature = "e2e"))]
             let ai_config = app.path().app_data_dir()?.join("ai-runtime.json");

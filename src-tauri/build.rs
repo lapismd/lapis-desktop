@@ -69,6 +69,7 @@ fn main() {
         "vault_editing_intents",
         "vault_editing_snapshot",
         "vault_tasks",
+        "vault_skills",
         "vault_watch_start",
         "vault_watch_stop",
         "vault_db_open",

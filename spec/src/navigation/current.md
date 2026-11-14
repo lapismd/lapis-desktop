@@ -10,6 +10,8 @@
   - [Lapis Sync native integration](../current/lapis-sync.md)
   - [Native workspace windows](../current/windows.md)
   - [Desktop plugins and catalog](../current/plugins.md)
+    - [Plugin-contributed skills](../current/skills.md)
+    - [Skill verification](../verification/skills.md)
   - [Desktop AI and optional compute](../current/ai.md)
   - [Explicit shared native queue](../current/ai-queue.md)
     - [Markdown-first memory](../current/ai-memory.md)

@@ -397,4 +397,4 @@ Retire Deno desktop build/test/release CI; preserve archives and data.
 
 CLI and manual remotes ship in rc.2
 ([E-RELEASE-024](../history/E-RELEASE-024.md)). E-CLI-002 retains the
-native-dialog gap; stable cutover remains separate.
+native-dialog gap; stable cutover remains separate. LD-SKILL-001 still requires released Core intake and native skill acceptance.

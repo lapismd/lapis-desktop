@@ -21,6 +21,7 @@ cross-repository release state and exact resume steps.
 - [Desktop integration](integration.md)
 - [Native workspace windows](windows.md)
 - [Desktop plugins and catalog](plugins.md)
+  - [Plugin-contributed skills](skills.md)
 - [Desktop AI and optional compute](ai.md)
   - [Explicit shared native queue](ai-queue.md)
   - [Markdown-first memory](ai-memory.md)

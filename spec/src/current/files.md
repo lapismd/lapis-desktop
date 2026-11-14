@@ -397,4 +397,4 @@ accepted-command retry rules remain unchanged.
 
 The owning settings controller registers shared CLI setup. CLI access uses
 admitted Core clients; vault close revokes grants and retains writer guards.
-Shared remotes preserve these file/editing fences (E-REPO-059).
+Shared remotes preserve these file/editing fences (E-REPO-059). LD-SKILL-001 preserves edited, unmanaged and interrupted skill directories through native receipts.
