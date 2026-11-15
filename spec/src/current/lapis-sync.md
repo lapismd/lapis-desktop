@@ -12,6 +12,16 @@ optional and disabled; no plugin inventory or installed application changes.
 | LD-SYNC-001 | Desktop MUST consume the public shared native Sync service through exact reachable source revisions, admit its captured profile/vault/root before commands, and keep account, endpoint and content authority separate. Shared Core owns durable work; Desktop MUST NOT install a renderer scheduler or silently select another provider after native failure. |
 | LD-SYNC-002 | The macOS account custody adapter MUST keep bounded native-only bytes in a profile-scoped Keychain namespace, validate scoped item keys and retain captured physical-root admission. Missing entries MUST remain distinct from custody failures; unsupported platforms MUST report unavailable without plaintext fallback.                                    |
 
+## Native profile identity
+
+LD-SYNC-001 native admission MUST retain one immutable logical profile UUID in
+profile-private Sync metadata and an independent immutable profile-level
+creation witness outside the Sync repository, bound to captured physical
+profile, Sync and witness-file identities. An existing Sync directory with
+missing, foreign or corrupt identity MUST require recovery instead of issuing a
+replacement identity. Native profile admission does not select a destination,
+enroll a participant or activate Sync.
+
 ## Account custody and source intake
 
 The native account coordinator is owned by Server Core

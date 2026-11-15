@@ -324,3 +324,4 @@
 - [Align the Notes cohort governance regression](../history/E-CLI-004.md)
 - [Refresh the hosted private-profile source](../history/E-CLI-005.md)
 - [Scoped native Sync account custody intake](../history/E-SYNC-001.md)
+- [Native Sync profile identity admission](../history/E-SYNC-002.md)
