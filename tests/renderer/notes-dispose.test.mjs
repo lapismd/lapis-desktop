@@ -47,6 +47,112 @@ function fixture() {
   return { app, options, events };
 }
 
+test("native Sync preparation drains before Desktop enters the session writer guard", async () => {
+  const f = fixture();
+  f.app.nativeSync = {
+    prepareLeave: async () => {
+      f.events.push("native-sync-prepare");
+      return () => f.events.push("native-sync-resume");
+    },
+  };
+  const guard = f.app.fileEditingSessions.guard;
+  f.app.fileEditingSessions.guard = async (scope, action) => {
+    assert.equal(f.events.includes("native-sync-prepare"), true);
+    return guard(scope, action);
+  };
+  await disposeNotesWorkspace(f.app, f.options);
+  assert.equal(
+    f.events.indexOf("native-sync-prepare") < f.events.indexOf("watch-stop"),
+    true,
+  );
+  assert.equal(
+    f.events.indexOf("metadata-dispose") <
+      f.events.indexOf("native-sync-resume"),
+    true,
+  );
+});
+
+test("Desktop waits for Sync preparation before stopping the original watcher", async () => {
+  const f = fixture();
+  const entered = Promise.withResolvers();
+  const drained = Promise.withResolvers();
+  let released = 0;
+  f.app.nativeSync = {
+    prepareLeave: async () => {
+      entered.resolve();
+      await drained.promise;
+      return () => {
+        released++;
+      };
+    },
+  };
+  const leaving = disposeNotesWorkspace(f.app, f.options);
+  await entered.promise;
+  assert.deepEqual(f.events, []);
+  drained.resolve();
+  await leaving;
+  assert.equal(released, 1);
+  assert.equal(f.events.at(-1), "complete");
+});
+
+test("Desktop releases the same Sync leave fence after refused final persistence", async () => {
+  const f = fixture();
+  let fenced = false;
+  let preparations = 0;
+  let releases = 0;
+  const lease = {};
+  f.app.nativeSync = {
+    lease,
+    prepareLeave: async () => {
+      preparations++;
+      fenced = true;
+      return () => {
+        fenced = false;
+        releases++;
+      };
+    },
+  };
+  f.options.prepareLeave = () => {
+    throw new Error("Final capture refused");
+  };
+  await assert.rejects(
+    disposeNotesWorkspace(f.app, f.options),
+    /Final capture refused/,
+  );
+  assert.equal(fenced, false);
+  assert.equal(releases, 1);
+  assert.equal(f.app.nativeSync.lease, lease);
+  assert.equal(f.events.includes("metadata-dispose"), false);
+  assert.equal(f.events.at(-1), "watch-resume");
+  f.options.prepareLeave = async () => {};
+  await disposeNotesWorkspace(f.app, f.options);
+  assert.equal(preparations, 2);
+  assert.equal(releases, 2);
+});
+
+test("Desktop releases preparation if watcher shutdown or transport cleanup fails", async () => {
+  for (const boundary of ["watch", "metadata"]) {
+    const f = fixture();
+    let released = 0;
+    f.app.nativeSync = {
+      prepareLeave: async () => () => {
+        released++;
+      },
+    };
+    const fail = async () => {
+      throw new Error(`${boundary} failed`);
+    };
+    if (boundary === "watch") f.app.vaultChanges.stop = fail;
+    else f.app.metadataCache.dispose = fail;
+    await assert.rejects(
+      disposeNotesWorkspace(f.app, f.options),
+      new RegExp(`${boundary} failed`),
+    );
+    assert.equal(released, 1);
+    assert.equal(f.events.includes("complete"), false);
+  }
+});
+
 test("native recovery preflight refusal preserves the same workspace and resumes watching", async () => {
   const f = fixture();
   const refusal = new Error(

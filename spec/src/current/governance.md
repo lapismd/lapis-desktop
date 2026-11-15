@@ -3,19 +3,19 @@
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 [Shared screens](shared-screen-integration.md) own integration;
 [backlog](../backlog.md) retains outstanding acceptance.
-[Local validation](../../../docs/validation.md) defines Docker/native commands,
-isolated archive prerequisites, reports and owned cleanup. E-VALIDATION-001
-preserves Docker/native boundaries. [Preview distribution](distribution.md) owns
-releases, including the Linux extension recorded by E-RELEASE-005.
-E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
-ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
-editing. Core readers use exact scoped IPC; generic plugin grants deny.
-Tasks/default/Sync retain leave gates. SSH options preserve authentication,
-endpoints and literal arguments. Archive rewriting is idempotent only for exact
-paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
-`jj` and exact args. E-CI-054–064/084 retain deadlines/assertions, exact editor
-readiness and no-retry/quarantine/release policy. Native close never retries;
-empty comparisons continue; unavailable/conflicting fail closed.
+[Local validation](../../../docs/validation.md) retains Docker/native gates
+(E-VALIDATION-001), archive receipts and owned cleanup. E-SYNC-006 requires one
+Notes cohort for API/Profile builds and imports. [Distribution](distribution.md)
+owns releases and E-RELEASE-005's Linux extension. E-CORE-025/026/045 pin
+Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
+E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
+use exact scoped IPC; generic plugin grants deny. Tasks/default/Sync retain
+leave gates. SSH options preserve authentication, endpoints and literal
+arguments. Archive rewriting is idempotent only for exact paths redirected to
+verified tarballs. ARM64 diagnostics use hosted SHA, pinned `jj` and exact args.
+E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
+no-retry/quarantine/release policy. Native close never retries; empty
+comparisons continue; unavailable/conflicting fail closed.
 [Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
 renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005

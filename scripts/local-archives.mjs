@@ -2,14 +2,13 @@ import { createHash } from "node:crypto";
 import { readFileSync, writeFileSync, mkdirSync, rmSync } from "node:fs";
 import { dirname, resolve, join } from "node:path";
 import { execFileSync, spawn } from "node:child_process";
-import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import assert from "node:assert/strict";
 import semver from "semver";
+import { archiveHookSource } from "./archive-hook.mjs";
 import { verifyArchiveResolution } from "./archive-resolution.mjs";
 export { verifyArchiveResolution } from "./archive-resolution.mjs";
 
-const require = createRequire(import.meta.url);
 export function readArchiveManifest(manifestPath) {
   const path = resolve(manifestPath);
   const manifest = JSON.parse(readFileSync(path, "utf8"));
@@ -53,39 +52,6 @@ export function readArchiveManifest(manifestPath) {
     );
     return { ...entry, tarball, sha256 };
   });
-}
-export function archiveHookSource(entries, localProjects = [], links = []) {
-  const packages = [
-    ...entries.map(({ name, version, tarball }) => [
-      name,
-      { version, target: "file:" + tarball },
-    ]),
-    ...links.map(({ name, ...entry }) => [name, entry]),
-  ];
-  return `const semver = require(${JSON.stringify(require.resolve("semver"))});
-const archives = new Map(${JSON.stringify(packages)});
-const localProjects = new Set(${JSON.stringify(localProjects)});
-module.exports = { hooks: { readPackage(pkg) {
-  const fields = ["dependencies", "optionalDependencies", "peerDependencies"];
-  if (localProjects.has(pkg.name)) fields.push("devDependencies");
-  for (const field of fields) {
-    for (const [name, entry] of archives) {
-      const range = pkg[field]?.[name];
-      if (!range) continue;
-      const target = entry.target;
-      if (field !== "peerDependencies" && range === target) continue;
-      const localLink = localProjects.has(pkg.name) && entry.declared === range;
-      if (!localLink && !semver.satisfies(entry.version, range, { includePrerelease: true }))
-        throw new Error(name + " archive " + entry.version + " does not satisfy " + range);
-      if (field === "peerDependencies") {
-        // Give peer-only workspace consumers the same verified package identity.
-        pkg.dependencies ??= {};
-        pkg.dependencies[name] = target;
-      } else pkg[field][name] = target;
-    }
-  }
-  return pkg;
-} } };\n`;
 }
 export async function preserveDependencyFiles(root, install) {
   const paths = ["package.json", "pnpm-lock.yaml"].map((file) =>

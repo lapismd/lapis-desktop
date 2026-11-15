@@ -331,3 +331,5 @@
 - [Native Sync scope and command admission](../history/E-SYNC-004.md)
 
 - [Native Sync cancellable session leave](../history/E-SYNC-005.md)
+
+- [App-owned native Sync leave preparation](../history/E-SYNC-006.md)

@@ -18,6 +18,11 @@ The [current native chapter](../current/lapis-sync.md) tracks source intake,
 custody adapters, retained account admission and cancellable native leave; their
 source evidence does not complete this roadmap or enable the plugin.
 
+App Sync leave preparation is now under consumer qualification against the Notes
+LN-PKG-193 candidate. Actual Tauri command/observation registration, native
+resource detachment and OS acceptance remain outstanding; fixture passes cannot
+complete those boundaries.
+
 ## Agreed product outcome
 
 Desktop devices can edit notes and attachments offline, retain local history

@@ -1,5 +1,9 @@
 # Native workspace windows
 
+App-owned Sync leave preparation under LD-SYNC-001 precedes the shared writer
+guard while retaining related-window leases on refusal. Transport detachment
+waits until accepted calls settle; it does not close the native service owner.
+
 After successful leave preflight, the workspace host MUST capture live view
 state before shell unmount. Existing related-window admission and
 failure-preservation gates remain required.

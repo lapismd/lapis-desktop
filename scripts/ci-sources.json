@@ -2,7 +2,7 @@
   {
     "name": "lapis-notes",
     "repository": "lapismd/lapis-notes",
-    "revision": "d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f"
+    "revision": "01bf01f61f91f31237ebcdbb07242b9b6f9a5943"
   },
   {
     "name": "lapis-plugins",
@@ -22,7 +22,7 @@
   {
     "name": "lapis-plugin-tasks",
     "repository": "lapismd/lapis-plugin-tasks",
-    "revision": "52270c2aa7838811604a20be0861cdbd04027b42"
+    "revision": "7e25dc5cce821baca7831827f1711c1f18cbabf1"
   },
   {
     "name": "lapis-server",

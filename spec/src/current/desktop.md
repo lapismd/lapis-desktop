@@ -1,12 +1,11 @@
 # Desktop shell and CI
 
-[Lapis Sync native intake](lapis-sync.md) retains explicit profile/OS custody
-and shared Core ownership. A native immutable profile UUID is bound to captured
-physical roots; missing or foreign established metadata requires recovery. The
-retained native account registry shares Core ownership across windows and fences
-stale presentation handles. Unconfigured native scopes and bounded host command
-admission and cancellable leave remain source-only; Tauri/App wiring is open,
-and installation and activation remain disabled.
+[Sync](lapis-sync.md) owns immutable profile/root admission, shared Core custody
+and revocable window scopes (LD-SYNC-001, LD-SYNC-002). Tauri/provider wiring
+remains pending; installation and activation stay disabled. App leave MUST
+prepare injected native Sync before watcher shutdown or the vault writer guard,
+release its fence on refusal, and await transport detachment on permanent
+disposal.
 
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),

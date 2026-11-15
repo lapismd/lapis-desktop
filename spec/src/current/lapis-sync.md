@@ -80,3 +80,14 @@ completion proof binds the original registry/session/vault/root and permits
 revocation only after a successful commit; reload and another retained session
 keep the owner. The host MUST retain one native transition guard through this
 sequence.
+
+## App leave and transport detachment
+
+LD-SYNC-001 Desktop App teardown MUST prepare its explicitly injected native
+Sync service before stopping observation or entering the whole-vault writer
+guard. Preparation fences new calls and drains accepted applies while retaining
+the same lease and observations. Refused leave MUST release that fence so the
+original App can recover; permanent disposal MUST await transport detachment
+without closing native-owned durable work. The API owns this portable contract
+under LN-PKG-189/193; Desktop owns its separate lifecycle caller and Tauri
+resource release. A fixture transport cannot qualify the actual native boundary.

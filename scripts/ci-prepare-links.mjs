@@ -23,15 +23,14 @@ const jobs = [
     ],
   },
   {
-    marker: "../lapis-notes/packages/app-profile/dist/native-chat/index.js",
+    marker: "../lapis-notes/packages/app-profile/dist/index.js",
     steps: [
       ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],
       [
         "../lapis-notes",
         "pnpm",
-        ["--filter", "@lapis-notes/app-profile^...", "build"],
+        ["--filter", "@lapis-notes/app-profile...", "build"],
       ],
-      ["../lapis-notes/packages/app-profile", "pnpm", ["build:native-chat"]],
     ],
   },
   {

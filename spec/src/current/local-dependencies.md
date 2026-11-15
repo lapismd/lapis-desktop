@@ -1,5 +1,15 @@
 # Local dependency intake
 
+E-SYNC-006 prepares six public Notes candidate packages from exact source
+`01bf01f61f91f31237ebcdbb07242b9b6f9a5943` for native Sync leave preparation. CI
+MUST build App Profile and its dependencies through the source-owned normal
+build, then project API, UI, Workspace, File Explorer, Language Service and App
+Profile archives into the same runtime graph. Published registry ranges and the
+portable lock remain tracked; candidate archive hashes and source provenance
+remain explicit private migration prerequisites. The removed native-chat-only
+build cannot qualify the current package exports. AI remains a separately
+verified private prerequisite; this intake authorizes no package publication.
+
 E-REPO-056 takes committed JJ Store `f58b9363` through the existing Tauri
 adapter and updates the private native lockfile. Neutral history and Tauri
 transport share one service implementation. Existing native product, provider,
@@ -200,3 +210,31 @@ retains its ^0.0.0 range. The JavaScript source pin advances independently of
 application crates retain lapis-server `530a6c42`. A renderer-only dependency
 update MUST NOT silently refresh those native inputs. Actual native-window and
 distribution qualification remain separate.
+
+E-SYNC-006 aligns the public Notes ranges with API `^0.6.5`, UI `^0.2.1`,
+Workspace `^0.4.6`, App Profile `^0.2.1`, History `^0.5.0` and their shared
+Markdown/Search/Source Editor dependencies. Released Core `0.13.4` retains one
+controller identity through the existing exact override. The public registry
+lock projection omits only the still-unpublished AI prerequisite; its checked
+source range and verified private archive remain explicit. The current Profile
+`0.2.2` source candidate satisfies `^0.2.1`. Its verified source archive carries
+the pending leave contract. Eight-archive intake now passes the actual consumer
+type boundary and all32installed import-route checks; registry-only distribution
+remains separately gated.
+
+The same intake uses released Graph `^0.1.12` and Bases `^0.4.1`, whose public
+peer contracts admit API0.6 and current Markdown; older locked releases do not.
+The separately pinned Tasks candidate uses source
+`7e25dc5cce821baca7831827f1711c1f18cbabf1`, version `0.2.0`, and development
+range `^0.2.0`. Its API 0.6 admission, full source checks, 66 cold
+interaction/axe cases and actual development/production archive hosts pass in
+the owner. Desktop MUST consume the same checksum-pinned candidate through all
+runtime import routes. A same-version registry package cannot substitute for
+these verified bytes, and this intake authorizes no publication.
+
+E-SYNC-006 qualification MUST route every admitted archive through dependency,
+optional-dependency and peer imports, plus local development imports. Root
+normal ranges MUST match the verified versions before projection. Both CI and
+portable workers MUST use the existing shared archive hook and verify installed
+identities; root-only replacement can leave a second registry API with the same
+version. Source manifests and the portable lock MUST be restored on failure.

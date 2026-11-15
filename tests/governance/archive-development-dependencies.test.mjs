@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import vm from "node:vm";
 import { createRequire } from "node:module";
-import { archiveHookSource } from "../../scripts/local-archives.mjs";
+import { archiveHookSource } from "../../scripts/archive-hook.mjs";
 
 test("archive admission redirects local development tools but ignores published development-only pins", () => {
   const entry = {

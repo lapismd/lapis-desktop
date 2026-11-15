@@ -16,47 +16,52 @@ type NotesDisposeOptions = {
 };
 
 /** Keep writers and every related document under the same App leave guard. */
-export function disposeNotesWorkspace(
+export async function disposeNotesWorkspace(
   app: App,
   options: NotesDisposeOptions,
 ): Promise<void> {
-  return leaveWithStoppedWatching(
-    app,
-    async () => {
-      await app.workspace.flushPluginChanges();
-      await app.plugins.flushPendingConfigWrites();
-      await app.fileEditingSessions.settleOperations();
-      await app.fileEditingSessions.preflightNativeRecovery();
-      await app.fileEditingSessions.guard(undefined, async () => {
-        await app.workspace.flushLayout();
-        try {
-          await options.prepareLeave();
-        } catch (failure) {
+  const resumeSync = await app.nativeSync?.prepareLeave();
+  try {
+    await leaveWithStoppedWatching(
+      app,
+      async () => {
+        await app.workspace.flushPluginChanges();
+        await app.plugins.flushPendingConfigWrites();
+        await app.fileEditingSessions.settleOperations();
+        await app.fileEditingSessions.preflightNativeRecovery();
+        await app.fileEditingSessions.guard(undefined, async () => {
+          await app.workspace.flushLayout();
           try {
-            await options.resumeLeave?.();
-          } catch (resume) {
-            throw new AggregateError(
-              [failure, resume],
-              "Final persistence failed and backup watching could not resume",
-            );
+            await options.prepareLeave();
+          } catch (failure) {
+            try {
+              await options.resumeLeave?.();
+            } catch (resume) {
+              throw new AggregateError(
+                [failure, resume],
+                "Final persistence failed and backup watching could not resume",
+              );
+            }
+            throw failure;
           }
-          throw failure;
-        }
-        // Projection and layout saves still need their mounted view state.
-        await app.workspace.disposeWorkspaceHost();
-        // Join shell cleanup before retiring the resources its views use.
-        await options.beforeDispose();
-        await options.popouts?.dispose();
-        options.stopMetadataTracking?.();
-        await app.metadataCache.dispose();
-        for (const plugin of [...app.plugins.plugins.values()].reverse())
-          await plugin.disable();
-        await options.disposeSync();
-        options.disposeSettings();
-        options.disposeBrowser();
-        options.complete();
-      });
-    },
-    options.canResume,
-  );
+          // Projection and layout saves still need their mounted view state.
+          await app.workspace.disposeWorkspaceHost();
+          // Join shell cleanup before retiring the resources its views use.
+          await options.beforeDispose();
+          await options.popouts?.dispose();
+          options.stopMetadataTracking?.();
+          await app.metadataCache.dispose();
+          for (const plugin of [...app.plugins.plugins.values()].reverse())
+            await plugin.disable();
+          await options.disposeSync();
+          options.disposeSettings();
+          options.disposeBrowser();
+          options.complete();
+        });
+      },
+      options.canResume,
+    );
+  } finally {
+    resumeSync?.();
+  }
 }

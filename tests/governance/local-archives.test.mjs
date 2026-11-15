@@ -16,10 +16,10 @@ import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import {
   readArchiveManifest,
-  archiveHookSource,
   preserveDependencyFiles,
 } from "../../scripts/local-archives.mjs";
 import * as archives from "../../scripts/local-archives.mjs";
+import { archiveHookSource } from "../../scripts/archive-hook.mjs";
 
 function fixture(context) {
   const root = mkdtempSync(join(tmpdir(), "lapis-archives-"));
