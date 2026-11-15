@@ -2,8 +2,11 @@ import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import { openHistory } from "../../support/repository/interactions.ts";
-import { otherOperation } from "../../support/repository/fixture.ts";
-import { historyContext } from "../../support/repository/context.ts";
+import { operation, otherOperation } from "../../support/repository/fixture.ts";
+import {
+  historyContext,
+  repositoryView,
+} from "../../support/repository/context.ts";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 
 const meta: Meta = {
@@ -15,6 +18,34 @@ const meta: Meta = {
 export default meta;
 type Story = StoryObj;
 
+async function openOperations(element: HTMLElement) {
+  const shell = within(element);
+  await waitFor(
+    () =>
+      expect(element.querySelector('[data-notes-ready="true"]')).not.toBeNull(),
+    { timeout: 30_000 },
+  );
+  await userEvent.click(
+    await shell.findByRole("button", { name: "Repository Op Log" }),
+  );
+  return within(
+    await shell.findByRole("region", { name: "Repository operation log" }),
+  );
+}
+function headerGeometry(
+  element: HTMLElement,
+  title: string,
+  panelLabel: string,
+) {
+  const panel = within(element).getByRole("region", { name: panelLabel });
+  const header = within(panel).getByRole("group", { name: `${title} header` });
+  expect(within(header).queryByRole("combobox")).toBeNull();
+  expect(within(header).getByRole("button", { name: "Refresh" })).toBeVisible();
+  expect(
+    header.getBoundingClientRect().top - panel.getBoundingClientRect().top,
+  ).toBeLessThanOrEqual(16);
+  expect(header.scrollWidth).toBeLessThanOrEqual(header.clientWidth + 1);
+}
 export const HistoryStartsWithColumnHeader: Story = {
   args: { scenario: "ready" },
   play: async ({ canvasElement }) => {
@@ -22,147 +53,73 @@ export const HistoryStartsWithColumnHeader: Story = {
     expect(
       canvas.queryByRole("heading", { name: "Repository history" }),
     ).toBeNull();
-    const header = canvas.getByRole("group", { name: "JJ Log header" });
-    expect(
-      within(header).getByRole("combobox", { name: "Operation" }),
-    ).toBeVisible();
-    expect(
-      within(header).getByRole("button", { name: "Refresh" }),
-    ).toBeVisible();
-    const panel = within(canvasElement).getByRole("region", {
-      name: "Repository history",
-    });
-    expect(
-      header.getBoundingClientRect().top - panel.getBoundingClientRect().top,
-    ).toBeLessThanOrEqual(16);
-    expect(header.scrollWidth).toBeLessThanOrEqual(header.clientWidth + 1);
+    headerGeometry(canvasElement, "JJ Log", "Repository history");
   },
 };
-
 export const OperationLogStartsWithColumnHeader: Story = {
   args: { scenario: "operation-ready" },
   play: async ({ canvasElement }) => {
-    const shell = within(canvasElement);
-    await waitFor(
-      () =>
-        expect(
-          canvasElement.querySelector('[data-notes-ready="true"]'),
-        ).not.toBeNull(),
-      { timeout: 30_000 },
-    );
-    await userEvent.click(
-      await shell.findByRole("button", { name: "Repository Op Log" }),
-    );
-    const panel = await shell.findByRole("region", {
-      name: "Repository operation log",
-    });
-    const canvas = within(panel);
+    const canvas = await openOperations(canvasElement);
     expect(canvas.queryByRole("heading", { name: "Op Log" })).toBeNull();
-    const header = canvas.getByRole("group", { name: "Op Log header" });
-    expect(
-      within(header).getByRole("combobox", { name: "Pinned operation" }),
-    ).toBeVisible();
-    expect(
-      within(header).getByRole("button", { name: "Refresh" }),
-    ).toBeVisible();
-    expect(
-      header.getBoundingClientRect().top - panel.getBoundingClientRect().top,
-    ).toBeLessThanOrEqual(16);
-    expect(header.scrollWidth).toBeLessThanOrEqual(header.clientWidth + 1);
+    headerGeometry(canvasElement, "Op Log", "Repository operation log");
   },
 };
-
-export const OperationSnapshotCommandPicker: Story = {
+export const OperationHeadKeyboardSelection: Story = {
   args: { scenario: "multiple" },
   play: async ({ canvasElement }) => {
     const canvas = await openHistory(canvasElement);
-    const trigger = canvas.getByRole("combobox", { name: "Operation" });
-    expect(trigger.tagName).toBe("BUTTON");
-    await userEvent.click(trigger);
-    const body = within(canvasElement.ownerDocument.body);
-    const search = await body.findByRole("combobox", {
-      name: "Select operation snapshot",
+    const head = await canvas.findByRole("button", {
+      name: `Inspect operation ${otherOperation}`,
     });
-    await expect(search).toHaveFocus();
-    expect(search.closest('[data-ui-component="command-view"]')).not.toBeNull();
-    const callsBeforeSearch =
-      historyContext(canvasElement).fixture.calls.length;
-    await userEvent.type(search, "no matching operation");
-    await expect(await body.findByText("No matching operations")).toBeVisible();
-    await userEvent.clear(search);
-    await userEvent.type(search, otherOperation);
-    expect(historyContext(canvasElement).fixture.calls.length).toBe(
-      callsBeforeSearch,
+    head.focus();
+    await expect(head).toHaveFocus();
+    await userEvent.keyboard("{Enter}");
+    await expect(
+      await canvas.findByRole("list", { name: "Revision graph" }),
+    ).toBeVisible();
+    expect(repositoryView(canvasElement).getState().operation).toBe(
+      otherOperation,
     );
-    await userEvent.keyboard("{ArrowDown}{Enter}");
-    await expect(trigger).toHaveValue(otherOperation);
     expect(
       historyContext(canvasElement)
         .fixture.calls.filter(([kind]) => kind === "open")
         .map(([, id]) => id),
     ).toEqual([otherOperation]);
-    await userEvent.click(trigger);
-    await expect(
-      await body.findByRole("row", {
-        name: `Select operation ${otherOperation}`,
-      }),
-    ).toHaveAttribute("data-current", "true");
-    await userEvent.click(
-      body.getByRole("button", { name: "Close operation picker" }),
-    );
-    await expect(trigger).toHaveFocus();
   },
 };
-
-export const OperationLogSnapshotCommandPicker: Story = {
+export const OperationLogHeadKeyboardSelection: Story = {
   args: { scenario: "operation-multiple-heads" },
   play: async ({ canvasElement }) => {
-    const outer = within(canvasElement);
-    await waitFor(
-      () =>
-        expect(
-          canvasElement.querySelector('[data-notes-ready="true"]'),
-        ).not.toBeNull(),
-      { timeout: 30_000 },
-    );
-    await userEvent.click(
-      await outer.findByRole("button", { name: "Repository Op Log" }),
-    );
-    const log = within(
-      await outer.findByRole("region", { name: "Repository operation log" }),
-    );
-    const trigger = log.getByRole("combobox", { name: "Pinned operation" });
-    expect(trigger.tagName).toBe("BUTTON");
-    await userEvent.click(trigger);
-    const body = within(canvasElement.ownerDocument.body);
-    await userEvent.click(
-      await body.findByRole("row", {
-        name: `Select operation ${otherOperation}`,
-      }),
-    );
-    await expect(trigger).toHaveValue(otherOperation);
+    const log = await openOperations(canvasElement);
+    const head = await log.findByRole("button", {
+      name: `Inspect operation ${operation}`,
+    });
+    head.focus();
+    await userEvent.keyboard("{Enter}");
     await expect(
       await log.findByRole("button", { name: /initialize repo.*;/ }),
     ).toBeVisible();
     expect(
+      repositoryView(canvasElement, "repository-oplog").getState().operation,
+    ).toBe(operation);
+    expect(
       historyContext(canvasElement)
         .fixture.calls.filter(([kind]) => kind === "open")
         .map(([, id]) => id),
-    ).toEqual([otherOperation]);
+    ).toEqual([operation]);
   },
 };
-
-export const EmptySnapshotPickerDisabled: Story = {
+export const EmptyHeaderRetainsRefresh: Story = {
   args: { scenario: "empty" },
   play: async ({ canvasElement }) => {
     const canvas = await openHistory(canvasElement);
-    await expect(
-      canvas.getByRole("combobox", { name: "Operation" }),
-    ).toBeDisabled();
+    expect(canvas.queryByRole("combobox", { name: "Operation" })).toBeNull();
+    expect(canvas.queryByRole("group", { name: "Operation heads" })).toBeNull();
+    await expect(canvas.getByRole("button", { name: "Refresh" })).toBeEnabled();
     expect(
-      within(canvasElement.ownerDocument.body).queryByRole("dialog", {
-        name: "Select operation snapshot",
-      }),
-    ).toBeNull();
+      historyContext(canvasElement).fixture.calls.filter(
+        ([kind]) => kind === "open",
+      ),
+    ).toHaveLength(0);
   },
 };

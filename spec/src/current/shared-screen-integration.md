@@ -57,18 +57,21 @@ retain matching IDs and use the same production integration after migration.
 
 ## Repository pins
 
-History and Op Log mount the complete public Repository UI screens; portable
-controllers retain admitted native readers and exact operation/revision pins.
-Leaf File History uses its documented public RepositoryShell context because API
-view mounts cannot inherit another component tree’s Svelte context. The history
-leaf sets public AppShell inset, border, radius and 40px toolbar tokens for its
-existing Notes sidebar, avoiding nested window chrome at that host boundary. Its
-cards expose author details and an explicit View code action; commit subjects
-are descriptive text. Op Log closes the containing diff column through its
-shared header rather than through the operation metadata card. Blame's wrap
+History and Op Log mount the complete public History Repository screens;
+portable controllers retain admitted native readers and exact operation/revision
+pins. The Desktop-owned component/controller copies are removed; native OS/Tauri
+adapters remain Desktop-owned and use shared Core policy. Leaf File History uses
+its documented public RepositoryShell context because API view mounts cannot
+inherit another component tree’s Svelte context. The history leaf sets public
+AppShell inset, border, radius and 40px toolbar tokens for its existing Notes
+sidebar, avoiding nested window chrome at that host boundary. Its graph rows
+open the recorded revision directly, omit author metadata, and retain native
+file-scoped operation identity. Op Log closes the containing diff column through
+its shared header rather than through the operation metadata card. Blame's wrap
 preference stays in the Desktop settings owner and enters the shared panel
-through `wrap` and `onWrapChange`, retaining its existing key. Complete screens
-retain the shared fixed horizontal canvas and compact composer geometry. Host
+through `wrap` and `onWrapChange`, retaining its existing key. Repository
+screens use the shared pane-responsive canvas, including keyboard navigation
+between compact columns. Agent screens retain compact composer geometry. Host
 acceptance exercises those defaults and retained drafts rather than reinstating
 the retired custom layout or three-line input override.
 

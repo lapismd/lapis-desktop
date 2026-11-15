@@ -11,3 +11,13 @@ export function historyContext(canvas: HTMLElement): Context {
   if (!context) throw new Error("Repository fixture is not ready");
   return context;
 }
+
+/** Observe the production view's public state after its header selectors retire. */
+export function repositoryView(
+  canvas: HTMLElement,
+  type = "repository-history",
+) {
+  const leaf = historyContext(canvas).app.workspace.getLeavesOfType(type)[0];
+  if (!leaf) throw new Error(`Repository view is not open: ${type}`);
+  return leaf.view;
+}

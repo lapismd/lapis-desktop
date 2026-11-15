@@ -1,5 +1,5 @@
 import type { LocalGraphCommit, BlamePage } from "@lapismd/jj-history";
-import type { HistoryReader } from "../../../src/lib/repository/history-reader.ts";
+import type { HistoryReader } from "@lapis-notes/history/repository/controllers/history-reader";
 export const blameText =
   "# Notes\nHistory is retained\n\nAnother author changed this line.\n";
 export function attachBlameFixture(

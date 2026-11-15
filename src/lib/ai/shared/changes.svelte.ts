@@ -8,7 +8,7 @@ import {
   readTurnComparison,
   readTurnFile,
 } from "../chat/history-comparison.ts";
-import { diffText } from "../../repository/history-state.ts";
+import { diffText } from "@lapis-notes/history/repository/controllers/history-state";
 /** Native operation identities and undo guards remain outside the shared presentation. */
 export function sharedChanges(
   panel: () => TranscriptPanelProps,

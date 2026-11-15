@@ -4,8 +4,8 @@ import { HistoryController } from "@lapismd/repository-ui/history";
 import {
   diffText,
   timestampLabel,
-} from "../../src/lib/repository/history-state.ts";
-import { prepared } from "../../src/lib/repository/history-selection.ts";
+} from "@lapis-notes/history/repository/controllers/history-state";
+import { prepared } from "@lapis-notes/history/repository/controllers/history-selection";
 import {
   historyFixture,
   operation,

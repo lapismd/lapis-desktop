@@ -36,10 +36,11 @@ pub fn run() -> tauri::Result<()> {
             .as_deref(),
     )
     .map_err(tauri::Error::Io)?;
-    let editing_owner = lapis_desktop::vault::editing::EditingOwner::parse(
-        std::env::var("LAPIS_DESKTOP_EDITING_OWNER").ok().as_deref(),
-    )
-    .map_err(tauri::Error::Io)?;
+    let editing_selection =
+        std::env::var("LAPIS_DESKTOP_EDITING_OWNER").unwrap_or_else(|_| "core".into());
+    let editing_owner =
+        lapis_desktop::vault::editing::EditingOwner::parse(Some(&editing_selection))
+            .map_err(tauri::Error::Io)?;
     let tasks_owner = lapis_desktop::vault::tasks::TasksOwner::parse(
         std::env::var("LAPIS_DESKTOP_TASKS_OWNER").ok().as_deref(),
     )
@@ -148,9 +149,6 @@ pub fn run() -> tauri::Result<()> {
             crate::host::repository::ai_history::desktop_ai_history,
             crate::host::repository::backup::desktop_backup_stop,
             crate::host::repository::backup_restore::desktop_backup_restore,
-            crate::host::repository::forges::desktop_forge_accounts,
-            crate::host::repository::remote::desktop_backup_remote,
-            repository::sync::desktop_backup_sync,
             repository::search::desktop_backup_search,
             repository::indexed_search::desktop_backup_history_search,
             repository::storage::desktop_backup_storage,
@@ -161,6 +159,9 @@ pub fn run() -> tauri::Result<()> {
             crate::host::repository::commands::desktop_repository_admit,
             crate::host::repository::commands::desktop_repository_release,
             crate::host::repository::working_copy::desktop_repository_working_copy,
+            repository::remotes::desktop_repository_remotes,
+            repository::remotes::desktop_repository_backup,
+            repository::remotes::desktop_repository_synchronization,
             crate::host::shell::shell_info,
             crate::host::shell::shell_ready,
             crate::host::windows::popups::desktop_workspace_windows,

@@ -199,3 +199,13 @@ retains its ^0.0.0 range. The JavaScript source pin advances independently of
 application crates retain lapis-server `530a6c42`. A renderer-only dependency
 update MUST NOT silently refresh those native inputs. Actual native-window and
 distribution qualification remain separate.
+
+## Repository remotes cohort
+
+Repository presentation and controllers MUST use the released History package's
+public `/repository` exports. App Profile is public and MUST be consumed through
+registry ranges, outside the private AI archive projection. The retained private
+AI archive remains checksum-bound; its existing workflow does not imply an
+application data migration. Native Core/Protocol and SDK source identities are
+recorded independently from the JavaScript intake and must select merged sources
+before distribution. The approved Bits UI patch remains unchanged.

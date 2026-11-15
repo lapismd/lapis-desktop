@@ -40,7 +40,7 @@
   import type { TerminalFactory } from "../../lib/terminal/terminal-binding.ts";
   import type { NativeChatHost } from "@lapis-notes/app-profile/native-chat";
   import type { AiFactory } from "../../lib/ai/plugin/services.ts";
-  import type { RepositoryFactory } from "../../lib/repository/services.ts";
+  import type { RepositoryFactory } from "@lapis-notes/history/repository/controllers/services";
   import type {
     DesktopPopouts,
     PopoutFactory,

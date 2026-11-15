@@ -4,9 +4,9 @@
   import { Badge } from "@lapismd/design-core/shadcn/badge";
   import { TagList } from "@lapismd/design-core/shadcn/tag-list";
   import { formatRelativeTime } from "@lapismd/design-core/shadcn/relative-time";
-  import { RepositoryAuthorAvatar as ReviewAuthorAvatar } from "@lapismd/repository-ui/jj";
-  import { encodeJjChangeId } from "../../../../src/lib/repository/graph/repository-log-graph.ts";
-  import { repositoryCommitTags } from "../../../../src/lib/repository/tags.ts";
+  import ReviewAuthorAvatar from "@lapis-notes/history/repository/components/RepositoryAuthorAvatar.svelte";
+  import { encodeJjChangeId } from "@lapis-notes/history/repository/controllers/graph/repository-log-graph";
+  import { repositoryCommitTags } from "@lapis-notes/history/repository/controllers/tags";
   let { target, commit }: { target: string; commit?: LocalGraphCommit } =
     $props();
   let now = $state(Date.now());

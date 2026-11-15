@@ -157,6 +157,14 @@ pub fn initialize(
         &history_root(app)?,
         fs_gate.clone(),
     )?;
+    let core_vaults =
+        core_vaults.with_remotes(lapis_desktop::repository::remote_installation::open(
+            &profile,
+            matches!(
+                *app.state::<lapis_desktop::vault::editing::EditingOwner>(),
+                lapis_desktop::vault::editing::EditingOwner::Core
+            ),
+        )?);
     let core_vaults = if app
         .state::<lapis_desktop::vault::tasks::TasksOwner>()
         .is_core()

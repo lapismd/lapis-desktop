@@ -3,9 +3,9 @@ import type { FileListingFile } from "@lapismd/design-core/diff";
 import type {
   AiHistoryBinding,
   AiTurnRecord,
-} from "../../repository/ai-history.ts";
-import { changeStats } from "../../repository/history-files.ts";
-import { diffText } from "../../repository/history-state.ts";
+} from "@lapis-notes/history/repository/controllers/ai-history";
+import { changeStats } from "@lapis-notes/history/repository/controllers/history-files";
+import { diffText } from "@lapis-notes/history/repository/controllers/history-state";
 
 export type TurnFile = FileListingFile & { diff?: LocalFileDiffChange };
 export type TurnComparison = {

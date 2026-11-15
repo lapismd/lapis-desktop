@@ -1,7 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { historyContext } from "../../support/repository/context.ts";
+import {
+  historyContext,
+  repositoryView,
+} from "../../support/repository/context.ts";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { operation } from "../../support/repository/fixture.ts";
 import { openHistory } from "../../support/repository/interactions.ts";
@@ -84,15 +87,13 @@ export const FollowEditorAndOpenRevision: StoryObj = {
   play: async ({ canvasElement }) => {
     const panel = await sidebar(canvasElement, "Welcome.md"),
       canvas = within(canvasElement);
-    const row = await panel.findByRole("article", {
+    const row = await panel.findByRole("button", {
       name: /Keep repository history beside the notes/,
     });
     expect(
       panel.queryByRole("combobox", { name: "File history operation" }),
     ).toBeNull();
-    await expect(
-      within(row).getByRole("button", { name: /About Ada/ }),
-    ).toBeVisible();
+    expect(panel.queryByRole("button", { name: /About Ada/ })).toBeNull();
     await userEvent.click(canvas.getByRole("tab", { name: "File history" }));
     await expect(row).toBeVisible();
     await userEvent.click(
@@ -102,15 +103,13 @@ export const FollowEditorAndOpenRevision: StoryObj = {
       await panel.findByText(/No revisions changed this file/),
     ).toBeVisible();
     expect(
-      panel.queryByRole("article", { name: /Keep repository history/ }),
+      panel.queryByRole("button", { name: /Keep repository history/ }),
     ).toBeNull();
     await userEvent.click(canvas.getByRole("button", { name: "Welcome.md" }));
-    const restored = await panel.findByRole("article", {
+    const restored = await panel.findByRole("button", {
       name: /Keep repository history beside the notes/,
     });
-    await userEvent.click(
-      within(restored).getByRole("button", { name: "View code at this point" }),
-    );
+    await userEvent.click(restored);
     const log = within(
       await canvas.findByRole("region", { name: "Repository history" }),
     );
@@ -119,9 +118,7 @@ export const FollowEditorAndOpenRevision: StoryObj = {
         name: /Keep repository history beside the notes/,
       }),
     ).toHaveAttribute("aria-pressed", "true");
-    await expect(log.getByRole("combobox", { name: "Operation" })).toHaveValue(
-      operation,
-    );
+    expect(repositoryView(canvasElement).getState().operation).toBe(operation);
     await expect(panel.getByText(/Open a file in the editor/)).toBeVisible();
     await expect(
       panel.getByRole("button", { name: "Blame file" }),
@@ -142,7 +139,7 @@ export const FailureAndRecovery: StoryObj = {
       panel.getByRole("button", { name: "Refresh file history" }),
     );
     await expect(
-      await panel.findByRole("article", {
+      await panel.findByRole("button", {
         name: /Keep repository history beside the notes/,
       }),
     ).toBeVisible();
@@ -172,12 +169,10 @@ export const OpenDuringLogPreparation: StoryObj = {
       return read(handle, query);
     };
     try {
-      const row = await panel.findByRole("article", {
+      const row = await panel.findByRole("button", {
         name: /Keep repository history beside the notes/,
       });
-      await userEvent.click(
-        within(row).getByRole("button", { name: "View code at this point" }),
-      );
+      await userEvent.click(row);
       await waitFor(() => expect(requested).toBe(true));
       const body = within(canvasElement.ownerDocument.body);
       expect(body.queryByText(/outside the bounded JJ Log history/)).toBeNull();
@@ -221,7 +216,7 @@ export const Preparing: StoryObj = {
 export const RenameAndDelete: StoryObj = {
   play: async ({ canvasElement }) => {
     const panel = await sidebar(canvasElement, "Welcome.md");
-    await panel.findByRole("article", {
+    await panel.findByRole("button", {
       name: /Keep repository history beside the notes/,
     });
     await userEvent.click(

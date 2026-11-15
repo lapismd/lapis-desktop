@@ -2,7 +2,7 @@
 // Retained Lapis AiPlugin conversation integration; see ../NOTICE.md.
 import type { App, WorkspaceLeaf } from "@lapis-notes/api";
 import type { ComposerTriggerItem } from "@lapismd/design-core/ai/chat";
-import { bindTranscriptWriters } from "../../repository/transcript-writers.ts";
+import { bindTranscriptWriters } from "@lapis-notes/history/repository/controllers/transcript-writers";
 import { ConversationProtection } from "../conversations/transcript-protection.ts";
 import { ConversationRepository } from "../conversations/conversation-repository.ts";
 import { ownedConversationPersistence } from "./conversation-persistence.ts";

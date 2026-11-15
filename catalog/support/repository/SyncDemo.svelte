@@ -3,7 +3,7 @@
   import NotesDemo from "../NotesDemo.svelte";
   import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
-  import type { SyncProposal } from "../../../src/lib/repository/sync.ts";
+  import type { SyncProposal } from "@lapis-notes/history/repository/controllers/sync";
   let {
     scenario = "clean",
   }: { scenario?: "clean" | "conflicts" | "offline" | "pending" | "unknown" } =

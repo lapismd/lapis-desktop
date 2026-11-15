@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
+  import RepositorySkeleton from "@lapis-notes/history/repository/components/RepositorySkeleton.svelte";
   import { onMount, onDestroy, untrack } from "svelte";
   import type {
     LocalGraphOperationNode,
     LocalGraphEvolutionNode,
   } from "@lapismd/jj-history";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
-  import { createHistoryCanvas } from "../../../../src/lib/repository/history-canvas.ts";
+  import { createHistoryCanvas } from "@lapis-notes/history/repository/controllers/history-canvas";
   import ReviewConflictResolution from "./ReviewConflictResolution.svelte";
   import ReviewEvolutionColumn from "./ReviewEvolutionColumn.svelte";
-  import { RepositoryLogHeader } from "@lapismd/repository-ui/jj";
-  import type { HistoryController } from "@lapismd/repository-ui/history";
-  import { initialHistoryState } from "@lapismd/repository-ui/history";
-  import { RepositoryRevisions } from "@lapismd/repository-ui/jj";
-  import RepositoryDiffColumn from "../../../../src/components/repository/RepositoryDiffColumn.svelte";
-  import RepositoryShell from "../../../../src/components/repository/RepositoryShell.svelte";
-  import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";
+  import RepositoryLogHeader from "@lapis-notes/history/repository/components/RepositoryLogHeader.svelte";
+  import type { HistoryController } from "@lapis-notes/history/repository/controllers/history-controller";
+  import { initialHistoryState } from "@lapis-notes/history/repository/controllers/history-state";
+  import RepositoryRevisions from "@lapis-notes/history/repository/components/RepositoryRevisions.svelte";
+  import RepositoryDiffColumn from "@lapis-notes/history/repository/components/RepositoryDiffColumn.svelte";
+  import RepositoryShell from "@lapis-notes/history/repository/components/RepositoryShell.svelte";
+  import type { RepositoryWorkspace } from "@lapis-notes/history/repository/controllers/workspaces";
   let {
     controller,
     initialOperation,

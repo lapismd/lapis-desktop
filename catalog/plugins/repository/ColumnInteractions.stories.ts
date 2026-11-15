@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
-import { RepositoryPanel } from "@lapismd/repository-ui/jj";
+import RepositoryPanel from "@lapis-notes/history/repository/components/RepositoryPanel.svelte";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import {
@@ -142,12 +142,12 @@ export const ResizingAndCompactReturn: StoryObj = {
     });
     if (canvasElement.ownerDocument.defaultView!.innerWidth > 800) {
       await waitFor(() =>
-        expect(root).toHaveAttribute("data-display-mode", "fixed"),
+        expect(root).toHaveAttribute("data-display-mode", "wide"),
       );
       const revisions = canvas.getByRole("region", { name: "Revisions" }),
         before = revisions.getBoundingClientRect().width;
       const resize = canvas.getByRole("separator", {
-        name: "Resize JJ Log column",
+        name: "Resize JJ Log and Diff columns",
       });
       resize.focus();
       await userEvent.keyboard("{ArrowRight}");
@@ -164,7 +164,11 @@ export const ResizingAndCompactReturn: StoryObj = {
         ),
       );
     } else {
-      await expect(root).toHaveAttribute("data-display-mode", "fixed");
+      await expect(root).toHaveAttribute("data-display-mode", "compact");
+      root.focus();
+      await userEvent.keyboard("{Home}");
+      await waitFor(() => expect(root.scrollLeft).toBeLessThan(2));
+      await userEvent.keyboard("{End}");
     }
     await userEvent.click(
       canvas.getByRole("button", { name: "Close Diff column" }),

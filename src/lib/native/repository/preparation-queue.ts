@@ -1,5 +1,5 @@
 import type { Handle, HistoryClient } from "@lapismd/jj-history";
-import { pause } from "../../repository/history-selection.ts";
+import { pause } from "@lapis-notes/history/repository/controllers/history-selection";
 type Preparation = {
   handle: Handle;
   reader: HistoryClient;

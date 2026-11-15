@@ -2,7 +2,7 @@ import type {
   StorageLocation,
   StorageService,
   StorageStatus,
-} from "../../repository/storage.ts";
+} from "@lapis-notes/history/repository/controllers/storage";
 import type { NativeCall } from "../vault-client.ts";
 import { nativeError } from "../native-error.ts";
 export function nativeStorage(

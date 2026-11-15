@@ -5,9 +5,12 @@ import {
 } from "../../support/repository/interactions.ts";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { RepositoryPanel } from "@lapismd/repository-ui/jj";
+import RepositoryPanel from "@lapis-notes/history/repository/components/RepositoryPanel.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
-import { historyContext } from "../../support/repository/context.ts";
+import {
+  historyContext,
+  repositoryView,
+} from "../../support/repository/context.ts";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import {
   operation,
@@ -46,9 +49,9 @@ export const PinnedHistoryAndDiff: Story = {
     await expect(
       canvas.getByRole("region", { name: "Later revision" }),
     ).toBeVisible();
-    await expect(
-      canvas.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-history").getState().operation,
+    ).toBe(operation);
     await waitFor(() => {
       const columns = canvas.getByRole("region", {
         name: "Repository history columns",
@@ -93,9 +96,10 @@ export const RetainsHistoricalSelection: Story = {
     context.fixture.advance();
     await userEvent.click(canvas.getByRole("button", { name: "Refresh" }));
     await waitFor(() =>
-      expect(canvas.getByRole("combobox", { name: "Operation" })).toHaveValue(
-        operation,
-      ),
+      expect(
+        repositoryView(canvasElement, "repository-history").getState()
+          .operation,
+      ).toBe(operation),
     );
     await expect(
       canvas.getByRole("button", {
@@ -105,17 +109,16 @@ export const RetainsHistoricalSelection: Story = {
     expect(
       context.fixture.calls.filter(([method]) => method === "open"),
     ).toHaveLength(1);
-    await userEvent.click(canvas.getByRole("combobox", { name: "Operation" }));
-    await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("row", {
-        name: `Select operation ${otherOperation}`,
-      }),
-    );
+    await repositoryView(canvasElement).setState({
+      source: "backup",
+      operation: otherOperation,
+    });
     await waitFor(() => expect(context.fixture.closed).toHaveLength(1));
     await waitFor(() => {
-      expect(canvas.getByRole("combobox", { name: "Operation" })).toHaveValue(
-        otherOperation,
-      );
+      expect(
+        repositoryView(canvasElement, "repository-history").getState()
+          .operation,
+      ).toBe(otherOperation);
       expect(
         within(canvasElement).getByRole("region", {
           name: "Repository history",
@@ -142,11 +145,8 @@ export const MultipleHeads: Story = {
         ([method]) => method === "open",
       ),
     ).toBe(false);
-    await userEvent.click(canvas.getByRole("combobox", { name: "Operation" }));
     await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("row", {
-        name: `Select operation ${operation}`,
-      }),
+      canvas.getByRole("button", { name: `Inspect operation ${operation}` }),
     );
     await expect(
       await canvas.findByRole("button", {
@@ -193,9 +193,11 @@ export const NoRevisions: Story = {
     await expect(
       await canvas.findByText("No revisions in this operation."),
     ).toBeVisible();
-    await expect(
-      canvas.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      historyContext(canvasElement)
+        .fixture.calls.filter(([kind]) => kind === "open")
+        .at(-1)?.[1],
+    ).toBe(operation);
   },
 };
 export const Empty: Story = {
@@ -223,7 +225,7 @@ export const UnavailableBinary: Story = {
   play: async ({ canvasElement }) => {
     const canvas = await file(canvasElement);
     await expect(
-      await canvas.findByText("This file cannot be shown as text: binary."),
+      await canvas.findByText("Preview unavailable: binary."),
     ).toBeVisible();
     await expect(canvas.queryByText("No textual changes")).toBeNull();
   },
@@ -258,9 +260,9 @@ export const ReadFailureRetainsPin: Story = {
     await expect(await body.findByRole("alert")).toHaveTextContent(
       "The file comparison failed",
     );
-    await expect(
-      canvas.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-history").getState().operation,
+    ).toBe(operation);
     await expect(canvas.queryByText("No textual changes")).toBeNull();
     historyContext(canvasElement).fixture.recover();
     await userEvent.click(
@@ -292,9 +294,11 @@ export const RevisionFailureAndRecovery: Story = {
         name: /Keep repository history beside the notes/,
       }),
     ).toBeVisible();
-    await expect(
-      canvas.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      historyContext(canvasElement)
+        .fixture.calls.filter(([kind]) => kind === "open")
+        .at(-1)?.[1],
+    ).toBe(operation);
     await waitFor(() =>
       expect(
         body.queryByText("The revision history could not be read"),
@@ -320,7 +324,9 @@ export const ComparisonFailureAndRecovery: Story = {
     ).toBeNull();
     expect(canvas.queryByRole("region", { name: "Changed files" })).toBeNull();
     historyContext(canvasElement).fixture.recover();
-    await userEvent.click(canvas.getByRole("button", { name: "Retry" }));
+    await userEvent.click(
+      canvas.getByRole("button", { name: "Retry comparison" }),
+    );
     await expect(
       await canvas.findByRole("button", { name: "Welcome.md" }),
     ).toBeVisible();
@@ -370,14 +376,17 @@ export const RestoresHistoricalOperation: Story = {
     ).not.toBeNull();
     const canvas = within(canvasElement);
     await waitFor(() =>
-      expect(canvas.getByRole("combobox", { name: "Operation" })).toHaveValue(
-        otherOperation,
-      ),
+      expect(
+        repositoryView(canvasElement, "repository-history").getState()
+          .operation,
+      ).toBe(otherOperation),
     );
-    expect(
-      fixture.calls
-        .filter(([method]) => method === "open")
-        .map(([, pin]) => pin),
-    ).toEqual([otherOperation]);
+    await waitFor(() =>
+      expect(
+        fixture.calls
+          .filter(([method]) => method === "open")
+          .map(([, pin]) => pin),
+      ).toEqual([otherOperation]),
+    );
   },
 };

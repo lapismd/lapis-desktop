@@ -2,9 +2,12 @@ import { chooseChangedRevision } from "../../support/repository/picker-interacti
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { RepositoryOperations } from "@lapismd/repository-ui/jj";
+import RepositoryOperations from "@lapis-notes/history/repository/components/RepositoryOperations.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
-import { historyContext } from "../../support/repository/context.ts";
+import {
+  historyContext,
+  repositoryView,
+} from "../../support/repository/context.ts";
 import { operation, otherOperation } from "../../support/repository/fixture.ts";
 const meta: Meta = {
   title: "Desktop/Repository Op Log",
@@ -53,9 +56,9 @@ export const OperationGraphAndChanges: Story = {
     await expect(
       canvas.getByRole("list", { name: "Operation graph" }),
     ).toBeVisible();
-    await expect(
-      canvas.getByRole("combobox", { name: "Pinned operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-oplog").getState().operation,
+    ).toBe(operation);
   },
 };
 export const RootOperation: Story = {
@@ -148,9 +151,9 @@ export const RefreshRetainsPinAndSeparateHistory: Story = {
     const { fixture } = historyContext(canvasElement);
     fixture.advance();
     await userEvent.click(canvas.getByRole("button", { name: "Refresh" }));
-    await expect(
-      canvas.getByRole("combobox", { name: "Pinned operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-oplog").getState().operation,
+    ).toBe(operation);
     await userEvent.click(
       canvas.getByRole("button", { name: "More operation actions" }),
     );
@@ -162,9 +165,9 @@ export const RefreshRetainsPinAndSeparateHistory: Story = {
     const history = await within(canvasElement).findByRole("region", {
       name: "Repository history",
     });
-    await expect(
-      within(history).getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(otherOperation);
+    expect(repositoryView(canvasElement).getState().operation).toBe(
+      otherOperation,
+    );
     const opened = fixture.calls
       .filter(([kind]) => kind === "open")
       .map(([, id]) => id);
@@ -172,9 +175,9 @@ export const RefreshRetainsPinAndSeparateHistory: Story = {
     await userEvent.click(
       within(canvasElement).getByRole("button", { name: "Repository Op Log" }),
     );
-    await expect(
-      canvas.getByRole("combobox", { name: "Pinned operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-oplog").getState().operation,
+    ).toBe(operation);
   },
 };
 export const DetailFailureAndRecovery: Story = {
@@ -194,9 +197,9 @@ export const DetailFailureAndRecovery: Story = {
       await body.findByText("The operation comparison failed"),
     ).toBeVisible();
     expect(canvas.queryByText("The operation comparison failed")).toBeNull();
-    await expect(
-      canvas.getByRole("combobox", { name: "Pinned operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-oplog").getState().operation,
+    ).toBe(operation);
     historyContext(canvasElement).fixture.recover();
     await userEvent.click(
       canvas.getByRole("button", { name: "Retry operation" }),
@@ -238,12 +241,7 @@ export const MultipleHeads: Story = {
       await canvas.findByText("Choose an operation to inspect its ancestry."),
     ).toBeVisible();
     await userEvent.click(
-      canvas.getByRole("combobox", { name: "Pinned operation" }),
-    );
-    await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("row", {
-        name: `Select operation ${operation}`,
-      }),
+      canvas.getByRole("button", { name: `Inspect operation ${operation}` }),
     );
     await expect(
       await canvas.findByRole("button", { name: /describe commit.*;/ }),

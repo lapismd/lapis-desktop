@@ -3,7 +3,7 @@ import type { LocalCodeQuery } from "@lapismd/jj-history";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { RepositoryOperations } from "@lapismd/repository-ui/jj";
+import RepositoryOperations from "@lapis-notes/history/repository/components/RepositoryOperations.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { operation, otherOperation } from "../../support/repository/fixture.ts";
 

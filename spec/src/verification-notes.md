@@ -198,3 +198,14 @@ Existing Explorer menus use admitted macOS open/reveal/system-trash ports.
 Capability checks retain unsupported behavior and local-trash fallback. Shared
 Vault projection handles successful system trash once, without a second deletion
 or replacement action surface.
+
+[E-REPO-058](history/E-REPO-058.md) supersedes remotes preparation with shared
+History adoption, scoped OS/Tauri adapters and native editing guards. Cold host,
+final registry and release gates remain separate; application-data migration is
+out of scope by user decision.
+
+[E-REPO-059](history/E-REPO-059.md) retains real OS custody and HTTPS proof, the
+first-process Core-AI failure and final-cohort gates.
+
+LD-REPO-005: E-REPO-053/054, M14, E-AI-093 and E-CORE-017 retain storage, sync,
+provider, ACP and shared-backup evidence.

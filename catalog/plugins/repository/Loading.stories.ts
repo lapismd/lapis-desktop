@@ -44,7 +44,7 @@ export const OperationDetails: StoryObj = {
       await view.findByRole("button", { name: /describe commit.*;/ }),
     );
     await expect(
-      await view.findByRole("status", { name: "Loading operation details" }),
+      await view.findByRole("status", { name: "Loading operation details…" }),
     ).toBeVisible();
   },
 };
@@ -68,7 +68,7 @@ export const FileDiff: StoryObj = {
     const view = await openHistoryFile(canvasElement);
     await expect(
       await view.findByRole("status", {
-        name: "Loading changes to Welcome.md",
+        name: "Loading file changes…",
       }),
     ).toBeVisible();
   },

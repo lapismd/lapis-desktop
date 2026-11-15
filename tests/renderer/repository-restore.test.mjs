@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { RestoreController } from "@lapismd/repository-ui/history";
-import { restoreRecovery } from "../../src/lib/repository/restore-recovery.ts";
+import { restoreRecovery } from "@lapis-notes/history/repository/controllers/restore-recovery";
 function fixture() {
   const calls = [],
     errors = [],

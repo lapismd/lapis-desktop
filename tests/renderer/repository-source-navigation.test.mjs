@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { historySource } from "../../src/lib/repository/history-source.ts";
-import { openRepositoryView } from "../../src/components/repository/repository-navigation.ts";
+import { historySource } from "@lapis-notes/history/repository/controllers/history-source";
+import { openRepositoryView } from "@lapis-notes/history/repository/components/repository-navigation";
 test("persisted pins keep a strict source and legacy view state stays backup-scoped", () => {
   assert.equal(historySource({}), "backup");
   assert.equal(historySource({ source: "original" }), "original");

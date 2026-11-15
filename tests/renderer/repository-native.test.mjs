@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createNativeRepository } from "../../src/lib/native/repository/services.ts";
-import { WorkingCopyController } from "../../src/lib/repository/working-copy-controller.ts";
+import { WorkingCopyController } from "@lapis-notes/history/repository/controllers/working-copy-controller";
 const vault = {
   sessionId: "vault-token",
   path: "/private/not-renderer-authority",

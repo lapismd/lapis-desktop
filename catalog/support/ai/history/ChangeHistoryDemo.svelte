@@ -3,7 +3,7 @@
   import { WorkspaceShell } from "@lapis-notes/workspace";
   import { createSentContextFixture } from "../sent-context/fixture.ts";
   import { memoryHistory } from "./memory-history.ts";
-  import { bindAiHistory } from "../../../../src/lib/repository/ai-history.ts";
+  import { bindAiHistory } from "@lapis-notes/history/repository/controllers/ai-history";
   import { registerAiReview } from "../review.ts";
   import { installHistoryNavigation } from "./navigation.ts";
   let {

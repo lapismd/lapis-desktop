@@ -1,3 +1,4 @@
+import type { RepositoryPlugin } from "@lapis-notes/history/repository/components/repository-plugin";
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
@@ -129,59 +130,37 @@ export const NoOriginalRepository: StoryObj = {
     ).toBeVisible();
   },
 };
-async function chooseOriginal(element: HTMLElement) {
-  const body = within(element.ownerDocument.body);
-  await userEvent.click(
-    await within(element).findByRole("button", { name: /^History source:/ }),
-  );
-  await userEvent.click(
-    await body.findByRole("option", { name: /^Original repository/ }),
-  );
-  await waitFor(() =>
-    expect(
-      within(element).getByRole("button", { name: /^History source:/ }),
-    ).toHaveTextContent("Original"),
-  );
+function plugin(element: HTMLElement) {
+  const value =
+    historyContext(element).app.plugins.plugins.get("repository-history");
+  if (!value) throw new Error("Repository plugin is not loaded");
+  return value as RepositoryPlugin;
 }
 export const SeparateLogSources: StoryObj = {
   play: async ({ canvasElement }) => {
     await openHistory(canvasElement);
-    await chooseOriginal(canvasElement);
-    const app = historyContext(canvasElement).app;
-    const workspace = getWorkspaceHostBinding(app.workspace).controller
-      .workspace;
-    const leaves = workspace.getLeavesOfType("repository-history");
-    expect(leaves.map((leaf) => leaf.viewState?.state?.source).sort()).toEqual([
-      "backup",
-      "original",
-    ]);
-    await userEvent.click(
-      within(canvasElement).getByRole("button", { name: /^History source:/ }),
-    );
-    await userEvent.click(
-      await within(canvasElement.ownerDocument.body).findByRole("option", {
-        name: /^Automatic vault history/,
-      }),
-    );
-    await waitFor(() =>
-      expect(
-        within(canvasElement).getByRole("button", { name: /^History source:/ }),
-      ).toHaveTextContent("Backup"),
-    );
+    await plugin(canvasElement).open(undefined, undefined, "original");
+    const workspace = getWorkspaceHostBinding(
+      historyContext(canvasElement).app.workspace,
+    ).controller.workspace;
+    expect(
+      workspace
+        .getLeavesOfType("repository-history")
+        .map((leaf) => leaf.viewState?.state?.source)
+        .sort(),
+    ).toEqual(["backup", "original"]);
+    await plugin(canvasElement).open(undefined, undefined, "backup");
     expect(workspace.getLeavesOfType("repository-history")).toHaveLength(2);
+    expect(
+      within(canvasElement).queryByRole("button", { name: /^History source:/ }),
+    ).toBeNull();
   },
 };
 export const SeparateOperationSources: StoryObj = {
   play: async ({ canvasElement }) => {
-    await userEvent.click(
-      await within(canvasElement).findByRole("button", {
-        name: "Repository Op Log",
-      }),
-    );
-    await within(canvasElement).findByRole("region", {
-      name: "Repository operation log",
-    });
-    await chooseOriginal(canvasElement);
+    await openHistory(canvasElement);
+    await plugin(canvasElement).openOperations("backup");
+    await plugin(canvasElement).openOperations("original");
     const leaves = getWorkspaceHostBinding(
       historyContext(canvasElement).app.workspace,
     ).controller.workspace.getLeavesOfType("repository-oplog");
@@ -189,25 +168,30 @@ export const SeparateOperationSources: StoryObj = {
       "backup",
       "original",
     ]);
+    expect(
+      within(canvasElement).queryByRole("button", { name: /^History source:/ }),
+    ).toBeNull();
   },
 };
 export const SourceDiscoveryFailure: StoryObj = {
   args: { scenario: "source-failure" },
   play: async ({ canvasElement }) => {
     await openHistory(canvasElement);
-    await userEvent.click(
-      within(canvasElement).getByRole("button", { name: /^History source:/ }),
-    );
+    const picker = plugin(canvasElement).sourcePicker("backup", () => {});
+    expect(picker).toBeDefined();
+    try {
+      await picker!.load();
+      throw new Error("Source discovery unexpectedly succeeded");
+    } catch (error) {
+      picker!.report(error);
+    }
     const body = within(canvasElement.ownerDocument.body);
     await expect(
       await body.findByText("Original repository could not be inspected"),
     ).toBeVisible();
-    const dialog = body.getByLabelText("Select history source", {
-      selector: '[data-ui-component="popover"]',
-    });
     expect(
-      within(dialog).queryByText("Original repository could not be inspected"),
-    ).not.toBeInTheDocument();
+      within(canvasElement).getByRole("region", { name: "Repository history" }),
+    ).not.toHaveTextContent("Original repository could not be inspected");
   },
 };
 

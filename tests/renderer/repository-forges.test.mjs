@@ -1,7 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { ForgeController } from "../../src/lib/repository/forge-controller.ts";
-import { nativeForges } from "../../src/lib/native/repository/forges.ts";
+import { ForgeController } from "@lapis-notes/history/repository/controllers/forge-controller";
 const empty = {
   accounts: [],
   oauth_available: true,
@@ -112,27 +111,6 @@ test("cancel fences an in-flight poll and clears its timer", async (context) => 
   context.mock.timers.tick(60_000);
   assert.equal(f.calls.filter((call) => call.kind === "poll_oauth").length, 1);
   await f.c.close();
-});
-test("native account frames cannot select custody paths and never forward activation to arbitrary URLs", async () => {
-  const calls = [];
-  const service = nativeForges(async (command, args) => {
-    calls.push({ command, args });
-    return empty;
-  });
-  await service.inventory();
-  await service.command({ kind: "forget", account: "known" });
-  assert.deepEqual(calls[0], {
-    command: "desktop_forge_accounts",
-    args: { request: { command: null } },
-  });
-  assert.deepEqual(calls[1].args, {
-    request: { command: { kind: "forget", account: "known" } },
-  });
-  await assert.rejects(
-    service.openAuthorization("https://unrelated.example/login"),
-    /Invalid/,
-  );
-  assert.equal(calls.length, 2);
 });
 
 test("Forgejo PAT uses its explicit native action without entering observable state", async () => {

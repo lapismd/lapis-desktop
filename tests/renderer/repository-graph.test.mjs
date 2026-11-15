@@ -4,11 +4,11 @@ import {
   buildRepositoryLogGraph,
   encodeJjChangeId,
   shortestRepositoryLogPrefix,
-} from "../../src/lib/repository/graph/repository-log-graph.ts";
+} from "@lapis-notes/history/repository/controllers/graph/repository-log-graph";
 import {
   commitRows,
   operationRows,
-} from "../../src/lib/repository/graph/model.ts";
+} from "@lapis-notes/history/repository/controllers/graph/model";
 import {
   commit,
   operation,

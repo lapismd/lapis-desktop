@@ -5,13 +5,11 @@
     LocalGraphEvolutionNode,
   } from "@lapismd/jj-history";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
-  import { RepositoryRevisions as ReviewRevisions } from "@lapismd/repository-ui/jj";
-  import ReviewHistoryDiff from "../../../../src/components/repository/RepositoryDiffColumn.svelte";
-  import {
-    initialHistoryState,
-    type HistoryState,
-  } from "@lapismd/repository-ui/history";
-  import { commitRows } from "../../../../src/lib/repository/graph/model.ts";
+  import ReviewRevisions from "@lapis-notes/history/repository/components/RepositoryRevisions.svelte";
+  import ReviewHistoryDiff from "@lapis-notes/history/repository/components/RepositoryDiffColumn.svelte";
+  import { initialHistoryState } from "@lapis-notes/history/repository/controllers/history-state";
+  import type { HistoryState } from "@lapis-notes/history/repository/controllers/history-state";
+  import { commitRows } from "@lapis-notes/history/repository/controllers/graph/model";
   import { reviewEvolutionHistory } from "./review-evolution.ts";
   import { reviewEvolutionComparison } from "./review-evolution-comparison.ts";
   let {
