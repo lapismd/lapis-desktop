@@ -1226,3 +1226,10 @@ and missing host declarations preserving R2 busy refusal. Capture freezes the
 native default mode. Core FIFO/journal/cold lifetime remain actual native
 acceptance; fixture replies confer no host authority. Governing requirements:
 LD-AI-005–LD-AI-007 and LD-CAT-003. Visual review remains pending.
+
+Desktop / CLI Settings mounts the shared production CLI settings with the real
+Desktop named-command adapter and a catalog-owned native fixture. Install,
+Installed and Repair review registration state; Scoped Desktop Access proves
+explicit consent, selected-vault read-only credentials, private-file command
+output, revocation and disable. Generic install/remove and conflict/failure
+coverage remains in Notes' owning CLI stories. Visual review remains pending.

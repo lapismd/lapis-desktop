@@ -459,5 +459,9 @@
   },
   "catalog/plugins/terminal/Terminal.stories.ts": {
     "kind": "application"
+  },
+  "catalog/plugins/cli/Settings.stories.ts": {
+    "kind": "component",
+    "subject": "@lapis-notes/ui/cli#CliSettings"
   }
 }

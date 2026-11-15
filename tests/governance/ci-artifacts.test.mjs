@@ -262,6 +262,7 @@ test("acceptance artifacts bind exact source and preserve bundle links/modes wit
     );
     put(root, ".local/acp/native/lapis-acp", "ACP");
     put(root, "src-tauri/resources/lapis-ai/runtime.json", "{}\n");
+    put(root, "src-tauri/resources/lapis-cli/lapis", "CLI fixture");
     put(root, ".local/native-tasks/artifact/main.mjs", "export {};\n");
     put(root, ".local/native-tasks/provenance.json", "{}\n");
     put(

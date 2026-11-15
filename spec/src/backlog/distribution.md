@@ -390,9 +390,11 @@ and Dependency audits has no lane dependency.
 
 ## Stable Tauri cutover follow-up
 
-Preview automation does not switch stable users. A separate approved cutover
-must use a CalVer above the actual installed Deno release, preserve
-`Lapis Notes.app` and `notes.lapis.desktop`, prove Deno-to-Tauri upgrade,
-rollback and note/profile compatibility on macOS and the retained Linux
-architectures, and retire Deno desktop build/test/release CI while preserving
-archives and data.
+Stable cutover needs separate approval and a CalVer above installed Deno.
+Preserve `Lapis Notes.app`/`notes.lapis.desktop`; prove Deno-to-Tauri upgrade,
+rollback and note/profile compatibility on macOS and retained Linux targets.
+Retire Deno desktop build/test/release CI; preserve archives and data.
+
+CLI UI registry intake is complete ([E-CLI-003](../history/E-CLI-003.md)).
+Supported-platform native qualification remains before publication;
+[E-CLI-002](../history/E-CLI-002.md) retains the gaps.

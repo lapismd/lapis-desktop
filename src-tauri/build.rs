@@ -38,6 +38,8 @@ fn main() {
         "desktop_repository_admit",
         "desktop_repository_release",
         "desktop_repository_working_copy",
+        "desktop_cli_installation",
+        "desktop_cli_access",
         "shell_info",
         "shell_ready",
         "desktop_workspace_windows",

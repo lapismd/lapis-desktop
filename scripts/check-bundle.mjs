@@ -2,6 +2,7 @@ import { readFileSync, readdirSync, mkdirSync, writeFileSync } from "node:fs";
 import { resolve, join, relative } from "node:path";
 import { execFileSync } from "node:child_process";
 import assert from "node:assert/strict";
+import { verifyCliResource } from "./verify-cli-resource.mjs";
 
 if (process.platform !== "darwin")
   throw new Error("The current bundle gate qualifies macOS only.");
@@ -95,12 +96,21 @@ for (const path of rendererFiles)
     readFileSync(path, "utf8"),
     /wdioTauri|__wdio_mocks__|TAURI_WEBDRIVER_PORT|__lapisAcpAcceptance|__lapisShellStartupAcceptance|__lapisNativeDatabaseAcceptance|__lapisNativeWatchAcceptance|__lapisConditionalWriteAcceptance|__lapisPopoutProof|__lapisDistributionAcceptance|__lapisTasksAcceptance|__LAPIS_DISTRIBUTION_FIXTURE__|native-install-acceptance|native-install\.invalid/u,
   );
+const cliRoot = join(bundle, "Contents/Resources/lapis-cli");
+const cliManifest = verifyCliResource(cliRoot, "aarch64-apple-darwin");
+assert.equal(
+  execFileSync("/usr/bin/lipo", ["-archs", join(cliRoot, "lapis")], {
+    encoding: "utf8",
+  }).trim(),
+  "arm64",
+);
 const report = {
   result: "pass",
   bundle,
   identifier: configuration.identifier,
   architectures,
   signing: "deferred",
+  cliManifest,
   bundledFiles: bundleFiles,
   rendererJavaScriptFiles: rendererFiles.length,
   normalAutomationMarkers: 0,

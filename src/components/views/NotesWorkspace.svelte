@@ -13,10 +13,10 @@
   } from "@lapis-notes/api";
   import {
     WorkspaceShell,
-    registerPluginManagementSettings,
     DesktopWorkspaceStartup,
     DesktopRecoveryBanner,
   } from "@lapis-notes/workspace";
+  import { registerDesktopSettings } from "../../lib/notes/notes-settings.ts";
   import { notesNavigation } from "../../lib/notes/notes-navigation.ts";
   import type {
     WorkspaceStartupFailure,
@@ -57,6 +57,7 @@
     nativeChat,
     createRepository,
     createPopouts,
+    cliSettings,
     onBack,
     onReady,
     onRestart,
@@ -72,6 +73,7 @@
     nativeChat?: (app: App) => NativeChatHost;
     createRepository?: RepositoryFactory;
     createPopouts?: PopoutFactory;
+    cliSettings?: import("@lapis-notes/ui/cli").CliSettingsHost;
     onBack(): Promise<void>;
     onReady(): Promise<void>;
     onRestart(mode: AppSafeModeState): Promise<void>;
@@ -104,7 +106,7 @@
   provideApplicationState(app);
   const releaseCompatibility = installApplicationCompatibility(app);
   const sync = takeHostSyncService(app);
-  const disposePluginSettings = registerPluginManagementSettings(app);
+  const disposePluginSettings = registerDesktopSettings(app, () => cliSettings);
   const disposePluginBrowser = registerDesktopPluginBrowser(app);
   const dailyDocumentProvider = registerDefaultDailyDocumentProvider(app);
   const lifecycle = bindHostLifecycleFailure(app);

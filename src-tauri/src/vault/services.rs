@@ -14,12 +14,23 @@ use std::{
 };
 use uuid::Uuid;
 
-#[derive(Default)]
 pub struct VaultServices {
+    pub content: Arc<lapis_app_core::services::content::ContentGrants>,
     runtime: Runtime,
     profile: Option<VaultRoot>,
     clients: HashMap<String, Arc<Client>>,
     detached: HashSet<Uuid>,
+}
+impl Default for VaultServices {
+    fn default() -> Self {
+        Self {
+            runtime: Runtime::default(),
+            profile: None,
+            clients: HashMap::new(),
+            detached: HashSet::new(),
+            content: Arc::new(lapis_app_core::services::content::ContentGrants::disabled()),
+        }
+    }
 }
 impl VaultServices {
     /// Installation policy selects the shared owner, never an IPC-supplied path.
@@ -50,6 +61,7 @@ impl VaultServices {
         profile.verify_physical_root()?;
         Ok(Self {
             runtime: Runtime::with_database(storage),
+            content: Arc::new(lapis_app_core::services::content::ContentGrants::disabled()),
             profile: Some(profile),
             clients: HashMap::new(),
             detached: HashSet::new(),
@@ -197,6 +209,9 @@ impl VaultServices {
                 .count()
                 == 1
             {
+                self.content
+                    .revoke_vault(id)
+                    .map_err(|e| io::Error::other(e.message))?;
                 self.runtime.close_vault(id).map_err(io::Error::other)?;
                 self.detached.remove(&id);
             }
@@ -224,6 +239,9 @@ impl VaultServices {
     /// Before destructive App teardown on Quit, reconcile vaults left by reload.
     pub fn close_detached(&mut self) -> io::Result<()> {
         for id in self.detached.clone() {
+            self.content
+                .revoke_vault(id)
+                .map_err(|e| io::Error::other(e.message))?;
             self.runtime.close_vault(id).map_err(io::Error::other)?;
             self.detached.remove(&id);
         }
@@ -231,7 +249,13 @@ impl VaultServices {
     }
 
     pub fn shutdown(&mut self) -> io::Result<()> {
+        self.content
+            .set_enabled(false)
+            .map_err(|e| io::Error::other(e.message))?;
         self.runtime.shutdown().map_err(io::Error::other)?;
+        self.content
+            .shutdown()
+            .map_err(|e| io::Error::other(e.message))?;
         self.clients.clear();
         self.detached.clear();
         Ok(())

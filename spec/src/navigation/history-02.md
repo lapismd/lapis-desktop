@@ -318,3 +318,8 @@
 - [Wait for App-owned mobile chrome after shell start](../history/E-MOBILE-005.md)
 - [Adopt the published Notes mobile cohort](../history/E-MOBILE-006.md)
 - [Use active portable artifacts for nightly health](../history/E-CI-101.md)
+- [CLI installation and content access](../history/E-CLI-001.md)
+- [CLI final source and consumer qualification](../history/E-CLI-002.md)
+- [Published CLI UI registry adoption](../history/E-CLI-003.md)
+- [Align the Notes cohort governance regression](../history/E-CLI-004.md)
+- [Refresh the hosted private-profile source](../history/E-CLI-005.md)

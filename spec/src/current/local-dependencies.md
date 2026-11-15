@@ -85,9 +85,9 @@ retain their owning contracts.
 
 ## Current registry and private inputs
 
-E-MOBILE-006 selects the published mobile cohort from Notes source
-`cdad0cde972f64bc0f20896d493c97268cc97b51`: API ^0.3.1, UI ^0.1.9, File Explorer
-^0.2.5, Workspace ^0.4.0, Language Service ^0.1.3, Design Core ^0.13.0, Mira
+E-CLI-003 and E-CLI-005 select the published cohort from Notes source
+`d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f`: API ^0.6.1, UI ^0.2.0, File Explorer
+^0.2.8, Workspace ^0.4.4, Language Service ^0.1.6, Design Core ^0.13.2, Mira
 ~0.1.5, Search ^0.1.6 and Agent UI ^0.2.3. AI Host ^0.3.0, Markdown ^0.2.1,
 Repository UI ^0.1.1, Bases ^0.2.0, History ^0.2.0, Tasks ^0.1.1, Terminal
 ^0.1.2 and Mira companions ~0.0.3 retain their ranges. Published intake and the
@@ -101,7 +101,7 @@ macOS-only cases are not collected on Linux. Those passes do not transfer to
 this selected cohort.
 
 Notes' private App Profile is built from the same Notes
-`cdad0cde972f64bc0f20896d493c97268cc97b51` release source as the published
+`d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f` release source as the published
 framework cohort. Hosted CI builds this committed public boundary without source
 aliases, bundled node_modules or a second chat writer. Portable validation MUST
 export that same reachable commit rather than an abandoned or source-local

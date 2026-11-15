@@ -1,3 +1,4 @@
+import { verifyCliResource } from "../verify-cli-resource.mjs";
 import assert from "node:assert/strict";
 import { lstatSync, readFileSync } from "node:fs";
 import { join, relative } from "node:path";
@@ -87,6 +88,7 @@ export function verifyLinuxBundle(directory, identity, target) {
   }
   for (const file of [
     executable,
+    join(directory, "lib", productName, "lapis-cli/lapis"),
     ...helpers.map((name) => join(directory, linuxRuntime, name)),
   ]) {
     assert.ok(
@@ -99,6 +101,7 @@ export function verifyLinuxBundle(directory, identity, target) {
     hash(readFileSync(join(directory, linuxRuntime, "runtime-manifest.toml"))),
     metadata.runtimeManifestSha256,
   );
+  verifyCliResource(join(directory, "lib", productName, "lapis-cli"), target);
   const desktop = readFileSync(join(directory, linuxDesktop), "utf8");
   assert.ok(desktop.includes(`X-Lapis-Identifier=${identifier}\n`));
   assert.ok(desktop.includes(`X-Lapis-Version=${identity.version}\n`));
