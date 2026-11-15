@@ -327,3 +327,5 @@
 - [Native Sync profile identity admission](../history/E-SYNC-002.md)
 
 - [Retained native Sync account admission](../history/E-SYNC-003.md)
+
+- [Native Sync scope and command admission](../history/E-SYNC-004.md)

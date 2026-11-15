@@ -4,8 +4,9 @@
 and shared Core ownership. A native immutable profile UUID is bound to captured
 physical roots; missing or foreign established metadata requires recovery. The
 retained native account registry shares Core ownership across windows and fences
-stale presentation handles. Tauri/App wiring remains open; installation and
-activation remain disabled.
+stale presentation handles. Unconfigured native scopes and bounded host command
+admission are under qualification; Tauri/App wiring remains open, and
+installation and activation remain disabled.
 
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),

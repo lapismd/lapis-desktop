@@ -1,5 +1,6 @@
 //! Native account admission, independent of Tauri and view lifetime.
 //! The host serializes admission and lifecycle transitions; Core owns execution.
+mod lifecycle;
 use super::profile::SyncProfile;
 use crate::vault::{VaultManager, admission::VaultAdmissions};
 use lapis_app_core::{
@@ -30,6 +31,7 @@ struct Link {
     vault: Uuid,
     session: String,
     generation: String,
+    root: (u64, u64),
 }
 
 /// Explicitly selected native service, never constructed by disabled Sync.
@@ -58,6 +60,73 @@ impl AccountServices {
             accounts: HashMap::new(),
             links: HashMap::new(),
         })
+    }
+
+    /// Admit presentation before a destination exists, without custody IO.
+    pub fn open_scope(
+        &mut self,
+        vaults: &VaultManager,
+        window: &str,
+        session: &str,
+    ) -> io::Result<Uuid> {
+        self.identity.verify()?;
+        let vault =
+            Uuid::parse_str(&vaults.descriptor(session)?.profile_id).map_err(|_| denied())?;
+        let root = vaults.get(session)?;
+        root.verify_physical_root()?;
+        let identity = root.physical_identity()?;
+        if self
+            .accounts
+            .get(&vault)
+            .is_some_and(|account| account.root != identity)
+        {
+            return Err(denied());
+        }
+        let plan = self.admissions.prepare(vaults, window, session)?;
+        let lease = self.admissions.complete(vaults, &plan)?;
+        self.identity.verify()?;
+        root.verify_physical_root()?;
+        if let Some(account) = self.accounts.get_mut(&vault) {
+            account.sessions.insert(session.into());
+        }
+        let handle = Uuid::new_v4();
+        self.links.insert(
+            window.into(),
+            Link {
+                handle,
+                vault,
+                session: session.into(),
+                generation: lease.generation().into(),
+                root: identity,
+            },
+        );
+        Ok(handle)
+    }
+
+    /// Native destination selection replaces presentation authority on success.
+    pub fn configure(
+        &mut self,
+        vaults: &VaultManager,
+        window: &str,
+        handle: Uuid,
+        origin: &str,
+    ) -> io::Result<Uuid> {
+        self.validate(vaults, window, handle)?;
+        let session = self.links[window].session.clone();
+        self.admit(vaults, window, &session, origin)
+    }
+
+    pub fn observation(
+        &mut self,
+        vaults: &VaultManager,
+        window: &str,
+        handle: Uuid,
+    ) -> io::Result<Option<AccountObservation>> {
+        self.validate(vaults, window, handle)?;
+        Ok(self
+            .accounts
+            .get(&self.links[window].vault)
+            .map(|account| account.owner.subscribe().borrow().clone()))
     }
 
     /// Blocking native admission. Production accepts HTTPS origins only.
@@ -126,6 +195,7 @@ impl AccountServices {
                 vault,
                 session: session.into(),
                 generation: lease.generation().into(),
+                root: root.physical_identity()?,
             },
         );
         Ok(handle)
@@ -148,11 +218,10 @@ impl AccountServices {
             .admissions
             .authorize(vaults, window)
             .map_err(|failure| failure.error)?;
-        let account = self.accounts.get(&link.vault).ok_or_else(denied)?;
         if lease.generation() != link.generation
             || lease.session() != link.session
             || Uuid::parse_str(lease.profile()).ok() != Some(link.vault)
-            || vaults.get(&link.session)?.physical_identity()? != account.root
+            || vaults.get(&link.session)?.physical_identity()? != link.root
         {
             return Err(denied());
         }
@@ -170,7 +239,9 @@ impl AccountServices {
         if matches!(command, AccountCommand::Close) {
             return Err(denied());
         }
-        self.accounts[&self.links[window].vault]
+        self.accounts
+            .get(&self.links[window].vault)
+            .ok_or_else(unconfigured)?
             .owner
             .submit(command)
     }
@@ -182,76 +253,12 @@ impl AccountServices {
         handle: Uuid,
     ) -> io::Result<watch::Receiver<AccountObservation>> {
         self.validate(vaults, window, handle)?;
-        Ok(self.accounts[&self.links[window].vault].owner.subscribe())
-    }
-
-    /// View detach/reload revokes only presentation authority, never native work.
-    pub fn detach(&mut self, window: &str) {
-        self.links.remove(window);
-        self.admissions.leave(window, false);
-    }
-
-    /// Native lifecycle only, under the host's transition guard through completion.
-    /// The host retains the returned work and inspects its outcome before teardown.
-    /// A failed close retains the original owner for explicit custody recovery.
-    pub fn close_session(
-        &mut self,
-        vaults: &VaultManager,
-        session: &str,
-        reload: bool,
-    ) -> io::Result<Option<AccountWork>> {
-        self.identity.verify()?;
-        let vault =
-            Uuid::parse_str(&vaults.descriptor(session)?.profile_id).map_err(|_| denied())?;
-        let windows: Vec<_> = self
-            .links
-            .iter()
-            .filter(|(_, link)| link.session == session)
-            .map(|(window, _)| window.clone())
-            .collect();
-        for window in windows {
-            self.detach(&window);
-        }
-        let Some(account) = self.accounts.get_mut(&vault) else {
-            return Ok(None);
-        };
-        vaults.get(session)?.verify_physical_root()?;
-        if vaults.get(session)?.physical_identity()? != account.root {
-            return Err(denied());
-        }
-        account.sessions.remove(session);
-        if reload || !account.sessions.is_empty() {
-            return Ok(None);
-        }
-        account.owner.submit(AccountCommand::Close).map(Some)
-    }
-
-    /// Positive inspection only: an unknown or failed close never releases state.
-    pub fn collect_closed(&mut self) -> usize {
-        let closed: HashSet<_> = self
+        Ok(self
             .accounts
-            .iter()
-            .filter(|(_, account)| {
-                matches!(
-                    *account.owner.subscribe().borrow(),
-                    AccountObservation::Closed
-                )
-            })
-            .map(|(vault, _)| *vault)
-            .collect();
-        let windows: Vec<_> = self
-            .links
-            .iter()
-            .filter(|(_, link)| closed.contains(&link.vault))
-            .map(|(window, _)| window.clone())
-            .collect();
-        for window in windows {
-            self.detach(&window);
-        }
-        for vault in &closed {
-            self.accounts.remove(vault);
-        }
-        closed.len()
+            .get(&self.links[window].vault)
+            .ok_or_else(unconfigured)?
+            .owner
+            .subscribe())
     }
 }
 
@@ -259,5 +266,12 @@ fn denied() -> io::Error {
     io::Error::new(
         io::ErrorKind::PermissionDenied,
         "Native Sync account admission is unavailable",
+    )
+}
+
+fn unconfigured() -> io::Error {
+    io::Error::new(
+        io::ErrorKind::NotConnected,
+        "Configure the native Sync account destination first",
     )
 }

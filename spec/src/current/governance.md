@@ -9,7 +9,7 @@ preserves Docker/native boundaries. [Preview distribution](distribution.md) owns
 releases, including the Linux extension recorded by E-RELEASE-005.
 E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
 ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
-editing. Core readers use exact local IPC; generic plugin grants deny.
+editing. Core readers use exact scoped IPC; generic plugin grants deny.
 Tasks/default/Sync gates stay separate. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for exact
 paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned

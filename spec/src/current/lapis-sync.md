@@ -37,10 +37,16 @@ lifetime integration owns close/drain; uncertain custody retains the original
 owner. Native registries MUST bound retained services and reject a different
 origin or replaced root without creating another owner or fallback.
 
+An unconfigured native session MAY admit a window scope before destination
+selection. This scope MUST validate the same profile/vault/root and revocable
+handle without opening an account or accessing custody. Account commands remain
+unavailable until explicit configuration; choosing a server replaces the handle
+only after successful admission. This capability adds no content authority.
+
 ## Account custody and source intake
 
 The native account coordinator is owned by Server Core
-`8e4bd701113a85ca0de0022188c511947ee2f5b8`; its source receipt records real
+`6cc6ba8861f3df217d548888f0e96d0fc42da1d0`; its source receipt records real
 HTTP, cold native-process and uncertain-outcome tests separately from OS
 custody. Desktop pins the same reachable Git source for all three shared crates
 and aligns JJ Store `87be3ad68530653c6c6fd1e5a2463a217cf3f044` across direct and
@@ -60,3 +66,8 @@ adapter, fake provider or another platform's pass cannot satisfy those gates.
 
 [Verification](../verification/lapis-sync.md) records source and remaining
 native gates.
+
+Native command admission MUST bound provider, request identity and inputs,
+reject renderer-supplied time, custody, roots and secret material, and refuse
+unknown operations. The native host supplies account time and device label;
+these source actions remain unregistered until the Tauri adapter is qualified.
