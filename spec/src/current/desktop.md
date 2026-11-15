@@ -319,4 +319,5 @@ record the lease and Core pins.
 
 CLI main-window authority, native credential custody and disabled loopback
 access follow [LD-CLI-001/002/003](integration.md). Its current release identity
-is `2026.31.6-rc.2`.
+is `2026.31.6-rc.2`; [E-CLI-007](../history/E-CLI-007.md) records its complete
+non-publishing three-platform candidate qualification.
