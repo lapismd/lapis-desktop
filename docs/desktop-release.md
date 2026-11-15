@@ -10,8 +10,8 @@ separately approved cutover.
 
 Merge a version change on main before preparing a candidate. Package, Cargo and
 Tauri versions must agree on a higher CalVer with `-rc.N`. Update the release
-configuration's numeric `bundleVersion` to the base version too. The first
-candidate is 2026.31.6-rc.1, provided stable Deno remains at 2026.31.5;
+configuration's numeric `bundleVersion` to the base version too. The current
+candidate is 2026.31.6-rc.2, provided stable Deno remains at 2026.31.5;
 preparation checks the actual published baseline again. Do not reuse a published
 version.
 
@@ -156,7 +156,7 @@ If publication succeeded but the tap update failed, recover it independently:
 
 ```sh
 gh workflow run release-desktop.yml --repo lapismd/lapis-desktop --ref main \
-  -f operation=recover-tap -f tag=desktop-v2026.31.6-rc.1
+  -f operation=recover-tap -f tag=desktop-v2026.31.6-rc.2
 ```
 
 Recovery verifies the published source tag and downloads, then reuses an

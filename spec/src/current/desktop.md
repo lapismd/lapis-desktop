@@ -318,4 +318,5 @@ M5 watch ownership maps to `files.md`; M7 native integration maps to
 record the lease and Core pins.
 
 CLI main-window authority, native credential custody and disabled loopback
-access follow [LD-CLI-001/002/003](integration.md).
+access follow [LD-CLI-001/002/003](integration.md). Its current release identity
+is `2026.31.6-rc.2`.
