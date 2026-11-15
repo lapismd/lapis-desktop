@@ -321,3 +321,4 @@
 - [CLI installation and content access](../history/E-CLI-001.md)
 - [CLI final source and consumer qualification](../history/E-CLI-002.md)
 - [Published CLI UI registry adoption](../history/E-CLI-003.md)
+- [Align the Notes cohort governance regression](../history/E-CLI-004.md)

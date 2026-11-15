@@ -387,8 +387,10 @@ Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 CLI preparation verifies the retrievable Core pin and stages a release binary
 with target/source/checksum identity. Packaging checks the resource and exact
-main-window grants. The consumer now pins published `@lapis-notes/ui@^0.2.0`;
-temporary UI archives remain historical qualification evidence only.
+main-window grants. The consumer now pins the coherent published API 0.6.1, File
+Explorer 0.2.8, Language Service 0.1.6, UI 0.2.0 and Workspace 0.4.4 cohort; its
+governance regression requires that manifest inventory and exactly one API peer
+context. Temporary UI archives remain historical qualification evidence.
 [CI governance](ci.md), [native acceptance](native-acceptance.md),
 [dependency intake](local-dependencies.md) and
 [retained CI tool qualification](../verification-notes.md) keep their gates.
