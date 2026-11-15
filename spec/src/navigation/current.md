@@ -7,6 +7,7 @@
   - [Desktop shell](../current/desktop.md)
   - [Notes mobile layout](../current/mobile-layout.md)
   - [Native Tasks](../current/tasks.md)
+  - [Lapis Sync native integration](../current/lapis-sync.md)
   - [Native workspace windows](../current/windows.md)
   - [Desktop plugins and catalog](../current/plugins.md)
   - [Desktop AI and optional compute](../current/ai.md)
@@ -47,3 +48,4 @@
     - [Planned Review contract](../backlog/markdown-review-contract.md)
 
 - [Additional qualification notes](../verification-notes.md)
+  - [Lapis Sync verification](../verification/lapis-sync.md)

@@ -14,6 +14,7 @@ cross-repository release state and exact resume steps.
 - [Desktop shell](desktop.md)
 - [Notes mobile layout](mobile-layout.md)
 - [Native Tasks](tasks.md)
+- [Lapis Sync native integration](lapis-sync.md)
 - [Background activity and responsiveness](background.md)
 - [File management](files.md)
 - [Find and navigate](navigation.md)

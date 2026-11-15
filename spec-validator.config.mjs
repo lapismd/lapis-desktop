@@ -43,7 +43,7 @@ export default defineConfig(
         },
       },
       verification: {
-        file: "verification.md",
+        files: ["^verification(?:/.*)?\\.md$"],
         mode: "table",
         idMode: "single",
         headers: {
@@ -76,6 +76,11 @@ export default defineConfig(
             pattern:
               "^(?:scripts/release/|tests/governance/release-|\\.github/workflows/release-desktop\\.yml$|src-tauri/tauri\\.preview\\.conf\\.json$)",
             chapters: ["spec/src/current/distribution.md"],
+          },
+          {
+            pattern:
+              "^(?:src-tauri/src/(?:sync/|host/sync/)|src-tauri/tests/sync_.*\\.rs$|src/lib/native/sync/)",
+            chapters: ["spec/src/current/lapis-sync.md"],
           },
           {
             pattern:
@@ -145,7 +150,7 @@ export default defineConfig(
         pattern: canonicalContractPattern(),
         role: "contract",
       },
-      { pattern: "^verification\\.md$", role: "verification" },
+      { pattern: "^verification(?:/.*)?\\.md$", role: "verification" },
       { pattern: "^history/(?!index)", role: "history" },
       { pattern: "^navigation/", role: "navigation" },
       { pattern: "(?:index|SUMMARY)\\.md$", role: "navigation" },

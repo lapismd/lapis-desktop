@@ -1,5 +1,8 @@
 # Desktop shell and CI
 
+[Lapis Sync native intake](lapis-sync.md) retains explicit profile/OS custody
+and shared Core ownership; installation and activation remain disabled.
+
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),
 [plugins](plugins.md), [history](repository.md),

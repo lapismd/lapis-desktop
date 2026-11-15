@@ -137,3 +137,5 @@
 
 [Additional qualification notes](verification-notes.md) retain the historical
 follow-ups and their original acceptance boundaries.
+
+[Sync](verification/lapis-sync.md)

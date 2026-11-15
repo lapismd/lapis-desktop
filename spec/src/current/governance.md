@@ -1,4 +1,4 @@
-# Governance — [CI tooling](ci.md), [native turns](ai-adapter.md), [mobile layout](mobile-layout.md)
+# Governance — [CI tooling](ci.md), [native turns](ai-adapter.md), [mobile layout](mobile-layout.md), [Sync](lapis-sync.md)
 
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 [Shared screens](shared-screen-integration.md) own integration;

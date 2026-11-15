@@ -137,19 +137,20 @@ warnings visible and resolves the host's API 0.3.1 identity; no peer override or
 warning suppression is introduced. Notes owns the peer-declaration refresh.
 Consumer type, interaction and accessibility checks remain mandatory.
 
-All jj-store crates use git revision `076e418cecbe204925aea874bef8aa8a680269a9`.
+All jj-store crates use git revision `87be3ad68530653c6c6fd1e5a2463a217cf3f044`.
 Native application crates use lapis-server
-`530a6c425e9183f93ee74c0b16bb4111fdc838f0`, retaining safe opt-in backup
-initialization and shutdown diagnostics and adopting explicit completed-command
-lease release. The Rust graph aligns `rustix` 1.1.6, Tauri 2.12.5 and
-tauri-build 2.7.4 with those exact owning sources. Projection engines remain
-restored through exact owning Plugins, Tasks and Docs Git commits. Terminal Rust
-uses `2463f944149d753eaf638cf876393a6f60f50190`, retaining attachment/ordered
-capture repairs and PR #12's fenced detach/remount sink. Its source race, real
-PTY stress, 109 Rust tests, strict Clippy and hosted gate pass; E-CI-013 keeps
-the separate Desktop consumer gate pending. Prompt assertions and shell
-admission remain unchanged. No native dependency requires an ambient sibling
-crate path or invented release tag.
+`907e647283a0e3981a2c5aa31e43cde9a92732f1`, retaining existing backup and
+lease-release behavior while adding the public Sync account transport, protected
+store and coordinator; OS and application acceptance remain separate. The Rust
+graph aligns `rustix` 1.1.6, Tauri 2.12.5 and tauri-build 2.7.4 with those exact
+owning sources. Projection engines remain restored through exact owning Plugins,
+Tasks and Docs Git commits. Terminal Rust uses
+`2463f944149d753eaf638cf876393a6f60f50190`, retaining attachment/ordered capture
+repairs and PR #12's fenced detach/remount sink. Its source race, real PTY
+stress, 109 Rust tests, strict Clippy and hosted gate pass; E-CI-013 keeps the
+separate Desktop consumer gate pending. Prompt assertions and shell admission
+remain unchanged. No native dependency requires an ambient sibling crate path or
+invented release tag.
 
 Hosted audit runs against the actual private install projection before restoring
 tracked files. Full and production audits remain blocking. Test tooling consumes
