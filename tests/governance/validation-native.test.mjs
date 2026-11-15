@@ -27,7 +27,7 @@ test("portable sources retain the native Notes pin while hosted renderer sources
   );
   assert.equal(
     revision(hosted, "lapis-notes"),
-    "cdad0cde972f64bc0f20896d493c97268cc97b51",
+    "d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f",
   );
   for (const name of ["lapis-ai", "jj-store", "lapis-plugins"]) {
     assert.match(revision(native, name), /^[a-f0-9]{40}$/u);
