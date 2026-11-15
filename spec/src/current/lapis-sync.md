@@ -22,10 +22,25 @@ missing, foreign or corrupt identity MUST require recovery instead of issuing a
 replacement identity. Native profile admission does not select a destination,
 enroll a participant or activate Sync.
 
+## Retained account admission
+
+LD-SYNC-001 Desktop account admission MUST share one Core account owner per
+logical local vault and captured root, with one selected server origin. Native
+profile identity and admitted vault sessions determine custody scope; a window
+cannot supply another root, profile identity or raw secret. Per-window opaque
+handles MUST be replaced on re-admission and checked both before actions and
+after waits or before observation delivery.
+
+View detach MUST revoke its handle while retaining accepted work and the owner.
+A window command MUST NOT close the shared owner. Explicit native vault/process
+lifetime integration owns close/drain; uncertain custody retains the original
+owner. Native registries MUST bound retained services and reject a different
+origin or replaced root without creating another owner or fallback.
+
 ## Account custody and source intake
 
 The native account coordinator is owned by Server Core
-`907e647283a0e3981a2c5aa31e43cde9a92732f1`; its source receipt records real
+`8e4bd701113a85ca0de0022188c511947ee2f5b8`; its source receipt records real
 HTTP, cold native-process and uncertain-outcome tests separately from OS
 custody. Desktop pins the same reachable Git source for all three shared crates
 and aligns JJ Store `87be3ad68530653c6c6fd1e5a2463a217cf3f044` across direct and

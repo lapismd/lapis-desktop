@@ -14,9 +14,9 @@ retains its original provider and two-device acceptance. Lapis Sync uses the
 `sync` plugin and encrypted revision/object protocol. Legacy `nostr-sync`,
 standalone History and Git backup keep their identities and existing data.
 
-The [current native chapter](../current/lapis-sync.md) tracks initial source
-intake and custody adapters; their source evidence does not complete this
-roadmap or enable the plugin.
+The [current native chapter](../current/lapis-sync.md) tracks source intake,
+custody adapters and retained account admission; their source evidence does not
+complete this roadmap or enable the plugin.
 
 ## Agreed product outcome
 
