@@ -385,7 +385,7 @@ no registry patch or substitute is introduced.
 AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
 Seeding stays exclusive; ordinary AI execution remains unavailable.
 
-CLI preparation verifies the retrievable Core pin and stages a release binary
+CLI preparation verifies the Core pin and stages the `2026.31.6-rc.2` binary
 with target/source/checksum identity. Packaging checks the resource and exact
 main-window grants. The consumer now pins the coherent published API 0.6.1, File
 Explorer 0.2.8, Language Service 0.1.6, UI 0.2.0 and Workspace 0.4.4 cohort; its

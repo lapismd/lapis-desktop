@@ -323,3 +323,4 @@
 - [Published CLI UI registry adoption](../history/E-CLI-003.md)
 - [Align the Notes cohort governance regression](../history/E-CLI-004.md)
 - [Refresh the hosted private-profile source](../history/E-CLI-005.md)
+- [Advance the CLI delivery preview version](../history/E-CLI-006.md)

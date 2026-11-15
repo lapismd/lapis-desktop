@@ -147,6 +147,9 @@ server source as the native services, with checksum/provenance and executable
 checks. Registration stores a private copy so moving the app does not strand
 PATH.
 
+The current CLI delivery candidate is `2026.31.6-rc.2`; the published
+`2026.31.6-rc.1` tag remains bound to its earlier source and bytes.
+
 The CLI resource manifest MUST match the Core source pin, package target,
 release profile, executable flag and actual SHA-256. A matching outer file
 inventory cannot admit a stale CLI. Bundle success is recorded only after these

@@ -131,7 +131,7 @@
 | LD-REPO-003 | Planned | Native-store experiment **Deferred** at `codex/desktop-jj-chat-checkpoint-20261020`; [E-AI-092](history/E-AI-092.md) preserves evidence/gates; [E-AI-093](history/E-AI-093.md) makes local ACP the active profile. |
 | LD-REPO-004 | Implemented | [M13.2 ledger](backlog.md): repository UI history and original gates; [E-REPO-016](history/E-REPO-016.md): loading progress. |
 | LD-REPO-005 | Partial | E-REPO-053/054, M14, E-AI-093 and E-CORE-017 retain storage, sync, provider, ACP and shared-backup evidence. [E-RELEASE-014](history/E-RELEASE-014.md): macOS ARM64 Original/Managed quarantine. [E-CI-085](history/E-CI-085.md): command-lease repair; [E-CI-086](history/E-CI-086.md): original exact pins; [E-CI-087](history/E-CI-087.md)/[088](history/E-CI-088.md): rebased Core identities; affected-platform proof pending. |
-| LD-CLI-001 | Partial | [E-CLI-002](history/E-CLI-002.md): installer. [E-CLI-005](history/E-CLI-005.md): UI/profile cohort; platform packaging pending. |
+| LD-CLI-001 | Partial | [E-CLI-002](history/E-CLI-002.md): installer. [E-CLI-006](history/E-CLI-006.md): CLI cohort/version; candidate pending. |
 | LD-CLI-002 | Partial | E-CLI-001: loopback/Core regressions pass; native consent pending. |
 | LD-CLI-003 | Partial | E-CLI-001: private-file/lifecycle regressions pass; native dialog pending. |
 
