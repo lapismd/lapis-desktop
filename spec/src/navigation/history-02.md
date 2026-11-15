@@ -324,3 +324,4 @@
 - [Align the Notes cohort governance regression](../history/E-CLI-004.md)
 - [Refresh the hosted private-profile source](../history/E-CLI-005.md)
 - [Advance the CLI delivery preview version](../history/E-CLI-006.md)
+- [Qualify the bundled CLI delivery candidate](../history/E-CLI-007.md)

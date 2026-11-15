@@ -148,7 +148,9 @@ checks. Registration stores a private copy so moving the app does not strand
 PATH.
 
 The current CLI delivery candidate is `2026.31.6-rc.2`; the published
-`2026.31.6-rc.1` tag remains bound to its earlier source and bytes.
+`2026.31.6-rc.1` tag remains bound to its earlier source and bytes. E-CLI-007
+records exact-source full CI, all three ordinary archives, both Linux installed
+lifecycles and the final sealed candidate; no publication was requested.
 
 The CLI resource manifest MUST match the Core source pin, package target,
 release profile, executable flag and actual SHA-256. A matching outer file
