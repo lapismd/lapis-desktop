@@ -362,3 +362,5 @@
 - [Plugin-contributed skills](../history/E-SKILL-001.md)
 - [Prepare selected hosted Rust skill resources](../history/E-CI-102.md)
 - [Prepare direct Linux Rust skill resources](../history/E-CI-103.md)
+
+- [Public profile and skill release intake](../history/E-SKILL-002.md)
