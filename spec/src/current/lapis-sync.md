@@ -46,7 +46,7 @@ only after successful admission. This capability adds no content authority.
 ## Account custody and source intake
 
 The native account coordinator is owned by Server Core
-`6cc6ba8861f3df217d548888f0e96d0fc42da1d0`; its source receipt records real
+`5d3d463b57221e6e0be46618c0ec00db3c1938e6`; its source receipt records real
 HTTP, cold native-process and uncertain-outcome tests separately from OS
 custody. Desktop pins the same reachable Git source for all three shared crates
 and aligns JJ Store `87be3ad68530653c6c6fd1e5a2463a217cf3f044` across direct and
@@ -71,3 +71,12 @@ Native command admission MUST bound provider, request identity and inputs,
 reject renderer-supplied time, custody, roots and secret material, and refuse
 unknown operations. The native host supplies account time and device label;
 these source actions remain unregistered until the Tauri adapter is qualified.
+
+Native leave admission MUST fence and drain the final account owner without
+revoking its window handles or releasing custody before other native leave
+checks approve. Dropping preparation after refused or cancelled leave MUST
+retain the same handles, account identity and original owner. A native-only
+completion proof binds the original registry/session/vault/root and permits
+revocation only after a successful commit; reload and another retained session
+keep the owner. The host MUST retain one native transition guard through this
+sequence.

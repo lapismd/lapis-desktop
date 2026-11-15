@@ -15,8 +15,8 @@ retains its original provider and two-device acceptance. Lapis Sync uses the
 standalone History and Git backup keep their identities and existing data.
 
 The [current native chapter](../current/lapis-sync.md) tracks source intake,
-custody adapters and retained account admission; their source evidence does not
-complete this roadmap or enable the plugin.
+custody adapters, retained account admission and cancellable native leave; their
+source evidence does not complete this roadmap or enable the plugin.
 
 ## Agreed product outcome
 

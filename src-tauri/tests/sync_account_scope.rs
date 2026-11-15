@@ -161,3 +161,38 @@ fn unconfigured_native_scope_is_admitted_without_custody_or_an_account() {
     services.detach("main");
     assert!(services.validate(&vaults, "main", current).is_err());
 }
+
+#[test]
+fn completion_refuses_a_replaced_root_without_revoking_the_original_handle() {
+    let profile = tempfile::tempdir().unwrap();
+    let base = tempfile::tempdir().unwrap();
+    let folder = base.path().join("vault");
+    std::fs::create_dir(&folder).unwrap();
+    let root = VaultRoot::open(profile.path()).unwrap();
+    let mut vaults = VaultManager::new(profile.path()).unwrap();
+    let selected = vaults.select(Some(folder.clone()), None).unwrap().unwrap();
+    let mut services = AccountServices::new(&root, Arc::new(UnaccessedCustody)).unwrap();
+    let handle = services
+        .open_scope(&vaults, "main", &selected.session_id)
+        .unwrap();
+    let runtime = tokio::runtime::Runtime::new().unwrap();
+    let proof = runtime.block_on(async {
+        let prepared = services
+            .prepare_session_close(&vaults, &selected.session_id, false)
+            .unwrap()
+            .wait()
+            .await
+            .unwrap();
+        tokio::task::spawn_blocking(move || prepared.commit())
+            .await
+            .unwrap()
+            .unwrap()
+    });
+    let retained = base.path().join("retained");
+    std::fs::rename(&folder, &retained).unwrap();
+    std::fs::create_dir(&folder).unwrap();
+    assert!(services.finish_session_close(&vaults, proof).is_err());
+    std::fs::remove_dir(&folder).unwrap();
+    std::fs::rename(&retained, &folder).unwrap();
+    services.validate(&vaults, "main", handle).unwrap();
+}

@@ -329,3 +329,5 @@
 - [Retained native Sync account admission](../history/E-SYNC-003.md)
 
 - [Native Sync scope and command admission](../history/E-SYNC-004.md)
+
+- [Native Sync cancellable session leave](../history/E-SYNC-005.md)

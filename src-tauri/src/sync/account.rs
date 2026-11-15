@@ -1,5 +1,6 @@
 //! Native account admission, independent of Tauri and view lifetime.
 //! The host serializes admission and lifecycle transitions; Core owns execution.
+pub mod leave;
 mod lifecycle;
 use super::profile::SyncProfile;
 use crate::vault::{VaultManager, admission::VaultAdmissions};
@@ -37,6 +38,7 @@ struct Link {
 /// Explicitly selected native service, never constructed by disabled Sync.
 /// No secret, filesystem root, execution owner or custody port crosses IPC.
 pub struct AccountServices {
+    registry: Uuid,
     profile: VaultRoot,
     identity: SyncProfile,
     custody: Arc<dyn HostAccountCustody>,
@@ -53,6 +55,7 @@ impl AccountServices {
             ));
         }
         Ok(Self {
+            registry: Uuid::new_v4(),
             profile: profile.try_clone()?,
             identity: SyncProfile::open(profile)?,
             custody,

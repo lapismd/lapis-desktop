@@ -10,7 +10,7 @@ releases, including the Linux extension recorded by E-RELEASE-005.
 E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
 ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
 editing. Core readers use exact scoped IPC; generic plugin grants deny.
-Tasks/default/Sync gates stay separate. SSH options preserve authentication,
+Tasks/default/Sync retain leave gates. SSH options preserve authentication,
 endpoints and literal arguments. Archive rewriting is idempotent only for exact
 paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
 `jj` and exact args. E-CI-054–064/084 retain deadlines/assertions, exact editor
