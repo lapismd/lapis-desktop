@@ -320,3 +320,4 @@
 - [Use active portable artifacts for nightly health](../history/E-CI-101.md)
 - [CLI installation and content access](../history/E-CLI-001.md)
 - [CLI final source and consumer qualification](../history/E-CLI-002.md)
+- [Published CLI UI registry adoption](../history/E-CLI-003.md)

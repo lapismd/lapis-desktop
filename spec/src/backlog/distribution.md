@@ -395,6 +395,6 @@ Preserve `Lapis Notes.app`/`notes.lapis.desktop`; prove Deno-to-Tauri upgrade,
 rollback and note/profile compatibility on macOS and retained Linux targets.
 Retire Deno desktop build/test/release CI; preserve archives and data.
 
-CLI setup/content access needs UI registry intake and supported-platform native
-qualification before publication. Local public-build archives qualify source
-integration only; [E-CLI-002](../history/E-CLI-002.md) retains the gaps.
+CLI UI registry intake is complete ([E-CLI-003](../history/E-CLI-003.md)).
+Supported-platform native qualification remains before publication;
+[E-CLI-002](../history/E-CLI-002.md) retains the gaps.

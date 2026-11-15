@@ -387,9 +387,9 @@ Seeding stays exclusive; ordinary AI execution remains unavailable.
 
 CLI preparation verifies the retrievable Core pin and stages a release binary
 with target/source/checksum identity. Packaging checks the resource and exact
-main-window grants. Temporary public UI archives qualify local consumers before
-governed registry release adoption. [CI governance](ci.md),
-[native acceptance](native-acceptance.md),
+main-window grants. The consumer now pins published `@lapis-notes/ui@^0.2.0`;
+temporary UI archives remain historical qualification evidence only.
+[CI governance](ci.md), [native acceptance](native-acceptance.md),
 [dependency intake](local-dependencies.md) and
 [retained CI tool qualification](../verification-notes.md) keep their gates.
 
