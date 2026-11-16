@@ -6578,7 +6578,7 @@ dependencies = [
 
 [[package]]
 name = "lapis-desktop"
-version = "2026.31.6-rc.1"
+version = "2026.31.6-rc.2"
 dependencies = [
  "async-trait",
  "axum",

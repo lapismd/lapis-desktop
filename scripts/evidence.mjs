@@ -96,8 +96,38 @@ export function evidenceFindings(
       ),
   );
   const head = process.env.LAPIS_DESKTOP_HEAD ?? "@";
+  const revisions = (expression) =>
+    vcs(root, [
+      "log",
+      "--no-graph",
+      "-r",
+      expression,
+      "-T",
+      'commit_id ++ "\\n"',
+    ])
+      .trim()
+      .split("\n")
+      .filter(Boolean);
+  // An explicit PR base controls coverage; every immediate parent also retains
+  // its immutable receipts. Never choose one side of a merge as authoritative.
+  const anchors = new Set([
+    ...revisions(base),
+    ...(checkRevision ? revisions(`parents(${head})`) : []),
+  ]);
+  if (!anchors.size) throw new Error("Evidence base resolved to no revisions.");
+  const trees = new Map(
+    [...anchors].map((revision) => [
+      revision,
+      new Set(
+        vcs(root, ["file", "list", "-r", revision])
+          .trim()
+          .split("\n")
+          .filter(Boolean),
+      ),
+    ]),
+  );
   const previousFiles = new Set(
-    vcs(root, ["file", "list", "-r", base]).trim().split("\n"),
+    [...trees.values()].flatMap((tree) => [...tree]),
   );
   const legacy = legacyEvidencePaths(
     JSON.parse(read("spec/evidence/legacy-validation-receipts.json")),
@@ -115,30 +145,32 @@ export function evidenceFindings(
     ),
   );
   if (checkRevision) {
-    const changed = vcs(root, [
-      "diff",
-      "--name-only",
-      "--from",
-      base,
-      "--to",
-      head,
-    ])
-      .trim()
-      .split("\n")
-      .filter(Boolean);
-    const previous = new Map();
-    const current = new Map();
-    for (const file of previousFiles) {
-      if (!/^spec\/src\/history\/E-.+\.md$/u.test(file)) continue;
-      previous.set(file, vcs(root, ["file", "show", "-r", base, file]));
-      if (files.includes(file)) current.set(file, read(file));
+    for (const [revision, tree] of trees) {
+      const changed = vcs(root, [
+        "diff",
+        "--name-only",
+        "--from",
+        revision,
+        "--to",
+        head,
+      ])
+        .trim()
+        .split("\n")
+        .filter(Boolean);
+      const previous = new Map();
+      const current = new Map();
+      for (const file of tree) {
+        if (!/^spec\/src\/history\/E-.+\.md$/u.test(file)) continue;
+        previous.set(file, vcs(root, ["file", "show", "-r", revision, file]));
+        if (files.includes(file)) current.set(file, read(file));
+      }
+      // Coverage needs the full base file set, including deleted non-evidence files.
+      for (const file of tree)
+        if (!previous.has(file)) previous.set(file, null);
+      errors.push(...revisionErrors(evidence, current, previous, changed));
     }
-    // Coverage needs the full base file set, including deleted non-evidence files.
-    for (const file of previousFiles)
-      if (!previous.has(file)) previous.set(file, null);
-    errors.push(...revisionErrors(evidence, current, previous, changed));
   }
-  return { evidence, errors };
+  return { evidence, errors: [...new Set(errors)] };
 }
 
 if (

@@ -333,3 +333,6 @@
 - [Native Sync cancellable session leave](../history/E-SYNC-005.md)
 
 - [App-owned native Sync leave preparation](../history/E-SYNC-006.md)
+- [Advance the CLI delivery preview version](../history/E-CLI-006.md)
+- [Qualify the bundled CLI delivery candidate](../history/E-CLI-007.md)
+- [Qualify native Sync delivery against current Desktop main](../history/E-SYNC-008.md)
