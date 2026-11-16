@@ -396,5 +396,5 @@ evidence. [CI governance](ci.md), [native acceptance](native-acceptance.md),
 [dependency intake](local-dependencies.md) and
 [retained CI tool qualification](../verification-notes.md) keep their gates.
 
-CLI staging tests model immutable-source cache reuse across two revisions;
-source-specific output and a build-schema marker prevent stale-binary adoption.
+CLI staging tests compare two immutable revisions; source-specific outputs and
+build-schema markers block stale binaries; [preview receipts](distribution.md).
