@@ -215,3 +215,7 @@ exact-main CI, the new three-platform rc.2 candidate, Linux install/upgrade
 lifecycles and protected publication of byte-identical verified public assets.
 The candidate macOS boundary remains build-only; older native/provider and live
 external forge acceptance gaps remain separately tracked.
+
+[E-RELEASE-025](history/E-RELEASE-025.md) closes E-RELEASE-024's subsequently
+required caller checked-head CI and merge. Manual token/host-SSH delivery is
+complete; the published app remains the original qualified rc.2 source/bytes.
