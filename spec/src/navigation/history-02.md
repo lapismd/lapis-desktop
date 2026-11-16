@@ -342,3 +342,5 @@
 - [Cold native remotes custody and transport](../history/E-REPO-059.md)
 
 - [Integrate Sync with shared remotes](../history/E-SYNC-009.md)
+
+- [Verify dependency and native fixture artifact roles](../history/E-SYNC-011.md)
