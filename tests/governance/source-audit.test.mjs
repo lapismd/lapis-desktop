@@ -348,6 +348,7 @@ test("Sync transport grants remain exact, local and restricted to the main windo
       "allow-desktop-sync-open",
       "allow-desktop-sync-snapshot",
       "allow-desktop-sync-detach",
+      "allow-desktop-sync-call",
     ],
   );
   assert.deepEqual(auditManifest(manifest, capabilities, config), []);
@@ -356,7 +357,9 @@ test("Sync transport grants remain exact, local and restricted to the main windo
     { windows: ["main", "acp-other"] },
     { local: false },
     { permissions: [...capabilities.permissions, "allow-desktop-sync-*"] },
-    { permissions: [...capabilities.permissions, "allow-desktop-sync-call"] },
+    {
+      permissions: [...capabilities.permissions, "allow-desktop-sync-observe"],
+    },
     { permissions: [...capabilities.permissions, "sync:default"] },
   ]) {
     assert.ok(

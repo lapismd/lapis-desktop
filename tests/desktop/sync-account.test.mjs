@@ -335,3 +335,113 @@ test(
     await quiet(session);
   },
 );
+
+test(
+  "native Sync account commands retain the owner on refused close and release it on accepted close",
+  { timeout: 60000 },
+  async (context) => {
+    const f = fixture(context);
+    const session = await nativeSession(
+      "sync-account-leave",
+      f.root,
+      undefined,
+      [],
+      { background: true },
+    );
+    context.after(session.cleanup);
+    writeFileSync(join(f.root, "picker.json"), JSON.stringify(f.vault));
+    const selected = await success(session, "vault_select");
+    const first = await success(session, "desktop_sync_open", {
+      request: { sessionId: selected.sessionId },
+    });
+    let handle = first.handle;
+    let request = 0;
+    const call = async (operation, input = {}) => {
+      const requestId = `native-account-${++request}`;
+      const result = await success(session, "desktop_sync_call", {
+        request: {
+          handle,
+          command: { provider: "lapis-server", requestId, operation, input },
+        },
+      });
+      assert.equal(result.reply.provider, "lapis-server");
+      assert.equal(result.reply.requestId, requestId);
+      assert.match(result.handle, uuid);
+      handle = result.handle;
+      return result;
+    };
+    await call("account-configure", { serverOrigin: "https://sync.example" });
+    const configuredHandle = handle;
+    const initial = await call("account-snapshot");
+    assert.equal(initial.observation.snapshot.phase, "ready");
+    const account = initial.observation.snapshot.account.snapshot;
+    assert.equal(account.phase, "disconnected");
+    assert.equal(account.origin, "https://sync.example");
+    assert.match(account.client_id, uuid);
+    const database = await success(session, "vault_db_open", {
+      sessionId: selected.sessionId,
+    });
+    assert.equal(
+      (await invoke(session, "vault_close", { sessionId: selected.sessionId }))
+        .failure?.code,
+      "EBUSY",
+    );
+    assert.equal(handle, configuredHandle);
+    assert.deepEqual(
+      (await call("account-snapshot")).observation.snapshot.account.snapshot,
+      account,
+    );
+    await success(session, "vault_db_close", {
+      sessionId: selected.sessionId,
+      connectionId: database.connectionId,
+    });
+    await success(session, "vault_close", { sessionId: selected.sessionId });
+    assert.ok(
+      (await invoke(session, "desktop_sync_snapshot", { request: { handle } }))
+        .failure,
+    );
+    const reopened = await success(session, "vault_open_recent", {
+      profileId: selected.profileId,
+    });
+    handle = (
+      await success(session, "desktop_sync_open", {
+        request: { sessionId: reopened.sessionId },
+      })
+    ).handle;
+    await call("account-configure", { serverOrigin: "https://sync.example" });
+    assert.deepEqual(
+      (await call("account-snapshot")).observation.snapshot.account.snapshot,
+      account,
+    );
+    await success(session, "vault_close", {
+      sessionId: reopened.sessionId,
+      reload: true,
+    });
+    await success(session, "vault_prepare_leave");
+    const afterQuitPreparation = await success(session, "vault_open_recent", {
+      profileId: selected.profileId,
+    });
+    const afterQuitScope = await success(session, "desktop_sync_open", {
+      request: { sessionId: afterQuitPreparation.sessionId },
+    });
+    assert.equal(
+      afterQuitScope.observation.snapshot.phase,
+      "unconfigured",
+      "Quit preparation must collect the positively closed detached account owner",
+    );
+    handle = afterQuitScope.handle;
+    await call("account-configure", { serverOrigin: "https://sync.example" });
+    assert.deepEqual(
+      (await call("account-snapshot")).observation.snapshot.account.snapshot,
+      account,
+    );
+    await success(session, "vault_close", {
+      sessionId: afterQuitPreparation.sessionId,
+    });
+    assert.equal(
+      readFileSync(join(f.vault, "Note.md"), "utf8"),
+      "offline draft stays local\n",
+    );
+    await quiet(session);
+  },
+);

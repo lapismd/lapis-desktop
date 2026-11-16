@@ -69,9 +69,10 @@ native gates.
 
 Native command admission MUST bound provider, request identity and inputs,
 reject renderer-supplied time, custody, roots and secret material, and refuse
-unknown operations. The native host supplies account time and device label;
-these account actions remain unregistered until the Tauri adapter is qualified.
-The initial Tauri scope open/snapshot/detach transport MUST require explicit
+unknown operations. The native host supplies account time and device label; the
+account call transport MUST return the matching provider/request identity and a
+freshly validated handle/observation without serializing native owners. The
+initial Tauri scope open/snapshot/detach transport MUST require explicit
 `LAPIS_DESKTOP_SYNC_OWNER=core`; absent or disabled selection MUST create no
 Sync service or custody state. Invalid selection MUST fail closed.
 
@@ -103,7 +104,9 @@ observations MUST revalidate opaque scope handles after waits. Native account
 work stays in Core; transport detachment MUST revoke only presentation
 authority. The host MUST await Core work outside its services lock, preserve
 refused leave, and open only the currently admitted account approval URL.
-Snapshot revisions and payloads MUST be bounded and contain no credentials. The
+Snapshot revisions and payloads MUST be bounded and contain no credentials.
+Successful handle replacement MUST retain monotonic observation revisions for
+the same window; refused first configuration MUST retain its admitted scope. The
 bridge remains explicitly selected; registration cannot activate Sync by default
 or select a custody/persistence fallback.
 
@@ -116,3 +119,22 @@ wrong-profile isolation and cleanup without printing protected bytes. Debug
 probe tooling MUST require the explicit native lane and never enter an ordinary
 application bundle or expose a renderer secret command. These results MUST NOT
 claim locked-Keychain, full account, hosted or release qualification.
+
+## Native account leave integration
+
+LD-SYNC-001 Tauri vault close MUST prepare the captured account under the shared
+native transition guard, await its drain outside the services lock, and keep
+that preparation until other native leave owners approve. Database, filesystem
+or owner refusal MUST release the fence without revoking the Sync handle. Final
+commit MUST revalidate the original profile/session/root before effects; only a
+successful account commit permits scope retirement and collection. Reload MUST
+retain the account owner while retiring presentation. Accepted command work MUST
+outlive its response waiter; delivery MUST revalidate scope after waiting.
+Account configuration and scope admission MUST use that same transition guard.
+
+LD-SYNC-001 native Quit preparation MUST also fence/drain accounts retained
+without sessions after reload, then commit only after other detached native
+owners approve. A new session or foreign registry MUST invalidate preparation
+before effects. Refused or partially uncertain closes MUST retain ownership for
+inspection; only positively closed owners may be collected. Active sessions
+remain subject to their individual close guards.

@@ -1,5 +1,6 @@
 //! Native account admission, independent of Tauri and view lifetime.
 //! The host serializes admission and lifecycle transitions; Core owns execution.
+pub mod detached;
 pub mod leave;
 mod lifecycle;
 pub mod presentation;
@@ -95,12 +96,17 @@ impl AccountServices {
         if let Some(account) = self.accounts.get_mut(&vault) {
             account.sessions.insert(session.into());
         }
+        let (revision, observed) = self
+            .links
+            .get(window)
+            .map(|link| (link.revision, link.observed.clone()))
+            .unwrap_or((0, None));
         let handle = Uuid::new_v4();
         self.links.insert(
             window.into(),
             Link {
-                revision: 0,
-                observed: None,
+                revision,
+                observed,
                 handle,
                 vault,
                 session: session.into(),
@@ -195,12 +201,17 @@ impl AccountServices {
             .unwrap()
             .sessions
             .insert(session.into());
+        let (revision, observed) = self
+            .links
+            .get(window)
+            .map(|link| (link.revision, link.observed.clone()))
+            .unwrap_or((0, None));
         let handle = Uuid::new_v4();
         self.links.insert(
             window.into(),
             Link {
-                revision: 0,
-                observed: None,
+                revision,
+                observed,
                 handle,
                 vault,
                 session: session.into(),

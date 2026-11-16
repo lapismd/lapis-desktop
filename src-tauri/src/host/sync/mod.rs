@@ -1,4 +1,7 @@
 //! Tauri caller and scope transport; native account ownership stays in services.
+pub(crate) mod commands;
+pub(crate) mod leave;
+mod reply;
 use crate::host::state::{NativeError, NativeHost, NativeServices, access};
 use lapis_desktop::sync::account::{AccountServices, presentation::Presentation};
 use serde::{Deserialize, Serialize};
@@ -54,6 +57,10 @@ pub async fn desktop_sync_open(
     host: State<'_, NativeHost>,
     request: OpenRequest,
 ) -> Result<Opened, NativeError> {
+    let repository = window
+        .app_handle()
+        .state::<crate::host::repository::RepositoryHost>();
+    let _transition = repository.transitions.lock().await;
     let window = caller(&window)?;
     if request.session_id.is_empty() || request.session_id.len() > 128 {
         return Err(denied().into());
@@ -91,6 +98,10 @@ pub async fn desktop_sync_detach(
     host: State<'_, NativeHost>,
     request: ScopeRequest,
 ) -> Result<(), NativeError> {
+    let repository = window
+        .app_handle()
+        .state::<crate::host::repository::RepositoryHost>();
+    let _transition = repository.transitions.lock().await;
     let window = caller(&window)?;
     access(host.inner().clone(), move |services| {
         let NativeServices { sync, vaults, .. } = services;

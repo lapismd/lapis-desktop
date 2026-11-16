@@ -88,6 +88,32 @@ impl AccountServices {
         })
     }
 
+    /// Revalidate the original native scope before any final host teardown effects.
+    pub fn validate_session_close(
+        &self,
+        vaults: &VaultManager,
+        session: &str,
+        prepared: &PreparedSessionClose,
+    ) -> io::Result<()> {
+        let scope = &prepared.scope;
+        if scope.registry != self.registry || scope.session != session {
+            return Err(denied());
+        }
+        self.identity.verify()?;
+        let root = vaults.get(session)?;
+        root.verify_physical_root()?;
+        if Uuid::parse_str(&vaults.descriptor(session)?.profile_id).ok() != Some(scope.vault)
+            || root.physical_identity()? != scope.root
+            || self
+                .accounts
+                .get(&scope.vault)
+                .is_some_and(|account| account.root != scope.root)
+        {
+            return Err(denied());
+        }
+        Ok(())
+    }
+
     /// Finish only after native commit, before removing the admitted vault session.
     /// A failed/unknown commit never supplies this proof and cannot revoke handles.
     pub fn finish_session_close(

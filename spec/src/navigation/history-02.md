@@ -343,6 +343,7 @@
 
 - [Integrate Sync with shared remotes](../history/E-SYNC-009.md)
 - [Native Sync Tauri scope and custody qualification](../history/E-SYNC-007.md)
+- [Native Sync account calls and admitted vault leave](../history/E-SYNC-010.md)
 - [Verify dependency and native fixture artifact roles](../history/E-SYNC-011.md)
 - [Publish shared Repository remotes in Preview rc.2](../history/E-RELEASE-024.md)
 - [Close checked remotes release handoff](../history/E-RELEASE-025.md)
@@ -350,3 +351,5 @@
 - [Integrate native scope delivery with artifact roles](../history/E-SYNC-013.md)
 - [Relocate frozen private archive hooks](../history/E-SYNC-014.md)
 - [Integrate native scope delivery with frozen projections](../history/E-SYNC-015.md)
+
+- [Integrate account calls with final native scopes](../history/E-SYNC-016.md)

@@ -156,6 +156,7 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-desktop-sync-open",
     "allow-desktop-sync-snapshot",
     "allow-desktop-sync-detach",
+    "allow-desktop-sync-call",
     "allow-desktop-terminal-admit",
     "allow-desktop-terminal-release",
     "allow-desktop-ai-user-commands",
