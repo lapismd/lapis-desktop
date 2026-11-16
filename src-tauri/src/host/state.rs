@@ -7,6 +7,7 @@ use std::{
 use tauri::Manager;
 
 pub struct NativeServices {
+    pub sync: Option<lapis_desktop::sync::account::AccountServices>,
     pub repository: lapis_desktop::repository::RepositoryAdmissions,
     pub imports: lapis_desktop::vault::admission::VaultAdmissions,
     pub ai: lapis_desktop::vault::admission::VaultAdmissions,
@@ -187,6 +188,7 @@ pub fn initialize(
         core_vaults
     };
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
+        sync: crate::host::sync::initialize(&profile)?,
         imports: lapis_desktop::vault::admission::VaultAdmissions::default(),
         ai: lapis_desktop::vault::admission::VaultAdmissions::default(),
         repository: lapis_desktop::repository::RepositoryAdmissions::default(),

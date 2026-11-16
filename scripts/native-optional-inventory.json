@@ -230,6 +230,18 @@
       "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
     },
     {
+      "file": "tests/desktop/sync-account.test.mjs",
+      "scope": "api",
+      "owner": "lapis-sync",
+      "reason": "Explicit hidden-WebView native Sync scope and cold identity acceptance; no foreground or release qualification inferred."
+    },
+    {
+      "file": "tests/desktop/sync-custody.test.mjs",
+      "scope": "api",
+      "owner": "lapis-sync",
+      "reason": "Explicit macOS native API lane only:production Keychain adapter in independent task-owned probe processes with isolated namespace cleanup; no default portable collection."
+    },
+    {
       "file": "tests/desktop/tasks-owner.test.mjs",
       "scope": "api",
       "owner": "native-api",

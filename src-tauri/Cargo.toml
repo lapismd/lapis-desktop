@@ -85,3 +85,11 @@ debug = 0
 name = "lapis-acp-native-fixture"
 path = "tests/fixtures/acp-provider.rs"
 required-features = ["e2e"]
+
+
+[[bin]]
+name = "lapis-sync-custody-probe"
+path = "tests/fixtures/sync-custody.rs"
+required-features = ["e2e"]
+test = false
+bench = false

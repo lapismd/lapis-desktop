@@ -34,6 +34,7 @@ fn fixture() -> (tempfile::TempDir, NativeHost, String) {
         .unwrap()
         .session_id;
     let host = NativeHost(Arc::new(Mutex::new(NativeServices {
+        sync: None,
         core_vaults: lapis_desktop::vault::services::VaultServices::default(),
         imports: VaultAdmissions::default(),
         ai: VaultAdmissions::default(),

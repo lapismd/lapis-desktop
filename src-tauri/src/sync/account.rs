@@ -2,6 +2,7 @@
 //! The host serializes admission and lifecycle transitions; Core owns execution.
 pub mod leave;
 mod lifecycle;
+pub mod presentation;
 use super::profile::SyncProfile;
 use crate::vault::{VaultManager, admission::VaultAdmissions};
 use lapis_app_core::{
@@ -28,6 +29,8 @@ struct Account {
     sessions: HashSet<String>,
 }
 struct Link {
+    revision: u64,
+    observed: Option<AccountObservation>,
     handle: Uuid,
     vault: Uuid,
     session: String,
@@ -96,6 +99,8 @@ impl AccountServices {
         self.links.insert(
             window.into(),
             Link {
+                revision: 0,
+                observed: None,
                 handle,
                 vault,
                 session: session.into(),
@@ -194,6 +199,8 @@ impl AccountServices {
         self.links.insert(
             window.into(),
             Link {
+                revision: 0,
+                observed: None,
                 handle,
                 vault,
                 session: session.into(),

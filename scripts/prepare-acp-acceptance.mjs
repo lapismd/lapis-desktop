@@ -23,6 +23,11 @@ if (
   }).trim()
 )
   throw Error("ACP acceptance requires a clean verified source checkout");
+const desktopRevision = execFileSync(
+  "jj",
+  ["--no-pager", "log", "-r", "@", "--no-graph", "-T", "commit_id"],
+  { encoding: "utf8" },
+).trim();
 execFileSync(
   "cargo",
   [
@@ -33,15 +38,29 @@ execFileSync(
     "e2e,tauri/custom-protocol",
     "--bin",
     "lapis-acp-native-fixture",
+    "--bin",
+    "lapis-sync-custody-probe",
     "--locked",
   ],
   { stdio: "inherit", env: buildEnvironment },
 );
+if (
+  execFileSync(
+    "jj",
+    ["--no-pager", "log", "-r", "@", "--no-graph", "-T", "commit_id"],
+    { encoding: "utf8" },
+  ).trim() !== desktopRevision
+)
+  throw Error("Desktop source changed during native fixture preparation");
 const destination = resolve(".local/acp/native");
 mkdirSync(destination, { recursive: true });
 const artifacts = [];
 for (const [name, path] of [
   ["lapis-acp", join(source, "target/debug/lapis-acp")],
+  [
+    "lapis-sync-custody-probe",
+    resolve("src-tauri/target/debug/lapis-sync-custody-probe"),
+  ],
   [
     "lapis-acp-native-fixture",
     resolve("src-tauri/target/debug/lapis-acp-native-fixture"),
@@ -58,6 +77,6 @@ for (const [name, path] of [
 }
 writeFileSync(
   resolve(".local/acp/resources.json"),
-  JSON.stringify({ revision, artifacts }, null, 2) + "\n",
+  JSON.stringify({ revision, desktopRevision, artifacts }, null, 2) + "\n",
 );
 console.log(`Prepared isolated ACP resources from ${revision}`);

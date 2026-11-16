@@ -50,6 +50,7 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             ..
         } => {
             crate::host::windows::popups::destroyed(app, &label);
+            crate::host::sync::window_destroyed(app, &label);
             crate::host::ai::imports::window_destroyed(app, &label);
             crate::host::ai::admission::window_destroyed(app, &label);
             crate::host::repository::commands::window_destroyed(app, &label);

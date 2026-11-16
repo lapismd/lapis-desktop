@@ -392,9 +392,9 @@ main-window grants. The registry cohort is API 0.6.5, File Explorer 0.2.8,
 Language Service 0.1.6, UI 0.2.1, Workspace 0.4.6, Profile 0.2.2 and History
 0.5.1. The peer guard checks that inventory and one API context (E-REPO-059).
 Native Notes stays pinned; earlier UI archives remain historical qualification
-evidence. [CI governance](ci.md), [native acceptance](native-acceptance.md),
-[dependency intake](local-dependencies.md) and
-[retained CI tool qualification](../verification-notes.md) keep their gates.
+evidence. [Native acceptance](native-acceptance.md) includes fixed `api --sync`
+and noninteractive, isolated custody probes; source/hash guards remain required.
+[Tool gates](../verification-notes.md) remain; CI and intake are linked above.
 
 CLI staging tests compare two immutable revisions; source-specific outputs and
 build-schema markers block stale binaries; [preview receipts](distribution.md).

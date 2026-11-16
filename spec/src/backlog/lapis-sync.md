@@ -1,6 +1,6 @@
 # Lapis Sync: future Tauri implementation
 
-**In progress, 15 November 2026. Complete implementation and release remain
+**In progress, 16 November 2026. Complete implementation and release remain
 open.** This topic owns the remaining Desktop work for encrypted Lapis Sync. The
 [plugin implementation context](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-context.md)
 retains the source investigation, and the
@@ -18,10 +18,13 @@ The [current native chapter](../current/lapis-sync.md) tracks source intake,
 custody adapters, retained account admission and cancellable native leave; their
 source evidence does not complete this roadmap or enable the plugin.
 
-App Sync leave preparation is now under consumer qualification against the Notes
-LN-PKG-193 candidate. Actual Tauri command/observation registration, native
-resource detachment and OS acceptance remain outstanding; fixture passes cannot
-complete those boundaries.
+App leave preparation is qualified against the private Notes LN-PKG-193
+candidate. [E-SYNC-007](../history/E-SYNC-007.md) records six actual local macOS
+scope and Keychain cases, strict normal/e2e compiler and both native builds.
+Complete native API25pass/3existing AI quarantines leaves those cases
+unqualified. Account command/observation transport, App injection,
+locked-Keychain and full Sync journeys remain outstanding; local acceptance does
+not qualify hosted or release gates.
 
 ## Agreed product outcome
 
