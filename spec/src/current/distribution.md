@@ -147,10 +147,12 @@ server source as the native services, with checksum/provenance and executable
 checks. Registration stores a private copy so moving the app does not strand
 PATH.
 
-The current CLI delivery candidate is `2026.31.6-rc.2`; the published
-`2026.31.6-rc.1` tag remains bound to its earlier source and bytes. E-CLI-007
-records exact-source full CI, all three ordinary archives, both Linux installed
-lifecycles and the final sealed candidate; no publication was requested.
+The published preview is `2026.31.6-rc.2`, source `c2971126`, including shared
+Repository remotes and bundled CLI delivery.
+[E-RELEASE-024](../history/E-RELEASE-024.md) records full exact-main
+qualification, sealed candidate promotion and verified public assets. Earlier
+E-CLI-007 and rc.1 retain their own source/bytes; that older prepared candidate
+was not reused for this release.
 
 The CLI resource manifest MUST match the Core source pin, package target,
 release profile, executable flag and actual SHA-256. A matching outer file
@@ -160,3 +162,15 @@ checks.
 CLI preparation isolates Cargo output by source revision and stamps its build
 schema. Reuse and bundle checks reject older preparation manifests rather than
 relabel a cached executable as a different source.
+
+Tap metadata verification uses the workflow's contents-read token before the
+separate App write authorization. The pinned tap verifier may authenticate only
+canonical GitHub API release/tag reads, refuses authenticated redirects and
+keeps manifest/archive downloads unauthenticated. No API error may waive source
+or artifact checks. E-RELEASE-024 retains the original anonymous HTTP 403 and
+the source-owned repair; the published candidate bytes stay unchanged.
+
+[E-RELEASE-025](../history/E-RELEASE-025.md) closes the subsequent caller
+checked-head gate from E-RELEASE-024 after PR #41 passes and merges. Published
+app source and qualified assets remain bound to `c2971126`; this workflow/docs
+follow-up does not rebuild or republish rc.2.

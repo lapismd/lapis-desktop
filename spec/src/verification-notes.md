@@ -209,3 +209,13 @@ first-process Core-AI failure and final-cohort gates.
 
 LD-REPO-005: E-REPO-053/054, M14, E-AI-093 and E-CORE-017 retain storage, sync,
 provider, ACP and shared-backup evidence.
+
+[E-RELEASE-024](history/E-RELEASE-024.md) adds merged shared remotes, full
+exact-main CI, the new three-platform rc.2 candidate, Linux install/upgrade
+lifecycles and protected publication of byte-identical verified public assets.
+The candidate macOS boundary remains build-only; older native/provider and live
+external forge acceptance gaps remain separately tracked.
+
+[E-RELEASE-025](history/E-RELEASE-025.md) closes E-RELEASE-024's subsequently
+required caller checked-head CI and merge. Manual token/host-SSH delivery is
+complete; the published app remains the original qualified rc.2 source/bytes.

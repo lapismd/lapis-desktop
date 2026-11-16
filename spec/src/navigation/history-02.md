@@ -342,5 +342,9 @@
 - [Cold native remotes custody and transport](../history/E-REPO-059.md)
 
 - [Integrate Sync with shared remotes](../history/E-SYNC-009.md)
-
 - [Native Sync Tauri scope and custody qualification](../history/E-SYNC-007.md)
+- [Verify dependency and native fixture artifact roles](../history/E-SYNC-011.md)
+- [Publish shared Repository remotes in Preview rc.2](../history/E-RELEASE-024.md)
+- [Close checked remotes release handoff](../history/E-RELEASE-025.md)
+- [Integrate current release metadata with Sync delivery](../history/E-SYNC-012.md)
+- [Integrate native scope delivery with artifact roles](../history/E-SYNC-013.md)

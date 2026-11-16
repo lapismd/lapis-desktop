@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import {
   chmodSync,
   cpSync,
+  copyFileSync,
   mkdirSync,
   mkdtempSync,
   readFileSync,
@@ -22,6 +23,7 @@ import {
 } from "../../scripts/ci-artifact-identity.mjs";
 import {
   exportDependencies,
+  selectDependencyArtifact,
   verifyDependencies,
 } from "../../scripts/ci-dependency-artifact.mjs";
 import {
@@ -32,6 +34,7 @@ import {
 
 import {
   selectTasksFixture,
+  packTasksFixture,
   tasksPackage,
 } from "../../scripts/ci-tasks-fixture.mjs";
 
@@ -140,6 +143,19 @@ test("dependency archives relocate, verify source/identity and reject changed by
       "package",
     ]);
     const bytes = readFileSync(join(root, output));
+    const tasksArtifact = packTasksFixture(
+      join(temporary, "tasks-dependency"),
+      root,
+    );
+    const tasksOutput = join(
+      root,
+      ".local/ci-packages/-lapis-notes-lapis-plugin-tasks/private.tgz",
+    );
+    mkdirSync(dirname(tasksOutput), { recursive: true });
+    copyFileSync(
+      join(temporary, "tasks-dependency", tasksArtifact.path),
+      tasksOutput,
+    );
     put(
       root,
       ".local/ci-install/archives.json",
@@ -152,6 +168,14 @@ test("dependency archives relocate, verify source/identity and reject changed by
           size: bytes.length,
           sha256: digest(bytes),
         },
+        {
+          name: tasksArtifact.name,
+          version: tasksArtifact.version,
+          sourceRepository: tasksArtifact.sourceRepository,
+          sourceCommit: tasksArtifact.sourceCommit,
+          size: tasksArtifact.size,
+          sha256: tasksArtifact.sha256,
+        },
       ]),
     );
     put(root, ".local/ci-install/package.json", '{"private":true}\n');
@@ -161,8 +185,66 @@ test("dependency archives relocate, verify source/identity and reject changed by
     const relocated = join(temporary, "relocated");
     cpSync(directory, relocated, { recursive: true });
     const entries = verifyDependencies(relocated, root);
-    assert.equal(entries.length, 2);
+    assert.equal(entries.length, 3);
     const taskFixture = selectTasksFixture(entries, root);
+    const dependency = selectDependencyArtifact(
+      [...entries].reverse(),
+      tasksPackage,
+    );
+    assert.equal(dependency.role, "dependency");
+    assert.notEqual(dependency.path, taskFixture.path);
+    assert.equal(dependency.sha256, taskFixture.sha256);
+    assert.throws(
+      () => selectDependencyArtifact([taskFixture], tasksPackage),
+      /exactly one/,
+    );
+    assert.throws(
+      () => selectDependencyArtifact([dependency, dependency], tasksPackage),
+      /exactly one/,
+    );
+    const manifestPath = join(directory, "manifest.json");
+    const originalManifest = readFileSync(manifestPath);
+    const manifest = JSON.parse(originalManifest);
+    for (const entry of manifest.entries) {
+      writeFileSync(
+        manifestPath,
+        JSON.stringify({ ...manifest, entries: [...manifest.entries, entry] }),
+      );
+      assert.throws(
+        () => verifyDependencies(directory, root),
+        /Duplicate dependency artifact/,
+      );
+    }
+    for (const role of [null, false, 0, {}, [], "unknown", "native-fixture"]) {
+      const entries = manifest.entries.map((entry) =>
+        entry.name === "@lapismd/ai" ? { ...entry, role } : entry,
+      );
+      writeFileSync(manifestPath, JSON.stringify({ ...manifest, entries }));
+      assert.throws(
+        () => verifyDependencies(directory, root),
+        /Unsupported dependency artifact role/,
+      );
+    }
+    writeFileSync(
+      manifestPath,
+      JSON.stringify({
+        ...manifest,
+        entries: manifest.entries.map((entry) => {
+          const legacy = { ...entry };
+          if (legacy.role === "dependency") delete legacy.role;
+          return legacy;
+        }),
+      }),
+    );
+    assert.equal(
+      selectDependencyArtifact(
+        verifyDependencies(directory, root),
+        tasksPackage,
+      ).sha256,
+      dependency.sha256,
+    );
+    writeFileSync(manifestPath, originalManifest);
+
     assert.equal(taskFixture.version, "0.1.0");
     assert.equal(taskFixture.source.revision, "b".repeat(40));
     assert.equal(
@@ -200,7 +282,7 @@ test("dependency archives relocate, verify source/identity and reject changed by
     );
     try {
       Object.assign(process.env, ci);
-      assert.equal(verifyDependencies(provenanceDirectory, root).length, 2);
+      assert.equal(verifyDependencies(provenanceDirectory, root).length, 3);
       process.env.GITHUB_RUN_ATTEMPT = "2";
       assert.throws(
         () => verifyDependencies(provenanceDirectory, root),

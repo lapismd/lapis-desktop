@@ -11,9 +11,10 @@ Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
 use exact scoped IPC; generic plugin grants deny. Tasks/default/Sync retain
 leave gates. SSH options preserve authentication, endpoints and literal
-arguments. Archive rewriting is idempotent only for exact paths redirected to
-verified tarballs. ARM64 diagnostics use hosted SHA, pinned `jj` and exact args.
-E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
+arguments. Artifact roles MUST separate dependencies from fixtures. Archive
+rewriting is idempotent only for exact paths redirected to verified tarballs.
+ARM64 diagnostics use hosted SHA, pinned `jj` and exact args. E-CI-054–064/084
+retain deadlines/assertions, exact editor readiness and
 no-retry/quarantine/release policy. Native close never retries; empty
 comparisons continue; unavailable/conflicting fail closed.
 [Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
@@ -393,8 +394,7 @@ Language Service 0.1.6, UI 0.2.1, Workspace 0.4.6, Profile 0.2.2 and History
 Native Notes stays pinned; earlier UI archives remain historical qualification
 evidence. [Native acceptance](native-acceptance.md) includes fixed `api --sync`
 and noninteractive, isolated custody probes; source/hash guards remain required.
-[CI](ci.md), [intake](local-dependencies.md) and
-[tools](../verification-notes.md) keep their gates.
+[Tool gates](../verification-notes.md) remain; CI and intake are linked above.
 
-CLI staging tests model immutable-source cache reuse across two revisions;
-source-specific output and a build-schema marker prevent stale-binary adoption.
+CLI staging tests compare two immutable revisions; source-specific outputs and
+build-schema markers block stale binaries; [preview receipts](distribution.md).
