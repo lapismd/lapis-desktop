@@ -348,3 +348,5 @@
 - [Close checked remotes release handoff](../history/E-RELEASE-025.md)
 - [Integrate current release metadata with Sync delivery](../history/E-SYNC-012.md)
 - [Integrate native scope delivery with artifact roles](../history/E-SYNC-013.md)
+- [Relocate frozen private archive hooks](../history/E-SYNC-014.md)
+- [Integrate native scope delivery with frozen projections](../history/E-SYNC-015.md)

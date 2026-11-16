@@ -1,4 +1,5 @@
 import { createRequire } from "node:module";
+import { isAbsolute, relative } from "node:path";
 const require = createRequire(import.meta.url);
 
 export function validateArchiveRanges(
@@ -28,17 +29,45 @@ export function archiveHookSource(
   localProjects = [],
   links = [],
   semverModule = require.resolve("semver"),
+  hookDirectory,
 ) {
+  const portable = hookDirectory !== undefined;
+  const absolute = (value) => typeof value === "string" && isAbsolute(value);
+  if (
+    portable &&
+    (!absolute(hookDirectory) ||
+      !absolute(semverModule) ||
+      entries.some((entry) => !absolute(entry.tarball)))
+  )
+    throw new Error(
+      "Relocatable archive hooks require admitted absolute inputs",
+    );
+  if (portable && links.length)
+    throw new Error(
+      "Relocatable archive hooks cannot admit local source links",
+    );
   const packages = [
     ...entries.map(({ name, version, tarball, declared }) => [
       name,
-      { version, target: "file:" + tarball, ...(declared ? { declared } : {}) },
+      {
+        version,
+        ...(portable
+          ? { relativeTarball: relative(hookDirectory, tarball) }
+          : { target: "file:" + tarball }),
+        ...(declared ? { declared } : {}),
+      },
     ]),
     ...links.map(({ name, ...entry }) => [name, entry]),
   ];
-  return `const semver = require(${JSON.stringify(semverModule)});
+  const setup = portable
+    ? `const path = require("node:path");\nconst semver = require(path.resolve(__dirname, ${JSON.stringify(relative(hookDirectory, semverModule))}));`
+    : `const semver = require(${JSON.stringify(semverModule)});`;
+  const targets = portable
+    ? 'for (const entry of archives.values()) entry.target = "file:" + path.resolve(__dirname, entry.relativeTarball);\n'
+    : "";
+  return `${setup}
 const archives = new Map(${JSON.stringify(packages)});
-const localProjects = new Set(${JSON.stringify(localProjects)});
+${targets}const localProjects = new Set(${JSON.stringify(localProjects)});
 module.exports = { hooks: { readPackage(pkg) {
   const fields = ["dependencies", "optionalDependencies", "peerDependencies"];
   if (localProjects.has(pkg.name)) fields.push("devDependencies");
@@ -46,7 +75,7 @@ module.exports = { hooks: { readPackage(pkg) {
     for (const [name, entry] of archives) {
       const range = pkg[field]?.[name];
       if (!range) continue;
-      const target = entry.target;
+      const target = ${portable ? "localProjects.has(pkg.name) && entry.declared ? entry.declared : " : ""}entry.target;
       if (field !== "peerDependencies" && range === target) continue;
       const localLink = localProjects.has(pkg.name) && entry.declared === range;
       if (!localLink && !semver.satisfies(entry.version, range, { includePrerelease: true }))

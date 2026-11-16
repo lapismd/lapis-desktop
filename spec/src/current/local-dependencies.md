@@ -10,6 +10,14 @@ remain explicit private migration prerequisites. The removed native-chat-only
 build cannot qualify the current package exports. AI remains a separately
 verified private prerequisite; this intake authorizes no package publication.
 
+Private CI artifact hooks MUST retain their checksum and frozen projected lock
+across checkout relocation. Runtime targets derive from the hook location and
+admitted relative archive/tool paths; root, dependency, optional and peer range
+checks remain unchanged. Local source links are unavailable in this relocatable
+archive mode; the separate explicit local development workflow retains its own
+admission. No path fallback, checksum edit or non-frozen consumer install may
+conceal a relocation failure.
+
 E-REPO-056 takes committed JJ Store `f58b9363` through the existing Tauri
 adapter and updates the private native lockfile. Neutral history and Tauri
 transport share one service implementation. Existing native product, provider,
