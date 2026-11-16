@@ -264,3 +264,11 @@ fixture consumers MUST select the fixture role. Both retain complete source,
 producer/run/platform identity, payload hash and frozen projection verification.
 Legacy entries without a role remain dependency entries; role distinctions do
 not authorize another source pin or package implementation.
+
+LD-CI-002 reused private projections MUST install with the verified frozen lock
+when the checkout root changes between host and container jobs. Generated hook
+bytes MUST be independent of that root; archive and semver paths MUST resolve
+from the hook's actual location at runtime. Root importer specifiers MUST retain
+their admitted relative archive declarations. Missing producers, incompatible
+ranges and unknown outcomes MUST NOT trigger a non-frozen retry or checksum
+rewrite. Producer and consumer retain the same admitted package identities.

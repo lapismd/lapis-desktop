@@ -12,9 +12,9 @@ E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
 use exact scoped IPC; generic plugin grants deny. Tasks/default/Sync retain
 leave gates. SSH options preserve authentication, endpoints and literal
 arguments. Artifact roles MUST separate dependencies from fixtures. Archive
-rewriting is idempotent only for exact paths redirected to verified tarballs.
-ARM64 diagnostics use hosted SHA, pinned `jj` and exact args. E-CI-054–064/084
-retain deadlines/assertions, exact editor readiness and
+rewriting is idempotent only for exact verified tarball paths; CI hooks MUST
+relocate. ARM64 diagnostics use hosted SHA, pinned `jj` and exact args.
+E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
 no-retry/quarantine/release policy. Native close never retries; empty
 comparisons continue; unavailable/conflicting fail closed.
 [Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;

@@ -346,3 +346,5 @@
 - [Publish shared Repository remotes in Preview rc.2](../history/E-RELEASE-024.md)
 - [Close checked remotes release handoff](../history/E-RELEASE-025.md)
 - [Integrate current release metadata with Sync delivery](../history/E-SYNC-012.md)
+
+- [Relocate frozen private archive hooks](../history/E-SYNC-014.md)
