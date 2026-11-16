@@ -146,3 +146,18 @@ test("tap automation uses a restricted installation token and recovery has no pu
     );
   }
 });
+test("tap release verification uses the workflow read token before App authorization", () => {
+  for (const name of ["tap-update", "recover-tap"]) {
+    const steps = workflow.jobs[name].steps;
+    const verify = steps.find((step) => step.run?.includes("update-cask.mjs"));
+    assert.equal(verify.env.GITHUB_TOKEN, "${{ secrets.GITHUB_TOKEN }}");
+    assert.equal(verify.env.GH_TOKEN, undefined);
+    assert.ok(
+      steps.indexOf(verify) <
+        steps.findIndex((step) =>
+          step.uses?.startsWith("actions/create-github-app-token"),
+        ),
+    );
+  }
+  assert.equal(workflow.permissions.contents, "read");
+});

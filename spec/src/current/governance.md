@@ -397,3 +397,4 @@ evidence. [CI governance](ci.md), [native acceptance](native-acceptance.md),
 
 CLI staging tests model immutable-source cache reuse across two revisions;
 source-specific output and a build-schema marker prevent stale-binary adoption.
+[E-RELEASE-024](../history/E-RELEASE-024.md) records qualified rc.2 publication.
