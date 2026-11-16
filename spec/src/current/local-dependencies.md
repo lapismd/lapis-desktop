@@ -1,5 +1,23 @@
 # Local dependency intake
 
+E-SYNC-006 prepares six public Notes candidate packages from exact source
+`01bf01f61f91f31237ebcdbb07242b9b6f9a5943` for native Sync leave preparation. CI
+MUST build App Profile and its dependencies through the source-owned normal
+build, then project API, UI, Workspace, File Explorer, Language Service and App
+Profile archives into the same runtime graph. Published registry ranges and the
+portable lock remain tracked; candidate archive hashes and source provenance
+remain explicit private migration prerequisites. The removed native-chat-only
+build cannot qualify the current package exports. AI remains a separately
+verified private prerequisite; this intake authorizes no package publication.
+
+Private CI artifact hooks MUST retain their checksum and frozen projected lock
+across checkout relocation. Runtime targets derive from the hook location and
+admitted relative archive/tool paths; root, dependency, optional and peer range
+checks remain unchanged. Local source links are unavailable in this relocatable
+archive mode; the separate explicit local development workflow retains its own
+admission. No path fallback, checksum edit or non-frozen consumer install may
+conceal a relocation failure.
+
 E-REPO-056 takes committed JJ Store `f58b9363` through the existing Tauri
 adapter and updates the private native lockfile. Neutral history and Tauri
 transport share one service implementation. Existing native product, provider,
@@ -137,19 +155,20 @@ warnings visible and resolves the host's API 0.3.1 identity; no peer override or
 warning suppression is introduced. Notes owns the peer-declaration refresh.
 Consumer type, interaction and accessibility checks remain mandatory.
 
-All jj-store crates use git revision `076e418cecbe204925aea874bef8aa8a680269a9`.
+All jj-store crates use git revision `87be3ad68530653c6c6fd1e5a2463a217cf3f044`.
 Native application crates use lapis-server
-`530a6c425e9183f93ee74c0b16bb4111fdc838f0`, retaining safe opt-in backup
-initialization and shutdown diagnostics and adopting explicit completed-command
-lease release. The Rust graph aligns `rustix` 1.1.6, Tauri 2.12.5 and
-tauri-build 2.7.4 with those exact owning sources. Projection engines remain
-restored through exact owning Plugins, Tasks and Docs Git commits. Terminal Rust
-uses `2463f944149d753eaf638cf876393a6f60f50190`, retaining attachment/ordered
-capture repairs and PR #12's fenced detach/remount sink. Its source race, real
-PTY stress, 109 Rust tests, strict Clippy and hosted gate pass; E-CI-013 keeps
-the separate Desktop consumer gate pending. Prompt assertions and shell
-admission remain unchanged. No native dependency requires an ambient sibling
-crate path or invented release tag.
+`907e647283a0e3981a2c5aa31e43cde9a92732f1`, retaining existing backup and
+lease-release behavior while adding the public Sync account transport, protected
+store and coordinator; OS and application acceptance remain separate. The Rust
+graph aligns `rustix` 1.1.6, Tauri 2.12.5 and tauri-build 2.7.4 with those exact
+owning sources. Projection engines remain restored through exact owning Plugins,
+Tasks and Docs Git commits. Terminal Rust uses
+`2463f944149d753eaf638cf876393a6f60f50190`, retaining attachment/ordered capture
+repairs and PR #12's fenced detach/remount sink. Its source race, real PTY
+stress, 109 Rust tests, strict Clippy and hosted gate pass; E-CI-013 keeps the
+separate Desktop consumer gate pending. Prompt assertions and shell admission
+remain unchanged. No native dependency requires an ambient sibling crate path or
+invented release tag.
 
 Hosted audit runs against the actual private install projection before restoring
 tracked files. Full and production audits remain blocking. Test tooling consumes
@@ -200,12 +219,50 @@ application crates retain lapis-server `530a6c42`. A renderer-only dependency
 update MUST NOT silently refresh those native inputs. Actual native-window and
 distribution qualification remain separate.
 
-## Repository remotes cohort
+E-SYNC-006 aligns the public Notes ranges with API `^0.6.5`, UI `^0.2.1`,
+Workspace `^0.4.6`, App Profile `^0.2.1`, History `^0.5.0` and their shared
+Markdown/Search/Source Editor dependencies. Released Core `0.13.4` retains one
+controller identity through the existing exact override. The public registry
+lock projection omits only the still-unpublished AI prerequisite; its checked
+source range and verified private archive remain explicit. The current Profile
+`0.2.2` source candidate satisfies `^0.2.1`. Its verified source archive carries
+the pending leave contract. Eight-archive intake now passes the actual consumer
+type boundary and all32installed import-route checks; registry-only distribution
+remains separately gated.
 
-Repository presentation and controllers MUST use the released History package's
-public `/repository` exports. App Profile is public and MUST be consumed through
-registry ranges, outside the private AI archive projection. The retained private
-AI archive remains checksum-bound; its existing workflow does not imply an
-application data migration. Native Core/Protocol and SDK source identities are
-recorded independently from the JavaScript intake and must select merged sources
-before distribution. The approved Bits UI patch remains unchanged.
+The same intake uses released Graph `^0.1.12` and Bases `^0.4.1`, whose public
+peer contracts admit API0.6 and current Markdown; older locked releases do not.
+The separately pinned Tasks candidate uses source
+`7e25dc5cce821baca7831827f1711c1f18cbabf1`, version `0.2.0`, and development
+range `^0.2.0`. Its API 0.6 admission, full source checks, 66 cold
+interaction/axe cases and actual development/production archive hosts pass in
+the owner. Desktop MUST consume the same checksum-pinned candidate through all
+runtime import routes. A same-version registry package cannot substitute for
+these verified bytes, and this intake authorizes no publication.
+
+E-SYNC-006 qualification MUST route every admitted archive through dependency,
+optional-dependency and peer imports, plus local development imports. Root
+normal ranges MUST match the verified versions before projection. Both CI and
+portable workers MUST use the existing shared archive hook and verify installed
+identities; root-only replacement can leave a second registry API with the same
+version. Source manifests and the portable lock MUST be restored on failure.
+
+## Sync intake after shared remotes
+
+E-SYNC-009 integrates E-REPO-058/059's released History `^0.5.1`, App Profile
+`^0.2.2` and Mira `~0.2.0` cohort while retaining the temporary verified Notes
+archive cohort for the unreleased native Sync leave contract. Published API
+0.6.5 lacks `NativeSyncService.prepareLeave`; account teardown MUST NOT fall
+back to the released older lifecycle. This documented private migration
+prerequisite also retains the API-compatible Tasks candidate and released Graph
+`^0.1.12`/Bases `^0.4.1` from the qualified Sync input; older peers refuse API
+0.6 admission. Source manifests and lockfiles retain registry ranges; archive
+bytes and all import routes remain verified. Remove the temporary Notes/Tasks
+projection after separate publication and consumer qualification. This exception
+does not authorize publication.
+
+Native crates adopt current main's Core `c32b5ae4` and JJ Store `086def18`. Core
+includes the earlier qualified Sync source. JJ Store retains the exact
+operation-frontier implementation from `87be3ad6` through its merged source; Git
+blob identity was checked because commit ancestry differs. Neither earlier
+qualification nor another platform's pass qualifies this new combined cohort.

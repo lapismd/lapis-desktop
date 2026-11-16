@@ -77,7 +77,7 @@
     "@lapismd/ai-host": "^0.3.0",
     "@lapis-notes/api": "^0.6.5",
     "@lapis-notes/file-explorer": "^0.2.8",
-    "@lapis-notes/graph": "^0.1.4",
+    "@lapis-notes/graph": "^0.1.12",
     "@lapis-notes/history": "^0.5.1",
     "@lapis-notes/language-service": "^0.1.6",
     "@lapis-notes/markdown": "^0.3.1",
@@ -150,7 +150,7 @@
     "vitest": "4.1.12",
     "webdriverio": "9.32.0",
     "turbo": "^2.5.4",
-    "@lapis-notes/lapis-plugin-tasks": "^0.1.1",
-    "@lapis-notes/bases": "^0.2.0"
+    "@lapis-notes/lapis-plugin-tasks": "^0.2.0",
+    "@lapis-notes/bases": "^0.4.1"
   }
 }

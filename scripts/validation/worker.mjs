@@ -109,6 +109,7 @@ try {
   const archives = validateArchives(source.archives);
   if (archives.length) {
     const overrides = {};
+    const admitted = [];
     await mkdir(join(root, ".local/validation-packages"), { recursive: true });
     for (const entry of archives) {
       const bytes = await readFile(join(input, entry.path));
@@ -126,13 +127,41 @@ try {
       const destination = join(root, ".local/validation-packages", entry.path);
       await copyFile(join(input, entry.path), destination);
       overrides[entry.name] = `file:${destination}`;
+      admitted.push({ ...entry, tarball: destination });
     }
     // An isolated install projection; restore source manifests before validation.
     const packagePath = join(root, "package.json"),
       lockPath = join(root, "pnpm-lock.yaml");
     const original = await readFile(packagePath),
       lock = await readFile(lockPath);
-    const pkg = projectArchives(JSON.parse(original), overrides);
+    const manifest = JSON.parse(original);
+    const tools = join(root, ".local/validation-archive-tools");
+    await mkdir(tools, { recursive: true });
+    await writeFile(
+      join(tools, "package.json"),
+      JSON.stringify({ private: true, dependencies: { semver: "7.8.5" } }),
+    );
+    await execute(
+      "pnpm",
+      [
+        "install",
+        "--ignore-workspace",
+        "--ignore-scripts",
+        "--no-frozen-lockfile",
+      ],
+      { cwd: tools },
+    );
+    const semverModule = join(tools, "node_modules/semver");
+    const { archiveHookSource, validateArchiveRanges } = await import(
+      join(root, "scripts/archive-hook.mjs")
+    );
+    validateArchiveRanges(manifest, admitted, semverModule);
+    const hook = join(tools, "archives.pnpmfile.cjs");
+    await writeFile(
+      hook,
+      archiveHookSource(admitted, [manifest.name], [], semverModule),
+    );
+    const pkg = projectArchives(manifest, overrides);
     try {
       await writeFile(packagePath, JSON.stringify(pkg));
       await execute(
@@ -141,14 +170,20 @@ try {
           "install",
           "--no-frozen-lockfile",
           "--lockfile-only",
-          "--ignore-pnpmfile",
+          `--pnpmfile=${hook}`,
         ],
         { cwd: root },
       );
       await execute(
         "pnpm",
-        ["install", "--frozen-lockfile", "--ignore-pnpmfile"],
+        ["install", "--frozen-lockfile", `--pnpmfile=${hook}`],
         { cwd: root },
+      );
+      const { verifyArchiveGraph } = await import(
+        join(root, "scripts/archive-resolution.mjs")
+      );
+      console.log(
+        `Verified ${verifyArchiveGraph(root, admitted)} archive import routes`,
       );
     } finally {
       await writeFile(packagePath, original);

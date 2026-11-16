@@ -1,5 +1,10 @@
 [
   {
+    "name": "lapis-notes",
+    "repository": "lapismd/lapis-notes",
+    "revision": "01bf01f61f91f31237ebcdbb07242b9b6f9a5943"
+  },
+  {
     "name": "lapis-plugins",
     "repository": "lapismd/lapis-plugins",
     "revision": "879581d1549187bdbac2d75b40d02e0df46e721a"
@@ -17,7 +22,7 @@
   {
     "name": "lapis-plugin-tasks",
     "repository": "lapismd/lapis-plugin-tasks",
-    "revision": "52270c2aa7838811604a20be0861cdbd04027b42"
+    "revision": "7e25dc5cce821baca7831827f1711c1f18cbabf1"
   },
   {
     "name": "lapis-server",

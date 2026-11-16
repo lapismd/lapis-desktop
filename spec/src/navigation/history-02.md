@@ -323,10 +323,28 @@
 - [Published CLI UI registry adoption](../history/E-CLI-003.md)
 - [Align the Notes cohort governance regression](../history/E-CLI-004.md)
 - [Refresh the hosted private-profile source](../history/E-CLI-005.md)
+- [Scoped native Sync account custody intake](../history/E-SYNC-001.md)
+- [Native Sync profile identity admission](../history/E-SYNC-002.md)
+
+- [Retained native Sync account admission](../history/E-SYNC-003.md)
+
+- [Native Sync scope and command admission](../history/E-SYNC-004.md)
+
+- [Native Sync cancellable session leave](../history/E-SYNC-005.md)
+
+- [App-owned native Sync leave preparation](../history/E-SYNC-006.md)
 - [Advance the CLI delivery preview version](../history/E-CLI-006.md)
 - [Qualify the bundled CLI delivery candidate](../history/E-CLI-007.md)
+- [Qualify native Sync delivery against current Desktop main](../history/E-SYNC-008.md)
+
 - [Prepare native remotes transport](../history/E-REPO-057.md)
 - [Shared native remotes adoption](../history/E-REPO-058.md)
 - [Cold native remotes custody and transport](../history/E-REPO-059.md)
+
+- [Integrate Sync with shared remotes](../history/E-SYNC-009.md)
+- [Verify dependency and native fixture artifact roles](../history/E-SYNC-011.md)
 - [Publish shared Repository remotes in Preview rc.2](../history/E-RELEASE-024.md)
 - [Close checked remotes release handoff](../history/E-RELEASE-025.md)
+- [Integrate current release metadata with Sync delivery](../history/E-SYNC-012.md)
+
+- [Relocate frozen private archive hooks](../history/E-SYNC-014.md)

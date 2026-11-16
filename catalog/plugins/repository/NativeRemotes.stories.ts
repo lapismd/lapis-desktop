@@ -64,15 +64,17 @@ export const WorkingCopyAndReview: Story = {
         name: /Review push to original repository/,
       }),
     );
-    const review = within(
-      await within(canvasElement.ownerDocument.body).findByRole("dialog", {
-        name: "Push to original repository?",
-      }),
+    const reviewDialog = await within(
+      canvasElement.ownerDocument.body,
+    ).findByRole("dialog", { name: "Push to original repository?" });
+    const review = within(reviewDialog);
+    await waitFor(() =>
+      expect(
+        review.getByText(/git.example.test\/team\/original.git/),
+      ).toBeVisible(),
     );
-    await expect(
-      review.getByText(/git.example.test\/team\/original.git/),
-    ).toBeVisible();
     await userEvent.click(review.getByRole("button", { name: "Cancel" }));
+    await waitFor(() => expect(reviewDialog).not.toBeInTheDocument());
   },
 };
 export const MissingConnection: Story = {

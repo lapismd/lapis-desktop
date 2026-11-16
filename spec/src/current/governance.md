@@ -1,21 +1,22 @@
-# Governance — [CI tooling](ci.md), [native turns](ai-adapter.md), [mobile layout](mobile-layout.md)
+# Governance — [CI tooling](ci.md), [native turns](ai-adapter.md), [mobile layout](mobile-layout.md), [Sync](lapis-sync.md)
 
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 [Shared screens](shared-screen-integration.md) own integration;
 [backlog](../backlog.md) retains outstanding acceptance.
-[Local validation](../../../docs/validation.md) defines Docker/native commands,
-isolated archive prerequisites, reports and owned cleanup. E-VALIDATION-001
-preserves Docker/native boundaries. [Preview distribution](distribution.md) owns
-releases, including the Linux extension recorded by E-RELEASE-005.
-E-CORE-025/026/045 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History
-ownership/controls. E-CORE-029/030 qualify metadata/Search; 033/034 qualify
-editing. Core readers use exact local IPC; generic plugin grants deny.
-Tasks/default gates remain separate. SSH options preserve authentication,
-endpoints and literal arguments. Archive rewriting is idempotent only for exact
-paths redirected to verified tarballs. ARM64 diagnostics use hosted SHA, pinned
-`jj` and exact args. E-CI-054–064/084 retain deadlines/assertions, exact editor
-readiness and no-retry/quarantine/release policy. Native close never retries;
-empty comparisons continue; unavailable/conflicting fail closed.
+[Local validation](../../../docs/validation.md) retains Docker/native gates
+(E-VALIDATION-001), archive receipts and owned cleanup. E-SYNC-006 requires one
+Notes cohort for API/Profile builds and imports. [Distribution](distribution.md)
+owns releases and E-RELEASE-005's Linux extension. E-CORE-025/026/045 pin
+Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
+E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
+use exact scoped IPC; generic plugin grants deny. Tasks/default/Sync retain
+leave gates. SSH options preserve authentication, endpoints and literal
+arguments. Artifact roles MUST separate dependencies from fixtures. Archive
+rewriting is idempotent only for exact verified tarball paths; CI hooks MUST
+relocate. ARM64 diagnostics use hosted SHA, pinned `jj` and exact args.
+E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
+no-retry/quarantine/release policy. Native close never retries; empty
+comparisons continue; unavailable/conflicting fail closed.
 [Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
 renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005
@@ -54,7 +55,7 @@ only a proved synchronized mirror or its exact conflict recovery.
 | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | LD-GOV-001 | Canonical requirements MUST have unique LD IDs and exactly one verification row, remain navigable in mdBook, and stay within 400 physical lines and 32,768 UTF-8 bytes per authored specification page.                                                                                                                                                                                                                                                                                                                                                                                                      |
 | LD-GOV-002 | Protected behavior and tooling changes MUST update mapped canonical chapters in the same Jujutsu change. Unmapped protected paths MUST fail closed. Release probes MAY retry only explicitly classified transient states inside original deadlines; other tool failures MUST remain fatal. Protected release recovery MUST use a wholly new complete run, exact environment approval and release-ID asset verification; failed jobs cannot be rerun alone, unprotected selection MUST retain read-only authority, and draft discovery and release writes MUST remain in the environment-protected publisher. |
-| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit acceptance review. Committed evidence MUST remain immutable.                                                                                                                                                                                                                                                                                                                                                                                      |
+| LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit acceptance review. Committed evidence MUST remain immutable. Revision validation MUST include every parent and the explicit base; inherited receipts MUST NOT cover new work.                                                                                                                                                                                                                                                                     |
 | LD-GOV-004 | Current feature chapters and verification MUST own behavior and requirement status. Canonical backlog topics MUST own outstanding implementation and qualification, retaining dependencies and original acceptance boundaries. Passing evidence MUST match the claimed boundary; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                                                                                                                                                                        |
 | LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                                                                                                                                                                                                                           |
 | LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, with documented pinned private public-build prerequisites in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                                                                                                                                                                                |
@@ -395,6 +396,5 @@ evidence. [CI governance](ci.md), [native acceptance](native-acceptance.md),
 [dependency intake](local-dependencies.md) and
 [retained CI tool qualification](../verification-notes.md) keep their gates.
 
-CLI staging tests model immutable-source cache reuse across two revisions;
-source-specific output and a build-schema marker prevent stale-binary adoption.
-[Release receipts](distribution.md) record qualified preview delivery.
+CLI staging tests compare two immutable revisions; source-specific outputs and
+build-schema markers block stale binaries; [preview receipts](distribution.md).

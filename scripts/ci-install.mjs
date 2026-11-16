@@ -11,14 +11,25 @@ import {
 } from "node:fs";
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { verifyArchiveResolution } from "./archive-resolution.mjs";
-import { resolve } from "node:path";
+import { verifyArchiveGraph } from "./archive-resolution.mjs";
+import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { runAudit } from "./ci-audit.mjs";
-import { verifyDependencies } from "./ci-dependency-artifact.mjs";
+import { archiveHookSource, validateArchiveRanges } from "./archive-hook.mjs";
+import {
+  verifyDependencies,
+  selectDependencyArtifact,
+} from "./ci-dependency-artifact.mjs";
 
 /** Packages awaiting qualified registry releases keep tracked semver ranges. */
 export const unpublishedRanges = {
+  "@lapis-notes/lapis-plugin-tasks": "../lapis-plugin-tasks",
+  "@lapis-notes/api": "../lapis-notes/packages/api",
+  "@lapis-notes/ui": "../lapis-notes/packages/ui",
+  "@lapis-notes/workspace": "../lapis-notes/packages/workspace",
+  "@lapis-notes/file-explorer": "../lapis-notes/packages/file-explorer",
+  "@lapis-notes/language-service": "../lapis-notes/packages/language-service",
+  "@lapis-notes/app-profile": "../lapis-notes/packages/app-profile",
   "@lapismd/ai": "../lapis-ai/packages/ai",
 };
 
@@ -62,8 +73,7 @@ function installProjected() {
       const target = `.local/ci-packages/${name.replaceAll(/[@/]/gu, "-")}/package.tgz`;
       const directory = resolve(target, "..");
       if (reused) {
-        const entry = reused.find((entry) => entry.name === name);
-        if (!entry) throw Error(`Missing reusable private artifact: ${name}`);
+        const entry = selectDependencyArtifact(reused, name);
         mkdirSync(directory, { recursive: true });
         copyFileSync(entry.path, target);
         archives[name] = { path: target, version: entry.version };
@@ -114,24 +124,24 @@ function installProjected() {
     ],
     { cwd: tools, stdio: "inherit" },
   );
+  const entries = Object.entries(archives).map(([name, entry]) => ({
+    name,
+    version: entry.version,
+    tarball: resolve(entry.path),
+    declared: "file:" + entry.path,
+  }));
+  const semverModule = resolve(tools, "node_modules/semver");
+  const manifest = JSON.parse(originalPkg.toString("utf8"));
+  validateArchiveRanges(manifest, entries, semverModule);
   writeFileSync(
     hook,
-    `const semver = require("../ci-package-tools/node_modules/semver");
-const { resolve } = require("node:path");
-const archives = ${JSON.stringify(archives)};
-module.exports = { hooks: { readPackage(pkg) {
-  for (const section of ["dependencies", "optionalDependencies"])
-    for (const [name, range] of Object.entries(pkg[section] || {})) {
-      const artifact = archives[name];
-      if (!artifact || range === "file:" + artifact.path) continue;
-      const target = "file:" + resolve(__dirname, "../..", artifact.path);
-      if (range === target) continue;
-      if (!semver.satisfies(artifact.version, range)) throw Error("Incompatible private artifact: " + name + " " + range);
-      pkg[section][name] = target;
-    }
-  return pkg;
-} } };
-`,
+    archiveHookSource(
+      entries,
+      [manifest.name],
+      [],
+      semverModule,
+      dirname(hook),
+    ),
   );
   const projectedText = JSON.stringify(projected, null, 2) + "\n";
   if (reused && reused.projectedPackage !== projectedText)
@@ -153,7 +163,7 @@ module.exports = { hooks: { readPackage(pkg) {
         },
       ).status ?? 1;
     if (status === 0) {
-      verifyArchiveResolution(
+      verifyArchiveGraph(
         process.cwd(),
         Object.entries(archives).map(([name, entry]) => ({
           name,

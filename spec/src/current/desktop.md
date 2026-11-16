@@ -1,5 +1,9 @@
 # Desktop shell and CI
 
+[Sync](lapis-sync.md) owns LD-SYNC-001/002; Tauri pending; Sync disabled. App
+leave MUST prepare injected Sync before watcher/writer teardown, unfence on
+refusal and await detach on disposal.
+
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),
 [plugins](plugins.md), [history](repository.md),

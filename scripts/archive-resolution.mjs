@@ -12,7 +12,39 @@ import {
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
+import { createRequire } from "node:module";
 import assert from "node:assert/strict";
+
+/** A same-version registry copy or second peer context cannot share App identity. */
+export function assertArchiveSnapshots(lock, entries) {
+  const snapshots = Object.keys(lock.snapshots ?? {});
+  for (const { name } of entries) {
+    const selected = snapshots.filter((key) => key.startsWith(`${name}@`));
+    assert.equal(
+      selected.length,
+      1,
+      `Archive must have one installed context: ${name}`,
+    );
+    assert.ok(
+      selected[0].startsWith(`${name}@file:`),
+      `Archive graph selected a registry package: ${name}`,
+    );
+  }
+}
+
+/** Verify the installed graph and bytes at every pnpm dependency context. */
+export function verifyArchiveGraph(root, entries) {
+  const { parse } = createRequire(join(resolve(root), "package.json"))("yaml");
+  const store = join(root, "node_modules/.pnpm");
+  assertArchiveSnapshots(
+    parse(readFileSync(join(store, "lock.yaml"), "utf8")),
+    entries,
+  );
+  const scopes = readdirSync(store, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && entry.name !== "node_modules")
+    .map((entry) => join(store, entry.name));
+  return verifyArchiveResolution(root, entries, scopes);
+}
 
 function fingerprint(root, includeDependencies) {
   const hash = createHash("sha256");

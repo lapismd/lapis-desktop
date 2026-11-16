@@ -1,7 +1,7 @@
 # Lapis Sync: future Tauri implementation
 
-**Planned, 14 November 2026. Implementation and release deferred.** This topic
-owns the remaining Desktop work for encrypted Lapis Sync. The
+**In progress, 15 November 2026. Complete implementation and release remain
+open.** This topic owns the remaining Desktop work for encrypted Lapis Sync. The
 [plugin implementation context](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-context.md)
 retains the source investigation, and the
 [cross-repository roadmap](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-plan.md)
@@ -13,6 +13,15 @@ This is separate from
 retains its original provider and two-device acceptance. Lapis Sync uses the
 `sync` plugin and encrypted revision/object protocol. Legacy `nostr-sync`,
 standalone History and Git backup keep their identities and existing data.
+
+The [current native chapter](../current/lapis-sync.md) tracks source intake,
+custody adapters, retained account admission and cancellable native leave; their
+source evidence does not complete this roadmap or enable the plugin.
+
+App Sync leave preparation is now under consumer qualification against the Notes
+LN-PKG-193 candidate. Actual Tauri command/observation registration, native
+resource detachment and OS acceptance remain outstanding; fixture passes cannot
+complete those boundaries.
 
 ## Agreed product outcome
 

@@ -14,7 +14,7 @@ import {
   projectArchives,
 } from "../../scripts/validation/model.mjs";
 
-test("portable sources retain the native Notes pin while public Profile uses the registry", async () => {
+test("portable sources retain the native Notes pin and explicit Sync archive cohort", async () => {
   const native = JSON.parse(
     await readFile("scripts/validation/native-sources.json", "utf8"),
   );
@@ -25,7 +25,10 @@ test("portable sources retain the native Notes pin while public Profile uses the
     revision(native, "lapis-notes"),
     "40b9ba8ee569a737a0ace77870a094972ee6f768",
   );
-  assert.equal(revision(hosted, "lapis-notes"), undefined);
+  assert.equal(
+    revision(hosted, "lapis-notes"),
+    "01bf01f61f91f31237ebcdbb07242b9b6f9a5943",
+  );
   const manifest = JSON.parse(await readFile("package.json", "utf8"));
   assert.match(
     manifest.dependencies["@lapis-notes/app-profile"],

@@ -1,7 +1,8 @@
 # File management (M5)
 
 Notes shell composition follows [mobile layout](mobile-layout.md) without a
-host-forced display mode; file and native adapter authority is unchanged.
+host-forced display mode; file and native adapter authority is unchanged. Sync
+leave follows [LD-SYNC-001](lapis-sync.md#app-leave-and-transport-detachment).
 
 Native missing-file recovery waits for the captured review's disk-accept action
 to become enabled after refresh, then retains exact draft, deletion, renamed

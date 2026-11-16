@@ -3,6 +3,7 @@ const chapters = [
   "desktop",
   "mobile-layout",
   "tasks",
+  "lapis-sync",
   "background",
   "files",
   "navigation",
