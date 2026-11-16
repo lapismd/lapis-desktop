@@ -22,6 +22,12 @@ struct Snapshot {
     account: Option<AccountObservation>,
 }
 
+impl Presentation {
+    pub fn revision(&self) -> u64 {
+        self.revision
+    }
+}
+
 impl AccountServices {
     pub fn presentation(
         &mut self,

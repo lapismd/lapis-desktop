@@ -11,6 +11,7 @@
     "allow-desktop-sync-snapshot",
     "allow-desktop-sync-detach",
     "allow-desktop-sync-call",
+    "allow-desktop-sync-observe",
     "allow-desktop-cli-installation",
     "allow-desktop-cli-access",
     "allow-shell-ready",

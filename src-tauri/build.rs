@@ -13,6 +13,7 @@ fn main() {
         "desktop_sync_snapshot",
         "desktop_sync_detach",
         "desktop_sync_call",
+        "desktop_sync_observe",
         "desktop_terminal_admit",
         "desktop_terminal_release",
         "desktop_ai_user_commands",

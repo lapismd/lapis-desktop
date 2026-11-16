@@ -138,3 +138,14 @@ owners approve. A new session or foreign registry MUST invalidate preparation
 before effects. Refused or partially uncertain closes MUST retain ownership for
 inspection; only positively closed owners may be collected. Active sessions
 remain subject to their individual close guards.
+
+## Bounded native observation delivery
+
+LD-SYNC-001 native observation MUST remain passive: one outstanding wait per
+admitted presentation scope, bounded secret-free snapshots and monotonic safe
+integer revisions. Native waits MUST have a bounded lifetime, coalesce account
+updates and revalidate the original scope before delivery. Scope replacement,
+detach and window destruction MUST wake retained observation waits promptly
+without closing Core-owned work. A future or forged cursor MUST refuse; older
+revisions MUST return current coalesced state. Stopped observations MUST NOT
+restart another custody or execution provider.
