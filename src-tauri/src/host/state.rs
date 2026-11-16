@@ -19,11 +19,12 @@ pub struct NativeServices {
 }
 
 impl NativeServices {
-    pub fn close_vault(&mut self, session_id: &str) -> io::Result<()> {
-        self.close_vault_mode(session_id, false)
-    }
-
-    pub fn close_vault_mode(&mut self, session_id: &str, reload: bool) -> io::Result<()> {
+    pub fn close_vault_mode(
+        &mut self,
+        session_id: &str,
+        reload: bool,
+        prepared: Option<lapis_desktop::sync::account::leave::PreparedSessionClose>,
+    ) -> io::Result<()> {
         self.vaults.get(session_id)?;
         if self.databases.has_session(session_id) {
             return Err(io::Error::new(
@@ -31,6 +32,7 @@ impl NativeServices {
                 "Close the owned database before closing the vault",
             ));
         }
+        crate::host::sync::leave::validate(self, session_id, prepared.as_ref())?;
         // A watcher never acquires the services lock. Do not hold fs_gate here:
         // joining a worker waiting to snapshot would otherwise deadlock.
         if reload {
@@ -39,7 +41,10 @@ impl NativeServices {
             self.core_vaults.close(&self.vaults, session_id)?;
         }
         self.watches.close_session(session_id)?;
-        self.with_files(|services| services.vaults.close(session_id))?;
+        self.with_files(move |services| {
+            crate::host::sync::leave::commit(services, session_id, prepared)?;
+            services.vaults.close(session_id)
+        })?;
         self.ai.finish_close_vault(session_id);
         self.imports.finish_close_vault(session_id);
         self.repository.finish_close_vault(session_id);

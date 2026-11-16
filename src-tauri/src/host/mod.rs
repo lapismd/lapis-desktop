@@ -132,6 +132,7 @@ pub fn run() -> tauri::Result<()> {
             sync::desktop_sync_open,
             sync::desktop_sync_snapshot,
             sync::desktop_sync_detach,
+            sync::commands::desktop_sync_call,
             cli::installation::desktop_cli_installation,
             cli::access::desktop_cli_access,
             #[cfg(feature = "e2e")]

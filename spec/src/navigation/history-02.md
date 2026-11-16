@@ -344,3 +344,5 @@
 - [Integrate Sync with shared remotes](../history/E-SYNC-009.md)
 
 - [Native Sync Tauri scope and custody qualification](../history/E-SYNC-007.md)
+
+- [Native Sync account calls and admitted vault leave](../history/E-SYNC-010.md)
