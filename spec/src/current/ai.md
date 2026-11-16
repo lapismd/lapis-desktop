@@ -7,8 +7,8 @@ reload completion and reload/cold-Quit History recovery without replay.
 Test-only holds may forward saved results after disposal; exact History readers
 await async WebDriver collections (E-CI-062). E-CORE-045 targets queue proof.
 
-[Native fixtures](native-acceptance.md) retain platform credential restrictions
-and share an injected call across editing and Tasks ports (E-CI-010).
+[Native fixtures](native-acceptance.md) retain credential gates and an injected
+editing/Tasks call (E-CI-010); unrelated [Sync](lapis-sync.md) stays unselected.
 [Shared-screen integration](shared-screen-integration.md) governs admission,
 Markdown leaves, queue authority and exact request/send failure recovery. AI
 shell stories MUST await owned fixtures and platform-neutral sent-draft clearing

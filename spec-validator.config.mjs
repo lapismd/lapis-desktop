@@ -79,7 +79,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:src-tauri/src/(?:sync/|host/sync/)|src-tauri/tests/sync_.*\\.rs$|src/lib/native/sync/)",
+              "^(?:src-tauri/src/(?:sync/|host/sync/)|src-tauri/tests/(?:sync_.*\\.rs$|fixtures/sync-custody\\.rs$)|src/lib/native/sync/|tests/desktop/sync-.*\\.test\\.mjs$)",
             chapters: ["spec/src/current/lapis-sync.md"],
           },
           {

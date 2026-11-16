@@ -333,3 +333,36 @@ test("repository history uses only its exact local main-window permission set", 
       ).some((e) => e.code === "LD-CAPABILITY-SCOPE"),
     );
 });
+
+test("Sync transport grants remain exact, local and restricted to the main window", () => {
+  const manifest = JSON.parse(readFileSync("package.json", "utf8"));
+  const capabilities = JSON.parse(
+    readFileSync("src-tauri/capabilities/main.json", "utf8"),
+  );
+  const config = JSON.parse(readFileSync("src-tauri/tauri.conf.json", "utf8"));
+  assert.deepEqual(
+    capabilities.permissions.filter((permission) =>
+      permission.startsWith("allow-desktop-sync-"),
+    ),
+    [
+      "allow-desktop-sync-open",
+      "allow-desktop-sync-snapshot",
+      "allow-desktop-sync-detach",
+    ],
+  );
+  assert.deepEqual(auditManifest(manifest, capabilities, config), []);
+  for (const extra of [
+    { windows: ["*"] },
+    { windows: ["main", "acp-other"] },
+    { local: false },
+    { permissions: [...capabilities.permissions, "allow-desktop-sync-*"] },
+    { permissions: [...capabilities.permissions, "allow-desktop-sync-call"] },
+    { permissions: [...capabilities.permissions, "sync:default"] },
+  ]) {
+    assert.ok(
+      auditManifest(manifest, { ...capabilities, ...extra }, config).some(
+        (finding) => finding.code === "LD-CAPABILITY-SCOPE",
+      ),
+    );
+  }
+});

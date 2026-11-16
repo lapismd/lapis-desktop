@@ -183,3 +183,11 @@ quarantines are re-enabled by this instrumentation. Secondary-window
 disappearance and ARM64 backup initialization remain unresolved until original
 isolated and normal-group scenarios complete on the affected platform after a
 demonstrated repair.
+
+The explicit API dispatcher MUST compile actual macOS OS-conditional source with
+strict all-target Clippy in normal and e2e modes and build the normal binary
+before building the cold e2e bundle. Compilation MUST NOT launch the normal
+application or access a user profile. Custody probes MUST remain debug/e2e-only,
+noninteractive, source/hash-bound and scoped to task-owned OS entries with
+cleanup. These compiler and local adapter results do not qualify hosted or
+release gates.

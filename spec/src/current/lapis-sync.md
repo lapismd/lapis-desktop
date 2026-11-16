@@ -70,7 +70,10 @@ native gates.
 Native command admission MUST bound provider, request identity and inputs,
 reject renderer-supplied time, custody, roots and secret material, and refuse
 unknown operations. The native host supplies account time and device label;
-these source actions remain unregistered until the Tauri adapter is qualified.
+these account actions remain unregistered until the Tauri adapter is qualified.
+The initial Tauri scope open/snapshot/detach transport MUST require explicit
+`LAPIS_DESKTOP_SYNC_OWNER=core`; absent or disabled selection MUST create no
+Sync service or custody state. Invalid selection MUST fail closed.
 
 Native leave admission MUST fence and drain the final account owner without
 revoking its window handles or releasing custody before other native leave
@@ -91,3 +94,25 @@ original App can recover; permanent disposal MUST await transport detachment
 without closing native-owned durable work. The API owns this portable contract
 under LN-PKG-189/193; Desktop owns its separate lifecycle caller and Tauri
 resource release. A fixture transport cannot qualify the actual native boundary.
+
+## Tauri account transport
+
+LD-SYNC-001 native presentation admission MUST derive its profile root from the
+host and its vault/root from the calling window's admitted session. Commands and
+observations MUST revalidate opaque scope handles after waits. Native account
+work stays in Core; transport detachment MUST revoke only presentation
+authority. The host MUST await Core work outside its services lock, preserve
+refused leave, and open only the currently admitted account approval URL.
+Snapshot revisions and payloads MUST be bounded and contain no credentials. The
+bridge remains explicitly selected; registration cannot activate Sync by default
+or select a custody/persistence fallback.
+
+## Explicit local custody probe
+
+LD-SYNC-002 local macOS custody acceptance MUST use the production adapter in
+independent native processes, task-owned profile roots and isolated OS item
+namespaces. Register cleanup before writing; prove missing, write, cold read,
+wrong-profile isolation and cleanup without printing protected bytes. Debug
+probe tooling MUST require the explicit native lane and never enter an ordinary
+application bundle or expose a renderer secret command. These results MUST NOT
+claim locked-Keychain, full account, hosted or release qualification.

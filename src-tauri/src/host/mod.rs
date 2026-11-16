@@ -7,6 +7,7 @@ pub(crate) mod lifecycle;
 pub(crate) mod repository;
 pub(crate) mod shell;
 pub(crate) mod state;
+pub(crate) mod sync;
 pub(crate) mod terminal;
 pub(crate) mod vault;
 pub(crate) mod windows;
@@ -128,6 +129,9 @@ pub fn run() -> tauri::Result<()> {
     };
     builder
         .invoke_handler(tauri::generate_handler![
+            sync::desktop_sync_open,
+            sync::desktop_sync_snapshot,
+            sync::desktop_sync_detach,
             cli::installation::desktop_cli_installation,
             cli::access::desktop_cli_access,
             #[cfg(feature = "e2e")]
