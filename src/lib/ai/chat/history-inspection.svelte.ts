@@ -2,7 +2,7 @@ import type { LocalFileDiffChange } from "@lapismd/jj-history";
 import type {
   AiTurnRecord,
   AiUndoRequest,
-} from "../../repository/ai-history.ts";
+} from "@lapis-notes/history/repository/controllers/ai-history";
 import type { AiFileHistory } from "./file-history.svelte.ts";
 import {
   readTurnComparison,

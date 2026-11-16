@@ -1,6 +1,6 @@
 import { searchPage } from "@lapis-notes/history/repository/controllers/search-page";
 import type { NativeCall } from "../vault-client.ts";
-import type { HistorySearchService } from "../../repository/search.ts";
+import type { HistorySearchService } from "@lapis-notes/history/repository/controllers/search";
 import { nativeError } from "../native-error.ts";
 export function nativeSearch(
   sessionId: string,

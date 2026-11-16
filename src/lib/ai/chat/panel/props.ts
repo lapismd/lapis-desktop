@@ -28,7 +28,7 @@ import type { AutomaticMemoryRecall } from "../../memory/types.ts";
 import type { HandoffSummaryCoordinator } from "../../conversations/handoff-summary.ts";
 export type AiChatPanelProps = {
   fileHistory?: () =>
-    | import("../../../repository/ai-history.ts").AiHistoryBinding
+    | import("@lapis-notes/history/repository/controllers/ai-history").AiHistoryBinding
     | undefined;
   agentProviders?: import("../../settings/agent-profile-editor.ts").AgentProfileEditorContext["agentProviders"];
   mentionPeople?: readonly import("../../conversations/recipients.ts").ComposerPersonOption[];

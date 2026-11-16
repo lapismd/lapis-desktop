@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import {
   bindTranscriptWriters,
   guardTranscriptReplacement,
-} from "../../src/lib/repository/transcript-writers.ts";
+} from "@lapis-notes/history/repository/controllers/transcript-writers";
 test("replacement joins AI admission, while ordinary shutdown uses its original guard", async () => {
   const calls = [];
   const app = {

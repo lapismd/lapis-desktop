@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { OperationController } from "@lapismd/repository-ui/history";
-import { operationParents } from "../../src/lib/repository/operation-parent.ts";
+import { operationParents } from "@lapis-notes/history/repository/controllers/operation-parent";
 import {
   operationFixture,
   operationNode,

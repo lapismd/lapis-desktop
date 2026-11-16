@@ -3,7 +3,7 @@
   import NotesDemo from "../NotesDemo.svelte";
   import { historyFixture, operation, revision } from "./fixture.ts";
   import { bindHistoryFixture } from "./context.ts";
-  import type { HistorySearchHit } from "../../../src/lib/repository/search.ts";
+  import type { HistorySearchHit } from "@lapis-notes/history/repository/controllers/search";
   let {
     scenario = "ready",
   }: { scenario?: "ready" | "failed" | "loading" | "empty" | "older" } =

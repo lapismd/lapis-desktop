@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { BlameController } from "@lapismd/repository-ui/history";
-import { validateBlame } from "../../src/lib/repository/blame-model.ts";
+import { validateBlame } from "@lapis-notes/history/repository/controllers/blame-model";
 import {
   blameChunks,
   sourceLines,
-} from "../../src/lib/repository/blame-chunks.ts";
+} from "@lapis-notes/history/repository/controllers/blame-chunks";
 import {
   historyFixture,
   operation,

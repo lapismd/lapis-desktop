@@ -6,7 +6,7 @@ import { FakeAgentRuntime } from "../../support/fake-runtime.ts";
 import type {
   AiHistoryBinding,
   AiTurnRecord,
-} from "../../../../src/lib/repository/ai-history.ts";
+} from "@lapis-notes/history/repository/controllers/ai-history";
 import { historyTranscript } from "../../../../src/lib/ai/chat/history-transcript.ts";
 import { projectAiTranscript } from "../../../../src/lib/ai/chat/transcript-projection.ts";
 

@@ -3,7 +3,7 @@
   import NotesDemo from "../NotesDemo.svelte";
   import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
-  import type { RemoteSnapshot } from "../../../src/lib/repository/remote.ts";
+  import type { RemoteSnapshot } from "@lapis-notes/history/repository/controllers/remote";
   let {
     scenario = "empty",
   }: {

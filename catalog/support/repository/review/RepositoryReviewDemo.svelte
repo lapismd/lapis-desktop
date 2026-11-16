@@ -4,9 +4,9 @@
   import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
   import NotesDemo from "../../NotesDemo.svelte";
   import { bindHistoryFixture } from "../context.ts";
-  import "../../../../src/components/repository/repository-review-identifiers.css";
-  import "../../../../src/components/repository/repository-picker-options.css";
-  import "../../../../src/components/repository/repository-column-chrome.css";
+  import "@lapis-notes/history/repository/styles/repository-review-identifiers.css";
+  import "@lapis-notes/history/repository/styles/repository-picker-options.css";
+  import "@lapis-notes/history/repository/styles/repository-column-chrome.css";
   import { HistoryReviewView } from "./history-review-view.ts";
   import { OperationReviewView } from "./review-view.ts";
   import { reviewFixture } from "./review-fixture.ts";

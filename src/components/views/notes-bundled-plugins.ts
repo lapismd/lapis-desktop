@@ -6,12 +6,12 @@ import {
 import type { App } from "@lapis-notes/api";
 import { TerminalPlugin } from "../terminal/terminal-plugin.ts";
 import { AiPlugin } from "../ai/plugin/ai-plugin.ts";
-import { RepositoryPlugin } from "../repository/repository-plugin.ts";
+import { RepositoryPlugin } from "@lapis-notes/history/repository";
 import {
   bindRepository,
   prepareRepositoryLeave,
   type RepositoryFactory,
-} from "../../lib/repository/services.ts";
+} from "@lapis-notes/history/repository";
 import { terminalEnabledByDefault } from "../../lib/terminal/terminal-preferences.ts";
 import { aiEnabledByDefault } from "../../lib/ai/plugin/preferences.ts";
 import {
@@ -71,7 +71,7 @@ export function notesBundledPlugins(
     async prepareLeave(mode: "close" | "reload"): Promise<void> {
       const history = app.plugins.plugins.get("repository-history");
       if (history instanceof RepositoryPlugin)
-        await history.backup?.prepareLeave(mode);
+        await history.backup?.prepareLeave();
       prepareTerminalLeave(app, mode);
       prepareAiLeave(app, mode);
       prepareNativeChatLeave(app, mode === "reload" ? "detach" : "close");

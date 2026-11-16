@@ -19,7 +19,6 @@ import { verifyDependencies } from "./ci-dependency-artifact.mjs";
 
 /** Packages awaiting qualified registry releases keep tracked semver ranges. */
 export const unpublishedRanges = {
-  "@lapis-notes/app-profile": "../lapis-notes/packages/app-profile",
   "@lapismd/ai": "../lapis-ai/packages/ai",
 };
 

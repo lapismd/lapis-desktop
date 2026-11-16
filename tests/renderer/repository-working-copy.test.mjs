@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { WorkingCopyController } from "../../src/lib/repository/working-copy-controller.ts";
-import { parseWorkingCopyStatus } from "../../src/lib/repository/working-copy-status.ts";
+import { WorkingCopyController } from "@lapis-notes/history/repository/controllers/working-copy-controller";
+import { parseWorkingCopyStatus } from "@lapis-notes/history/repository/controllers/working-copy-status";
 const frame = {
   version: 1,
   operation: "ab".repeat(64),

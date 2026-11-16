@@ -390,3 +390,7 @@ adapter. Native calls are fixtures; plays cover install, removal, repair and
 scoped read-only consent.
 [Retained catalog qualification](../verification-notes.md) preserves the
 previous presentation and lifecycle receipts.
+
+Repository settings, log headers and the Git footer consume public History
+exports. E-REPO-059 keeps App ownership, fixture disposal and visual-pending
+policy unchanged; native custody/transport proof remains separate.

@@ -1,5 +1,5 @@
 import type { TranscriptItem } from "@lapismd/design-core/chat";
-import type { AiTurnRecord } from "../../repository/ai-history.ts";
+import type { AiTurnRecord } from "@lapis-notes/history/repository/controllers/ai-history";
 import type { AiChatItem } from "./chat-items.ts";
 
 /** Insert immutable comparisons after the last retained row of their turn. */

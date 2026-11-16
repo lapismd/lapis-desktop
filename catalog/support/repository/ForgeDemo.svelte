@@ -3,7 +3,7 @@
   import NotesDemo from "../NotesDemo.svelte";
   import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
-  import type { ForgeInventory } from "../../../src/lib/repository/forge-accounts.ts";
+  import type { ForgeInventory } from "@lapis-notes/history/repository/controllers/forge-accounts";
   let { scenario = "empty" }: { scenario?: "empty" | "failed" | "loading" } =
     $props();
   const fixture = untrack(() => operationFixture());

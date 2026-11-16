@@ -2,7 +2,7 @@
   import { onMount, untrack } from "svelte";
   import type { App } from "@lapis-notes/api";
   import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
-  import { RepositoryPlugin } from "../../../../src/components/repository/repository-plugin.ts";
+  import { RepositoryPlugin } from "@lapis-notes/history/repository/components/repository-plugin";
   import NotesDemo from "../../NotesDemo.svelte";
   import { bindHistoryFixture } from "../context.ts";
   import { operationFixture } from "../operations.ts";

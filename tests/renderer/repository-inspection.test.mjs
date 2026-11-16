@@ -9,7 +9,7 @@ import {
   parent,
 } from "../../catalog/support/repository/fixture.ts";
 import { operationFixture } from "../../catalog/support/repository/operations.ts";
-import { operationMessageParts } from "../../src/lib/repository/operation-message.ts";
+import { operationMessageParts } from "@lapis-notes/history/repository/controllers/operation-message";
 
 function owner(Controller, fixture) {
   const errors = [];

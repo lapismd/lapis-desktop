@@ -3,7 +3,7 @@ import { operationFixture, operationNode } from "../operations.ts";
 import { commit, otherOperation, parent, revision } from "../fixture.ts";
 import { commitDetail } from "../commit-detail.ts";
 import { reviewEvolutionFixture } from "./review-evolution.ts";
-import { repositoryWorkspaces } from "../../../../src/lib/repository/workspaces.ts";
+import { repositoryWorkspaces } from "@lapis-notes/history/repository/controllers/workspaces";
 
 export function reviewFixture() {
   const fixture = operationFixture("operation-ready");

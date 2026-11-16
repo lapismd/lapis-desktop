@@ -19,7 +19,7 @@
   import type { NativeTasks } from "@lapis-notes/api/native-tasks";
   import type { TerminalFactory } from "../../src/lib/terminal/terminal-binding";
   import type { AiFactory } from "../../src/lib/ai/plugin/services";
-  import type { RepositoryFactory } from "../../src/lib/repository/services.ts";
+  import type { RepositoryFactory } from "@lapis-notes/history/repository/controllers/services";
   import type { AppSafeModeState } from "@lapis-notes/api";
 
   let {

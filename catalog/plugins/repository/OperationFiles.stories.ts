@@ -2,7 +2,7 @@ import { chooseChangedRevision } from "../../support/repository/picker-interacti
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { RepositoryOperations } from "@lapismd/repository-ui/jj";
+import RepositoryOperations from "@lapis-notes/history/repository/components/RepositoryOperations.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { historyContext } from "../../support/repository/context.ts";
 import { parent, revision } from "../../support/repository/fixture.ts";
@@ -99,11 +99,21 @@ export const UnavailableComparison: StoryObj = {
     const canvas = await open(canvasElement);
     await group(canvas);
     await expect(
-      await canvas.findByText("Content comparison unavailable"),
+      await canvas.findByText(
+        "This change has no available content comparison.",
+      ),
     ).toBeVisible();
-    await expect(
-      canvas.getByText("This recorded change has no available revision pair."),
-    ).toBeVisible();
+    expect(
+      canvas.queryByRole("combobox", { name: "Before revision" }),
+    ).toBeNull();
+    expect(
+      canvas.queryByRole("combobox", { name: "After revision" }),
+    ).toBeNull();
+    expect(
+      historyContext(canvasElement).fixture.calls.filter(
+        ([, query]) => (query as { kind?: string })?.kind === "diff",
+      ),
+    ).toHaveLength(0);
     expect(canvas.queryByRole("region", { name: "Changed files" })).toBeNull();
   },
 };

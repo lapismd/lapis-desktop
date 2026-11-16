@@ -1,3 +1,4 @@
+import "@lapis-notes/history/styles.css";
 import "@lapismd/repository-ui/styles.css";
 import "@lapismd/agent-ui/styles.css";
 import { launchDesktop } from "./lib/desktop/launch.ts";

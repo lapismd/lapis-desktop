@@ -6,7 +6,7 @@
   import type {
     AdoptionStatus,
     AdoptionRequest,
-  } from "../../../src/lib/repository/adoption.ts";
+  } from "@lapis-notes/history/repository/controllers/adoption";
   let {
     scenario = "available",
   }: {

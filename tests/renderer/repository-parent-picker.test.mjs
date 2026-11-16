@@ -1,11 +1,11 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { HistoryController } from "@lapismd/repository-ui/history";
-import { parentCandidates } from "../../src/lib/repository/parent-candidates.ts";
+import { parentCandidates } from "@lapis-notes/history/repository/controllers/parent-candidates";
 import {
   commitCardSearch,
   commitCardTags,
-} from "../../src/lib/repository/commit-cards.ts";
+} from "@lapis-notes/history/repository/controllers/commit-cards";
 import {
   historyFixture,
   commit,

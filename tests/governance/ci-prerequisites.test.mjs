@@ -114,32 +114,33 @@ test("the released Notes cohort has one current Design Core and API peer context
   const nativeSource = JSON.parse(
     readFileSync("scripts/validation/native-sources.json", "utf8"),
   );
-  const notesJavascriptRevision = "d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f";
   // Renderer package adoption does not change the qualified Rust source graph.
   const notesNativeRevision = "40b9ba8ee569a737a0ace77870a094972ee6f768";
   assert.equal(
     source.find((entry) => entry.name === "lapis-notes")?.revision,
-    notesJavascriptRevision,
+    undefined,
   );
   assert.equal(
     nativeSource.find((entry) => entry.name === "lapis-notes")?.revision,
     notesNativeRevision,
   );
-  assert.match(workspace, /"@lapismd\/design-core": "0\.13\.2"/);
+  assert.match(workspace, /"@lapismd\/design-core": "0\.13\.4"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
-  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.1");
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.5");
+  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.2.2");
+  assert.equal(manifest.dependencies["@lapis-notes/history"], "^0.5.1");
   assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.8");
   assert.equal(
     manifest.dependencies["@lapis-notes/language-service"],
     "^0.1.6",
   );
-  assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.2.0");
-  assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.4.4");
+  assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.2.1");
+  assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.4.6");
   assert.equal(manifest.dependencies["@lapismd/ai-host"], "^0.3.0");
-  assert.equal(manifest.dependencies["@lapismd/mira"], "~0.1.5");
-  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.13.2");
+  assert.equal(manifest.dependencies["@lapismd/mira"], "~0.2.0");
+  assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.13.4");
   assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
-  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.1\([^']+\)':$/gm);
+  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.5\([^']+\)':$/gm);
   assert.equal(contexts?.length, 1);
   assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.[0-9]\./);
   assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.[0-9]\./);

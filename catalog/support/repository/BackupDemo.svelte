@@ -4,7 +4,7 @@
   import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
   import { operation, revision, commit } from "./fixture.ts";
-  import type { BackupStatus } from "../../../src/lib/repository/backup.ts";
+  import type { BackupStatus } from "@lapis-notes/history/repository/controllers/backup";
   let {
     scenario = "ready",
   }: { scenario?: "ready" | "saving" | "failed" | "starting" } = $props();

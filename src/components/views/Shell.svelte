@@ -238,7 +238,8 @@
         ? (app) => createNativeChatHost(app, selected!)
         : undefined}
       cliSettings={createDesktopCliSettings()}
-      createRepository={() => createNativeRepository(selected!)}
+      createRepository={(app) =>
+        createNativeRepository(selected!, undefined, undefined, app)}
       createPopouts={createPopouts
         ? (app) => createPopouts!(app, selected!)
         : undefined}

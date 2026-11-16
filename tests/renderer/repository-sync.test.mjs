@@ -1,7 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { SyncController } from "../../src/lib/repository/sync-controller.ts";
-import { nativeSync } from "../../src/lib/native/repository/sync.ts";
+import { SyncController } from "@lapis-notes/history/repository/controllers/sync-controller";
 const deferred = () => {
   let resolve;
   return {
@@ -228,30 +227,9 @@ test("pausing automatic sync preserves local history and keep-current waits for 
   assert.equal(f.retained, undefined);
   assert.equal(f.state.recovery, false);
 });
-test("native sync frames carry only admitted session, revision and owned exact actions", async () => {
-  const frames = [];
-  const service = nativeSync("opaque", async (command, args) => {
-    frames.push({ command, ...args });
-    return null;
-  });
-  await service.prepare(2);
-  await service.preview("merged", 2);
-  await service.apply(
-    { request_id: "stable", checkpoint: "merged", expected: "saved" },
-    2,
-  );
-  await service.publish(2, "push-id");
-  assert(frames.every((frame) => frame.command === "desktop_backup_sync"));
-  assert.deepEqual(frames[0].request, {
-    sessionId: "opaque",
-    action: { kind: "prepare", revision: 2 },
-  });
-  assert.equal(frames[2].request.action.request.request_id, "stable");
-  assert.equal(frames[3].request.action.request_id, "push-id");
-});
 test("a cold sync recovery clears only its loaded original record and rejects malformed recovery before mutation", async () => {
   const { syncRecovery } = await import(
-    "../../src/lib/repository/sync-recovery.ts"
+    "@lapis-notes/history/repository/controllers/sync-recovery"
   );
   const pending = {
     version: 1,
@@ -290,7 +268,7 @@ test("a cold sync recovery clears only its loaded original record and rejects ma
 });
 test("offline backoff survives new checkpoints and disabling or closing stops automatic network work", async (t) => {
   const { RepositorySync } = await import(
-    "../../src/components/repository/repository-sync.ts"
+    "@lapis-notes/history/repository/components/repository-sync"
   );
   t.mock.timers.enable({ apis: ["setTimeout", "Date"], now: 1000 });
   t.after(() => t.mock.timers.reset());

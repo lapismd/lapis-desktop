@@ -44,13 +44,13 @@ inter-diff alignment and stay unavailable until supported. Unknown predecessors
 never become guessed ancestry. The fixture-only preview supplies no native
 lookup, pagination or recovery qualification; production adoption remains gated.
 
-Both production headers use a separate workspace Command View backed by explicit
-links read through the retained native handle. JJ workspace context reloads the
-native graph; Op Log retains repository-wide operation ancestry and clears
-selection without claiming workspace-filtered operations. Operation titles in
-graph rows and details reuse an adapted source message component: bounded full
-hex IDs become abbreviated copy controls, with full identity retained for
-copying. Buttons are siblings, never nested.
+Default production headers omit workspace and operation selectors, following the
+approved shared remotes presentation. Explicit view state retains native
+operation identity and separate source readers. Shared component opt-in pickers
+remain package-owned; Desktop does not restore them in its default logs.
+Operation titles in graph rows and details reuse an adapted source message
+component: bounded full hex IDs become abbreviated copy controls, with full
+identity retained for copying. Buttons are siblings, never nested.
 
 Op Log Revisions uses the Git branch icon. Revert opens an operation-inverse
 preview in a new operation, following `jj op revert`, never snapshot restore.

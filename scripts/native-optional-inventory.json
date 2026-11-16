@@ -234,6 +234,18 @@
       "scope": "api",
       "owner": "native-api",
       "reason": "Explicit hidden native WebView scenario inventoried by scripts/desktop-api-tests.mjs; does not qualify visible native UI."
+    },
+    {
+      "file": "tests/desktop/repository-remotes-https.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-remotes",
+      "reason": "Explicit LAPIS_DESKTOP_REMOTES_HTTPS=1 macOS app acceptance uses a disposable public TLS tunnel, generated Git repositories and synthetic OS credentials; excluded from default dispatchers."
+    },
+    {
+      "file": "tests/desktop/repository-remotes-ssh.test.mjs",
+      "scope": "standalone-native",
+      "owner": "repository-remotes",
+      "reason": "Explicit LAPIS_DESKTOP_REMOTES_SSH=1 macOS app acceptance uses generated loopback SSH keys, a private agent and one temporary exact host-key entry removed in finally; excluded from default dispatchers."
     }
   ]
 }

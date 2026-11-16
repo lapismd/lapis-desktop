@@ -4,7 +4,7 @@ import {
   parseAiTurn,
   type AiHistoryService,
   type AiUndoPreview,
-} from "../../repository/ai-history.ts";
+} from "@lapis-notes/history/repository/controllers/ai-history";
 
 export function nativeAiHistory(
   sessionId: string,

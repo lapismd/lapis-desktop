@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { StorageController } from "../../src/lib/repository/storage-controller.ts";
+import { StorageController } from "@lapis-notes/history/repository/controllers/storage-controller";
 import { nativeStorage } from "../../src/lib/native/repository/storage.ts";
 const external = { revision: 0, location: "external", pending: null };
 const colocated = { revision: 1, location: "colocated", pending: null };

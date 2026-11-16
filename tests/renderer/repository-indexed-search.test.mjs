@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { HistoryIndexController } from "@lapis-notes/history/repository/controllers/history-index-controller";
 import { indexedPage } from "@lapis-notes/history/repository/controllers/indexed-search-validation";
 import { nativeIndexedSearch } from "../../src/lib/native/repository/indexed-search.ts";
-import { historyExpression } from "../../src/lib/repository/history-search-expression.ts";
+import { historyExpression } from "@lapis-notes/history/repository/controllers/history-search-expression";
 const status = (complete, generation = 1) => ({
   complete,
   generation,

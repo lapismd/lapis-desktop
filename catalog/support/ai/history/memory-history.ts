@@ -1,7 +1,7 @@
 import type {
   AiHistoryBinding,
   AiTurnRecord,
-} from "../../../../src/lib/repository/ai-history.ts";
+} from "@lapis-notes/history/repository/controllers/ai-history";
 import type { LocalFileDiffChange } from "@lapismd/jj-history";
 
 export function memoryHistory(failure = false) {

@@ -325,3 +325,6 @@
 - [Refresh the hosted private-profile source](../history/E-CLI-005.md)
 - [Advance the CLI delivery preview version](../history/E-CLI-006.md)
 - [Qualify the bundled CLI delivery candidate](../history/E-CLI-007.md)
+- [Prepare native remotes transport](../history/E-REPO-057.md)
+- [Shared native remotes adoption](../history/E-REPO-058.md)
+- [Cold native remotes custody and transport](../history/E-REPO-059.md)
