@@ -21,10 +21,12 @@ source evidence does not complete this roadmap or enable the plugin.
 App leave preparation is qualified against the private Notes LN-PKG-193
 candidate. [E-SYNC-007](../history/E-SYNC-007.md) records six actual local macOS
 scope and Keychain cases, strict normal/e2e compiler and both native builds.
-Complete native API25pass/3existing AI quarantines leaves those cases
-unqualified. Account command/observation transport, App injection,
-locked-Keychain and full Sync journeys remain outstanding; local acceptance does
-not qualify hosted or release gates.
+[E-SYNC-010](../history/E-SYNC-010.md) qualifies account calls and guarded
+vault/ Quit leave: native API26pass/3existing AI quarantines, all7Sync cases
+executed. [E-SYNC-016](../history/E-SYNC-016.md) records source integration; the
+quarantined cases remain unqualified. Observation transport, browser handoff,
+App injection, connected-account, locked-Keychain and full Sync journeys remain
+outstanding. Local acceptance does not qualify hosted or release gates.
 
 ## Agreed product outcome
 

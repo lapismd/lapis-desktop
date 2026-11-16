@@ -12,11 +12,14 @@ import {
 import { execFileSync, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { verifyArchiveGraph } from "./archive-resolution.mjs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { runAudit } from "./ci-audit.mjs";
 import { archiveHookSource, validateArchiveRanges } from "./archive-hook.mjs";
-import { verifyDependencies } from "./ci-dependency-artifact.mjs";
+import {
+  verifyDependencies,
+  selectDependencyArtifact,
+} from "./ci-dependency-artifact.mjs";
 
 /** Packages awaiting qualified registry releases keep tracked semver ranges. */
 export const unpublishedRanges = {
@@ -70,8 +73,7 @@ function installProjected() {
       const target = `.local/ci-packages/${name.replaceAll(/[@/]/gu, "-")}/package.tgz`;
       const directory = resolve(target, "..");
       if (reused) {
-        const entry = reused.find((entry) => entry.name === name);
-        if (!entry) throw Error(`Missing reusable private artifact: ${name}`);
+        const entry = selectDependencyArtifact(reused, name);
         mkdirSync(directory, { recursive: true });
         copyFileSync(entry.path, target);
         archives[name] = { path: target, version: entry.version };
@@ -133,7 +135,13 @@ function installProjected() {
   validateArchiveRanges(manifest, entries, semverModule);
   writeFileSync(
     hook,
-    archiveHookSource(entries, [manifest.name], [], semverModule),
+    archiveHookSource(
+      entries,
+      [manifest.name],
+      [],
+      semverModule,
+      dirname(hook),
+    ),
   );
   const projectedText = JSON.stringify(projected, null, 2) + "\n";
   if (reused && reused.projectedPackage !== projectedText)

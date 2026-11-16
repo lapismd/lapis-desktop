@@ -14,7 +14,7 @@ import {
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import { packTasksFixture } from "./ci-tasks-fixture.mjs";
+import { packTasksFixture, tasksPackage } from "./ci-tasks-fixture.mjs";
 import {
   buildIdentity,
   digest,
@@ -49,7 +49,7 @@ export function exportDependencies(directory, root = process.cwd()) {
     assert.equal(digest(readFileSync(archive[0])), entry.sha256);
     const path = `${entry.name.replaceAll(/[@/]/gu, "-")}.tgz`;
     copyFileSync(archive[0], join(directory, path));
-    return { ...entry, path };
+    return { ...entry, role: "dependency", path };
   });
   assert.ok(entries.length, "No dependency archives were prepared");
   entries.push(packTasksFixture(directory, root));
@@ -93,8 +93,15 @@ export function verifyDependencies(selected, root = process.cwd()) {
   );
   const seen = new Set();
   const entries = manifest.entries.map((entry) => {
-    assert.ok(!seen.has(entry.name), "Duplicate dependency artifact");
-    seen.add(entry.name);
+    const role = entry.role === undefined ? "dependency" : entry.role;
+    assert.ok(
+      role === "dependency" ||
+        (role === "native-fixture" && entry.name === tasksPackage),
+      "Unsupported dependency artifact role",
+    );
+    const identity = JSON.stringify([role, entry.name]);
+    assert.ok(!seen.has(identity), "Duplicate dependency artifact");
+    seen.add(identity);
     const source = sources.find(
       (source) => source.repository === entry.sourceRepository,
     );
@@ -118,7 +125,7 @@ export function verifyDependencies(selected, root = process.cwd()) {
     );
     assert.equal(pkg.name, entry.name);
     assert.equal(pkg.version, entry.version);
-    return { ...entry, path };
+    return { ...entry, role, path };
   });
   assert.ok(entries.length, "Empty dependency artifact inventory");
   for (const name of ["package", "lock"]) {
@@ -135,6 +142,19 @@ export function verifyDependencies(selected, root = process.cwd()) {
   }
   return entries;
 }
+/** Verified archives only; a fixture must never satisfy app dependency admission. */
+export function selectDependencyArtifact(entries, name) {
+  const matches = entries.filter(
+    (entry) => entry.name === name && entry.role === "dependency",
+  );
+  assert.equal(
+    matches.length,
+    1,
+    "Expected exactly one verified dependency artifact",
+  );
+  return matches[0];
+}
+
 if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(resolve(process.argv[1])).href

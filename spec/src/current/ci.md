@@ -252,3 +252,23 @@ image identity invalidates caches created under the previous worker identity.
 CLI packaging is prepared alongside native AI prerequisites in CI. The CLI
 resource and source/hash manifest enter immutable acceptance inventories. macOS
 build checks do not execute the CLI or qualify native runtime.
+
+## Private dependency artifact roles
+
+LD-CI-002 private package artifacts MUST distinguish dependency installation
+from native plugin fixtures. Package names MUST be unique within each declared
+role; unknown roles and duplicate identities MUST fail closed. Only the pinned
+Tasks package may use the native-fixture role. Installers MUST select exactly
+one dependency-role archive, independently of inventory order, and native
+fixture consumers MUST select the fixture role. Both retain complete source,
+producer/run/platform identity, payload hash and frozen projection verification.
+Legacy entries without a role remain dependency entries; role distinctions do
+not authorize another source pin or package implementation.
+
+LD-CI-002 reused private projections MUST install with the verified frozen lock
+when the checkout root changes between host and container jobs. Generated hook
+bytes MUST be independent of that root; archive and semver paths MUST resolve
+from the hook's actual location at runtime. Root importer specifiers MUST retain
+their admitted relative archive declarations. Missing producers, incompatible
+ranges and unknown outcomes MUST NOT trigger a non-frozen retry or checksum
+rewrite. Producer and consumer retain the same admitted package identities.
