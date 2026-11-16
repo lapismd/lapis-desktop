@@ -328,3 +328,4 @@
 - [Prepare native remotes transport](../history/E-REPO-057.md)
 - [Shared native remotes adoption](../history/E-REPO-058.md)
 - [Cold native remotes custody and transport](../history/E-REPO-059.md)
+- [Publish shared Repository remotes in Preview rc.2](../history/E-RELEASE-024.md)

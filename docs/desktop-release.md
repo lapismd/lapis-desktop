@@ -53,18 +53,19 @@ app exit, an absent or undersized window and deadline expiry remain failures.
 
 `build-metadata.json` records per-target metadata and the actual CI run,
 toolchain, pinned prerequisite sources, private archive content hashes and lock
-hashes. App Profile and the AI client remain explicit private public-build
-prerequisites; this is not a registry-only claim. LIMITATIONS.md retains the
-native RC quarantines from the owning backlog. Skipped cases are not passing
-feature coverage.
+hashes. Only the AI client remains an explicit private public-build
+prerequisite; App Profile and History use released registry ranges. This is not
+a registry-only claim. LIMITATIONS.md retains the native RC quarantines from the
+owning backlog. Skipped cases are not passing feature coverage.
 
 ## Publish after qualification
 
 Each approved version creates its own entry in the repository's
 [GitHub Releases](https://github.com/lapismd/lapis-desktop/releases), containing
 all three platform packages, checksums, manifest and receipts. RC versions are
-marked prerelease. The list stays empty until the first qualified candidate is
-approved and published.
+marked prerelease. The current published preview is `2026.31.6-rc.2`; its
+source, candidate and publication are recorded in
+[E-RELEASE-024](../spec/src/history/E-RELEASE-024.md).
 
 Promote the reviewed preparation run without rebuilding:
 

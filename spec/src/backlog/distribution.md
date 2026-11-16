@@ -364,9 +364,9 @@ integration for the Rust case. Neither exact cause is established. Queue
 capture/control/cold recovery and Original/Managed read-source independence
 remain unqualified by these skipped cases. Diagnose readiness/backup startup;
 re-enable each original case after reliable hosted full-family passes with
-assertions/deadlines intact. Preserve all failed attempts. Exact-main full CI
-and three-platform ordinary Homebrew qualification still gate publication; carry
-both gaps into candidate notes and receipts.
+assertions/deadlines intact. Preserve all failed attempts. Exact-main full CI,
+ordinary platform builds and both Linux Homebrew lifecycles gate publication.
+Carry both gaps into candidate notes and receipts.
 
 ## Development audit exceptions
 
@@ -395,6 +395,6 @@ Preserve `Lapis Notes.app`/`notes.lapis.desktop`; prove Deno-to-Tauri upgrade,
 rollback and note/profile compatibility on macOS and retained Linux targets.
 Retire Deno desktop build/test/release CI; preserve archives and data.
 
-CLI UI registry intake and rc.2 platform qualification are complete
-([E-CLI-003](../history/E-CLI-003.md), [E-CLI-007](../history/E-CLI-007.md)).
-E-CLI-002 retains the native-dialog gap; publication remains separately gated.
+CLI and manual remotes ship in rc.2
+([E-RELEASE-024](../history/E-RELEASE-024.md)). E-CLI-002 retains the
+native-dialog gap; stable cutover remains separate.

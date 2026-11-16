@@ -33,7 +33,7 @@ concurrency:
   group: desktop-preview-release
   cancel-in-progress: false
 env:
-  HOMEBREW_TAP_REF: 5948fa8c25a135e79bb4a48e9186397b851db8a8
+  HOMEBREW_TAP_REF: 34a0d7518e2026d7693eefc4eca6c36019ea8abc
 jobs:
   ci-tools:
     name: Prepare verified CI tools
@@ -405,6 +405,7 @@ jobs:
           "$RELEASE_TAG"
         env:
           RELEASE_TAG: ${{ needs.publish.outputs.tag }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/create-github-app-token@v2
         id: app
         with:
@@ -436,6 +437,7 @@ jobs:
           "$RELEASE_TAG"
         env:
           RELEASE_TAG: ${{ inputs.tag }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/create-github-app-token@v2
         id: app
         with:
