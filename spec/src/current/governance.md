@@ -9,12 +9,12 @@ Notes cohort for API/Profile builds and imports. [Distribution](distribution.md)
 owns releases and E-RELEASE-005's Linux extension. E-CORE-025/026/045 pin
 Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
-use exact scoped IPC grants; generic plugins deny. Tasks/default/Sync retain
-native leave guards. SSH options preserve authentication, endpoints and literal
-arguments. Artifact roles MUST separate dependencies from fixtures. Archive
-rewriting is idempotent only for exact verified tarball paths; CI hooks MUST
-relocate. ARM64 diagnostics use hosted SHA, pinned `jj` and exact args.
-E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
+use exact scoped IPC grants and bounded Sync waits; generic plugins deny.
+Tasks/default/Sync retain native leave guards. SSH retains literal arguments,
+authentication and endpoints. Artifact roles MUST separate dependencies from
+fixtures. Archive rewriting is idempotent only for exact verified tarball paths;
+CI hooks MUST relocate. ARM64 diagnostics use hosted SHA, pinned `jj` and exact
+args. E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
 no-retry/quarantine/release policy. Native close never retries; empty
 comparisons continue; unavailable/conflicting fail closed.
 [Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;

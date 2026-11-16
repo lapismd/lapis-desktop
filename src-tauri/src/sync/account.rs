@@ -3,6 +3,7 @@
 pub mod detached;
 pub mod leave;
 mod lifecycle;
+pub mod observations;
 pub mod presentation;
 use super::profile::SyncProfile;
 use crate::vault::{VaultManager, admission::VaultAdmissions};
@@ -30,6 +31,8 @@ struct Account {
     sessions: HashSet<String>,
 }
 struct Link {
+    lifetime: watch::Sender<()>,
+    observer: Arc<tokio::sync::Semaphore>,
     revision: u64,
     observed: Option<AccountObservation>,
     handle: Uuid,
@@ -105,6 +108,8 @@ impl AccountServices {
         self.links.insert(
             window.into(),
             Link {
+                lifetime: watch::channel(()).0,
+                observer: Arc::new(tokio::sync::Semaphore::new(1)),
                 revision,
                 observed,
                 handle,
@@ -210,6 +215,8 @@ impl AccountServices {
         self.links.insert(
             window.into(),
             Link {
+                lifetime: watch::channel(()).0,
+                observer: Arc::new(tokio::sync::Semaphore::new(1)),
                 revision,
                 observed,
                 handle,

@@ -1,8 +1,8 @@
 # Desktop shell and CI
 
-[Sync](lapis-sync.md): scopes and calls MUST share native leave admission. Sync
-stays disabled. Leave MUST prepare Sync before watcher/writer teardown, unfence
-on refusal and await detach.
+[Sync](lapis-sync.md) scopes, calls and bounded observations MUST retain native
+admission. Sync is disabled. Leave MUST prepare Sync before writer teardown,
+unfence on refusal and await detach.
 
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),

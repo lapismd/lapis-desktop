@@ -24,9 +24,11 @@ scope and Keychain cases, strict normal/e2e compiler and both native builds.
 [E-SYNC-010](../history/E-SYNC-010.md) qualifies account calls and guarded
 vault/ Quit leave: native API26pass/3existing AI quarantines, all7Sync cases
 executed. [E-SYNC-016](../history/E-SYNC-016.md) records source integration; the
-quarantined cases remain unqualified. Observation transport, browser handoff,
-App injection, connected-account, locked-Keychain and full Sync journeys remain
-outstanding. Local acceptance does not qualify hosted or release gates.
+quarantined cases remain unqualified. [E-SYNC-017](../history/E-SYNC-017.md)
+records bounded native observations, actual Sync7/7 and full native API26/0 with
+three existing AI quarantines. Browser handoff, App injection,
+connected-account, locked-Keychain and full Sync journeys remain outstanding.
+Local acceptance does not qualify hosted or release gates.
 
 ## Agreed product outcome
 

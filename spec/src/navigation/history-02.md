@@ -353,3 +353,5 @@
 - [Integrate native scope delivery with frozen projections](../history/E-SYNC-015.md)
 
 - [Integrate account calls with final native scopes](../history/E-SYNC-016.md)
+
+- [Bounded native account observations](../history/E-SYNC-017.md)

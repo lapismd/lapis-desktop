@@ -1,6 +1,7 @@
 //! Tauri caller and scope transport; native account ownership stays in services.
 pub(crate) mod commands;
 pub(crate) mod leave;
+pub(crate) mod observations;
 mod reply;
 use crate::host::state::{NativeError, NativeHost, NativeServices, access};
 use lapis_desktop::sync::account::{AccountServices, presentation::Presentation};

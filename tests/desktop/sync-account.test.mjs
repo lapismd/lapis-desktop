@@ -127,9 +127,61 @@ test(
       request: { handle: second.handle },
     });
     assert.deepEqual(snapshot.snapshot, second.observation.snapshot);
+    const observed = await success(session, "desktop_sync_observe", {
+      request: { handle: second.handle },
+    });
+    assert.deepEqual(observed, snapshot);
+    assert.equal(
+      (
+        await invoke(session, "desktop_sync_observe", {
+          request: {
+            handle: second.handle,
+            afterRevision: observed.revision + 1,
+          },
+        })
+      ).failure?.code,
+      "EINVAL",
+    );
+    await session.browser.execute(
+      (handle, revision) => {
+        globalThis.__lapisSyncWaits = [];
+        for (let i = 0; i < 2; i++) {
+          void globalThis.__TAURI__.core
+            .invoke("desktop_sync_observe", {
+              request: { handle, afterRevision: revision },
+            })
+            .then(
+              () => globalThis.__lapisSyncWaits.push("unexpected-delivery"),
+              (error) => globalThis.__lapisSyncWaits.push(error?.code),
+            );
+        }
+      },
+      second.handle,
+      observed.revision,
+    );
+    await session.browser.waitUntil(
+      async () =>
+        (await session.browser.execute(
+          () => globalThis.__lapisSyncWaits.length,
+        )) === 1,
+    );
+    assert.deepEqual(
+      await session.browser.execute(() => globalThis.__lapisSyncWaits),
+      ["EBUSY"],
+    );
     await success(session, "desktop_sync_detach", {
       request: { handle: second.handle },
     });
+    await session.browser.waitUntil(
+      async () =>
+        (await session.browser.execute(
+          () => globalThis.__lapisSyncWaits.length,
+        )) === 2,
+    );
+    assert.deepEqual(
+      (await session.browser.execute(() => globalThis.__lapisSyncWaits)).sort(),
+      ["EACCES", "EBUSY"],
+    );
     const detached = await invoke(session, "desktop_sync_snapshot", {
       request: { handle: second.handle },
     });
