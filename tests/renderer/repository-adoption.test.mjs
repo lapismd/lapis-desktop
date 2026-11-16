@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { AdoptionController } from "../../src/lib/repository/adoption-controller.ts";
+import { AdoptionController } from "@lapis-notes/history/repository/controllers/adoption-controller";
 import { nativeAdoption } from "../../src/lib/native/repository/adoption.ts";
 const source = { operation: "ab".repeat(64), commit: "cd".repeat(20) };
 const status = { source, pending: null };

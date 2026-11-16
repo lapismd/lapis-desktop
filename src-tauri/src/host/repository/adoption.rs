@@ -1,8 +1,8 @@
 //! Explicit recorded-history import through the existing serialized vault worker.
 use super::{
-    RepositoryHost, policy,
-    remote::{failure, runtime},
-    storage,
+    RepositoryHost,
+    backup_access::{failure, runtime},
+    policy, storage,
 };
 use crate::host::state::{NativeError, NativeHost, access};
 use jj_vault::{AdoptionRequest, Binding, ExistingHistory};

@@ -260,13 +260,17 @@ test("hidden native history preserves source pins and independent admission thro
   await success(session, "desktop_repository_release", {
     request: { reload: true },
   });
-  assert.ok(
-    (
-      await invoke(session, "desktop_repository_working_copy", {
-        request: { sessionId: selected.sessionId },
-      })
-    ).failure,
-    "Released admission cannot authorize a physical status scan",
+  const beforePassiveStatus = digest(vault);
+  const passiveStatus = JSON.parse(
+    await success(session, "desktop_repository_working_copy", {
+      request: { sessionId: selected.sessionId },
+    }),
+  );
+  assert.equal(passiveStatus.commit.description.trim(), "external advance");
+  assert.deepEqual(
+    digest(vault),
+    beforePassiveStatus,
+    "Observer release retains passive Core status without capturing files",
   );
   assert.ok(
     (await historyResult(session, "heads", { vault: selected.sessionId }))
@@ -290,6 +294,14 @@ test("hidden native history preserves source pins and independent admission thro
     operation: reloaded.heads[0],
   });
   await success(session, "vault_close", { sessionId: selected.sessionId });
+  assert.ok(
+    (
+      await invoke(session, "desktop_repository_working_copy", {
+        request: { sessionId: selected.sessionId },
+      })
+    ).failure,
+    "Retired vault admission cannot read passive working-copy status",
+  );
   assert.ok(
     (
       await historyResult(session, "status", {

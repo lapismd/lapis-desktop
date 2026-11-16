@@ -1,8 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { RemoteController } from "../../src/lib/repository/remote-controller.ts";
-import { nativeRemote } from "../../src/lib/native/repository/remote.ts";
-import { updateRepositoryData } from "../../src/lib/repository/plugin-data.ts";
+import { RemoteController } from "@lapis-notes/history/repository/controllers/remote-controller";
+import { updateRepositoryData } from "@lapis-notes/history/repository/controllers/plugin-data";
 const empty = { revision: 0, configuration: null, checkpoint: null };
 const connected = {
   revision: 1,
@@ -81,40 +80,6 @@ test("closing a remote settings view fences late responses but retains activity 
   assert.equal(f.states.length, count);
   assert.equal(activity.at(-1).busy, false);
   assert.equal(f.errors.length, 0);
-});
-test("native remote frames bind the admitted session and never forward paths or secrets", async () => {
-  const calls = [];
-  const service = nativeRemote("opaque-session", async (command, args) => {
-    calls.push({ command, args });
-    return connected;
-  });
-  await service.configure(4, "account", "owner/notes", "");
-  assert.deepEqual(calls[0], {
-    command: "desktop_backup_remote",
-    args: {
-      request: {
-        sessionId: "opaque-session",
-        action: {
-          kind: "configure",
-          revision: 4,
-          account: "account",
-          project: "owner/notes",
-          branch: null,
-        },
-      },
-    },
-  });
-  const request = {
-    request_id: "stable",
-    checkpoint: "a".repeat(40),
-    expected: "b".repeat(40),
-  };
-  await service.restore(request);
-  assert.deepEqual(calls[1].args.request.action, { kind: "restore", request });
-  await service.keepCurrent();
-  assert.equal(calls[2].command, "desktop_backup_capture");
-  const invalid = nativeRemote("opaque", async () => ({ revision: -1 }));
-  await assert.rejects(invalid.status(), /Invalid remote/);
 });
 test("concurrent recovery and settings writes merge without losing another original command", async () => {
   let data = { showWorkingCopyStatus: true };
@@ -200,27 +165,4 @@ test("recreated plugin owners serialize their writes and an obsolete completion 
   await Promise.all([completing, starting]);
   await updateRepositoryData(old, clear);
   assert.equal(data.pendingRemoteRestore.request.request_id, "new");
-});
-
-test("native upstream counts retain exact anchors and reject invalid totals", async () => {
-  const divergence = {
-    local_commit: "a".repeat(40),
-    remote_commit: "b".repeat(40),
-    incoming: 2,
-    outgoing: 1,
-  };
-  const read = (counts) =>
-    nativeRemote("opaque", async () => ({
-      revision: 1,
-      divergence: counts,
-    })).status();
-  assert.deepEqual((await read(divergence)).divergence, divergence);
-  for (const counts of [
-    { ...divergence, incoming: -1 },
-    { ...divergence, outgoing: 1.5 },
-    { ...divergence, incoming: Number.MAX_SAFE_INTEGER + 1 },
-    { ...divergence, remote_commit: null },
-  ])
-    await assert.rejects(read(counts), /Invalid remote backup state/);
-  assert.equal((await read(null)).divergence, null);
 });

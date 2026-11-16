@@ -34,10 +34,11 @@ export const HeaderReview: Story = {
   play: async ({ canvasElement }) => {
     const { controls, fixture } = await open(canvasElement);
     expect(
-      controls.getByRole("button", { name: /^Pull from upstream/ }),
+      controls.getByRole("button", { name: /^Pull from upstream/ })
+        .parentElement,
     ).toHaveTextContent("2");
     expect(
-      controls.getByRole("button", { name: /^Push to upstream/ }),
+      controls.getByRole("button", { name: /^Push to upstream/ }).parentElement,
     ).toHaveTextContent("1");
     expect(fixture.dataset.actions).toBeUndefined();
   },
@@ -49,8 +50,8 @@ export const IncomingAndOutgoing: Story = {
     const pull = controls.getByRole("button", { name: /^Pull from upstream/ });
     const push = controls.getByRole("button", { name: /^Push to upstream/ });
     await waitFor(() => expect(fetch).toBeEnabled());
-    expect(pull).toHaveTextContent("2");
-    expect(push).toHaveTextContent("1");
+    expect(pull.parentElement).toHaveTextContent("2");
+    expect(push.parentElement).toHaveTextContent("1");
     expect(
       fetch.compareDocumentPosition(pull) & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy();
@@ -61,8 +62,7 @@ export const IncomingAndOutgoing: Story = {
     expect(push.getBoundingClientRect().right).toBeGreaterThan(
       header.right - 30,
     );
-    await userEvent.tab();
-    await userEvent.tab({ shift: true });
+    fetch.focus();
     for (const [button, title] of [
       [fetch, "Fetch from upstream"],
       [pull, "Pull from upstream"],
@@ -82,7 +82,7 @@ export const IncomingAndOutgoing: Story = {
       expect(fixture.dataset.actions).toBe("fetch|pull|apply"),
     );
     await waitFor(() => expect(push).toBeEnabled());
-    expect(pull).toHaveTextContent("0");
+    expect(pull.parentElement).toHaveTextContent("0");
     await userEvent.click(push);
     await waitFor(() =>
       expect(fixture.dataset.actions).toBe(
@@ -90,7 +90,7 @@ export const IncomingAndOutgoing: Story = {
       ),
     );
     await waitFor(() => expect(push).toBeEnabled());
-    expect(push).toHaveTextContent("0");
+    expect(push.parentElement).toHaveTextContent("0");
   },
 };
 export const AwaitingFirstFetch: Story = {
@@ -100,12 +100,14 @@ export const AwaitingFirstFetch: Story = {
     const fetch = controls.getByRole("button", { name: "Fetch from upstream" });
     await waitFor(() => expect(fetch).toBeEnabled());
     expect(
-      controls.getByRole("button", { name: /^Pull from upstream/ }),
+      controls.getByRole("button", { name: /^Pull from upstream/ })
+        .parentElement,
     ).toHaveTextContent("—");
     await userEvent.click(fetch);
     await waitFor(() =>
       expect(
-        controls.getByRole("button", { name: /^Pull from upstream/ }),
+        controls.getByRole("button", { name: /^Pull from upstream/ })
+          .parentElement,
       ).toHaveTextContent("2"),
     );
   },

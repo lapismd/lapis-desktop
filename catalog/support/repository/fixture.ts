@@ -3,7 +3,7 @@ import { attachBlameFixture } from "./blame.ts";
 import { stats } from "./query-stats.ts";
 import { richCommitMessage } from "./rich-commit.ts";
 import { commitDetail } from "./commit-detail.ts";
-import type { HistoryReader } from "../../../src/lib/repository/history-reader.ts";
+import type { HistoryReader } from "@lapis-notes/history/repository/controllers/history-reader";
 import type {
   LocalGraphCommit,
   LocalCodeQuery,

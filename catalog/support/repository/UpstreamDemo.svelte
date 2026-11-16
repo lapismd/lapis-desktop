@@ -4,7 +4,7 @@
   import { operationFixture } from "./operations.ts";
   import { operation, revision, commit } from "./fixture.ts";
   import { bindHistoryFixture } from "./context.ts";
-  import type { RemoteSnapshot } from "../../../src/lib/repository/remote.ts";
+  import type { RemoteSnapshot } from "@lapis-notes/history/repository/controllers/remote";
   let {
     scenario = "connected",
   }: {

@@ -61,16 +61,16 @@ test("unpublished packages stay registry ranges until install projection", async
   };
   const projected = projectUnpublished(manifest, () => true);
   assert.equal(
-    projected.dependencies["@lapis-notes/app-profile"],
-    "file:.local/ci-packages/-lapis-notes-app-profile/package.tgz",
+    projected.dependencies["@lapismd/ai"],
+    "file:.local/ci-packages/-lapismd-ai/package.tgz",
   );
-  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.1.0");
+  assert.equal(manifest.dependencies["@lapismd/ai"], "^0.1.0");
   assert.throws(
     () =>
       projectUnpublished({
         dependencies: {
           ...manifest.dependencies,
-          "@lapis-notes/app-profile": "link:../app-profile",
+          "@lapismd/ai": "link:../ai",
         },
       }),
     /registry range/,

@@ -153,7 +153,7 @@ test("the released Notes cohort has one current Design Core and API peer context
   assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.2.1");
   assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.4.6");
   assert.equal(manifest.dependencies["@lapismd/ai-host"], "^0.3.0");
-  assert.equal(manifest.dependencies["@lapismd/mira"], "~0.1.5");
+  assert.equal(manifest.dependencies["@lapismd/mira"], "~0.2.0");
   assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.13.4");
   assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
   const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.5\([^']+\)':$/gm);

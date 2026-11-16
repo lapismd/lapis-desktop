@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { RepositoryPanel } from "@lapismd/repository-ui/jj";
+import RepositoryPanel from "@lapis-notes/history/repository/components/RepositoryPanel.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { openHistory } from "../../support/repository/interactions.ts";
 import { parent } from "../../support/repository/fixture.ts";

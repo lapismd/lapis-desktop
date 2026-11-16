@@ -1,7 +1,8 @@
 //! Native layout changes are separate from immutable repository admission.
 use super::{
-    RepositoryHost, policy,
-    remote::{failure, runtime},
+    RepositoryHost,
+    backup_access::{failure, runtime},
+    policy,
 };
 use crate::host::state::{NativeError, NativeHost, access};
 use jj_vault::{Binding, StorageLocation};

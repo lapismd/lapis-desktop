@@ -1,14 +1,14 @@
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
-import type { RepositoryPlugin } from "../../../../src/components/repository/repository-plugin.ts";
-import type { BlameController } from "@lapismd/repository-ui/history";
-import type { BlameSelection } from "../../../../src/lib/repository/blame-model.ts";
-import { RepositoryBlamePanel } from "@lapismd/repository-ui/jj";
+import type { RepositoryPlugin } from "@lapis-notes/history/repository/components/repository-plugin";
+import type { BlameController } from "@lapis-notes/history/repository/controllers/blame-controller";
+import type { BlameSelection } from "@lapis-notes/history/repository/controllers/blame-model";
+import RepositoryBlamePanel from "@lapis-notes/history/repository/components/blame/RepositoryBlamePanel.svelte";
 import { reviewCommitStats } from "./commit-stats.ts";
 import {
   readBlameWrap,
   saveBlameWrap,
-} from "../../../../src/lib/repository/blame-preferences.ts";
+} from "@lapis-notes/history/repository/controllers/blame-preferences";
 
 /** Catalog-owned native reader and optional statistics; production presentation. */
 export class BlameReviewView extends View {

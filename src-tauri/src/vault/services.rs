@@ -33,6 +33,30 @@ impl Default for VaultServices {
     }
 }
 impl VaultServices {
+    pub fn with_remotes(mut self, storage: lapis_app_core::services::RemoteStorage) -> Self {
+        self.runtime = self.runtime.with_remotes(storage);
+        self
+    }
+    /// Response delivery cannot attach a new client or revive a retired session.
+    pub fn verify_client(
+        &self,
+        vaults: &VaultManager,
+        session: &str,
+        client: &Arc<Client>,
+    ) -> io::Result<()> {
+        vaults.get(session)?.verify_physical_root()?;
+        if !self
+            .clients
+            .get(session)
+            .is_some_and(|current| Arc::ptr_eq(current, client))
+        {
+            return Err(io::Error::new(
+                io::ErrorKind::PermissionDenied,
+                "Native client was retired",
+            ));
+        }
+        Ok(())
+    }
     /// Installation policy selects the shared owner, never an IPC-supplied path.
     pub fn new(profile: &Path) -> io::Result<Self> {
         let profile = VaultRoot::open(profile)?;

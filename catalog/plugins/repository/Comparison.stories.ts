@@ -4,9 +4,12 @@ import { expect, userEvent, waitFor, within } from "storybook/test";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
 import RepositoryReviewDemo from "../../support/repository/review/RepositoryReviewDemo.svelte";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
-import { RepositoryPanel } from "@lapismd/repository-ui/jj";
+import RepositoryPanel from "@lapis-notes/history/repository/components/RepositoryPanel.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
-import { historyContext } from "../../support/repository/context.ts";
+import {
+  historyContext,
+  repositoryView,
+} from "../../support/repository/context.ts";
 import { operation } from "../../support/repository/fixture.ts";
 
 const meta: Meta = {
@@ -111,9 +114,9 @@ export const ProductionIntegrationComparison: StoryObj = {
       "aria-checked",
       "true",
     );
-    await expect(
-      history.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-history").getState().operation,
+    ).toBe(operation);
     await userEvent.click(opTab);
     await expect(
       log.getByRole("region", { name: "Selected operation" }),
@@ -121,9 +124,9 @@ export const ProductionIntegrationComparison: StoryObj = {
     await expect(
       log.getByRole("region", { name: "Changes to Welcome.md" }),
     ).toBeVisible();
-    await expect(
-      log.getByRole("combobox", { name: "Pinned operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-oplog").getState().operation,
+    ).toBe(operation);
     await userEvent.click(jjTab);
   },
 };

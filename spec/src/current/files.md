@@ -395,6 +395,6 @@ first failure; passing a later attempt cannot silently re-enable the case or
 qualify missing native input/recovery boundaries. Product file behavior and
 accepted-command retry rules remain unchanged.
 
-Notes workspace setup registers the shared CLI page through its owning settings
-controller. CLI content access attaches existing admitted Core vault clients;
-closing a vault revokes its grants and preserves the original writer guards.
+The owning settings controller registers shared CLI setup. CLI access uses
+admitted Core clients; vault close revokes grants and retains writer guards.
+Shared remotes preserve these file/editing fences (E-REPO-059).

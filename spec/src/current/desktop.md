@@ -1,10 +1,8 @@
 # Desktop shell and CI
 
-[Sync](lapis-sync.md) owns immutable profile/root admission, shared Core custody
-and window admission (LD-SYNC-001, LD-SYNC-002). Tauri wiring is pending; Sync
-stays optional and disabled. App leave MUST prepare injected native Sync before
-watcher shutdown or the vault writer guard, release its fence on refusal, and
-await transport detachment on permanent disposal.
+[Sync](lapis-sync.md) owns LD-SYNC-001/002; Tauri pending; Sync disabled. App
+leave MUST prepare injected Sync before watcher/writer teardown, unfence on
+refusal and await detach on disposal.
 
 [Adapters](ai-adapter.md): E-CORE-025/027. LD-FILE-002/003: watch after
 metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),
@@ -327,3 +325,7 @@ CLI main-window authority, native credential custody and disabled loopback
 access follow [LD-CLI-001/002/003](integration.md). Its current release identity
 is `2026.31.6-rc.2`; [E-CLI-007](../history/E-CLI-007.md) records its complete
 non-publishing three-platform candidate qualification.
+
+Shared remotes preserve LD-DESK-003 main-window/vault admission; Core owns
+operations and OS/Tauri adapters retain custody. E-REPO-059 separates cold
+transport from catalog and distribution qualification.

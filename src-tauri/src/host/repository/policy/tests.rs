@@ -1,14 +1,18 @@
 use super::*;
+use crate::host::state::{NativeHost, NativeServices};
+use lapis_desktop::repository::Grant;
 use lapis_desktop::{
     database::NativeDatabases,
     repository::RepositoryAdmissions,
     vault::{VaultManager, admission::VaultAdmissions},
     watch::WatchRegistry,
 };
+use std::path::Path;
 use std::{
     process::Command,
     sync::{Arc, Mutex},
 };
+use tauri_plugin_jj_store::local;
 fn fixture() -> (tempfile::TempDir, NativeHost, String) {
     let root = tempfile::tempdir().unwrap();
     let vault = root.path().join("Vault");
@@ -96,4 +100,33 @@ fn native_working_copy_policy_rechecks_window_session_origin_and_retained_grant(
         assert!(local::Access::authorize(&access).await.is_err());
         assert!(admit(&host, &context(), &session).is_ok());
     });
+}
+struct Access {
+    pub(super) host: NativeHost,
+    pub(super) grant: Grant,
+}
+#[async_trait::async_trait]
+impl local::Access for Access {
+    fn repository(&self) -> jj_store_model::RepositoryId {
+        self.grant.repository()
+    }
+    fn generation(&self) -> u64 {
+        self.grant.generation()
+    }
+    fn metadata_path(&self) -> &Path {
+        self.grant.metadata_path()
+    }
+    async fn authorize(&self) -> Result<()> {
+        let host = self.host.clone();
+        let grant = self.grant.clone();
+        tauri::async_runtime::spawn_blocking(move || {
+            let mut services = host.0.lock().map_err(|_| Error::Unavailable)?;
+            let NativeServices {
+                repository, vaults, ..
+            } = &mut *services;
+            repository.check(vaults, &grant).map_err(|_| Error::Denied)
+        })
+        .await
+        .map_err(|_| Error::Unavailable)?
+    }
 }

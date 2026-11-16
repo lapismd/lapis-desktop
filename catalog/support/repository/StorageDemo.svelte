@@ -3,7 +3,7 @@
   import NotesDemo from "../NotesDemo.svelte";
   import { operationFixture } from "./operations.ts";
   import { bindHistoryFixture } from "./context.ts";
-  import type { StorageStatus } from "../../../src/lib/repository/storage.ts";
+  import type { StorageStatus } from "@lapis-notes/history/repository/controllers/storage";
   let {
     scenario = "external",
   }: {

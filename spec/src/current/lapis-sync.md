@@ -46,10 +46,10 @@ only after successful admission. This capability adds no content authority.
 ## Account custody and source intake
 
 The native account coordinator is owned by Server Core
-`5d3d463b57221e6e0be46618c0ec00db3c1938e6`; its source receipt records real
+`c32b5ae48b24c98dfa8de2004cf68e0496cd63bd`; its source receipt records real
 HTTP, cold native-process and uncertain-outcome tests separately from OS
 custody. Desktop pins the same reachable Git source for all three shared crates
-and aligns JJ Store `87be3ad68530653c6c6fd1e5a2463a217cf3f044` across direct and
+and aligns JJ Store `086def182eae2ab6e5dc39aba030390d7ea8612c` across direct and
 transitive native consumers. Feature-source intake is private development
 qualification; dependency PR ordering and release gates remain explicit.
 

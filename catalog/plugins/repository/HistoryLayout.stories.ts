@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/svelte-vite";
-import { expect, waitFor } from "storybook/test";
-import { RepositoryPanel } from "@lapismd/repository-ui/jj";
+import { expect, userEvent, waitFor } from "storybook/test";
+import RepositoryPanel from "@lapis-notes/history/repository/components/RepositoryPanel.svelte";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 import { openHistoryFile } from "../../support/repository/interactions.ts";
@@ -19,35 +19,46 @@ export const NarrowPaneInWideShell: StoryObj = {
     const canvas = await openHistoryFile(canvasElement);
     await canvas.findByRole("region", { name: "Changes to Welcome.md" });
     const pane = canvasElement.querySelector<HTMLElement>(".repository-panel")!;
+    const columns = canvas.getByRole("region", {
+      name: "Repository history columns",
+    });
     await waitFor(() => {
       const bounds = pane.getBoundingClientRect();
-      const revisions = canvas
-        .getByRole("region", { name: "Revisions" })
-        .getBoundingClientRect();
       const comparison = canvas
         .getByRole("region", { name: "Revision changes" })
         .getBoundingClientRect();
       expect(bounds.width).toBeLessThan(640);
-      const columns = canvas.getByRole("region", {
-        name: "Repository history columns",
-      });
-      expect(columns).toHaveAttribute("data-display-mode", "fixed");
-      expect(columns.getBoundingClientRect().width).toBeGreaterThan(
-        bounds.width - 1,
-      );
-      expect(revisions.width).toBeGreaterThanOrEqual(340);
-      expect(comparison.width).toBeGreaterThanOrEqual(340);
-      expect(comparison.top).toBeCloseTo(revisions.top, 0);
+      expect(columns).toHaveAttribute("data-display-mode", "compact");
+      expect(comparison.width).toBeGreaterThan(0);
+      expect(comparison.left).toBeGreaterThanOrEqual(bounds.left);
+      expect(comparison.right).toBeLessThanOrEqual(bounds.right + 1);
       expect(columns.scrollWidth).toBeGreaterThan(columns.clientWidth);
-      expect(
-        canvas.getByRole("button", { name: "Refresh" }).getBoundingClientRect()
-          .right,
-      ).toBeLessThanOrEqual(revisions.right + 1);
-      expect(
-        canvas
-          .getByRole("button", { name: /^Welcome\.md(?: |$)/ })
-          .getBoundingClientRect().width,
-      ).toBeGreaterThan(80);
     });
+    columns.focus();
+    await expect(columns).toHaveFocus();
+    await userEvent.keyboard("{Home}");
+    await expect(
+      canvas.getByRole("list", { name: "Revision graph" }),
+    ).toBeVisible();
+    await waitFor(() =>
+      expect(canvas.getByRole("button", { name: "Refresh" })).toBeVisible(),
+    );
+    await waitFor(() => {
+      const revisions = canvas
+        .getByRole("region", { name: "Revisions" })
+        .getBoundingClientRect();
+      const refresh = canvas
+        .getByRole("button", { name: "Refresh" })
+        .getBoundingClientRect();
+      expect(refresh.right).toBeLessThanOrEqual(revisions.right + 1);
+      expect(refresh.right).toBeLessThanOrEqual(
+        pane.getBoundingClientRect().right + 1,
+      );
+    });
+    expect(
+      canvas
+        .getByRole("button", { name: /^Welcome\.md(?: |$)/ })
+        .getBoundingClientRect().width,
+    ).toBeGreaterThan(80);
   },
 };

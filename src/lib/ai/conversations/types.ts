@@ -127,7 +127,7 @@ export type AgentBindingRecord =
       type: "history.turn.recorded";
       id: string;
       createdAt: string;
-      history: import("../../repository/ai-history.ts").AiTurnRecord;
+      history: import("@lapis-notes/history/repository/controllers/ai-history").AiTurnRecord;
     }
   | AgentBindingCreatedRecord
   | AgentUsageRecord

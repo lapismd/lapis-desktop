@@ -2,9 +2,9 @@
   import { untrack } from "svelte";
   import { MediaQuery } from "svelte/reactivity";
   import type { LocalGraphCommit } from "@lapismd/jj-history";
-  import ReviewConflictSurface from "../../../../src/components/repository/conflicts/RepositoryConflictSurface.svelte";
-  import ReviewConflictActions from "../../../../src/components/repository/conflicts/RepositoryConflictActions.svelte";
-  import ReviewConflictText from "../../../../src/components/repository/conflicts/RepositoryConflictText.svelte";
+  import ReviewConflictSurface from "@lapis-notes/history/repository/components/conflicts/RepositoryConflictSurface.svelte";
+  import ReviewConflictActions from "@lapis-notes/history/repository/components/conflicts/RepositoryConflictActions.svelte";
+  import ReviewConflictText from "@lapis-notes/history/repository/components/conflicts/RepositoryConflictText.svelte";
   import { conflictFile } from "./review-conflict-fixture.ts";
   let {
     open,

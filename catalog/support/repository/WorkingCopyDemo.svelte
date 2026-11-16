@@ -5,7 +5,7 @@
   import { bindHistoryFixture } from "./context.ts";
   import { commit, operation, revision } from "./fixture.ts";
   import { nativeError } from "../../../src/lib/native/native-error.ts";
-  import type { WorkingCopyStatus } from "../../../src/lib/repository/working-copy-status.ts";
+  import type { WorkingCopyStatus } from "@lapis-notes/history/repository/controllers/working-copy-status";
   let {
     scenario = "ready",
     roundedWindow = false,

@@ -14,7 +14,7 @@ import {
   projectArchives,
 } from "../../scripts/validation/model.mjs";
 
-test("portable sources retain the native Notes pin while hosted renderer sources advance", async () => {
+test("portable sources retain the native Notes pin and explicit Sync archive cohort", async () => {
   const native = JSON.parse(
     await readFile("scripts/validation/native-sources.json", "utf8"),
   );
@@ -28,6 +28,18 @@ test("portable sources retain the native Notes pin while hosted renderer sources
   assert.equal(
     revision(hosted, "lapis-notes"),
     "01bf01f61f91f31237ebcdbb07242b9b6f9a5943",
+  );
+  const manifest = JSON.parse(await readFile("package.json", "utf8"));
+  assert.match(
+    manifest.dependencies["@lapis-notes/app-profile"],
+    /^\^\d+\.\d+\.\d+$/u,
+  );
+  const server = revision(hosted, "lapis-server");
+  assert.match(server, /^[a-f0-9]{40}$/u);
+  assert.ok(
+    (await readFile("src-tauri/Cargo.toml", "utf8")).includes(
+      `rev = "${server}"`,
+    ),
   );
   for (const name of ["lapis-ai", "jj-store", "lapis-plugins"]) {
     assert.match(revision(native, name), /^[a-f0-9]{40}$/u);

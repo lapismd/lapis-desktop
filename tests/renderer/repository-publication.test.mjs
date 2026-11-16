@@ -1,7 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { RemoteController } from "../../src/lib/repository/remote-controller.ts";
-import { nativeRemote } from "../../src/lib/native/repository/remote.ts";
+import { RemoteController } from "@lapis-notes/history/repository/controllers/remote-controller";
 const pending = {
   request_id: "original",
   before: null,
@@ -54,37 +53,9 @@ test("publication recovery pins original request and connection revision, preser
   controller.close();
   assert.equal(await controller.observePublication("original"), false);
 });
-test("native observation and explicit stop never forward endpoints, paths or credentials", async () => {
-  const frames = [];
-  const service = nativeRemote("opaque", async (command, args) => {
-    frames.push({ command, ...args });
-    return {
-      revision: 4,
-      configuration: null,
-      checkpoint: null,
-      publication: pending,
-    };
-  });
-  await service.publication.observe(4, "original");
-  await service.publication.stop(4, "original");
-  assert.deepEqual(
-    frames.map((frame) => frame.request.action),
-    [
-      { kind: "observe_publication", revision: 4, request_id: "original" },
-      { kind: "stop_publication", revision: 4, request_id: "original" },
-    ],
-  );
-  assert(
-    frames.every(
-      (frame) =>
-        frame.command === "desktop_backup_remote" &&
-        frame.request.sessionId === "opaque",
-    ),
-  );
-});
 test("automatic sync observes an original unknown request before any new merge or push", async () => {
   const { SyncController } = await import(
-    "../../src/lib/repository/sync-controller.ts"
+    "@lapis-notes/history/repository/controllers/sync-controller"
   );
   let unresolved = true;
   const calls = [],

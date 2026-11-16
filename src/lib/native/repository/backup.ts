@@ -1,7 +1,11 @@
 import { Channel } from "@tauri-apps/api/core";
+import type { App } from "@lapis-notes/api";
 import type { NativeCall } from "../vault-client.ts";
 import { nativeError } from "../native-error.ts";
-import type { BackupService, BackupStatus } from "../../repository/backup.ts";
+import type {
+  BackupService,
+  BackupStatus,
+} from "@lapis-notes/history/repository/controllers/backup";
 
 function status(value: unknown): BackupStatus {
   if (!value || typeof value !== "object")
@@ -25,6 +29,7 @@ function status(value: unknown): BackupStatus {
 export function nativeBackup(
   sessionId: string,
   call: NativeCall,
+  app?: App,
 ): BackupService {
   let events: Channel<BackupStatus> | undefined;
   async function invoke<T>(command: string, extra = {}) {
@@ -34,7 +39,48 @@ export function nativeBackup(
       throw nativeError(error);
     }
   }
+  async function selection(command: unknown) {
+    try {
+      return await call<{ configuration: unknown; status: BackupStatus }>(
+        "desktop_repository_backup",
+        { request: { sessionId, command } },
+      );
+    } catch (error) {
+      throw nativeError(error);
+    }
+  }
   return {
+    ...(app
+      ? {
+          async setEnabled(enabled: boolean) {
+            const mutation = app.fileEditingSessions.guard(
+              app.configuration.basePath,
+              async () => {
+                const before = await selection({ kind: "status" });
+                try {
+                  await selection({
+                    kind: "set_enabled",
+                    enabled,
+                    expected: before.configuration,
+                  });
+                } catch (error) {
+                  await selection({ kind: "status" });
+                  throw error;
+                }
+              },
+            );
+            const reconciliation = app.fileEditingSessions.afterMutations(() =>
+              app.configuration.reloadFromDisk({ materializeDefaults: false }),
+            );
+            const [selected, refreshed] = await Promise.allSettled([
+              mutation,
+              reconciliation,
+            ]);
+            if (selected.status === "rejected") throw selected.reason;
+            if (refreshed.status === "rejected") throw refreshed.reason;
+          },
+        }
+      : {}),
     async start(changed) {
       if (events) events.onmessage = () => {};
       events = new Channel<BackupStatus>();
@@ -42,14 +88,9 @@ export function nativeBackup(
       return status(await invoke("desktop_backup_start", { onChange: events }));
     },
     async capture() {
-      return status(await invoke("desktop_backup_capture"));
+      return status((await selection({ kind: "capture" })).status);
     },
     async stop() {
-      await invoke("desktop_backup_stop");
-      if (events) events.onmessage = () => {};
-      events = undefined;
-    },
-    async detach() {
       if (events) events.onmessage = () => {};
       events = undefined;
     },

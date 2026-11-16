@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { HistorySearchController } from "../../src/lib/repository/search-controller.ts";
+import { HistorySearchController } from "@lapis-notes/history/repository/controllers/search-controller";
 import { nativeSearch } from "../../src/lib/native/repository/search.ts";
 import { openHistoryRevision } from "@lapismd/repository-ui/history";
 import { HistoryController } from "@lapismd/repository-ui/history";

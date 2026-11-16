@@ -238,3 +238,23 @@ normal ranges MUST match the verified versions before projection. Both CI and
 portable workers MUST use the existing shared archive hook and verify installed
 identities; root-only replacement can leave a second registry API with the same
 version. Source manifests and the portable lock MUST be restored on failure.
+
+## Sync intake after shared remotes
+
+E-SYNC-009 integrates E-REPO-058/059's released History `^0.5.1`, App Profile
+`^0.2.2` and Mira `~0.2.0` cohort while retaining the temporary verified Notes
+archive cohort for the unreleased native Sync leave contract. Published API
+0.6.5 lacks `NativeSyncService.prepareLeave`; account teardown MUST NOT fall
+back to the released older lifecycle. This documented private migration
+prerequisite also retains the API-compatible Tasks candidate and released Graph
+`^0.1.12`/Bases `^0.4.1` from the qualified Sync input; older peers refuse API
+0.6 admission. Source manifests and lockfiles retain registry ranges; archive
+bytes and all import routes remain verified. Remove the temporary Notes/Tasks
+projection after separate publication and consumer qualification. This exception
+does not authorize publication.
+
+Native crates adopt current main's Core `c32b5ae4` and JJ Store `086def18`. Core
+includes the earlier qualified Sync source. JJ Store retains the exact
+operation-frontier implementation from `87be3ad6` through its merged source; Git
+blob identity was checked because commit ancestry differs. Neither earlier
+qualification nor another platform's pass qualifies this new combined cohort.

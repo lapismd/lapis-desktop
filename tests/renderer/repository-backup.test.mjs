@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { BackupController } from "../../src/lib/repository/backup.ts";
+import { BackupController } from "@lapis-notes/history/repository/controllers/backup";
 const ready = { phase: "ready", checkpoint: null, error: null };
 function fixture(start) {
   const calls = [],
@@ -164,34 +164,4 @@ test("successful preflight is not repeated during final plugin disposal", async 
   await f.controller.pause();
   await f.controller.close();
   assert.equal(f.calls.filter((value) => value === "stop").length, 1);
-});
-
-test("renderer reload checkpoints and detaches without disabling the native service", async () => {
-  const f = fixture();
-  await f.controller.start();
-  await f.controller.prepareLeave("reload");
-  await f.controller.close();
-  assert.equal(f.calls.filter((value) => value === "capture").length, 1);
-  assert.equal(f.calls.filter((value) => value === "detach").length, 1);
-  assert.equal(f.calls.includes("stop"), false);
-  f.changed({ ...ready, phase: "saving" });
-  assert.notEqual(f.states.at(-1).phase, "saving");
-});
-
-test("failed reload capture keeps the observer and permits the same leave to retry", async () => {
-  const f = fixture();
-  await f.controller.start();
-  f.service.capture = async () => {
-    throw new Error("Final capture failed");
-  };
-  await assert.rejects(
-    f.controller.prepareLeave("reload"),
-    /Final capture failed/,
-  );
-  assert.equal(f.calls.includes("detach"), false);
-  assert.equal(f.calls.includes("stop"), false);
-  f.service.capture = async () => ready;
-  await f.controller.prepareLeave("reload");
-  await f.controller.close();
-  assert.equal(f.calls.filter((value) => value === "detach").length, 1);
 });

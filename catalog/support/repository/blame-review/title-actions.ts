@@ -1,6 +1,6 @@
 import type { App } from "@lapis-notes/api";
 import { getWorkspaceHostBinding } from "@lapis-notes/api/workspace-host";
-import type { BlameSelection } from "../../../../src/lib/repository/blame-model.ts";
+import type { BlameSelection } from "@lapis-notes/history/repository/controllers/blame-model";
 
 export async function openBlameReview(app: App, selection: BlameSelection) {
   const workspace = getWorkspaceHostBinding(app.workspace).controller.workspace;

@@ -3,7 +3,7 @@ import {
   type AiHistoryBinding,
   type AiTurnOutcome,
   type AiTurnRecord,
-} from "../../repository/ai-history.ts";
+} from "@lapis-notes/history/repository/controllers/ai-history";
 import type { App } from "@lapis-notes/api";
 import type { ConversationRepository } from "../conversations/conversation-repository.ts";
 import {

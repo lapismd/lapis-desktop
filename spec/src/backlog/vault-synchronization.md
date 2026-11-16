@@ -21,6 +21,14 @@ Acceptance: Functional automatic backup, restore, GitHub/Forgejo synchronization
 and historical search integrated into main workspaces
 
 Remaining outcome: Real-provider acceptance.
+[E-REPO-058](../history/E-REPO-058.md) and
+[E-REPO-059](../history/E-REPO-059.md) qualify shared remotes adoption, native
+routes, actual OS custody and cold HTTPS/SSH manual operations. Final
+catalog/checked-head delivery remains open; that scope does not complete the
+older live-forge/two-device acceptance below.
+
+The application is not in use. The user's 2026-11-15 decision removes legacy
+application data/connection/recovery migration from this release's scope.
 
 Evidence: [E-REPO-026](../history/E-REPO-026.md),
 [E-REPO-039](../history/E-REPO-039.md), [E-REPO-040](../history/E-REPO-040.md),

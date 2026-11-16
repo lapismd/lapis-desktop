@@ -1,4 +1,4 @@
-import type { HistoryReader } from "../../../src/lib/repository/history-reader.ts";
+import type { HistoryReader } from "@lapis-notes/history/repository/controllers/history-reader";
 
 /** Hold a real view boundary until its owning handle closes. */
 export function attachLoadingFixture(reader: HistoryReader, scenario: string) {

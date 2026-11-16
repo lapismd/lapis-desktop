@@ -1,11 +1,11 @@
 import { View, type WorkspaceLeaf } from "@lapis-notes/api";
 import { mount, unmount } from "svelte";
-import type { HistoryReader } from "../../../../src/lib/repository/history-reader.ts";
+import type { HistoryReader } from "@lapis-notes/history/repository/controllers/history-reader";
 import type { LocalGraphCommit } from "@lapismd/jj-history";
-import { OperationController } from "@lapismd/repository-ui/history";
+import { OperationController } from "@lapis-notes/history/repository/controllers/operation-controller";
 import RepositoryOperationsReview from "./RepositoryOperationsReview.svelte";
 import { operation } from "../fixture.ts";
-import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";
+import type { RepositoryWorkspace } from "@lapis-notes/history/repository/controllers/workspaces";
 
 /** Catalog-only view: no production registration or shipping UI imports this. */
 export class OperationReviewView extends View {

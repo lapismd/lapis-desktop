@@ -1,7 +1,7 @@
 //! Native repository grants independent of AI admission and renderer authority.
-pub mod forges;
+pub mod credentials;
 pub mod readers;
-pub mod remote;
+pub mod remote_installation;
 pub(crate) mod source;
 pub mod storage;
 use crate::vault::{

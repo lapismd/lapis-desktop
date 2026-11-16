@@ -1,7 +1,8 @@
 //! Admitted immutable indexing/query work. No capture or editor writer lease.
 use super::{
-    RepositoryHost, policy,
-    remote::{bound, failure},
+    RepositoryHost,
+    backup_access::{bound, failure},
+    policy,
 };
 use crate::host::state::{NativeError, NativeHost, access};
 use lapis_app_protocol::history_index::{HistoryIndexCommand, HistoryIndexValue};

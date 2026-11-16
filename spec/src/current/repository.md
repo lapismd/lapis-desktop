@@ -1,10 +1,12 @@
 # Repository history and conversations
 
-[Shared screens](shared-screen-integration.md) govern History/Blame source pins.
-[Backup](vault-backup.md) owns scheduling, controls, cached status and actions;
-[navigation](repository-navigation.md) retains status/clearance. Dedicated Core
-read clients drain accepted work before retirement independently of App writers;
-existing admission, exact pins and backup authority remain unchanged.
+[Shared screens](shared-screen-integration.md) and
+[parity review](repository-review.md) govern History/Blame pins;
+[backup](vault-backup.md) owns scheduling, controls, cached status and actions;
+[navigation](repository-navigation.md) retains status/clearance. Core read
+clients drain accepted work before retirement independently of App writers.
+Remote transports MUST preserve target/recovery identities, fence late replies
+and follow [remotes and credentials](repository-remotes.md).
 
 ## Requirements
 
@@ -337,11 +339,13 @@ close/reopen and compact return through the column controls. Expanded rows
 retain measured graph bounds. Collapse/reselection fences previous replies.
 
 History and Op Log start directly with their Column Canvas headers, matching
-jj-store's omission of redundant body title bars. Native operation selection,
-refresh and collapse controls belong in that compact header; full operation
-identities remain the select values and accessible descriptions. No repeated
-full-width pin block may displace the graph. Header controls remain available
-for loading, empty, multiple-head and unavailable states in narrow panes.
+jj-store's omission of redundant body title bars. Refresh, collapse and
+configured remote actions belong in that compact header. Workspace and operation
+dropdowns are omitted from the default logs. Native operation pins remain
+available through explicit view state and multiple-head selection; refresh
+retains the selected pin. No repeated full-width pin block may displace the
+graph. Header controls remain available for loading, empty, multiple-head and
+unavailable states in narrow panes.
 
 Operation rows expose bounded native change groups after an exact parent delta.
 The user selects the changed revision, then the native exact pair or both sides
@@ -381,20 +385,15 @@ comparison, pin and close responses are fenced. Metadata failure preserves the
 comparison and uses an App toast plus explicit retry. Failed final backup leave
 keeps the shell; Problems and a toast report failure without extra chrome.
 
-The compact JJ Log and Op Log header selectors choose exact pinned operations,
-not workspaces. Both use public Command View/Popover with ID search, explicit
-selection, filled `circle-check` indication, keyboard focus and full operation
-IDs. Known operation metadata may enrich a card; missing metadata must not
-invent author or workspace information. All repository command pickers share the
-filled selection icon. Opening/searching the picker performs no repository reads
-or writes. Refresh preserves a historical pin among newly observed heads; only
-an explicit choice replaces the selected snapshot.
+The JJ Log and Op Log headers MUST expose targeted pull/push actions only when a
+remote is configured, plus the existing settings action. Workspace and operation
+dropdowns are omitted from those headers. Fetch follows JJ semantics and
+preserves the selected History pin; explicit operation selection elsewhere uses
+public Command View/Popover controls with exact IDs and filled selection icons.
+Searching a picker performs no repository reads or writes.
 
 Split file diffs MUST fill the bounded remaining vertical space in the History
 column and the Op Log file card, including both revision panes. Changing wrap,
 collapsing operation metadata and compact pane navigation MUST retain the fill
 layout. Unified operation previews retain their content-sized presentation. The
 application sizes its owned hosts through public component contracts.
-
-Production presentation, command formatting and staged adoption are governed by
-[repository parity review](repository-review.md) (E-REPO-015, E-REPO-023).

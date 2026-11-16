@@ -4,11 +4,11 @@ import type {
   LocalGraphEvolutionNode,
 } from "@lapismd/jj-history";
 import { mount, unmount } from "svelte";
-import type { HistoryReader } from "../../../../src/lib/repository/history-reader.ts";
-import { HistoryController } from "@lapismd/repository-ui/history";
+import type { HistoryReader } from "@lapis-notes/history/repository/controllers/history-reader";
+import { HistoryController } from "@lapis-notes/history/repository/controllers/history-controller";
 import RepositoryHistoryReview from "./RepositoryHistoryReview.svelte";
 import { operation } from "../fixture.ts";
-import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";
+import type { RepositoryWorkspace } from "@lapis-notes/history/repository/controllers/workspaces";
 
 export class HistoryReviewView extends View {
   #component?: ReturnType<typeof mount>;

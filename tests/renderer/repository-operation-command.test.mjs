@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { operationCommandLabel } from "../../src/lib/repository/operation-command.ts";
+import { operationCommandLabel } from "@lapis-notes/history/repository/controllers/operation-command";
 
 test("JJ recorded nested TOML quotes render as readable command arguments", () => {
   const recorded = String.raw`jj --no-pager --config 'user.name=\'History fixture\'' --config 'user.email=\'fixture@invalid\'' new -m 'Native working revision'`;

@@ -1,33 +1,37 @@
 import { nativeIndexedSearch } from "./indexed-search.ts";
 import type { HistoryClient } from "@lapismd/jj-history";
+import type { App } from "@lapis-notes/api";
 import { coreHistory, historyFailure } from "./history-client.ts";
 import { invoke } from "@tauri-apps/api/core";
 import type { NativeCall, VaultDescriptor } from "../vault-client.ts";
 import { nativeError } from "../native-error.ts";
-import type { RepositoryServices } from "../../repository/history-reader.ts";
-import { parseWorkingCopyStatus } from "../../repository/working-copy-status.ts";
+import type { RepositoryServices } from "@lapis-notes/history/repository";
+import { parseWorkingCopyStatus } from "@lapis-notes/history/repository/controllers/working-copy-status";
 import { PreparationQueue } from "./preparation-queue.ts";
 import { nativeBackup } from "./backup.ts";
 import { nativeRestore } from "./restore.ts";
-import { nativeForges } from "./forges.ts";
 import { nativeSearch } from "./search.ts";
-import { nativeSync } from "./sync.ts";
-import { nativeRemote } from "./remote.ts";
 import { nativeAdoption } from "./adoption.ts";
 import { nativeStorage } from "./storage.ts";
 import { nativeAiHistory } from "./ai-history.ts";
+import { nativeRemotes } from "./remotes.ts";
 
 /** Owns native admission through all in-flight reads, including lost opens. */
 export function createNativeRepository(
   vault: VaultDescriptor,
   call: NativeCall = invoke,
   client?: HistoryClient,
+  app?: App,
 ): RepositoryServices {
   const reader = client ?? coreHistory(vault.profileId, vault.sessionId, call);
   let original: HistoryClient | undefined;
   let originalActivation: Promise<void> | undefined;
   const preparation = new PreparationQueue(reader);
-  const backupTransport = nativeBackup(vault.sessionId, call);
+  const backupTransport = nativeBackup(
+    vault.sessionId,
+    (command, args) => track(() => call(command, args)),
+    app,
+  );
   let initialBackup: Promise<unknown> | undefined;
   const backup: typeof backupTransport = {
     ...backupTransport,
@@ -127,7 +131,11 @@ export function createNativeRepository(
   }
   const search = nativeSearch(vault.sessionId, call);
   const indexed = nativeIndexedSearch(vault.sessionId, call);
+  const remotes = nativeRemotes(vault.sessionId, (command, args) =>
+    track(() => call(command, args)),
+  );
   return {
+    remotes,
     aiHistory: nativeAiHistory(vault.sessionId, (command, args) =>
       track(async () => {
         if (initialBackup) await initialBackup;
@@ -145,13 +153,10 @@ export function createNativeRepository(
         context: (request) => track(() => indexed.context(request)),
       },
     },
-    sync: nativeSync(vault.sessionId, call),
-    remote: nativeRemote(vault.sessionId, call),
-    forges: nativeForges(call),
     restore: nativeRestore(vault.sessionId, call),
     backup,
     workingCopy: () =>
-      run(async () =>
+      track(async () =>
         parseWorkingCopyStatus(
           await call<string>("desktop_repository_working_copy", {
             request: { sessionId: vault.sessionId },
@@ -166,6 +171,7 @@ export function createNativeRepository(
     reader: scoped(() => reader, run),
     close(mode) {
       closed = true;
+      remotes.close();
       preparation.stop();
       return (closing ??= (async () => {
         while (pending.size) await Promise.allSettled([...pending]);

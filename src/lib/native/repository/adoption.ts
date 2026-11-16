@@ -5,7 +5,7 @@ import {
   existingHistory,
   type AdoptionStatus,
   type AdoptionService,
-} from "../../repository/adoption.ts";
+} from "@lapis-notes/history/repository/controllers/adoption";
 export function nativeAdoption(
   sessionId: string,
   call: NativeCall,

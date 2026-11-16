@@ -463,5 +463,8 @@
   "catalog/plugins/cli/Settings.stories.ts": {
     "kind": "component",
     "subject": "@lapis-notes/ui/cli#CliSettings"
+  },
+  "catalog/plugins/repository/NativeRemotes.stories.ts": {
+    "kind": "application"
   }
 }

@@ -2,7 +2,7 @@
 // Retained from the Lapis AI plugin; see ../NOTICE.md.
 import { assertExecutionMode } from "../core/agent-profile.ts";
 import { validateRecipients } from "./recipients.ts";
-import { parseAiTurn } from "../../repository/ai-history.ts";
+import { parseAiTurn } from "@lapis-notes/history/repository/controllers/ai-history";
 import type { AgentBindingRecord } from "./types.ts";
 import {
   record,

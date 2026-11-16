@@ -3,7 +3,10 @@ import { expect, userEvent, within } from "storybook/test";
 import RepositoryDemo from "../../support/repository/RepositoryDemo.svelte";
 import { openHistory } from "../../support/repository/interactions.ts";
 import { chooseChangedRevision } from "../../support/repository/picker-interactions.ts";
-import { historyContext } from "../../support/repository/context.ts";
+import {
+  historyContext,
+  repositoryView,
+} from "../../support/repository/context.ts";
 import { operation } from "../../support/repository/fixture.ts";
 import { cleanupCatalog } from "../../support/lifecycle.ts";
 
@@ -23,21 +26,16 @@ export const WorkspaceContext: StoryObj = {
         name: /Keep repository history beside the notes/,
       }),
     );
-    await userEvent.click(
-      history.getByRole("combobox", { name: "Repository workspace" }),
-    );
-    const body = within(canvasElement.ownerDocument.body);
-    await userEvent.click(
-      await body.findByRole("option", { name: /^default$/ }),
-    );
-    await expect(
-      history.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      history.queryByRole("combobox", { name: "Repository workspace" }),
+    ).toBeNull();
+    expect(history.queryByRole("combobox", { name: "Operation" })).toBeNull();
+    expect(repositoryView(canvasElement).getState().operation).toBe(operation);
     await expect(
       history.getByRole("button", {
         name: /Keep repository history beside the notes/,
       }),
-    ).toHaveAttribute("aria-expanded", "false");
+    ).toHaveAttribute("aria-expanded", "true");
     const queries = historyContext(canvasElement)
       .fixture.calls.map(([, query]) => query)
       .filter(
@@ -46,7 +44,6 @@ export const WorkspaceContext: StoryObj = {
     const latest = queries.at(-1) as { query: unknown[] } | undefined;
     expect(latest?.query[0]).toMatchObject({
       graph: "log",
-      workspace: "default",
     });
   },
 };
@@ -97,9 +94,9 @@ export const NativeConflictInspection: StoryObj = {
     await expect(
       history.getByRole("button", { name: "Resolve conflicts" }),
     ).toHaveFocus();
-    await expect(
-      history.getByRole("combobox", { name: "Operation" }),
-    ).toHaveValue(operation);
+    expect(
+      repositoryView(canvasElement, "repository-history").getState().operation,
+    ).toBe(operation);
   },
 };
 

@@ -28,6 +28,7 @@
   - [Explicit local transcript imports](../current/ai-imports.md)
   - [Automatic vault backup](../current/vault-backup.md)
   - [Repository history and conversations](../current/repository.md)
+    - [Repository remotes and credentials](../current/repository-remotes.md)
     - [Repository row selection and file history](../current/repository-navigation.md)
     - [Repository Storybook parity review](../current/repository-review.md)
   - [File management](../current/files.md)

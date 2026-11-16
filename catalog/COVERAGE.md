@@ -2,7 +2,8 @@
 
 Shared-screen migration: existing story IDs remain comparable between baseline
 7480 and migration 7481. Production repository/history/blame/restore/conflict
-surfaces import public Repository UI exports. Chat uses AgentChatScreen;
+surfaces now import public `@lapis-notes/history/repository` exports; the former
+Desktop component and controller copies are removed. Chat uses AgentChatScreen;
 History, Catalog and Imports use their complete Agent UI screens. Recorded
 captures retain exact host groups and the shared recorded reader. App/native
 services and disposable catalog adapters remain host-owned. Legacy layout-review
@@ -341,10 +342,11 @@ viewport height.
 ## Native repository history presentation
 
 `plugins/repository/Header.stories.ts` checks that History and Op Log start
-directly with their production Column Canvas header, with compact native pin,
-refresh and collapse controls that fit both widths and themes. Source layout and
-header composition follow jj-store; native identities and admission remain owned
-by Notes. Visual baselines remain pending.
+directly with their production Column Canvas header, omitting the operation and
+workspace dropdowns and retaining refresh/collapse controls. Configured remote
+actions use the shared circular controls. Source layout and header composition
+follow jj-store; native identities and admission remain owned by Notes. Visual
+baselines remain pending.
 
 `plugins/repository/History.stories.ts` mounts the production bundled Repository
 History plugin, Notes workspace and public Design Core Diff through an injected
@@ -428,11 +430,19 @@ keyboard search/selection, exact operation identities, merge choice retention
 and App toast/explicit metadata recovery. Operation parents remain distinct from
 commit/change IDs. Visual approval remains pending.
 
-`plugins/repository/Header.stories.ts` covers JJ Log and Op Log
-operation-snapshot Command View selection, full-ID search, current-pin
-indication, keyboard/focus return, empty disabled state and no native IO while
-searching. This header control selects operations; it is not a workspace
-selector.
+`plugins/repository/Header.stories.ts` covers JJ Log and Op Log multiple-head
+keyboard selection, exact native IDs, empty refresh controls and absence of the
+retired context dropdowns. Restored pins and separate original/backup sources
+are exercised through the public plugin and view-state APIs. File History uses
+the shared graph row to open its recorded revision and omits author controls.
+
+`plugins/repository/NativeRemotes.stories.ts` mounts the production Desktop
+transport adapter, public Profile shell, shared History settings and git split
+footer over declared native responses. It covers working-copy/diff status,
+explicit target push review, missing connection, locked OS storage with host
+SSH, and current-code copy before opening GitHub. These fixtures establish
+presentation and routing; actual OS custody and network acceptance remain
+separate. All states retain `visual-pending`.
 
 `plugins/repository/DiffLayout.stories.ts` uses production History/Op Log views
 to verify short split diffs fill their available column/card and both revision

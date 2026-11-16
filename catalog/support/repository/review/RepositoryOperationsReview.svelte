@@ -1,18 +1,18 @@
 <script lang="ts">
-  import { RepositorySkeleton } from "@lapismd/repository-ui/jj";
+  import RepositorySkeleton from "@lapis-notes/history/repository/components/RepositorySkeleton.svelte";
   import { onMount, onDestroy, untrack } from "svelte";
   import { Button } from "@lapismd/design-core/shadcn/button";
-  import { RepositoryLogHeader } from "@lapismd/repository-ui/jj";
+  import RepositoryLogHeader from "@lapis-notes/history/repository/components/RepositoryLogHeader.svelte";
   import * as ColumnCanvas from "@lapismd/design-core/shadcn/column-canvas";
-  import type { OperationController } from "@lapismd/repository-ui/history";
-  import { initialOperationState } from "@lapismd/repository-ui/history";
-  import { operationRows } from "../../../../src/lib/repository/graph/model.ts";
-  import { createLogCanvas } from "../../../../src/lib/repository/log-canvas.ts";
-  import RepositoryOperationFiles from "../../../../src/components/repository/RepositoryOperationFiles.svelte";
-  import { RepositoryOperationColumn } from "@lapismd/repository-ui/jj";
-  import RepositoryShell from "../../../../src/components/repository/RepositoryShell.svelte";
-  import { RepositoryGraph } from "@lapismd/repository-ui/jj";
-  import type { RepositoryWorkspace } from "../../../../src/lib/repository/workspaces.ts";
+  import type { OperationController } from "@lapis-notes/history/repository/controllers/operation-controller";
+  import { initialOperationState } from "@lapis-notes/history/repository/controllers/operation-state";
+  import { operationRows } from "@lapis-notes/history/repository/controllers/graph/model";
+  import { createLogCanvas } from "@lapis-notes/history/repository/controllers/log-canvas";
+  import RepositoryOperationFiles from "@lapis-notes/history/repository/components/RepositoryOperationFiles.svelte";
+  import RepositoryOperationColumn from "@lapis-notes/history/repository/components/RepositoryOperationColumn.svelte";
+  import RepositoryShell from "@lapis-notes/history/repository/components/RepositoryShell.svelte";
+  import RepositoryGraph from "@lapis-notes/history/repository/components/RepositoryGraph.svelte";
+  import type { RepositoryWorkspace } from "@lapis-notes/history/repository/controllers/workspaces";
   let {
     controller,
     initialOperation,

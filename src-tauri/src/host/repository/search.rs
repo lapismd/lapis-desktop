@@ -1,7 +1,8 @@
 //! Immutable history search on bounded workers, outside capture/file IO locks.
 use super::{
-    RepositoryHost, policy,
-    remote::{bound, failure},
+    RepositoryHost,
+    backup_access::{bound, failure},
+    policy,
 };
 use crate::host::state::{NativeError, NativeHost, access};
 use jj_vault::search::{NativeHistory, Page, Request as SearchRequest};
