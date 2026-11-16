@@ -169,3 +169,8 @@ canonical GitHub API release/tag reads, refuses authenticated redirects and
 keeps manifest/archive downloads unauthenticated. No API error may waive source
 or artifact checks. E-RELEASE-024 retains the original anonymous HTTP 403 and
 the source-owned repair; the published candidate bytes stay unchanged.
+
+[E-RELEASE-025](../history/E-RELEASE-025.md) closes the subsequent caller
+checked-head gate from E-RELEASE-024 after PR #41 passes and merges. Published
+app source and qualified assets remain bound to `c2971126`; this workflow/docs
+follow-up does not rebuild or republish rc.2.
