@@ -26,3 +26,9 @@ private App Profile projection are recorded in
 private prerequisites. Native-window acceptance and registry-only distribution
 remain outstanding; browser acceptance does not qualify or replace an installed
 native application.
+
+Dependency adoption57 prepares Notes164's exact six-archive cohort under
+[local intake](current/local-dependencies.md). Complete installed production
+audit, cold complete consumer lanes and hosted source/main acceptance before
+removing the central archive hold. Development HIGH remains a distinct gate; no
+new exception or replacement npm publication is authorized by this slice.

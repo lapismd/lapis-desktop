@@ -27,7 +27,7 @@ test("portable sources retain the native Notes pin and explicit Sync archive coh
   );
   assert.equal(
     revision(hosted, "lapis-notes"),
-    "01bf01f61f91f31237ebcdbb07242b9b6f9a5943",
+    "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
   );
   const manifest = JSON.parse(await readFile("package.json", "utf8"));
   assert.match(

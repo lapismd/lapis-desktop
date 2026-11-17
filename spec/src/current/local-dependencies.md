@@ -1,7 +1,24 @@
 # Local dependency intake
 
+Notes164's private cohort pins committed source
+`b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e` for API0.6.8, UI0.2.3,
+Workspace0.4.8, File Explorer0.2.8, Language Service0.1.6 and Profile0.2.5. The
+source qualification is merged through Notes5ffb33c1. Profile MUST retain its
+public build helper while leaving Vite to Desktop's declared development
+dependency. Its production/dependency/optional/peer graph MUST NOT install Vite.
+The six rebuilt archives exactly match the owning Notes164 qualification hashes;
+normal CI MUST rebuild from that source and retain actual artifact/projection
+hashes. This does not replace same-version npm bytes or authorize publication.
+
+The private archive projection and frozen installed graph MUST qualify the
+production audit separately from development findings and every normal consumer
+lane. No approved MODERATE decision transfers to HIGH or production findings.
+Source metadata, CI health and a phase change cannot replace installed
+acceptance. The source/main audit hold and central activation remain until those
+gates pass.
+
 E-SYNC-006 prepares six public Notes candidate packages from exact source
-`01bf01f61f91f31237ebcdbb07242b9b6f9a5943` for native Sync leave preparation. CI
+`b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e` for native Sync leave preparation. CI
 MUST build App Profile and its dependencies through the source-owned normal
 build, then project API, UI, Workspace, File Explorer, Language Service and App
 Profile archives into the same runtime graph. Published registry ranges and the

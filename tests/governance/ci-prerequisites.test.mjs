@@ -131,7 +131,7 @@ test("the released Notes cohort has one current Design Core and API peer context
   const nativeSource = JSON.parse(
     readFileSync("scripts/validation/native-sources.json", "utf8"),
   );
-  const notesJavascriptRevision = "01bf01f61f91f31237ebcdbb07242b9b6f9a5943";
+  const notesJavascriptRevision = "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e";
   // Renderer package adoption does not change the qualified Rust source graph.
   const notesNativeRevision = "40b9ba8ee569a737a0ace77870a094972ee6f768";
   assert.equal(
