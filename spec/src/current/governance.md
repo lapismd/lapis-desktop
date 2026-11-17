@@ -397,4 +397,4 @@ and noninteractive, isolated custody probes; source/hash guards remain required.
 [Tool gates](../verification-notes.md) remain; CI and intake are linked above.
 
 CLI keeps source/build-schema guards; [preview receipts](distribution.md).
-[Skills](skills.md) and [intake](../history/E-SKILL-003.md) retain gates.
+[Skill qualification](../history/E-SKILL-004.md) retains its delivery gates.

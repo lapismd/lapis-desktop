@@ -326,6 +326,8 @@ access follow [LD-CLI-001/002/003](integration.md). Its current release identity
 is `2026.31.6-rc.2`; [E-CLI-007](../history/E-CLI-007.md) records its complete
 non-publishing three-platform candidate qualification.
 
-Shared remotes preserve LD-DESK-003 main-window/vault admission; Core owns
-operations and OS/Tauri adapters retain custody. E-REPO-059 separates cold
-transport from catalog and distribution qualification.
+Shared remotes retain main-window/vault admission, Core operations and OS
+custody (LD-DESK-003). E-REPO-059 separates transport, catalog and distribution
+gates.
+
+Native-owned skill resources: [contract](skills.md).

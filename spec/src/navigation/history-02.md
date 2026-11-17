@@ -366,3 +366,4 @@
 - [Public profile and skill release intake](../history/E-SKILL-002.md)
 
 - [Current-main released native skill intake](../history/E-SKILL-003.md)
+- [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)

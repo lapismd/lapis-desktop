@@ -15,3 +15,9 @@ Released Core intake uses Server v2.4.0 source
 `83fca8ddd25b7b7913723e231779862f94f7dbcb`;
 [E-SKILL-003](../history/E-SKILL-003.md) records current-main integration and
 keeps source, package, native and distribution acceptance separate.
+
+The ordinary Tauri bundle declares `bundled-skills.json` alongside its CLI
+resources. Startup reads this immutable resource through the owning native
+service; main-window admission supplies the active vault and renderer input
+cannot select resource paths or bytes. [E-SKILL-004](../history/E-SKILL-004.md)
+retains the full-run spec-first repair and current-main navigation integration.
