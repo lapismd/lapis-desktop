@@ -1,9 +1,11 @@
 # Lapis Sync native integration
 
 This chapter owns current Desktop intake and OS adapters. The
-[full Sync backlog](../backlog/lapis-sync.md) retains enrollment, transfer,
-reconciliation, scheduling, recovery and end-to-end acceptance. Sync remains
-optional and disabled; no plugin inventory or installed application changes.
+[Sync backlog](../backlog/lapis-sync.md) now prioritizes the manual encrypted
+two-device macOS MVP. Server/Web editing, automation, expanded recovery/UI and
+other platforms are deferred; shared security/data-integrity gates remain. Sync
+remains optional and disabled; no plugin inventory or installed application
+changes.
 
 ## Requirements
 

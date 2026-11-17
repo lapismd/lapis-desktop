@@ -177,13 +177,13 @@ WebdriverIO 9.32, with upstream browser-download and Mocha serializer overrides.
 The language-service chain uses released KaTeX 0.18.10; private App Profile uses
 Markdown 0.2.0 without the former Mira/KaTeX cohort.
 
-Approved development audit exceptions run through 2026-11-30.
-GHSA-gcqx-w48m-w2h4 is deepmerge 4.3.1 under the Svelte Vite plugin.
-GHSA-3g3m-2fjr-6pw4 is glob 10.5.0. GHSA-g3hv-75wg-m249 retains only the
-WebdriverIO minimatch 9.0.9 and 10.2.6 edges after its upstream range narrowed
-(E-DEPENDENCIES-004). Enforce each exact path, version and expiry; retain full
-diagnostics. Production findings and any new or changed advisory remain
-blocking. Remove stale exceptions.
+Approved development audit exceptions run through 2026-11-30. E-DEPENDENCIES-006
+removes the stale deepmerge exception: current full and production reports no
+longer contain GHSA-gcqx-w48m-w2h4. GHSA-3g3m-2fjr-6pw4 is glob 10.5.0.
+GHSA-g3hv-75wg-m249 retains only the WebdriverIO minimatch 9.0.9 and 10.2.6
+edges after its upstream range narrowed (E-DEPENDENCIES-004). Enforce each exact
+path, version and expiry; retain full diagnostics. Production findings and any
+new or changed advisory remain blocking. Remove stale exceptions.
 
 ## Authorized Bits UI patch
 

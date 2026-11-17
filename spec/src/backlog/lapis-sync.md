@@ -1,12 +1,10 @@
-# Lapis Sync: future Tauri implementation
+# Lapis Sync: manual encrypted MVP
 
-**In progress, 16 November 2026. Complete implementation and release remain
-open.** This topic owns the remaining Desktop work for encrypted Lapis Sync. The
-[plugin implementation context](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-context.md)
-retains the source investigation, and the
-[cross-repository roadmap](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-plan.md)
-owns the full engine/provider sequence. Land both repositories' documentation
-before relying on those new remote links.
+**Active MVP scope, revised by the user on 17 November 2026.** The
+[cross-repository MVP plan](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-plan.md)
+owns delivery order; its retained full roadmap is deferred follow-up. The
+[implementation context](https://github.com/lapismd/lapis-plugins/blob/main/spec/src/plugins/sync/implementation-context.md)
+retains historical provenance. This scope change completes no product gate.
 
 This is separate from
 [Git vault synchronization and turn history](vault-synchronization.md), which
@@ -30,7 +28,69 @@ three existing AI quarantines. Browser handoff, App injection,
 connected-account, locked-Keychain and full Sync journeys remain outstanding.
 Local acceptance does not qualify hosted or release gates.
 
-## Agreed product outcome
+## Active MVP and exit journey
+
+Support two independent macOS ARM64 Desktop devices, one logical vault and one
+configured Lapis Server destination per local vault. Offline edits cover notes
+and attachments. **Sync now** performs durable encrypted checkpoint, upload,
+download and guarded non-conflicting apply. One minimal settings/status surface
+shows progress, last successful sync, errors and explicit conflict recovery.
+
+For the MVP, Server is an authenticated ciphertext-only destination. It receives
+no content keys and has no enrolled decrypting endpoint or managed Sync working
+vault. Local devices require owner-approved authenticated, expiring,
+replay-protected pairing. Account login alone grants no content authority.
+Native Core owns durable effects; the plugin observes the public App service and
+submits admitted actions. No Deno revival or renderer scheduler.
+
+Implement in this order:
+
+1. Complete real native App/session lifecycle, HTTPS account connection,
+   protected restore/sign-out and local-device pairing.
+2. Connect native encrypted history/checkpoint/outbox and authenticated,
+   dependency-ordered durable transfer with bounded catch-up.
+3. Complete manual create/update/delete apply. Treat rename as delete/add;
+   preserve explicit tombstones and refuse stale or conflicting changes.
+4. Preserve both conflict versions and durable conflict state, stop visibly, and
+   provide a minimal explicit manual resolution/retry path.
+5. Demonstrate A offline edit → Sync now → Server → B exact files, then B edit →
+   Sync now → Server → A, using independent stores/keys and a real server.
+   Repeat across device/server cold restart and interrupted transfer/apply.
+
+Mandatory MVP acceptance retains encrypted durability before network work,
+stable ciphertext/event retry identity, unknown-outcome inspection, guarded
+idempotent apply, writer protection or refusal across active/retired/embedded/
+multi-window writers, and exclusive apply ownership. Test lost acknowledgements,
+conflicting text/binary/delete/add, populated-root collision refusal, empty or
+partial listings, index rebuild, wrong profile/vault/root, permission loss,
+locked/missing keys and corrupt/missing objects. Attachments retain bounded
+streaming and the 64 MiB in-flight target. Minimal encrypted recovery export/
+import requires an actual independent-device restore; account reset is separate.
+
+Qualify the actual macOS boundary plus affected source/artifact/consumer,
+functional, keyboard/accessibility, architecture/App-ownership and spec lanes.
+MVP-relevant retained cases must execute after repair; deferred-only scenarios
+remain explicitly unqualified. Do not relax assertions or count skips as passes.
+Visual review stays visual-pending. Sync remains optional/disabled by default;
+private intake does not authorize publication, deployment or app replacement.
+
+## Deferred until after MVP
+
+- Decrypting server enrollment, readable managed vault, Server Web → Desktop
+  edits and server/external-change capture without browsers.
+- Automatic sync/checkpoints, reconnect scheduling, watchers and background
+  participant lifetime; manual restart/retry recovery remains in MVP. Retain the
+  20-second quiet/five-minute maximum policy for eventual automatic operation.
+- Rich History/File History/Compare/Merge interfaces, automatic conflict
+  resolution, semantic rename detection and forward restore.
+- Revocation-management UI, key/Sync Identity rotation and advanced recovery;
+  existing authority/cutoff validation, safe refusal and minimal encrypted
+  recovery remain binding. Do not claim compromised-key recovery in the MVP.
+- Other platforms, all six placements, broad synthetic 3 GiB qualification and
+  public package/registry/distribution work. Existing separate release approvals
+  still apply, alongside the previously deferred destinations/migration/GC.
+
+## Original full product outcome — deferred beyond MVP
 
 Desktop devices can edit notes and attachments offline, retain local history
 across restart and synchronize with one configured Lapis Server destination per
@@ -154,7 +214,7 @@ service; detaching a view does not create or destroy a second engine. Define
 distinct reload/detach, explicit plugin disable, vault close and process exit
 behavior; cancelled leave retains ownership and all pending work.
 
-## Delivery stages and native exits
+## Retained full roadmap — MVP subsets first, larger exits deferred
 
 The Plugins roadmap supplies the complete prerequisites, public interfaces,
 regression families and manual journey for each matching stage. All stages are
@@ -186,7 +246,11 @@ automatic two-device operation are distinct exits. Each slice first updates its
 owner requirements/verification, names the exact regression and records source
 revisions, public artifacts and consumer acceptance independently.
 
-## Acceptance matrix
+## Deferred full-feature acceptance matrix
+
+The following matrix retains full-feature follow-up. Shared safety cases remain
+MVP gates above; server/Web edits, automation, expanded UI/restore/rotation and
+additional-platform qualification are deferred, not completed.
 
 | Target                                                   | Required result                                                                                                                          |
 | -------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -229,6 +293,7 @@ repair upstream defects with consumer aliases, copied engines or overrides.
 Future API/Server work needs its own canonical contracts and receipts before
 implementation; recording those dependencies here does not implement them.
 
-Saving this backlog changes no product verification status. The next feature
-task starts with stage 1, followed by the staged native adoption above. Commit
-each verified slice in its owner with Jujutsu and preserve historical receipts.
+Saving this backlog changes no product verification status. Continue verified
+foundations toward the active manual MVP journey; do not restart completed
+slices or resume deferred features without a scope change. Commit each verified
+slice in its owner with Jujutsu and preserve historical receipts.
