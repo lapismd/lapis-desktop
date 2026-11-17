@@ -11,6 +11,8 @@ import {
 import { resolve, join } from "node:path";
 import { nativeSession } from "./native-session.mjs";
 import { acceptanceBinary } from "../../scripts/native-acceptance-binary.mjs";
+import { seedRetiredAi } from "./ai-retirement-fixture.mjs";
+import { normalRecovery } from "../../src/lib/notes/startup-recovery.ts";
 process.env.LAPIS_DESKTOP_ACCEPTANCE_NATIVE_AI = "1";
 const executable = resolve(
   "src-tauri/target/debug/bundle/macos/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop",
@@ -121,4 +123,131 @@ test("disabled bundled AI starts Notes without native command IO or a Chat actio
   assert.equal(existsSync(join(vault, ".agents/skills")), false);
   await session.close();
   console.log(`Disabled AI Notes evidence: ${root}`);
+});
+
+for (const disabledBy of [undefined, "installed", "app-shell"]) {
+  test(`retired external AI stays inert and its data survives bundled startup and cold reopen: ${disabledBy ?? "enabled"}`, async (context) => {
+    const artifact = binary();
+    const { root, vault } = fixture("ai-retirement-");
+    const unchanged = seedRetiredAi(vault, disabledBy);
+    for (const cold of [false, true]) {
+      const session = await nativeSession(
+        `ai-retirement-${disabledBy ?? "enabled"}-${cold ? "cold" : "first"}`,
+        root,
+        artifact,
+      );
+      context.after(session.cleanup);
+      await info(session);
+      if (!cold) {
+        writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
+        await session.browser.$("button*=Open Vault").click();
+      }
+      await ready(session);
+      assert.equal(
+        await session.browser.execute(() =>
+          Boolean(globalThis.__retiredSharedAiEvaluated),
+        ),
+        false,
+        "Bundled precedence must prevent external module evaluation",
+      );
+      const chat = session.browser.$('button[aria-label="Open Chat"]');
+      assert.equal(await chat.isExisting(), disabledBy === undefined);
+      if (disabledBy === undefined) {
+        await chat.click();
+        await unavailable(session);
+        const retained = JSON.parse(
+          readFileSync(join(vault, ".lapis/app.json"), "utf8"),
+        ).pluginData.ai;
+        assert.deepEqual(retained.sessions, [
+          { id: "legacy-controller-session", runtimeSessionId: "old" },
+        ]);
+        assert.deepEqual(retained.futureValue, { keep: true });
+        assert.equal(retained.settings.defaultRuntime, "fake");
+      } else {
+        assert.equal(existsSync(join(root, ".lapis/agents/commands")), false);
+        assert.equal(existsSync(join(vault, ".agents/skills")), false);
+      }
+      unchanged();
+      await session.close();
+      unchanged();
+      assert.equal(existsSync(join(root, "acp-peer.jsonl")), false);
+    }
+    console.log(`Retired AI preservation evidence: ${root}`);
+  });
+}
+
+test("Safe Mode suppresses bundled and retired AI without changing saved data, then cold startup enables only bundled AI", async (context) => {
+  const artifact = binary();
+  const { root, vault } = fixture("ai-retirement-safe-");
+  const unchanged = seedRetiredAi(vault);
+  const session = await nativeSession("ai-retirement-safe", root, artifact);
+  context.after(session.cleanup);
+  await info(session);
+  writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
+  // Admit only long enough to obtain this disposable profile's identity. The
+  // production Shell has not opened a Notes App or allocated its AI services.
+  const profileId = await session.browser.execute(async () => {
+    const selected = await globalThis.__TAURI__.core.invoke("vault_select", {
+      createName: null,
+    });
+    await globalThis.__TAURI__.core.invoke("vault_close", {
+      sessionId: selected.sessionId,
+    });
+    return selected.profileId;
+  });
+  await session.browser.execute(
+    (id, recovery) => {
+      sessionStorage.setItem(
+        `lapis.safeMode.session:${id}`,
+        JSON.stringify(recovery),
+      );
+    },
+    profileId,
+    {
+      ...normalRecovery(),
+      active: true,
+      disableCommunityPlugins: true,
+      disableOptionalCorePlugins: true,
+      skipLayoutRestore: true,
+    },
+  );
+  await session.browser.$("button*=Open Vault").click();
+  await ready(session);
+  await session.browser.$('[aria-label="Safe Mode"]').waitForDisplayed();
+  assert.equal(
+    await session.browser.$('button[aria-label="Open Chat"]').isExisting(),
+    false,
+  );
+  assert.equal(
+    await session.browser.execute(() =>
+      Boolean(globalThis.__retiredSharedAiEvaluated),
+    ),
+    false,
+  );
+  assert.equal(existsSync(join(root, ".lapis/agents/commands")), false);
+  assert.equal(existsSync(join(vault, ".agents/skills")), false);
+  unchanged();
+  await session.close();
+  unchanged();
+  const cold = await nativeSession("ai-retirement-after-safe", root, artifact);
+  context.after(cold.cleanup);
+  await info(cold);
+  await ready(cold);
+  assert.equal(
+    await cold.browser.$('[aria-label="Safe Mode"]').isExisting(),
+    false,
+  );
+  await cold.browser.$('button[aria-label="Open Chat"]').click();
+  await unavailable(cold);
+  assert.equal(
+    await cold.browser.execute(() =>
+      Boolean(globalThis.__retiredSharedAiEvaluated),
+    ),
+    false,
+  );
+  unchanged();
+  await cold.close();
+  unchanged();
+  assert.equal(existsSync(join(root, "acp-peer.jsonl")), false);
+  console.log(`Safe Mode retired AI preservation evidence: ${root}`);
 });

@@ -262,10 +262,11 @@ The native asset route is a bundled-production-origin capability; Vite
 development startup reports it unavailable rather than exposing vault files
 through Node.
 
-Until the M10 bundled replacement is registered, external `ai` installations are
-unavailable under the App-owned host policy. Preserved conversations and
-disabled preferences do not activate the retired controller integration.
-Terminal already retains its qualified bundled precedence.
+With either owned AI factory, Desktop registers bundled `ai` before configured
+installations. Without either factory, external `ai` remains unavailable under
+the App-owned host policy. Saved disabled preferences stay authoritative.
+[E-RETIRE-004](../history/E-RETIRE-004.md) prepares native preservation
+acceptance.
 
 Native Notes reuses the public Workspace plugin Settings pages for installed
 plugin control and diagnostics. The Core page retains all App Shell and Lapis

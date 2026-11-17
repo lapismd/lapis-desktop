@@ -106,6 +106,15 @@ interaction or provider matrices. Resume exact missing native/provider journeys
 with fresh receipts; keep local model inference and two-device pairing distinct.
 Native macOS/provider lanes remain explicitly requested opt-ins.
 
+## Retired shared AI preservation
+
+[E-RETIRE-004](../history/E-RETIRE-004.md) prepares four native cases covering
+installed-copy precedence, both legacy disabling sources, Safe Mode and cold
+reopen with saved settings, conversations and memory. Execution is pending;
+synthetic installed fixtures do not qualify signed historical artifacts or the
+separate App Profile native-chat storage path. Preserve LD-PLUG-001 and
+LD-AI-002 as open native gates until actual product evidence exists.
+
 Further application tools stay in [AI tool expansion](ai-tool-expansion.md).
 Shared participant, context/handoff, native tools, memory and durable-job work
 belongs to the
