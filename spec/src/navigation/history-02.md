@@ -357,3 +357,5 @@
 - [Bounded native account observations](../history/E-SYNC-017.md)
 
 - [Scope Sync delivery to the manual encrypted MVP](../history/E-PLAN-009.md)
+
+- [Remove unused deepmerge audit approval](../history/E-DEPENDENCIES-006.md)

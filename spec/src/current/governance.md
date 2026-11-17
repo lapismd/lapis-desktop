@@ -329,10 +329,10 @@ audits reject the fixture trust, origin and distribution-hook markers.
 Production startup retains embedded SDK trust and the existing native permission
 set.
 
-The private AI public-build link is a temporary migration prerequisite alongside
-Terminal. Native ACP test policy, controls, compiled provider and channel driver
-are feature-gated acceptance inputs. Ordinary bundle audits reject their markers
-and resources. Dependency-audit changes retain full consumer lanes. The frozen
+Private AI and Terminal public-build links remain migration prerequisites.
+Native ACP policy, controls, compiled provider and channel driver are
+feature-gated acceptance inputs. Ordinary bundle audits reject their markers and
+resources. Audit changes keep full consumer lanes; remove stale approvals. The
 graph resolves `@hono/node-server` 2.1.6 without an exception. Fixture passes do
 not qualify AI product UI, models, tools, credentials or compute.
 
