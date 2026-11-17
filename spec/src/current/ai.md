@@ -40,7 +40,7 @@ E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 E-CATALOG-009–012 retain shell clearance, inert XML and constrained chat
 wrapping. The [AI backlog](../backlog/ai-qualification.md) retains outstanding
 native acceptance. Shared plugin identity and catalog requirements live in
-[plugins.md](plugins.md).
+[plugins.md](plugins.md). E-RETIRE-006 removes unused session controls.
 
 Native AI admission uses a two-phase, window-owned transition over an existing
 live vault token. Pending transitions cannot authorize ACP. A new root retires

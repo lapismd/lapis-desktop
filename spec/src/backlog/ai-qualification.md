@@ -106,6 +106,19 @@ interaction or provider matrices. Resume exact missing native/provider journeys
 with fresh receipts; keep local model inference and two-device pairing distinct.
 Native macOS/provider lanes remain explicitly requested opt-ins.
 
+## Private presentation retirement
+
+[E-RETIRE-006](../history/E-RETIRE-006.md) removes the unreferenced private
+session controls after verifying the active public Agent UI adapter. Separately
+audit `chat/history-inspection.svelte.ts`, `chat/panel/history.svelte.ts` and
+`chat/panel/send-transcript.ts`; the frontend-root graph alone cannot authorize
+their removal. Test-only session avatars and catalog-only approval/question
+cards retain their current coverage until their owning requirements are
+reviewed. Audit old list/resize selectors and the tabs padding variable within
+active `sessions/session-shell.css` against public Agent UI markup before
+pruning individual rules; retain its real frame/thread/footer consumers and run
+affected catalog acceptance for that stylesheet change.
+
 Further application tools stay in [AI tool expansion](ai-tool-expansion.md).
 Shared participant, context/handoff, native tools, memory and durable-job work
 belongs to the

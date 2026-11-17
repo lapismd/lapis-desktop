@@ -371,5 +371,5 @@
 - [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)
 
 - [Retired-free Desktop fixture source admission](../history/E-RETIRE-003.md)
-
 - [Complete fresh public-package fixtures](../history/E-RETIRE-005.md)
+- [Remove unused private AI session presentation](../history/E-RETIRE-006.md)

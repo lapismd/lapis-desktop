@@ -221,7 +221,7 @@ gates are unchanged. One child task is Active at a time.
 ## Session inbox layout
 
 The user approved live adoption and resumed tests on 2026-10-19. AI-SESSION-UI
-copies and adapts JJ Store's application-specific session inbox for explicit
+now uses public `@lapismd/agent-ui/sessions` through CapturedSessionBrowser for
 import and captured local history. An application-owned nested AppShell keeps
 the outer Notes workspace intact. A compact searchable, grouped session list,
 bounded pointer/keyboard divider and selected-session header surround the
@@ -238,6 +238,11 @@ composition. Captured file reads pass their retained filename to the shared
 syntax reader; unknown paths stay plain. Diff fences use the shared patch
 reader. These are display projections only and never read files or rewrite
 captured content.
+
+[E-RETIRE-006](../history/E-RETIRE-006.md) removes unreferenced private session
+controls superseded by that public screen. It preserves the active adapter,
+capture types, existing stories, transcript projection and historical
+attribution.
 
 The general-chat layout review reuses the same inbox AppShell, conversation
 rows, header icon toggle and aligned compact footer. The ordinary AiView
