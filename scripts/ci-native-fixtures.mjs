@@ -30,6 +30,12 @@ if (!existsSync(join(plugins, "node_modules/fflate/package.json"))) {
     stdio: "inherit",
   });
 }
+// Slides bundles the owning workspace Markdown exports, including ./embed.
+// A frozen dependency install alone does not prepare that package's public dist.
+execFileSync("pnpm", ["--filter", "@lapis-notes/markdown...", "build"], {
+  cwd: plugins,
+  stdio: "inherit",
+});
 const tools = await import(
   pathToFileURL(join(plugins, "scripts/plugin-release.mjs"))
 );

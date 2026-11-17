@@ -34,6 +34,17 @@ const jobs = [
     ],
   },
   {
+    marker: "../lapis-notes/packages/language-service/dist/index.js",
+    steps: [
+      ["../lapis-notes", "pnpm", ["install", "--frozen-lockfile"]],
+      [
+        "../lapis-notes",
+        "pnpm",
+        ["--filter", "@lapis-notes/language-service...", "build"],
+      ],
+    ],
+  },
+  {
     marker: "../lapis-ai/packages/ai/dist/index.js",
     steps: [
       ["../lapis-ai", "pnpm", ["install", "--frozen-lockfile"]],
@@ -52,16 +63,17 @@ function run(cwd, command, args) {
 }
 
 const receiptPath = resolve(root, ".local/ci-prepared-links.json");
-export function missingPathPackages() {
+export function missingPathPackages(directory = root) {
+  const receiptPath = resolve(directory, ".local/ci-prepared-links.json");
   let receipt;
   try {
     receipt = JSON.parse(readFileSync(receiptPath));
   } catch {
     /* Missing receipts require a build. */
   }
-  const identity = buildIdentity(root);
+  const identity = buildIdentity(directory);
   return jobs.filter((job) => {
-    const marker = resolve(root, job.marker);
+    const marker = resolve(directory, job.marker);
     if (
       !existsSync(marker) ||
       JSON.stringify(receipt?.identity) !== JSON.stringify(identity)

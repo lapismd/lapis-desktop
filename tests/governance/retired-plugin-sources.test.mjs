@@ -80,3 +80,12 @@ test("source-owned retirement audit rejects stale, missing and failing sources b
     rmSync(source, { recursive: true, force: true });
   }
 });
+
+test("native fixtures build the owning Markdown exports before plugin runtime bundling", () => {
+  const source = readFileSync("scripts/ci-native-fixtures.mjs", "utf8");
+  const build = source.indexOf(
+    '["--filter", "@lapis-notes/markdown...", "build"]',
+  );
+  assert.ok(build > source.indexOf("assertRetiredFreePlugins(plugins)"));
+  assert.ok(build < source.indexOf("scripts/build-plugin-release.mjs"));
+});
