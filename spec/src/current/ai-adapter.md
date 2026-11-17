@@ -154,3 +154,8 @@ uncertain outcomes, isolated workers, revocation and process cleanup.
 This transport gate does not qualify desktop AI UI, conversation/context/memory
 migration, application tools, native credentials, a real model or compute. Those
 retain M10.2–M10.4 gates. The application adds no replacement screens.
+
+Shared-AI public consumer qualification continues in
+[E-RETIRE-002](../history/E-RETIRE-002.md). Installed public admission and cold
+catalog evidence remain separate from original-artifact/native preservation and
+complete fresh hosted dependency production.
