@@ -367,3 +367,5 @@
 
 - [Current-main released native skill intake](../history/E-SKILL-003.md)
 - [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)
+
+- [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)

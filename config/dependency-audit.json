@@ -29,6 +29,25 @@
       "expires": "2026-11-30",
       "reason": "Development-only WebdriverIO tooling on minimatch 9 and 10. The advisory no longer classifies the former minimatch 3 and 5 edges as vulnerable, and the production audit reported no advisories. Minimatch 11 is not a drop-in replacement for the retained edges. Remove this exception when every listed edge is patched or gone.",
       "approvedBy": "User, 2026-10-31"
+    },
+    {
+      "advisory": "GHSA-fc5q-39xc-vjpf",
+      "package": "picomatch",
+      "severity": "high",
+      "findings": [
+        {
+          "version": "4.0.7",
+          "paths": [".>@storybook/addon-docs>unplugin>picomatch"]
+        },
+        {
+          "version": "2.3.2",
+          "paths": [".>@wdio/mocha-framework>mocha>chokidar>anymatch>picomatch"]
+        }
+      ],
+      "status": "approved",
+      "expires": "2026-11-30",
+      "reason": "Temporary development-only Storybook and WebdriverIO tooling exception. The actual installed private package cohort reports no production advisories after the source-owned App Profile Vite peer cleanup. No patched Picomatch release is available. Remove when these exact edges are patched or gone; all production findings remain blocking.",
+      "approvedBy": "User, 2026-11-17"
     }
   ]
 }

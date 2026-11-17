@@ -98,18 +98,15 @@ icons; E-AI-111 aligns selected command icons. Original native gates remain.
 
 ## Reusable ACP transport qualification
 
-M10.1 consumes `lapis-ai`'s built private `@lapismd/ai` root/Tauri exports and
-Rust adapter through an explicit temporary local development prerequisite.
-Record its exact source revision and public-build checks separately from the
-consumer. The acceptance-only host policy admits isolated native roots and
-compiled Rust providers; it cannot enter ordinary bundles or grant production
-launch authority. Real packaged WebView tests cover command capabilities,
-ordered channel delivery, exact permission IDs, cancellation, reconnect,
-uncertain outcomes, isolated workers, revocation and process cleanup.
+External shared-AI retirement uses Notes' public installer admission; it does
+not retire Desktop's owned AI. Consumer qualification MUST use the installed
+public package, reject the original retired artifact before network IO and
+preserve saved settings, conversations and memory. An independent AI origin MUST
+retain ordinary admission. These checks do not qualify native startup or publish
+a package.
 
-This transport gate does not qualify desktop AI UI, conversation/context/memory
-migration, application tools, native credentials, a real model or compute. Those
-retain M10.2–M10.4 gates. The application adds no replacement screens.
+[Reusable ACP transport qualification](ai-adapter.md#reusable-acp-transport-qualification)
+retains its independent source, native and provider gates.
 
 ## Desktop AI handover foundation
 

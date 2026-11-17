@@ -17,7 +17,7 @@ CI hooks MUST relocate. ARM64 diagnostics use hosted SHA, pinned `jj` and exact
 args. E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
 no-retry/quarantine/release policy. Native close never retries; empty
 comparisons continue; unavailable/conflicting fail closed.
-[Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
+[Local intake](local-dependencies.md) owns cohort audit and gates (E-CI-015/018;
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
 renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005
 health grants no release authority (E-CI-009/089). Protected changes require

@@ -131,7 +131,7 @@ test("the released Notes cohort has one current Design Core and API peer context
   const nativeSource = JSON.parse(
     readFileSync("scripts/validation/native-sources.json", "utf8"),
   );
-  const notesJavascriptRevision = "01bf01f61f91f31237ebcdbb07242b9b6f9a5943";
+  const notesJavascriptRevision = "5ffb33c152404b6880debd1b5fd70762121d6196";
   // Renderer package adoption does not change the qualified Rust source graph.
   const notesNativeRevision = "40b9ba8ee569a737a0ace77870a094972ee6f768";
   assert.equal(
@@ -142,7 +142,7 @@ test("the released Notes cohort has one current Design Core and API peer context
     nativeSource.find((entry) => entry.name === "lapis-notes")?.revision,
     notesNativeRevision,
   );
-  assert.match(workspace, /"@lapismd\/design-core": "0\.13\.4"/);
+  assert.match(workspace, /"@lapismd\/design-core": "0\.13\.5"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
   assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.5");
   assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.8");
