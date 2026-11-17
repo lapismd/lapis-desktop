@@ -138,9 +138,21 @@ Notes' private App Profile is built from the same Notes
 framework cohort. Hosted CI builds this committed public boundary without source
 aliases, bundled node_modules or a second chat writer. Portable validation MUST
 export that same reachable commit rather than an abandoned or source-local
-identity (E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources
-MUST also match the exact reachable commits used by hosted preparation; no
-fallback or equal-tree substitution is allowed.
+identity (E-VALIDATION-010). Its overlapping AI and JJ Store sources MUST match
+hosted preparation exactly. Plugins JavaScript fixtures select retired-free
+`969356250f26c5561fac22cf00d8da8f395dbdae`; the qualified Rust engine source
+remains `879581d1549187bdbac2d75b40d02e0df46e721a` in the native source
+inventory and Cargo lock. No fallback or equal-tree substitution is allowed.
+
+Native fixture preparation and the explicit local macOS plugin builder MUST run
+the checked-out Plugins source's `scripts/check-retired-ai.mjs` before workspace
+installation, signer import or plugin builds, including warm dependency reuse. A
+missing or failing audit MUST stop preparation. Retain the seven non-AI native
+fixtures, static native AI, ephemeral signing and independent Tasks inputs.
+Changing a source pin requires a newly produced source-identity-bound dependency
+artifact; prior full artifacts MUST NOT qualify the new input. E-RETIRE-003
+records source-admission controls; actual fixture generation and macOS/native
+qualification remain separate gates.
 
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History
