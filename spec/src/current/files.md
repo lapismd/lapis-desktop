@@ -395,6 +395,6 @@ first failure; passing a later attempt cannot silently re-enable the case or
 qualify missing native input/recovery boundaries. Product file behavior and
 accepted-command retry rules remain unchanged.
 
-The owning settings controller registers shared CLI setup. CLI access uses
-admitted Core clients; vault close revokes grants and retains writer guards.
-Shared remotes preserve these file/editing fences (E-REPO-059). LD-SKILL-001 preserves edited, unmanaged and interrupted skill directories through native receipts.
+CLI settings use their owning controller and admitted Core clients; vault close
+revokes grants, retaining writer guards and remote fences (E-REPO-059). Native
+receipts protect edited/unmanaged/interrupted skills (LD-SKILL-001).

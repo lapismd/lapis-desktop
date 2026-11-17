@@ -364,3 +364,5 @@
 - [Prepare direct Linux Rust skill resources](../history/E-CI-103.md)
 
 - [Public profile and skill release intake](../history/E-SKILL-002.md)
+
+- [Current-main released native skill intake](../history/E-SKILL-003.md)

@@ -396,5 +396,5 @@ evidence. [Native acceptance](native-acceptance.md) includes fixed `api --sync`
 and noninteractive, isolated custody probes; source/hash guards remain required.
 [Tool gates](../verification-notes.md) remain; CI and intake are linked above.
 
-CLI staging tests compare two immutable revisions; source-specific outputs and
-build-schema markers block stale binaries; [preview receipts](distribution.md). [E-SKILL-001](../history/E-SKILL-001.md) retains skill source qualification and native gates. [CI resources](../history/E-CI-102.md). [Native CI resources](../history/E-CI-103.md). [Released skill intake](../history/E-SKILL-002.md).
+CLI keeps source/build-schema guards; [preview receipts](distribution.md).
+[Skills](skills.md) and [intake](../history/E-SKILL-003.md) retain gates.

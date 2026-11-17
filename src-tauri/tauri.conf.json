@@ -30,9 +30,7 @@
       }
     ],
     "security": {
-      "capabilities": [
-        "main"
-      ],
+      "capabilities": ["main"],
       "csp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://www.gravatar.com lapis-vault: http://lapis-vault.localhost; media-src 'self' lapis-vault: http://lapis-vault.localhost; worker-src 'self' blob:; connect-src 'self' data: blob: https: ipc: http://ipc.localhost lapis-vault: http://lapis-vault.localhost; object-src 'none'; frame-src 'none'; base-uri 'none'",
       "devCsp": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://www.gravatar.com lapis-vault: http://lapis-vault.localhost; media-src 'self' lapis-vault: http://lapis-vault.localhost; worker-src 'self' blob:; connect-src 'self' data: blob: https: ipc: http://ipc.localhost lapis-vault: http://lapis-vault.localhost ws://127.0.0.1:1431; object-src 'none'; frame-src 'none'; base-uri 'none'"
     }
@@ -40,23 +38,14 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": [
-          "lapis",
-          "lapis-notes",
-          "web+lapis"
-        ]
+        "schemes": ["lapis", "lapis-notes", "web+lapis"]
       }
     }
   },
   "bundle": {
     "active": true,
-    "targets": [
-      "app"
-    ],
-    "icon": [
-      "icons/icon.png",
-      "icons/icon.icns"
-    ],
+    "targets": ["app"],
+    "icon": ["icons/icon.png", "icons/icon.icns"],
     "macOS": {
       "minimumSystemVersion": "13.0"
     },

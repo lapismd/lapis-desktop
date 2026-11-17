@@ -71,7 +71,7 @@ native packages to the same built public exports. Normal semver ranges must
 match the local version; only the root's exact declared link may bypass range
 parsing. Tracked dependency manifests and lockfiles remain portable.
 
-The public Notes application profile uses its published `native-chat` entry
+The private Notes application profile uses its packed public `native-chat` entry
 and a normal package range. Its Agent UI and API imports must resolve the same
 verified consumer identities. Source aliases, copied screens and a second chat
 writer remain prohibited.
@@ -103,11 +103,14 @@ retain their owning contracts.
 
 ## Current registry and private inputs
 
-E-SKILL-002 selects the public Profile ^0.2.1 / API ^0.6.5 boundary, UI ^0.2.1,
-Workspace ^0.4.6, Markdown ^0.3.2, Search ^0.1.12, Source Editor ^0.1.11,
-Graph ^0.1.12, History ^0.4.0, Bases ^0.4.1, Agent UI ^0.2.6, Design Core ^0.13.4 and Mira
-~0.2.0 with companions ~0.0.4. Registry resolution, portable source gates and
-native application acceptance remain separate qualifications.
+E-CLI-003 and E-CLI-005 select the published cohort from Notes source
+`d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f`: API ^0.6.1, UI ^0.2.0, File Explorer
+^0.2.8, Workspace ^0.4.4, Language Service ^0.1.6, Design Core ^0.13.2, Mira
+~0.1.5, Search ^0.1.6 and Agent UI ^0.2.3. AI Host ^0.3.0, Markdown ^0.2.1,
+Repository UI ^0.1.1, Bases ^0.2.0, History ^0.2.0, Tasks ^0.1.1, Terminal
+^0.1.2 and Mira companions ~0.0.3 retain their ranges. Published intake and the
+intentionally private App Profile/AI projection remain separate from
+registry-only distribution and native application acceptance.
 
 E-CI-017's intermediate API 0.2.3/Core 0.7.3 input passed full quality, 596 Node
 and 746 policy cases, 259 Linux Rust tests, all 2,128 cold catalog cases,
@@ -115,20 +118,22 @@ renderer and static builds. Two Rust tests retain their existing ignores; four
 macOS-only cases are not collected on Linux. Those passes do not transfer to
 this selected cohort.
 
-Notes' public App Profile is consumed from npm. Hosted preparation MUST NOT
-project its registry range to a private archive or rebuild its Notes source.
-The Notes JavaScript source prerequisite is retired; retained native fixture
-pins keep their separately qualified identities. AI remains the only private
-npm projection. Local review refresh may still explicitly rebuild a committed
-Notes source cohort through the documented archive workflow.
+Notes' private App Profile is built from the same Notes
+`d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f` release source as the published
+framework cohort. Hosted CI builds this committed public boundary without source
+aliases, bundled node_modules or a second chat writer. Portable validation MUST
+export that same reachable commit rather than an abandoned or source-local
+identity (E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources
+MUST also match the exact reachable commits used by hosted preparation; no
+fallback or equal-tree substitution is allowed.
 
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History
 package builds. Native plugin fixture sources, including Plugins and Tasks, and
 the qualified Rust git pins stay. Hosted preparation installs the packed Tasks
 pin's own dependencies, bundles that pin, and leaves the published registry
-range and lockfile unchanged (E-CI-034). The remaining npm archive prerequisite
-is AI, which remains intentionally private. JJ Conversations
+range and lockfile unchanged (E-CI-034). The remaining npm archive prerequisites
+are App Profile and AI. Both remain intentionally private. JJ Conversations
 0.1.0 stays the published registry range. Public transitions are governed by
 [the distribution backlog](../backlog/distribution.md). Preserve tracked
 registry ranges and verify every active private archive import route; the
@@ -261,3 +266,8 @@ includes the earlier qualified Sync source. JJ Store retains the exact
 operation-frontier implementation from `87be3ad6` through its merged source; Git
 blob identity was checked because commit ancestry differs. Neither earlier
 qualification nor another platform's pass qualifies this new combined cohort.
+
+The skill intake pins Core/Protocol/Content HTTP to released Server v2.4.0
+source `83fca8ddd25b7b7913723e231779862f94f7dbcb`;
+[E-SKILL-003](../history/E-SKILL-003.md) retains package archive provenance and
+separate native/distribution gates.
