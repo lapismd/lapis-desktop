@@ -116,7 +116,7 @@ related blank windows only with the debug acceptance feature and explicit
 fixture opt-in; ordinary permissions remain exact. Bundle audits reject proof
 markers. Native tests retain isolated profiles and no Node/Deno app PATH.
 
-`spec-validator.config.mjs` owns normal audits. Bounded `navigation/*.md`
+`spec-validator.config.mjs` owns audits (`0.2.1`). Bounded `navigation/*.md`
 SUMMARY fragments preserve chapter order/routes; Spec Validator builds/serves
 ignored `spec/.generated/`. `spec:first` checks full JJ changes and CI PRs.
 `file:` report paths are decoded before fail-closed canonical inventory checks.

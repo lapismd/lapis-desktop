@@ -355,3 +355,5 @@
 - [Integrate account calls with final native scopes](../history/E-SYNC-016.md)
 
 - [Bounded native account observations](../history/E-SYNC-017.md)
+
+- [Scope Sync delivery to the manual encrypted MVP](../history/E-PLAN-009.md)
