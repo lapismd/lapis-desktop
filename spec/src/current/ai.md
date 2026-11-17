@@ -165,10 +165,10 @@ cleanup and retains cleanup errors. Bounded initial skill/context delivery and
 the explicit tool-free restricted Lapis profile follow
 [local setup](ai-setup.md); resume and arbitrary MCP remain refused.
 
-Retained skill parsing, discovery precedence, immutable snapshots and bundled
-seeding remain application-owned and Vault-scoped. The migrated policy test lane
-uses original applicable regression suites with public in-memory App/Vault APIs.
-It is independent of Storybook and requires no native process or credential.
+Skill parsing, discovery precedence and immutable snapshots remain App-owned and
+Vault-scoped. Seeding is missing-only; [updates](skills.md) preserve edits.
+Policy tests retain applicable original regressions through public in-memory
+App/Vault APIs, without Storybook, native processes or credentials.
 
 Command parsing, discovery, precedence, reserved local actions and bootstrap
 formatting remain app-owned. Unknown commands stay local errors; literal slash

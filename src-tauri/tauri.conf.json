@@ -4,9 +4,9 @@
   "version": "2026.31.6-rc.2",
   "identifier": "com.lapismd.lapis-desktop.preview",
   "build": {
-    "beforeDevCommand": "pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse && pnpm exec vite",
+    "beforeDevCommand": "node scripts/prepare-bundled-skills.mjs && pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse && pnpm exec vite",
     "devUrl": "http://127.0.0.1:1431",
-    "beforeBuildCommand": "pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse && pnpm build",
+    "beforeBuildCommand": "node scripts/prepare-bundled-skills.mjs && pnpm cli:prepare -- --reuse && pnpm ai:prepare -- --reuse && pnpm build",
     "frontendDist": "../dist"
   },
   "app": {
@@ -51,7 +51,8 @@
     },
     "resources": {
       "resources/lapis-ai/": "lapis-ai/",
-      "resources/lapis-cli/": "lapis-cli/"
+      "resources/lapis-cli/": "lapis-cli/",
+      "resources/bundled-skills.json": "bundled-skills.json"
     }
   }
 }

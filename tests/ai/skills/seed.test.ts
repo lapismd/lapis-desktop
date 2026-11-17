@@ -12,7 +12,7 @@ beforeAll(async () => {
 });
 
 describe("seedBundledSkills", () => {
-  it("writes packaged skills only when missing and overwrites packaged names on update", async () => {
+  it("seeds missing skills and preserves user edits on legacy update", async () => {
     const vault = new Vault(new MemoryVaultAdapter());
     await vault.load();
     await seedBundledSkills(vault);
@@ -20,10 +20,11 @@ describe("seedBundledSkills", () => {
     const lapis = vault.getFileByPath(".agents/skills/lapis-notes/SKILL.md");
     expect(research).toBeTruthy();
     expect(lapis).toBeTruthy();
+    expect(await vault.cachedRead(research!)).toBe(RESEARCH_SKILL_MARKDOWN);
     await vault.modify(research!, "user edited research");
     await seedBundledSkills(vault);
     expect(await vault.cachedRead(research!)).toBe("user edited research");
     await seedBundledSkills(vault, { overwrite: true });
-    expect(await vault.cachedRead(research!)).toBe(RESEARCH_SKILL_MARKDOWN);
+    expect(await vault.cachedRead(research!)).toBe("user edited research");
   });
 });

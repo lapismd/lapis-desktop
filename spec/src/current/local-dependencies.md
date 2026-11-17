@@ -266,3 +266,8 @@ includes the earlier qualified Sync source. JJ Store retains the exact
 operation-frontier implementation from `87be3ad6` through its merged source; Git
 blob identity was checked because commit ancestry differs. Neither earlier
 qualification nor another platform's pass qualifies this new combined cohort.
+
+The skill intake pins Core/Protocol/Content HTTP to released Server v2.4.0
+source `83fca8ddd25b7b7913723e231779862f94f7dbcb`;
+[E-SKILL-003](../history/E-SKILL-003.md) retains package archive provenance and
+separate native/distribution gates.

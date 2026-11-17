@@ -38,7 +38,9 @@ export function unitCommands(env = process.env) {
   if (files.length)
     commands.push([process.execPath, ["--import", "tsx", "--test", ...files]]);
   if (groups.includes("ai")) commands.push(["pnpm", ["test:ai"]]);
-  if (groups.includes("rust"))
+  if (groups.includes("rust")) {
+    const packages = rustArguments(env.LAPIS_CI_RUST_PACKAGES);
+    prepareDesktopSkills(commands, packages);
     commands.push([
       "cargo",
       [
@@ -46,9 +48,10 @@ export function unitCommands(env = process.env) {
         "--manifest-path",
         "src-tauri/Cargo.toml",
         "--locked",
-        ...rustArguments(env.LAPIS_CI_RUST_PACKAGES),
+        ...packages,
       ],
     ]);
+  }
   return commands;
 }
 export function qualityCommands(env = process.env) {
@@ -60,6 +63,8 @@ export function qualityCommands(env = process.env) {
   ];
   if (groups.includes("types")) commands.push(["pnpm", ["check:types"]]);
   if (groups.includes("rust")) {
+    const packages = rustArguments(env.LAPIS_CI_RUST_PACKAGES);
+    prepareDesktopSkills(commands, packages);
     commands.push([
       "cargo",
       [
@@ -79,7 +84,7 @@ export function qualityCommands(env = process.env) {
         "src-tauri/Cargo.toml",
         "--all-targets",
         "--locked",
-        ...rustArguments(env.LAPIS_CI_RUST_PACKAGES),
+        ...packages,
         "--",
         "-D",
         "warnings",
@@ -105,4 +110,9 @@ export function qualityCommands(env = process.env) {
       ]);
   }
   return commands;
+}
+
+function prepareDesktopSkills(commands, packages) {
+  if (packages.includes("--workspace") || packages.includes("lapis-desktop"))
+    commands.push([process.execPath, ["scripts/prepare-bundled-skills.mjs"]]);
 }
