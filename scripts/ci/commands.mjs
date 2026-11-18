@@ -57,6 +57,10 @@ export function unitCommands(env = process.env) {
 export function qualityCommands(env = process.env) {
   const groups = selection(env.LAPIS_CI_QUALITY_GROUPS, ["types", "rust"]);
   const commands = [
+    [
+      process.execPath,
+      ["scripts/dependency-automation/check-canonical-intake.mjs"],
+    ],
     ["pnpm", ["exec", "prettier", "--check", "."]],
     [process.execPath, ["scripts/source-audit.mjs"]],
     ["pnpm", ["check:storybook-parity"]],

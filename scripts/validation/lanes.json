@@ -1,6 +1,6 @@
 {
   "build": "node scripts/prepare-bundled-skills.mjs && vite build",
-  "check": "pnpm check:storybook-parity && pnpm spec:validate && pnpm check:types && pnpm check:rust && pnpm check:rust:e2e && pnpm format:check",
+  "check": "node scripts/dependency-automation/check-canonical-intake.mjs && pnpm check:storybook-parity && pnpm spec:validate && pnpm check:types && pnpm check:rust && pnpm check:rust:e2e && pnpm format:check",
   "check:types": "svelte-check --tsconfig tsconfig.json --fail-on-warnings",
   "check:rust": "node scripts/prepare-bundled-skills.mjs && cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --locked -- -D warnings",
   "check:architecture": "node scripts/source-audit.mjs",

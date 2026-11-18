@@ -391,3 +391,5 @@
 - [Combine verified Desktop retirement slices](../history/E-RETIRE-012.md)
 
 - [Prepare App Profile cold-chat collection](../history/E-RETIRE-013.md)
+
+- [Integrate held dependency automation on current main](../history/E-DEPENDENCIES-017.md)

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "repository": "lapismd/lapis-desktop",
+  "status": "disabled",
+  "approvedAt": null,
+  "authority": null,
+  "expiresAt": "2026-11-20T00:00:00.000Z",
+  "finding": {
+    "advisory": "GHSA-fc5q-39xc-vjpf",
+    "package": "picomatch",
+    "severity": "high",
+    "findings": [
+      {
+        "version": "4.0.7",
+        "paths": [".>@storybook/addon-docs>unplugin>picomatch"]
+      },
+      {
+        "version": "2.3.2",
+        "paths": [".>@wdio/mocha-framework>mocha>chokidar>anymatch>picomatch"]
+      }
+    ]
+  },
+  "bindings": {
+    "sourceInputsSha256": null,
+    "portableManifestSha256": null,
+    "portableLockSha256": null,
+    "workspaceSha256": null,
+    "sourceInventorySha256": null,
+    "projections": []
+  },
+  "rawFullCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 2,
+    "critical": 0
+  },
+  "rawProductionCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "unresolved": "Fresh currentmain2015 integrated source/private archives/hosted context pending. Existing operational legacy HIGH decision is preserved unchanged with separate authority provenance; this disabled proposal grants no transfer, extension, rebinding or activation.",
+  "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
+  "activePolicy": "config/dependency-audit.json (no developmentHigh entry)",
+  "sourceSha": null,
+  "record": "spec/src/history/E-DEPENDENCIES-016.md",
+  "contextRecord": "spec/src/history/E-DEPENDENCIES-017.md",
+  "legacySourcePolicy": {
+    "baseline": "2015c1ead2042b6a9f5f8c52e37d205bdd4773b7",
+    "record": "spec/src/history/E-RETIRE-001.md",
+    "status": "operationally unchanged; authority not independently authenticated in this thread"
+  }
+}

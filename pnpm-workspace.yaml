@@ -3,6 +3,7 @@ onlyBuiltDependencies:
 
 # Native test tooling: consume the published security repairs.
 overrides:
+  "@lapismd/spec-validator": "0.2.1"
   # Temporary reviewed lifecycle/focus patch; see E-CI-015 for removal gates.
   bits-ui: "2.20.2"
   # One resolved Design Core for the API peer context. Unmet peer warnings stay.

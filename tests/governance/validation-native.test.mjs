@@ -95,9 +95,10 @@ test("native aggregate and protocol lanes select the pinned Rust toolchain", () 
   ])
     assert.equal(laneImage(lane), "ui");
 });
-test("native sources export only pinned committed bytes, verify transfer and reject traversal", async () => {
+test("native sources export only pinned committed bytes, verify transfer and reject traversal", async (t) => {
   const dir = await mkdtemp(join(tmpdir(), "notes-native-sources-"));
   const repository = join(dir, "source"),
+    consumer = join(dir, "consumer"),
     input = join(dir, "input"),
     output = join(dir, "output");
   const jj = (args) =>
@@ -108,12 +109,19 @@ test("native sources export only pinned committed bytes, verify transfer and rej
         'user.name="Validation"',
         "--config",
         'user.email="validation@localhost"',
+        "--config",
+        'signing.behavior="drop"',
         ...args,
       ],
       { cwd: repository, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] },
     ).trim();
   try {
     await mkdir(repository);
+    await mkdir(consumer);
+    execFileSync("jj", ["git", "init", "--colocate", consumer], {
+      cwd: consumer,
+      stdio: "pipe",
+    });
     await mkdir(input);
     await mkdir(output);
     jj(["git", "init", "--colocate", repository]);
@@ -121,18 +129,104 @@ test("native sources export only pinned committed bytes, verify transfer and rej
     jj(["commit", "-m", "Pinned native source"]);
     const revision = jj(["log", "-r", "@-", "--no-graph", "-T", "commit_id"]);
     await writeFile(join(repository, "data"), "unrelated pending work\n");
+    const operation = () =>
+      jj([
+        "--ignore-working-copy",
+        "op",
+        "log",
+        "--limit",
+        "1",
+        "--no-graph",
+        "-T",
+        "id",
+      ]);
+    const beforeOperation = operation();
+    const beforeBytes = await readFile(join(repository, "data"), "utf8");
     const sources = await exportNativeSources(
-      repository,
+      consumer,
       input,
       { dependency: repository },
       [{ name: "dependency", revision }],
     );
+    const afterOperation = operation();
+    t.diagnostic(
+      `sibling operation before=${beforeOperation} after=${afterOperation}`,
+    );
+    assert.equal(
+      afterOperation,
+      beforeOperation,
+      "pinned export must not snapshot sibling work",
+    );
+    assert.equal(await readFile(join(repository, "data"), "utf8"), beforeBytes);
     await restoreNativeSources(sources, input, output);
     assert.equal(
       await readFile(join(output, "dependency/data"), "utf8"),
       "pinned\n",
     );
     assert.equal(sources[0].revision, revision);
+    const { snapshot, snapshotFile } = await import(
+      "../../scripts/validation/source.mjs"
+    );
+    const previousBase = process.env.LAPIS_DESKTOP_BASE;
+    try {
+      delete process.env.LAPIS_DESKTOP_BASE;
+      await writeFile(
+        join(consumer, "data"),
+        "intentional Desktop pending work\n",
+      );
+      const consumerOperation = () =>
+        execFileSync(
+          "jj",
+          [
+            "--ignore-working-copy",
+            "op",
+            "log",
+            "--limit",
+            "1",
+            "--no-graph",
+            "-T",
+            "id",
+          ],
+          { cwd: consumer, encoding: "utf8" },
+        ).trim();
+      const rootBefore = consumerOperation();
+      // No native inventory exists: UI must not try to read or export one.
+      const ui = await snapshot(consumer, join(dir, "ui-snapshot"), null, {
+        native: false,
+      });
+      assert.deepEqual(ui.nativeSources, []);
+      assert.notEqual(
+        consumerOperation(),
+        rootBefore,
+        "Desktop's intentional working-copy snapshot remains enabled",
+      );
+      assert.equal(
+        snapshotFile(consumer, ui.revision, "data").toString(),
+        "intentional Desktop pending work\n",
+      );
+      await mkdir(join(consumer, "scripts/validation"), { recursive: true });
+      await writeFile(
+        join(consumer, "scripts/validation/native-sources.json"),
+        JSON.stringify([{ name: "dependency", revision }]),
+      );
+      const full = await snapshot(consumer, join(dir, "full-snapshot"), null, {
+        native: true,
+        sourceRoots: { dependency: repository },
+      });
+      assert.deepEqual(full.nativeSources, sources);
+      assert.equal(
+        operation(),
+        beforeOperation,
+        "UI/full export must preserve sibling operation identity",
+      );
+      assert.equal(
+        await readFile(join(repository, "data"), "utf8"),
+        beforeBytes,
+      );
+    } finally {
+      if (previousBase === undefined) delete process.env.LAPIS_DESKTOP_BASE;
+      else process.env.LAPIS_DESKTOP_BASE = previousBase;
+    }
     await assert.rejects(
       restoreNativeSources(
         [{ ...sources[0], name: "../escape" }],

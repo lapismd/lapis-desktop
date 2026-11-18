@@ -10,7 +10,7 @@ export async function exportNativeSources(root, directory, roots = {}, pins) {
       "utf8",
     ),
   );
-  const git = execFileSync("jj", ["git", "root"], {
+  const git = execFileSync("jj", ["--ignore-working-copy", "git", "root"], {
     cwd: root,
     encoding: "utf8",
   }).trim();
@@ -26,6 +26,7 @@ export async function exportNativeSources(root, directory, roots = {}, pins) {
     const actual = execFileSync(
       "jj",
       [
+        "--ignore-working-copy",
         "--no-pager",
         "log",
         "-r",
@@ -37,7 +38,7 @@ export async function exportNativeSources(root, directory, roots = {}, pins) {
       { cwd: repository, encoding: "utf8" },
     ).trim();
     if (actual !== pin.revision) throw Error("Native source revision mismatch");
-    const store = execFileSync("jj", ["git", "root"], {
+    const store = execFileSync("jj", ["--ignore-working-copy", "git", "root"], {
       cwd: repository,
       encoding: "utf8",
     }).trim();

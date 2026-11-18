@@ -281,3 +281,8 @@ from the hook's actual location at runtime. Root importer specifiers MUST retain
 their admitted relative archive declarations. Missing producers, incompatible
 ranges and unknown outcomes MUST NOT trigger a non-frozen retry or checksum
 rewrite. Producer and consumer retain the same admitted package identities.
+
+Held dependency automation adds the independent source-owned SDK policy/shape
+check before quality lanes and canonical spec checks. Original native/product,
+archive/export and full/production audit gates retain their existing authority.
+The exact metadata-only completion delegate adds no local runtime or writer.
