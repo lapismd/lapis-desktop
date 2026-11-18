@@ -191,3 +191,24 @@ application or access a user profile. Custody probes MUST remain debug/e2e-only,
 noninteractive, source/hash-bound and scoped to task-owned OS entries with
 cleanup. These compiler and local adapter results do not qualify hosted or
 release gates.
+
+## App Profile cold-chat collection
+
+[E-RETIRE-013](../history/E-RETIRE-013.md) collects the existing
+`ai-core-chat.test.mjs` in the explicit headed `services` feature stage as a
+cold-process case. It selects Core only inside its isolated test-file process,
+restores the inherited owner/native-policy environment and retains its complete
+assertions and deadlines. The separate renderer retirement matrix retains its
+owner and expectations. Default portable commands and hosted Linux-only policy
+remain unchanged; collection/governance checks do not execute native acceptance.
+
+The existing protocol-peer input is a separate execution prerequisite. CI pins
+Server `83fca8ddd25b7b7913723e231779862f94f7dbcb`, matching the compiled Cargo
+source; the native fixture reads its sibling `peer.py` at invocation. That peer
+is not frozen in the native acceptance artifact. Before any authorized native
+execution, independently verify its bytes against that exact clean Server commit
+and record the digest alongside the Desktop binary/package inputs. Neither a
+pin-manifest match nor collection success proves those runtime bytes. No shared
+helper, artifact schema, Server/core implementation or API changes are included.
+Core-specific retired-copy, Safe Mode, old-data/storage and lifecycle
+preservation remain outstanding; frozen-host removal is not unlocked.

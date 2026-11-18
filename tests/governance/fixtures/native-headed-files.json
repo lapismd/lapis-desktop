@@ -9,6 +9,7 @@
   "ai-native-queue-admission.test.mjs",
   "ai-native-queue-owner.test.mjs",
   "ai-native-queue-screen.test.mjs",
+  "ai-core-chat.test.mjs",
   "ai-notes-binding.test.mjs",
   "ai-transcript-backup.test.mjs",
   "plugin-assets.test.mjs",

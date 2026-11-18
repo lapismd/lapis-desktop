@@ -389,3 +389,5 @@
 - [Complete hosted repaired-cohort qualification](../history/E-RETIRE-011.md)
 
 - [Combine verified Desktop retirement slices](../history/E-RETIRE-012.md)
+
+- [Prepare App Profile cold-chat collection](../history/E-RETIRE-013.md)

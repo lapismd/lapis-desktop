@@ -63,6 +63,12 @@
       "coldProcess": true
     },
     {
+      "file": "tests/desktop/ai-core-chat.test.mjs",
+      "family": "services",
+      "mode": "feature",
+      "coldProcess": true
+    },
+    {
       "file": "tests/desktop/ai-notes-binding.test.mjs",
       "family": "services",
       "mode": "feature",

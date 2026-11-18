@@ -87,6 +87,25 @@ test("mapped native tests include smoke; unknown production or harness ownership
   );
 });
 
+test("Core cold chat is independently collected by the opt-in services family", () => {
+  const file = "tests/desktop/ai-core-chat.test.mjs";
+  assert.deepEqual(
+    nativeInventory.files.find((entry) => entry.file === file),
+    { file, family: "services", mode: "feature", coldProcess: true },
+  );
+  assert.deepEqual(nativeFamiliesForFile(file), ["smoke", "services"]);
+  const feature = nativeStages("services").find(({ id }) => id === "feature");
+  assert.equal(feature.files.filter((entry) => entry === file).length, 1);
+  assert.ok(feature.files.includes("tests/desktop/ai-notes-binding.test.mjs"));
+  const optional = JSON.parse(
+    readFileSync("scripts/native-optional-inventory.json", "utf8"),
+  );
+  assert.equal(
+    optional.files.some((entry) => entry.file === file),
+    false,
+  );
+});
+
 test("native conflict recovery proves every writer and focused input boundary", () => {
   const graph = readFileSync("tests/desktop/navigation-graph.test.mjs", "utf8");
   assert.match(graph, /mirror\.wait\(browser, directory, pluginId\)/);

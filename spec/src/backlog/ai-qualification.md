@@ -143,3 +143,12 @@ modified bytes must fail before seeding a disposable vault. Original signature
 verification/fixture preparation does not grant new-install permission or
 qualify native startup. Core API services/functions and planned Language Service
 wiring remain unchanged under the user's Desktop/Deno-only scope.
+
+E-RETIRE-013 prepares collection of the existing App Profile cold-chat case in
+opt-in `services`; no native case is executed or newly qualified. Its Server
+protocol peer must be independently verified at the exact compiled source before
+execution. Retired synthetic/original installed copies, both legacy disablement
+sources, Safe Mode zero allocation/recovery and exact old settings,
+conversation, memory and storage/lifecycle preservation still need Core-specific
+acceptance. The renderer matrix and historical new-conversation Core proof do
+not close these gaps or permit frozen-host removal.
