@@ -14,12 +14,6 @@
       "reason": "Standalone client-installation scenario additionally guarded by LAPIS_AI_CLIENT_INSTALL_TEST=1; not a default CI lane."
     },
     {
-      "file": "tests/desktop/ai-core-chat.test.mjs",
-      "scope": "standalone-native",
-      "owner": "ai-core-chat",
-      "reason": "Standalone real cold native chat/history scenario; not collected by existing dispatchers."
-    },
-    {
       "file": "tests/desktop/ai-core-provider-screen.test.mjs",
       "scope": "live-provider",
       "owner": "ai-provider",
