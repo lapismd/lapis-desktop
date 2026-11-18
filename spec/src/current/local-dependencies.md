@@ -1,20 +1,22 @@
 # Local dependency intake
 
-The shared-AI retirement candidate prepares six public Notes packages from exact
-source `5ffb33c152404b6880debd1b5fd70762121d6196`. API 0.6.8 includes Notes'
-retired-distribution provenance guard; UI 0.2.3, Workspace 0.4.8, File Explorer
-0.2.8, Language Service 0.1.6 and App Profile 0.2.5 retain one runtime graph.
-The approved App Profile optional Vite peer cleanup keeps its active public
-build helper and development toolchain. Its actual installed production graph
-has zero advisories; the approved development-only Picomatch exception expires
-2026-11-30 and matches exact tool versions/paths. Released Core 0.13.5 satisfies
-the API dependency through the existing single-version override. Qualification
-is in progress; the older E-SYNC-006/009 receipts do not qualify this cohort.
-The installed public installer rejects retired provenance before network IO
-without writing settings, conversations or memory; ordinary third-party `ai`
-origins retain fetch admission. Source pins and archive hashes identify the
-cohort. A restored public root lock cannot substitute for its actual installed
-production/development audit graph.
+The shared-AI retirement candidate prepared six public Notes packages from exact
+source `5ffb33c152404b6880debd1b5fd70762121d6196`.
+[E-CLI-008](../history/E-CLI-008.md) advances the hosted JavaScript pin to
+`6b2b39f583a30be4e6dfa734050c20af862384ba` so CI archives satisfy API `0.6.9`,
+UI `0.2.5` and App Profile `0.2.6`. Workspace 0.4.8, File Explorer 0.2.8 and
+Language Service 0.1.6 remain in that cohort. The approved App Profile optional
+Vite peer cleanup keeps its active public build helper and development
+toolchain. Its actual installed production graph has zero advisories; the
+approved development-only Picomatch exception expires 2026-11-30 and matches
+exact tool versions/paths. Released Core 0.13.5 satisfies the API dependency
+through the existing single-version override. Qualification is in progress; the
+older E-SYNC-006/009 receipts do not qualify this cohort. The installed public
+installer rejects retired provenance before network IO without writing settings,
+conversations or memory; ordinary third-party `ai` origins retain fetch
+admission. Source pins and archive hashes identify the cohort. A restored public
+root lock cannot substitute for its actual installed production/development
+audit graph.
 
 CI MUST build App Profile and its dependencies through the source-owned normal
 build, then project all six archives into the same runtime graph. Published
@@ -267,16 +269,18 @@ application crates retain lapis-server `530a6c42`. A renderer-only dependency
 update MUST NOT silently refresh those native inputs. Actual native-window and
 distribution qualification remain separate.
 
-E-SYNC-006 aligns the public Notes ranges with API `^0.6.5`, UI `^0.2.1`,
+E-SYNC-006 aligned the public Notes ranges with API `^0.6.5`, UI `^0.2.1`,
 Workspace `^0.4.6`, App Profile `^0.2.1`, History `^0.5.0` and their shared
 Markdown/Search/Source Editor dependencies. Released Core `0.13.4` retains one
 controller identity through the existing exact override. The public registry
 lock projection omits only the still-unpublished AI prerequisite; its checked
-source range and verified private archive remain explicit. The current Profile
-`0.2.2` source candidate satisfies `^0.2.1`. Its verified source archive carries
-the pending leave contract. Eight-archive intake now passes the actual consumer
-type boundary and all32installed import-route checks; registry-only distribution
-remains separately gated.
+source range and verified private archive remain explicit.
+
+[E-CLI-008](../history/E-CLI-008.md) advances the portable registry cohort to
+API `^0.6.9`, App Profile `^0.2.6` and UI `^0.2.5` so Desktop receives the
+declarative General → Advanced CLI settings port and published Sync leave types
+without a private Notes leave archive. AI `^0.2.0` remains the only unpublished
+root prerequisite.
 
 The same intake uses released Graph `^0.1.12` and Bases `^0.4.1`, whose public
 peer contracts admit API0.6 and current Markdown; older locked releases do not.
@@ -297,17 +301,14 @@ version. Source manifests and the portable lock MUST be restored on failure.
 
 ## Sync intake after shared remotes
 
-E-SYNC-009 integrates E-REPO-058/059's released History `^0.5.1`, App Profile
-`^0.2.2` and Mira `~0.2.0` cohort while retaining the temporary verified Notes
-archive cohort for the unreleased native Sync leave contract. Published API
-0.6.5 lacks `NativeSyncService.prepareLeave`; account teardown MUST NOT fall
-back to the released older lifecycle. This documented private migration
-prerequisite also retains the API-compatible Tasks candidate and released Graph
-`^0.1.12`/Bases `^0.4.1` from the qualified Sync input; older peers refuse API
-0.6 admission. Source manifests and lockfiles retain registry ranges; archive
-bytes and all import routes remain verified. Remove the temporary Notes/Tasks
-projection after separate publication and consumer qualification. This exception
-does not authorize publication.
+E-SYNC-009 integrated E-REPO-058/059's released History `^0.5.1`, App Profile
+`^0.2.2` and Mira `~0.2.0` cohort while a temporary Notes archive covered the
+then-unpublished Sync leave contract. [E-CLI-008](../history/E-CLI-008.md)
+replaces that leave prerequisite with published API `0.6.9`. The API-compatible
+Tasks candidate and released Graph `^0.1.12`/Bases `^0.4.1` remain required
+where older peers refuse API 0.6 admission. Source manifests and lockfiles
+retain registry ranges; archive bytes and all import routes remain verified.
+This exception does not authorize publication.
 
 Native crates adopt current main's Core `c32b5ae4` and JJ Store `086def18`. Core
 includes the earlier qualified Sync source. JJ Store retains the exact

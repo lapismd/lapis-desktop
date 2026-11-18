@@ -335,6 +335,7 @@
 - [App-owned native Sync leave preparation](../history/E-SYNC-006.md)
 - [Advance the CLI delivery preview version](../history/E-CLI-006.md)
 - [Qualify the bundled CLI delivery candidate](../history/E-CLI-007.md)
+- [Adopt published declarative CLI settings UI](../history/E-CLI-008.md)
 - [Qualify native Sync delivery against current Desktop main](../history/E-SYNC-008.md)
 
 - [Prepare native remotes transport](../history/E-REPO-057.md)

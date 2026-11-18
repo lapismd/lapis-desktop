@@ -128,7 +128,7 @@
 | LD-REPO-003 | Planned | Native-store experiment **Deferred** at `codex/desktop-jj-chat-checkpoint-20261020`; [E-AI-092](history/E-AI-092.md) preserves evidence/gates; [E-AI-093](history/E-AI-093.md) makes local ACP the active profile. |
 | LD-REPO-004 | Implemented | [M13.2 ledger](backlog.md): repository UI history and original gates; [E-REPO-016](history/E-REPO-016.md): loading progress. |
 | LD-REPO-005 | Partial | [E-RELEASE-014](history/E-RELEASE-014.md): ARM64 quarantine. [E-CI-085](history/E-CI-085.md)/[086](history/E-CI-086.md)/[087](history/E-CI-087.md)/[088](history/E-CI-088.md): earlier native admission evidence. [E-REPO-058](history/E-REPO-058.md)/[059](history/E-REPO-059.md): shared remotes adoption, real OS/HTTPS proof and final-cohort gates; publication remains separate. |
-| LD-CLI-001 | Implemented | [E-CLI-002](history/E-CLI-002.md): installer. [E-CLI-007](history/E-CLI-007.md): exact-source CI, rc.2 three-platform candidate and Linux installed-app lifecycles. |
+| LD-CLI-001 | Implemented | [E-CLI-002](history/E-CLI-002.md): installer. [E-CLI-007](history/E-CLI-007.md): rc.2 candidate. [E-CLI-008](history/E-CLI-008.md): UI 0.2.5 / API 0.6.9 / App Profile 0.2.6 adoption. |
 | LD-CLI-002 | Partial | E-CLI-001: loopback/Core regressions pass; native consent pending. |
 | LD-CLI-003 | Partial | E-CLI-001: private-file/lifecycle regressions pass; native dialog pending. |
 

@@ -63,9 +63,9 @@ test("frozen current no-op matches reviewed shared shape and exact descriptor by
     before = structuredClone(d);
   assert.deepEqual(verifyArtifactProjection(d), {
     shapeSha256:
-      "c0c86889045958d5ae1a4fbc4822c55aae6af01bcfabe907ee930ae7307be881",
+      "018000ffc43161d5b0f2376e6cab432e974b42310ae98f5ba47dd9be4ac82013",
     descriptorSha256:
-      "18ec13aa4cbaf0eac8db6af508dddf83aacec65cd5d8a43f68d9ded44d0df9a4",
+      "403f5b2044df651284e3991b0db249787004c4d3d3b738aef1925f37452e7b3f",
     reviewedSource: "c4b54f932cd4239d9a8f0b3e1fb327f28b63dfb2",
   });
   assert.deepEqual(d, before);
