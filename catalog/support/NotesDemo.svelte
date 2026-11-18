@@ -28,6 +28,7 @@
     createAi,
     nativeChat,
     createRepository,
+    cliSettings,
     files = {},
     safeMode,
     backgroundIndexing,
@@ -39,6 +40,7 @@
     createAi?: AiFactory;
     nativeChat?: (app: App) => NativeChatHost;
     createRepository?: RepositoryFactory;
+    cliSettings?: import("@lapis-notes/ui/cli").CliSettingsHost;
     files?: Record<string, string>;
     safeMode?: AppSafeModeState;
     backgroundIndexing?: NativeBackgroundIndexing;
@@ -141,6 +143,7 @@
       {createAi}
       {nativeChat}
       {createRepository}
+      {cliSettings}
       safeMode={safeMode ?? normalRecovery()}
       urlDelivery={urls}
       onReady={async () => {

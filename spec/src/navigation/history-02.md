@@ -368,7 +368,6 @@
 
 - [Current-main released native skill intake](../history/E-SKILL-003.md)
 - [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)
-
 - [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)
 
 - [Shared AI final consumer qualification](../history/E-RETIRE-002.md)
@@ -393,6 +392,7 @@
 
 - [Prepare App Profile cold-chat collection](../history/E-RETIRE-013.md)
 
+- [Adopt released Notes retirement packages](../history/E-RETIRE-014.md)
 - [Integrate held dependency automation on current main](../history/E-DEPENDENCIES-017.md)
 
 - [Qualify the held current-main integration](../history/E-DEPENDENCIES-018.md)

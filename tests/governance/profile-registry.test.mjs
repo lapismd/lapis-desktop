@@ -6,26 +6,30 @@ import {
   unpublishedRanges,
 } from "../../scripts/ci-install.mjs";
 
-test("Sync migration preserves released ranges and bounds its pending-contract projection", () => {
+test("released retirement cohort preserves npm ranges and bounds the remaining private projection", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const original = structuredClone(manifest);
   const projected = projectUnpublished(manifest, () => true);
   assert.deepEqual(manifest, original);
-  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.2.6");
-  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.9");
+  const released = {
+    "@lapis-notes/api": "^0.6.9",
+    "@lapis-notes/ui": "^0.2.5",
+    "@lapis-notes/app-profile": "^0.2.6",
+  };
+  for (const [name, range] of Object.entries(released)) {
+    assert.equal(manifest.dependencies[name], range);
+    assert.equal(projected.dependencies[name], range);
+  }
   assert.deepEqual(Object.keys(unpublishedRanges).sort(), [
-    "@lapis-notes/api",
-    "@lapis-notes/app-profile",
     "@lapis-notes/file-explorer",
     "@lapis-notes/language-service",
     "@lapis-notes/lapis-plugin-tasks",
-    "@lapis-notes/ui",
     "@lapis-notes/workspace",
     "@lapismd/ai",
   ]);
   assert.equal(
-    projected.dependencies["@lapis-notes/app-profile"],
-    "file:.local/ci-packages/-lapis-notes-app-profile/package.tgz",
+    projected.dependencies["@lapis-notes/language-service"],
+    "file:.local/ci-packages/-lapis-notes-language-service/package.tgz",
   );
   assert.equal(
     projected.dependencies["@lapis-notes/history"],

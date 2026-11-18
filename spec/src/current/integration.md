@@ -34,6 +34,14 @@ LD-INT-003/004/008/009.
 
 ## Qualification
 
+E-RETIRE-014 verifies the released CLI settings port through the real owned
+NotesWorkspace, including General → Advanced registration, fake scoped clients
+and return-to-vaults disposal in four viewport/theme modes. Final proof MUST use
+published UI 0.2.5 on normal npm; earlier private fixed-UI 0.2.4 overlay results
+remain historical only. These browser cases do not qualify native installation,
+private token-file IO, loopback authority or the outstanding native
+consent/lifecycle boundaries.
+
 Exercise actual menu dispatch, clipboard/native notification ports, native About
 and safe external opening alongside renderer command routing. Use isolated real
 vaults for cold and already-running application URL delivery, repeated requests

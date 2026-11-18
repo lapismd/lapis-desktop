@@ -1,5 +1,14 @@
 # Desktop catalog coverage
 
+`Desktop/CLI workspace settings/GeneralAdvancedAndDisposal` mounts production
+`NotesWorkspace` through the existing owned Notes fixture and forwards only its
+existing public CLI host input. It verifies released CLI registration under
+General → Advanced, public-controller registration/disposal, scoped credential
+creation/revocation, and actual return-to-vaults teardown. The component stories
+in `plugins/cli/Settings.stories.ts` remain separate. No native command
+executes; all four viewport/theme modes and visual-pending status remain
+required.
+
 Shared-screen migration: existing story IDs remain comparable between baseline
 7480 and migration 7481. Production repository/history/blame/restore/conflict
 surfaces now import public `@lapis-notes/history/repository` exports; the former

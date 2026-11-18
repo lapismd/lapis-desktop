@@ -98,6 +98,11 @@ package/image dispatches, signing, deployment or installed-app replacement.
 
 ## Registry-install prerequisite
 
+E-RETIRE-014 seals three npm packages plus the five private archives below on
+published UI 0.2.5. Historical private-UI repair evidence and remaining native
+or registry-only gates stay in
+[dependency intake](../current/local-dependencies.md).
+
 The approved manual Bits UI 2.20.2 patch permits the pending Core/UI release
 work to proceed through normal qualification without an upstream release wait.
 Retain Link Preview and Slider repairs plus the verified FocusScope guard; every
@@ -105,14 +110,6 @@ consumer installs the explicit root patch and frozen hash. E-CI-015 and
 [dependency intake](../current/local-dependencies.md) own qualification and the
 upstream-equivalence removal gate. A local patch or prepared source alone does
 not establish a published Core replacement or final Desktop acceptance.
-
-The application retains two intentionally private public-build prerequisites:
-App Profile ^0.0.0 and AI ^0.2.0. Hosted CI pins their owning sources and
-verifies public archive payloads. JJ Conversations ^0.1.0, History ^0.2.0, Agent
-UI ^0.2.3, Repository UI ^0.1.1, Bases ^0.2.0 and Tasks ^0.1.1 use published
-registry ranges. Before registry-only distribution, qualify supported public
-consumption or the explicit private distribution contract. Preserve portable
-manifests; source aliases and copied implementations remain prohibited.
 
 [E-MOBILE-006](../history/E-MOBILE-006.md) records the released Notes mobile
 cohort and rebuilt private App Profile intake. The current version inventory
@@ -130,17 +127,20 @@ selected cohort still needs its own Desktop audit.
 
 ### Remaining npm archive prerequisites
 
-CI prepares these two packages from the full commits in
+CI prepares these five packages from the full commits in
 `scripts/ci-sources.json`; `scripts/ci-install.mjs` selects their package
 boundaries. That source list also keeps native plugin fixture checkouts and
 qualified Rust git pins after their npm projections are removed. Remove each
 remaining temporary projection after its released replacement or explicit
 private distribution contract is qualified in Desktop.
 
-| Package                    | Remaining transition                                          |
-| -------------------------- | ------------------------------------------------------------- |
-| `@lapis-notes/app-profile` | Retain the intentionally private verified built prerequisite. |
-| `@lapismd/ai`              | Retain the intentionally private verified built client.       |
+| Package                           | Remaining transition                                      |
+| --------------------------------- | --------------------------------------------------------- |
+| `@lapis-notes/lapis-plugin-tasks` | Qualify a released replacement for the pinned source fix. |
+| `@lapis-notes/workspace`          | Qualify a released replacement for the pinned source fix. |
+| `@lapis-notes/file-explorer`      | Qualify a released replacement for the pinned source fix. |
+| `@lapis-notes/language-service`   | Retain explicit preparation and complete public exports.  |
+| `@lapismd/ai`                     | Retain the verified private built client.                 |
 
 The original E-CI-005 audit predates these newer verified releases. Each
 selected source repair still needs its own release and consumer proof. These
