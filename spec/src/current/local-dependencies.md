@@ -71,11 +71,14 @@ remain.
 
 `pnpm local:refresh` rebuilds public exports, uses source-owned package
 preparation and records source revisions/checksums together. Design Core owns
-its prepared CSS/declaration archive. Node Spec Validator preparation uses the
-exact build runtime declared by that source; it does not change the machine's
-default Deno. Linked Terminal, AI and JJ clients retain their public-export
-boundaries and gain build fingerprints. Native source inputs must also be
-committed before their consuming app and helper bundles are rebuilt.
+its prepared CSS/declaration archive. Spec Validator preparation MUST use the
+supported Node `build:node` script. Before any source build or freshness check,
+reject a declared Deno engine, an absent/incompatible Node engine or a missing
+Node build script; never bootstrap Deno. Existing cohort semver and committed
+source admission remain authoritative. E-RETIRE-008 owns this tooling repair.
+Linked Terminal, AI and JJ clients retain their public-export boundaries and
+gain build fingerprints. Native source inputs must also be committed before
+their consuming app and helper bundles are rebuilt.
 
 `pnpm local:status` MUST reject missing/old installed source receipts, modified
 linked exports, bad archive checksums and installed payload mismatches. Inspect

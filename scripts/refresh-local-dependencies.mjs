@@ -12,6 +12,7 @@ import {
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import semver from "semver";
 import {
   committedSource,
   dependencySources,
@@ -79,6 +80,24 @@ export function freshness(groups, installed, links) {
 }
 export async function refreshLocalDependencies(root, check = false) {
   const groups = dependencySources(root);
+  const validator = groups.find((group) => group.repo === "spec-validator");
+  if (validator) {
+    const manifest = validator.packages[0].manifest;
+    assert.ok(
+      !Object.hasOwn(manifest.engines ?? {}, "deno"),
+      "Spec Validator local sources must be Deno-free; use the supported Node release",
+    );
+    assert.ok(
+      typeof manifest.engines?.node === "string" &&
+        semver.satisfies(process.versions.node, manifest.engines.node),
+      "Spec Validator local sources require a supported Node engine",
+    );
+    assert.ok(
+      typeof manifest.scripts?.["build:node"] === "string" &&
+        manifest.scripts["build:node"].trim(),
+      "Spec Validator local sources require build:node",
+    );
+  }
   const directory = join(root, ".local/archives");
   if (check) {
     const installedPath = join(directory, "installed.json");
@@ -124,23 +143,7 @@ export async function refreshLocalDependencies(root, check = false) {
     console.log(`Refresh ${group.repo} at ${group.revision}`);
     const output = join(directory, "latest", group.repo, group.revision);
     mkdirSync(output, { recursive: true });
-    if (group.build) {
-      const deno =
-        group.repo === "spec-validator" &&
-        group.packages[0].manifest.engines.deno;
-      if (deno)
-        assert.match(
-          deno,
-          /^\d+\.\d+\.\d+$/u,
-          "Spec Validator must pin its build runtime",
-        );
-      await run(
-        group.root,
-        deno
-          ? [`--package=deno@${deno}`, "dlx", "--shell-mode", "pnpm build:node"]
-          : group.build,
-      );
-    }
+    if (group.build) await run(group.root, group.build);
     for (const pkg of group.packages) {
       if (!group.build && group.repo !== "design-core")
         await run(pkg.root, ["build"]);

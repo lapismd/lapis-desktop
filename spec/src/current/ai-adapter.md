@@ -154,3 +154,38 @@ uncertain outcomes, isolated workers, revocation and process cleanup.
 This transport gate does not qualify desktop AI UI, conversation/context/memory
 migration, application tools, native credentials, a real model or compute. Those
 retain M10.2–M10.4 gates. The application adds no replacement screens.
+
+## Shared AI retirement qualification
+
+[E-RETIRE-001](../history/E-RETIRE-001.md) retains installed public admission
+and the approved exact development audit exception.
+[E-RETIRE-002](../history/E-RETIRE-002.md) records final local
+public-guard/canonical checks and 2,168 cold catalog cases. Neither receipt
+qualifies native data preservation or publication.
+
+[E-RETIRE-003](../history/E-RETIRE-003.md) rejects stale shared-AI fixture
+sources before builds. [E-RETIRE-005](../history/E-RETIRE-005.md) repairs normal
+Language Service preparation and packed-export admission, preserving its future
+wiring. [E-RETIRE-010](../history/E-RETIRE-010.md) records complete fresh
+artifacts, same-run public-guard tests and all 2,168 hosted
+interaction/accessibility cases.
+
+[E-RETIRE-006](../history/E-RETIRE-006.md) retires only superseded private
+presentation; its 432 reachable runtime modules and all edges remain unchanged.
+[E-RETIRE-008](../history/E-RETIRE-008.md) removes the obsolete Spec Validator
+Deno bootstrap while preserving supported Node builds and source admission.
+[E-RETIRE-004](../history/E-RETIRE-004.md)/[009](../history/E-RETIRE-009.md)
+prepare ten baseline/synthetic/original-archive native cases. None has executed;
+App Profile storage/lifecycle remains a separate boundary. No core API service
+or function is removed or changed, including planned Language Service wiring.
+
+[E-RETIRE-011](../history/E-RETIRE-011.md) closes the selected ordinary hosted
+producer/consumer boundary: eight gates pass, including both Linux binaries; the
+checked tree lands unchanged on the PR47 feature branch. The macOS bundle and
+full-source profile were explicitly unselected, not qualified. Child candidate
+integration, native preservation, App Profile lifecycle and release remain
+separate. Core API services/functions and planned Language Service integration
+remain intact; terminal migration stays last.
+
+[E-RETIRE-012](../history/E-RETIRE-012.md) prepares the combined candidate while
+preserving each original removal and its remaining hosted/native gates.

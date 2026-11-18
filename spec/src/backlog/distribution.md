@@ -76,7 +76,7 @@ explicitly retired, and the replacement has no Deno runtime dependency.
 Remaining: Qualify Tauri and fixtures (E-RETIRE-003/005), then remove Deno.
 
 Evidence: [E-PLAN-002](../history/E-PLAN-002.md),
-[E-REVIEW-001](../history/E-REVIEW-001.md).
+[E-REVIEW-001](../history/E-REVIEW-001.md). Node tooling: E-RETIRE-008.
 
 ## Retained release decisions
 
