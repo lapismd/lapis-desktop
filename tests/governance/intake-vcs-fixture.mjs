@@ -70,6 +70,15 @@ export function intakeVcsFixture({
   ]);
   write(".gitignore", "node_modules/\n.local/\n");
   write(policyPath, policyBytes);
+  for (const path of [
+    "scripts/ci-sources.json",
+    ".github/ci-docs/package.json",
+    ".github/dependency-automation/artifact-projection.json",
+  ])
+    write(
+      path,
+      readFileSync(new URL("../../" + path, import.meta.url), "utf8"),
+    );
   const apply = (files) => {
     for (const [path, text] of Object.entries(files)) write(path, text);
     for (const path of chapters)

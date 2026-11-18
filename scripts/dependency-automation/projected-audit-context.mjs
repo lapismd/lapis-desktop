@@ -18,6 +18,12 @@ export const projectedAuditSourceInputs = [
   "scripts/ci-artifact-provenance.mjs",
   "scripts/dependency-automation/projected-audit-context.mjs",
   "scripts/dependency-automation/projected-audit-admission.mjs",
+  ".github/dependency-automation/artifact-projection.json",
+  ".github/ci-docs/package.json",
+  "scripts/dependency-automation/artifact-projection.mjs",
+  "scripts/dependency-automation/check-canonical-intake.mjs",
+  "scripts/dependency-automation/source-intake-reader.mjs",
+  "scripts/dependency-automation/maintenance-note.mjs",
 ];
 export function projectedAuditContext({
   root = process.cwd(),

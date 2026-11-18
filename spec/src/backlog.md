@@ -53,12 +53,13 @@ availability is not runtime proof. The new disabled Desktop HIGH ceiling is
 November20 at00:00UTC, at most48hours after a future exact user decision and
 ending earlier on a fix; existing active approvals are unchanged.
 
-A source-declared isolated public-tool projection may be a bounded future SDK
-metadata path without publishing intentional private packages: seed only the
-reviewed SDK closure and copy back independently verified portable data. It
-requires reviewed shared support and real private installed consumer CI; it is
-not implemented, and neither skip-installs nor private writer activation is
-authorized by the assessment in E-DEPENDENCIES-011.
+Reviewed coordinator88 and E-DEPENDENCIES-014 implement the SDK-only seeded
+projection contract and source data/independent shape guard. Exact raw
+descriptor 1816 remains inactive until Root separately admits the trusted
+capability and qualifies actual source health/audits/eligibility. Current
+SDK0.2.1 is a no-op; historical real0.2.0→0.2.1 proves mechanics only. No
+skip-installs, fake registry version or private writer activation is authorized
+by source descriptor data.
 
 Separate active-thread drafts47/49/51/52/53 form a retirement stack around
 merged48 within47, not main or PR50. Their installer/artifact/private graph,
@@ -79,3 +80,7 @@ bindings.
 comparison selection across hosted Git, JJ candidates and empty bootstrap. The
 SDK API remains unchanged; private updater/hosted/HIGH holds and immutable
 E-DEPENDENCIES-012 context remain separate pending final reviewed source opt-in.
+
+[E-DEPENDENCIES-014](history/E-DEPENDENCIES-014.md) expands final source binding
+to20 reviewed inputs, including executable intake guards, descriptor and nested
+CI-docs raw bytes. Preserve old14-input E012; no HIGH decision transfers.

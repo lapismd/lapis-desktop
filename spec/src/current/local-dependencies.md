@@ -302,6 +302,17 @@ changed paths; paired hosted revisions MUST match the actual candidate and
 available ancestor. Clean Git, selected JJ candidates, local JJ changes and
 empty JJ-on-HEAD bootstrap MUST retain note/scope checks without false no-ops.
 
+The data-only artifact descriptor MUST bind root manifest/workspace/portable
+lock plus exact private-inventory and nested CI-docs manifest bytes. Only the
+selected SDK version/integrity and corresponding root coordinates MAY normalize;
+all shared jiti/TypeScript rows, peer labels and private/runtime inputs MUST
+stay fixed. The independent source guard MUST verify that shape in normal
+quality and functional spec lanes. The reviewed shared implementation is
+`dependency-automation@c4b54f932cd4239d9a8f0b3e1fb327f28b63dfb2`; it is not
+imported by the source guard. Separate trusted capability admission, real
+eight-archive installation/full-production audits, source health and writer
+eligibility remain mandatory; descriptor data alone grants no activation.
+
 <!-- dependency-intake:validator-development:start -->
 
 ```json

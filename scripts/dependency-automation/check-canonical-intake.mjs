@@ -1,4 +1,5 @@
 import { sourceIntakeReader } from "./source-intake-reader.mjs";
+import { checkArtifactProjection } from "./artifact-projection.mjs";
 import {
   managedMaintenanceNote,
   verifyMaintenanceScope,
@@ -241,6 +242,7 @@ export function verifyValidatorCanonicalIntake({
   return facts;
 }
 export function checkValidatorCanonicalIntake(root = process.cwd()) {
+  checkArtifactProjection(root);
   const read = (path) => {
     const target = resolve(root, path);
     if (realpathSync(target) !== target) fail("non-regular source path");

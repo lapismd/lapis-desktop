@@ -42,7 +42,7 @@
     "high": 0,
     "critical": 0
   },
-  "unresolved": "Disabled only. E-DEPENDENCIES-012 preserves historical14-input source/private context; E-DEPENDENCIES-013 repairs the independent Desktop VCS caller. Final coherent source/descriptor and actual hosted projections must be qualified and rebound before any operator question. Operational projections remain empty; no HIGH authority or private writer activation.",
+  "unresolved": "Disabled only. Reviewed shared88 and the new independent source descriptor/guard require a concrete20-input source context; old E01214-input data remains historical. Final committed-source/8archive context and actual hosted projections must be qualified before an exact operator question. Operational projections remain empty; no HIGH authority or private writer activation.",
   "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
   "activePolicy": "config/dependency-audit.json (no developmentHigh entry)",
   "sourceSha": "6b13b20dbf76435f84bd7ece9dd97ab7b93c4a29",
@@ -134,6 +134,6 @@
     "activeHigh": false,
     "aggregateExit": 1
   },
-  "record": "spec/src/history/E-DEPENDENCIES-014.md",
+  "record": "spec/src/history/E-DEPENDENCIES-016.md",
   "contextRecord": "spec/src/history/E-DEPENDENCIES-012.md"
 }
