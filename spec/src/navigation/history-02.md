@@ -371,3 +371,9 @@
 - [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)
 
 - [Shared AI final consumer qualification](../history/E-RETIRE-002.md)
+
+- [Retired-free Desktop fixture source admission](../history/E-RETIRE-003.md)
+
+- [Complete fresh public-package fixtures](../history/E-RETIRE-005.md)
+
+- [Verify repaired Desktop public-package intake](../history/E-RETIRE-010.md)

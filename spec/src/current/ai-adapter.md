@@ -159,3 +159,5 @@ Shared-AI public consumer qualification continues in
 [E-RETIRE-002](../history/E-RETIRE-002.md). Installed public admission and cold
 catalog evidence remain separate from original-artifact/native preservation and
 complete fresh hosted dependency production.
+[E-RETIRE-010](../history/E-RETIRE-010.md) integrates the repaired producer and
+its fresh hosted intake evidence without advancing native preservation.
