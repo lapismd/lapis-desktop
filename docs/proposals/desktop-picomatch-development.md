@@ -66,3 +66,9 @@ operator question or active policy. The planned shared SDK projection/source
 opt-in may change relevant bindings; qualify that reviewed contract and actual
 hosted source before Root considers a concrete exact decision. Keep all existing
 private/archive/writer holds and other-owner retirement graphs separate.
+
+The newer independent VCS caller repair is recorded in
+[E-DEPENDENCIES-013](../../spec/src/history/E-DEPENDENCIES-013.md). E012 and its
+14-input context remain immutable. Final coherent source/descriptor and hosted
+projection bindings must be reviewed before any exact question; this change adds
+no approval, projection entry, expiry extension or writer authority.

@@ -296,7 +296,11 @@ development patch and these two exact factual slots. An optional single reserved
 managed note MUST have a blank or empty YAML release map, a nonempty body and at
 most8192bytes; no release intent is created. All other source/canonical text,
 public runtime/peer ranges, native pins, installed archives and audit gates stay
-source-owned. Automatic source acceptance does not remove the private hold.
+source-owned. Automatic source acceptance does not remove the private hold. The
+source reader MUST use one captured base/head for both previous bytes and
+changed paths; paired hosted revisions MUST match the actual candidate and
+available ancestor. Clean Git, selected JJ candidates, local JJ changes and
+empty JJ-on-HEAD bootstrap MUST retain note/scope checks without false no-ops.
 
 <!-- dependency-intake:validator-development:start -->
 

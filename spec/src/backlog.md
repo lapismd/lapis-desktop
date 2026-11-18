@@ -74,3 +74,8 @@ source6b13/local8archive context with HIGHdisabled and operational projections
 empty. Do not ask or activate a decision before the reviewed future SDK source
 opt-in and hosted graph are qualified; changed relevant inputs need new
 bindings.
+
+[E-DEPENDENCIES-013](history/E-DEPENDENCIES-013.md) repairs Desktop VCS
+comparison selection across hosted Git, JJ candidates and empty bootstrap. The
+SDK API remains unchanged; private updater/hosted/HIGH holds and immutable
+E-DEPENDENCIES-012 context remain separate pending final reviewed source opt-in.

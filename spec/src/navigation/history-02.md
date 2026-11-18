@@ -373,3 +373,5 @@
 - [Read-only immutable native sibling export](../history/E-DEPENDENCIES-010.md)
 - [Held Desktop completion observer and prospective advisory scope](../history/E-DEPENDENCIES-011.md)
 - [Frozen isolated Desktop source and installed archive context](../history/E-DEPENDENCIES-012.md)
+
+- [Match Desktop intake revisions across Git and Jujutsu](../history/E-DEPENDENCIES-013.md)

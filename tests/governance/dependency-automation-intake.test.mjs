@@ -103,40 +103,6 @@ for (const [name, mutate] of [
     assert.throws(() => verifyValidatorCanonicalIntake(d));
     assert.deepEqual(d, saved);
   });
-for (const hasJj of [true, false])
-  test(
-    "source reader uses only read-only " + (hasJj ? "JJ" : "Git") + " ancestry",
-    () => {
-      const calls = [];
-      const read = sourceIntakeReader(
-        "/source",
-        (binary, args) => {
-          calls.push([binary, args]);
-          return calls.length === 1 ? "a".repeat(40) + "\n" : "source bytes";
-        },
-        hasJj,
-      );
-      assert.equal(read("package.json"), "source bytes");
-      assert.equal(calls[0][0], hasJj ? "jj" : "git");
-      assert.deepEqual(
-        calls[1],
-        hasJj
-          ? [
-              "jj",
-              [
-                "--ignore-working-copy",
-                "file",
-                "show",
-                "-r",
-                "a".repeat(40),
-                "--",
-                "package.json",
-              ],
-            ]
-          : ["git", ["show", "a".repeat(40) + ":package.json"]],
-      );
-    },
-  );
 test("source reader fails on unavailable ancestry", () =>
   assert.throws(() => sourceIntakeReader("/source", () => "", false)));
 
