@@ -84,3 +84,8 @@ E-DEPENDENCIES-012 context remain separate pending final reviewed source opt-in.
 [E-DEPENDENCIES-014](history/E-DEPENDENCIES-014.md) expands final source binding
 to20 reviewed inputs, including executable intake guards, descriptor and nested
 CI-docs raw bytes. Preserve old14-input E012; no HIGH decision transfers.
+
+[E-DEPENDENCIES-015](history/E-DEPENDENCIES-015.md) freezes source76ca5 and
+actual20-input/private8archive context. HIGH remains disabled and operational
+projections empty pending actualhosted context/operator decision. Source1816
+capability/eligibility/health activation remains separately Root-owned.

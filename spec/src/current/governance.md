@@ -368,7 +368,8 @@ exemptions. Before-bytes and changed paths MUST share one verified immutable
 base/head, including hosted Git and empty JJ bootstrap. Runtime/native/private
 archives and advisory bindings require source review. Desktop retains private
 CalVer/Tauri preparation; no Changesets/version writer or release intent is
-introduced. Completion hints grant no activation authority.
+introduced. Completion hints grant no activation authority
+([current context](../history/E-DEPENDENCIES-015.md)).
 
 Pinned sibling exports MUST use JJ reads without working-copy snapshots or
 automatic Git import. Dirty sibling files/operation IDs MUST remain unchanged,

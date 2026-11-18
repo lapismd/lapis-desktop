@@ -72,3 +72,17 @@ The newer independent VCS caller repair is recorded in
 14-input context remain immutable. Final coherent source/descriptor and hosted
 projection bindings must be reviewed before any exact question; this change adds
 no approval, projection entry, expiry extension or writer authority.
+
+## Concrete twenty-input source context
+
+[E-DEPENDENCIES-015](../../spec/src/history/E-DEPENDENCIES-015.md) supersedes
+only the old context's relevance: reviewed source
+`76ca5cd0203b33a48ff5209196276d0a81fc56cc`, twenty-input digest
+`bb27b2c4dd6451fc4d86745f66db278238b68c807ccbc5118f0b195aa9588450`, and exact
+installed eight-archive Linux context are measured. Independent source
+projection guards and the descriptor are now bound. E012/E013/E014 remain
+immutable; no prior decision transfers. The full audit still blocks solely the
+exact HIGH finding, production/muted counts are zero. Operational projections
+remain empty: local paths do not establish actual hosted artifact context. Root
+owns final source/hosted qualification, any precise operator question and
+separate capability/eligibility admission; this packet enables none of them.

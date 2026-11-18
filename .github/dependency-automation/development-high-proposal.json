@@ -21,11 +21,11 @@
     ]
   },
   "bindings": {
+    "sourceInputsSha256": "bb27b2c4dd6451fc4d86745f66db278238b68c807ccbc5118f0b195aa9588450",
     "portableManifestSha256": "5249c6d2c7f9ff79f9f948cb118600e762aaf9594ed148e2985003c87532b746",
     "portableLockSha256": "df468bc0436aa9908c157167d2888579774aab7d4cae501218af191822dc3146",
     "workspaceSha256": "a4e8e4a50b4949b78592128fe9b1cf89be1c6e30aeb9cdc30a7fb1c83f73299b",
     "sourceInventorySha256": "cd82614d26a3e685f0930c2f16d94c3c53cf49313abcc5daf22e7c1c8789d86c",
-    "sourceInputsSha256": "f8de86b1f845469103acfb241c49038a2c618cdec6197c72f429a4962cdd09ad",
     "projections": []
   },
   "rawFullCounts": {
@@ -42,14 +42,14 @@
     "high": 0,
     "critical": 0
   },
-  "unresolved": "Disabled only. Reviewed shared88 and the new independent source descriptor/guard require a concrete20-input source context; old E01214-input data remains historical. Final committed-source/8archive context and actual hosted projections must be qualified before an exact operator question. Operational projections remain empty; no HIGH authority or private writer activation.",
+  "unresolved": "Concrete20-input source76ca5 and actual cold8archive installed context are measured, with HIGH stilldisabled. Operational projections remainempty; actualhostedartifact contexts/health and an exact Desktop-specific user decision remain Root-owned. Descriptor/capability/private eligibility are separate gates. Old E01214-input context and all prior approval provenance remain historical, never transferred.",
   "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
   "activePolicy": "config/dependency-audit.json (no developmentHigh entry)",
-  "sourceSha": "6b13b20dbf76435f84bd7ece9dd97ab7b93c4a29",
+  "sourceSha": "76ca5cd0203b33a48ff5209196276d0a81fc56cc",
   "localProjectionEvidence": {
-    "kind": "cold-frozen-eight-archive-source-context-only",
-    "sourceSnapshot": "65e3076dffa9c55c5a3db7003d12fab5a00b4f14",
-    "sourceSha": "6b13b20dbf76435f84bd7ece9dd97ab7b93c4a29",
+    "kind": "cold-frozen-eight-archive-20input-source-context-only",
+    "sourceSnapshot": "16397708fa94f6b75bb2166ec13996775ff826ee",
+    "sourceSha": "76ca5cd0203b33a48ff5209196276d0a81fc56cc",
     "projection": {
       "platform": "linux-x64",
       "manifestSha256": "3f418e34b832941fcb9191520be16a85fe868e97ba6dcf06b736abbe6db55332",
@@ -132,8 +132,13 @@
       }
     ],
     "activeHigh": false,
-    "aggregateExit": 1
+    "aggregateExit": 1,
+    "descriptor": {
+      "rawSha256": "1816cce05457ae1853f28bead21ad4a109a56e0f4318318f9a4b5f2194e0ffd2",
+      "shapeSha256": "d8fa74cb4f137b2af96a530d7e37afbe4ce082e720802023a47196f0d1f0fbc2",
+      "reviewedSharedSource": "c4b54f932cd4239d9a8f0b3e1fb327f28b63dfb2"
+    }
   },
   "record": "spec/src/history/E-DEPENDENCIES-016.md",
-  "contextRecord": "spec/src/history/E-DEPENDENCIES-012.md"
+  "contextRecord": "spec/src/history/E-DEPENDENCIES-015.md"
 }

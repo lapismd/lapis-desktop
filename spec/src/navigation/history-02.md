@@ -377,3 +377,5 @@
 - [Match Desktop intake revisions across Git and Jujutsu](../history/E-DEPENDENCIES-013.md)
 
 - [Bound Desktop SDK artifact projection source opt-in](../history/E-DEPENDENCIES-014.md)
+
+- [Frozen Desktop projection source and twenty-input audit context](../history/E-DEPENDENCIES-015.md)
