@@ -48,6 +48,7 @@ export function validatePlan(plan) {
   if (
     plan?.schemaVersion !== 2 ||
     typeof plan.ordinaryProfilesEnabled !== "boolean" ||
+    typeof plan.linuxBuild !== "boolean" ||
     !["ordinary", "full"].includes(plan.profile) ||
     plan.full !== (plan.profile === "full") ||
     !subset(plan.gates, gates) ||
@@ -82,6 +83,7 @@ export function validatePlan(plan) {
       !equal(plan.unit, unitGroups) ||
       !equal(plan.quality, ["types", "rust"]) ||
       plan.rustPackages !== null ||
+      !plan.linuxBuild ||
       plan.nativeFamilies.length !== 0 ||
       plan.catalogProfile !== "full")
   )

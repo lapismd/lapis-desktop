@@ -358,12 +358,12 @@
 - [Bounded native account observations](../history/E-SYNC-017.md)
 
 - [Scope Sync delivery to the manual encrypted MVP](../history/E-PLAN-009.md)
-
 - [Remove unused deepmerge audit approval](../history/E-DEPENDENCIES-006.md)
 - [Plugin-contributed skills](../history/E-SKILL-001.md)
 - [Prepare selected hosted Rust skill resources](../history/E-CI-102.md)
 - [Prepare direct Linux Rust skill resources](../history/E-CI-103.md)
-
+- [Use the native Linux CI image, separate Rust tests from builds](../history/E-CI-104.md),
+  and [record the first hosted attempt](../history/E-CI-105.md)
 - [Public profile and skill release intake](../history/E-SKILL-002.md)
 
 - [Current-main released native skill intake](../history/E-SKILL-003.md)

@@ -46,6 +46,21 @@ test("docs-only edits select specification checks without native/UI/test builds"
   assert.deepEqual(p.unit, []);
   assert.equal(p.full, false);
 });
+test("dependency automation skips Rust and renderer dependencies only rebuild consumers", () => {
+  const tooling = plan([
+    "scripts/dependency-automation/check-canonical-intake.mjs",
+    ".github/dependency-automation/canonical-intake.json",
+    "spec/src/current/governance.md",
+  ]);
+  assert.deepEqual(tooling.quality, []);
+  assert.deepEqual(tooling.unit, ["governance"]);
+  assert.equal(tooling.gates.includes("linux"), false);
+  const dependencies = plan(["package.json", "pnpm-lock.yaml"]);
+  assert.deepEqual(dependencies.quality, ["types"]);
+  assert.equal(dependencies.unit.includes("rust"), false);
+  assert.equal(dependencies.gates.includes("linux"), true);
+  assert.equal(dependencies.linuxBuild, true);
+});
 test("Cargo closure includes dependent application crates and excludes unrelated crates", () => {
   assert.deepEqual(
     affectedCrates(["src-tauri/crates/core/src/lib.rs"], metadata, "/repo"),
@@ -61,12 +76,14 @@ test("Cargo closure includes dependent application crates and excludes unrelated
   assert.ok(!app.gates.includes("storybook-interaction"));
   const serviceTest = plan(["src-tauri/tests/repository_original.rs"]);
   assert.ok(serviceTest.gates.includes("linux"));
+  assert.equal(serviceTest.linuxBuild, false);
   assert.ok(!serviceTest.gates.includes("headed"));
 });
 test("renderer, catalog, release and native-test changes select complete consumers", () => {
   const renderer = plan(["src/components/views/Main.svelte"]);
   assert.ok(!renderer.gates.includes("bundle"));
   assert.ok(renderer.gates.includes("linux"));
+  assert.equal(renderer.linuxBuild, true);
   assert.deepEqual(renderer.dependencyPlatforms, [
     { os: "ubuntu-24.04", id: "linux-x64" },
     { os: "ubuntu-24.04-arm", id: "linux-arm64" },
@@ -89,7 +106,6 @@ test("renderer, catalog, release and native-test changes select complete consume
 test("unknown/shared changes, missing crate ownership and explicit full requests fail closed", () => {
   const linuxGates = gates.filter((gate) => gate !== "bundle");
   for (const files of [
-    ["package.json"],
     ["src-tauri/Cargo.lock"],
     ["scripts/ci/impact.mjs"],
     ["unknown/new.file"],
@@ -100,6 +116,7 @@ test("unknown/shared changes, missing crate ownership and explicit full requests
     assert.equal(selected.full, false);
     assert.ok(!selected.gates.includes("bundle"));
     assert.deepEqual(selected.gates, linuxGates);
+    assert.equal(selected.linuxBuild, true);
     assert.deepEqual(selected.dependencyPlatforms, [
       { os: "ubuntu-24.04", id: "linux-x64" },
       { os: "ubuntu-24.04-arm", id: "linux-arm64" },
