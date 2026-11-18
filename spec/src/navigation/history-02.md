@@ -367,3 +367,25 @@
 
 - [Current-main released native skill intake](../history/E-SKILL-003.md)
 - [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)
+
+- [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)
+
+- [Shared AI final consumer qualification](../history/E-RETIRE-002.md)
+
+- [Retired-free Desktop fixture source admission](../history/E-RETIRE-003.md)
+
+- [Prepare native shared AI preservation acceptance](../history/E-RETIRE-004.md)
+
+- [Complete fresh public-package fixtures](../history/E-RETIRE-005.md)
+
+- [Remove unused private AI session presentation](../history/E-RETIRE-006.md)
+
+- [Remove Desktop Spec Validator Deno bootstrap](../history/E-RETIRE-008.md)
+
+- [Original signed AI preservation fixture](../history/E-RETIRE-009.md)
+
+- [Verify repaired Desktop public-package intake](../history/E-RETIRE-010.md)
+
+- [Complete hosted repaired-cohort qualification](../history/E-RETIRE-011.md)
+
+- [Combine verified Desktop retirement slices](../history/E-RETIRE-012.md)

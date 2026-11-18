@@ -106,8 +106,40 @@ interaction or provider matrices. Resume exact missing native/provider journeys
 with fresh receipts; keep local model inference and two-device pairing distinct.
 Native macOS/provider lanes remain explicitly requested opt-ins.
 
+## Private presentation retirement
+
+[E-RETIRE-006](../history/E-RETIRE-006.md) removes superseded private session
+controls after a complete caller audit; the active public Agent UI screen and
+its retained types/stores/cards remain intact. Further helper or stylesheet
+cleanup is outside this Desktop/Deno retirement slice.
+
+Retain `chat/history-inspection.svelte.ts`, `chat/panel/history.svelte.ts`,
+`chat/panel/send-transcript.ts`, test-only session avatars and catalog-only
+approval/question coverage. Keep active `sessions/session-shell.css` and its
+frame/thread/footer consumers. Any separately scoped future pruning needs a
+complete caller/public-markup audit and affected catalog acceptance; the
+frontend-root graph alone is insufficient removal authority.
+
+## Retired shared AI preservation
+
+[E-RETIRE-004](../history/E-RETIRE-004.md) prepares four native cases covering
+installed-copy precedence, both legacy disabling sources, Safe Mode and cold
+reopen with saved settings, conversations and memory. Execution is pending;
+synthetic installed fixtures do not qualify signed historical artifacts or the
+separate App Profile native-chat storage path. Preserve LD-PLUG-001 and
+LD-AI-002 as open native gates until actual product evidence exists.
+
 Further application tools stay in [AI tool expansion](ai-tool-expansion.md).
 Shared participant, context/handoff, native tools, memory and durable-job work
 belongs to the
 [Server backlog](https://github.com/lapismd/lapis-server/blob/main/spec/src/backlog.md);
 Desktop supplies its admitted Tauri integration and current public screens.
+
+E-RETIRE-009 verifies the preserved original0.1.16 archive (registry signature,
+release signature and177signed file hashes) and prepares four additional
+historical-copy cases beside the synthetic trap matrix. All10native cases remain
+unexecuted. A selected checksum-pinned ignored archive is required; missing or
+modified bytes must fail before seeding a disposable vault. Original signature
+verification/fixture preparation does not grant new-install permission or
+qualify native startup. Core API services/functions and planned Language Service
+wiring remain unchanged under the user's Desktop/Deno-only scope.

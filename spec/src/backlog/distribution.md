@@ -73,10 +73,10 @@ Disposition at consolidation: **Planned**. Requirements: LD-MIG-002,LD-MIG-003.
 Acceptance: Every currently supported desktop capability is migrated or
 explicitly retired, and the replacement has no Deno runtime dependency.
 
-Remaining outcome: Qualify Tauri coverage and remove frozen Deno desktop.
+Remaining: Qualify Tauri and fixtures (E-RETIRE-003/005), then remove Deno.
 
 Evidence: [E-PLAN-002](../history/E-PLAN-002.md),
-[E-REVIEW-001](../history/E-REVIEW-001.md).
+[E-REVIEW-001](../history/E-REVIEW-001.md). Node tooling: E-RETIRE-008.
 
 ## Retained release decisions
 
@@ -370,16 +370,16 @@ Carry both gaps into candidate notes and receipts.
 
 ## Development audit exceptions
 
-[E-CI-037](../history/E-CI-037.md) records two development-only advisories that
-blocked Dependency audits on run
-[41246684301](https://github.com/lapismd/lapis-desktop/actions/runs/41246684301),
-revision `d83bec25d0467725f38b7ca9fd5ecbe739286769`, job `124682633629`.
-Command: `node scripts/ci-install.mjs --audit`. Evidence: the production audit
-reported no advisories; the full audit blocked `GHSA-3g3m-2fjr-6pw4` (glob
-10.5.0) and `GHSA-g3hv-75wg-m249` (minimatch 3.1.5, 5.1.9, 9.0.9 and 10.2.6),
-both under WebdriverIO tooling. Requirement: LD-GOV-006. Limitation: these
-exceptions do not qualify production dependencies and expire 2026-11-30. Owner:
-Desktop. Remove an exception when its listed edges are patched or gone.
+[E-RETIRE-001](../history/E-RETIRE-001.md) records the approved temporary
+Picomatch exception through 2026-11-30 for the exact Storybook and WDIO paths.
+The installed peer-cleaned Notes cohort has zero production advisories.
+Production findings, new paths/versions and expiry remain blocking.
+
+[E-CI-037](../history/E-CI-037.md) retains the two existing development-only
+Glob/Minimatch approvals under WebdriverIO. Their exact findings, production
+prohibition and 2026-11-30 expiry remain unchanged (LD-GOV-006). Desktop owns
+removal when the listed edges are patched or gone; they grant no release
+authority.
 
 The hosted Dependency audits job starts with the other lanes
 ([E-CI-041](../history/E-CI-041.md)). It does not wait for Governance, Quality,

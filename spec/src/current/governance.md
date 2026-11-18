@@ -17,13 +17,13 @@ CI hooks MUST relocate. ARM64 diagnostics use hosted SHA, pinned `jj` and exact
 args. E-CI-054–064/084 retain deadlines/assertions, exact editor readiness and
 no-retry/quarantine/release policy. Native close never retries; empty
 comparisons continue; unavailable/conflicting fail closed.
-[Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
+[Local intake](local-dependencies.md) owns cohort audit and gates (E-CI-015/018;
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
-renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005
-health grants no release authority (E-CI-009/089). Protected changes require
-full checks. Images trust only the exact mounted workspace; source checks use
-built-ins. E2e imports instrumentation; bundles reject its startup marker.
-Planned [Review](../backlog/markdown-review-contract.md) and staged
+renderer retains Rust pins; builders audit retirement. Hosted logs stream.
+LD-CI-005 health grants no release authority (E-CI-009/089). Protected changes
+require full checks. Images trust only the exact mounted workspace; source
+checks use built-ins. E2e imports instrumentation; bundles reject its startup
+marker. Planned [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md) are canonical owners registered in
 `scripts/spec-contracts.mjs` (E-PLAN-005; LD-GOV-001/002/004).
 
@@ -58,7 +58,7 @@ only a proved synchronized mirror or its exact conflict recovery.
 | LD-GOV-003 | Every protected implementation slice MUST add fresh evidence with actual commands, results, failure counts, versions, affected paths, gaps and an explicit acceptance review. Committed evidence MUST remain immutable. Revision validation MUST include every parent and the explicit base; inherited receipts MUST NOT cover new work.                                                                                                                                                                                                                                                                     |
 | LD-GOV-004 | Current feature chapters and verification MUST own behavior and requirement status. Canonical backlog topics MUST own outstanding implementation and qualification, retaining dependencies and original acceptance boundaries. Passing evidence MUST match the claimed boundary; bookkeeping and substituted tests MUST NOT qualify product behavior.                                                                                                                                                                                                                                                        |
 | LD-GOV-005 | Production and script files MUST stay within 300 counted lines, stories within 400 and standalone tests within 500. Production MUST NOT import test fixtures or use ambient App state, Tailwind utilities, or dependency-internal style selectors.                                                                                                                                                                                                                                                                                                                                                           |
-| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, with documented pinned private public-build prerequisites in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime.                                                                                                                                                                                                                                                                                |
+| LD-GOV-006 | The desktop MUST use registry packages or verified local pnpm archives during migration, pinned toolchains and portable tracked manifests/lockfiles, with documented pinned private public-build prerequisites in this private app. Normal builds, checks and native launch MUST work without Deno or a bundled Node runtime. Packed archives MUST contain every declared public export.                                                                                                                                                                                                                     |
 | LD-GOV-007 | Verification MUST start at the exact affected boundary and expand according to the workspace policy. Native lifecycle changes MUST retain cold process acceptance, and visual baselines MUST require explicit human approval.                                                                                                                                                                                                                                                                                                                                                                                |
 | LD-GOV-008 | Local archive installation MUST retain peer semver ranges and verify installed package payloads against the archive across active workspace import routes. Registry copies and differing payload bytes MUST reject qualification. One archive MAY have separate pnpm peer contexts and generated dependency shims. Archive redirection MUST NOT alter tracked manifests or lockfiles; the private Terminal link is separately recorded under LD-GOV-006.                                                                                                                                                     |
 | LD-GOV-009 | Desktop tests MUST default to a quiet headless renderer/catalog and native-service run without launching native UI or changing the session clipboard. An explicit local headed option MUST retain the complete native WebView/window/OS suite. Hosted executable tests MUST run only on Linux; macOS runners MUST be packaging-only. Linux/headless success MUST NOT be described as macOS native evidence; invalid mode flags MUST reject before launching children.                                                                                                                                        |
@@ -372,8 +372,8 @@ Retained AI components and policy modules map to the plugins chapter. The
 isolated policy runner compiles normal Svelte runes with the Svelte Vite plugin;
 it supplies no rune shim. Desktop pins Svelte 5.57.2 to match the linked
 Terminal's public component types, preventing duplicate snippet identities.
-Registry icon imports remain portable. Local archive refresh retains payload
-verification and records each source repair before consumer qualification.
+Registry icons stay portable. Refresh denies Deno validators (E-RETIRE-008),
+retains payload checks and records source repairs before consumer qualification.
 
 Dependency refresh records clean owning sources. E-CI-085 pins the command-lease
 repair without changing admission, retries, deadlines, assertions or the ARM64

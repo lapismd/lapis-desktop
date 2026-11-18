@@ -1,14 +1,44 @@
 # Local dependency intake
 
-E-SYNC-006 prepares six public Notes candidate packages from exact source
-`01bf01f61f91f31237ebcdbb07242b9b6f9a5943` for native Sync leave preparation. CI
-MUST build App Profile and its dependencies through the source-owned normal
-build, then project API, UI, Workspace, File Explorer, Language Service and App
-Profile archives into the same runtime graph. Published registry ranges and the
-portable lock remain tracked; candidate archive hashes and source provenance
-remain explicit private migration prerequisites. The removed native-chat-only
-build cannot qualify the current package exports. AI remains a separately
-verified private prerequisite; this intake authorizes no package publication.
+The shared-AI retirement candidate prepares six public Notes packages from exact
+source `5ffb33c152404b6880debd1b5fd70762121d6196`. API 0.6.8 includes Notes'
+retired-distribution provenance guard; UI 0.2.3, Workspace 0.4.8, File Explorer
+0.2.8, Language Service 0.1.6 and App Profile 0.2.5 retain one runtime graph.
+The approved App Profile optional Vite peer cleanup keeps its active public
+build helper and development toolchain. Its actual installed production graph
+has zero advisories; the approved development-only Picomatch exception expires
+2026-11-30 and matches exact tool versions/paths. Released Core 0.13.5 satisfies
+the API dependency through the existing single-version override. Qualification
+is in progress; the older E-SYNC-006/009 receipts do not qualify this cohort.
+The installed public installer rejects retired provenance before network IO
+without writing settings, conversations or memory; ordinary third-party `ai`
+origins retain fetch admission. Source pins and archive hashes identify the
+cohort. A restored public root lock cannot substitute for its actual installed
+production/development audit graph.
+
+CI MUST build App Profile and its dependencies through the source-owned normal
+build, then project all six archives into the same runtime graph. Published
+registry ranges and the portable lock remain tracked; candidate archive hashes
+and source provenance remain explicit private migration prerequisites. The
+removed native-chat-only build cannot qualify the current package exports. AI
+and Tasks retain their separately pinned prerequisites. This renderer intake
+MUST NOT change Rust pins, enable the deferred native conversation store or
+publish packages. Installed-data/native acceptance remains separate.
+
+CI preparation MUST build the direct Language Service package explicitly in
+addition to App Profile's dependency closure. A present App Profile marker does
+not prove Language Service's public `dist` exists. Preparation receipts MUST
+track that output independently. Before installation and artifact admission,
+packed archives MUST contain every declared conditional export, declaration,
+legacy entry field and at least one match for each wildcard target. Correct
+checksums or an installed copy of an incomplete archive do not qualify exports.
+The export-admission implementation MUST enter dependency artifact identity.
+
+E-RETIRE-005 records the first fresh PR48 producer's incomplete Language Service
+archive and the owner-Desktop orchestration repair. Fresh API declaration bytes
+differ from the earlier complete owner pack; compare payloads and qualify the
+actual fresh consumer cohort rather than claiming archive equivalence. Preserve
+failed artifacts, exact provenance and the same-run fanout restriction.
 
 Private CI artifact hooks MUST retain their checksum and frozen projected lock
 across checkout relocation. Runtime targets derive from the hook location and
@@ -41,11 +71,14 @@ remain.
 
 `pnpm local:refresh` rebuilds public exports, uses source-owned package
 preparation and records source revisions/checksums together. Design Core owns
-its prepared CSS/declaration archive. Node Spec Validator preparation uses the
-exact build runtime declared by that source; it does not change the machine's
-default Deno. Linked Terminal, AI and JJ clients retain their public-export
-boundaries and gain build fingerprints. Native source inputs must also be
-committed before their consuming app and helper bundles are rebuilt.
+its prepared CSS/declaration archive. Spec Validator preparation MUST use the
+supported Node `build:node` script. Before any source build or freshness check,
+reject a declared Deno engine, an absent/incompatible Node engine or a missing
+Node build script; never bootstrap Deno. Existing cohort semver and committed
+source admission remain authoritative. E-RETIRE-008 owns this tooling repair.
+Linked Terminal, AI and JJ clients retain their public-export boundaries and
+gain build fingerprints. Native source inputs must also be committed before
+their consuming app and helper bundles are rebuilt.
 
 `pnpm local:status` MUST reject missing/old installed source receipts, modified
 linked exports, bad archive checksums and installed payload mismatches. Inspect
@@ -123,9 +156,24 @@ Notes' private App Profile is built from the same Notes
 framework cohort. Hosted CI builds this committed public boundary without source
 aliases, bundled node_modules or a second chat writer. Portable validation MUST
 export that same reachable commit rather than an abandoned or source-local
-identity (E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources
-MUST also match the exact reachable commits used by hosted preparation; no
-fallback or equal-tree substitution is allowed.
+identity (E-VALIDATION-010). Its overlapping AI and JJ Store sources MUST match
+hosted preparation exactly. Plugins JavaScript fixtures select retired-free
+`969356250f26c5561fac22cf00d8da8f395dbdae`; the qualified Rust engine source
+remains `879581d1549187bdbac2d75b40d02e0df46e721a` in the native source
+inventory and Cargo lock. No fallback or equal-tree substitution is allowed.
+
+Native fixture preparation and the explicit local macOS plugin builder MUST run
+the checked-out Plugins source's `scripts/check-retired-ai.mjs` before workspace
+installation, signer import or plugin builds, including warm dependency reuse. A
+missing or failing audit MUST stop preparation. Retain the seven non-AI native
+fixtures, static native AI, ephemeral signing and independent Tasks inputs.
+Before runtime bundling, preparation MUST build Plugins-owned Markdown public
+exports through its normal dependency closure; a frozen workspace install alone
+does not provide the Slides dependency’s compiled `./embed` contract. Changing a
+source pin requires a newly produced source-identity-bound dependency artifact;
+prior full artifacts MUST NOT qualify the new input. E-RETIRE-003 records
+source-admission controls; actual fixture generation and macOS/native
+qualification remain separate gates.
 
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History

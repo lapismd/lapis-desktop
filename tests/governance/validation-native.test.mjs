@@ -27,7 +27,7 @@ test("portable sources retain the native Notes pin and explicit Sync archive coh
   );
   assert.equal(
     revision(hosted, "lapis-notes"),
-    "01bf01f61f91f31237ebcdbb07242b9b6f9a5943",
+    "5ffb33c152404b6880debd1b5fd70762121d6196",
   );
   const manifest = JSON.parse(await readFile("package.json", "utf8"));
   assert.match(
@@ -41,10 +41,22 @@ test("portable sources retain the native Notes pin and explicit Sync archive coh
       `rev = "${server}"`,
     ),
   );
-  for (const name of ["lapis-ai", "jj-store", "lapis-plugins"]) {
+  for (const name of ["lapis-ai", "jj-store"]) {
     assert.match(revision(native, name), /^[a-f0-9]{40}$/u);
     assert.equal(revision(native, name), revision(hosted, name));
   }
+  // JavaScript fixture retirement must not silently refresh qualified Rust engines.
+  const pluginsNative = "879581d1549187bdbac2d75b40d02e0df46e721a";
+  assert.equal(revision(native, "lapis-plugins"), pluginsNative);
+  assert.equal(
+    revision(hosted, "lapis-plugins"),
+    "969356250f26c5561fac22cf00d8da8f395dbdae",
+  );
+  assert.ok(
+    (await readFile("src-tauri/Cargo.lock", "utf8")).includes(
+      `git+https://github.com/lapismd/lapis-plugins?rev=${pluginsNative}#${pluginsNative}`,
+    ),
+  );
 });
 
 test("portable archives replace their declared root ranges without duplicate contexts", () => {
