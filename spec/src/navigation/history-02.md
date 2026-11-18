@@ -369,6 +369,7 @@
 - [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)
 
 - [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)
+- [Remove Desktop Spec Validator Deno bootstrap](../history/E-RETIRE-008.md)
 
 - [Retired-free Desktop fixture source admission](../history/E-RETIRE-003.md)
 
