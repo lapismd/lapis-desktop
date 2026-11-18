@@ -11,8 +11,8 @@ test("Sync migration preserves released ranges and bounds its pending-contract p
   const original = structuredClone(manifest);
   const projected = projectUnpublished(manifest, () => true);
   assert.deepEqual(manifest, original);
-  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.2.2");
-  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.5");
+  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.2.6");
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.9");
   assert.deepEqual(Object.keys(unpublishedRanges).sort(), [
     "@lapis-notes/api",
     "@lapis-notes/app-profile",
