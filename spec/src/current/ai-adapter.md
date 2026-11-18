@@ -155,9 +155,25 @@ This transport gate does not qualify desktop AI UI, conversation/context/memory
 migration, application tools, native credentials, a real model or compute. Those
 retain M10.2–M10.4 gates. The application adds no replacement screens.
 
-Shared-AI public consumer qualification continues in
-[E-RETIRE-002](../history/E-RETIRE-002.md). Installed public admission and cold
-catalog evidence remain separate from original-artifact/native preservation and
-complete fresh hosted dependency production.
-[E-RETIRE-010](../history/E-RETIRE-010.md) integrates the repaired producer and
-its fresh hosted intake evidence without advancing native preservation.
+## Shared AI retirement qualification
+
+[E-RETIRE-001](../history/E-RETIRE-001.md) retains installed public admission
+and the approved exact development audit exception.
+[E-RETIRE-002](../history/E-RETIRE-002.md) records final local
+public-guard/canonical checks and 2,168 cold catalog cases. Neither receipt
+qualifies native data preservation or publication.
+
+[E-RETIRE-003](../history/E-RETIRE-003.md) rejects stale shared-AI fixture
+sources before builds. [E-RETIRE-005](../history/E-RETIRE-005.md) repairs normal
+Language Service preparation and packed-export admission, preserving its future
+wiring. [E-RETIRE-010](../history/E-RETIRE-010.md) records complete fresh
+artifacts, same-run public-guard tests and all 2,168 hosted
+interaction/accessibility cases.
+
+[E-RETIRE-011](../history/E-RETIRE-011.md) closes the selected ordinary hosted
+producer/consumer boundary: eight gates pass, including both Linux binaries; the
+checked tree lands unchanged on the PR47 feature branch. The macOS bundle and
+full-source profile were explicitly unselected, not qualified. Child candidate
+integration, native preservation, App Profile lifecycle and release remain
+separate. Core API services/functions and planned Language Service integration
+remain intact; terminal migration stays last.

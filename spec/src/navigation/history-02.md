@@ -377,3 +377,5 @@
 - [Complete fresh public-package fixtures](../history/E-RETIRE-005.md)
 
 - [Verify repaired Desktop public-package intake](../history/E-RETIRE-010.md)
+
+- [Complete hosted repaired-cohort qualification](../history/E-RETIRE-011.md)
