@@ -14,7 +14,7 @@ counts retain MODERATE3/HIGH2 and zero other severities; production and muted
 counts are zero. Both existing exact MODERATE decisions remain unchanged. The
 raw vulnerable range must remain`<=4.0.7`, patched range`<0.0.0`.
 
-Proposed expiry is **November19,2026 at00:00UTC**, at most48hours after an
+Proposed expiry is **November20,2026 at00:00UTC**, at most48hours after an
 actual explicit user decision, or sooner on any known patch or official stable
 successor above4.0.7. This supersedes the earlier unapproved November30
 proposal; it does not extend any existing decision. No approval

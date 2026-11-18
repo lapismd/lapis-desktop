@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { readFileSync, existsSync } from "node:fs";
 import test from "node:test";
 import {
   admitProjectedDevelopmentHigh,
@@ -10,7 +10,8 @@ const read = (path) =>
   JSON.parse(readFileSync(new URL(path, import.meta.url), "utf8"));
 const full = read("../fixtures/desktop-audit-full.json");
 const production = read("../fixtures/desktop-audit-production.json");
-const legacy = read("../../config/dependency-audit.json");
+const sourcePolicy = read("../../config/dependency-audit.json");
+const legacy = { exceptions: sourcePolicy.exceptions };
 const now = "2026-11-18T02:00:00.000Z";
 function fixture() {
   const projection = {
@@ -31,7 +32,7 @@ function fixture() {
     repository: "lapismd/lapis-desktop",
     authority: "explicit-user",
     approvedAt: "2026-11-18T01:00:00.000Z",
-    expiresAt: "2026-11-19T00:00:00.000Z",
+    expiresAt: "2026-11-20T00:00:00.000Z",
     sourceSha: "3".repeat(40),
     bindings: { ...bound, projections: [projection] },
     finding: structuredClone(desktopHighIdentity),
@@ -67,8 +68,7 @@ const assess = (d) =>
     d.context,
     d.context.now,
   );
-test("source policy remains unapproved and actual complete audit still blocks HIGH", () => {
-  assert.equal(legacy.developmentHigh, undefined);
+test("complete legacy audit retains the HIGH block without a separate decision", () => {
   const errors = auditFindings(full, production, legacy, "2026-11-18");
   assert.deepEqual(errors, [
     "Blocking advisory: GHSA-fc5q-39xc-vjpf (picomatch)",
@@ -105,7 +105,7 @@ for (const [name, mutate] of [
   ],
   [
     "deadline extension",
-    (d) => (d.decision.expiresAt = "2026-11-19T00:00:00.001Z"),
+    (d) => (d.decision.expiresAt = "2026-11-20T00:00:00.001Z"),
   ],
   ["source change", (d) => (d.context.sourceSha = "4".repeat(40))],
   [
@@ -286,14 +286,34 @@ test("legacy severity entries cannot bypass the separately bound HIGH decision",
   );
 });
 
-test("the source-specific proposal remains disabled and grants no active authority", () => {
+test("a disabled proposal grants no authority; a separate exact source decision is required", () => {
   const proposal = read(
     "../../.github/dependency-automation/development-high-proposal.json",
   );
   assert.equal(proposal.status, "disabled");
   assert.equal(proposal.authority, null);
   assert.equal(proposal.approvedAt, null);
-  assert.equal(proposal.expiresAt, "2026-11-19T00:00:00.000Z");
+  assert.equal(proposal.expiresAt, "2026-11-20T00:00:00.000Z");
   assert.deepEqual(proposal.finding, desktopHighIdentity);
-  assert.equal(legacy.developmentHigh, undefined);
+  const decision = sourcePolicy.developmentHigh;
+  if (!decision) assert.equal(decision, undefined);
+  else {
+    assert.equal(decision.authority, "explicit-user");
+    assert.equal(decision.repository, "lapismd/lapis-desktop");
+    assert.deepEqual(decision.finding, proposal.finding);
+    assert.match(decision.sourceSha, /^[a-f0-9]{40}$/u);
+    assert.equal(decision.sourceSha, proposal.sourceSha);
+    assert.deepEqual(decision.bindings, proposal.bindings);
+    assert.ok(decision.bindings.projections.length > 0);
+    assert.equal(decision.expiresAt, proposal.expiresAt);
+    const duration =
+      Date.parse(decision.expiresAt) - Date.parse(decision.approvedAt);
+    assert.ok(duration > 0 && duration <= 48 * 60 * 60 * 1000);
+    assert.equal(decision.record, proposal.record);
+    assert.match(decision.record, /^spec\/src\/history\/E-[A-Z]+-\d{3}\.md$/u);
+    assert.equal(
+      existsSync(new URL("../../" + decision.record, import.meta.url)),
+      true,
+    );
+  }
 });

@@ -91,6 +91,7 @@ test("projected binding independently fingerprints committed portable inputs and
 for (const path of [
   "pnpm-workspace.yaml",
   "scripts/ci-sources.json",
+  "scripts/validation/native-sources.mjs",
   "scripts/ci-audit.mjs",
   "scripts/dependency-automation/projected-audit-admission.mjs",
   "spec/src/history/E-DEPENDENCIES-999.md",

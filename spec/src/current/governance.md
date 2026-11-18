@@ -369,6 +369,11 @@ separate review. Desktop retains private CalVer/Tauri preparation; no
 Changesets/version writer or release intent is introduced. Completion hints
 grant no activation authority.
 
+Pinned sibling exports MUST use JJ reads without working-copy snapshots or
+automatic Git import. Dirty sibling files/operation IDs MUST remain unchanged,
+and exact committed pin/tar bytes identical. Full workers export native sources;
+UI workers skip them. Desktop's own working-copy snapshot remains intentional.
+
 <!-- dependency-intake:validator-development:start -->
 
 ```json

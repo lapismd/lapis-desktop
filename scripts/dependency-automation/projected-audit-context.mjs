@@ -8,6 +8,7 @@ export const projectedAuditSourceInputs = [
   "pnpm-lock.yaml",
   "pnpm-workspace.yaml",
   "scripts/ci-sources.json",
+  "scripts/validation/native-sources.mjs",
   "scripts/ci-install.mjs",
   "scripts/ci-audit.mjs",
   "scripts/archive-resolution.mjs",

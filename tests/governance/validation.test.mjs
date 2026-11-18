@@ -1,6 +1,7 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { metadataOnlyDelegate } from "./completion-delegate.mjs";
 import {
   archiveMember,
   toolPins,
@@ -27,6 +28,7 @@ test("every hosted setup-node action pins the declared Node runtime", async () =
   for (const name of await readdir(dir)) {
     if (!/\.ya?ml$/.test(name)) continue;
     const source = await readFile(new URL(name, dir), "utf8");
+    if (metadataOnlyDelegate(name, source)) continue;
     const setupCount = source.match(/uses:\s*actions\/setup-node@v6/gu)?.length;
     const configured = [
       ...source.matchAll(/^\s*node-version:\s*([^\s#]+)\s*$/gmu),
@@ -133,10 +135,9 @@ test("all hosted workflows explicitly select their provisioned native runtime", 
   const dir = new URL("../../.github/workflows/", import.meta.url);
   for (const name of await readdir(dir)) {
     if (!/\.ya?ml$/.test(name)) continue;
-    assert.match(
-      await readFile(new URL(name, dir), "utf8"),
-      /LAPIS_DESKTOP_VALIDATION_RUNTIME: native/,
-    );
+    const source = await readFile(new URL(name, dir), "utf8");
+    if (metadataOnlyDelegate(name, source)) continue;
+    assert.match(source, /LAPIS_DESKTOP_VALIDATION_RUNTIME: native/);
   }
 });
 test("remote resource limits are bounded positive numbers", () => {

@@ -291,7 +291,26 @@ Dependency audits MUST retain the original complete raw full and production
 reports plus the decision artifact. The existing exact MODERATE decisions stay
 separate. Any HIGH admission MUST require a distinct explicit user decision,
 exact committed source inputs and qualified per-platform installed projection/
-archive bindings, at most48hours and no later than2026-11-19T00:00UTC. Any
+archive bindings, at most48hours and no later than2026-11-20T00:00UTC. Any
 production advisory, extra finding/path/count, binding drift or known upstream
 fix/stable successor MUST fail. The active policy currently has no HIGH
 decision.
+
+LD-GOV-010 native export MUST preserve sibling files and JJ operation identity.
+Full target snapshots retain exact pinned archives through read-only sibling
+queries; UI targets never inspect those inventories. Desktop still snapshots its
+own current work before validation. Image and native cache keys are unchanged.
+
+The completion observer MUST watch only CI400533153 and Storybook Pages403244157
+through the same reviewed immutable shared implementation/policy. Successful
+original PR/push/manual events are supported; CI schedule and unknown events
+MUST skip before shared verification or App minting. Source token permissions
+remain contents/Actions/PR read-only and only the named existing bot secret may
+enter trusted shared code. No candidate checkout, artifact execution, version/
+publisher authority or source/private writer-hold removal is granted.
+
+Only the exact reviewed metadata-only completion delegate may omit local Desktop
+Node/native setup. Its single pinned shared job MUST retain read-only source
+permissions, named credentials and no local source/runtime execution. All other
+hosted workflows retain exact declared Node and native selectors;
+unknown/mutable/executable delegates MUST fail the ordinary workflow inventory.

@@ -55,7 +55,7 @@ export function admitProjectedDevelopmentHigh(
     time >= end ||
     end <= start ||
     end - start > 48 * 60 * 60 * 1000 ||
-    end > Date.parse("2026-11-19T00:00:00.000Z")
+    end > Date.parse("2026-11-20T00:00:00.000Z")
   )
     return false;
   if (

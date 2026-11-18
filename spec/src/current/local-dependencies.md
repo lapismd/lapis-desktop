@@ -325,7 +325,7 @@ and both existing MODERATE policies. HIGH MUST NOT use that legacy approval
 route: its separate source decision requires explicit-user authority, exact
 source/portable-input and qualified installed manifest/lock/archive hashes, a
 committed decision record and a maximum48hour deadline ending no later than
-2026-11-19T00:00UTC. Both raw graphs, final source/record/policy bindings, exact
+2026-11-20T00:00UTC. Both raw graphs, final source/record/policy bindings, exact
 observed development paths/counts and fresh official registry fix evidence MUST
 qualify; changed or missing evidence fails closed. No HIGH is currently
 approved.
@@ -339,3 +339,18 @@ ordinary consumer acceptance do not remove this source prerequisite or activate
 writes. Publication or a separately reviewed shared private-projection contract
 is required; consumer aliases, invented registry bytes and dropped runtime
 dependencies MUST NOT substitute.
+
+Pinned native-source export MUST leave sibling working files and JJ operation
+identity untouched, even when their work is dirty. Resolve immutable revisions
+and Git roots with read-only JJ access; exact tar bytes and source pins remain
+unchanged. Full workers export native inputs; UI workers skip them. This does
+not disable the Desktop working-copy snapshot that owns current source capture.
+
+The held-root completion observer uses reviewed coordinator source
+`b66a19937ea8b4bb1b0545396c920797c7832fb4` for both implementation and policy.
+Only actual CI400533153 (`.github/workflows/ci.yml`, PR/push/manual) and
+Pages403244157 (`.github/workflows/publish-storybook-pages.yml`, push/manual)
+are registered. Source schedules are filtered before the trusted verifier.
+Held-observer registration and existing bot credential availability are metadata
+prerequisites only; full phase, private archive and native-updater write holds
+remain. No new publisher, Changesets recipe or release intent is introduced.

@@ -41,3 +41,30 @@ AI404. Do not clear the archive hold from controlled public SDK guard tests.
 Source publication or a reviewed shared private-projection contract is required.
 The separate bounded Desktop HIGH proposal stays disabled pending coherent
 bindings and explicit source-specific user approval.
+
+[E-DEPENDENCIES-010](history/E-DEPENDENCIES-010.md) repairs incidental sibling
+JJ snapshots during immutable native export; it preserves all archive/native
+inputs and does not clear the separate private bot/audit/hosted holds.
+
+The reviewed held-root metadata observer is source-prepared under
+[E-DEPENDENCIES-011](history/E-DEPENDENCIES-011.md). Require actual source
+merge/current successful supported runs and callback settlement/replay; key-name
+availability is not runtime proof. The new disabled Desktop HIGH ceiling is
+November20 at00:00UTC, at most48hours after a future exact user decision and
+ending earlier on a fix; existing active approvals are unchanged.
+
+A source-declared isolated public-tool projection may be a bounded future SDK
+metadata path without publishing intentional private packages: seed only the
+reviewed SDK closure and copy back independently verified portable data. It
+requires reviewed shared support and real private installed consumer CI; it is
+not implemented, and neither skip-installs nor private writer activation is
+authorized by the assessment in E-DEPENDENCIES-011.
+
+Separate active-thread drafts47/49/51/52/53 form a retirement stack around
+merged48 within47, not main or PR50. Their installer/artifact/private graph,
+Core0.13.5 and common source/spec files overlap eventual integration. Their
+legacy HIGH record claims a separate user decision through November30; that
+provenance is unverified here and is not transferred or declared nonexistent.
+Root must coordinate owners, preserve all evidence/contracts/budgets and qualify
+the combined graph before any merge/rebase/security decision. PR50 keeps its own
+isolated source/archive bindings and private write hold.
