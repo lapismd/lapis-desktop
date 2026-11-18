@@ -62,6 +62,7 @@ export function buildIdentity(root = process.cwd(), kind = "dependencies") {
     "scripts/ci-dependency-artifact.mjs",
     "scripts/ci-artifact-identity.mjs",
     "scripts/ci-artifact-provenance.mjs",
+    "scripts/package-archive-exports.mjs",
   ];
   if (kind === "acceptance")
     inputs.push(

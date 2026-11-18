@@ -73,7 +73,7 @@ Disposition at consolidation: **Planned**. Requirements: LD-MIG-002,LD-MIG-003.
 Acceptance: Every currently supported desktop capability is migrated or
 explicitly retired, and the replacement has no Deno runtime dependency.
 
-Remaining outcome: Qualify Tauri coverage and remove frozen Deno desktop.
+Remaining: Qualify Tauri and fixtures (E-RETIRE-003/005), then remove Deno.
 
 Evidence: [E-PLAN-002](../history/E-PLAN-002.md),
 [E-REVIEW-001](../history/E-REVIEW-001.md).

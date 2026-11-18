@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
+import { verifyPackageArchive } from "./package-archive-exports.mjs";
 import {
   artifactProvenance,
   verifyArtifactProvenance,
 } from "./ci-artifact-provenance.mjs";
-import { execFileSync } from "node:child_process";
 import {
   copyFileSync,
   existsSync,
@@ -118,11 +118,7 @@ export function verifyDependencies(selected, root = process.cwd()) {
       entry.sha256,
       "Dependency artifact digest changed",
     );
-    const pkg = JSON.parse(
-      execFileSync("tar", ["-xOf", path, "package/package.json"], {
-        encoding: "utf8",
-      }),
-    );
+    const pkg = verifyPackageArchive(path);
     assert.equal(pkg.name, entry.name);
     assert.equal(pkg.version, entry.version);
     return { ...entry, role, path };

@@ -25,6 +25,21 @@ and Tasks retain their separately pinned prerequisites. This renderer intake
 MUST NOT change Rust pins, enable the deferred native conversation store or
 publish packages. Installed-data/native acceptance remains separate.
 
+CI preparation MUST build the direct Language Service package explicitly in
+addition to App Profile's dependency closure. A present App Profile marker does
+not prove Language Service's public `dist` exists. Preparation receipts MUST
+track that output independently. Before installation and artifact admission,
+packed archives MUST contain every declared conditional export, declaration,
+legacy entry field and at least one match for each wildcard target. Correct
+checksums or an installed copy of an incomplete archive do not qualify exports.
+The export-admission implementation MUST enter dependency artifact identity.
+
+E-RETIRE-005 records the first fresh PR48 producer's incomplete Language Service
+archive and the owner-Desktop orchestration repair. Fresh API declaration bytes
+differ from the earlier complete owner pack; compare payloads and qualify the
+actual fresh consumer cohort rather than claiming archive equivalence. Preserve
+failed artifacts, exact provenance and the same-run fanout restriction.
+
 Private CI artifact hooks MUST retain their checksum and frozen projected lock
 across checkout relocation. Runtime targets derive from the hook location and
 admitted relative archive/tool paths; root, dependency, optional and peer range
@@ -138,9 +153,24 @@ Notes' private App Profile is built from the same Notes
 framework cohort. Hosted CI builds this committed public boundary without source
 aliases, bundled node_modules or a second chat writer. Portable validation MUST
 export that same reachable commit rather than an abandoned or source-local
-identity (E-VALIDATION-010). Its overlapping AI, JJ Store and Plugins sources
-MUST also match the exact reachable commits used by hosted preparation; no
-fallback or equal-tree substitution is allowed.
+identity (E-VALIDATION-010). Its overlapping AI and JJ Store sources MUST match
+hosted preparation exactly. Plugins JavaScript fixtures select retired-free
+`969356250f26c5561fac22cf00d8da8f395dbdae`; the qualified Rust engine source
+remains `879581d1549187bdbac2d75b40d02e0df46e721a` in the native source
+inventory and Cargo lock. No fallback or equal-tree substitution is allowed.
+
+Native fixture preparation and the explicit local macOS plugin builder MUST run
+the checked-out Plugins source's `scripts/check-retired-ai.mjs` before workspace
+installation, signer import or plugin builds, including warm dependency reuse. A
+missing or failing audit MUST stop preparation. Retain the seven non-AI native
+fixtures, static native AI, ephemeral signing and independent Tasks inputs.
+Before runtime bundling, preparation MUST build Plugins-owned Markdown public
+exports through its normal dependency closure; a frozen workspace install alone
+does not provide the Slides dependency’s compiled `./embed` contract. Changing a
+source pin requires a newly produced source-identity-bound dependency artifact;
+prior full artifacts MUST NOT qualify the new input. E-RETIRE-003 records
+source-admission controls; actual fixture generation and macOS/native
+qualification remain separate gates.
 
 Completed npm archive projections for Agent UI, Bases, History and Tasks are
 removed, including Agent UI's redundant source build and the Bases and History
