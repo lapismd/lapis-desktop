@@ -219,3 +219,14 @@ external forge acceptance gaps remain separately tracked.
 [E-RELEASE-025](history/E-RELEASE-025.md) closes E-RELEASE-024's subsequently
 required caller checked-head CI and merge. Manual token/host-SSH delivery is
 complete; the published app remains the original qualified rc.2 source/bytes.
+
+## Held dependency automation
+
+LD-GOV-002/006/008:
+[Current-main held integration](history/E-DEPENDENCIES-017.md).
+
+[Fresh qualification](history/E-DEPENDENCIES-018.md) retains the same LD-GOV
+gates.
+
+[ed03 integration](history/E-DEPENDENCIES-019.md) preserves the same gates and
+new native collection without granting acceptance or adoption authority.

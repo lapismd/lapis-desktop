@@ -42,12 +42,12 @@
     "high": 0,
     "critical": 0
   },
-  "unresolved": "Current21input source4537 and fresh actual8archive local context are measured. Operational projection bindings remainempty. Legacy main policy/evaluator is unchanged; its observed allow result grants no new exact authority. Fresh newhead hostedcandidate/main/defaultscheduledhealth and callback/central capability/private eligibility remain Root-owned. No operator question or activation in this slice.",
+  "unresolved": "Rebased onto actual main ed03f5ee; all21source-input bytes and immutable descriptor/shape independently recomputed equal. New source identity requires fresh hosted source/archive/audit binding. Historical localProjectionEvidence remains factual at its original source, not authority for this integration. Operational projections remain empty; disabled/null authority/null approval and legacy policy bytes unchanged. Root owns hosted checks, authority reconciliation, ordinary merge, health/callback and activation.",
   "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
   "activePolicy": "config/dependency-audit.json (no developmentHigh entry)",
-  "sourceSha": "4537add5a5edd51270b0bb59869d015a61f83429",
+  "sourceSha": "aba2cabe20568d238b278851e6b0f81dd2546892",
   "record": "spec/src/history/E-DEPENDENCIES-016.md",
-  "contextRecord": "spec/src/history/E-DEPENDENCIES-018.md",
+  "contextRecord": "spec/src/history/E-DEPENDENCIES-019.md",
   "legacySourcePolicy": {
     "baseline": "2015c1ead2042b6a9f5f8c52e37d205bdd4773b7",
     "record": "spec/src/history/E-RETIRE-001.md",
@@ -146,5 +146,29 @@
       "rawSha256": "18ec13aa4cbaf0eac8db6af508dddf83aacec65cd5d8a43f68d9ded44d0df9a4",
       "shapeSha256": "c0c86889045958d5ae1a4fbc4822c55aae6af01bcfabe907ee930ae7307be881"
     }
+  },
+  "currentIntegrationEvidence": {
+    "record": "spec/src/history/E-DEPENDENCIES-019.md",
+    "base": "ed03f5ee585469b0e319535ae95cb6e8bd064282",
+    "sourceSnapshot": "4f06e1834c08fbf399bc5b8393517ba8596ffc40",
+    "context": {
+      "sourceSha": "aba2cabe20568d238b278851e6b0f81dd2546892",
+      "sourceInputsSha256": "c0e32e951577f250f6147bb891c3c6dddad2347c043d5d9e687f046875c0837a",
+      "portableManifestSha256": "5249c6d2c7f9ff79f9f948cb118600e762aaf9594ed148e2985003c87532b746",
+      "portableLockSha256": "33b1fc7324a63cd2a4e4ee5c16f9f9381599cd9c568d633ea38d2366c1c8de37",
+      "workspaceSha256": "3c48dadf4e7557172f8ea08f932195d3c49dda566ec6ad927ffdb0261132ad1d",
+      "sourceInventorySha256": "b3a598669587eb8de3dfb66d7ce55b009e72f95a42b62171be95bd66c8cd16b5",
+      "projection": {
+        "platform": "linux-x64",
+        "manifestSha256": "bbc0e1a9572e95d52d3fb49812ba4e0e36b9a2df66c5a21093a76b98003f1b53",
+        "lockSha256": "c44173ee58dc3be20fbe15a1c33ce7a90a33142a1c3038e59e34afb3c8d393ea",
+        "archivesSha256": "725454cc4c1b427a2007d04d2ea9b1b50f569e1fdf502179edb6afdd94d66ea8"
+      },
+      "recordPresent": true,
+      "recordSha256": "badadf039983216f12fb09a1cbe29962c7ce4853df295e27e4a3ac71910092c2"
+    },
+    "adoptionAuthorityGranted": false,
+    "newExactHighAccepted": false,
+    "hostedBindingQualified": false
   }
 }

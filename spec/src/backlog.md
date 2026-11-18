@@ -34,3 +34,7 @@ Fresh exact-source/private archive, full-prod audit, hosted candidate/main,
 scheduled health and metadata callback qualification remain separate. The old
 PR50/aaca context and source-declared legacy HIGH approval cannot qualify a new
 exact source decision. Preserve current native/product/distribution gates.
+
+E-DEPENDENCIES-019 appends ed03 integration and renewed source evidence; fresh
+final-head hosted checks, authority reconciliation and health/callback remain
+held. Native cold-chat collection does not qualify native acceptance.

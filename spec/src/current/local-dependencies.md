@@ -354,7 +354,8 @@ throughNov30 authority is not independently authenticated here. Neither that
 claim nor the disabled new source/projection proposal supplies new authority; no
 decision is transferred, extended, rebound, removed or silently inferred. The
 raw HIGH findings and production audit remain visible. Central activation
-requires Root's separate concrete source/archive/hosted authority review.
+requires Root's separate concrete source/archive/hosted authority review. E019
+appends actual ed03 main integration while preserving its native collection.
 
 <!-- dependency-intake:validator-development:start -->
 

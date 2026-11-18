@@ -33,3 +33,9 @@ The concrete local source is `4537add5a5edd51270b0bb59869d015a61f83429`,21input
 digest `c0e32e951577f250f6147bb891c3c6dddad2347c043d5d9e687f046875c0837a`. E018
 records its actual cold archive context; operational projections stay empty
 until independent hosted qualification.
+
+E019 appends the ed03 main integration at source
+`aba2cabe20568d238b278851e6b0f81dd2546892`. Its21input digest and
+descriptor/shape are independently recomputed equal; E018 retains its historical
+source identity. Fresh local and hosted evidence are distinct. No operational
+projection or security authority is granted by this source requalification.

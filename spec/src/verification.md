@@ -137,8 +137,4 @@ follow-ups and their original acceptance boundaries.
 
 [Sync](verification/lapis-sync.md)
 
-LD-GOV-002/006/008:
-[Current-main held integration](history/E-DEPENDENCIES-017.md).
-
-[Fresh qualification](history/E-DEPENDENCIES-018.md) retains the same LD-GOV
-gates.
+[Held dependency automation](verification-notes.md#held-dependency-automation)

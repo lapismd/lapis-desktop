@@ -365,9 +365,10 @@ shape guards MUST run in normal quality/spec lanes outside bot exemptions. Prior
 bytes and changed paths MUST share one immutable Git/JJ range. Completion hints
 grant no activation. Existing audit authority is unchanged; the disabled new
 proposal grants none. Private CalVer/native/archive/distribution gates remain
-separate. Pinned sibling JJ reads MUST NOT snapshot/import dirty working copies;
-files, operation IDs and exact source/tar bytes remain unchanged. UI workers
-skip native exports; Desktop's own source snapshot remains intentional.
+separate. E019 preserves ed03 native collection with held adoption. Pinned
+sibling JJ reads MUST NOT snapshot/import dirty working copies; files, operation
+IDs and exact source/tar bytes remain unchanged. UI workers skip native exports;
+Desktop's own source snapshot remains intentional.
 
 <!-- dependency-intake:validator-development:start -->
 
