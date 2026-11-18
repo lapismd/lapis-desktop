@@ -1,85 +1,54 @@
 # Disabled Desktop development Picomatch proposal
 
-**Status: disabled and unapproved.** This document changes no operational audit
-policy. Do not copy it into `config/dependency-audit.json` without separate
-exact operator approval and fresh complete source/installed-graph qualification.
+**Disabled and unapproved.** The active source policy has no `developmentHigh`
+entry. No coordinator, Notes, Visual Delta, Docs, Tasks or Mira approval
+transfers. The
+[exact proposal data](../../.github/dependency-automation/development-high-proposal.json)
+is not an active policy. Null/unresolved bindings cannot qualify an operator
+decision.
 
-The actual private installed graph is production-clean after consuming the six
-Notes164 archives from committed source
-`b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e`. Those archives match the owning
-source qualification byte for byte. This does not publish or replace any
-same-version npm package. Existing MODERATE WebdriverIO decisions remain
-unchanged; no prior coordinator, Visual Delta or Notes record supplies HIGH
-approval for Desktop.
+The proposed scope is HIGH GHSA-fc5q-39xc-vjpf, picomatch4.0.7 at
+`.>@storybook/addon-docs>unplugin>picomatch`, and picomatch2.3.2 at
+`.>@wdio/mocha-framework>mocha>chokidar>anymatch>picomatch` only. Raw full
+counts retain MODERATE3/HIGH2 and zero other severities; production and muted
+counts are zero. Both existing exact MODERATE decisions remain unchanged. The
+raw vulnerable range must remain`<=4.0.7`, patched range`<0.0.0`.
 
-## Exact proposed findings
+Proposed expiry is **November19,2026 at00:00UTC**, at most48hours after an
+actual explicit user decision, or sooner on any known patch or official stable
+successor above4.0.7. This supersedes the earlier unapproved November30
+proposal; it does not extend any existing decision. No approval
+authority/timestamp is supplied.
 
-```json
-{
-  "advisory": "GHSA-fc5q-39xc-vjpf",
-  "package": "picomatch",
-  "severity": "high",
-  "findings": [
-    {
-      "version": "4.0.7",
-      "paths": [".>@storybook/addon-docs>unplugin>picomatch"]
-    },
-    {
-      "version": "2.3.2",
-      "paths": [".>@wdio/mocha-framework>mocha>chokidar>anymatch>picomatch"]
-    }
-  ],
-  "status": "disabled",
-  "expires": "2026-11-30",
-  "reason": "Proposed exact development-only Storybook/WebdriverIO tooling scope after the private installed production graph is clean. Requires separate explicit operator approval; retire on upstream remediation.",
-  "approvedBy": "UNAPPROVED — proposal only"
-}
-```
+The owning gate retains the existing complete raw collector; shared LapisCI's
+portable-root evaluator cannot substitute for this source's private installed
+projection and already-approved MODERATE semantics. Its separate HIGH evaluator
+requires the exact committed source-input digest/latest input commit, portable
+manifest/lock/workspace/CI source inventory and an explicitly reviewed
+platform's actual installed manifest/lock/archive-inventory hashes. It verifies
+committed source/record bytes before collection, rechecks source/record/policy
+after fresh official registry evidence, and retains all raw full/production
+findings. A legacy severity entry cannot bypass the separate HIGH boundary. The
+active source configuration remains unchanged and acceptance stays disabled.
 
-The proposed expiry uses the existing source gate's inclusive UTC calendar-date
-semantics: November30 ends before December1,2026 at00:00UTC. It is a proposal,
-not an extension of the separate coordinator decision. Prefer a compatible
-released remediation and retire this proposed entry if it becomes unnecessary.
+[E-DEPENDENCIES-008](../../spec/src/history/E-DEPENDENCIES-008.md) preserves
+complete original8-archive ordinary acceptance: production0,2168 cold catalog
+cases and full-image source checks. Those earlier exact projected hashes do not
+silently bind a later projection. Fresh coherent source and installed/hosted
+artifact bindings must be frozen in the JSON before requesting any decision. No
+same-version npm bytes are replaced or published.
 
-## Reviewed graph facts
+Even a future exact security decision does not repair the separate normal bot
+install prerequisite: private AI/Tasks remain absent from the portable lock and
+AI is unavailable from public npm. The eight-archive CI path and controlled SDK
+registry-projection guard tests are separate from unchanged-manifest bot intake.
+The source stays held until that prerequisite, hosted candidate/main/scheduled
+health, callback and central activation/replay independently qualify.
+Publication, native distribution, user profiles and visual-baseline authority
+are unchanged.
 
-- Consumer validation snapshot: `4de846ada8579c9661368d3bf5cefb578af41c91`.
-  Later evidence-only commits do not change the dependency inputs listed here.
-- Installed lock SHA256:
-  `c3557d11aff1162073ec6fcf7f086695644ff378e224e1e2e5aa54cd0b4371d2`.
-- Projected root manifest SHA256:
-  `5560247406fbf41e9b336fddb494622a4318056f919df72eb483a7c29a7431cf`.
-- Tracked portable lock SHA256:
-  `45718cc76b2a5f086773affa62b1dc674be73c3954c8a76f9601f54a801a58ef`.
-- Tracked root manifest SHA256:
-  `67ff70bdb0437f2339cf3d3ef7294dbea4d8c0226461d54d7c58150167c64850`.
-- Exact CI source inventory SHA256:
-  `cd82614d26a3e685f0930c2f16d94c3c53cf49313abcc5daf22e7c1c8789d86c`.
-- Full audit retains three MODERATE vulnerable-version findings under the two
-  existing exact approvals and two HIGH development versions under this
-  advisory.
-- Production audit has zero advisories; the old Profile→Vite production path is
-  absent. The current aggregate policy still rejects this HIGH advisory.
-
-These hashes are review evidence. The existing operational gate enforces exact
-version/path/severity/finding-count/date and prohibits every production
-advisory; it does not currently enforce source/lock hashes. Do not claim runtime
-hash binding from this document. A changed graph requires fresh review, not
-inherited approval or an edited receipt.
-
-## Scope and remaining gates
-
-The remaining paths are Storybook Docs/unplugin and WebdriverIO Mocha/chokidar
-tooling. The advisory concerns expensive repeated-extglob matching. This scope
-grants no production, npm/tag, signing, repository write, native distribution or
-visual-baseline authority. All unrelated findings, exact source/archive trust,
-functional/type/build/catalog/accessibility checks and branch rules remain
-blocking. The source audit must be production-clean before any decision can be
-considered. Actual hosted candidate/main and complete installed-consumer
-acceptance remain required; current local results do not assert those gates.
-
-The owning follow-up is
-[Desktop46](https://github.com/lapismd/lapis-desktop/issues/46); adoption57 and
-its central archive hold remain open. The operator must approve this exact
-proposal or an upstream patched graph must remove the finding before activation.
-Nothing in this proposal marks that decision as granted.
+Owning follow-up:
+[Desktop46](https://github.com/lapismd/lapis-desktop/issues/46) and
+[adoption57](https://github.com/lapismd/dependency-automation/issues/57).
+Generic shared projected-audit consolidation is future work; this bounded change
+copies no shared collector and introduces no new Changesets/version writer.

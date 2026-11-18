@@ -69,6 +69,14 @@ export default defineConfig(
         rules: [
           {
             pattern:
+              "^tests/fixtures/desktop-(?:audit-(?:full|production)\\.json$|validator-intake\\.json\\.gz$)",
+            chapters: [
+              "spec/src/current/governance.md",
+              "spec/src/current/local-dependencies.md",
+            ],
+          },
+          {
+            pattern:
               "^(?:\\.ci/|scripts/ci/|tests/governance/ci-selection|\\.github/workflows/ci\\.yml$)",
             chapters: ["spec/src/current/ci.md"],
           },
@@ -159,6 +167,11 @@ export default defineConfig(
       build: true,
       first: true,
       lanes: [
+        {
+          name: "canonical-dependency-intake",
+          command: "node",
+          args: ["scripts/dependency-automation/check-canonical-intake.mjs"],
+        },
         {
           name: "rust-format",
           command: "cargo",

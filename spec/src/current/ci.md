@@ -286,3 +286,12 @@ rewrite. Producer and consumer retain the same admitted package identities.
 catalog and ordinary full-image qualification of the exact private cohort.
 Installed production audit success MUST NOT imply aggregate HIGH admission,
 hosted main acceptance, successful schedule or writable activation.
+
+Dependency audits MUST retain the original complete raw full and production
+reports plus the decision artifact. The existing exact MODERATE decisions stay
+separate. Any HIGH admission MUST require a distinct explicit user decision,
+exact committed source inputs and qualified per-platform installed projection/
+archive bindings, at most48hours and no later than2026-11-19T00:00UTC. Any
+production advisory, extra finding/path/count, binding drift or known upstream
+fix/stable successor MUST fail. The active policy currently has no HIGH
+decision.

@@ -1,5 +1,8 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
 import { spawnSync } from "node:child_process";
+import { isDeepStrictEqual } from "node:util";
+import { admitProjectedDevelopmentHigh } from "./dependency-automation/projected-audit-admission.mjs";
+import { projectedAuditContext } from "./dependency-automation/projected-audit-context.mjs";
 
 function samePaths(actual, expected) {
   return (
@@ -15,6 +18,7 @@ export function auditFindings(
   production,
   policy,
   date = new Date().toISOString().slice(0, 10),
+  context,
 ) {
   const errors = [];
   for (const report of [all, production])
@@ -34,12 +38,22 @@ export function auditFindings(
     errors.push(
       `Production advisory: ${entry.github_advisory_id} (${entry.module_name})`,
     );
+  const highAccepted = admitProjectedDevelopmentHigh(
+    all,
+    production,
+    policy.developmentHigh,
+    context,
+    context?.now,
+  );
   const accepted = new Set();
   for (const entry of Object.values(all.advisories)) {
+    if (highAccepted && entry.github_advisory_id === "GHSA-fc5q-39xc-vjpf")
+      continue;
     const exception = policy.exceptions.find(
       (candidate) => candidate.advisory === entry.github_advisory_id,
     );
     const matches =
+      entry.severity !== "high" &&
       exception?.status === "approved" &&
       /^\d{4}-\d{2}-\d{2}$/u.test(exception.expires) &&
       date <= exception.expires &&
@@ -73,10 +87,24 @@ export function auditFindings(
       errors.push(
         `Remove or review stale audit exception: ${exception.advisory}`,
       );
+  if (policy.developmentHigh && !highAccepted)
+    errors.push("Unqualified or stale exact projected HIGH decision");
   return errors;
 }
 
-export function runAudit() {
+export function runAudit(projection) {
+  const policyBytes = readFileSync("config/dependency-audit.json", "utf8");
+  const policy = JSON.parse(policyBytes);
+  let context, contextError;
+  const readContext = () =>
+    projectedAuditContext({ ...projection, decision: policy.developmentHigh });
+  if (policy.developmentHigh) {
+    try {
+      context = readContext();
+    } catch {
+      contextError = "Projected HIGH source binding is unavailable";
+    }
+  }
   const reports = [];
   for (const args of [
     ["audit", "--json"],
@@ -96,10 +124,74 @@ export function runAudit() {
       return 1;
     }
   }
-  const policy = JSON.parse(
-    readFileSync("config/dependency-audit.json", "utf8"),
+  if (context) {
+    const versions = spawnSync(
+      "pnpm",
+      [
+        "view",
+        "picomatch",
+        "versions",
+        "--json",
+        "--registry=https://registry.npmjs.org",
+      ],
+      { encoding: "utf8", maxBuffer: 1024 * 1024 },
+    );
+    try {
+      if (
+        versions.status !== 0 ||
+        versions.error ||
+        !isDeepStrictEqual(context, readContext()) ||
+        readFileSync("config/dependency-audit.json", "utf8") !== policyBytes
+      )
+        throw Error("binding changed");
+      context.officialVersions = JSON.parse(versions.stdout);
+      context.now = new Date().toISOString();
+    } catch {
+      contextError =
+        "Projected HIGH registry or final binding verification failed";
+      context = undefined;
+    }
+  }
+  const errors = auditFindings(
+    reports[0],
+    reports[1],
+    policy,
+    undefined,
+    context,
   );
-  const errors = auditFindings(reports[0], reports[1], policy);
+  if (contextError) errors.push(contextError);
+  mkdirSync(".local/projected-dependency-audit", { recursive: true });
+  for (const [name, report] of [
+    ["all", reports[0]],
+    ["production", reports[1]],
+  ])
+    writeFileSync(
+      `.local/projected-dependency-audit/${name}.json`,
+      JSON.stringify(report, null, 2),
+    );
+  writeFileSync(
+    ".local/projected-dependency-audit/decision.json",
+    JSON.stringify(
+      {
+        allowed: errors.length === 0,
+        errors,
+        highAccepted: Boolean(
+          context &&
+            admitProjectedDevelopmentHigh(
+              reports[0],
+              reports[1],
+              policy.developmentHigh,
+              context,
+              context.now,
+            ),
+        ),
+        sourceSha: context?.sourceSha ?? null,
+        projection: context?.projection ?? null,
+      },
+      null,
+      2,
+    ),
+  );
   for (const error of errors) console.error(error);
   if (!errors.length)
     console.log(

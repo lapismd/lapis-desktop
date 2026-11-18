@@ -203,7 +203,11 @@ function installProjected() {
         JSON.stringify(receipt, null, 2) + "\n",
       );
       if (process.argv.includes("--audit")) {
-        status = runAudit();
+        status = runAudit({
+          portableManifest: originalPkg,
+          portableLock: originalLock,
+          archives: receipt,
+        });
       }
     }
   } finally {

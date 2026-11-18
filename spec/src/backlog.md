@@ -34,3 +34,10 @@ in E-DEPENDENCIES-008. Complete hosted source/main and successful scheduled
 health before removing the central archive hold. Development HIGH remains a
 distinct gate; no new exception or replacement npm publication is authorized by
 this slice.
+
+The current normal bot frozen registry install is separately blocked by the
+private AI/Tasks omission; the unmodified native SDK updater also receives
+AI404. Do not clear the archive hold from controlled public SDK guard tests.
+Source publication or a reviewed shared private-projection contract is required.
+The separate bounded Desktop HIGH proposal stays disabled pending coherent
+bindings and explicit source-specific user approval.

@@ -290,3 +290,52 @@ The skill intake pins Core/Protocol/Content HTTP to released Server v2.4.0
 source `83fca8ddd25b7b7913723e231779862f94f7dbcb`;
 [E-SKILL-003](../history/E-SKILL-003.md) retains package archive provenance and
 separate native/distribution gates.
+
+The shared coordinator MAY prepare only the selected Node-only Spec Validator0.2
+development patch and these two exact factual slots. An optional single reserved
+managed note MUST have a blank or empty YAML release map, a nonempty body and at
+most8192bytes; no release intent is created. All other source/canonical text,
+public runtime/peer ranges, native pins, installed archives and audit gates stay
+source-owned. Automatic source acceptance does not remove the private hold.
+
+<!-- dependency-intake:validator-development:start -->
+
+```json
+{
+  "schemaVersion": 1,
+  "kind": "development-dependency-intake",
+  "dependency": "@lapismd/spec-validator",
+  "version": "0.2.1",
+  "peer": null,
+  "integrity": "sha512-aHLByppZkay1axSm8KvCwOJz0si8aDyZBXDGWW+d2VQw+66f1KLimw2rEMjYIpLdoSG9+yN5Kd1MKlAJw7xUVw==",
+  "importers": {
+    ".": {
+      "specifier": "0.2.1",
+      "version": "0.2.1"
+    }
+  },
+  "policySha256": "01dd47ddc905cf78914c00647792e48515e8b08fe4baebd9fe6cb55f67998579"
+}
+```
+
+<!-- dependency-intake:validator-development:end -->
+
+The source-owned installed-graph audit collector retains complete raw evidence
+and both existing MODERATE policies. HIGH MUST NOT use that legacy approval
+route: its separate source decision requires explicit-user authority, exact
+source/portable-input and qualified installed manifest/lock/archive hashes, a
+committed decision record and a maximum48hour deadline ending no later than
+2026-11-19T00:00UTC. Both raw graphs, final source/record/policy bindings, exact
+observed development paths/counts and fresh official registry fix evidence MUST
+qualify; changed or missing evidence fails closed. No HIGH is currently
+approved.
+
+The normal shared bot scripts-disabled frozen registry install still fails the
+unchanged private root because AI and Tasks are intentionally absent from the
+portable lock; the native updater cannot fetch unpublished AI. Controlled public
+projection SDK tests are independent source-guard evidence, not qualification of
+that original-manifest bot path. The eight-archive CI projection and its
+ordinary consumer acceptance do not remove this source prerequisite or activate
+writes. Publication or a separately reviewed shared private-projection contract
+is required; consumer aliases, invented registry bytes and dropped runtime
+dependencies MUST NOT substitute.

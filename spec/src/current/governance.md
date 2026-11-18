@@ -21,9 +21,10 @@ comparisons continue; unavailable/conflicting fail closed.
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
 renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005
 health grants no release authority (E-CI-009/089); E-DEPENDENCIES-008 retains
-private cohort full-image acceptance. Protected changes require
-full checks. Images trust only the mounted workspace; source checks use built-ins. E2e imports instrumentation; bundles reject its startup marker.
-Planned [Review](../backlog/markdown-review-contract.md) and staged
+private cohort full-image acceptance. Protected changes require full checks.
+Images trust only the mounted workspace; source checks use built-ins. E2e
+imports instrumentation; bundles reject its startup marker. Planned
+[Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md) are canonical owners registered in
 `scripts/spec-contracts.mjs` (E-PLAN-005; LD-GOV-001/002/004).
 
@@ -234,160 +235,123 @@ Normal bundle audits reject their marker in both binary and renderer output.
 
 The native runner retains the real Explorer dirty-delete regression. Its
 contextmenu event opens the existing Bits UI menu when the embedded driver does
-not synthesize that browser default; the real Delete item performs IO.
-
-Existing App notices project through the source-owned workspace notification
-bridge and retire with that host. Real native failure/retry acceptance uses the
-shared notification component and verifies physical bytes and explicit recovery.
-
+not synthesize that browser default; the real Delete item performs IO. Existing
+App notices project through the source-owned workspace notification bridge and
+retire with that host. Real native failure/retry acceptance uses the shared
+notification component and verifies physical bytes and explicit recovery.
 Exclusive creation shares the capability-opened staged publication helper with
 copy and retains the same source budget and file-contract mapping. Source APIs
-remain opt-in and portable; no broad native permission is added.
-
-Open, reveal, relative-path conversion and system trash use named variants of
-the existing admitted vault command. Physical descriptor identity and macOS file
-reference URLs constrain OS dispatch; unresolved or replaced targets reject.
-Passive OS-action receipts compile only with e2e, and normal bundle audits
-reject their marker. The cold runner retains real
-Finder/default-open/system-trash and local-trash fallback acceptance using only
-isolated disposable files.
-
+remain opt-in and portable; no broad native permission is added. Open, reveal,
+relative-path conversion and system trash use named variants of the existing
+admitted vault command. Physical descriptor identity and macOS file reference
+URLs constrain OS dispatch; unresolved or replaced targets reject. Passive
+OS-action receipts compile only with e2e, and normal bundle audits reject their
+marker. The cold runner retains real Finder/default-open/system-trash and
+local-trash fallback acceptance using only isolated disposable files.
 Internal-mutation native qualification uses existing rename/drop components and
 separate isolated profiles. It records browser event delivery separately from
 physical operating-system gestures; no product acceptance hook is added.
-
 Attachment import acceptance dispatches File/DataTransfer through the existing
 Explorer in the real WebView, then verifies native bytes, collision/failure
 handling, rendering and restart. This does not claim a physical operating-system
 drag gesture and adds no native permission or product test hook.
-
 Compressed-renderer acceptance uses the existing debug e2e feature and
 configured 127.0.0.1:1431 dev origin. Its temporary fixture serves only the
 freshly built acceptance renderer, never a user vault. The harness fails if that
 port is owned elsewhere; it cannot stop or reuse an unrelated listener. Bundled
 raw-resource acceptance runs first, and the subsequent dev build does not
-replace the bundled application binary or widen navigation/IPC authority.
-
-M6 navigation is a first-class canonical chapter in the shared contract list.
+replace the bundled application binary or widen navigation/IPC authority. M6
+navigation is a first-class canonical chapter in the shared contract list.
 Plugin-profile intake and native find/navigation acceptance map explicitly to
 that owner, while shell composition, writer audit and milestone gates keep their
-existing contracts.
-
-The specification owns current state. Evidence checks retain immutable receipts,
-actual run results, valid requirements, historical file resolution and fresh
-coverage for protected changes. New evidence uses contract and acceptance
-review; historical milestone metadata remains tied to its original source
-revision.
-
-Native Search settings acceptance joins the existing sequential runner. Failed
-locator fixtures remain distinct from reproduced stale recovery; qualification
-uses the source-owned public package archive and existing Configuration events.
-
-Native metadata acceptance joins the canonical runner with registered Markdown
-views and Search handoffs, including disabled/re-enabled Search and ordinary
-internal links. It uses real source-position edits in isolated vaults.
-
-Graph native tests observe forwarded Canvas drawing calls to locate actually
-rendered nodes and deliver browser pointer/context-menu events to existing
-handlers. The instrumentation lives only in the external acceptance driver and
-is absent from every application bundle. The owning Graph package retains its
-data and settings lifecycle qualification.
-
+existing contracts. The specification owns current state. Evidence checks retain
+immutable receipts, actual run results, valid requirements, historical file
+resolution and fresh coverage for protected changes. New evidence uses contract
+and acceptance review; historical milestone metadata remains tied to its
+original source revision. Native Search settings acceptance joins the existing
+sequential runner. Failed locator fixtures remain distinct from reproduced stale
+recovery; qualification uses the source-owned public package archive and
+existing Configuration events. Native metadata acceptance joins the canonical
+runner with registered Markdown views and Search handoffs, including
+disabled/re-enabled Search and ordinary internal links. It uses real
+source-position edits in isolated vaults. Graph native tests observe forwarded
+Canvas drawing calls to locate actually rendered nodes and deliver browser
+pointer/context-menu events to existing handlers. The instrumentation lives only
+in the external acceptance driver and is absent from every application bundle.
+The owning Graph package retains its data and settings lifecycle qualification.
 E-GRAPH-002 retains final failures and source-owned startup ordering. DOM
-capture after failure cannot retry/pass acceptance or change deadlines.
-
-M7 native integration has a dedicated canonical chapter and mapped source/tests;
+capture after failure cannot retry/pass acceptance or change deadlines. M7
+native integration has a dedicated canonical chapter and mapped source/tests;
 its evidence retains targeted results and every deferred full qualification
-lane.
-
-M7 adds exactly seven named main-window service permissions: text clipboard
-read/write, bounded external open, notification delivery and queued URL
-next/acknowledge/enqueue. The fail-closed capability audit lists those grants
-explicitly and still rejects extra generic plugin permissions. Opener automatic
-JavaScript link injection stays disabled; only the bounded host route may open
-an external address. Native menu snapshots and passive receipts are e2e-only.
-
-Portable plugin resources use Tauri’s bundled-origin response hook and the
-existing opaque vault-resource admission. The Rust SHA-256 dependency pins the
-public asset fingerprint contract; CSP admits same-origin asset reads, workers
-and WASM compilation without arbitrary JavaScript evaluation or new IPC grants.
-
-The desktop declares its portable editor/Lezer shared modules explicitly through
-registry semver ranges and deduplicates them alongside API, Svelte and one
-Design Core 0.8.0 copy (E-CI-033). Build-owned entries reuse that graph instead
-of resolving private dependency paths.
-
-Portable native acceptance observes plugin-owned Apps through a weak reference
-and wraps worker creation/termination only in the e2e renderer entry. Normal
-bundle audits reject its marker. Fixture seeding independently verifies local
-test-signed public archives and signed files; actual installation remains M9.
-
-M9 native acceptance injects ephemeral public signing keys and fixture transport
-only through the App constructor in its separately compiled entry. Test fixture
-private keys are held only in producer memory. Ordinary binary and renderer
-audits reject the fixture trust, origin and distribution-hook markers.
-Production startup retains embedded SDK trust and the existing native permission
-set.
-
-Private AI and Terminal public-build links remain migration prerequisites.
-Native ACP policy, controls, compiled provider and channel driver are
-feature-gated acceptance inputs. Ordinary bundle audits reject their markers and
-resources. Audit changes keep full consumer lanes; remove stale approvals. The
-graph resolves `@hono/node-server` 2.1.6 without an exception. Fixture passes do
-not qualify AI product UI, models, tools, credentials or compute.
-
-Native builds recreate ignored autogenerated application permissions from their
-current feature-specific command list. Switching from acceptance to ordinary
-builds must not retain test permission metadata. Authored capabilities and
-permission sources remain separate from those generated outputs.
-
-The desktop AI foundation and retained transcript fixtures map to `plugins.md`;
-JSON fixtures stay spec-first protected.
-
-Retained AI metadata uses the declared registry YAML codec. Vault-backed, hidden
-API and complete headed Node acceptance all load public built API exports with
-the existing tsx dev loader; no loader or test state enters production. Live
-agent/provider specs run only through the explicit opt-in runner, never a
-default lane (E-TEST-002). `pnpm test:ai` retains its Node policy lane in normal
-`pnpm test`. `vitest.workers.config.ts` and `tests/workers` map to
-[background](background.md) for browser scheduling. E-REPO-016 retains
-dependency/source ownership and its native/catalog gates.
-
-The renderer source audit rejects controller/ai-host imports, Node execution
-modules and legacy ACP bridge/Node-user-store paths. Public lapis-ai clients
-remain admitted. It runs in ordinary and canonical specification checks. The
-isolated policy runner also transforms the public UI helper exports through
-Vite.
-
-Memory capture uses the registry `@lapismd/agent-redaction` portable root only.
-Its Node/Deno/secretlint execution exports do not enter the renderer graph.
+lane. M7 adds exactly seven named main-window service permissions: text
+clipboard read/write, bounded external open, notification delivery and queued
+URL next/acknowledge/enqueue. The fail-closed capability audit lists those
+grants explicitly and still rejects extra generic plugin permissions. Opener
+automatic JavaScript link injection stays disabled; only the bounded host route
+may open an external address. Native menu snapshots and passive receipts are
+e2e-only. Portable plugin resources use Tauri’s bundled-origin response hook and
+the existing opaque vault-resource admission. The Rust SHA-256 dependency pins
+the public asset fingerprint contract; CSP admits same-origin asset reads,
+workers and WASM compilation without arbitrary JavaScript evaluation or new IPC
+grants. The desktop declares its portable editor/Lezer shared modules explicitly
+through registry semver ranges and deduplicates them alongside API, Svelte and
+one Design Core 0.8.0 copy (E-CI-033). Build-owned entries reuse that graph
+instead of resolving private dependency paths. Portable native acceptance
+observes plugin-owned Apps through a weak reference and wraps worker
+creation/termination only in the e2e renderer entry. Normal bundle audits reject
+its marker. Fixture seeding independently verifies local test-signed public
+archives and signed files; actual installation remains M9. M9 native acceptance
+injects ephemeral public signing keys and fixture transport only through the App
+constructor in its separately compiled entry. Test fixture private keys are held
+only in producer memory. Ordinary binary and renderer audits reject the fixture
+trust, origin and distribution-hook markers. Production startup retains embedded
+SDK trust and the existing native permission set. Private AI and Terminal
+public-build links remain migration prerequisites. Native ACP policy, controls,
+compiled provider and channel driver are feature-gated acceptance inputs.
+Ordinary bundle audits reject their markers and resources. Audit changes keep
+full consumer lanes; remove stale approvals. The graph resolves
+`@hono/node-server` 2.1.6 without an exception. Fixture passes do not qualify AI
+product UI, models, tools, credentials or compute. Native builds recreate
+ignored autogenerated application permissions from their current
+feature-specific command list. Switching from acceptance to ordinary builds must
+not retain test permission metadata. Authored capabilities and permission
+sources remain separate from those generated outputs. The desktop AI foundation
+and retained transcript fixtures map to `plugins.md`; JSON fixtures stay
+spec-first protected. Retained AI metadata uses the declared registry YAML
+codec. Vault-backed, hidden API and complete headed Node acceptance all load
+public built API exports with the existing tsx dev loader; no loader or test
+state enters production. Live agent/provider specs run only through the explicit
+opt-in runner, never a default lane (E-TEST-002). `pnpm test:ai` retains its
+Node policy lane in normal `pnpm test`. `vitest.workers.config.ts` and
+`tests/workers` map to [background](background.md) for browser scheduling.
+E-REPO-016 retains dependency/source ownership and its native/catalog gates. The
+renderer source audit rejects controller/ai-host imports, Node execution modules
+and legacy ACP bridge/Node-user-store paths. Public lapis-ai clients remain
+admitted. It runs in ordinary and canonical specification checks. The isolated
+policy runner also transforms the public UI helper exports through Vite. Memory
+capture uses the registry `@lapismd/agent-redaction` portable root only. Its
+Node/Deno/secretlint execution exports do not enter the renderer graph.
 Dependency installation retains the same 14 verified ignored archive routes.
-
 App-tool schema interpretation uses the registry @cfworker/json-schema public
 root and standard draft-7 meta-schema data with attribution. Tests run with
 string code generation disabled; no unsafe-eval CSP grant, JavaScript runtime
-service or legacy bridge is added.
-
-Retained AI components and policy modules map to the plugins chapter. The
-isolated policy runner compiles normal Svelte runes with the Svelte Vite plugin;
-it supplies no rune shim. Desktop pins Svelte 5.57.2 to match the linked
-Terminal's public component types, preventing duplicate snippet identities.
-Registry icon imports remain portable. Local archive refresh retains payload
-verification and records each source repair before consumer qualification.
-
-Dependency refresh records clean owning sources. E-CI-085 pins the command-lease
-repair without changing admission, retries, deadlines, assertions or the ARM64
-quarantine. E-CI-086 advances only exact revisions; E-CI-087/088 preserve the
-same gates across subsequent Core rebases. Locked checks and packaged ACP
-acceptance retain existing gates. E-CORE-047, E-DEPENDENCIES-004 and E-AI-030
-retain their prior source, privacy, lock/profile and real-policy qualification;
-no registry patch or substitute is introduced.
-
-AI user-command IO is main-only with Rust-owned paths and isolated acceptance.
-Seeding stays exclusive; ordinary AI execution remains unavailable.
-
-CLI preparation verifies the Core pin and stages the `2026.31.6-rc.2` binary
-with target/source/checksum identity. Packaging checks the resource and exact
+service or legacy bridge is added. Retained AI components and policy modules map
+to the plugins chapter. The isolated policy runner compiles normal Svelte runes
+with the Svelte Vite plugin; it supplies no rune shim. Desktop pins Svelte
+5.57.2 to match the linked Terminal's public component types, preventing
+duplicate snippet identities. Registry icon imports remain portable. Local
+archive refresh retains payload verification and records each source repair
+before consumer qualification. Dependency refresh records clean owning sources.
+E-CI-085 pins the command-lease repair without changing admission, retries,
+deadlines, assertions or the ARM64 quarantine. E-CI-086 advances only exact
+revisions; E-CI-087/088 preserve the same gates across subsequent Core rebases.
+Locked checks and packaged ACP acceptance retain existing gates. E-CORE-047,
+E-DEPENDENCIES-004 and E-AI-030 retain their prior source, privacy, lock/profile
+and real-policy qualification; no registry patch or substitute is introduced. AI
+user-command IO is main-only with Rust-owned paths and isolated acceptance.
+Seeding stays exclusive; ordinary AI execution remains unavailable. CLI
+preparation verifies the Core pin and stages the `2026.31.6-rc.2` binary with
+target/source/checksum identity. Packaging checks the resource and exact
 main-window grants. The registry cohort is API 0.6.5, File Explorer 0.2.8,
 Language Service 0.1.6, UI 0.2.1, Workspace 0.4.6, Profile 0.2.2 and History
 0.5.1. The peer guard checks that inventory and one API context (E-REPO-059).
@@ -395,6 +359,34 @@ Native Notes stays pinned; earlier UI archives remain historical qualification
 evidence. [Native acceptance](native-acceptance.md) includes fixed `api --sync`
 and noninteractive, isolated custody probes; source/hash guards remain required.
 [Tool gates](../verification-notes.md) remain; CI and intake are linked above.
-
 CLI keeps source/build-schema guards; [preview receipts](distribution.md).
 [Skill qualification](../history/E-SKILL-004.md) retains its delivery gates.
+LD-GOV-002/006 admit only forward Node-only Spec Validator0.2 development
+patches. The independent offline guard checks exact policy, complete portable
+catalog and both factual slots in normal quality and functional specification
+lanes, outside bot exemptions. Runtime/native/private archive inputs require
+separate review. Desktop retains private CalVer/Tauri preparation; no
+Changesets/version writer or release intent is introduced. Completion hints
+grant no activation authority.
+
+<!-- dependency-intake:validator-development:start -->
+
+```json
+{
+  "schemaVersion": 1,
+  "kind": "development-dependency-intake",
+  "dependency": "@lapismd/spec-validator",
+  "version": "0.2.1",
+  "peer": null,
+  "integrity": "sha512-aHLByppZkay1axSm8KvCwOJz0si8aDyZBXDGWW+d2VQw+66f1KLimw2rEMjYIpLdoSG9+yN5Kd1MKlAJw7xUVw==",
+  "importers": {
+    ".": {
+      "specifier": "0.2.1",
+      "version": "0.2.1"
+    }
+  },
+  "policySha256": "01dd47ddc905cf78914c00647792e48515e8b08fe4baebd9fe6cb55f67998579"
+}
+```
+
+<!-- dependency-intake:validator-development:end -->

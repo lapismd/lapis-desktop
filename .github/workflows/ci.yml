@@ -759,6 +759,9 @@ jobs:
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Set up pnpm
         uses: pnpm/action-setup@v6
       - name: Set up Node.js
@@ -782,6 +785,15 @@ jobs:
           node scripts/ci/timing.mjs run
           verify-and-install-prepared-private-packages -- /bin/bash -e -o
           pipefail -c 'node scripts/ci-install.mjs --audit'
+      - name: Retain complete projected dependency audit evidence
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: desktop-projected-audit-${{ github.run_attempt }}
+          path: .local/projected-dependency-audit/
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
       - uses: actions/upload-artifact@v7
         if: always()
         with:

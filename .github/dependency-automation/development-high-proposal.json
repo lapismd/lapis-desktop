@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "repository": "lapismd/lapis-desktop",
+  "status": "disabled",
+  "approvedAt": null,
+  "authority": null,
+  "expiresAt": "2026-11-19T00:00:00.000Z",
+  "finding": {
+    "advisory": "GHSA-fc5q-39xc-vjpf",
+    "package": "picomatch",
+    "severity": "high",
+    "findings": [
+      {
+        "version": "4.0.7",
+        "paths": [".>@storybook/addon-docs>unplugin>picomatch"]
+      },
+      {
+        "version": "2.3.2",
+        "paths": [".>@wdio/mocha-framework>mocha>chokidar>anymatch>picomatch"]
+      }
+    ]
+  },
+  "dependencySource": null,
+  "sourceInputsSha256": null,
+  "bindings": {
+    "portableManifestSha256": "5249c6d2c7f9ff79f9f948cb118600e762aaf9594ed148e2985003c87532b746",
+    "portableLockSha256": "df468bc0436aa9908c157167d2888579774aab7d4cae501218af191822dc3146",
+    "workspaceSha256": "a4e8e4a50b4949b78592128fe9b1cf89be1c6e30aeb9cdc30a7fb1c83f73299b",
+    "sourceInventorySha256": "cd82614d26a3e685f0930c2f16d94c3c53cf49313abcc5daf22e7c1c8789d86c"
+  },
+  "qualifiedProjections": [],
+  "rawFullCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 2,
+    "critical": 0
+  },
+  "rawProductionCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "unresolved": "Final coherent source commit and exact current-head installed/hosted projection bindings must be frozen before an operator question. Earlier UI/full receipts retain independent historical hashes.",
+  "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
+  "activePolicy": "config/dependency-audit.json (no developmentHigh entry)"
+}

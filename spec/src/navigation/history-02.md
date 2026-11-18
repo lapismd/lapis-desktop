@@ -369,3 +369,4 @@
 - [Current-main released native skill intake](../history/E-SKILL-003.md)
 - [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)
 - [Complete private cohort ordinary consumer qualification](../history/E-DEPENDENCIES-008.md)
+- [Bounded Desktop dependency intake and disabled projected audit decision](../history/E-DEPENDENCIES-009.md)
