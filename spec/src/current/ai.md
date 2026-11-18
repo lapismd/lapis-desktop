@@ -40,7 +40,7 @@ E-REPO-002 retains separate AI/history admission; history cannot admit targets.
 E-CATALOG-009–012 retain shell clearance, inert XML and constrained chat
 wrapping. The [AI backlog](../backlog/ai-qualification.md) retains outstanding
 native acceptance. Shared plugin identity and catalog requirements live in
-[plugins.md](plugins.md).
+[plugins.md](plugins.md). E-RETIRE-006 removes unused session controls.
 
 Native AI admission uses a two-phase, window-owned transition over an existing
 live vault token. Pending transitions cannot authorize ACP. A new root retires
@@ -102,8 +102,10 @@ External shared-AI retirement uses Notes' public installer admission; it does
 not retire Desktop's owned AI. Consumer qualification MUST use the installed
 public package, reject the original retired artifact before network IO and
 preserve saved settings, conversations and memory. An independent AI origin MUST
-retain ordinary admission. These checks do not qualify native startup or publish
-a package.
+retain ordinary admission. Native startup remains unqualified;
+[E-RETIRE-004](../history/E-RETIRE-004.md) and
+[E-RETIRE-009](../history/E-RETIRE-009.md) prepare synthetic/original
+preservation cases.
 
 [Reusable ACP transport qualification](ai-adapter.md#reusable-acp-transport-qualification)
 retains its independent source, native and provider gates.

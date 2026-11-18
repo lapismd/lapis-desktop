@@ -372,8 +372,8 @@ Retained AI components and policy modules map to the plugins chapter. The
 isolated policy runner compiles normal Svelte runes with the Svelte Vite plugin;
 it supplies no rune shim. Desktop pins Svelte 5.57.2 to match the linked
 Terminal's public component types, preventing duplicate snippet identities.
-Registry icon imports remain portable. Local archive refresh retains payload
-verification and records each source repair before consumer qualification.
+Registry icons stay portable. Refresh denies Deno validators (E-RETIRE-008),
+retains payload checks and records source repairs before consumer qualification.
 
 Dependency refresh records clean owning sources. E-CI-085 pins the command-lease
 repair without changing admission, retries, deadlines, assertions or the ARM64

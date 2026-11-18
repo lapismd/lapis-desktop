@@ -330,4 +330,4 @@ Shared remotes retain main-window/vault admission, Core operations and OS
 custody (LD-DESK-003). E-REPO-059 separates transport, catalog and distribution
 gates.
 
-Native-owned skill resources: [contract](skills.md).
+[Skills](skills.md); [AI](ai-adapter.md).
