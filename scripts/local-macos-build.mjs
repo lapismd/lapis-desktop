@@ -17,6 +17,8 @@ import {
 import { dirname, join, resolve, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import { assertRetiredFreePlugins } from "./plugin-source-admission.mjs";
+
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const repo = (name) => join(root, "..", name);
 const pluginsRepo = repo("lapis-plugins");
@@ -210,6 +212,7 @@ function readRelease(pkgDir) {
 }
 
 function installPlugins() {
+  assertRetiredFreePlugins(pluginsRepo);
   // 1. Build every official plugin payload so .release/plugins is fresh.
   run("pnpm", ["plugin:build"], pluginsRepo, {
     LAPIS_PLUGINS_VALIDATION_RUNTIME: "native",

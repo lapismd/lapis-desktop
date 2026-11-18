@@ -120,3 +120,12 @@ Shared participant, context/handoff, native tools, memory and durable-job work
 belongs to the
 [Server backlog](https://github.com/lapismd/lapis-server/blob/main/spec/src/backlog.md);
 Desktop supplies its admitted Tauri integration and current public screens.
+
+E-RETIRE-009 verifies the preserved original0.1.16 archive (registry signature,
+release signature and177signed file hashes) and prepares four additional
+historical-copy cases beside the synthetic trap matrix. All10native cases remain
+unexecuted. A selected checksum-pinned ignored archive is required; missing or
+modified bytes must fail before seeding a disposable vault. Original signature
+verification/fixture preparation does not grant new-install permission or
+qualify native startup. Core API services/functions and planned Language Service
+wiring remain unchanged under the user's Desktop/Deno-only scope.

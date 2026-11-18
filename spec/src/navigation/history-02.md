@@ -369,4 +369,9 @@
 - [Integrate the current Sync plan and full-run contract](../history/E-SKILL-004.md)
 
 - [Shared AI retirement public consumer intake](../history/E-RETIRE-001.md)
+
+- [Retired-free Desktop fixture source admission](../history/E-RETIRE-003.md)
 - [Prepare native shared AI preservation acceptance](../history/E-RETIRE-004.md)
+- [Complete fresh public-package fixtures](../history/E-RETIRE-005.md)
+
+- [Original signed AI preservation fixture](../history/E-RETIRE-009.md)

@@ -50,6 +50,7 @@ const inputs = [
   "scripts/ci-dependency-artifact.mjs",
   "scripts/ci-artifact-identity.mjs",
   "scripts/ci-artifact-provenance.mjs",
+  "scripts/package-archive-exports.mjs",
   "rust-toolchain.toml",
   "src-tauri/Cargo.toml",
   "src-tauri/Cargo.lock",

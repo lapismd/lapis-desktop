@@ -2,10 +2,15 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { historicalAiFiles } from "./historical-ai-files.mjs";
 
-/** Synthetic installed copy, deliberately not a signed-install qualification. */
-export function seedRetiredAi(vault, disabledBy) {
-  const now = "2026-01-01T00:00:00.000Z";
+/** Seed existing files; registry installation and native startup remain separate. */
+export function seedRetiredAi(vault, disabledBy, kind = "synthetic") {
+  assert.ok(["synthetic", "historical"].includes(kind));
+  const now =
+    kind === "historical"
+      ? "2026-11-17T00:00:00.000Z"
+      : "2026-01-01T00:00:00.000Z";
   const id = "11111111-1111-4111-8111-111111111111";
   const session = `.lapis/agents/sessions/${id}`;
   const manifest = JSON.stringify({
@@ -18,7 +23,10 @@ export function seedRetiredAi(vault, disabledBy) {
   });
   const main =
     'globalThis.__retiredSharedAiEvaluated = true; throw new Error("Retired shared AI evaluated");\n';
-  const files = { "manifest.json": manifest, "main.js": main };
+  const files =
+    kind === "historical"
+      ? historicalAiFiles()
+      : { "manifest.json": manifest, "main.js": main };
   const installed = {
     schemaVersion: 1,
     updatedAt: now,
@@ -77,6 +85,10 @@ export function seedRetiredAi(vault, disabledBy) {
   }
   return () => {
     for (const [path, text] of Object.entries(saved))
-      assert.equal(readFileSync(join(vault, path), "utf8"), text, path);
+      assert.deepEqual(
+        readFileSync(join(vault, path)),
+        Buffer.from(text),
+        path,
+      );
   };
 }

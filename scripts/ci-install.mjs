@@ -15,6 +15,7 @@ import { verifyArchiveGraph } from "./archive-resolution.mjs";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { runAudit } from "./ci-audit.mjs";
+import { verifyPackageArchive } from "./package-archive-exports.mjs";
 import { archiveHookSource, validateArchiveRanges } from "./archive-hook.mjs";
 import {
   verifyDependencies,
@@ -97,6 +98,7 @@ function installProjected() {
       if (tarballs.length !== 1)
         throw Error(`Expected one public archive for ${name}`);
       renameSync(`${directory}/${tarballs[0]}`, resolve(target));
+      verifyPackageArchive(resolve(target));
       archives[name] = {
         path: target,
         version: JSON.parse(

@@ -15,10 +15,13 @@ import { packTasksFixture, selectTasksFixture } from "./ci-tasks-fixture.mjs";
 import { verifyDependencies } from "./ci-dependency-artifact.mjs";
 import { buildTasksArtifact } from "../tests/desktop/tasks-installed-artifact.mjs";
 
+import { assertRetiredFreePlugins } from "./plugin-source-admission.mjs";
+
 const root = process.cwd();
 const plugins = resolve("../lapis-plugins");
 const sources = JSON.parse(readFileSync("scripts/ci-sources.json", "utf8"));
 const source = sources.find((entry) => entry.name === "lapis-plugins");
+assertRetiredFreePlugins(plugins);
 // Registry intake no longer builds Bases or History from this checkout, but
 // release signing still imports fflate and the plugin build still needs Vite.
 if (!existsSync(join(plugins, "node_modules/fflate/package.json"))) {
@@ -27,6 +30,12 @@ if (!existsSync(join(plugins, "node_modules/fflate/package.json"))) {
     stdio: "inherit",
   });
 }
+// Slides bundles the owning workspace Markdown exports, including ./embed.
+// A frozen dependency install alone does not prepare that package's public dist.
+execFileSync("pnpm", ["--filter", "@lapis-notes/markdown...", "build"], {
+  cwd: plugins,
+  stdio: "inherit",
+});
 const tools = await import(
   pathToFileURL(join(plugins, "scripts/plugin-release.mjs"))
 );

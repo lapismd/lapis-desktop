@@ -265,8 +265,8 @@ through Node.
 With either owned AI factory, Desktop registers bundled `ai` before configured
 installations. Without either factory, external `ai` remains unavailable under
 the App-owned host policy. Saved disabled preferences stay authoritative.
-[E-RETIRE-004](../history/E-RETIRE-004.md) prepares native preservation
-acceptance.
+[E-RETIRE-009](../history/E-RETIRE-009.md) adds the verified original archive to
+E-RETIRE-004's prepared native preservation matrix; execution remains pending.
 
 Native Notes reuses the public Workspace plugin Settings pages for installed
 plugin control and diagnostics. The Core page retains all App Shell and Lapis
