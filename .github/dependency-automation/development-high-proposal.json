@@ -1,0 +1,174 @@
+{
+  "schemaVersion": 1,
+  "repository": "lapismd/lapis-desktop",
+  "status": "disabled",
+  "approvedAt": null,
+  "authority": null,
+  "expiresAt": "2026-11-20T00:00:00.000Z",
+  "finding": {
+    "advisory": "GHSA-fc5q-39xc-vjpf",
+    "package": "picomatch",
+    "severity": "high",
+    "findings": [
+      {
+        "version": "4.0.7",
+        "paths": [".>@storybook/addon-docs>unplugin>picomatch"]
+      },
+      {
+        "version": "2.3.2",
+        "paths": [".>@wdio/mocha-framework>mocha>chokidar>anymatch>picomatch"]
+      }
+    ]
+  },
+  "bindings": {
+    "sourceInputsSha256": "c0e32e951577f250f6147bb891c3c6dddad2347c043d5d9e687f046875c0837a",
+    "portableManifestSha256": "5249c6d2c7f9ff79f9f948cb118600e762aaf9594ed148e2985003c87532b746",
+    "portableLockSha256": "33b1fc7324a63cd2a4e4ee5c16f9f9381599cd9c568d633ea38d2366c1c8de37",
+    "workspaceSha256": "3c48dadf4e7557172f8ea08f932195d3c49dda566ec6ad927ffdb0261132ad1d",
+    "sourceInventorySha256": "b3a598669587eb8de3dfb66d7ce55b009e72f95a42b62171be95bd66c8cd16b5",
+    "projections": []
+  },
+  "rawFullCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 3,
+    "high": 2,
+    "critical": 0
+  },
+  "rawProductionCounts": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0
+  },
+  "unresolved": "Rebased onto actual main ed03f5ee; all21source-input bytes and immutable descriptor/shape independently recomputed equal. New source identity requires fresh hosted source/archive/audit binding. Historical localProjectionEvidence remains factual at its original source, not authority for this integration. Operational projections remain empty; disabled/null authority/null approval and legacy policy bytes unchanged. Root owns hosted checks, authority reconciliation, ordinary merge, health/callback and activation.",
+  "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
+  "activePolicy": "config/dependency-audit.json (no developmentHigh entry)",
+  "sourceSha": "aba2cabe20568d238b278851e6b0f81dd2546892",
+  "record": "spec/src/history/E-DEPENDENCIES-016.md",
+  "contextRecord": "spec/src/history/E-DEPENDENCIES-019.md",
+  "legacySourcePolicy": {
+    "baseline": "2015c1ead2042b6a9f5f8c52e37d205bdd4773b7",
+    "record": "spec/src/history/E-RETIRE-001.md",
+    "status": "operationally unchanged; authority not independently authenticated in this thread"
+  },
+  "localProjectionEvidence": {
+    "kind": "currentmain2015-cold-eight-archive-21input-source-context-only",
+    "sourceSnapshot": "c7a3bd308f7082c30964968cebdb6c163d6eb617",
+    "sourceSha": "4537add5a5edd51270b0bb59869d015a61f83429",
+    "projection": {
+      "platform": "linux-x64",
+      "manifestSha256": "bbc0e1a9572e95d52d3fb49812ba4e0e36b9a2df66c5a21093a76b98003f1b53",
+      "lockSha256": "121f9dbccab052a4b2c42b35cf86950043015de21e8cbe771069fd37afa2878b",
+      "archivesSha256": "725454cc4c1b427a2007d04d2ea9b1b50f569e1fdf502179edb6afdd94d66ea8"
+    },
+    "archives": [
+      {
+        "name": "@lapis-notes/lapis-plugin-tasks",
+        "version": "0.2.0",
+        "sourceRepository": "lapismd/lapis-plugin-tasks",
+        "sourceCommit": "7e25dc5cce821baca7831827f1711c1f18cbabf1",
+        "size": 253259,
+        "sha256": "9ff0dbdec630b0e56fbaa21957349ee22248d80759fa0a3f1a5b3c3a9b898cff",
+        "path": "package-0.tgz"
+      },
+      {
+        "name": "@lapis-notes/api",
+        "version": "0.6.8",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "5ffb33c152404b6880debd1b5fd70762121d6196",
+        "size": 766108,
+        "sha256": "2917dc6b4723e1423e13aef1cccb9bf23b844b28d358d0725710efd889f8ccd7",
+        "path": "package-1.tgz"
+      },
+      {
+        "name": "@lapis-notes/ui",
+        "version": "0.2.3",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "5ffb33c152404b6880debd1b5fd70762121d6196",
+        "size": 31732,
+        "sha256": "d8dc5f8e2469f2e9f4dd5bcd5b727db9780507caa5a8701f3c8a9d32f9a32e95",
+        "path": "package-2.tgz"
+      },
+      {
+        "name": "@lapis-notes/workspace",
+        "version": "0.4.8",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "5ffb33c152404b6880debd1b5fd70762121d6196",
+        "size": 116880,
+        "sha256": "558ecb749a420cbb222a790f19f5527aef9b2d956fcb367e633ca26cc7d60177",
+        "path": "package-3.tgz"
+      },
+      {
+        "name": "@lapis-notes/file-explorer",
+        "version": "0.2.8",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "5ffb33c152404b6880debd1b5fd70762121d6196",
+        "size": 15086,
+        "sha256": "5ab4ba28eb6a839bf64cfbc4031c77bb60b9883069ce9c0a510ecce32be3f342",
+        "path": "package-4.tgz"
+      },
+      {
+        "name": "@lapis-notes/language-service",
+        "version": "0.1.6",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "5ffb33c152404b6880debd1b5fd70762121d6196",
+        "size": 9473,
+        "sha256": "9b371f7c14850d73961f9d2a94aad126c964b7f3800576b38079185e821f28a0",
+        "path": "package-5.tgz"
+      },
+      {
+        "name": "@lapis-notes/app-profile",
+        "version": "0.2.5",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "5ffb33c152404b6880debd1b5fd70762121d6196",
+        "size": 31199,
+        "sha256": "82f533715b31a0504f4ce3e9780b9071a8c00bcfb1f9c929c5deff46a0e1d859",
+        "path": "package-6.tgz"
+      },
+      {
+        "name": "@lapismd/ai",
+        "version": "0.2.0",
+        "sourceRepository": "lapismd/lapis-ai",
+        "sourceCommit": "9a98293c26524c9320acdd9767e34e8ffdd7170c",
+        "size": 14057,
+        "sha256": "071f885c9c0b4efe0722bd3771a632583a7416d62a59f17d2c9f3d9ac9ea3630",
+        "path": "package-7.tgz"
+      }
+    ],
+    "sourceInputCount": 21,
+    "actualFactualContextRecord": "E-DEPENDENCIES-017 at4537add5a5edd51270b0bb59869d015a61f83429",
+    "newExactHighAccepted": false,
+    "legacyEvaluationAllowedObserved": true,
+    "adoptionAuthorityGranted": false,
+    "descriptor": {
+      "rawSha256": "18ec13aa4cbaf0eac8db6af508dddf83aacec65cd5d8a43f68d9ded44d0df9a4",
+      "shapeSha256": "c0c86889045958d5ae1a4fbc4822c55aae6af01bcfabe907ee930ae7307be881"
+    }
+  },
+  "currentIntegrationEvidence": {
+    "record": "spec/src/history/E-DEPENDENCIES-019.md",
+    "base": "ed03f5ee585469b0e319535ae95cb6e8bd064282",
+    "sourceSnapshot": "4f06e1834c08fbf399bc5b8393517ba8596ffc40",
+    "context": {
+      "sourceSha": "aba2cabe20568d238b278851e6b0f81dd2546892",
+      "sourceInputsSha256": "c0e32e951577f250f6147bb891c3c6dddad2347c043d5d9e687f046875c0837a",
+      "portableManifestSha256": "5249c6d2c7f9ff79f9f948cb118600e762aaf9594ed148e2985003c87532b746",
+      "portableLockSha256": "33b1fc7324a63cd2a4e4ee5c16f9f9381599cd9c568d633ea38d2366c1c8de37",
+      "workspaceSha256": "3c48dadf4e7557172f8ea08f932195d3c49dda566ec6ad927ffdb0261132ad1d",
+      "sourceInventorySha256": "b3a598669587eb8de3dfb66d7ce55b009e72f95a42b62171be95bd66c8cd16b5",
+      "projection": {
+        "platform": "linux-x64",
+        "manifestSha256": "bbc0e1a9572e95d52d3fb49812ba4e0e36b9a2df66c5a21093a76b98003f1b53",
+        "lockSha256": "c44173ee58dc3be20fbe15a1c33ce7a90a33142a1c3038e59e34afb3c8d393ea",
+        "archivesSha256": "725454cc4c1b427a2007d04d2ea9b1b50f569e1fdf502179edb6afdd94d66ea8"
+      },
+      "recordPresent": true,
+      "recordSha256": "badadf039983216f12fb09a1cbe29962c7ce4853df295e27e4a3ac71910092c2"
+    },
+    "adoptionAuthorityGranted": false,
+    "newExactHighAccepted": false,
+    "hostedBindingQualified": false
+  }
+}

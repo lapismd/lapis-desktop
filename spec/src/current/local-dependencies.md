@@ -319,3 +319,67 @@ The skill intake pins Core/Protocol/Content HTTP to released Server v2.4.0
 source `83fca8ddd25b7b7913723e231779862f94f7dbcb`;
 [E-SKILL-003](../history/E-SKILL-003.md) retains package archive provenance and
 separate native/distribution gates.
+
+## Held specification-tool automation
+
+The independent canonical guard admits only existing Node-only Validator0.2
+development patches with exact registry identity, catalog and factual slots. A
+data-only seeded SDK descriptor binds full portable manifest/workspace/lock
+shape plus exact private source inventory and nested CI-docs bytes. Only
+selected root SDK coordinates/integrity normalize; runtime/shared peer rows are
+immutable. The source shape guard runs before no-op returns; genuine historical
+released patch controls are distinct from the actual current no-op. No fake
+update, private package publication or normal-root install bypass is introduced.
+
+All before-bytes and changed paths share one immutable Git/JJ comparison,
+including hosted revisions and JJ bootstrap. Reserved managed notes remain one
+exact path, regular UTF-8 and8192bytes, with empty YAML release intent only.
+Source review, native/private archive requirements and actual installed full/
+production audit qualification remain mandatory. Private CalVer/Tauri
+preparation has no Changesets/version writer or automatic release intent.
+Present notes always validate before a no-op return. Missing changed managed
+notes require an unchanged complete baseline fact tuple; actual dependency
+updates still reject missing bytes, and unsafe current files never count as
+absent.
+
+The held completion observer uses reviewed coordinator
+b66a19937ea8b4bb1b0545396c920797c7832fb4 for both implementation and policy. It
+accepts only actual CI400533153 PR/push/ manual and Pages403244157 push/manual
+events; CI schedules are filtered before invocation. This is metadata only, not
+capability, phase or writer activation.
+
+Current main's source-declared legacy HIGH approval and collector remain
+operationally byte-identical in this slice. Its separate claimed User2026-11-17
+throughNov30 authority is not independently authenticated here. Neither that
+claim nor the disabled new source/projection proposal supplies new authority; no
+decision is transferred, extended, rebound, removed or silently inferred. The
+raw HIGH findings and production audit remain visible. Central activation
+requires Root's separate concrete source/archive/hosted authority review. E019
+appends actual ed03 main integration while preserving its native collection.
+
+<!-- dependency-intake:validator-development:start -->
+
+```json
+{
+  "schemaVersion": 1,
+  "kind": "development-dependency-intake",
+  "dependency": "@lapismd/spec-validator",
+  "version": "0.2.1",
+  "peer": null,
+  "integrity": "sha512-aHLByppZkay1axSm8KvCwOJz0si8aDyZBXDGWW+d2VQw+66f1KLimw2rEMjYIpLdoSG9+yN5Kd1MKlAJw7xUVw==",
+  "importers": {
+    ".": {
+      "specifier": "0.2.1",
+      "version": "0.2.1"
+    }
+  },
+  "policySha256": "01dd47ddc905cf78914c00647792e48515e8b08fe4baebd9fe6cb55f67998579"
+}
+```
+
+<!-- dependency-intake:validator-development:end -->
+
+E-DEPENDENCIES-018 freezes the new21input source and actual local8archive
+context. Legacy approval provenance and new exact disabled authority remain
+separate; actual hosted finalhead/main/health/callback and Root admission still
+gate enabling.

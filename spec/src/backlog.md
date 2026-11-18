@@ -26,3 +26,15 @@ private App Profile projection are recorded in
 private prerequisites. Native-window acceptance and registry-only distribution
 remain outstanding; browser acceptance does not qualify or replace an installed
 native application.
+
+## Held dependency automation integration
+
+The source-only current-main integration is recorded in E-DEPENDENCIES-017.
+Fresh exact-source/private archive, full-prod audit, hosted candidate/main,
+scheduled health and metadata callback qualification remain separate. The old
+PR50/aaca context and source-declared legacy HIGH approval cannot qualify a new
+exact source decision. Preserve current native/product/distribution gates.
+
+E-DEPENDENCIES-019 appends ed03 integration and renewed source evidence; fresh
+final-head hosted checks, authority reconciliation and health/callback remain
+held. Native cold-chat collection does not qualify native acceptance.

@@ -136,3 +136,5 @@
 follow-ups and their original acceptance boundaries.
 
 [Sync](verification/lapis-sync.md)
+
+[Held dependency automation](verification-notes.md#held-dependency-automation)
