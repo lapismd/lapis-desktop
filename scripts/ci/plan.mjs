@@ -113,6 +113,7 @@ const outputs = [
   `unit_groups=${JSON.stringify(plan.unit)}`,
   `quality_groups=${JSON.stringify(plan.quality)}`,
   `rust_packages=${JSON.stringify(plan.rustPackages)}`,
+  `linux_build=${plan.linuxBuild}`,
   `rust=${plan.quality.includes("rust") || plan.unit.includes("rust")}`,
   ...gates.map((g) => `${g.replaceAll("-", "_")}=${plan.gates.includes(g)}`),
 ];

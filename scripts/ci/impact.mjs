@@ -48,6 +48,7 @@ export function planChanges(
     quality = new Set(),
     reasons = [];
   let catalogProfile = "ordinary";
+  let linuxBuild = false;
   let rustPackages = [],
     all = full || !Array.isArray(files) || !files.length;
   const add = (...names) => names.forEach((n) => selected.add(n));
@@ -55,8 +56,9 @@ export function planChanges(
     add("unit");
     names.forEach((n) => units.add(n));
   };
-  const native = () => {
+  const native = (build = false) => {
     add("linux");
+    linuxBuild ||= build;
   };
   for (const file of Array.isArray(files) ? files : []) {
     if (
@@ -79,6 +81,26 @@ export function planChanges(
       continue;
     }
     if (
+      file.startsWith("scripts/dependency-automation/") ||
+      file.startsWith(".github/dependency-automation/") ||
+      file.startsWith(".github/ci-docs/") ||
+      /^spec-validator\.config\./u.test(file)
+    ) {
+      add("quality");
+      unit("governance");
+      reasons.push(`Governance tooling: ${file}`);
+      continue;
+    }
+    if (file === "package.json" || file === "pnpm-lock.yaml") {
+      add("quality", "storybook-static", "storybook-interaction", "audit");
+      unit("governance", "renderer", "ai");
+      quality.add("types");
+      native(true);
+      catalogProfile = "full";
+      reasons.push(`Renderer dependency graph: ${file}`);
+      continue;
+    }
+    if (
       file.startsWith("src/") ||
       file.startsWith("public/") ||
       file === "index.html"
@@ -86,7 +108,7 @@ export function planChanges(
       add("quality", "storybook-static", "storybook-interaction");
       unit("governance", "renderer", "ai");
       quality.add("types");
-      native();
+      native(true);
       catalogProfile = "full";
     } else if (
       file.startsWith("catalog/") ||
@@ -124,7 +146,7 @@ export function planChanges(
       if (crates.includes("lapis-desktop")) {
         // Linux executes enabled portable service cases, including ARM64 quarantines.
         add("linux");
-        if (!file.startsWith("src-tauri/tests/")) native();
+        if (!file.startsWith("src-tauri/tests/")) native(true);
         else if (file.includes("/tests/fixtures/")) add("quality");
       }
     } else if (file.startsWith("tests/desktop/")) {
@@ -175,6 +197,7 @@ export function planChanges(
       unit: [...unitGroups],
       quality: ["types", "rust"],
       rustPackages: null,
+      linuxBuild: true,
       nativeFamilies: [],
       catalogProfile: "full",
       dependencyPlatforms: prerequisitePlatforms(selectedGates),
@@ -199,6 +222,7 @@ export function planChanges(
     unit: unitGroups.filter((g) => units.has(g)),
     quality: ["types", "rust"].filter((g) => quality.has(g)),
     rustPackages,
+    linuxBuild,
     nativeFamilies: [],
     catalogProfile,
     dependencyPlatforms: prerequisitePlatforms([...selected]),

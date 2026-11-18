@@ -37,7 +37,6 @@ test("all executable test and quality jobs run on Linux", () => {
     "storybook-static",
     "storybook-interaction-shards",
     "storybook-interaction",
-    "linux",
     "audit",
     "validate",
     "qualification",
@@ -47,6 +46,11 @@ test("all executable test and quality jobs run on Linux", () => {
       /ubuntu/u,
       name,
     );
+  const linux = workflow.jobs.linux;
+  assert.equal(linux["runs-on"], "${{ matrix.os }}");
+  assert.ok(linux.strategy.matrix.include.length >= 2);
+  for (const entry of linux.strategy.matrix.include)
+    assert.match(entry.os, /^ubuntu-/u, entry.target);
   for (const name of [
     "native-prepare",
     "native-families",

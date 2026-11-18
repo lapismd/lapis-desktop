@@ -12,13 +12,13 @@ as newly authored.
 
 ## Requirements
 
-| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
-| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-CI-001 | CI MUST use actual PR/push ranges, include rename sources and destinations, and select complete dependent gates. Docs-only changes MUST validate specification/evidence without building private packages or native helpers, subject to the trusted dependency-author spec exemption. Unknown paths, shared configuration and missing history MUST select every Linux gate without macOS packaging. Explicit full requests MUST select all gates including packaging.                                                              |
-| LD-CI-002 | Rust build caching MUST bind to platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch; floating selectors cannot qualify verified reuse. Caches MAY reuse dependency outputs, but MUST NOT replace selected Linux tests. Ordinary bundles MUST still be rebuilt/audited and reject acceptance drivers; helper inventory/signing and final artifact hashes remain authoritative.                    |
-| LD-CI-003 | Full CI MUST remain explicitly dispatchable. Every executable test, quality, catalog and Rust lane MUST run on Linux. Ordinary pull-request and main required checks MUST be Linux-only; macOS runners MUST be packaging-only for explicit full, trial and release publication. Release preparation MUST require successful full Linux tests and three-platform packaging of the identical main commit, not a docs-only green run, and GitHub Releases MUST publish those same qualified bytes with RC versions marked prerelease. |
-| LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve both required Linux target checks. Ordinary Validate MUST NOT require macOS jobs. macOS packaging success MUST NOT be represented as test or native acceptance success.                                                                                                                                             |
-| LD-CI-005 | Read-only nightly health MUST require a canonical scheduled attempt within 30 hours and complete full-CI success within 48 hours. Required jobs and active portable artifacts MUST match the source and current attempt. Missing, expired, malformed or foreign evidence MUST fail closed. Health MUST NOT authorize releases or require retired on-demand native-family artifacts.                                                                                                                                                |
+| ID        | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-CI-001 | CI MUST use actual PR/push ranges, include rename sources and destinations, and select complete dependent gates. Docs-only and dependency-automation changes MUST run governed checks without private packages, native helpers or Rust, subject to the trusted dependency-author exemption. Renderer dependency changes MUST retain renderer and Linux build consumers without selecting Rust tests. Unknown paths, shared configuration or missing history MUST select every Linux gate; explicit full requests MUST also select packaging. |
+| LD-CI-002 | Rust caches MUST bind platform/architecture, pinned toolchain, Cargo manifests/locks, build environment and private source pins. All artifact producers and consumers MUST use the exact tracked Node patch. Failed or cancelled jobs MUST NOT save Rust outputs, and ordinary pull requests MUST NOT write the canonical cache. Caches MAY reuse dependencies but MUST NOT replace selected tests; ordinary bundles, helper inventory/signing and final artifact hashes remain authoritative.                                               |
+| LD-CI-003 | Full CI MUST remain explicitly dispatchable. Every executable test, quality, catalog and Rust lane MUST run on Linux. Ordinary pull-request and main required checks MUST be Linux-only; macOS runners MUST be packaging-only for explicit full, trial and release publication. Release preparation MUST require successful full Linux tests and three-platform packaging of the identical main commit, not a docs-only green run, and GitHub Releases MUST publish those same qualified bytes with RC versions marked prerelease.           |
+| LD-CI-004 | Validate MUST require successful planning and every selected gate, and reject failed/cancelled results even for unselected jobs. It MUST distinguish unselected acknowledgements from test passes and preserve both required Linux target checks. Ordinary Validate MUST NOT require macOS jobs. macOS packaging success MUST NOT be represented as test or native acceptance success.                                                                                                                                                       |
+| LD-CI-005 | Read-only nightly health MUST require a canonical scheduled attempt within 30 hours and complete full-CI success within 48 hours. Required jobs and active portable artifacts MUST match the source and current attempt. Missing, expired, malformed or foreign evidence MUST fail closed. Health MUST NOT authorize releases or require retired on-demand native-family artifacts.                                                                                                                                                          |
 
 The planner selects whole test families rather than removing assertions. Desktop
 currently owns one Rust application crate, `lapis-desktop`; its changes select
@@ -98,19 +98,19 @@ publisher builds a local image first and runs Jujutsu-dependent source checks
 inside it; a clean host never downloads those tools or falls back. Each workflow
 exports the image-owned bytes once, binds them to the current repository,
 source, run and attempt, and transfers one mode/hash-verified cross-platform
-artifact. Linux Quality and Unit execute inside that pinned image so their Rust
-checks and tests receive its fixed GTK/WebKit build libraries without a runner
-download. Consumers reject a missing producer, foreign attempt, changed digest,
-extra file, unsupported platform or non-executable payload. After verification
-they force Vectorscan's crate-owned offline mode and select only that platform's
-archive directory. Turbo MUST pass both values into every selected child task;
-ordinary jobs MUST NOT download this native dependency. Hosted native
-preparation, family execution, quarantine diagnostics and the Native ARM64
-aggregate are disabled. Their local entry points, inventories, assertions,
-deadlines and quarantine records remain intact. Linux tests and browser/catalog
-results cannot qualify macOS WebView, focus, window, lifecycle, Keychain or
-backup behavior. A macOS bundle build proves only compilation, packaging and the
-ordinary-bundle audit.
+artifact. Linux Quality, Unit and selected native Linux jobs execute inside that
+pinned image so Rust checks, tests and release builds receive its fixed
+GTK/WebKit libraries without a runner download. Consumers reject a missing
+producer, foreign attempt, changed digest, extra file, unsupported platform or
+non-executable payload. After verification they force Vectorscan's crate-owned
+offline mode and select only that platform's archive directory. Turbo MUST pass
+both values into every selected child task; ordinary jobs MUST NOT download this
+native dependency. Hosted native preparation, family execution, quarantine
+diagnostics and the Native ARM64 aggregate are disabled. Their local entry
+points, inventories, assertions, deadlines and quarantine records remain intact.
+Linux tests and browser/catalog results cannot qualify macOS WebView, focus,
+window, lifecycle, Keychain or backup behavior. A macOS bundle build proves only
+compilation, packaging and the ordinary-bundle audit.
 
 A listener-confirmed native startup that exhausts its renderer-acknowledgement
 budget remains failed. Before cleanup, its harness MAY make one bounded driver
@@ -190,12 +190,13 @@ build hook and retain the bundle audit. Timing receipts report restore, build
 and execution durations and cache reuse; hosted cold/warm comparisons remain
 required before claiming performance or reliability improvements.
 
-Linux x86_64 executes portable Rust service tests and explicitly verifies the
-Original/Managed reader case ran successfully. Linux native jobs free unused
-preinstalled runner SDK trees before WebKit installation and Rust cache restore.
-Linux release builds remain separate evidence and cannot qualify the ARM64
-backup quarantine or macOS UI. Local quarantine diagnostics remain explicit,
-uncached and non-qualifying.
+Linux x86_64 executes selected portable Rust service tests and explicitly
+verifies the Original/Managed reader case whenever Rust tests are selected. Rust
+integration-test-only changes do not build a release binary; renderer and
+production native changes retain both Linux release targets. Linux release
+builds remain separate evidence and cannot qualify the ARM64 backup quarantine
+or macOS UI. Local quarantine diagnostics remain explicit, uncached and
+non-qualifying.
 
 The Original/Managed reader failure in Linux job `130024094859` was reproduced
 locally as a completed jj-store session/relink command leaving the next command

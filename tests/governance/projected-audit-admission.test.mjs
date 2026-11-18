@@ -68,9 +68,11 @@ const assess = (d) =>
     d.context,
     d.context.now,
   );
-test("observed legacy audit behavior remains unchanged without granting fresh authority", () => {
+test("retired legacy exception blocks its historical finding without granting fresh authority", () => {
   const errors = auditFindings(full, production, legacy, "2026-11-18");
-  assert.deepEqual(errors, []);
+  assert.deepEqual(errors, [
+    "Blocking advisory: GHSA-fc5q-39xc-vjpf (picomatch)",
+  ]);
   assert.equal(assess({ ...fixture(), decision: undefined }), false);
 });
 test("synthetic explicit decision control accepts only exact two-version source/projected scope", () => {
