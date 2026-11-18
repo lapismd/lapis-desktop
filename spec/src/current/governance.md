@@ -390,3 +390,6 @@ skip native exports; Desktop's own source snapshot remains intentional.
 ```
 
 <!-- dependency-intake:validator-development:end -->
+
+[Current source qualification](../history/E-DEPENDENCIES-018.md) grants no
+activation.

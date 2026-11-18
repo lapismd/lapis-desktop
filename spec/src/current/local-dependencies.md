@@ -377,3 +377,8 @@ requires Root's separate concrete source/archive/hosted authority review.
 ```
 
 <!-- dependency-intake:validator-development:end -->
+
+E-DEPENDENCIES-018 freezes the new21input source and actual local8archive
+context. Legacy approval provenance and new exact disabled authority remain
+separate; actual hosted finalhead/main/health/callback and Root admission still
+gate enabling.

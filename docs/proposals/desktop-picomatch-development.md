@@ -28,3 +28,8 @@ owns the new qualification. Earlier E012–E015 remain immutable at oldaaca.
 Shared capability, private eligibility, full source CI, scheduled health,
 callback and writer admission remain separate held gates. No runtime package,
 publication, new Changesets/version recipe or native distribution is introduced.
+
+The concrete local source is `4537add5a5edd51270b0bb59869d015a61f83429`,21input
+digest `c0e32e951577f250f6147bb891c3c6dddad2347c043d5d9e687f046875c0837a`. E018
+records its actual cold archive context; operational projections stay empty
+until independent hosted qualification.
