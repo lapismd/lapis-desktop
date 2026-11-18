@@ -354,3 +354,9 @@ are registered. Source schedules are filtered before the trusted verifier.
 Held-observer registration and existing bot credential availability are metadata
 prerequisites only; full phase, private archive and native-updater write holds
 remain. No new publisher, Changesets recipe or release intent is introduced.
+
+[E-DEPENDENCIES-012](../history/E-DEPENDENCIES-012.md) freezes only the current
+isolated14-input source and local installed archive context. Local and hosted
+projection hashes MUST remain distinct. Empty operational projection bindings
+grant no admission; future SDK opt-in/shared support requires fresh relevant
+source qualification before any precise operator decision or write eligibility.

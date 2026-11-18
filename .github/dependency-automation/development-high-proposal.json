@@ -25,7 +25,7 @@
     "portableLockSha256": "df468bc0436aa9908c157167d2888579774aab7d4cae501218af191822dc3146",
     "workspaceSha256": "a4e8e4a50b4949b78592128fe9b1cf89be1c6e30aeb9cdc30a7fb1c83f73299b",
     "sourceInventorySha256": "cd82614d26a3e685f0930c2f16d94c3c53cf49313abcc5daf22e7c1c8789d86c",
-    "sourceInputsSha256": null,
+    "sourceInputsSha256": "f8de86b1f845469103acfb241c49038a2c618cdec6197c72f429a4962cdd09ad",
     "projections": []
   },
   "rawFullCounts": {
@@ -42,10 +42,98 @@
     "high": 0,
     "critical": 0
   },
-  "unresolved": "Final coherent source commit and exact current-head installed/hosted projection bindings must be frozen before an operator question. Earlier UI/full receipts retain independent historical hashes.",
+  "unresolved": "Fourteen-input source and local installed archive context are frozen, but this is NOT an approval request. Operational projections remain empty; actual hosted artifacts, future bounded SDK descriptor/shared support and final relevant bindings require separate qualification. Source/private writer hold remains.",
   "earlierFixRule": "Any known patch or official stable successor above4.0.7 blocks immediately.",
   "activePolicy": "config/dependency-audit.json (no developmentHigh entry)",
-  "sourceSha": null,
-  "localProjectionEvidence": null,
-  "record": "spec/src/history/E-DEPENDENCIES-013.md"
+  "sourceSha": "6b13b20dbf76435f84bd7ece9dd97ab7b93c4a29",
+  "localProjectionEvidence": {
+    "kind": "cold-frozen-eight-archive-source-context-only",
+    "sourceSnapshot": "65e3076dffa9c55c5a3db7003d12fab5a00b4f14",
+    "sourceSha": "6b13b20dbf76435f84bd7ece9dd97ab7b93c4a29",
+    "projection": {
+      "platform": "linux-x64",
+      "manifestSha256": "3f418e34b832941fcb9191520be16a85fe868e97ba6dcf06b736abbe6db55332",
+      "lockSha256": "4f3e4309ca81e008ec0f2c8d68f48225206324e8167a1e12f72efe74ab716671",
+      "archivesSha256": "d4bc4384dbfa746b6511a21315df017fc4bc08558d93df9dbe86571af0fe4023"
+    },
+    "installedImportRoutes": 34,
+    "archives": [
+      {
+        "name": "@lapis-notes/lapis-plugin-tasks",
+        "version": "0.2.0",
+        "path": "package-0.tgz",
+        "sha256": "9ff0dbdec630b0e56fbaa21957349ee22248d80759fa0a3f1a5b3c3a9b898cff",
+        "sourceRepository": "lapismd/lapis-plugin-tasks",
+        "sourceCommit": "7e25dc5cce821baca7831827f1711c1f18cbabf1",
+        "size": 253259
+      },
+      {
+        "name": "@lapis-notes/api",
+        "version": "0.6.8",
+        "path": "package-1.tgz",
+        "sha256": "c90eac5de04eb15b971d45665f0bd26603abf3a00fd35320a9ed3cb56dc0f4ce",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
+        "size": 766112
+      },
+      {
+        "name": "@lapis-notes/ui",
+        "version": "0.2.3",
+        "path": "package-2.tgz",
+        "sha256": "d8dc5f8e2469f2e9f4dd5bcd5b727db9780507caa5a8701f3c8a9d32f9a32e95",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
+        "size": 31732
+      },
+      {
+        "name": "@lapis-notes/workspace",
+        "version": "0.4.8",
+        "path": "package-3.tgz",
+        "sha256": "558ecb749a420cbb222a790f19f5527aef9b2d956fcb367e633ca26cc7d60177",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
+        "size": 116880
+      },
+      {
+        "name": "@lapis-notes/file-explorer",
+        "version": "0.2.8",
+        "path": "package-4.tgz",
+        "sha256": "5ab4ba28eb6a839bf64cfbc4031c77bb60b9883069ce9c0a510ecce32be3f342",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
+        "size": 15086
+      },
+      {
+        "name": "@lapis-notes/language-service",
+        "version": "0.1.6",
+        "path": "package-5.tgz",
+        "sha256": "9b371f7c14850d73961f9d2a94aad126c964b7f3800576b38079185e821f28a0",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
+        "size": 9473
+      },
+      {
+        "name": "@lapis-notes/app-profile",
+        "version": "0.2.5",
+        "path": "package-6.tgz",
+        "sha256": "82f533715b31a0504f4ce3e9780b9071a8c00bcfb1f9c929c5deff46a0e1d859",
+        "sourceRepository": "lapismd/lapis-notes",
+        "sourceCommit": "b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e",
+        "size": 31199
+      },
+      {
+        "name": "@lapismd/ai",
+        "version": "0.2.0",
+        "path": "package-7.tgz",
+        "sha256": "071f885c9c0b4efe0722bd3771a632583a7416d62a59f17d2c9f3d9ac9ea3630",
+        "sourceRepository": "lapismd/lapis-ai",
+        "sourceCommit": "9a98293c26524c9320acdd9767e34e8ffdd7170c",
+        "size": 14057
+      }
+    ],
+    "activeHigh": false,
+    "aggregateExit": 1
+  },
+  "record": "spec/src/history/E-DEPENDENCIES-013.md",
+  "contextRecord": "spec/src/history/E-DEPENDENCIES-012.md"
 }

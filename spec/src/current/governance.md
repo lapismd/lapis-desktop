@@ -364,10 +364,10 @@ CLI keeps source/build-schema guards; [preview receipts](distribution.md).
 LD-GOV-002/006 admit only forward Node-only Spec Validator0.2 development
 patches. The independent offline guard checks exact policy, complete portable
 catalog and both factual slots in normal quality and functional specification
-lanes, outside bot exemptions. Runtime/native/private archive inputs require
-separate review. Desktop retains private CalVer/Tauri preparation; no
-Changesets/version writer or release intent is introduced. Completion hints
-grant no activation authority.
+lanes, outside bot exemptions. Runtime/native/private archives and advisory
+bindings require source review. Desktop retains private CalVer/Tauri
+preparation; no Changesets/version writer or release intent is introduced.
+Completion hints grant no activation authority.
 
 Pinned sibling exports MUST use JJ reads without working-copy snapshots or
 automatic Git import. Dirty sibling files/operation IDs MUST remain unchanged,

@@ -68,3 +68,9 @@ provenance is unverified here and is not transferred or declared nonexistent.
 Root must coordinate owners, preserve all evidence/contracts/budgets and qualify
 the combined graph before any merge/rebase/security decision. PR50 keeps its own
 isolated source/archive bindings and private write hold.
+
+[E-DEPENDENCIES-012](history/E-DEPENDENCIES-012.md) records frozen isolated
+source6b13/local8archive context with HIGHdisabled and operational projections
+empty. Do not ask or activate a decision before the reviewed future SDK source
+opt-in and hosted graph are qualified; changed relevant inputs need new
+bindings.

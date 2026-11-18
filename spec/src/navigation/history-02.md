@@ -372,3 +372,4 @@
 - [Bounded Desktop dependency intake and disabled projected audit decision](../history/E-DEPENDENCIES-009.md)
 - [Read-only immutable native sibling export](../history/E-DEPENDENCIES-010.md)
 - [Held Desktop completion observer and prospective advisory scope](../history/E-DEPENDENCIES-011.md)
+- [Frozen isolated Desktop source and installed archive context](../history/E-DEPENDENCIES-012.md)

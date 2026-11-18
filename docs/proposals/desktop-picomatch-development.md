@@ -52,3 +52,17 @@ Owning follow-up:
 [adoption57](https://github.com/lapismd/dependency-automation/issues/57).
 Generic shared projected-audit consolidation is future work; this bounded change
 copies no shared collector and introduces no new Changesets/version writer.
+
+## Frozen source context, without admission
+
+[E-DEPENDENCIES-012](../../spec/src/history/E-DEPENDENCIES-012.md) records the
+actual committed source `6b13b20dbf76435f84bd7ece9dd97ab7b93c4a29`, all14
+source-input bindings and the cold installed8archive context. The real collector
+still returns1 with HIGH2/MODERATE3/production0; no HIGH admission exists. Local
+validation paths are not hosted artifact paths. The JSON operational
+`bindings.projections` array therefore remains empty, while separate local
+context evidence retains the measured projection/archive hashes. This is not an
+operator question or active policy. The planned shared SDK projection/source
+opt-in may change relevant bindings; qualify that reviewed contract and actual
+hosted source before Root considers a concrete exact decision. Keep all existing
+private/archive/writer holds and other-owner retirement graphs separate.
