@@ -15,7 +15,9 @@ production audit separately from development findings and every normal consumer
 lane. No approved MODERATE decision transfers to HIGH or production findings.
 Source metadata, CI health and a phase change cannot replace installed
 acceptance. The source/main audit hold and central activation remain until those
-gates pass.
+gates pass. [E-DEPENDENCIES-008](../history/E-DEPENDENCIES-008.md) completes
+2168 cold catalog cases and ordinary full-image consumer qualification; the
+required development HIGH, hosted main and scheduled health remain blocked.
 
 E-SYNC-006 prepares six public Notes candidate packages from exact source
 `b3a93b2f5e49d514a6c447a0d6e2664d3179bb3e` for native Sync leave preparation. CI

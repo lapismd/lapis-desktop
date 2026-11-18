@@ -20,9 +20,9 @@ comparisons continue; unavailable/conflicting fail closed.
 [Local intake](local-dependencies.md) owns cohort pins and gates (E-CI-015/018;
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
 renderer refreshes retain qualified Rust sources. Hosted logs stream. LD-CI-005
-health grants no release authority (E-CI-009/089). Protected changes require
-full checks. Images trust only the exact mounted workspace; source checks use
-built-ins. E2e imports instrumentation; bundles reject its startup marker.
+health grants no release authority (E-CI-009/089); E-DEPENDENCIES-008 retains
+private cohort full-image acceptance. Protected changes require
+full checks. Images trust only the mounted workspace; source checks use built-ins. E2e imports instrumentation; bundles reject its startup marker.
 Planned [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md) are canonical owners registered in
 `scripts/spec-contracts.mjs` (E-PLAN-005; LD-GOV-001/002/004).

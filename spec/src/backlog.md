@@ -28,7 +28,9 @@ remain outstanding; browser acceptance does not qualify or replace an installed
 native application.
 
 Dependency adoption57 prepares Notes164's exact six-archive cohort under
-[local intake](current/local-dependencies.md). Complete installed production
-audit, cold complete consumer lanes and hosted source/main acceptance before
-removing the central archive hold. Development HIGH remains a distinct gate; no
-new exception or replacement npm publication is authorized by this slice.
+[local intake](current/local-dependencies.md). Installed production0 and all2168
+cold catalog cases plus ordinary full-image check/test/build/spec/evidence pass
+in E-DEPENDENCIES-008. Complete hosted source/main and successful scheduled
+health before removing the central archive hold. Development HIGH remains a
+distinct gate; no new exception or replacement npm publication is authorized by
+this slice.

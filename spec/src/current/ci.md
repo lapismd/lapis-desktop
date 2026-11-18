@@ -281,3 +281,8 @@ from the hook's actual location at runtime. Root importer specifiers MUST retain
 their admitted relative archive declarations. Missing producers, incompatible
 ranges and unknown outcomes MUST NOT trigger a non-frozen retry or checksum
 rewrite. Producer and consumer retain the same admitted package identities.
+
+[E-DEPENDENCIES-008](../history/E-DEPENDENCIES-008.md) records completed cold
+catalog and ordinary full-image qualification of the exact private cohort.
+Installed production audit success MUST NOT imply aggregate HIGH admission,
+hosted main acceptance, successful schedule or writable activation.
