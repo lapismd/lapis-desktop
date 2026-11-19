@@ -46,7 +46,7 @@
   - [Vault synchronization and turn history](../backlog/vault-synchronization.md)
   - [Lapis Sync: future Tauri implementation](../backlog/lapis-sync.md)
   - [Native canonical conversations](../backlog/native-conversations.md)
-  - [Distribution and frozen-host retirement](../backlog/distribution.md)
+  - [Distribution and retired-host provenance](../backlog/distribution.md)
   - [AI tool expansion](../backlog/ai-tool-expansion.md)
   - [Markdown document Review mode](../backlog/markdown-review-mode.md)
     - [Planned Review contract](../backlog/markdown-review-contract.md)

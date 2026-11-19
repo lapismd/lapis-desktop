@@ -8,11 +8,11 @@ task fields describe the original capture and are not live completion state.
 
 ## Requirements
 
-| ID         | Requirement                                                                                                                                                                                                                                                                                                                                           |
-| ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-MIG-001 | Historical source inventory MUST retain source revisions and original legacy desktop requirement, command/event, service, plugin, packaging and acceptance dispositions. Current feature contracts and backlog destinations MUST account for that scope without maintaining the original milestone ledger.                                            |
-| LD-MIG-002 | Outstanding implementation and qualification MUST live in canonical backlog topics with their original acceptance boundaries, dependencies and evidence. Deferred capabilities MUST remain visible. Product implementation MUST first introduce its owning contract; bookkeeping or substituted tests MUST NOT complete an unproved product boundary. |
-| LD-MIG-003 | The Deno desktop MUST remain superseded and frozen. Further desktop features, fixes and host qualification MUST target Tauri. Shared changes MUST remain in their owning packages. The frozen host MAY remain a reference until its backlog retirement is completed; Deno services used by other hosts are outside this freeze.                       |
+| ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                           |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-MIG-001 | Historical source inventory MUST retain source revisions and original legacy desktop requirement, command/event, service, plugin, packaging and acceptance dispositions. Current feature contracts and backlog destinations MUST account for that scope without maintaining the original milestone ledger.                                                                            |
+| LD-MIG-002 | Outstanding implementation and qualification MUST live in canonical backlog topics with their original acceptance boundaries, dependencies and evidence. Deferred capabilities MUST remain visible. Product implementation MUST first introduce its owning contract; bookkeeping or substituted tests MUST NOT complete an unproved product boundary.                                 |
+| LD-MIG-003 | The retired Deno desktop MUST NOT regain current runtime, build, test or release authority. Further desktop features, fixes and host qualification MUST target Tauri. Shared changes MUST remain in their owning packages. Historical source, evidence and artifacts MUST remain immutable provenance; Deno services used by preserved non-Desktop hosts are outside this retirement. |
 
 ## Supported boundaries
 
@@ -40,7 +40,7 @@ support private development acceptance under
 lockfiles remain portable. Source qualification, consumer adoption, public
 release and installed-app replacement are independent. The
 [distribution backlog](../backlog/distribution.md) retains the original
-clean-machine, upgrade/rollback and frozen-host retirement acceptance.
+clean-machine and upgrade/rollback acceptance plus retired-host provenance.
 
 Parallel-branch CI receipts retain their original bytes and legacy review
 metadata. Their original revisions and hashes are pinned in historical evidence

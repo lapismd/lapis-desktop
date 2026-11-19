@@ -150,18 +150,18 @@ protocol peer must be independently verified at the exact compiled source before
 execution. Retired synthetic/original installed copies, both legacy disablement
 sources, Safe Mode zero allocation/recovery and exact old settings,
 conversation, memory and storage/lifecycle preservation still need Core-specific
-acceptance. The renderer matrix and historical new-conversation Core proof do
-not close these gaps or permit frozen-host removal.
+acceptance. The renderer matrix and historical new-conversation Core proof did
+not close those gaps by themselves.
 
 E-RETIRE-015 adds the four missing App Profile normal/Safe Mode
 synthetic/historical preservation cases. Portable source qualification and the
-explicit isolated macOS ARM64 matrix both pass; frozen-host deletion remains
-blocked only until that evidence lands.
+explicit isolated macOS ARM64 matrix both passed and landed before host removal.
 
 The focused four-case App Profile replay and complete ten-case renderer binding
 matrix now pass with byte-exact old data. The full services family also passes
 those cases and Core cold chat, but retains the pre-existing repository-history
 backup readiness failure and raw development-WebView startup failure. The user
 explicitly accepted those unchanged out-of-scope failures as non-blocking on
-2026-11-19 without qualifying them or changing their owners. The sealed landing
-and exact-main hosted gate remain before frozen-host deletion can start.
+2026-11-19 without qualifying them or changing their owners. The sealed landing,
+exact-main hosted gate and subsequent Notes host deletion are complete;
+E-RETIRE-016 records the final Desktop-side residue audit.

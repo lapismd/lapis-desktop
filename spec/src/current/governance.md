@@ -352,11 +352,12 @@ with target/source/checksum identity. Packaging checks the resource and exact
 main-window grants. The registry cohort is API 0.6.9, File Explorer 0.2.8,
 Language Service 0.1.6, UI 0.2.5, Workspace 0.4.6, Profile 0.2.6 and History
 0.5.1. [E-CLI-008](../history/E-CLI-008.md) seeds that lock;
-[E-RETIRE-014](../history/E-RETIRE-014.md) keeps API/UI/Profile on npm and only
-Tasks/Workspace/File Explorer/Language/AI in CI archives. The peer guard checks
-it and one API context (E-REPO-059). Native Notes stays pinned; earlier UI
-archives remain historical evidence. [Native acceptance](native-acceptance.md)
-includes `api --sync` and isolated custody probes; source/hash guards remain.
+[E-RETIRE-014](../history/E-RETIRE-014.md) keeps the released cohort, while
+[E-RETIRE-016](../history/E-RETIRE-016.md) removes retired fixture commands. The
+peer guard checks it and one API context (E-REPO-059). Native Notes stays
+pinned; earlier UI archives remain historical evidence.
+[Native acceptance](native-acceptance.md) includes `api --sync` and isolated
+custody probes; source/hash guards remain.
 [Tool gates](../verification-notes.md) remain.
 
 CLI keeps source/build-schema guards; [preview receipts](distribution.md).

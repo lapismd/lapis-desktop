@@ -49,10 +49,10 @@ export const FailedToolCall: Story = {
     await userEvent.click(
       within(inspector).getByRole("button", { name: "Show source" }),
     );
-    await expect(inspector).toHaveTextContent(
-      "pnpm --filter @lapis-notes/ai test",
+    await expect(inspector).toHaveTextContent("pnpm test:ai");
+    const output = canvas.getAllByText(
+      /FAIL tests\/ai\/chat\/chat-tool-pairing\.test\.ts/,
     );
-    const output = canvas.getAllByText(/FAIL ai-chat-panel\.test\.ts/);
     await expect(output[output.length - 1]).toBeVisible();
   },
 };

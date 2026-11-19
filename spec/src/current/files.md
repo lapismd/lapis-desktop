@@ -243,7 +243,7 @@ Notification delivery belongs to M7, while M5 retains file open/reveal and
 explicit capability behavior from LN-DENO-017. The proxy representation contract
 from LN-DENO-076 remains visible in LD-FILE-005; no component pass waives it.
 The migration replaces Deno watching with native Rust watching; the superseded
-Deno host remains frozen.
+Deno host is retired and remains only in immutable provenance.
 
 Qualification includes real temporary folders, Unicode/binary paths, collisions
 and containment, dirty-note mutations, external filesystem changes, watch
@@ -331,7 +331,7 @@ validation and the native 64 MiB file bound.
 
 ## Renderer representation qualification
 
-The frozen Deno host used an intermediate Fetch proxy only for its Vite dev
+The retired Deno host used an intermediate Fetch proxy only for its Vite dev
 renderer. Tauri's devUrl loads that loopback renderer directly; production
 bundles assets through Tauri. There is no decoded-upstream forwarding stage to
 port. Preserve LD-FILE-005 and the captured LN-DENO-076 inventory entry: any

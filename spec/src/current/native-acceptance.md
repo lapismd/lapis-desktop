@@ -214,8 +214,10 @@ execution, independently verify its bytes against that exact clean Server commit
 and record the digest alongside the Desktop binary/package inputs. Neither a
 pin-manifest match nor collection success proves those runtime bytes. No shared
 helper, artifact schema, Server/core implementation or API changes are included.
-E-RETIRE-015 closes the retirement-specific preservation boundary below; frozen
-host removal still requires that evidence to land.
+E-RETIRE-015 closes the retirement-specific preservation boundary below. That
+evidence landed before the frozen Notes host was removed; E-RETIRE-016 records
+the resulting retired-host boundary without qualifying the two accepted
+failures.
 
 E-RETIRE-015 adds four cases to that same inventoried file: synthetic and
 checksum-pinned original installed copies under normal and Safe Mode startup.
