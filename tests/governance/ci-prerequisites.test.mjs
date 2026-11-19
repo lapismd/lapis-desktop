@@ -75,18 +75,17 @@ test("source-fix archives share the graph while tracked ranges and unaffected re
   }
 });
 
-test("native Sync consumer projects the complete public Notes cohort from one source", () => {
+test("released Notes retirement packages stay on npm while remaining Notes archives share one source", () => {
   const manifest = JSON.parse(readFileSync("package.json", "utf8"));
   const original = structuredClone(manifest);
   const projected = projectUnpublished(manifest, () => true);
-  for (const leaf of [
-    "api",
-    "ui",
-    "workspace",
-    "file-explorer",
-    "language-service",
-    "app-profile",
-  ]) {
+  for (const leaf of ["api", "ui", "app-profile"])
+    assert.equal(
+      projected.dependencies[`@lapis-notes/${leaf}`],
+      original.dependencies[`@lapis-notes/${leaf}`],
+      `${leaf} must retain its released registry range`,
+    );
+  for (const leaf of ["workspace", "file-explorer", "language-service"]) {
     const name = `@lapis-notes/${leaf}`;
     assert.equal(
       projected.dependencies[name],

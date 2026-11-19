@@ -1,31 +1,45 @@
 # Local dependency intake
 
-The shared-AI retirement candidate prepared six public Notes packages from exact
-source `5ffb33c152404b6880debd1b5fd70762121d6196`.
-[E-CLI-008](../history/E-CLI-008.md) advances the hosted JavaScript pin to
-`6b2b39f583a30be4e6dfa734050c20af862384ba` so CI archives satisfy API `0.6.9`,
-UI `0.2.5` and App Profile `0.2.6`. Workspace 0.4.8, File Explorer 0.2.8 and
-Language Service 0.1.6 remain in that cohort. The approved App Profile optional
-Vite peer cleanup keeps its active public build helper and development
-toolchain. Its actual installed production graph has zero advisories; the
-approved development-only Picomatch exception expires 2026-11-30 and matches
-exact tool versions/paths. Released Core 0.13.5 satisfies the API dependency
-through the existing single-version override. Qualification is in progress; the
-older E-SYNC-006/009 receipts do not qualify this cohort. The installed public
-installer rejects retired provenance before network IO without writing settings,
-conversations or memory; ordinary third-party `ai` origins retain fetch
-admission. Source pins and archive hashes identify the cohort. A restored public
-root lock cannot substitute for its actual installed production/development
-audit graph.
+The shared-AI retirement candidate adopts released API ^0.6.9, UI ^0.2.5 and App
+Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
+advances the hosted JavaScript pin to `6b2b39f583a30be4e6dfa734050c20af862384ba`
+for those published packages. API retains Notes' approved retired-distribution
+provenance guard; App Profile retains the approved Vite peer cleanup. UI
+composes CLI settings under General → Advanced. Desktop MUST qualify the
+installed public guard, actual CLI registration/disposal and the complete
+affected catalog. Identical private payloads do not transfer native acceptance.
+E-RETIRE-014 records the remaining unpublished-projection removal, real CLI
+workspace acceptance and sealed public-UI gates. Earlier published UI 0.2.4
+failed actual CLI field rendering; the temporary private fixed-UI overlay and
+its counts remain historical evidence only and MUST NOT be used for final
+consumer proof.
 
-CI MUST build App Profile and its dependencies through the source-owned normal
-build, then project all six archives into the same runtime graph. Published
-registry ranges and the portable lock remain tracked; candidate archive hashes
-and source provenance remain explicit private migration prerequisites. The
-removed native-chat-only build cannot qualify the current package exports. AI
-and Tasks retain their separately pinned prerequisites. This renderer intake
-MUST NOT change Rust pins, enable the deferred native conversation store or
-publish packages. Installed-data/native acceptance remains separate.
+Workspace 0.4.8, File Explorer 0.2.8 and Language Service 0.1.6 retain verified
+archives from exact Notes source `5ffb33c152404b6880debd1b5fd70762121d6196`. The
+approved App Profile optional Vite peer cleanup keeps its active public build
+helper and development toolchain. Its actual installed production graph has zero
+advisories. The former development-only Picomatch GHSA-fc5q-39xc-vjpf edges are
+gone from the public-UI installed graph, so that exception was removed; retain
+only the approved glob/minimatch development exceptions through 2026-11-30.
+Released Core 0.13.5 satisfies the API dependency through the existing
+single-version override. E-RETIRE-014 seals the public-UI consumer gates for
+this cohort; the older E-SYNC-006/009 receipts do not qualify it. The installed
+public installer rejects retired provenance before network IO without writing
+settings, conversations or memory; ordinary third-party `ai` origins retain
+fetch admission. Source pins and archive hashes identify the cohort. A restored
+public root lock cannot substitute for its actual installed
+production/development audit graph.
+
+CI MUST retain App Profile's source-owned normal dependency build for remaining
+Notes and fixture outputs, but MUST NOT project released API, UI or App Profile
+archives over npm. Only Tasks, Workspace, File Explorer, Language Service and AI
+remain in the mandatory five-package private npm projection. Published registry
+ranges and the portable lock remain tracked; private archive hashes and source
+provenance remain explicit migration prerequisites. The removed native-chat-only
+build cannot qualify the current package exports. AI and Tasks retain their
+separately pinned prerequisites. This renderer intake MUST NOT change Rust pins,
+enable the deferred native conversation store or publish packages.
+Installed-data/native acceptance remains separate.
 
 CI preparation MUST build the direct Language Service package explicitly in
 addition to App Profile's dependency closure. A present App Profile marker does
@@ -136,7 +150,7 @@ and [E-CORE-046](../history/E-CORE-046.md). The selected inputs below supersede
 those historical version inventories; provider, native and distribution gates
 retain their owning contracts.
 
-## Current registry and private inputs
+## Earlier registry and private intakes
 
 E-CLI-003 and E-CLI-005 select the published cohort from Notes source
 `d157d0eaf7be37a5d220d61fbadb7bcf2b35bb9f`: API ^0.6.1, UI ^0.2.0, File Explorer
@@ -182,9 +196,10 @@ removed, including Agent UI's redundant source build and the Bases and History
 package builds. Native plugin fixture sources, including Plugins and Tasks, and
 the qualified Rust git pins stay. Hosted preparation installs the packed Tasks
 pin's own dependencies, bundles that pin, and leaves the published registry
-range and lockfile unchanged (E-CI-034). The remaining npm archive prerequisites
-are App Profile and AI. Both remain intentionally private. JJ Conversations
-0.1.0 stays the published registry range. Public transitions are governed by
+range and lockfile unchanged (E-CI-034). At that intake, the remaining npm
+archive prerequisites were App Profile and AI. The selected retirement cohort
+above supersedes that inventory. JJ Conversations 0.1.0 stays the published
+registry range. Public transitions are governed by
 [the distribution backlog](../backlog/distribution.md). Preserve tracked
 registry ranges and verify every active private archive import route; the
 resulting graph does not qualify registry-only application distribution.
@@ -231,7 +246,9 @@ Approved development audit exceptions run through 2026-11-30. E-DEPENDENCIES-006
 removes the stale deepmerge exception: current full and production reports no
 longer contain GHSA-gcqx-w48m-w2h4. GHSA-3g3m-2fjr-6pw4 is glob 10.5.0.
 GHSA-g3hv-75wg-m249 retains only the WebdriverIO minimatch 9.0.9 and 10.2.6
-edges after its upstream range narrowed (E-DEPENDENCIES-004). Enforce each exact
+edges after its upstream range narrowed (E-DEPENDENCIES-004). E-RETIRE-014
+removes the stale Picomatch GHSA-fc5q-39xc-vjpf exception after the public-UI
+graph no longer reports those Storybook/WebdriverIO edges. Enforce each exact
 path, version and expiry; retain full diagnostics. Production findings and any
 new or changed advisory remain blocking. Remove stale exceptions.
 
@@ -269,18 +286,16 @@ application crates retain lapis-server `530a6c42`. A renderer-only dependency
 update MUST NOT silently refresh those native inputs. Actual native-window and
 distribution qualification remain separate.
 
-E-SYNC-006 aligned the public Notes ranges with API `^0.6.5`, UI `^0.2.1`,
+E-SYNC-006 aligns the public Notes ranges with API `^0.6.5`, UI `^0.2.1`,
 Workspace `^0.4.6`, App Profile `^0.2.1`, History `^0.5.0` and their shared
 Markdown/Search/Source Editor dependencies. Released Core `0.13.4` retains one
 controller identity through the existing exact override. The public registry
 lock projection omits only the still-unpublished AI prerequisite; its checked
-source range and verified private archive remain explicit.
-
-[E-CLI-008](../history/E-CLI-008.md) advances the portable registry cohort to
-API `^0.6.9`, App Profile `^0.2.6` and UI `^0.2.5` so Desktop receives the
-declarative General → Advanced CLI settings port and published Sync leave types
-without a private Notes leave archive. AI `^0.2.0` remains the only unpublished
-root prerequisite.
+source range and verified private archive remain explicit. The current Profile
+`0.2.2` source candidate satisfies `^0.2.1`. Its verified source archive carries
+the pending leave contract. Eight-archive intake now passes the actual consumer
+type boundary and all32installed import-route checks; registry-only distribution
+remains separately gated.
 
 The same intake uses released Graph `^0.1.12` and Bases `^0.4.1`, whose public
 peer contracts admit API0.6 and current Markdown; older locked releases do not.
@@ -301,14 +316,17 @@ version. Source manifests and the portable lock MUST be restored on failure.
 
 ## Sync intake after shared remotes
 
-E-SYNC-009 integrated E-REPO-058/059's released History `^0.5.1`, App Profile
-`^0.2.2` and Mira `~0.2.0` cohort while a temporary Notes archive covered the
-then-unpublished Sync leave contract. [E-CLI-008](../history/E-CLI-008.md)
-replaces that leave prerequisite with published API `0.6.9`. The API-compatible
-Tasks candidate and released Graph `^0.1.12`/Bases `^0.4.1` remain required
-where older peers refuse API 0.6 admission. Source manifests and lockfiles
-retain registry ranges; archive bytes and all import routes remain verified.
-This exception does not authorize publication.
+E-SYNC-009 integrates E-REPO-058/059's released History `^0.5.1`, App Profile
+`^0.2.2` and Mira `~0.2.0` cohort while retaining the temporary verified Notes
+archive cohort for the unreleased native Sync leave contract. Published API
+0.6.5 lacks `NativeSyncService.prepareLeave`; account teardown MUST NOT fall
+back to the released older lifecycle. This documented private migration
+prerequisite also retains the API-compatible Tasks candidate and released Graph
+`^0.1.12`/Bases `^0.4.1` from the qualified Sync input; older peers refuse API
+0.6 admission. Source manifests and lockfiles retain registry ranges; archive
+bytes and all import routes remain verified. Remove the temporary Notes/Tasks
+projection after separate publication and consumer qualification. This exception
+does not authorize publication.
 
 Native crates adopt current main's Core `c32b5ae4` and JJ Store `086def18`. Core
 includes the earlier qualified Sync source. JJ Store retains the exact
@@ -320,43 +338,6 @@ The skill intake pins Core/Protocol/Content HTTP to released Server v2.4.0
 source `83fca8ddd25b7b7913723e231779862f94f7dbcb`;
 [E-SKILL-003](../history/E-SKILL-003.md) retains package archive provenance and
 separate native/distribution gates.
-
-## Held specification-tool automation
-
-The independent canonical guard admits only existing Node-only Validator0.2
-development patches with exact registry identity, catalog and factual slots. A
-data-only seeded SDK descriptor binds full portable manifest/workspace/lock
-shape plus exact private source inventory and nested CI-docs bytes. Only
-selected root SDK coordinates/integrity normalize; runtime/shared peer rows are
-immutable. The source shape guard runs before no-op returns; genuine historical
-released patch controls are distinct from the actual current no-op. No fake
-update, private package publication or normal-root install bypass is introduced.
-
-All before-bytes and changed paths share one immutable Git/JJ comparison,
-including hosted revisions and JJ bootstrap. Reserved managed notes remain one
-exact path, regular UTF-8 and8192bytes, with empty YAML release intent only.
-Source review, native/private archive requirements and actual installed full/
-production audit qualification remain mandatory. Private CalVer/Tauri
-preparation has no Changesets/version writer or automatic release intent.
-Present notes always validate before a no-op return. Missing changed managed
-notes require an unchanged complete baseline fact tuple; actual dependency
-updates still reject missing bytes, and unsafe current files never count as
-absent.
-
-The held completion observer uses reviewed coordinator
-b66a19937ea8b4bb1b0545396c920797c7832fb4 for both implementation and policy. It
-accepts only actual CI400533153 PR/push/ manual and Pages403244157 push/manual
-events; CI schedules are filtered before invocation. This is metadata only, not
-capability, phase or writer activation.
-
-Current main's source-declared legacy HIGH approval and collector remain
-operationally byte-identical in this slice. Its separate claimed User2026-11-17
-throughNov30 authority is not independently authenticated here. Neither that
-claim nor the disabled new source/projection proposal supplies new authority; no
-decision is transferred, extended, rebound, removed or silently inferred. The
-raw HIGH findings and production audit remain visible. Central activation
-requires Root's separate concrete source/archive/hosted authority review. E019
-appends actual ed03 main integration while preserving its native collection.
 
 <!-- dependency-intake:validator-development:start -->
 

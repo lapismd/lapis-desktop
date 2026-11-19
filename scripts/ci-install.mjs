@@ -25,12 +25,9 @@ import {
 /** Packages awaiting qualified registry releases keep tracked semver ranges. */
 export const unpublishedRanges = {
   "@lapis-notes/lapis-plugin-tasks": "../lapis-plugin-tasks",
-  "@lapis-notes/api": "../lapis-notes/packages/api",
-  "@lapis-notes/ui": "../lapis-notes/packages/ui",
   "@lapis-notes/workspace": "../lapis-notes/packages/workspace",
   "@lapis-notes/file-explorer": "../lapis-notes/packages/file-explorer",
   "@lapis-notes/language-service": "../lapis-notes/packages/language-service",
-  "@lapis-notes/app-profile": "../lapis-notes/packages/app-profile",
   "@lapismd/ai": "../lapis-ai/packages/ai",
 };
 

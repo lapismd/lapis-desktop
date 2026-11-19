@@ -12,6 +12,9 @@
       }
     }
   },
+  "catalog/plugins/cli/Workspace.stories.ts": {
+    "kind": "application"
+  },
   "catalog/plugins/ai/Addressing.stories.ts": {
     "kind": "application"
   },
