@@ -11,6 +11,7 @@ import {
   waitForNativeReadiness,
 } from "./native-readiness.mjs";
 import {
+  nativeApplicationArgs,
   nativeSessionMode,
   assertBackgroundAvailability,
 } from "./native-session-mode.mjs";
@@ -46,7 +47,7 @@ export async function nativeSession(
   const port = await availablePort();
   const started = performance.now();
   let startupPhase = "spawn";
-  const child = spawn(executable, args, {
+  const child = spawn(executable, nativeApplicationArgs(executable, args), {
     env: {
       ...mode.environment,
       PATH: "/usr/bin:/bin",

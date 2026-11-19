@@ -14,7 +14,11 @@ the supported Keychain backend constructs its device service identity.
 Cold-process acceptance matches the complete Rust readiness output before
 retaining a bounded tail. A listening driver socket alone cannot prove IPC
 readiness; early evaluation can lose replies during navigation. Keep the bounded
-startup deadline.
+startup deadline. The isolated acceptance launcher disables AppKit persistent
+window restoration so deliberately killed test processes cannot accumulate a
+crash-recovery modal that blocks Tauri setup before the WebView exists.
+Desktop's own isolated window-state fixture and all product lifecycle assertions
+remain active.
 
 E-RELEASE-008 quarantines the background AI admission/cold-reset case after an
 intermittent second-process readiness failure on an unchanged tree. Its complete
@@ -192,7 +196,7 @@ noninteractive, source/hash-bound and scoped to task-owned OS entries with
 cleanup. These compiler and local adapter results do not qualify hosted or
 release gates.
 
-## App Profile cold-chat collection
+## App Profile cold-chat and preservation
 
 [E-RETIRE-013](../history/E-RETIRE-013.md) collects the existing
 `ai-core-chat.test.mjs` in the explicit headed `services` feature stage as a
@@ -210,5 +214,30 @@ execution, independently verify its bytes against that exact clean Server commit
 and record the digest alongside the Desktop binary/package inputs. Neither a
 pin-manifest match nor collection success proves those runtime bytes. No shared
 helper, artifact schema, Server/core implementation or API changes are included.
-Core-specific retired-copy, Safe Mode, old-data/storage and lifecycle
-preservation remain outstanding; frozen-host removal is not unlocked.
+E-RETIRE-015 closes the retirement-specific preservation boundary below; frozen
+host removal still requires that evidence to land.
+
+E-RETIRE-015 adds four cases to that same inventoried file: synthetic and
+checksum-pinned original installed copies under normal and Safe Mode startup.
+Every case uses a disposable acceptance profile and preserves exact installed
+plugin, settings, legacy-controller session, transcript and memory bytes through
+guarded exit and cold reopen. Normal startup admits only bundled App Profile
+chat, sends one isolated peer turn and never replays it. Safe Mode exposes no AI
+action and starts no ACP worker; a cold normal restart then admits only bundled
+chat. The synthetic trap must never evaluate. Historical bytes remain data-only
+input and confer no install authority.
+
+The focused App Profile and complete renderer matrices pass all four and all ten
+retirement cases respectively. Reopening an unchanged legacy conversation MUST
+retain its exact metadata bytes; a parsed-equal metadata snapshot is a no-op,
+while actual metadata changes retain the existing validation and serialization.
+The full services replay retains two unrelated failures in repository-history
+backup readiness and the raw development-WebView diagnostic. Neither qualifies
+or changes this retirement boundary. On 2026-11-19 the user explicitly accepted
+both unchanged failures as non-blocking for E-RETIRE-015; their original counts
+remain recorded and their owning code remains unchanged.
+
+Execution requires the exact Server pin and peer digest, the checksum-pinned
+historical archive, an acceptance-only app bundle and a workspace-local profile.
+It must never open an installed application, user profile or live provider. This
+matrix changes no core API service/function or planned Language Service wiring.

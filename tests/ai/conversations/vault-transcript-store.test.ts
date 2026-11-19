@@ -99,6 +99,21 @@ describe("VaultTranscriptStore", () => {
     ]);
   });
 
+  it("keeps legacy metadata bytes when an unchanged snapshot is written", async () => {
+    const { vault, store, repository } = await createHarness();
+    const location = { scopeDir: "", conversationId: ID };
+    await repository.create({ id: ID, scopeDir: "", now: CREATED_AT });
+    const path = `.lapis/agents/sessions/${ID}/metadata.yaml`;
+    const file = vault.getFileByPath(path)!;
+    const legacy = `schemaVersion: 1\nid: ${ID}\ntitle: Preserved retirement conversation\ncreatedAt: '${CREATED_AT}'\nupdatedAt: '${CREATED_AT}'\nstatus: active\n`;
+    await vault.modify(file, legacy);
+
+    const snapshot = await repository.read(location);
+    await store.writeMetadata(location, snapshot.metadata);
+
+    expect(await vault.read(file)).toBe(legacy);
+  });
+
   it("tolerates only a malformed final JSONL fragment", async () => {
     const { vault, repository } = await createHarness();
     const location = { scopeDir: "", conversationId: ID };
