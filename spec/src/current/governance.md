@@ -144,11 +144,10 @@ through the M1 committed-source archives. M3 uses verified public Source
 Editor/Markdown registry packages. Desktop owns plugin/App lifecycle; it never
 imports the private Notes profile or ships acceptance hooks. E2E reads only
 editor dirty state; absent is unavailable, exact `false` is clean, and ordinary
-bundles reject it. Native acceptance launchers inspect the actual executable for
-both the embedded driver and isolated-profile feature markers before spawning
-it. A normal Cargo build can replace the shared target path; that artifact must
-fail closed before any process starts. Rebuild the e2e artifact after ordinary
-Cargo builds/tests.
+bundles reject it. Native launchers inspect the executable for driver and
+profile markers before spawn; ordinary Cargo replacements fail closed. Rebuild
+e2e after ordinary Cargo builds/tests. macOS identity MUST query `xcrun`'s
+explicit `macosx` SDK; stale ambient defaults fail preparation.
 
 The tracked local pack command accepts optional Mira and plugin source
 workspaces to produce the full ten-archive Notes cohort. It validates each

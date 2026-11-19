@@ -1,8 +1,14 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
-import { lstatSync, readFileSync, readlinkSync, readdirSync } from "node:fs";
-import { isAbsolute, join, relative, resolve, sep } from "node:path";
+import {
+  existsSync,
+  lstatSync,
+  readFileSync,
+  readlinkSync,
+  readdirSync,
+} from "node:fs";
+import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 
 export const digest = (bytes) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -47,6 +53,50 @@ export function verifyFiles(root, files) {
     "Artifact files, permissions or digests changed",
   );
 }
+
+function sourceIdentity(root, run) {
+  if (existsSync(join(root, ".git"))) {
+    const sourceCommit = run("git", ["rev-parse", "HEAD"]);
+    return {
+      sourceCommit,
+      sourceTree: run("git", ["rev-parse", "HEAD^{tree}"]),
+      files: run("git", ["ls-files", "-z"]).split("\0").filter(Boolean),
+    };
+  }
+  const workspaceRepository = join(root, ".jj/repo");
+  if (!existsSync(workspaceRepository))
+    throw Error("Artifact identity requires a Git or Jujutsu checkout");
+  const repository = resolve(
+    dirname(workspaceRepository),
+    readFileSync(workspaceRepository, "utf8").trim(),
+  );
+  const store = join(repository, "store");
+  const gitDirectory = resolve(
+    store,
+    readFileSync(join(store, "git_target"), "utf8").trim(),
+  );
+  const sourceCommit = run("jj", [
+    "--no-pager",
+    "log",
+    "-r",
+    "@",
+    "--no-graph",
+    "-T",
+    "commit_id",
+  ]);
+  return {
+    sourceCommit,
+    sourceTree: run("git", [
+      `--git-dir=${gitDirectory}`,
+      "rev-parse",
+      `${sourceCommit}^{tree}`,
+    ]),
+    files: run("jj", ["file", "list", "-T", 'path ++ "\\0"'])
+      .split("\0")
+      .filter(Boolean),
+  };
+}
+
 export function buildIdentity(root = process.cwd(), kind = "dependencies") {
   const run = (command, args) =>
     execFileSync(command, args, { cwd: root, encoding: "utf8" }).trim();
@@ -89,17 +139,15 @@ export function buildIdentity(root = process.cwd(), kind = "dependencies") {
     if (process.platform === "darwin")
       identity.appleTools = {
         xcode: run("xcodebuild", ["-version"]),
-        sdk: run("xcrun", ["--show-sdk-version"]),
+        sdk: run("xcrun", ["--sdk", "macosx", "--show-sdk-version"]),
       };
     identity.deploymentTarget = JSON.parse(
       readFileSync(join(root, "src-tauri/tauri.conf.json")),
     ).bundle.macOS.minimumSystemVersion;
-    identity.sourceCommit = run("git", ["rev-parse", "HEAD"]);
-    identity.sourceTree = run("git", ["rev-parse", "HEAD^{tree}"]);
-    const files = run("git", ["ls-files", "-z"])
-      .split("\0")
-      .filter(Boolean)
-      .sort();
+    const source = sourceIdentity(root, run);
+    identity.sourceCommit = source.sourceCommit;
+    identity.sourceTree = source.sourceTree;
+    const files = source.files.sort();
     identity.checkoutDigest = digest(
       Buffer.concat(
         files.flatMap((file) => [

@@ -30,6 +30,7 @@ import { validateConversationMetadata } from "./metadata-validation.ts";
 import { validateTranscriptEntry } from "./transcript-validation.ts";
 import { runtimeProvenanceKey } from "./provenance.ts";
 import { prepareVaultImport } from "./vault-import.ts";
+import { sameMetadataYaml } from "./metadata-yaml-equality.ts";
 
 const MAX_METADATA_BYTES = 256 * 1024;
 
@@ -209,10 +210,11 @@ export class VaultTranscriptStore implements TranscriptStore {
       if (metadata.id !== normalized.conversationId) {
         throw new Error("Conversation metadata ID must match its directory");
       }
-      await this.replaceText(
-        `${conversationDirectory(normalized)}/metadata.yaml`,
-        this.metadataYaml(metadata),
-      );
+      const path = `${conversationDirectory(normalized)}/metadata.yaml`;
+      const yaml = this.metadataYaml(metadata);
+      const current = await this.readRequired(path);
+      if (sameMetadataYaml(current, yaml)) return;
+      await this.replaceText(path, yaml);
     });
   }
 

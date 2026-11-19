@@ -28,6 +28,12 @@ export function nativeSessionMode(options = {}, inherited = process.env) {
   };
 }
 
+export function nativeApplicationArgs(executable, args = []) {
+  return executable.includes(".app/Contents/MacOS/")
+    ? ["-ApplePersistenceIgnoreState", "YES", ...args]
+    : args;
+}
+
 export function assertBackgroundAvailability(executable, listing) {
   const suffix = "/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop";
   const active = listing.split("\n").some((line) => {

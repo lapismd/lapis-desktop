@@ -318,8 +318,7 @@ M5 watch ownership maps to `files.md`; M7 native integration maps to
 
 [File integration](files.md) retains native mutation and writer protection.
 
-[Native gates](native-acceptance.md); E-CI-085–088 record the lease and Core
-pins.
+[Native gates](native-acceptance.md) now include App Profile retirement.
 
 CLI main-window authority, native credential custody and disabled loopback
 access follow [LD-CLI-001/002/003](integration.md). Its current release identity

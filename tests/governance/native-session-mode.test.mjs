@@ -4,6 +4,7 @@ import { mkdtempSync, writeFileSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import {
+  nativeApplicationArgs,
   nativeSessionMode,
   assertBackgroundAvailability,
 } from "../desktop/native-session-mode.mjs";
@@ -34,6 +35,23 @@ test("invalid native session modes reject before a process can start", () => {
     { background: true, window: "other" },
   ])
     assert.throws(() => nativeSessionMode(value, {}), /background/);
+});
+
+test("native acceptance ignores AppKit crash-restoration state without dropping caller arguments", () => {
+  const bundled =
+    "/tmp/Lapis Notes Acceptance.app/Contents/MacOS/lapis-desktop";
+  assert.deepEqual(nativeApplicationArgs(bundled), [
+    "-ApplePersistenceIgnoreState",
+    "YES",
+  ]);
+  assert.deepEqual(nativeApplicationArgs(bundled, ["lapis://open/example"]), [
+    "-ApplePersistenceIgnoreState",
+    "YES",
+    "lapis://open/example",
+  ]);
+  assert.deepEqual(nativeApplicationArgs("/tmp/http/lapis-desktop", ["x"]), [
+    "x",
+  ]);
 });
 
 test("background API mode cannot inherit interactive picker or popup-proof flags", () => {

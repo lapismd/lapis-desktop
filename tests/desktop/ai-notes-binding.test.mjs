@@ -34,24 +34,39 @@ async function info(session) {
   );
   assert.equal(value.backgroundApi, false);
 }
-async function unavailable(session) {
+async function unavailable(
+  session,
+  expected = "Configure an admitted agent",
+  admitted = true,
+) {
   const panel = session.browser.$('[data-testid="ai-chat-panel"]');
   await panel.waitForDisplayed();
   await session.browser.waitUntil(async () =>
-    (await panel.getText()).includes("Configure an admitted agent"),
+    (await panel.getText()).includes(expected),
   );
-  assert.deepEqual(
-    await session.browser.execute(() =>
-      globalThis.__TAURI__.core.invoke("plugin:lapis-ai|targets"),
-    ),
-    [],
-  );
-  assert.deepEqual(
-    await session.browser.execute(() =>
-      globalThis.__TAURI__.core.invoke("plugin:lapis-ai|list"),
-    ),
-    [],
-  );
+  const native = await session.browser.execute(async () => {
+    const invoke = async (command) => {
+      try {
+        return { value: await globalThis.__TAURI__.core.invoke(command) };
+      } catch (error) {
+        return { error: String(error) };
+      }
+    };
+    return {
+      targets: await invoke("plugin:lapis-ai|targets"),
+      workers: await invoke("plugin:lapis-ai|list"),
+    };
+  });
+  if (admitted)
+    assert.deepEqual(native, {
+      targets: { value: [] },
+      workers: { value: [] },
+    });
+  else
+    assert.deepEqual(native, {
+      targets: { error: "vault_admission_unavailable" },
+      workers: { error: "vault_admission_unavailable" },
+    });
 }
 function fixture(name) {
   const parent = resolve(
@@ -152,11 +167,16 @@ for (const fixtureKind of ["synthetic", "historical"]) {
             false,
             "Bundled precedence must prevent external module evaluation",
           );
+        unchanged();
         const chat = session.browser.$('button[aria-label="Open Chat"]');
         assert.equal(await chat.isExisting(), disabledBy === undefined);
         if (disabledBy === undefined) {
           await chat.click();
-          await unavailable(session);
+          await unavailable(
+            session,
+            "Saved runtime fake is unavailable",
+            false,
+          );
           const retained = JSON.parse(
             readFileSync(join(vault, ".lapis/app.json"), "utf8"),
           ).pluginData.ai;
@@ -197,6 +217,7 @@ for (const fixtureKind of ["synthetic", "historical"]) {
       });
       return selected.profileId;
     });
+    writeFileSync(join(root, "picker.json"), JSON.stringify(vault));
     await session.browser.execute(
       (id, recovery) => {
         sessionStorage.setItem(
@@ -245,7 +266,7 @@ for (const fixtureKind of ["synthetic", "historical"]) {
       false,
     );
     await cold.browser.$('button[aria-label="Open Chat"]').click();
-    await unavailable(cold);
+    await unavailable(cold, "Saved runtime fake is unavailable", false);
     if (fixtureKind === "synthetic")
       assert.equal(
         await cold.browser.execute(() =>
