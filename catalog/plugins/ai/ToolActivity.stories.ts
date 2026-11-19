@@ -80,12 +80,12 @@ export const SuccessfulToolCall: Story = {
     const inspector = await canvas.findByRole("region", {
       name: "Tool details",
     });
-    await expect(within(inspector).getByText("121 tests passed")).toBeVisible();
+    await expect(
+      within(inspector).getByText("Desktop AI tests passed"),
+    ).toBeVisible();
     await userEvent.click(
       within(inspector).getByRole("button", { name: "Show source" }),
     );
-    await expect(inspector).toHaveTextContent(
-      "pnpm --filter @lapis-notes/ai test",
-    );
+    await expect(inspector).toHaveTextContent("pnpm test:ai");
   },
 };

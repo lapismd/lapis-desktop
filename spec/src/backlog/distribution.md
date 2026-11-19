@@ -1,4 +1,4 @@
-# Desktop distribution and frozen-host retirement
+# Desktop distribution and retired-host provenance
 
 Outstanding implementation and qualification are recorded here. Existing feature
 contracts and requirement verification retain the implemented scope. Legacy task
@@ -63,20 +63,20 @@ rollback and additional platform qualification remain deferred.
 
 Evidence: [E-PLAN-006](../history/E-PLAN-006.md).
 
-## Frozen Deno desktop retirement
+## Retired Deno desktop
 
-Former reference: M12. Dependencies: Distribution qualification and
-supported-capability parity or explicit retirement.
+Disposition: **Completed**. Requirements: LD-MIG-002,LD-MIG-003.
 
-Disposition at consolidation: **Planned**. Requirements: LD-MIG-002,LD-MIG-003.
+Acceptance: Every supported desktop capability was migrated or explicitly
+retired, and the replacement has no Deno runtime dependency.
 
-Acceptance: Every currently supported desktop capability is migrated or
-explicitly retired, and the replacement has no Deno runtime dependency.
+Completed: After Tauri fixture and data-preservation qualification, Notes
+removed the host, its tooling and runtime edges. Source, artifacts and data
+remain.
 
-Remaining: Qualify Tauri and fixtures (E-RETIRE-003/005), then remove Deno.
-
-Evidence: [E-PLAN-002](../history/E-PLAN-002.md),
-[E-REVIEW-001](../history/E-REVIEW-001.md). Node tooling: E-RETIRE-008.
+Evidence: [plan](../history/E-PLAN-002.md),
+[review](../history/E-REVIEW-001.md), [closure](../history/E-RETIRE-016.md).
+Node tooling: E-RETIRE-008.
 
 ## Retained release decisions
 
@@ -84,10 +84,10 @@ The first preview targets Apple Silicon macOS 15+ (ad-hoc signed, unnotarized)
 and Ubuntu 24.04 Linux ARM64/x64 through Homebrew. Preserve Lapis Notes.app and
 the canonical bundle identity; keep preview configuration separate. Continue
 desktop CalVer above the actual installed Deno release, checking that version
-when release work resumes. At approved Tauri cutover, retain all qualified
-platforms and retire Deno desktop build/test/release CI while preserving old
-archives and user data. Preview installation/window/quit checks do not establish
-full Linux native feature parity.
+when release work resumes. At approved Tauri cutover, retain qualified
+platforms, keep retired CI absent and preserve archives and data. Preview
+installation and window/quit checks do not establish full Linux native feature
+parity.
 
 Reconcile currently published upstream packages and consumer contracts before a
 registry-only build. The retired release-wave register predates newer published
@@ -393,7 +393,7 @@ and Dependency audits has no lane dependency.
 Stable cutover needs separate approval and a CalVer above installed Deno.
 Preserve `Lapis Notes.app`/`notes.lapis.desktop`; prove Deno-to-Tauri upgrade,
 rollback and note/profile compatibility on macOS and retained Linux targets.
-Retire Deno desktop build/test/release CI; preserve archives and data.
+Keep retired Deno CI absent; preserve archives and data.
 
 CLI/remotes ship in rc.2 ([receipt](../history/E-RELEASE-024.md)). E-CLI-002
 retains the native-dialog gap; stable cutover remains separate. LD-SKILL-001

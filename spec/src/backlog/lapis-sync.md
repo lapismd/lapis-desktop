@@ -113,14 +113,14 @@ optional and disabled by default after qualification.
 
 ## Investigation baseline and provenance
 
-| Area                | Existing foundation on 14 November 2026                                                                                    | Remaining boundary                                                           |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| Sync plugin         | Protocol codecs, encrypted checkpoints/outbox, ancestry/authority, guarded-apply foundations and retained UI               | Private/parked, no complete production runtime, tests/stories skipped        |
-| Notes API           | Scoped identity/change, guarded I/O/storage, crypto/pairing/membership/recovery and editor protection                      | Native consumer selection and complete Sync writer qualification             |
-| Frozen Deno host    | Dedicated encrypted stores, Keychain custody, admitted security/data RPC, guarded filesystem/receipts and restart evidence | Reference only; none of that acceptance qualifies Tauri/Rust                 |
-| Current Tauri       | Generic API SyncHostService lifecycle, existing editor registry and native application infrastructure                      | No installed Sync plugin, native Sync providers, runtime or scheduler        |
-| Old server          | Account authorization, connection checks and managed-vault discovery                                                       | Durable destination and continuous participant remained unfinished           |
-| Current Rust server | Hosted vaults and shared native application services                                                                       | Sync-specific authorization, enrollment, destination/storage and participant |
+| Area                       | Existing foundation on 14 November 2026                                                                                    | Remaining boundary                                                           |
+| -------------------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Sync plugin                | Protocol codecs, encrypted checkpoints/outbox, ancestry/authority, guarded-apply foundations and retained UI               | Private/parked, no complete production runtime, tests/stories skipped        |
+| Notes API                  | Scoped identity/change, guarded I/O/storage, crypto/pairing/membership/recovery and editor protection                      | Native consumer selection and complete Sync writer qualification             |
+| Retired Deno host snapshot | Dedicated encrypted stores, Keychain custody, admitted security/data RPC, guarded filesystem/receipts and restart evidence | Immutable provenance only; none of that acceptance qualifies Tauri/Rust      |
+| Current Tauri              | Generic API SyncHostService lifecycle, existing editor registry and native application infrastructure                      | No installed Sync plugin, native Sync providers, runtime or scheduler        |
+| Old server                 | Account authorization, connection checks and managed-vault discovery                                                       | Durable destination and continuous participant remained unfinished           |
+| Current Rust server        | Hosted vaults and shared native application services                                                                       | Sync-specific authorization, enrollment, destination/storage and participant |
 
 In `src/components/views/NotesWorkspace.svelte`, the App receives no Sync
 security/local-provider configuration; `takeHostSyncService(app)` supplies the
@@ -149,7 +149,8 @@ Old temporary workspaces were preserved and retired after landing. Earlier
 pending-main claims, Deno runtime/version assumptions and import failures
 describe those recorded revisions. The former packaged-window failure is not a
 reproduced current Tauri defect. Preserve all historical evidence unchanged;
-[LD-MIG-003](../current/migration.md) keeps Deno Desktop frozen.
+[LD-MIG-003](../current/migration.md) keeps the retired Deno Desktop snapshot as
+immutable provenance without restoring its runtime.
 
 The investigation observed 85 passing focused API cases in nine files;
 standalone Sync engine/Svelte checks had zero errors/warnings. Its current test

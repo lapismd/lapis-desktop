@@ -98,12 +98,12 @@ icons; E-AI-111 aligns selected command icons. Original native gates remain.
 
 ## Reusable ACP transport qualification
 
-External shared-AI retirement uses Notes' public installer admission; it does
-not retire Desktop's owned AI. Qualification MUST reject the original retired
-artifact before network IO, preserve settings, conversations and memory, and
-retain independent origins. [E-RETIRE-004](../history/E-RETIRE-004.md) and
-[009](../history/E-RETIRE-009.md) prepare renderer cases; App Profile follows
-the separate [native acceptance](native-acceptance.md) preservation matrix.
+External shared-AI retirement does not retire Desktop AI. Notes admission MUST
+reject the original artifact before network IO while preserving settings,
+conversations, memory and origins. [E-RETIRE-004](../history/E-RETIRE-004.md)
+and [009](../history/E-RETIRE-009.md) prepare renderer cases; App Profile
+follows [native acceptance](native-acceptance.md). E-RETIRE-016 replaces the
+final catalog command with Desktop-owned `pnpm test:ai`.
 
 [Reusable ACP transport qualification](ai-adapter.md#reusable-acp-transport-qualification)
 retains its independent source, native and provider gates.

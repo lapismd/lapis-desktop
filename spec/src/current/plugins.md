@@ -200,7 +200,7 @@ startup remain excluded from the catalog host.
 
 Each stage records source revisions, public import boundaries, exact tests,
 failures, source-to-destination story coverage and native evidence separately.
-Local links do not bypass source checks. Deno desktop remains frozen. Retain
+Local links do not bypass source checks. The Deno desktop is retired. Retain
 license notices and attribution when moving plugin code. Retire old active
 distribution/story registrations only after replacements pass.
 

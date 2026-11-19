@@ -391,9 +391,9 @@
 - [Combine verified Desktop retirement slices](../history/E-RETIRE-012.md)
 
 - [Prepare App Profile cold-chat collection](../history/E-RETIRE-013.md)
-
 - [Adopt released Notes retirement packages](../history/E-RETIRE-014.md)
 - [Qualify App Profile retired-data preservation](../history/E-RETIRE-015.md)
+- [Retire final Desktop Deno residue](../history/E-RETIRE-016.md)
 - [Integrate held dependency automation on current main](../history/E-DEPENDENCIES-017.md)
 - [Qualify the held current-main integration](../history/E-DEPENDENCIES-018.md)
 

@@ -39,7 +39,7 @@ and chooser cold-restoration checks for these host-owned state paths.
 E-QUALIFICATION-002 passes the complete cold edit/save/quit/relaunch,
 failed-save, external-conflict and repeated-switch gates for every enabled
 writer above. Native file, navigation and integration scopes retain that
-original aggregate qualification. Deno desktop stays frozen; no publication or
+original aggregate qualification. The Deno desktop is retired; no publication or
 app signing is introduced.
 
 M6 adds Search settings/recent-query data and Graph control/settings persistence

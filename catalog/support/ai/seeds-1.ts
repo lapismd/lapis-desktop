@@ -11,11 +11,14 @@ export function createAiChatToolSeedItems(
       name: "shell.execute",
       server: "local workspace",
       state,
-      input: "pnpm --filter @lapis-notes/ai test",
+      input: "pnpm test:ai",
       ...(state === "completed"
-        ? { output: "121 tests passed" }
+        ? { output: "Desktop AI tests passed" }
         : state === "error"
-          ? { output: "Process exited with code 1\nFAIL ai-chat-panel.test.ts" }
+          ? {
+              output:
+                "Process exited with code 1\nFAIL tests/ai/chat/chat-tool-pairing.test.ts",
+            }
           : {}),
       createdAt: "2026-03-16T09:00:00.000Z",
     },

@@ -168,6 +168,7 @@ Actions receipts before retrying. Do not waive required checks or alter hashes.
 
 A later approved change must preserve Lapis Notes.app and notes.lapis.desktop,
 advance CalVer above installed Deno, qualify real old-to-new upgrade, rollback
-and data compatibility on macOS and both retained Linux architectures, and
-retire Deno desktop CI while retaining old archives and user data. Intel macOS,
-Windows, Developer ID/notarization and an in-app updater remain separate work.
+and data compatibility on macOS and both retained Linux architectures, and keep
+retired Deno desktop CI absent while retaining old archives and user data. Intel
+macOS, Windows, Developer ID/notarization and an in-app updater remain separate
+work.
