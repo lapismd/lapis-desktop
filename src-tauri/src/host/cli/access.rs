@@ -74,6 +74,10 @@ pub async fn desktop_cli_access(
                     .map_err(|e| e.message)?;
                 if let Some(previous) = listener.take() {
                     previous.stop().await.map_err(|e| e.to_string())?;
+                    if let Some(home) = std::env::var_os("HOME") {
+                        lapis_desktop::cli::discovery::retire(std::path::Path::new(&home))
+                            .map_err(|_| "Could not remove Desktop connection details")?;
+                    }
                 }
             }
             Ok(Value::Null)
@@ -103,12 +107,13 @@ pub async fn desktop_cli_access(
                     .dialog()
                     .file()
                     .set_parent(&window)
-                    .set_title("Save private CLI credential")
+                    .set_title("Save credential for local CLI and MCP access")
                     .set_file_name("lapis-cli.token")
                     .blocking_save_file()
                     .ok_or("Credential creation cancelled")?
                     .into_path()
                     .map_err(|_| "Choose a local token file")?;
+                let home = std::env::var_os("HOME").ok_or("Home directory is unavailable")?;
                 grants.prune_expired().map_err(|e| e.message)?;
                 let (issued, path) = {
                     let mut services = host
@@ -159,6 +164,17 @@ pub async fn desktop_cli_access(
                     return Err(
                         "Could not create a new private token file; choose a different path".into(),
                     );
+                }
+                if lapis_desktop::cli::discovery::publish(
+                    std::path::Path::new(&home),
+                    &origin,
+                    &path,
+                )
+                .is_err()
+                {
+                    let _ = grants.revoke(issued.grant_id);
+                    let _ = std::fs::remove_file(&path);
+                    return Err("Could not publish private Desktop connection details".into());
                 }
                 Ok(json!({"command": lapis_desktop::cli::credential::command(&origin, &path)}))
             })

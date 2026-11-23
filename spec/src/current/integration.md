@@ -102,3 +102,21 @@ contracts remain unchanged; plugins do not receive general shell execution.
 `integration` owns reusable policy and URL queues. Their spec-first ownership
 follows both directories, with passive receipts in debug-only
 `acceptance/integration.rs`. Module moves preserve all existing command names.
+
+## Local CLI and MCP access
+
+The opt-in loopback listener mounts both content HTTP and `/mcp` using the same
+Core grants and boundary budget. MCP cannot create independent vault owners or
+bypass expiry, revocation or vault closure. Stopping the listener cancels MCP
+transport work before draining the socket.
+
+After explicit credential creation, Desktop publishes a private, versioned
+connection record at `~/.local/state/lapis/desktop.json` on Unix. It contains
+the loopback origin and exported token-file path, never the bearer token. CLI
+and stdio MCP reuse that approval through `--target desktop` (also the default
+when no target or credential source is supplied); no additional owner sign-in is
+required. A later credential replaces the selected connection. Revoked, expired,
+closed or restarted sessions fail closed; they never fall back to disk access.
+Non-Unix discovery remains unavailable until private-file custody is qualified.
+The native save dialog remains explicit consent for credential export and local
+CLI/MCP reuse. Disabling access removes discovery metadata.
