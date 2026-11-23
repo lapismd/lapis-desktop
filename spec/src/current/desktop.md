@@ -321,9 +321,10 @@ M5 watch ownership maps to `files.md`; M7 native integration maps to
 [Native gates](native-acceptance.md) now include App Profile retirement.
 
 CLI main-window authority, native custody, disabled loopback and approved
-MCP/CLI discovery follow [LD-CLI-001/002/003](integration.md). Release
-`2026.31.6-rc.2` retains complete non-publishing three-platform candidate
-qualification in [E-CLI-007](../history/E-CLI-007.md).
+MCP/CLI discovery follow [LD-CLI-001/002/003](integration.md). Bundled CLI
+version custody selects Server 2.9.2; qualified native engine pins stay fixed.
+Release `2026.31.6-rc.2` retains complete non-publishing three-platform
+candidate qualification in [E-CLI-007](../history/E-CLI-007.md).
 
 Shared remotes retain main-window/vault admission, Core operations and OS
 custody (LD-DESK-003). E-REPO-059 separates transport, catalog and distribution

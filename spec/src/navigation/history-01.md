@@ -185,3 +185,5 @@
 - [Desktop MCP and local CLI reuse](../history/E-CLI-009.md)
 
 - [Changesets preview release automation and CLI intake](../history/E-RELEASE-026.md)
+
+- [Released CLI version custody](../history/E-CLI-010.md)

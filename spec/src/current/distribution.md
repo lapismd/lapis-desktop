@@ -196,3 +196,8 @@ The existing restricted Homebrew release App also reconciles published Server
 CLI archives through the tap's independent CLI channel on main pushes, scheduled
 runs and explicit dispatch. It verifies public bytes and opens a formula-only
 update behind native tap checks; it cannot publish Server releases.
+
+The CLI tooling pin selects Server 2.9.2 source `4c22844f` after its version PR
+passes all 11 checks. It advances only CLI custody; qualified Core/HTTP/MCP and
+native plugin engine pins remain unchanged. Public CLI archives and the first
+real formula still require their own publication and native install receipts.

@@ -130,7 +130,7 @@
 | LD-REPO-005 | Partial | [E-RELEASE-014](history/E-RELEASE-014.md): ARM64 quarantine. [E-CI-085](history/E-CI-085.md)/[086](history/E-CI-086.md)/[087](history/E-CI-087.md)/[088](history/E-CI-088.md): earlier native admission evidence. [E-REPO-058](history/E-REPO-058.md)/[059](history/E-REPO-059.md): shared remotes adoption, real OS/HTTPS proof and final-cohort gates; publication remains separate. |
 | LD-CLI-001 | Implemented | [E-CLI-002](history/E-CLI-002.md): installer. [E-CLI-007](history/E-CLI-007.md): rc.2 candidate. [E-CLI-008](history/E-CLI-008.md)/[E-RETIRE-014](history/E-RETIRE-014.md): cohort. |
 | LD-CLI-002 | Partial | [E-CLI-009](history/E-CLI-009.md): MCP/discovery pass; native pending. |
-| LD-CLI-003 | Partial | [E-CLI-009](history/E-CLI-009.md): custody pass; native dialog pending. |
+| LD-CLI-003 | Partial | [E-CLI-009](history/E-CLI-009.md): custody; [010](history/E-CLI-010.md): CLI 2.9.2; native dialog pending. |
 
 [Additional qualification notes](verification-notes.md) retain the historical
 follow-ups and their original acceptance boundaries.

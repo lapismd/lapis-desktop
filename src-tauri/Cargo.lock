@@ -6554,20 +6554,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-protocol"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb#83fca8ddd25b7b7913723e231779862f94f7dbcb"
-dependencies = [
- "indexmap 2.14.2",
- "schemars 1.2.3",
- "serde",
- "serde_json",
- "ts-rs",
- "uuid",
-]
-
-[[package]]
-name = "lapis-app-protocol"
-version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=cadc20b8200e3388486549509a00981b6c164eb6#cadc20b8200e3388486549509a00981b6c164eb6"
+source = "git+https://github.com/lapismd/lapis-server?rev=4c22844f67744a47f38d580a684cca90c4731605#4c22844f67744a47f38d580a684cca90c4731605"
 dependencies = [
  "indexmap 2.14.2",
  "inventory",
@@ -6579,12 +6566,25 @@ dependencies = [
 ]
 
 [[package]]
+name = "lapis-app-protocol"
+version = "0.1.0"
+source = "git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb#83fca8ddd25b7b7913723e231779862f94f7dbcb"
+dependencies = [
+ "indexmap 2.14.2",
+ "schemars 1.2.3",
+ "serde",
+ "serde_json",
+ "ts-rs",
+ "uuid",
+]
+
+[[package]]
 name = "lapis-cli"
-version = "2.9.1"
-source = "git+https://github.com/lapismd/lapis-server?rev=cadc20b8200e3388486549509a00981b6c164eb6#cadc20b8200e3388486549509a00981b6c164eb6"
+version = "2.9.2"
+source = "git+https://github.com/lapismd/lapis-server?rev=4c22844f67744a47f38d580a684cca90c4731605#4c22844f67744a47f38d580a684cca90c4731605"
 dependencies = [
  "clap",
- "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=cadc20b8200e3388486549509a00981b6c164eb6)",
+ "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=4c22844f67744a47f38d580a684cca90c4731605)",
  "reqwest 0.12.28",
  "reqwest 0.13.5",
  "rmcp",
