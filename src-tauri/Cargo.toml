@@ -10,9 +10,11 @@ default-run = "lapis-desktop"
 [features]
 default = []
 custom-protocol = ["tauri/custom-protocol"]
+cli-tooling = ["dep:lapis-cli"]
 e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
+lapis-cli = { git = "https://github.com/lapismd/lapis-server", rev = "cadc20b8200e3388486549509a00981b6c164eb6", version = "2.9.1", optional = true }
 lapis-app-protocol = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }
 lapis-content-http = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }
 lapis-content-mcp = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }

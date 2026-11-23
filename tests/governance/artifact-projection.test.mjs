@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { test } from "node:test";
 import { parse, stringify } from "yaml";
@@ -62,15 +63,28 @@ test("frozen current no-op matches reviewed shared shape and exact descriptor by
   const d = input(),
     before = structuredClone(d);
   assert.deepEqual(verifyArtifactProjection(d), {
-    shapeSha256:
-      "018000ffc43161d5b0f2376e6cab432e974b42310ae98f5ba47dd9be4ac82013",
-    descriptorSha256:
-      "403f5b2044df651284e3991b0db249787004c4d3d3b738aef1925f37452e7b3f",
+    shapeSha256: JSON.parse(descriptorBytes).immutableShapeSha256,
+    descriptorSha256: createHash("sha256")
+      .update(descriptorBytes)
+      .digest("hex"),
     reviewedSource: "c4b54f932cd4239d9a8f0b3e1fb327f28b63dfb2",
   });
   assert.deepEqual(d, before);
 });
 for (const [name, change] of [
+  [
+    "application release version",
+    (d) => edit(d, "package.json", (x) => (x.version = "2026.31.6-rc.99")),
+  ],
+  [
+    "version orchestration command",
+    (d) =>
+      edit(
+        d,
+        "package.json",
+        (x) => (x.scripts["release:version"] = "node unreviewed.mjs"),
+      ),
+  ],
   [
     "private runtime range",
     (d) =>

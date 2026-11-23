@@ -1295,7 +1295,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "117725a109d387c937a1533ce01b450cbde6b88abceea8473c4d7a85853cda3c"
 dependencies = [
  "lazy_static",
- "windows-sys 0.48.0",
+ "windows-sys 0.59.0",
 ]
 
 [[package]]
@@ -2719,8 +2719,8 @@ dependencies = [
  "libc",
  "log",
  "rustversion",
- "windows-link 0.1.3",
- "windows-result 0.3.4",
+ "windows-link 0.2.1",
+ "windows-result 0.4.1",
 ]
 
 [[package]]
@@ -5118,7 +5118,7 @@ dependencies = [
  "js-sys",
  "log",
  "wasm-bindgen",
- "windows-core 0.61.2",
+ "windows-core 0.62.2",
 ]
 
 [[package]]
@@ -6524,7 +6524,7 @@ dependencies = [
  "jj-vault",
  "jsonschema",
  "lapis-ai-service",
- "lapis-app-protocol",
+ "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb)",
  "lapis-docs-projection",
  "lapis-plugin-services",
  "lapis-task-services",
@@ -6565,13 +6565,46 @@ dependencies = [
 ]
 
 [[package]]
+name = "lapis-app-protocol"
+version = "0.1.0"
+source = "git+https://github.com/lapismd/lapis-server?rev=cadc20b8200e3388486549509a00981b6c164eb6#cadc20b8200e3388486549509a00981b6c164eb6"
+dependencies = [
+ "indexmap 2.14.2",
+ "inventory",
+ "schemars 1.2.3",
+ "serde",
+ "serde_json",
+ "ts-rs",
+ "uuid",
+]
+
+[[package]]
+name = "lapis-cli"
+version = "2.9.1"
+source = "git+https://github.com/lapismd/lapis-server?rev=cadc20b8200e3388486549509a00981b6c164eb6#cadc20b8200e3388486549509a00981b6c164eb6"
+dependencies = [
+ "clap",
+ "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=cadc20b8200e3388486549509a00981b6c164eb6)",
+ "reqwest 0.12.28",
+ "reqwest 0.13.5",
+ "rmcp",
+ "rustix 1.1.6",
+ "serde",
+ "serde_json",
+ "sha2 0.10.9",
+ "tokio",
+ "tokio-util",
+ "uuid",
+]
+
+[[package]]
 name = "lapis-content-http"
 version = "0.1.0"
 source = "git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb#83fca8ddd25b7b7913723e231779862f94f7dbcb"
 dependencies = [
  "axum",
  "lapis-app-core",
- "lapis-app-protocol",
+ "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb)",
  "serde",
  "serde_json",
  "tokio",
@@ -6585,7 +6618,7 @@ source = "git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e
 dependencies = [
  "axum",
  "lapis-app-core",
- "lapis-app-protocol",
+ "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb)",
  "lapis-content-http",
  "percent-encoding",
  "rmcp",
@@ -6616,7 +6649,8 @@ dependencies = [
  "lapis-ai-app-tools",
  "lapis-ai-capture",
  "lapis-app-core",
- "lapis-app-protocol",
+ "lapis-app-protocol 0.1.0 (git+https://github.com/lapismd/lapis-server?rev=83fca8ddd25b7b7913723e231779862f94f7dbcb)",
+ "lapis-cli",
  "lapis-content-http",
  "lapis-content-mcp",
  "libc",
@@ -8470,7 +8504,7 @@ version = "0.14.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "03da047801ff44bb6a4d407d4860c05fd70bb81714e6b2f3812603d5b145b042"
 dependencies = [
- "heck 0.4.1",
+ "heck 0.5.0",
  "itertools 0.14.0",
  "log",
  "multimap",
@@ -9101,6 +9135,7 @@ dependencies = [
  "pastey",
  "pin-project-lite",
  "rand 0.10.3",
+ "reqwest 0.13.5",
  "schemars 1.2.3",
  "serde",
  "serde_json",
@@ -12640,7 +12675,7 @@ version = "0.1.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22"
 dependencies = [
- "windows-sys 0.48.0",
+ "windows-sys 0.61.2",
 ]
 
 [[package]]

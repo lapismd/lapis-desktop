@@ -54,6 +54,17 @@ test("truly absent consumed note is accepted only for unchanged complete depende
   d.before = structuredClone(fixture.before);
   assert.throws(() => verifyValidatorCanonicalIntake(d));
 });
+test("ordinary release notes and tooling coexist only when the SDK version is unchanged", () => {
+  const d = input();
+  d.changedFiles.push(
+    ".changeset/desktop-mcp-release.md",
+    ".changeset/config.json",
+    ".changeset/README.md",
+  );
+  assert.equal(verifyValidatorCanonicalIntake(d).version, "0.2.1");
+  d.before = structuredClone(fixture.before);
+  assert.throws(() => verifyValidatorCanonicalIntake(d));
+});
 for (const bytes of [
   "---\nnull\n---\nbody",
   '---\n"runtime": patch\n---\nbody',

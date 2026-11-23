@@ -365,3 +365,16 @@ E-DEPENDENCIES-018 freezes the new21input source and actual local8archive
 context. Legacy approval provenance and new exact disabled authority remain
 separate; actual hosted finalhead/main/health/callback and Root admission still
 gate enabling.
+
+CLI tooling selects the independently qualified source
+`cadc20b8200e3388486549509a00981b6c164eb6` through its optional, metadata-only
+`cli-tooling` dependency. Ordinary app builds do not enable it. Core, Protocol,
+HTTP, MCP and the qualified native plugin engines retain their existing pins.
+The CLI package is built from its owning source/public binary exports.
+Changesets tooling has a separate frozen public pnpm graph. Version PRs renew
+the exact frozen SDK descriptor only for their reviewed version context; SDK
+updates still cannot alter other source facts or activate held automation.
+
+Product Changesets are independent of SDK maintenance notes when the SDK version
+is unchanged. SDK transitions retain strict managed-note and source-scope
+checks.

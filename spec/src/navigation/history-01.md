@@ -183,3 +183,5 @@
 - [AI history landing verification and retirement](../history/E-AI-063.md)
 
 - [Desktop MCP and local CLI reuse](../history/E-CLI-009.md)
+
+- [Changesets preview release automation and CLI intake](../history/E-RELEASE-026.md)

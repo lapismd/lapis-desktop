@@ -39,7 +39,7 @@ function elf(machine = 183) {
 }
 const pinnedCliSource = (
   await readFile(new URL("../../src-tauri/Cargo.toml", import.meta.url), "utf8")
-).match(/lapis-app-core = .*rev = "([a-f0-9]{40})"/)?.[1];
+).match(/lapis-cli = .*rev = "([a-f0-9]{40})"/)?.[1];
 async function fixture(context, cli = {}) {
   const root = await mkdtemp(join(tmpdir(), "lapis-preview-linux-"));
   context.after(() => rm(root, { recursive: true, force: true }));

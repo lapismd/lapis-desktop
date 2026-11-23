@@ -1,0 +1,52 @@
+name: Version Desktop preview
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+permissions:
+  contents: read
+concurrency:
+  group: desktop-changesets-version
+  cancel-in-progress: false
+jobs:
+  version:
+    if:
+      github.repository == 'lapismd/lapis-desktop' && github.ref ==
+      'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+      - name: Install source-owned release tools
+        run:
+          pnpm --dir scripts/release-tools install --frozen-lockfile
+          --ignore-scripts --ignore-workspace
+      - name: Install public context validation tools
+        run: node scripts/ci/docs-setup.mjs
+      - name: Require actual Changesets release intent
+        id: intent
+        run: node scripts/release/version-pr.mjs --intent
+      - name: Mint repository-scoped version PR token
+        if: steps.intent.outputs.hasChangesets == 'true'
+        id: app
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.LAPIS_DEPENDENCY_APP_CLIENT_ID }}
+          private-key: ${{ secrets.LAPIS_DEPENDENCY_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: ${{ github.event.repository.name }}
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Create or update the reviewed preview version PR
+        if: steps.intent.outputs.hasChangesets == 'true'
+        run: node scripts/release/version-pr.mjs
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}

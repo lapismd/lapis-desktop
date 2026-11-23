@@ -1,0 +1,58 @@
+name: Update verified CLI Homebrew formula
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description:
+          Exact Server version tag, or latest published stable release
+        type: string
+        required: false
+  schedule:
+    - cron: "31 */6 * * *"
+  push:
+    branches: [main]
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+permissions:
+  contents: read
+concurrency:
+  group: lapis-cli-homebrew-update
+  cancel-in-progress: false
+jobs:
+  update:
+    if:
+      github.repository == 'lapismd/lapis-desktop' && github.ref ==
+      'refs/heads/main'
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          repository: lapismd/homebrew-tap
+          ref: 2dffdb8d056dce83a3dfb52a46277185b57c941e
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+      - name: Select and verify the published CLI release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_TAG: ${{ inputs.tag }}
+        run: |
+          tag="$REQUESTED_TAG"
+          if test -z "$tag"; then
+            tag=$(gh api repos/lapismd/lapis-server/releases/latest --jq .tag_name)
+          fi
+          node scripts/update-cask.mjs --channel cli --release "$tag"
+      - uses: actions/create-github-app-token@v2
+        id: app
+        with:
+          app-id: ${{ vars.HOMEBREW_TAP_APP_ID }}
+          private-key: ${{ secrets.HOMEBREW_TAP_APP_PRIVATE_KEY }}
+          owner: lapismd
+          repositories: homebrew-tap
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Open the verified formula update behind native tap CI
+        run: node scripts/open-update-pr.mjs --channel cli
+        env:
+          GH_TOKEN: ${{ steps.app.outputs.token }}

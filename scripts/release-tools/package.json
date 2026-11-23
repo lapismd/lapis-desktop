@@ -1,0 +1,10 @@
+{
+  "name": "@lapismd/desktop-release-tools",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.34.5",
+  "dependencies": {
+    "@changesets/cli": "3.0.3",
+    "prettier": "3.3.3"
+  }
+}

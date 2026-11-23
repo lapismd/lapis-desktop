@@ -2,6 +2,7 @@ import { sourceIntakeReader } from "./source-intake-reader.mjs";
 import { checkArtifactProjection } from "./artifact-projection.mjs";
 import {
   loadMaintenanceNotes,
+  managedMaintenanceNote,
   verifyMaintenanceLifecycle,
   verifyMaintenanceScope,
 } from "./maintenance-note.mjs";
@@ -12,20 +13,12 @@ import { resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { parse } from "yaml";
 
-const core = "@lapismd/spec-validator";
-const policyPath = ".github/dependency-automation/canonical-intake.json";
-const chapters = [
-  "spec/src/current/governance.md",
-  "spec/src/current/local-dependencies.md",
-];
-const expectedPolicy = {
-  schemaVersion: 1,
-  kind: "single-development-dependency",
-  repository: "lapismd/lapis-desktop",
-  dependency: core,
-  slot: "validator-development",
+import {
+  core,
+  policyPath,
   chapters,
-};
+  expectedPolicy,
+} from "./canonical-policy.mjs";
 const fail = (reason) => {
   throw Error(`Desktop canonical intake: ${reason}`);
 };
@@ -185,9 +178,19 @@ export function verifyValidatorCanonicalIntake({
   consumedNotes = [],
 }) {
   const facts = validatorFacts(files, policyBytes);
+  const old =
+    before &&
+    parse(before["pnpm-lock.yaml"]).importers?.["."]?.devDependencies?.[
+      core
+    ]?.version?.split("(")[0];
+  // Product release notes belong to Changesets; SDK transitions retain their strict scope.
+  const maintenanceFiles =
+    old === facts.version
+      ? changedFiles.filter(managedMaintenanceNote)
+      : changedFiles;
   verifyMaintenanceLifecycle(
     files,
-    changedFiles,
+    maintenanceFiles,
     consumedNotes,
     Boolean(
       consumedNotes.length &&
@@ -202,9 +205,6 @@ export function verifyValidatorCanonicalIntake({
   if (!before) return facts;
   const previous = JSON.parse(before["package.json"]),
     candidate = JSON.parse(files["package.json"]);
-  const old = parse(before["pnpm-lock.yaml"]).importers?.[
-    "."
-  ]?.devDependencies?.[core]?.version?.split("(")[0];
   if (old === facts.version) {
     const originalIntegrity = parse(before["pnpm-lock.yaml"]).packages?.[
       `${core}@${old}`

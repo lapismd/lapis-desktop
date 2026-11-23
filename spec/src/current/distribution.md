@@ -9,14 +9,14 @@ and Ayatana AppIndicator. Stable cutover remains in the
 
 ## Requirements
 
-| ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
-| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-REL-001 | Candidate preparation MUST run manually from hosted main and require the latest successful authoritative CI for the identical source commit. Authority MUST consider push and manual full-CI attempts only; scheduled evidence MUST NOT qualify or mask the latest push/manual attempt. Public app, Rust and package versions MUST agree on forward CalVer with an rc suffix; the numeric macOS bundle version MUST equal its base. Preview MUST retain its distinct bundle/profile identity and MUST NOT register stable URL schemes.                                                                     |
-| LD-REL-002 | Release packaging MUST use ordinary release binaries without e2e instrumentation, release-built bundled AI helpers and CLI and verified pinned private public archives. All preparation, assembly, publication and recovery jobs MUST use the exact tracked Node patch. Nested signing MUST finish before helper checksum inventory; the outer bundle MUST be signed last without changing helper bytes. Build metadata MUST record source/toolchain identities, archive hashes and exact-source Linux CI, including the macOS build-only limitation and existing RC limitations.                          |
-| LD-REL-003 | Schema-v2 `desktop-manifest.json` MUST bind runtime tauri, channel preview, lapismd/lapis-desktop, source commit and desktop-v tag to canonical versioned macOS ARM64 ZIP and Linux ARM64/x64 tar.gz archives with actual sizes and SHA-256. Final candidates MUST contain all three targets and per-target build metadata, plus native Homebrew receipts for both Linux targets, under a complete checksum inventory. macOS MUST have no runtime receipt while it is build-only. Altered, incomplete, extra or mismatched assets MUST fail closed.                                                        |
-| LD-REL-004 | Publication MUST default off and require desktop-preview-release approval after candidate qualification, promote the same tested bytes without rebuilding, publish a source-bound public prerelease and never replace differing tag or asset contents. Interrupted draft uploads MAY resume only with identical existing bytes. A later repair revision MAY resume only an existing exact-source draft after full exact-main CI, using its compatible release ID while leaving duplicates unchanged and failing closed on ambiguity. Publication MUST verify public downloads before starting tap updates. |
-| LD-REL-005 | A verified published preview MUST open or recover a restricted App-authored tap update and enable auto-merge behind the existing four required checks. Stable and preview state MUST remain separate. Recovery MUST verify the public release without rebuilding or republishing. Linux native install, reinstall, uninstall and data retention MUST pass, with upgrades tested when a prior different preview exists; the macOS archive is build-only and MUST NOT be described as installed or runtime-qualified.                                                                                        |
-| LD-REL-006 | Linux archives MUST retain the ordinary release executable, its Tauri resource directory, release-built AI helpers, preview desktop entry and icon. Their launcher/profile/desktop identity MUST remain separate from stable. Ubuntu 24.04 ARM64/x64 installation, reinstall, uninstall, profile/vault retention, visible native window and graceful quit MUST qualify the actual installed application without Node/Deno or acceptance drivers. Linux ABI/dependency prerequisites and feature-coverage limits MUST be explicit.                                                                          |
+| ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-REL-001 | Changesets version PRs MUST advance synchronized preview candidates; automatic preparation MUST require successful authoritative CI for the identical main commit. Only the latest push/manual attempt MAY qualify; scheduled runs MUST NOT qualify or mask it. Package, Rust and public app versions MUST agree on forward CalVer with an rc suffix; the numeric macOS bundle version MUST equal its base. Preview MUST retain distinct bundle/profile identity without stable URL schemes.                                                                                      |
+| LD-REL-002 | Release packaging MUST use ordinary release binaries without e2e instrumentation, release-built bundled AI helpers and CLI and verified pinned private public archives. All preparation, assembly, publication and recovery jobs MUST use the exact tracked Node patch. Nested signing MUST finish before helper checksum inventory; the outer bundle MUST be signed last without changing helper bytes. Build metadata MUST record source/toolchain identities, archive hashes and exact-source Linux CI, including the macOS build-only limitation and existing RC limitations. |
+| LD-REL-003 | Schema-v2 `desktop-manifest.json` MUST bind runtime tauri, channel preview, lapismd/lapis-desktop, source commit and desktop-v tag to canonical versioned macOS ARM64 ZIP and Linux ARM64/x64 tar.gz archives with actual sizes and SHA-256. Final candidates MUST contain all three targets and per-target build metadata, plus native Homebrew receipts for both Linux targets, under a complete checksum inventory. macOS MUST have no runtime receipt while it is build-only. Altered, incomplete, extra or mismatched assets MUST fail closed.                               |
+| LD-REL-004 | Manual publication MUST default off; automatic publication MUST follow a reviewed Changesets version PR and full exact-source CI/candidate qualification in the main-only publication environment. It MUST promote tested bytes, publish a source-bound prerelease and reject changed tags/assets. Draft recovery MUST preserve identical bytes, require full exact-main CI and reject ambiguous source/channel/release identity. Public downloads MUST verify before tap updates.                                                                                                |
+| LD-REL-005 | A verified published preview MUST open or recover a restricted App-authored tap update and enable auto-merge behind the existing four required checks. Stable and preview state MUST remain separate. Recovery MUST verify the public release without rebuilding or republishing. Linux native install, reinstall, uninstall and data retention MUST pass, with upgrades tested when a prior different preview exists; the macOS archive is build-only and MUST NOT be described as installed or runtime-qualified.                                                               |
+| LD-REL-006 | Linux archives MUST retain the ordinary release executable, its Tauri resource directory, release-built AI helpers, preview desktop entry and icon. Their launcher/profile/desktop identity MUST remain separate from stable. Ubuntu 24.04 ARM64/x64 installation, reinstall, uninstall, profile/vault retention, visible native window and graceful quit MUST qualify the actual installed application without Node/Deno or acceptance drivers. Linux ABI/dependency prerequisites and feature-coverage limits MUST be explicit.                                                 |
 
 ## Candidate and publication boundary
 
@@ -142,8 +142,8 @@ authoritative job attempt cannot authorize preparation. Source equality requires
 the exact commit rather than an equal tree. The release build uses the
 configured minimum macOS version before dependency cache restore and build.
 
-Ordinary bundles MUST include the release-built `lapis` CLI, pinned to the same
-server source as the native services, with checksum/provenance and executable
+Ordinary bundles MUST include the release-built `lapis` CLI, independently
+pinned to its owning Server source, with checksum/provenance and executable
 checks. Registration stores a private copy so moving the app does not strand
 PATH.
 
@@ -154,7 +154,7 @@ qualification, sealed candidate promotion and verified public assets. Earlier
 E-CLI-007 and rc.1 retain their own source/bytes; that older prepared candidate
 was not reused for this release.
 
-The CLI resource manifest MUST match the Core source pin, package target,
+The CLI resource manifest MUST match the CLI tooling source pin, package target,
 release profile, executable flag and actual SHA-256. A matching outer file
 inventory cannot admit a stale CLI. Bundle success is recorded only after these
 checks.
@@ -174,3 +174,25 @@ the source-owned repair; the published candidate bytes stay unchanged.
 checked-head gate from E-RELEASE-024 after PR #41 passes and merges. Published
 app source and qualified assets remain bound to `c2971126`; this workflow/docs
 follow-up does not rebuild or republish rc.2.
+
+## Changesets and automatic delivery
+
+Reviewed Changesets notes are aggregated using the pinned public Changesets CLI.
+The preview adapter increments only `rc.N`, synchronizes
+Package/Cargo/lock/Tauri identities and records a generated pending evidence
+receipt in the version PR. No npm package or stable cutover is published.
+Private application archives are not needed to run the independent source-owned
+release toolchain.
+
+After authoritative successful main CI, the release controller checks current
+main and the immutable release tag. An unpublished candidate requests full CI
+when selective lanes were skipped, then dispatches preparation with publication
+requested. Existing candidate attempts are not silently retried, and failed or
+superseded source cannot publish. Candidate/native installation verification and
+same-byte publication remain mandatory. The main-only publication environment
+has no separate reviewer pause, as explicitly requested by the user.
+
+The existing restricted Homebrew release App also reconciles published Server
+CLI archives through the tap's independent CLI channel on main pushes, scheduled
+runs and explicit dispatch. It verifies public bytes and opens a formula-only
+update behind native tap checks; it cannot publish Server releases.

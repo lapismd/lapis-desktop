@@ -71,7 +71,9 @@
     "checks": "node scripts/run-turbo.mjs ci:governance ci:storybook-static --summarize && node scripts/run-turbo.mjs ci:storybook-interaction --summarize && node scripts/run-turbo.mjs ci:quality --summarize && node scripts/run-turbo.mjs ci:unit --summarize && node scripts/run-turbo.mjs ci:bundle --summarize",
     "release:prepare": "node scripts/release/prepare-platform.mjs",
     "release:verify": "node scripts/release/verify-candidate.mjs",
-    "cli:prepare": "node scripts/prepare-cli.mjs"
+    "cli:prepare": "node scripts/prepare-cli.mjs",
+    "changeset": "node scripts/release/changesets.mjs",
+    "release:version": "node scripts/release/version.mjs"
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.3.0",
