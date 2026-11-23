@@ -102,3 +102,40 @@ async fn idle_loopback_connection_does_not_hold_disable_open() {
         .unwrap();
     drop(socket);
 }
+
+#[tokio::test]
+async fn mcp_mount_shares_desktop_grants_and_revocation() {
+    let grants = std::sync::Arc::new(lapis_app_core::services::content::ContentGrants::default());
+    let issued = grants
+        .issue_read_only(vec![], Duration::from_secs(60))
+        .unwrap();
+    let listener = Listener::start(grants.clone()).await.unwrap();
+    let http = reqwest::Client::builder().no_proxy().build().unwrap();
+    let request =
+        || {
+            http.post(format!("{}/mcp", listener.origin))
+        .bearer_auth(issued.token.expose_secret())
+        .header("content-type", "application/json")
+        .header("accept", "application/json, text/event-stream")
+        .header("mcp-protocol-version", "2026-07-28")
+        .header("mcp-method", "tools/list")
+        .body(serde_json::json!({"jsonrpc":"2.0","id":1,"method":"tools/list","params":{"_meta":{
+            "io.modelcontextprotocol/protocolVersion":"2026-07-28",
+            "io.modelcontextprotocol/clientCapabilities":{}
+        }}}).to_string())
+        };
+    let response = request().send().await.unwrap();
+    assert_eq!(response.status(), 200);
+    let body: serde_json::Value = serde_json::from_str(&response.text().await.unwrap()).unwrap();
+    assert!(
+        body["result"]["tools"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .any(|t| t["name"] == "read_note")
+    );
+    grants.revoke(issued.grant_id).unwrap();
+    assert_eq!(request().send().await.unwrap().status(), 401);
+    grants.set_enabled(false).unwrap();
+    listener.stop().await.unwrap();
+}
