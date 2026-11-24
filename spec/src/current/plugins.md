@@ -15,7 +15,7 @@ credential scope and revocation. Stories stay `visual-pending`;
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned
-Notes/AI boot promises bound catalog startup. Public roles/names govern
+Notes/AI boot promises bound catalog startup. Accessible roles/names govern
 selectors; controls MUST await readiness and the absence of their named
 accessible loading status, including `Loading catalog`. Collapse checks await
 closed state/unmount before unchanged absence assertions. E-AI-103 reviews

@@ -261,9 +261,21 @@ export const Snapshot: Story = {
   parameters: { scenario: "operation-snapshot" },
   play: async ({ canvasElement }) => {
     const canvas = await open(canvasElement);
-    await expect(
-      (await canvas.findAllByText("Snapshot", { exact: true }))[0],
-    ).toBeVisible();
+    const graph = within(
+      await canvas.findByRole("list", { name: "Operation graph" }),
+    );
+    const row = (
+      await graph.findByRole("button", { name: /describe commit.*;/ })
+    ).closest("li");
+    expect(row).not.toBeNull();
+    const tags = within(
+      within(row!).getByRole("list", { name: "Operation tags" }),
+    );
+    await waitFor(async () => {
+      const tag = tags.getByRole("listitem");
+      await expect(tag).toHaveTextContent(/^Snapshot$/);
+      await expect(tag).toBeVisible();
+    });
   },
 };
 
