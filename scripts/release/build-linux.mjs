@@ -61,6 +61,10 @@ await cp(
   join(app, linuxBinary),
 );
 await cp(
+  "src-tauri/resources/bundled-skills.json",
+  join(app, "lib", productName, "bundled-skills.json"),
+);
+await cp(
   "src-tauri/resources/lapis-cli",
   join(app, "lib", productName, "lapis-cli"),
   { recursive: true },

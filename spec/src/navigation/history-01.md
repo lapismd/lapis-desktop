@@ -198,3 +198,4 @@
 
 - [Release tooling native CI selection](../history/E-CI-106.md)
 - [Version Desktop preview 2026.31.6-rc.3](../history/E-RELEASE-027.md)
+- [Linux startup resource repair](../history/E-RELEASE-028.md)
