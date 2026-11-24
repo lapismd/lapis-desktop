@@ -1,0 +1,35 @@
+name: Advance verified Desktop release
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+env:
+  LAPIS_DESKTOP_VALIDATION_RUNTIME: native
+permissions:
+  contents: read
+  actions: write
+concurrency:
+  group: desktop-automatic-release
+  cancel-in-progress: false
+jobs:
+  advance:
+    if: >-
+      github.repository == 'lapismd/lapis-desktop' &&
+      github.event.workflow_run.head_repository.full_name == github.repository
+      && github.event.workflow_run.head_branch == 'main' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'push' ||
+      github.event.workflow_run.event == 'workflow_dispatch')
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.15.0
+      - name: Request full CI or qualified candidate publication
+        run: node scripts/release/auto.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}

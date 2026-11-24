@@ -82,7 +82,7 @@ export default defineConfig(
           },
           {
             pattern:
-              "^(?:scripts/release/|tests/governance/release-|\\.github/workflows/release-desktop\\.yml$|src-tauri/tauri\\.preview\\.conf\\.json$)",
+              "^(?:\\.changeset/config\\.json$|scripts/release(?:/|-tools/)|tests/governance/release-|\\.github/workflows/(?:release-(?:desktop|auto|cli-tap)|version-desktop)\\.yml$|src-tauri/tauri\\.preview\\.conf\\.json$)",
             chapters: ["spec/src/current/distribution.md"],
           },
           {

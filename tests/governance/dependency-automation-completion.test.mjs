@@ -59,7 +59,10 @@ test("the source preserves private CalVer releases and every installed audit gat
     readFileSync(new URL("../../package.json", import.meta.url), "utf8"),
   );
   assert.equal(pkg.private, true);
-  assert.equal(pkg.scripts["release:version"], undefined);
+  assert.equal(
+    pkg.scripts["release:version"],
+    "node scripts/release/version.mjs",
+  );
   assert.equal(pkg.devDependencies["@changesets/cli"], undefined);
   assert.equal(
     pkg.scripts["release:prepare"],

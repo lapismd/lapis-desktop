@@ -7,14 +7,15 @@ Targets MUST declare safe `default_mode`; sends MUST assert it. History fixtures
 use native start/status publication, never client scheduling. Metadata stories
 MUST inject the public session port into the real shell with startup
 progress/recovery. [Mobile fixtures](mobile-layout.md) verify App-owned actions
-and responsive settings. [E-RETIRE-014](../history/E-RETIRE-014.md) adds a real
-CLI Workspace story for General → Advanced registration and disposal through
-published UI 0.2.5. Stories stay `visual-pending`; browser proof is separate
-from [native acceptance](../history/E-CORE-022.md).
+and responsive settings. UI 0.2.8 places Status, Installation and Refresh
+directly under Advanced, with separate Desktop access. The CLI Workspace story
+MUST verify exact fields, search, empty persisted authority, disposal,
+credential scope and revocation. Stories stay `visual-pending`;
+[native gates](../history/E-CORE-022.md) remain separate.
 
 [Shared-screen integration](shared-screen-integration.md) retains public
 source/pin/request controls and pointer release after portalled menus. Owned
-Notes/AI boot promises bound catalog startup. Public roles/names govern
+Notes/AI boot promises bound catalog startup. Accessible roles/names govern
 selectors; controls MUST await readiness and the absence of their named
 accessible loading status, including `Loading catalog`. Collapse checks await
 closed state/unmount before unchanged absence assertions. E-AI-103 reviews

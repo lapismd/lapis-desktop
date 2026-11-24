@@ -12,12 +12,12 @@ export function verifyCliResource(directory, target) {
   const source = readFileSync(
     new URL("../src-tauri/Cargo.toml", import.meta.url),
     "utf8",
-  ).match(/lapis-app-core = .*rev = "([a-f0-9]{40})"/)?.[1];
+  ).match(/lapis-cli = .*rev = "([a-f0-9]{40})"/)?.[1];
   assert.ok(source, "Pinned CLI source is required");
   assert.equal(
     manifest.sourceRevision,
     source,
-    "CLI source differs from the Core pin",
+    "CLI source differs from the CLI tooling pin",
   );
   assert.equal(manifest.target, target, "CLI target differs from the bundle");
   assert.equal(manifest.profile, "release", "CLI must use the release profile");

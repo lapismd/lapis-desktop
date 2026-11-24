@@ -128,6 +128,10 @@ jobs:
         run: node scripts/ci-revisions.mjs
       - name: Install only published docs validation tools
         run: node scripts/ci/docs-setup.mjs
+      - name: Require Changesets intent for product changes
+        run: |
+          pnpm --dir scripts/release-tools install --frozen-lockfile --ignore-scripts --ignore-workspace
+          node scripts/release/check-intent.mjs
       - name: Validate documentation, specifications and immutable evidence
         run: node scripts/ci/docs.mjs
     needs:

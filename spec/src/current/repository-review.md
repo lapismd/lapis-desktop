@@ -103,3 +103,8 @@ with readable, shell-safe quoting, preserving literal argument contents. Other
 recorded formats remain verbatim; formatting never executes or mutates commands.
 The expandable Op Log details title retains collapse activation without a hover
 fill; ID copy and other action buttons keep their hover/focus treatments.
+
+Snapshot acceptance MUST scope the marked operation row in the Operation graph
+and await a visible Snapshot list item in its Operation tags. Design Core's
+inert measurement copies are not displayed metadata and cannot qualify this
+assertion. The tag's exact label and visibility remain required.

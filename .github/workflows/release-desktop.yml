@@ -13,7 +13,7 @@ on:
         default: prepare
       publish:
         description:
-          Request protected publication approval after candidate qualification
+          Publish automatically after successful candidate qualification
         type: boolean
         default: false
       candidate_run_id:
@@ -33,7 +33,7 @@ concurrency:
   group: desktop-preview-release
   cancel-in-progress: false
 env:
-  HOMEBREW_TAP_REF: 34a0d7518e2026d7693eefc4eca6c36019ea8abc
+  HOMEBREW_TAP_REF: 2dffdb8d056dce83a3dfb52a46277185b57c941e
 jobs:
   ci-tools:
     name: Prepare verified CI tools

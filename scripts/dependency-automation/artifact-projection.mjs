@@ -42,29 +42,7 @@ const yaml = (text) => {
   if (document.errors.length || document.warnings.length) fail();
   return document.toJS();
 };
-export function verifyArtifactProjection({ files, descriptorBytes }) {
-  if (
-    typeof descriptorBytes !== "string" ||
-    Buffer.byteLength(descriptorBytes) > 8192
-  )
-    fail();
-  yaml(descriptorBytes);
-  const descriptor = JSON.parse(descriptorBytes);
-  if (
-    !keys(descriptor, [
-      "schemaVersion",
-      "kind",
-      "repository",
-      "dependency",
-      "immutableShapeSha256",
-    ]) ||
-    descriptor.schemaVersion !== 1 ||
-    descriptor.kind !== "seeded-sdk-development-lock" ||
-    descriptor.repository !== "lapismd/lapis-desktop" ||
-    descriptor.dependency !== sdk ||
-    !/^[a-f0-9]{64}$/.test(descriptor.immutableShapeSha256)
-  )
-    fail();
+export function computeArtifactProjectionShape(files) {
   for (const path of projectionSourceInputs)
     if (
       typeof files[path] !== "string" ||
@@ -130,6 +108,32 @@ export function verifyArtifactProjection({ files, descriptorBytes }) {
       }),
     ),
   );
+  return shapeSha256;
+}
+export function verifyArtifactProjection({ files, descriptorBytes }) {
+  if (
+    typeof descriptorBytes !== "string" ||
+    Buffer.byteLength(descriptorBytes) > 8192
+  )
+    fail();
+  yaml(descriptorBytes);
+  const descriptor = JSON.parse(descriptorBytes);
+  if (
+    !keys(descriptor, [
+      "schemaVersion",
+      "kind",
+      "repository",
+      "dependency",
+      "immutableShapeSha256",
+    ]) ||
+    descriptor.schemaVersion !== 1 ||
+    descriptor.kind !== "seeded-sdk-development-lock" ||
+    descriptor.repository !== "lapismd/lapis-desktop" ||
+    descriptor.dependency !== sdk ||
+    !/^[a-f0-9]{64}$/.test(descriptor.immutableShapeSha256)
+  )
+    fail();
+  const shapeSha256 = computeArtifactProjectionShape(files);
   if (shapeSha256 !== descriptor.immutableShapeSha256) fail();
   return {
     shapeSha256,

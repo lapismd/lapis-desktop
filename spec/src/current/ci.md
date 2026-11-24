@@ -287,3 +287,12 @@ Held dependency automation adds the independent source-owned SDK policy/shape
 check before quality lanes and canonical spec checks. Original native/product,
 archive/export and full/production audit gates retain their existing authority.
 The exact metadata-only completion delegate adds no local runtime or writer.
+
+Changesets preview version PRs retain ordinary affected CI. Their merge triggers
+the release controller, which requests full exact-source CI before candidate
+publication. Scheduled health and PR runs cannot authorize a release; all
+existing full-qualification job names and native/platform gates remain required.
+
+Product PRs must add a Desktop Changeset; readme-only notes do not qualify. The
+generated version PR may consume notes only while changing its restricted
+version/changelog/evidence files. Product source cannot use that exemption.

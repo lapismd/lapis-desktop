@@ -1,6 +1,6 @@
 # Local dependency intake
 
-The shared-AI retirement candidate adopts released API ^0.6.9, UI ^0.2.5 and App
+The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
 advances the hosted JavaScript pin to `6b2b39f583a30be4e6dfa734050c20af862384ba`
 for those published packages. API retains Notes' approved retired-distribution
@@ -365,3 +365,24 @@ E-DEPENDENCIES-018 freezes the new21input source and actual local8archive
 context. Legacy approval provenance and new exact disabled authority remain
 separate; actual hosted finalhead/main/health/callback and Root admission still
 gate enabling.
+
+CLI tooling selects the independently qualified source
+`4c22844f67744a47f38d580a684cca90c4731605` through its optional, metadata-only
+`cli-tooling` dependency. Ordinary app builds do not enable it. Core, Protocol,
+HTTP, MCP and the qualified native plugin engines retain their existing pins.
+The CLI package is built from its owning source/public binary exports.
+Changesets tooling has a separate frozen public pnpm graph. Version PRs renew
+the exact frozen SDK descriptor only for their reviewed version context; SDK
+updates still cannot alter other source facts or activate held automation.
+
+Product Changesets are independent of SDK maintenance notes when the SDK version
+is unchanged. SDK transitions retain strict managed-note and source-scope
+checks.
+
+Patched localization intake MUST consume published API ^0.6.14, its UI ^0.2.8
+peer and direct i18next ^26.3.4 through registry resolution. The actual
+installed production graph MUST have no advisory; existing development
+exceptions retain their exact policy. One API peer context, private archive
+prerequisites and native source pins remain enforced. Reviewed application
+intake renews the SDK context descriptor without changing its projection
+algorithm or held authority.

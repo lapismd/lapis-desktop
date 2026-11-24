@@ -20,9 +20,7 @@ const target =
 if (!Object.values(targets).includes(target))
   throw Error("Unsupported CLI bundle target");
 const manifest = await readFile("src-tauri/Cargo.toml", "utf8");
-const revision = manifest.match(
-  /lapis-app-core = .*rev = "([a-f0-9]{40})"/,
-)?.[1];
+const revision = manifest.match(/lapis-cli = .*rev = "([a-f0-9]{40})"/)?.[1];
 if (!revision) throw Error("A pinned server revision is required");
 const destination = resolve("src-tauri/resources/lapis-cli");
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
@@ -58,6 +56,8 @@ const metadata = JSON.parse(
       "--manifest-path",
       "src-tauri/Cargo.toml",
       "--locked",
+      "--features",
+      "cli-tooling",
       "--format-version",
       "1",
     ],
@@ -65,10 +65,9 @@ const metadata = JSON.parse(
   ),
 );
 const core = metadata.packages.find(
-  (pkg) =>
-    pkg.name === "lapis-app-core" && pkg.source?.endsWith(`#${revision}`),
+  (pkg) => pkg.name === "lapis-cli" && pkg.source?.endsWith(`#${revision}`),
 );
-if (!core) throw Error("Pinned server source was not resolved by Cargo");
+if (!core) throw Error("Pinned CLI source was not resolved by Cargo");
 const source = resolve(dirname(core.manifest_path), "../..");
 const output = resolve(".local/cli-target", revision);
 execFileSync(

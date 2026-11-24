@@ -28,7 +28,7 @@ const fs = require("node:fs"), path = require("node:path");
 const state = JSON.parse(fs.readFileSync(${JSON.stringify(state)}, "utf8"));
 const args = process.argv.slice(2);
 if (args[0] === "metadata") {
-  process.stdout.write(JSON.stringify({ packages: [{ name: "lapis-app-core", source: "git+https://example.invalid/server#" + state.revision, manifest_path: path.join(state.source, "crates/lapis-app-core/Cargo.toml") }] }));
+  process.stdout.write(JSON.stringify({ packages: [{ name: "lapis-cli", source: "git+https://example.invalid/server#" + state.revision, manifest_path: path.join(state.source, "crates/lapis-cli/Cargo.toml") }] }));
 } else if (args[0] === "build") {
   const output = path.join(args[args.indexOf("--target-dir") + 1], args[args.indexOf("--target") + 1], "release/lapis");
   fs.mkdirSync(path.dirname(output), { recursive: true });
@@ -58,7 +58,7 @@ if (args[0] === "metadata") {
       await writeFile(state, JSON.stringify({ revision, source }));
       await writeFile(
         join(root, "src-tauri/Cargo.toml"),
-        `lapis-app-core = { git = "https://example.invalid/server", rev = "${revision}" }\n`,
+        `lapis-cli = { git = "https://example.invalid/server", rev = "${revision}" }\n`,
       );
       const built = run();
       assert.equal(built.status, 0, built.stderr);

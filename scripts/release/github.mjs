@@ -16,6 +16,6 @@ export function github(
     });
     if (optional && response.status === 404) return null;
     if (!response.ok) throw Error(`GitHub ${path}: HTTP ${response.status}`);
-    return response.json();
+    return response.status === 204 ? null : response.json();
   };
 }

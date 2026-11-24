@@ -30,17 +30,59 @@ export const GeneralAdvancedAndDisposal: Story = {
       expect(
         settings.sections.find((section) => section.id === "general"),
       ).toMatchObject({
-        fields: [{ id: "advanced", fields: [{ id: "cli" }] }],
+        fields: [
+          {
+            id: "advanced",
+            type: "group",
+            fields: [
+              { id: "cli.status", type: "custom", adapter: "lapis.cli.status" },
+              {
+                id: "cli.installation",
+                type: "custom",
+                adapter: "lapis.cli.installation",
+              },
+              { id: "cli.refresh", type: "custom" },
+            ],
+          },
+          {
+            id: "cli.desktop-access",
+            type: "group",
+            fields: [{ id: "cli.access", type: "custom" }],
+          },
+        ],
         searchEntries: [{ id: "cli", path: ["General", "Advanced"] }],
       });
+      expect(settings.values).toEqual({});
+      expect(settings.search("CLI")).toEqual(
+        expect.arrayContaining([
+          expect.objectContaining({
+            sectionId: "general",
+            fieldId: "cli",
+            title: "Command line interface",
+          }),
+          expect.objectContaining({
+            sectionId: "general",
+            fieldId: "cli.status",
+            path: ["General", "Advanced", "Status"],
+          }),
+        ]),
+      );
     } finally {
       dispose();
     }
     expect(
       settings.sections.find((section) => section.id === "general"),
     ).toBeUndefined();
+    expect(settings.search("CLI")).toEqual([]);
     const disposeReplacement = registerCliSettings(settings, cliFixture());
+    expect(
+      settings.sections.find((section) => section.id === "general"),
+    ).toBeDefined();
     disposeReplacement();
+    expect(
+      settings.sections.find((section) => section.id === "general"),
+    ).toBeUndefined();
+    expect(settings.search("CLI")).toEqual([]);
     settings.destroy();
 
     await notesReady(canvasElement);
@@ -55,11 +97,12 @@ export const GeneralAdvancedAndDisposal: Story = {
     await userEvent.click(
       canvas.getByRole("button", { name: "Open settings" }),
     );
-    await userEvent.click(canvas.getByRole("button", { name: "General" }));
-    await expect(canvas.getByText("Advanced", { exact: true })).toBeVisible();
-    const cli = within(
-      await canvas.findByRole("region", { name: "Command line interface" }),
-    );
+    const cli = within(await canvas.findByRole("dialog", { name: "Settings" }));
+    await userEvent.click(cli.getByRole("button", { name: "General" }));
+    await expect(cli.getByText("Advanced", { exact: true })).toBeVisible();
+    await expect(
+      cli.getByText("Desktop access", { exact: true }),
+    ).toBeVisible();
     await expect(
       await cli.findByRole("button", { name: "Uninstall CLI" }),
     ).toBeEnabled();
@@ -101,7 +144,7 @@ export const GeneralAdvancedAndDisposal: Story = {
       ).toBeNull(),
     );
     expect(
-      canvas.queryByRole("region", { name: "Command line interface" }),
+      canvas.queryByRole("region", { name: "Desktop CLI access" }),
     ).toBeNull();
   },
 };

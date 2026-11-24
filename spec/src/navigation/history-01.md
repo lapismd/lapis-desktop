@@ -183,3 +183,13 @@
 - [AI history landing verification and retirement](../history/E-AI-063.md)
 
 - [Desktop MCP and local CLI reuse](../history/E-CLI-009.md)
+
+- [Changesets preview release automation and CLI intake](../history/E-RELEASE-026.md)
+
+- [Released CLI version custody](../history/E-CLI-010.md)
+
+- [Patched localization registry intake](../history/E-DEPENDENCIES-020.md)
+
+- [CLI declarative Settings consumer acceptance](../history/E-CLI-011.md)
+
+- [Measured repository Snapshot tag acceptance](../history/E-CATALOG-018.md)

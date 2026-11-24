@@ -3,5 +3,5 @@
   "kind": "seeded-sdk-development-lock",
   "repository": "lapismd/lapis-desktop",
   "dependency": "@lapismd/spec-validator",
-  "immutableShapeSha256": "018000ffc43161d5b0f2376e6cab432e974b42310ae98f5ba47dd9be4ac82013"
+  "immutableShapeSha256": "2e48a516416bef0cf225c6b6cf8832dcb1e52db4c2da9db274c958179cf960ef"
 }

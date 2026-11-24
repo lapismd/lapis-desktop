@@ -6,7 +6,35 @@ Preview, with a separate application profile. It does not register stable Notes
 URL handlers. Stable users remain on the existing Deno tap release until a
 separately approved cutover.
 
-## Prepare and review
+## Automatic preview releases
+
+Add a Changeset for user-visible Desktop changes with `pnpm changeset`. The
+source-owned public tool graph is installed with:
+
+```sh
+pnpm --dir scripts/release-tools install --frozen-lockfile --ignore-scripts --ignore-workspace
+```
+
+A main push with release intent opens or updates a repository-App-authored
+version PR. Review its changelog and synchronized native versions. During
+preview, all intents advance the existing CalVer `rc.N`; stable cutover remains
+separate. No private application build or npm publication is needed for
+versioning.
+
+Merging the version PR automatically requests full exact-source CI, prepares
+ordinary platform archives, qualifies native Linux Homebrew installation,
+publishes the same verified bytes and opens the Homebrew preview update PR. The
+main-only `desktop-preview-release` environment retains its branch boundary
+without a separate reviewer pause. Failed or superseded source cannot publish;
+existing failed candidate attempts require explicit recovery rather than a blind
+automatic rebuild. Both platform/candidate checks and tap CI remain gates.
+
+A separate scheduled/manual reconciler uses the same restricted tap App to
+verify stable Server CLI archives and open an independent `lapis` formula PR. It
+never creates or replaces a Server release. Formula updates retain native macOS
+ARM64 and Linux ARM64/x64 install/reinstall/uninstall and version checks.
+
+## Manual preparation and recovery
 
 Merge a version change on main before preparing a candidate. Package, Cargo and
 Tauri versions must agree on a higher CalVer with `-rc.N`. Update the release
@@ -77,8 +105,8 @@ gh workflow run release-desktop.yml --repo lapismd/lapis-desktop --ref main \
 Initial publication requires the candidate source to match main and the
 qualified artifact to be unexpired. Alternatively, prepare with `publish=true`
 to request approval in the same run. The `desktop-preview-release` environment
-requires stevejuma's approval, permits main only and disallows administrator
-bypass. Approve the exact run's qualified artifact. The protected job promotes
+permits main only. Publication follows the reviewed version PR and successful
+qualification without a separate approval pause. The protected job promotes
 those same bytes without rebuilding, creates `desktop-v<version>`, publishes a
 GitHub prerelease, and checks its public downloads. Existing differing
 tags/assets cause failure; do not delete or replace a release to conceal a bad
