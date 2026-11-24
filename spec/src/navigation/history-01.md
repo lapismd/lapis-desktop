@@ -189,3 +189,5 @@
 - [Released CLI version custody](../history/E-CLI-010.md)
 
 - [Patched localization registry intake](../history/E-DEPENDENCIES-020.md)
+
+- [CLI declarative Settings consumer acceptance](../history/E-CLI-011.md)
