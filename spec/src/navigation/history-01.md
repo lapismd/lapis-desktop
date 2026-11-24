@@ -195,3 +195,5 @@
 - [Measured repository Snapshot tag acceptance](../history/E-CATALOG-018.md)
 
 - [Version intent preserves prior qualification](../history/E-VERSION-001.md)
+
+- [Release tooling native CI selection](../history/E-CI-106.md)

@@ -21,10 +21,10 @@ comparisons continue; unavailable/conflicting fail closed.
 LD-GOV-006/008). JavaScript/private-profile and Rust pins are independent;
 renderer retains Rust pins; builders audit retirement. Hosted logs stream.
 LD-CI-005 health grants no release authority (E-CI-009/089). Protected changes
-require full checks. Ordinary CI maps exact changes to complete dependent gates;
-Rust evidence and Linux release builds remain independently selected. Images
-trust only the exact mounted workspace; source checks use built-ins. E2e imports
-instrumentation; bundles reject its startup marker. Planned
+require full checks. Release tooling selects both Linux builds (E-CI-106).
+Ordinary CI maps exact changes to dependent gates; Rust evidence stays separate.
+Images trust only the exact mounted workspace; source checks use built-ins. E2e
+imports instrumentation; bundles reject its startup marker. Planned
 [Review](../backlog/markdown-review-contract.md) and staged
 [native queues](ai-queue.md) are canonical owners registered in
 `scripts/spec-contracts.mjs` (E-PLAN-005; LD-GOV-001/002/004).
