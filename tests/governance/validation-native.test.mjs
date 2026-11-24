@@ -23,11 +23,11 @@ test("portable sources retain the native Notes pin and explicit Sync archive coh
     sources.find((source) => source.name === name)?.revision;
   assert.equal(
     revision(native, "lapis-notes"),
-    "40b9ba8ee569a737a0ace77870a094972ee6f768",
+    "65df856a657f091fef60993f6c0d894a115a6612",
   );
   assert.equal(
     revision(hosted, "lapis-notes"),
-    "6b2b39f583a30be4e6dfa734050c20af862384ba",
+    "65df856a657f091fef60993f6c0d894a115a6612",
   );
   const manifest = JSON.parse(await readFile("package.json", "utf8"));
   assert.match(
@@ -45,8 +45,8 @@ test("portable sources retain the native Notes pin and explicit Sync archive coh
     assert.match(revision(native, name), /^[a-f0-9]{40}$/u);
     assert.equal(revision(native, name), revision(hosted, name));
   }
-  // JavaScript fixture retirement must not silently refresh qualified Rust engines.
-  const pluginsNative = "879581d1549187bdbac2d75b40d02e0df46e721a";
+  // The native broker follows Core; renderer plugin fixtures stay separately pinned.
+  const pluginsNative = "9f2713ac6a4f40ff48325620d969de08fb31f5aa";
   assert.equal(revision(native, "lapis-plugins"), pluginsNative);
   assert.equal(
     revision(hosted, "lapis-plugins"),

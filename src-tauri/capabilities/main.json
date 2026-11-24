@@ -37,6 +37,7 @@
     "allow-vault-editing-intents",
     "allow-vault-editing-snapshot",
     "allow-vault-tasks",
+    "allow-vault-background-jobs",
     "allow-vault-skills",
     "allow-vault-watch-start",
     "allow-vault-watch-stop",

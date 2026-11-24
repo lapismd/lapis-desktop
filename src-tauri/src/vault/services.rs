@@ -1,4 +1,5 @@
 //! Native admission adapter. Call under the host's existing shared file IO gate.
+mod background;
 use super::VaultManager;
 use lapis_app_core::{
     embedding::host::NativeEmbeddingHost,

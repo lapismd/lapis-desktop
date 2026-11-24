@@ -120,3 +120,7 @@ closed or restarted sessions fail closed; they never fall back to disk access.
 Non-Unix discovery remains unavailable until private-file custody is qualified.
 The native save dialog remains explicit consent for credential export and local
 CLI/MCP reuse. Disabling access removes discovery metadata.
+
+Background-job alerts MUST use the existing native notification delivery only
+after explicit approval and OS permission. Unattended work MUST NOT request
+permission; Lapis history remains authoritative when OS delivery is unavailable.

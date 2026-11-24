@@ -5,12 +5,12 @@ Their public views, controls, settings and command openers remain authoritative;
 the host adds the plugin profile and native qualification. Do not create a
 replacement Search, metadata panel, graph or navigation implementation.
 
-M16.4 stages Core metadata behind explicit startup selection under the
-[background contract](background.md). Existing Metadata/Search/Graph views MUST
-retain their native acceptance with this selected owner. Renderer metadata
-remains default. M16.5 separately admits the qualified native Search adapter on
-the explicit Core port; absent selection retains renderer Search. Native Search
-provider, semantic, lifecycle and cold UI gates remain independently required.
+Core metadata is the startup default under the
+[background contract](background.md). The explicit renderer compatibility mode
+remains available and disables native job admission. Existing
+Metadata/Search/Graph views MUST retain native acceptance. Search selection
+remains separate on the same Core port; provider, semantic, lifecycle and cold
+UI gates remain independently required.
 
 Full shared-Rust qualification also exercises the actual macOS ONNX provider
 through the admitted native database, using the source-owned retained model and

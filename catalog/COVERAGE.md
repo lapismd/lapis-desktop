@@ -1,5 +1,11 @@
 # Desktop catalog coverage
 
+`Desktop/Background jobs` mounts production NotesWorkspace through the owned
+Notes fixture. Local alerts/approval/pause and unavailable-runner recovery use
+the shared Settings page and passive admitted-port simulator. The fixtures use
+no real OS notification or scheduler. Native window lifetime and metadata
+default gates remain separate; all variants stay visual-pending.
+
 `Desktop/CLI workspace settings/GeneralAdvancedAndDisposal` mounts production
 `NotesWorkspace` through the existing owned Notes fixture and forwards only its
 existing public CLI host input. It verifies released CLI registration under

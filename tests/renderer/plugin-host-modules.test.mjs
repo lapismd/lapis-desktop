@@ -6,11 +6,13 @@ import {
   pluginHostModules,
 } from "../../scripts/plugin-host-modules.ts";
 
-test("portable import map publishes API, Markdown, editor and exact renderer contracts", () => {
+test("portable import map publishes API, Design Core, Markdown, editor and exact renderer contracts", () => {
   const imports = pluginImportMap.imports;
   for (const specifier of [
     "@lapis-notes/api",
     "@lapis-notes/api/workspace-host",
+    "@lapismd/design-core/shadcn/popover",
+    "@lapismd/design-core/shadcn/button",
     "@lapis-notes/markdown/embed",
     "@codemirror/state",
     "svelte/renderer/5.56.10/internal/client",

@@ -85,8 +85,8 @@ async function eventually(read, predicate) {
   assert.fail("Native metadata did not converge within the original bound");
 }
 
-test("renderer metadata remains the default and forged DOM selection cannot grant native controls", async (context) => {
-  const f = await fixture(context);
+test("explicit renderer compatibility rejects forged DOM native controls", async (context) => {
+  const f = await fixture(context, "renderer");
   assert.equal((await f.call("shell_info")).metadataOwner, "renderer");
   await assert.rejects(
     f.provider.backgroundIndexing.call({ kind: "select_metadata" }),
@@ -118,13 +118,22 @@ test("renderer metadata remains the default and forged DOM selection cannot gran
   await f.session.close();
 });
 
-test("selected native metadata preserves typed admission, detached reconciliation and cold rebuild", async (context) => {
-  const f = await fixture(context, "core");
+test("default native metadata preserves typed admission, detached reconciliation and cold rebuild", async (context) => {
+  const f = await fixture(context);
   const { backgroundIndexing: port } = f.provider;
   const shell = await f.call("shell_info");
   assert.equal(shell.metadataOwner, "core");
-  assert.equal(shell.nativeVisibility.Ok[0], false);
-  assert.equal(shell.nativeVisibility.Ok[4], false);
+  assert.deepEqual(
+    await f.session.browser.execute(async () => {
+      const window = globalThis.__TAURI__.window.getCurrentWindow();
+      return [await window.isVisible(), await window.isFocused()];
+    }),
+    [false, false],
+  );
+  if (process.platform === "darwin") {
+    assert.equal(shell.nativeVisibility.Ok[0], false);
+    assert.equal(shell.nativeVisibility.Ok[4], false);
+  }
   await port.call({ kind: "select_metadata" });
   const processor = await port.call({
     kind: "register_processor",

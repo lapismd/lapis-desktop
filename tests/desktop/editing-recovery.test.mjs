@@ -152,7 +152,10 @@ test("native retained claims refuse leave and recover through the mounted Proble
   await browser.$('[data-path="Note.md"]').click();
   await editor.waitForDisplayed();
   await editor.click();
-  await browser.keys([Key.Command, "a"]);
+  await browser.keys([
+    process.platform === "darwin" ? Key.Command : Key.Control,
+    "a",
+  ]);
   await browser.keys(Key.NULL);
   await editor.addValue("# Saved after native recovery\n");
   await returnToVaults(browser);

@@ -200,3 +200,4 @@
 - [Version Desktop preview 2026.31.6-rc.3](../history/E-RELEASE-027.md)
 - [Linux startup resource repair](../history/E-RELEASE-028.md)
 - [Version Desktop preview 2026.31.6-rc.4](../history/E-RELEASE-029.md)
+- [Qualify native plugin background jobs](../history/E-JOB-001.md)

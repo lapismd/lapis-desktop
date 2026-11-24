@@ -12,6 +12,7 @@ import { join } from "node:path";
 import { Key } from "webdriverio";
 import { nativeSession } from "./native-session.mjs";
 
+const modifier = process.platform === "darwin" ? Key.Command : Key.Control;
 const view = (name) => `[data-ui-component="${name}"]`;
 const editor =
   '[data-ui-component="editor"] .cm-content[contenteditable="true"]';
@@ -78,7 +79,7 @@ test("existing metadata panels navigate, refresh edits and file changes, and res
       "Navigation proof ## Citrus chapter",
     ),
   );
-  await browser.keys([Key.Command, "z"]);
+  await browser.keys([modifier, "z"]);
   await browser.keys(Key.NULL);
   await browser.waitUntil(
     () => readFileSync(join(vault, "Alfa.md"), "utf8") === original,

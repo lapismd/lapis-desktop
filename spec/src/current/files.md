@@ -1,4 +1,4 @@
-# File management (M5)
+# File management (M5) — [Plugin background jobs](background.md)
 
 Notes shell composition follows [mobile layout](mobile-layout.md) without a
 host-forced display mode; native leave MUST retain prepared Sync authority. Sync

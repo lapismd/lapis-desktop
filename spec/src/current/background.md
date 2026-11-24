@@ -43,14 +43,14 @@ renderer reload and zero clients preserve the owner until explicit vault close.
 Shared public History observation and response validation MUST retain those
 semantics; the Desktop adapter owns transport/admission, not a second scheduler.
 
-## Staged native metadata adoption
+## Native metadata default
 
-Under LD-DB-001/002/003/004, LD-SESSION-001 and LD-NAV-004/006,
-`LAPIS_DESKTOP_METADATA_OWNER=core` MAY explicitly attach the public native
-indexing port to the admitted Notes session before App construction. Missing or
-`renderer` selection MUST retain the existing renderer default; any other value
-MUST reject startup. The native selection is fixed at process startup and MUST
-independently reject renderer-mode controls, foreign windows and changed roots.
+Under LD-DB-001/002/003/004, LD-SESSION-001 and LD-NAV-004/006, the default and
+`LAPIS_DESKTOP_METADATA_OWNER=core` MUST attach the public native indexing port
+to the admitted Notes session before App construction. Explicit `renderer`
+selection MAY retain compatibility mode; any other value MUST reject startup.
+The native selection is fixed at process startup and MUST independently reject
+renderer-mode controls, foreign windows and changed roots.
 
 The port MUST share the existing opaque database session/connection admission
 and passive change channel. Its typed command admits no filesystem path, SQL,
@@ -65,12 +65,11 @@ declared projections, publishes existing status progress and suppresses renderer
 metadata/projection writes. Unsupported custom contributions MUST remain visibly
 unavailable. Failures MUST remain observable without a renderer fallback. Search
 selection remains separate in the M16.4 metadata-only cohort. The M16.5 Search
-intake MAY admit `select_search` and `disable_search` only on this same
-explicitly selected Core authority with the source-qualified native Search
-adapter. Missing or renderer selection MUST expose no native indexing port.
-Neither intake completes Tasks ordered writes/recovery or either host default
-cutover. Other compiled projection controls remain available through
-MetadataCache.
+intake MAY admit `select_search` and `disable_search` only on this same selected
+Core authority with the source-qualified native Search adapter. Explicit
+renderer selection MUST expose no native indexing port. Tasks ordered
+writes/recovery remain separately selected. Other compiled projection controls
+remain available through MetadataCache.
 
 Qualification MUST cover exact default/admission failures, one shared transport,
 passive refresh/disposal, external create/edit/rename/delete after client
@@ -101,3 +100,32 @@ original Metadata/Search/Graph journeys and visible recovery. Catalog evidence
 MUST retain real production components and cannot qualify native ownership. The
 hidden native API suite MUST include Search ownership; the headed suite MUST
 also include the fresh-App safe-mode drain and re-enable journey.
+
+## Plugin background jobs
+
+### Requirements
+
+| ID         | Requirement                                                                                                                                                                                                                                                                                          |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-JOB-001 | Desktop MUST admit plugin jobs through shared Core using installation-private storage and the same native vault client as metadata and editing. Renderer code MUST NOT own a scheduler or gain path authority through the job port.                                                                  |
+| LD-JOB-002 | Closing the main window while eligible jobs exist MUST hide it and retain native work and guarded editor state. Reopening MUST reveal the existing workspace. Explicit Quit and explicit vault close MUST preserve existing save checks and drain native services.                                   |
+| LD-JOB-003 | Cold startup MUST resume eligible job owners only through recorded native vault identities and revalidated roots. Invalid or unavailable roots MUST remain unavailable without inventing filesystem authority.                                                                                       |
+| LD-JOB-004 | Optional job system alerts MUST require explicit configuration and existing OS permission. Unattended execution MUST NOT prompt for permission; Lapis notification history MUST remain available when OS delivery fails.                                                                             |
+| LD-JOB-005 | Native metadata MUST be the default startup owner. Explicit renderer compatibility mode MUST disable background-job admission and controls so competing metadata writers cannot run. Default qualification MUST retain typed metadata, Search and Graph acceptance and cold native ownership checks. |
+
+## Native Linux qualification
+
+The explicit `pnpm test:plugin-jobs:native` lane MUST run in an unprivileged
+Omarchy-compatible Docker worker, with a real GTK/WebKit application and X11
+window manager. It MUST retain the production bootstrap, metadata/Search/Graph
+journeys, default/renderer admission tests and actual close/Quit background-job
+checks. Its fresh profiles, test driver and optional-provider availability
+belong to acceptance only; normal and e2e Rust configurations remain separate
+checks. The receipt MUST identify source, dependency lock, native executable and
+selected test families. Platform-specific system alerts retain their own OS
+acceptance.
+
+The e2e-only native admission receipt MAY observe successful restore, picker and
+recent-vault admissions for the real Notes workspace. It MUST remain bounded and
+passive, contain no resource token and introduce no production command or
+writer.

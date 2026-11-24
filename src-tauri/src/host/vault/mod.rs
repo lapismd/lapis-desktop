@@ -1,5 +1,6 @@
 pub(crate) mod editing;
 pub(crate) mod files;
+pub(crate) mod jobs;
 pub(crate) mod skills;
 pub(crate) mod tasks;
 pub(crate) mod watch;
@@ -23,10 +24,13 @@ pub async fn vault_recents(host: tauri::State<'_, VaultHost>) -> Result<Value, N
 pub async fn vault_restore(
     host: tauri::State<'_, VaultHost>,
 ) -> Result<Option<VaultDescriptor>, NativeError> {
-    access(host.inner().clone(), |manager| {
+    let selected = access(host.inner().clone(), |manager| {
         manager.with_files(|manager| manager.vaults.restore_notes())
     })
-    .await
+    .await?;
+    #[cfg(feature = "e2e")]
+    crate::acceptance::vault_admission::record(selected.as_ref());
+    Ok(selected)
 }
 
 #[tauri::command]
@@ -51,7 +55,7 @@ pub async fn vault_select(
         lapis_desktop::vault::validate_name(name)?;
     }
     let host = host.inner().clone();
-    tauri::async_runtime::spawn_blocking(move || {
+    let selected = tauri::async_runtime::spawn_blocking(move || {
         let create_destination = create.unwrap_or(false);
         if create_destination && create_name.is_some() {
             return Err(io::Error::other("Choose one vault creation mode"));
@@ -99,8 +103,10 @@ pub async fn vault_select(
             .with_files(|manager| manager.vaults.select(selection, create_name.as_deref()))
     })
     .await
-    .map_err(|_| io::Error::other("Folder selection could not complete"))?
-    .map_err(Into::into)
+    .map_err(|_| io::Error::other("Folder selection could not complete"))??;
+    #[cfg(feature = "e2e")]
+    crate::acceptance::vault_admission::record(selected.as_ref());
+    Ok(selected)
 }
 
 fn pick_native(
@@ -149,10 +155,13 @@ pub async fn vault_open_recent(
     host: tauri::State<'_, VaultHost>,
     profile_id: String,
 ) -> Result<VaultDescriptor, NativeError> {
-    access(host.inner().clone(), move |manager| {
+    let selected = access(host.inner().clone(), move |manager| {
         manager.with_files(|manager| manager.vaults.open_recent(&profile_id))
     })
-    .await
+    .await?;
+    #[cfg(feature = "e2e")]
+    crate::acceptance::vault_admission::record(Some(&selected));
+    Ok(selected)
 }
 
 #[tauri::command]

@@ -89,8 +89,8 @@ test("released Notes retirement packages stay on npm while remaining Notes archi
     const name = `@lapis-notes/${leaf}`;
     assert.equal(
       projected.dependencies[name],
-      `file:.local/ci-packages/-lapis-notes-${leaf}/package.tgz`,
-      `${name} must use the verified source cohort`,
+      original.dependencies[name],
+      `${name} must retain its released registry range`,
     );
   }
   assert.deepEqual(manifest, original);
@@ -130,9 +130,9 @@ test("the released Notes cohort has one current Design Core and API peer context
   const nativeSource = JSON.parse(
     readFileSync("scripts/validation/native-sources.json", "utf8"),
   );
-  const notesJavascriptRevision = "6b2b39f583a30be4e6dfa734050c20af862384ba";
-  // Renderer package adoption does not change the qualified Rust source graph.
-  const notesNativeRevision = "40b9ba8ee569a737a0ace77870a094972ee6f768";
+  const notesJavascriptRevision = "65df856a657f091fef60993f6c0d894a115a6612";
+  // The native default is qualified against the same released Notes source.
+  const notesNativeRevision = "65df856a657f091fef60993f6c0d894a115a6612";
   assert.equal(
     source.find((entry) => entry.name === "lapis-notes")?.revision,
     notesJavascriptRevision,
@@ -143,20 +143,20 @@ test("the released Notes cohort has one current Design Core and API peer context
   );
   assert.match(workspace, /"@lapismd\/design-core": "0\.13\.5"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
-  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.14");
-  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.2.6");
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.15");
+  assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.3.1");
   assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.8");
   assert.equal(
     manifest.dependencies["@lapis-notes/language-service"],
     "^0.1.6",
   );
   assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.2.8");
-  assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.4.6");
+  assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.4.11");
   assert.equal(manifest.dependencies["@lapismd/ai-host"], "^0.3.0");
   assert.equal(manifest.dependencies["@lapismd/mira"], "~0.2.0");
   assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.13.4");
   assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
-  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.14\([^']+\)':$/gm);
+  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.15\([^']+\)':$/gm);
   assert.equal(contexts?.length, 1);
   assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.[0-9]\./);
   assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.[0-9]\./);
@@ -194,7 +194,7 @@ test("native Tasks fixtures unpack the packed pin instead of the registry instal
       JSON.parse(readFileSync("package.json", "utf8")).devDependencies[
         "@lapis-notes/lapis-plugin-tasks"
       ],
-      "^0.2.0",
+      "^0.3.0",
     );
   } finally {
     rmSync(root, { recursive: true, force: true });

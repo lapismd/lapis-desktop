@@ -1,4 +1,4 @@
-# Governance — [native collection](native-acceptance.md), [CI tooling](ci.md), [native turns](ai-adapter.md), [mobile layout](mobile-layout.md), [Sync](lapis-sync.md)
+# Governance — [native](native-acceptance.md), [CI](ci.md), [turns](ai-adapter.md), [mobile](mobile-layout.md), [Sync](lapis-sync.md) — [Plugin jobs](background.md)
 
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 [Shared screens](shared-screen-integration.md) own integration;

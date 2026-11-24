@@ -1,5 +1,12 @@
 # Local dependency intake
 
+The plugin background-jobs development cohort temporarily qualifies the new API,
+Workspace and Profile public builds from exact Notes source archives. This
+feature-specific validation preserves tracked registry ranges and lockfiles;
+publication and replacement of the ordinary release projection remain separate
+gates. Desktop adopts released Profile `^0.3.0` for the shared session
+lifecycle.
+
 The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
 advances the hosted JavaScript pin to `6b2b39f583a30be4e6dfa734050c20af862384ba`
@@ -386,3 +393,8 @@ exceptions retain their exact policy. One API peer context, private archive
 prerequisites and native source pins remain enforced. Reviewed application
 intake renews the SDK context descriptor without changing its projection
 algorithm or held authority.
+
+Background services consume released API `^0.6.15`, Workspace `^0.4.11` and App
+Profile `^0.3.1`; only private AI retains an explicit archive. Refresh the SDK
+shape descriptor from the reviewed manifest, lock and CI source inventory;
+retain its algorithm and held automation authority.

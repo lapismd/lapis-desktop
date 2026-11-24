@@ -77,15 +77,27 @@ export class NotesRecovery {
       this.message = error instanceof Error ? error.message : String(error);
     }
   }
+  private async restartWithPolicy(mode: AppSafeModeState): Promise<void> {
+    const jobs = this.app.backgroundJobs;
+    if (jobs) {
+      const snapshot = await jobs.call({ kind: "list" });
+      await jobs.call({
+        kind: "fence",
+        trusted: snapshot.trusted,
+        safeMode: mode.active,
+      });
+    }
+    await this.restart(mode);
+  }
   retry(): Promise<void> {
-    return this.run(() => this.restart(this.app.safeMode));
+    return this.run(() => this.restartWithPolicy(this.app.safeMode));
   }
   normal(): Promise<void> {
-    return this.run(() => this.restart(normalRecovery()));
+    return this.run(() => this.restartWithPolicy(normalRecovery()));
   }
   enter(update: Partial<AppSafeModeState>): Promise<void> {
     return this.run(() =>
-      this.restart({
+      this.restartWithPolicy({
         ...this.app.safeMode,
         ...update,
         active: true,

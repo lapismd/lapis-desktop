@@ -156,7 +156,7 @@ pub fn initialize(
     #[cfg(feature = "e2e")]
     let profile =
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
-    let vaults = VaultManager::new(&profile)?;
+    let mut vaults = VaultManager::new(&profile)?;
     let fs_gate = Arc::new(Mutex::new(()));
     let core_vaults = lapis_desktop::vault::services::VaultServices::new_with_backup(
         &profile,
@@ -192,6 +192,17 @@ pub fn initialize(
     } else {
         core_vaults
     };
+    let mut core_vaults = if app
+        .state::<lapis_desktop::database::MetadataOwner>()
+        .is_core()
+    {
+        core_vaults.with_jobs(&profile, crate::host::integration::services::job_delivery())?
+    } else {
+        core_vaults
+    };
+    for _ in core_vaults.resume_background_jobs(&mut vaults)? {
+        eprintln!("A saved background-job vault is unavailable; reopen it to inspect its status.");
+    }
     app.manage(NativeHost(Arc::new(Mutex::new(NativeServices {
         sync: crate::host::sync::initialize(&profile)?,
         imports: lapis_desktop::vault::admission::VaultAdmissions::default(),

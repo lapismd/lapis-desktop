@@ -1,3 +1,4 @@
+import { createNativeBackgroundJobs } from "../native/background-jobs/jobs.ts";
 import { createSkillManagement } from "../native/skill-management.ts";
 import {
   createVaultSession,
@@ -21,7 +22,7 @@ import {
 
 export async function openNotesSession(
   selected: VaultDescriptor,
-  metadataOwner: MetadataOwner = "renderer",
+  metadataOwner: MetadataOwner = "core",
   editingOwner: EditingOwner = "renderer",
   tasksOwner: TasksOwner = "renderer",
   call?: NativeCall,
@@ -53,6 +54,8 @@ export async function openNotesSession(
     },
     appDatabaseProvider: provider,
   });
+  if (metadataOwner === "core")
+    session.nativeBackgroundJobs = createNativeBackgroundJobs(selected, call);
   session.skillManagement = createSkillManagement(selected, call);
   if (provider.backgroundIndexing)
     session.backgroundIndexing = provider.backgroundIndexing;

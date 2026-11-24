@@ -1,6 +1,8 @@
 # Verification
 
 [CI verification](verification/ci.md) retains the CI requirements and evidence.
+[Background-job verification](verification/background-jobs.md) retains native
+qualification.
 
 <!-- prettier-ignore -->
 | ID | Status | Evidence |

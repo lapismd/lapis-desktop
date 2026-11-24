@@ -18,6 +18,6 @@ COPY --from=rust /usr/local/cargo /usr/local/cargo
 COPY --from=rust /usr/local/rustup /usr/local/rustup
 ENV RUSTUP_HOME=/usr/local/rustup CARGO_HOME=/cache/cargo CARGO_BUILD_JOBS=4
 ENV PATH=/usr/local/cargo/bin:$PATH
-RUN apt-get update && apt-get install -y --no-install-recommends build-essential pkg-config clang cmake protobuf-compiler libssl-dev libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libayatana-appindicator3-dev patchelf libxdo-dev && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential pkg-config clang cmake protobuf-compiler libssl-dev libwebkit2gtk-4.1-dev libgtk-3-dev librsvg2-dev libayatana-appindicator3-dev patchelf libxdo-dev xvfb xauth dbus-x11 openbox wmctrl procps && rm -rf /var/lib/apt/lists/*
 RUN rustup component add rustfmt clippy --toolchain 1.99.0
 USER 10001:10001

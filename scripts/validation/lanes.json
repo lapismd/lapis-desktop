@@ -22,5 +22,6 @@
   "validation:smoke": "node scripts/validation/smoke.mjs",
   "check:storybook-parity": "node scripts/spec-validation/check-storybook-parity.mjs",
   "check:rust:e2e": "node scripts/prepare-bundled-skills.mjs && cargo clippy --manifest-path src-tauri/Cargo.toml --all-targets --features e2e --locked -- -D warnings",
-  "check:evidence": "node scripts/evidence.mjs"
+  "check:evidence": "node scripts/evidence.mjs",
+  "test:plugin-jobs:native": "node scripts/plugin-jobs-native-tests.mjs"
 }

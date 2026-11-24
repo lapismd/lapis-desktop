@@ -58,6 +58,8 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             crate::host::windows::macos_chrome::release(&label);
         }
         #[cfg(target_os = "macos")]
+        RunEvent::Reopen { .. } => crate::host::integration::raise(app),
+        #[cfg(target_os = "macos")]
         RunEvent::Opened { urls } => {
             for url in urls {
                 crate::host::integration::enqueue(app, url.to_string());
@@ -80,7 +82,16 @@ pub fn on_event(app: &AppHandle, event: RunEvent) {
             ..
         } if label == "main" && !approved => {
             api.prevent_close();
-            if let Err(error) = request(app, LeaveAction::Close) {
+            let background = app
+                .state::<crate::host::state::NativeHost>()
+                .0
+                .lock()
+                .is_ok_and(|services| services.core_vaults.has_background_jobs());
+            if background {
+                if let Some(window) = app.get_webview_window("main") {
+                    let _ = window.hide();
+                }
+            } else if let Err(error) = request(app, LeaveAction::Close) {
                 eprintln!("Could not request safe window close: {error}");
             }
         }

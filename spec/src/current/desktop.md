@@ -1,4 +1,4 @@
-# Desktop shell and CI
+# Desktop shell and CI — [Plugin background jobs](background.md)
 
 [Sync](lapis-sync.md) scopes, calls and bounded observations MUST retain native
 admission. Sync is disabled. Leave MUST prepare Sync before writer teardown,

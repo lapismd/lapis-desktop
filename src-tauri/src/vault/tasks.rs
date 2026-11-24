@@ -22,6 +22,21 @@ impl TasksOwner {
         }
     }
 
+    pub fn select(
+        value: Option<&str>,
+        metadata_core: bool,
+        editing_core: bool,
+    ) -> io::Result<Self> {
+        let default = if metadata_core && editing_core {
+            "core"
+        } else {
+            "renderer"
+        };
+        let owner = Self::parse(Some(value.unwrap_or(default)))?;
+        owner.validate(metadata_core, editing_core)?;
+        Ok(owner)
+    }
+
     pub fn is_core(self) -> bool {
         matches!(self, Self::Core)
     }

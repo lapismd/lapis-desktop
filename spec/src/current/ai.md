@@ -395,3 +395,6 @@ execution and import/ACP fixture redaction semantics remain unchanged.
 E-AI-110: shared Max VRAM units/host-owned GGUF browsing, separate from import.
 Boot: 15s (E-CI-032). Gaps: E-CI-042/E-RELEASE-004/008/010/014. Remotes retain
 admission/ACP/queue/close/window/reload gaps (E-REPO-059).
+
+Window Close retains the owning App, AI drafts and scopes while plugin jobs
+run; explicit Quit and vault close retain guarded AI drain before revocation.
