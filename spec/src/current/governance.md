@@ -397,4 +397,4 @@ Desktop's own source snapshot remains intentional.
 <!-- dependency-intake:validator-development:end -->
 
 [E-DEPENDENCIES-018](../history/E-DEPENDENCIES-018.md) grants no activation.
-[Release](distribution.md).
+[Intent](distribution.md).
