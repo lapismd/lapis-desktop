@@ -143,20 +143,20 @@ test("the released Notes cohort has one current Design Core and API peer context
   );
   assert.match(workspace, /"@lapismd\/design-core": "0\.13\.5"/);
   assert.doesNotMatch(workspace, /peerDependencyRules/);
-  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.9");
+  assert.equal(manifest.dependencies["@lapis-notes/api"], "^0.6.14");
   assert.equal(manifest.dependencies["@lapis-notes/app-profile"], "^0.2.6");
   assert.equal(manifest.dependencies["@lapis-notes/file-explorer"], "^0.2.8");
   assert.equal(
     manifest.dependencies["@lapis-notes/language-service"],
     "^0.1.6",
   );
-  assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.2.5");
+  assert.equal(manifest.dependencies["@lapis-notes/ui"], "^0.2.8");
   assert.equal(manifest.dependencies["@lapis-notes/workspace"], "^0.4.6");
   assert.equal(manifest.dependencies["@lapismd/ai-host"], "^0.3.0");
   assert.equal(manifest.dependencies["@lapismd/mira"], "~0.2.0");
   assert.equal(manifest.dependencies["@lapismd/design-core"], "^0.13.4");
   assert.equal(manifest.dependencies["@lapismd/jj-conversations"], "^0.1.0");
-  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.9\([^']+\)':$/gm);
+  const contexts = lock.match(/^ {2}'@lapis-notes\/api@0\.6\.14\([^']+\)':$/gm);
   assert.equal(contexts?.length, 1);
   assert.doesNotMatch(lock, /'@lapismd\/design-core@0\.[0-9]\./);
   assert.doesNotMatch(lock, /'@lapismd\/design-core': 0\.[0-9]\./);

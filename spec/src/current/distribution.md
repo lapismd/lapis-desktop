@@ -178,11 +178,13 @@ follow-up does not rebuild or republish rc.2.
 ## Changesets and automatic delivery
 
 Reviewed Changesets notes are aggregated using the pinned public Changesets CLI.
-The preview adapter increments only `rc.N`, synchronizes
-Package/Cargo/lock/Tauri identities and records a generated pending evidence
-receipt in the version PR. No npm package or stable cutover is published.
-Private application archives are not needed to run the independent source-owned
-release toolchain.
+Version qualification includes the real root formatter configuration and the
+workflow's public docs-tools installation before Changesets runs. Generated
+version documents retain the same formatting and file limits. The preview
+adapter increments only `rc.N`, synchronizes Package/Cargo/lock/Tauri identities
+and records a generated pending evidence receipt in the version PR. No npm
+package or stable cutover is published. Private application archives are not
+needed to run the independent source-owned release toolchain.
 
 After authoritative successful main CI, the release controller checks current
 main and the immutable release tag. An unpublished candidate requests full CI

@@ -187,3 +187,5 @@
 - [Changesets preview release automation and CLI intake](../history/E-RELEASE-026.md)
 
 - [Released CLI version custody](../history/E-CLI-010.md)
+
+- [Patched localization registry intake](../history/E-DEPENDENCIES-020.md)

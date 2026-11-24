@@ -30,7 +30,7 @@ import {
   existsSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { join, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { versionEvidence } from "../../scripts/release/version-evidence.mjs";
 import {
@@ -49,6 +49,8 @@ test("real Changesets consumes notes and synchronizes all native preview identit
       name: "@lapismd/lapis-desktop",
       private: true,
       version: "2026.31.6-rc.2",
+      packageManager: "pnpm@10.34.5",
+      devDependencies: { prettier: "3.3.3" },
     }),
   );
   writeFileSync(
@@ -75,6 +77,25 @@ test("real Changesets consumes notes and synchronizes all native preview identit
     join(root, "src-tauri/tauri.preview.conf.json"),
     JSON.stringify({ bundle: { macOS: { bundleVersion: "2026.31.6" } } }),
   );
+  // Match the version workflow: public docs tools supply the root formatter,
+  // while Changesets itself stays in its separate public release graph.
+  writeFileSync(
+    join(root, ".prettierrc.json"),
+    readFileSync(".prettierrc.json"),
+  );
+  mkdirSync(join(root, ".github/ci-docs"), { recursive: true });
+  for (const file of ["package.json", "pnpm-lock.yaml"])
+    writeFileSync(
+      join(root, ".github/ci-docs", file),
+      readFileSync(join(".github/ci-docs", file)),
+    );
+  const tools = mkdtempSync(join(tmpdir(), "desktop-version-public-tools-"));
+  t.after(() => rmSync(tools, { recursive: true, force: true }));
+  execFileSync(process.execPath, [resolve("scripts/ci/docs-setup.mjs")], {
+    cwd: root,
+    env: { ...process.env, RUNNER_TEMP: tools },
+    stdio: "pipe",
+  });
   execFileSync("jj", ["git", "init", "--colocate", "."], {
     cwd: root,
     stdio: "pipe",
