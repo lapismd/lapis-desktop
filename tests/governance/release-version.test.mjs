@@ -131,7 +131,7 @@ test("real Changesets consumes notes and synchronizes all native preview identit
     mkdirSync(join(root, "spec/src", p), { recursive: true });
   writeFileSync(
     join(root, "spec/src/current/desktop.md"),
-    "Candidate 2026.31.6-rc.2\n",
+    "Preview intent: awaiting its reviewed version PR.\n\nHistorical qualification remains 2026.31.6-rc.2.\n",
   );
   writeFileSync(
     join(root, "spec/src/current/governance.md"),
@@ -150,6 +150,10 @@ test("real Changesets consumes notes and synchronizes all native preview identit
   assert.match(
     readFileSync(join(root, "spec/src/current/desktop.md"), "utf8"),
     /rc\.3/,
+  );
+  assert.match(
+    readFileSync(join(root, "spec/src/current/desktop.md"), "utf8"),
+    /Historical qualification remains 2026\.31\.6-rc\.2\./,
   );
   assert.equal(
     JSON.parse(readFileSync(join(root, "package.json"))).version,

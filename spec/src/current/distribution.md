@@ -184,7 +184,10 @@ version documents retain the same formatting and file limits. The preview
 adapter increments only `rc.N`, synchronizes Package/Cargo/lock/Tauri identities
 and records a generated pending evidence receipt in the version PR. No npm
 package or stable cutover is published. Private application archives are not
-needed to run the independent source-owned release toolchain.
+needed to run the independent source-owned release toolchain. Versioning MUST
+change only the dedicated release-intent statement and preserve earlier
+qualification versions and evidence links. Intent remains pending until the new
+source independently passes every release gate.
 
 After authoritative successful main CI, the release controller checks current
 main and the immutable release tag. An unpublished candidate requests full CI

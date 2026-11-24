@@ -29,8 +29,10 @@ native consumers. An inventoried native test-only change selects static
 governance and both Linux native targets; it does not dispatch macOS packaging.
 Unmapped harness, shared infrastructure and unknown ownership select every Linux
 test/build gate without macOS packaging. Explicit full, trial and release
-publication still package on macOS. Release-tool tests run without unrelated
-feature/browser suites.
+publication still package on macOS. Release-tool changes MUST run both Linux
+builds: versioning and packaging change native release identities and resources.
+Their required target contexts MUST be emitted by PR CI itself. Release-tool
+tests retain governance coverage without unrelated feature/browser suites.
 
 A small published, locked docs toolchain supplies spec-validator, TypeScript,
 Svelte parsing and formatting. It installs no private app package and starts no

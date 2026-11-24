@@ -97,11 +97,28 @@ test("renderer, catalog, release and native-test changes select complete consume
     "prerequisites",
     "quality",
     "unit",
+    "linux",
   ]);
   assert.deepEqual(release.unit, ["governance"]);
   const native = plan(["tests/desktop/startup-progress.test.mjs"]);
   assert.ok(!native.gates.includes("bundle"));
   assert.ok(native.gates.includes("linux"));
+});
+test("release versioning and packaging select both native Linux build contexts", () => {
+  for (const file of [
+    "scripts/release/version-evidence.mjs",
+    "scripts/release/build-linux.mjs",
+    "tests/governance/release-version.test.mjs",
+    ".github/workflows/release-desktop.yml",
+  ]) {
+    const selected = plan([file]);
+    assert.ok(selected.gates.includes("linux"), file);
+    assert.equal(selected.linuxBuild, true, file);
+    assert.deepEqual(selected.dependencyPlatforms, [
+      { os: "ubuntu-24.04", id: "linux-x64" },
+      { os: "ubuntu-24.04-arm", id: "linux-arm64" },
+    ]);
+  }
 });
 test("unknown/shared changes, missing crate ownership and explicit full requests fail closed", () => {
   const linuxGates = gates.filter((gate) => gate !== "bundle");

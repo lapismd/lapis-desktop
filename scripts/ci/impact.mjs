@@ -170,6 +170,7 @@ export function planChanges(
     ) {
       add("quality");
       unit("governance");
+      native(true);
     } else if (
       file.startsWith("tests/governance/") &&
       !file.includes("ci-selection")

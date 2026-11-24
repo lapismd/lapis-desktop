@@ -1,9 +1,6 @@
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-export function versionEvidence(
-  { version, previousVersion, changesets },
-  root = process.cwd(),
-) {
+export function versionEvidence({ version, changesets }, root = process.cwd()) {
   if (!changesets.every((id) => /^[a-z0-9-]+$/.test(id)))
     throw Error("Invalid Changeset identity");
   const history = join(root, "spec/src/history");
@@ -29,12 +26,19 @@ export function versionEvidence(
   ];
   const edit = (p, fn) =>
     writeFileSync(join(root, p), fn(readFileSync(join(root, p), "utf8")));
-  edit("spec/src/current/desktop.md", (s) =>
-    s.split(previousVersion).join(version),
-  );
+  edit("spec/src/current/desktop.md", (s) => {
+    const anchor =
+      /^Preview intent: (?:awaiting its reviewed version PR\.|\[[^\n]+\]\(\.\.\/history\/E-RELEASE-\d+\.md\) \(pending\)\.)$/gm;
+    if ([...s.matchAll(anchor)].length !== 1)
+      throw Error("Missing or ambiguous version intent anchor");
+    return s.replace(
+      anchor,
+      `Preview intent: [${version}](../history/${id}.md) (pending).`,
+    );
+  });
   edit("spec/src/current/governance.md", (s) =>
     s.replace(
-      /\[(?:Release|20\d{2}[^\]]+)\]\(distribution\.md\)/,
+      /\[(?:Release|Intent|20\d{2}[^\]]+)\]\(distribution\.md\)/,
       `[${version}](distribution.md)`,
     ),
   );
