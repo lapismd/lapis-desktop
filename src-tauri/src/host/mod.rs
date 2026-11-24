@@ -129,6 +129,8 @@ pub fn run() -> tauri::Result<()> {
     };
     builder
         .invoke_handler(tauri::generate_handler![
+            vault::credentials::vault_credential_grants,
+            vault::credentials::vault_plugin_credentials,
             sync::desktop_sync_open,
             sync::desktop_sync_snapshot,
             sync::desktop_sync_detach,

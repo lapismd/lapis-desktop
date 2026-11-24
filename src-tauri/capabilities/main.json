@@ -37,6 +37,8 @@
     "allow-vault-editing-intents",
     "allow-vault-editing-snapshot",
     "allow-vault-tasks",
+    "allow-vault-credential-grants",
+    "allow-vault-plugin-credentials",
     "allow-vault-skills",
     "allow-vault-watch-start",
     "allow-vault-watch-stop",

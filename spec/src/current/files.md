@@ -1,8 +1,8 @@
 # File management (M5)
 
-Notes shell composition follows [mobile layout](mobile-layout.md) without a
-host-forced display mode; native leave MUST retain prepared Sync authority. Sync
-leave follows [LD-SYNC-001](lapis-sync.md#app-leave-and-transport-detachment).
+Notes follows [mobile layout](mobile-layout.md) without forcing a mode. Vault
+retirement revokes [plugin credentials](repository-remotes.md). Native leave
+MUST retain [Sync authority](lapis-sync.md#app-leave-and-transport-detachment).
 
 Native missing-file recovery waits for the captured review's disk-accept action
 to become enabled after refresh, then retains exact draft, deletion, renamed

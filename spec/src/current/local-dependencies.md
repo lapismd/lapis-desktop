@@ -1,5 +1,9 @@
 # Local dependency intake
 
+The Desktop credential adapter consumes the same Server revision for Core,
+Protocol and Content transports. Desktop keeps its approved Keychain item
+identities; the renderer takes the durable plugin API from the Notes registry.
+
 The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
 advances the hosted JavaScript pin to `6b2b39f583a30be4e6dfa734050c20af862384ba`

@@ -1,6 +1,7 @@
 - [Specification and backlog consolidation](../history/E-SPEC-001.md)
 - [Sync planning evidence](../history/index.md)
 - [Current compatible dependency and native intake](../history/current-intake.md)
+- [Shared Desktop OS credential storage](../history/E-REPO-060.md)
   - [Stored migration plan](../history/E-PLAN-001.md)
   - [Native shell foundation](../history/E-SHELL-001.md)
   - [Native shell qualification](../history/E-SHELL-002.md)
