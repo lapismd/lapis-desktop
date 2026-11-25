@@ -18,6 +18,15 @@ Core's pending-publication credential holds. Editing metadata cannot widen the
 scope bound into the OS-held record. Existing GitHub/Forgejo flows use Desktop's
 forge namespace and Core's shared provider orchestration.
 
+Persist credentials through the shared Core contract and Desktop OS adapter.
+Preserve the existing OS service and item identifiers for Repository, Forge, AI,
+and Sync. Approved plugin scopes use separate OS identifiers. Plugin commands
+MUST NOT accept a native service name or expose native feature credentials.
+Plugin admission requires local main-window authority and an admitted vault
+session. Desktop reads explicit plugin approvals from
+`LAPIS_DESKTOP_CREDENTIAL_PLUGINS` at startup. The default approval set is
+empty.
+
 Native Tauri commands MUST admit the local main window and current opaque vault
 session, reject caller-supplied roots/owners/storage locations, and fence
 response delivery after client retirement. Accepted native commands are never

@@ -1,4 +1,6 @@
+use crate::credentials::{DesktopCredentials, io_error};
 use lapis_app_core::{
+    credentials::{ScopedCredentialStore, SecretBytes, SecretName},
     sync::account::protected::{HostAccountCustody, HostSecretBytes},
     vault::VaultRoot,
 };
@@ -56,54 +58,26 @@ impl AccountCustody {
 }
 impl HostAccountCustody for AccountCustody {
     fn supported(&self) -> bool {
-        cfg!(target_os = "macos")
+        DesktopCredentials::keychain_supported()
     }
     fn read(&self, key: &str) -> io::Result<Option<HostSecretBytes>> {
         self.admit(key)?;
-        #[cfg(target_os = "macos")]
-        {
-            let record =
-                match security_framework::passwords::get_generic_password(&self.service, key) {
-                    Ok(bytes) => Some(HostSecretBytes::new(bytes)?),
-                    Err(error) if error.code() == -25300 => None,
-                    Err(_) => return Err(unavailable()),
-                };
-            self.profile.verify_physical_root()?;
-            Ok(record)
-        }
-        #[cfg(not(target_os = "macos"))]
-        Err(unsupported())
+        let store = DesktopCredentials::keychain(self.service.clone());
+        let name = SecretName::new(key).map_err(io_error)?;
+        let record = store
+            .get(&name)
+            .map_err(io_error)?
+            .map(|value| HostSecretBytes::new(value.expose_secret().to_vec()))
+            .transpose()?;
+        self.profile.verify_physical_root()?;
+        Ok(record)
     }
     fn write(&self, key: &str, value: &HostSecretBytes) -> io::Result<()> {
         self.admit(key)?;
-        #[cfg(target_os = "macos")]
-        {
-            security_framework::passwords::set_generic_password(
-                &self.service,
-                key,
-                value.expose_secret(),
-            )
-            .map_err(|_| unavailable())?;
-            self.profile.verify_physical_root()
-        }
-        #[cfg(not(target_os = "macos"))]
-        {
-            let _ = value;
-            Err(unsupported())
-        }
+        let store = DesktopCredentials::keychain(self.service.clone());
+        let name = SecretName::new(key).map_err(io_error)?;
+        let value = SecretBytes::new(value.expose_secret().to_vec()).map_err(io_error)?;
+        store.set(&name, &value).map_err(io_error)?;
+        self.profile.verify_physical_root()
     }
-}
-#[cfg(target_os = "macos")]
-fn unavailable() -> io::Error {
-    io::Error::new(
-        io::ErrorKind::PermissionDenied,
-        "Sync account Keychain custody did not complete",
-    )
-}
-#[cfg(not(target_os = "macos"))]
-fn unsupported() -> io::Error {
-    io::Error::new(
-        io::ErrorKind::Unsupported,
-        "Sync account OS custody is unavailable on this platform",
-    )
 }

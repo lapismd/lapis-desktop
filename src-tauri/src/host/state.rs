@@ -157,6 +157,9 @@ pub fn initialize(
     let profile =
         std::path::PathBuf::from(std::env::var("LAPIS_DESKTOP_ACCEPTANCE_ROOT")?).join("profile");
     let vaults = VaultManager::new(&profile)?;
+    app.manage(crate::host::vault::credentials::PluginCredentials::new(
+        &profile,
+    )?);
     let fs_gate = Arc::new(Mutex::new(()));
     let core_vaults = lapis_desktop::vault::services::VaultServices::new_with_backup(
         &profile,

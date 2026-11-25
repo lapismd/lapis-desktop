@@ -63,6 +63,16 @@ export function auditSources(files, read, { appOnly = false } = {}) {
         "Receive App explicitly; ambient App access is prohibited.",
       );
     if (appOnly) continue;
+    if (
+      file.startsWith("src-tauri/src/") &&
+      !file.startsWith("src-tauri/src/credentials/") &&
+      /\b(?:security_framework|ScopedNativeSecrets|keyring)\b/u.test(source)
+    )
+      report(
+        file,
+        "LD-OS-CREDENTIAL-ADAPTER",
+        "Use the shared Desktop credential adapter for OS storage.",
+      );
     if (/^src-tauri\/src\/(?!main\.rs$|lib\.rs$)[^/]+$/u.test(file))
       report(
         file,
@@ -221,6 +231,8 @@ export function auditManifest(manifest, capabilities, normalConfig) {
     "allow-vault-editing-intents",
     "allow-vault-editing-snapshot",
     "allow-vault-tasks",
+    "allow-vault-credential-grants",
+    "allow-vault-plugin-credentials",
     "allow-vault-skills",
     "allow-vault-db-close",
     "core:window:allow-start-dragging",

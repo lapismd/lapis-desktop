@@ -5,7 +5,8 @@ This chapter owns current Desktop intake and OS adapters. The
 two-device macOS MVP. Server/Web editing, automation, expanded recovery/UI and
 other platforms are deferred; shared security/data-integrity gates remain. Sync
 remains optional and disabled; no plugin inventory or installed application
-changes.
+changes. The shared Desktop OS credential adapter retains existing Sync service
+and item identifiers and enforces the same profile admission.
 
 ## Requirements
 

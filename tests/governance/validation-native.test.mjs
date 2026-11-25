@@ -45,8 +45,8 @@ test("portable sources retain the native Notes pin and explicit Sync archive coh
     assert.match(revision(native, name), /^[a-f0-9]{40}$/u);
     assert.equal(revision(native, name), revision(hosted, name));
   }
-  // JavaScript fixture retirement must not silently refresh qualified Rust engines.
-  const pluginsNative = "879581d1549187bdbac2d75b40d02e0df46e721a";
+  // Portable validation follows the Rust engine resolved by the shared Core pin.
+  const pluginsNative = "9f2713ac6a4f40ff48325620d969de08fb31f5aa";
   assert.equal(revision(native, "lapis-plugins"), pluginsNative);
   assert.equal(
     revision(hosted, "lapis-plugins"),

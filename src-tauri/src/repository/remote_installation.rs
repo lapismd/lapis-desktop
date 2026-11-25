@@ -1,7 +1,8 @@
 //! Installation inputs and OS adapters; Core owns repository remote policy.
 use super::credentials::DesktopTokens;
+use crate::credentials::DesktopCredentials;
 use cap_std::fs::PermissionsExt as _;
-use jj_forge::accounts::{Manager, store::ScopedNativeSecrets};
+use jj_forge::accounts::Manager;
 use lapis_app_core::{
     services::{NativeRemoteCredentials, RemoteStorage},
     vault::VaultRoot,
@@ -26,13 +27,15 @@ pub fn open(profile: &Path, transfers: bool) -> io::Result<RemoteStorage> {
         .and_then(|manager| manager.client_id.clone());
     let accounts = Arc::new(Manager::new(
         forges.path().into(),
-        Arc::new(ScopedNativeSecrets::new("md.lapis.desktop.forge.v1")),
+        Arc::new(DesktopCredentials::repository("md.lapis.desktop.forge.v1")),
         Arc::new(jj_forge::accounts::http::Http),
         client_id,
     ));
     let tokens = Arc::new(DesktopTokens::open(
         tokens.path(),
-        Arc::new(ScopedNativeSecrets::new("md.lapis.desktop.repository.v1")),
+        Arc::new(DesktopCredentials::repository(
+            "md.lapis.desktop.repository.v1",
+        )),
     )?);
     let ssh = Command::new("ssh")
         .arg("-V")

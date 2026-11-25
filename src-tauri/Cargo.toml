@@ -15,11 +15,11 @@ e2e = ["dep:tauri-plugin-wdio", "dep:tauri-plugin-wdio-webdriver"]
 
 [dependencies]
 lapis-cli = { git = "https://github.com/lapismd/lapis-server", rev = "4c22844f67744a47f38d580a684cca90c4731605", version = "2.9.2", optional = true }
-lapis-app-protocol = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }
-lapis-content-http = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }
-lapis-content-mcp = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }
+lapis-app-protocol = { git = "https://github.com/lapismd/lapis-server", rev = "f42eb264402b333dda2dd7a4c04ee9c1e55433a2", version = "0.1.0" }
+lapis-content-http = { git = "https://github.com/lapismd/lapis-server", rev = "f42eb264402b333dda2dd7a4c04ee9c1e55433a2", version = "0.1.0" }
+lapis-content-mcp = { git = "https://github.com/lapismd/lapis-server", rev = "f42eb264402b333dda2dd7a4c04ee9c1e55433a2", version = "0.1.0" }
 tokio-util = "0.7"
-lapis-app-core = { git = "https://github.com/lapismd/lapis-server", rev = "83fca8ddd25b7b7913723e231779862f94f7dbcb", version = "0.1.0" }
+lapis-app-core = { git = "https://github.com/lapismd/lapis-server", rev = "f42eb264402b333dda2dd7a4c04ee9c1e55433a2", version = "0.1.0" }
 jj-forge = { git = "https://github.com/stevejuma/jj-store", rev = "086def182eae2ab6e5dc39aba030390d7ea8612c", version = "0.2.0" }
 jj-vault = { git = "https://github.com/stevejuma/jj-store", rev = "086def182eae2ab6e5dc39aba030390d7ea8612c", version = "0.2.0" }
 async-trait = "0.1"

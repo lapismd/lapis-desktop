@@ -6,7 +6,7 @@
 [navigation](repository-navigation.md) retains status/clearance. Core read
 clients drain accepted work before retirement independently of App writers.
 Remote transports MUST preserve target/recovery identities, fence late replies
-and follow [remotes and credentials](repository-remotes.md). Unrelated guard
+and preserve [OS credential identifiers](repository-remotes.md). Unrelated guard
 fixtures leave optional [Sync](lapis-sync.md) unselected.
 
 ## Requirements

@@ -1,5 +1,9 @@
 # Local dependency intake
 
+The Desktop credential adapter consumes the same Server revision for Core,
+Protocol and Content transports. Desktop keeps its approved Keychain item
+identities; the renderer takes the durable plugin API from the Notes registry.
+
 The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
 advances the hosted JavaScript pin to `6b2b39f583a30be4e6dfa734050c20af862384ba`
@@ -174,9 +178,10 @@ aliases, bundled node_modules or a second chat writer. Portable validation MUST
 export that same reachable commit rather than an abandoned or source-local
 identity (E-VALIDATION-010). Its overlapping AI and JJ Store sources MUST match
 hosted preparation exactly. Plugins JavaScript fixtures select retired-free
-`969356250f26c5561fac22cf00d8da8f395dbdae`; the qualified Rust engine source
-remains `879581d1549187bdbac2d75b40d02e0df46e721a` in the native source
-inventory and Cargo lock. No fallback or equal-tree substitution is allowed.
+`969356250f26c5561fac22cf00d8da8f395dbdae`; the credential-capable shared Core
+selects Rust engine source `9f2713ac6a4f40ff48325620d969de08fb31f5aa` in the
+native source inventory and Cargo lock. No fallback or equal-tree substitution
+is allowed.
 
 Native fixture preparation and the explicit local macOS plugin builder MUST run
 the checked-out Plugins source's `scripts/check-retired-ai.mjs` before workspace
@@ -386,3 +391,7 @@ exceptions retain their exact policy. One API peer context, private archive
 prerequisites and native source pins remain enforced. Reviewed application
 intake renews the SDK context descriptor without changing its projection
 algorithm or held authority.
+
+Desktop credential intake requires published Notes API `^0.6.16` for the native
+plugin secret adapter. Keep one installed API peer context and preserve the
+separate checksummed projection for the remaining private packages.
