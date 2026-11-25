@@ -324,7 +324,7 @@ CLI main-window authority, native custody, disabled loopback and approved
 MCP/CLI discovery follow [LD-CLI-001/002/003](integration.md). Bundled CLI
 version custody selects Server 2.9.2; qualified native engine pins stay fixed.
 
-Preview intent: [2026.31.6-rc.3](../history/E-RELEASE-027.md) (pending).
+Preview intent: [2026.31.6-rc.4](../history/E-RELEASE-029.md) (pending).
 
 Release `2026.31.6-rc.2` retains complete non-publishing three-platform
 candidate qualification in [E-CLI-007](../history/E-CLI-007.md).
