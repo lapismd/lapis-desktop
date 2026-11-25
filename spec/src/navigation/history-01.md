@@ -206,3 +206,4 @@
 - [Qualify native plugin background jobs](../history/E-JOB-001.md)
 
 - [E-JOB-002: Combined credentials and jobs](../history/E-JOB-002.md)
+- [Version Desktop preview 2026.31.6-rc.5](../history/E-RELEASE-030.md)

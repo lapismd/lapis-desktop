@@ -1,5 +1,20 @@
 # @lapismd/lapis-desktop
 
+## 2026.31.6-rc.5
+
+### Minor Changes
+
+- a59b697: Support opt-in native plugin background jobs while the window is
+  closed, with explicit Quit draining, private checkpoints, runner handoff and
+  optional local alerts. Select native metadata by default while retaining
+  explicit renderer compatibility mode.
+
+### Patch Changes
+
+- 4d9121c: Use a shared OS credential adapter for Repository, forge accounts,
+  AI, Sync, and explicitly approved plugins. Existing native keychain
+  identifiers are preserved.
+
 ## 2026.31.6-rc.4
 
 ### Patch Changes
