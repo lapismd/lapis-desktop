@@ -3,6 +3,7 @@
   import { onMount, tick } from "svelte";
   import VaultLauncher from "../vaults/VaultLauncher.svelte";
   import { createNativePluginAssetServer } from "../../lib/native/plugin-assets.ts";
+  import { preparePluginCredentials } from "../../lib/native/plugin-credentials.ts";
   import NotesWorkspace from "./NotesWorkspace.svelte";
   import { DesktopWorkspaceStartup } from "@lapis-notes/workspace";
   import { createNativeTerminal } from "../../lib/native/native-terminal.ts";
@@ -21,6 +22,7 @@
     VaultSession,
     AppSafeModeState,
     AppPluginDistributionOptions,
+    PluginSecretsHost,
   } from "@lapis-notes/api";
   import type { DesktopUrlDelivery } from "../../lib/native/integration-urls.ts";
   import type {
@@ -64,6 +66,7 @@
       : "renderer";
   let safeMode = $state<AppSafeModeState>(normalRecovery());
   let session = $state<VaultSession | null>(null);
+  let pluginSecretsHost = $state.raw<PluginSecretsHost | undefined>(undefined);
   let selected = $state<VaultDescriptor | null>(null);
   let returnProfileId = $state<string | null>(null);
   let notes = $state<{
@@ -107,6 +110,7 @@
     openingNotes = true;
     const operation = (async () => {
       try {
+        pluginSecretsHost = await preparePluginCredentials(target);
         session = await openSession(
           target,
           metadataOwner,
@@ -226,10 +230,13 @@
       {safeMode}
       hostFailure={failure}
       {pluginDistributionOptions}
-      pluginAssetServer={createNativePluginAssetServer(
-        session.vaultAdapter,
-        selected!.resourceToken,
-      )}
+      pluginHost={{
+        pluginSecretsHost,
+        pluginAssetServer: createNativePluginAssetServer(
+          session.vaultAdapter,
+          selected!.resourceToken,
+        ),
+      }}
       createTerminal={(app) => createNativeTerminal(app, selected!)}
       createAi={coreChat
         ? undefined

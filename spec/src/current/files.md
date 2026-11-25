@@ -1,7 +1,7 @@
 # File management (M5)
 
 Notes follows [mobile layout](mobile-layout.md) without forcing a mode. Vault
-retirement revokes [plugin credentials](repository-remotes.md). Native leave
+retirement revokes its [plugin credential leases](repository-remotes.md). Leave
 MUST retain [Sync authority](lapis-sync.md#app-leave-and-transport-detachment).
 
 Native missing-file recovery waits for the captured review's disk-accept action

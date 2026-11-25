@@ -11,7 +11,8 @@ metadata/views, drain on leave, resume on failure. [Navigation](navigation.md),
 
 Desktop exposes scoped plugin credentials through the local main window and its
 admitted vault session. The [credential contract](repository-remotes.md) defines
-explicit approval and OS storage; releasing the session revokes its leases.
+host approval and OS storage. The Notes App receives the host adapter through
+its workspace, and releasing the session revokes its leases.
 
 LD-DESK-003 keeps AI/History admission native; renderer
 paths/generations/actors/executables/environment stay denied. Docker uses
