@@ -1,6 +1,6 @@
 [package]
 name = "lapis-desktop"
-version = "2026.31.6-rc.4"
+version = "2026.31.6-rc.5"
 edition = "2024"
 rust-version = "1.99"
 license = "Apache-2.0"
