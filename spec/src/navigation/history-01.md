@@ -1,6 +1,9 @@
 - [Specification and backlog consolidation](../history/E-SPEC-001.md)
 - [Sync planning evidence](../history/index.md)
 - [Current compatible dependency and native intake](../history/current-intake.md)
+- [Shared Desktop OS credential storage](../history/E-REPO-060.md)
+- [Release intent for shared Desktop credentials](../history/E-REPO-061.md)
+- [Desktop renderer credential admission](../history/E-REPO-062.md)
   - [Stored migration plan](../history/E-PLAN-001.md)
   - [Native shell foundation](../history/E-SHELL-001.md)
   - [Native shell qualification](../history/E-SHELL-002.md)
@@ -201,3 +204,5 @@
 - [Linux startup resource repair](../history/E-RELEASE-028.md)
 - [Version Desktop preview 2026.31.6-rc.4](../history/E-RELEASE-029.md)
 - [Qualify native plugin background jobs](../history/E-JOB-001.md)
+
+- [E-JOB-002: Combined credentials and jobs](../history/E-JOB-002.md)

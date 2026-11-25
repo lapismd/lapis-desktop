@@ -1,4 +1,6 @@
-//! Adapted from JJ Store agent_execution/secrets.rs; OS custody stays device-local.
+//! AI configuration uses its existing device-local Keychain namespace.
+use crate::credentials::{DesktopCredentials, io_error, text};
+use lapis_app_core::credentials::{ScopedCredentialStore, SecretBytes, SecretName};
 use std::{io, path::Path, sync::Arc};
 use zeroize::Zeroizing;
 
@@ -9,77 +11,36 @@ pub trait Secrets: Send + Sync {
     fn remove(&self, id: &str) -> io::Result<()>;
 }
 
-#[cfg(target_os = "macos")]
-struct Keychain(String);
-#[cfg(not(target_os = "macos"))]
-struct Keychain;
+struct Keychain(DesktopCredentials);
 pub fn device(root: &Path) -> Arc<dyn Secrets> {
-    #[cfg(target_os = "macos")]
-    {
-        use sha2::{Digest, Sha256};
-        let digest = Sha256::digest(root.as_os_str().as_encoded_bytes());
-        Arc::new(Keychain(format!("org.lapismd.desktop.ai.{digest:x}")))
-    }
-    #[cfg(not(target_os = "macos"))]
-    {
-        let _ = root;
-        Arc::new(Keychain)
-    }
+    use sha2::{Digest, Sha256};
+    let digest = Sha256::digest(root.as_os_str().as_encoded_bytes());
+    Arc::new(Keychain(DesktopCredentials::keychain(format!(
+        "org.lapismd.desktop.ai.{digest:x}"
+    ))))
 }
 
 impl Secrets for Keychain {
     fn supported(&self) -> bool {
-        cfg!(target_os = "macos")
+        DesktopCredentials::keychain_supported()
     }
     fn get(&self, id: &str) -> io::Result<Zeroizing<String>> {
-        #[cfg(target_os = "macos")]
-        {
-            let bytes = Zeroizing::new(
-                security_framework::passwords::get_generic_password(&self.0, id).map_err(
-                    |error| {
-                        if error.code() == -25300 {
-                            io::Error::from(io::ErrorKind::NotFound)
-                        } else {
-                            super::unavailable()
-                        }
-                    },
-                )?,
-            );
-            Ok(Zeroizing::new(
-                String::from_utf8(bytes.to_vec()).map_err(|_| super::unavailable())?,
-            ))
-        }
-        #[cfg(not(target_os = "macos"))]
-        {
-            let _ = id;
-            Err(super::unavailable())
-        }
+        let name = SecretName::new(id).map_err(io_error)?;
+        let value = self
+            .0
+            .get(&name)
+            .map_err(io_error)?
+            .ok_or(io::ErrorKind::NotFound)?;
+        Ok(Zeroizing::new(text(&value).map_err(io_error)?.to_owned()))
     }
     fn set(&self, id: &str, value: &str) -> io::Result<()> {
-        #[cfg(target_os = "macos")]
-        {
-            security_framework::passwords::set_generic_password(&self.0, id, value.as_bytes())
-                .map_err(|_| super::unavailable())
-        }
-        #[cfg(not(target_os = "macos"))]
-        {
-            let _ = (id, value);
-            Err(super::unavailable())
-        }
+        let name = SecretName::new(id).map_err(io_error)?;
+        let value = SecretBytes::new(value.as_bytes().to_vec()).map_err(io_error)?;
+        self.0.set(&name, &value).map_err(io_error)
     }
     fn remove(&self, id: &str) -> io::Result<()> {
-        #[cfg(target_os = "macos")]
-        {
-            match security_framework::passwords::delete_generic_password(&self.0, id) {
-                Ok(()) => Ok(()),
-                Err(error) if error.code() == -25300 => Ok(()),
-                Err(_) => Err(super::unavailable()),
-            }
-        }
-        #[cfg(not(target_os = "macos"))]
-        {
-            let _ = id;
-            Err(super::unavailable())
-        }
+        self.0
+            .delete(&SecretName::new(id).map_err(io_error)?)
+            .map_err(io_error)
     }
 }

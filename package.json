@@ -78,7 +78,7 @@
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.3.0",
-    "@lapis-notes/api": "^0.6.15",
+    "@lapis-notes/api": "^0.6.16",
     "@lapis-notes/file-explorer": "^0.2.8",
     "@lapis-notes/graph": "^0.1.12",
     "@lapis-notes/history": "^0.5.1",

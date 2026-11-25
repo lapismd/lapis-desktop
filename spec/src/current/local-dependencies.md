@@ -1,11 +1,7 @@
 # Local dependency intake
 
-The plugin background-jobs development cohort temporarily qualifies the new API,
-Workspace and Profile public builds from exact Notes source archives. This
-feature-specific validation preserves tracked registry ranges and lockfiles;
-publication and replacement of the ordinary release projection remain separate
-gates. Desktop adopts released Profile `^0.3.0` for the shared session
-lifecycle.
+Background jobs and credentials use one combined Server revision for Core,
+Protocol, Content and CLI. Existing Keychain identities stay unchanged.
 
 The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
@@ -181,9 +177,10 @@ aliases, bundled node_modules or a second chat writer. Portable validation MUST
 export that same reachable commit rather than an abandoned or source-local
 identity (E-VALIDATION-010). Its overlapping AI and JJ Store sources MUST match
 hosted preparation exactly. Plugins JavaScript fixtures select retired-free
-`969356250f26c5561fac22cf00d8da8f395dbdae`; the qualified Rust engine source
-remains `879581d1549187bdbac2d75b40d02e0df46e721a` in the native source
-inventory and Cargo lock. No fallback or equal-tree substitution is allowed.
+`969356250f26c5561fac22cf00d8da8f395dbdae`; the credential-capable shared Core
+selects Rust engine source `9f2713ac6a4f40ff48325620d969de08fb31f5aa` in the
+native source inventory and Cargo lock. No fallback or equal-tree substitution
+is allowed.
 
 Native fixture preparation and the explicit local macOS plugin builder MUST run
 the checked-out Plugins source's `scripts/check-retired-ai.mjs` before workspace
@@ -394,7 +391,7 @@ prerequisites and native source pins remain enforced. Reviewed application
 intake renews the SDK context descriptor without changing its projection
 algorithm or held authority.
 
-Background services consume released API `^0.6.15`, Workspace `^0.4.11` and App
-Profile `^0.3.1`; only private AI retains an explicit archive. Refresh the SDK
-shape descriptor from the reviewed manifest, lock and CI source inventory;
-retain its algorithm and held automation authority.
+Background services and credentials consume released API `^0.6.16`, Workspace
+`^0.4.11` and Profile `^0.3.1` in one API peer context; only private AI retains
+an explicit archive. Refresh the SDK shape from the reviewed manifest, lock and
+CI inventory without changing its algorithm or held automation authority.

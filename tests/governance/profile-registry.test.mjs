@@ -14,7 +14,7 @@ test("released retirement cohort preserves npm ranges and bounds the remaining p
   const projected = projectUnpublished(manifest, () => true);
   assert.deepEqual(manifest, original);
   const released = {
-    "@lapis-notes/api": "^0.6.15",
+    "@lapis-notes/api": "^0.6.16",
     "@lapis-notes/ui": "^0.2.8",
     "@lapis-notes/app-profile": "^0.3.1",
     i18next: "^26.3.4",

@@ -26,6 +26,8 @@ Remaining outcome: Real-provider acceptance.
 routes, actual OS custody and cold HTTPS/SSH manual operations. Final
 catalog/checked-head delivery remains open; that scope does not complete the
 older live-forge/two-device acceptance below.
+[E-REPO-060](../history/E-REPO-060.md) tracks the shared Desktop credential
+adapter and its separate native application acceptance.
 
 The application is not in use. The user's 2026-11-15 decision removes legacy
 application data/connection/recovery migration from this release's scope.

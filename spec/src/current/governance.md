@@ -9,7 +9,7 @@ Notes cohort for API/Profile builds and imports. [Distribution](distribution.md)
 owns releases; E-RELEASE-028 requires Linux startup skills. E-CORE-025/026/045
 pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
-use exact scoped IPC grants and bounded Sync waits; generic plugins deny.
+use scoped IPC and bounded Sync waits. Plugin credentials need host approval.
 Tasks/default/Sync retain native leave guards. SSH retains literal arguments,
 authentication and endpoints. Artifact roles MUST separate dependencies from
 fixtures. Archive rewriting is idempotent only for exact verified tarball paths;

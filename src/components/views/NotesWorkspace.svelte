@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PluginAssetServer } from "@lapis-notes/api/plugin-assets";
+  import type { DesktopPluginHost } from "../../lib/native/plugin-credentials.ts";
   import { onMount, tick, untrack } from "svelte";
   import {
     App,
@@ -50,7 +50,7 @@
   let {
     session,
     hostFailure = "",
-    pluginAssetServer,
+    pluginHost,
     pluginDistributionOptions,
     createTerminal,
     createAi,
@@ -66,7 +66,7 @@
   }: {
     session: VaultSession;
     hostFailure?: string;
-    pluginAssetServer?: PluginAssetServer;
+    pluginHost?: DesktopPluginHost;
     pluginDistributionOptions?: AppPluginDistributionOptions;
     createTerminal?: TerminalFactory;
     createAi?: AiFactory;
@@ -85,7 +85,7 @@
       new App({
         version: "0.1.0",
         session,
-        pluginAssetServer,
+        ...pluginHost,
         pluginDistributionOptions,
         unavailablePlugins:
           createAi || nativeChat ? {} : unavailableDesktopPlugins,

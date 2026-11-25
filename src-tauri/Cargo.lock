@@ -6642,7 +6642,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-core"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=758084f3c6c9f0d97ba3191e5c79df1f02c75bc1#758084f3c6c9f0d97ba3191e5c79df1f02c75bc1"
+source = "git+https://github.com/lapismd/lapis-server?rev=b8824134a792cbd0aad449f9c02e659b28e2a88a#b8824134a792cbd0aad449f9c02e659b28e2a88a"
 dependencies = [
  "async-trait",
  "base64 0.22.1",
@@ -6690,7 +6690,7 @@ dependencies = [
 [[package]]
 name = "lapis-app-protocol"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=758084f3c6c9f0d97ba3191e5c79df1f02c75bc1#758084f3c6c9f0d97ba3191e5c79df1f02c75bc1"
+source = "git+https://github.com/lapismd/lapis-server?rev=b8824134a792cbd0aad449f9c02e659b28e2a88a#b8824134a792cbd0aad449f9c02e659b28e2a88a"
 dependencies = [
  "indexmap 2.14.2",
  "inventory",
@@ -6705,7 +6705,7 @@ dependencies = [
 [[package]]
 name = "lapis-cli"
 version = "2.9.2"
-source = "git+https://github.com/lapismd/lapis-server?rev=758084f3c6c9f0d97ba3191e5c79df1f02c75bc1#758084f3c6c9f0d97ba3191e5c79df1f02c75bc1"
+source = "git+https://github.com/lapismd/lapis-server?rev=b8824134a792cbd0aad449f9c02e659b28e2a88a#b8824134a792cbd0aad449f9c02e659b28e2a88a"
 dependencies = [
  "clap",
  "lapis-app-protocol",
@@ -6724,7 +6724,7 @@ dependencies = [
 [[package]]
 name = "lapis-content-http"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=758084f3c6c9f0d97ba3191e5c79df1f02c75bc1#758084f3c6c9f0d97ba3191e5c79df1f02c75bc1"
+source = "git+https://github.com/lapismd/lapis-server?rev=b8824134a792cbd0aad449f9c02e659b28e2a88a#b8824134a792cbd0aad449f9c02e659b28e2a88a"
 dependencies = [
  "axum",
  "lapis-app-core",
@@ -6738,7 +6738,7 @@ dependencies = [
 [[package]]
 name = "lapis-content-mcp"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=758084f3c6c9f0d97ba3191e5c79df1f02c75bc1#758084f3c6c9f0d97ba3191e5c79df1f02c75bc1"
+source = "git+https://github.com/lapismd/lapis-server?rev=b8824134a792cbd0aad449f9c02e659b28e2a88a#b8824134a792cbd0aad449f9c02e659b28e2a88a"
 dependencies = [
  "axum",
  "lapis-app-core",
@@ -6829,7 +6829,7 @@ dependencies = [
 [[package]]
 name = "lapis-plugin-jobs"
 version = "0.1.0"
-source = "git+https://github.com/lapismd/lapis-server?rev=758084f3c6c9f0d97ba3191e5c79df1f02c75bc1#758084f3c6c9f0d97ba3191e5c79df1f02c75bc1"
+source = "git+https://github.com/lapismd/lapis-server?rev=b8824134a792cbd0aad449f9c02e659b28e2a88a#b8824134a792cbd0aad449f9c02e659b28e2a88a"
 dependencies = [
  "chrono",
  "chrono-tz 0.10.4",

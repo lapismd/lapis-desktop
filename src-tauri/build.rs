@@ -70,6 +70,8 @@ fn main() {
         "vault_editing_snapshot",
         "vault_tasks",
         "vault_background_jobs",
+        "vault_credential_grants",
+        "vault_plugin_credentials",
         "vault_skills",
         "vault_watch_start",
         "vault_watch_stop",
