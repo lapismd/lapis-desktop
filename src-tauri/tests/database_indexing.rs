@@ -10,11 +10,11 @@ use uuid::Uuid;
 
 #[test]
 fn metadata_selection_is_explicit_and_indexing_frames_have_no_extra_authority() {
-    for value in [None, Some("renderer")] {
-        let owner = MetadataOwner::parse(value).unwrap();
-        assert!(!owner.is_core());
-        assert!(owner.authorize("main").is_err());
-    }
+    let compatibility = MetadataOwner::parse(Some("renderer")).unwrap();
+    assert!(!compatibility.is_core());
+    assert!(compatibility.authorize("main").is_err());
+    assert!(MetadataOwner::default().is_core());
+    assert!(MetadataOwner::parse(None).unwrap().is_core());
     let owner = MetadataOwner::parse(Some("core")).unwrap();
     assert!(owner.is_core());
     owner.authorize("main").unwrap();

@@ -16,29 +16,28 @@ test("released retirement cohort preserves npm ranges and bounds the remaining p
   const released = {
     "@lapis-notes/api": "^0.6.16",
     "@lapis-notes/ui": "^0.2.8",
-    "@lapis-notes/app-profile": "^0.2.6",
+    "@lapis-notes/app-profile": "^0.3.1",
     i18next: "^26.3.4",
   };
   for (const [name, range] of Object.entries(released)) {
     assert.equal(manifest.dependencies[name], range);
     assert.equal(projected.dependencies[name], range);
   }
-  assert.deepEqual(Object.keys(unpublishedRanges).sort(), [
-    "@lapis-notes/file-explorer",
-    "@lapis-notes/language-service",
-    "@lapis-notes/lapis-plugin-tasks",
-    "@lapis-notes/workspace",
-    "@lapismd/ai",
-  ]);
+  assert.deepEqual(Object.keys(unpublishedRanges).sort(), ["@lapismd/ai"]);
   assert.equal(
     projected.dependencies["@lapis-notes/language-service"],
-    "file:.local/ci-packages/-lapis-notes-language-service/package.tgz",
+    original.dependencies["@lapis-notes/language-service"],
   );
   assert.equal(
     projected.dependencies["@lapis-notes/history"],
     original.dependencies["@lapis-notes/history"],
   );
   assert.equal(projected.dependencies["@lapismd/mira"], "~0.2.0");
+  assert.equal(projected.dependencies["@lapis-notes/workspace"], "^0.4.11");
+  assert.equal(
+    projected.devDependencies["@lapis-notes/lapis-plugin-tasks"],
+    "^0.3.0",
+  );
   assert.equal(
     projected.devDependencies["@lapis-notes/bases"],
     original.devDependencies["@lapis-notes/bases"],

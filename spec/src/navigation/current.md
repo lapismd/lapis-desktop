@@ -40,6 +40,7 @@
   - [Source provenance and acceptance](../current/migration.md)
   - [Verification](../verification.md)
     - [CI verification](../verification/ci.md)
+    - [Background jobs](../verification/background-jobs.md)
 - [Backlog](../backlog.md)
 
   - [AI and shared-screen qualification](../backlog/ai-qualification.md)

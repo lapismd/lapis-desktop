@@ -93,6 +93,7 @@ const nativeLanes = new Set([
   "check:rust:e2e",
   "test",
   "test:rust",
+  "test:plugin-jobs:native",
   "test:desktop",
   "test:desktop:headless",
   "format:check",

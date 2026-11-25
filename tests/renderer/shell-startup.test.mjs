@@ -38,9 +38,9 @@ test("ready content is exposed only after the native readiness acknowledgement",
   assert.equal(document.documentElement.dataset.appStateDirectory, ".lapis");
   assert.equal(document.documentElement.dataset.lapisRuntime, "tauri-desktop");
   assert.equal(document.documentElement.dataset.runtimeClass, "desktop");
-  assert.equal(document.documentElement.dataset.metadataOwner, "renderer");
-  assert.equal(document.documentElement.dataset.editingOwner, "renderer");
-  assert.equal(document.documentElement.dataset.tasksOwner, "renderer");
+  assert.equal(document.documentElement.dataset.metadataOwner, "core");
+  assert.equal(document.documentElement.dataset.editingOwner, "core");
+  assert.equal(document.documentElement.dataset.tasksOwner, "core");
 });
 test("native Tasks selection reaches session construction only with core metadata and editing", async () => {
   const f = fixture();
@@ -61,8 +61,8 @@ test("native Tasks selection reaches session construction only with core metadat
   });
   for (const selection of [
     { tasksOwner: "auto" },
-    { tasksOwner: "core", metadataOwner: "core" },
-    { tasksOwner: "core", editingOwner: "core" },
+    { tasksOwner: "core", metadataOwner: "core", editingOwner: "renderer" },
+    { tasksOwner: "core", editingOwner: "core", metadataOwner: "renderer" },
   ]) {
     const invalid = fixture();
     await assert.rejects(

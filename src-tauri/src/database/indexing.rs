@@ -5,16 +5,16 @@ use std::io;
 #[derive(Clone, Copy, Default, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MetadataOwner {
-    #[default]
     Renderer,
+    #[default]
     Core,
 }
 
 impl MetadataOwner {
     pub fn parse(value: Option<&str>) -> io::Result<Self> {
         match value {
-            None | Some("renderer") => Ok(Self::Renderer),
-            Some("core") => Ok(Self::Core),
+            Some("renderer") => Ok(Self::Renderer),
+            None | Some("core") => Ok(Self::Core),
             _ => Err(io::Error::new(
                 io::ErrorKind::InvalidInput,
                 "Invalid metadata owner selection",

@@ -29,13 +29,15 @@ export async function startShell({
       "The native host did not report a supported desktop runtime",
     );
   }
-  const metadataOwner = info.metadataOwner ?? "renderer";
+  const metadataOwner = info.metadataOwner ?? "core";
   if (metadataOwner !== "renderer" && metadataOwner !== "core")
     throw new Error("The native host reported an invalid metadata owner");
-  const editingOwner = info.editingOwner ?? "renderer";
+  const editingOwner = info.editingOwner ?? "core";
   if (editingOwner !== "renderer" && editingOwner !== "core")
     throw new Error("The native host reported an invalid editing owner");
-  const tasksOwner = info.tasksOwner ?? "renderer";
+  const tasksOwner =
+    info.tasksOwner ??
+    (metadataOwner === "core" && editingOwner === "core" ? "core" : "renderer");
   validateTasksSelection(tasksOwner, metadataOwner, editingOwner);
   document.documentElement.dataset.appStateDirectory =
     DEFAULT_APP_STATE_DIRECTORY;

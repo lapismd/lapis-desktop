@@ -7,6 +7,7 @@
     type VaultSession,
     type NativeBackgroundIndexing,
     type AppDatabase,
+    type NativeBackgroundJobs,
   } from "@lapis-notes/api";
   import NotesWorkspace from "../../src/components/views/NotesWorkspace.svelte";
   import { DesktopUrlDelivery } from "../../src/lib/native/integration-urls";
@@ -33,6 +34,7 @@
     safeMode,
     backgroundIndexing,
     nativeTasks,
+    nativeBackgroundJobs,
     appDatabase,
   }: {
     class?: string;
@@ -45,6 +47,7 @@
     safeMode?: AppSafeModeState;
     backgroundIndexing?: NativeBackgroundIndexing;
     nativeTasks?: NativeTasks;
+    nativeBackgroundJobs?: NativeBackgroundJobs;
     appDatabase?: AppDatabase;
   } = $props();
 
@@ -81,17 +84,21 @@
     } catch {
       // Preserve malformed configuration fixtures for startup recovery stories.
     }
+    const vaultId = crypto.randomUUID();
     const boot = createVaultSession(
-      new MemoryVaultAdapter({
-        ...files,
-        ".lapis/app.json": configuration,
-        "Welcome.md": "# A desktop catalog\n\nEdit this disposable note.\n",
-      }),
+      new MemoryVaultAdapter(
+        {
+          ...files,
+          ".lapis/app.json": configuration,
+          "Welcome.md": "# A desktop catalog\n\nEdit this disposable note.\n",
+        },
+        { vaultId },
+      ),
       {
         runtime: "tauri-desktop",
         appDatabase: appDatabase ?? new MemoryAppDatabase(crypto.randomUUID()),
         profile: {
-          id: crypto.randomUUID(),
+          id: vaultId,
           name: "Catalog vault",
           kind: "desktop-folder",
           handle: { rootPath: "/catalog" },
@@ -104,6 +111,8 @@
       .then(async (value) => {
         if (backgroundIndexing) value.backgroundIndexing = backgroundIndexing;
         if (nativeTasks) value.nativeTasks = nativeTasks;
+        if (nativeBackgroundJobs)
+          value.nativeBackgroundJobs = nativeBackgroundJobs;
         if (disposed) await value.close();
         else session = value;
       })

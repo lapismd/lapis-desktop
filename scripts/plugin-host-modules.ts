@@ -29,6 +29,7 @@ const modules = Object.entries(registry).filter(
     entry.public &&
     entry.platforms.includes("web") &&
     (entry.packageName === "@lapis-notes/api" ||
+      entry.packageName === "@lapismd/design-core" ||
       specifier === "@lapis-notes/markdown/embed" ||
       editorModules.has(specifier) ||
       entry.source === "renderer-abi"),

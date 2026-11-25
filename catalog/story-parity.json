@@ -469,5 +469,8 @@
   },
   "catalog/plugins/repository/NativeRemotes.stories.ts": {
     "kind": "application"
+  },
+  "catalog/plugins/background-jobs/Settings.stories.ts": {
+    "kind": "application"
   }
 }

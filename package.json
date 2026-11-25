@@ -73,7 +73,8 @@
     "release:verify": "node scripts/release/verify-candidate.mjs",
     "cli:prepare": "node scripts/prepare-cli.mjs",
     "changeset": "node scripts/release/changesets.mjs",
-    "release:version": "node scripts/release/version.mjs"
+    "release:version": "node scripts/release/version.mjs",
+    "test:plugin-jobs:native": "node scripts/validation.mjs run test:plugin-jobs:native"
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.3.0",
@@ -86,7 +87,7 @@
     "@lapis-notes/search": "^0.1.12",
     "@lapis-notes/source-editor": "^0.1.11",
     "@lapis-notes/ui": "^0.2.8",
-    "@lapis-notes/workspace": "^0.4.6",
+    "@lapis-notes/workspace": "^0.4.11",
     "@lapismd/design-core": "^0.13.4",
     "@lapismd/mira": "~0.2.0",
     "@lapismd/mira-editor": "~0.0.4",
@@ -117,7 +118,7 @@
     "@tanstack/svelte-virtual": "^3.13.46",
     "@lapismd/agent-ui": "^0.2.6",
     "@lapismd/repository-ui": "^0.1.1",
-    "@lapis-notes/app-profile": "^0.2.6",
+    "@lapis-notes/app-profile": "^0.3.1",
     "i18next": "^26.3.4"
   },
   "devDependencies": {
@@ -153,7 +154,7 @@
     "vitest": "4.1.12",
     "webdriverio": "9.32.0",
     "turbo": "^2.5.4",
-    "@lapis-notes/lapis-plugin-tasks": "^0.2.0",
+    "@lapis-notes/lapis-plugin-tasks": "^0.3.0",
     "@lapis-notes/bases": "^0.4.1"
   }
 }

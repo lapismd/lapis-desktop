@@ -1,4 +1,4 @@
-# Desktop plugins and [CI catalog profiles](ci.md) — [native turns](ai-adapter.md), [queues](ai-queue.md)
+# Desktop plugins and [CI catalog profiles](ci.md) — [native turns](ai-adapter.md), [queues](ai-queue.md) — [Plugin background jobs](background.md)
 
 Catalog draft clearing MUST be platform-neutral; cancellation retains original
 assertions. Queue states extend E-CORE-033/036 recovery/admission with real
@@ -150,12 +150,12 @@ public exports and owning-repository validation.
 
 ## Requirements
 
-The development catalog retains component/style HMR and reconstructs its owned
-App/controller instances after runtime-script or fixture changes. Those changes
-must trigger a full preview reload; retained old class/state shapes cannot be
-treated as current implementation. Reload scope stays within this checkout's
-`src` runtime scripts and `catalog/support` fixtures. Generated outputs and
-sibling repositories do not trigger this lifecycle policy.
+Notes catalog fixtures MUST use unique vault IDs to isolate persisted trust and
+policy between owned Apps. Component/style HMR remains. Runtime script or
+fixture changes MUST rebuild App/controllers by full preview reload within this
+checkout's `src` runtime scripts and `catalog/support`. Old class/state shapes
+cannot represent current code. Generated outputs and sibling repositories do not
+trigger this lifecycle policy.
 
 Managed preview commands retain the foreground launcher and use literal loopback
 with an exact selected port. Start/restart preflight installed CLI and
@@ -257,8 +257,8 @@ Worker and WASM assets use the production origin with their correct MIME types;
 no Node/Deno runtime, unrestricted file URL or global filesystem grant is added.
 Signature verification remains owned by the existing installation pipeline.
 
-The build-owned initial import map exposes only approved portable API, Markdown
-embed, editor and exact Svelte renderer contracts through the same Vite graph.
+The build-owned initial import map exposes approved portable API, Design Core,
+Markdown embed, editor and exact Svelte renderer contracts in one Vite graph.
 Configured installations load after static plugins; bundled identities retain
 precedence. Notes teardown disables every loaded instance after guarded saves.
 The native asset route is a bundled-production-origin capability; Vite

@@ -63,6 +63,10 @@ pub async fn desktop_notify(
     notification: Notification,
 ) -> Result<(), String> {
     main_window(&window)?;
+    deliver_notification(notification, true).await
+}
+
+async fn deliver_notification(notification: Notification, interactive: bool) -> Result<(), String> {
     notification.validate()?;
     #[cfg(target_os = "macos")]
     {
@@ -72,7 +76,7 @@ pub async fn desktop_notify(
             .map_err(|error| error.to_string())?;
         let allowed = match settings.authorization_status {
             AuthorizationStatus::Authorized | AuthorizationStatus::Provisional => true,
-            AuthorizationStatus::NotDetermined => {
+            AuthorizationStatus::NotDetermined if interactive => {
                 request_auth().await.map_err(|error| error.to_string())?
             }
             _ => false,
@@ -91,5 +95,30 @@ pub async fn desktop_notify(
         Ok(())
     }
     #[cfg(not(target_os = "macos"))]
-    Err("Native notifications are unavailable on this platform".into())
+    {
+        let _ = interactive;
+        Err("Native notifications are unavailable on this platform".into())
+    }
+}
+
+pub fn job_delivery() -> Option<lapis_app_core::services::JobNotificationDelivery> {
+    #[cfg(target_os = "macos")]
+    {
+        Some(std::sync::Arc::new(|record| {
+            tauri::async_runtime::block_on(deliver_notification(
+                Notification {
+                    id: record.id.clone(),
+                    title: record.title.clone(),
+                    message: record.message.clone(),
+                    severity: "info".into(),
+                    source: record.source.clone(),
+                },
+                false,
+            ))
+        }))
+    }
+    #[cfg(not(target_os = "macos"))]
+    {
+        None
+    }
 }

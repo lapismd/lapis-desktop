@@ -52,6 +52,7 @@ it("session editing and Tasks ports share the injected admitted transport", asyn
   await session.nativeEditingIntents!.call({ kind: "list" });
   expect(await session.nativeEditingIntents!.read("Note.md")).toBe(saved);
   await session.nativeTasks!.call({ kind: "status" });
+  await session.nativeBackgroundJobs!.call({ kind: "list" });
   expect(calls).toEqual([
     [
       "vault_editing_intents",
@@ -59,6 +60,10 @@ it("session editing and Tasks ports share the injected admitted transport", asyn
     ],
     ["vault_editing_snapshot", { sessionId: "admitted", path: "Note.md" }],
     ["vault_tasks", { sessionId: "admitted", command: { kind: "status" } }],
+    [
+      "vault_background_jobs",
+      { sessionId: "admitted", command: { kind: "list" } },
+    ],
   ]);
   expect(bypass).not.toHaveBeenCalled();
 });

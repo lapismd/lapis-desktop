@@ -29,7 +29,7 @@ const original = JSON.parse(
 test("each original native file has exactly one independent family and execution mode", () => {
   assert.deepEqual(
     nativeInventory.files.map(({ file }) => file.split("/").at(-1)).sort(),
-    original.sort(),
+    [...original, "background-jobs.test.mjs"].sort(),
   );
   for (const entry of nativeInventory.files)
     assert.ok(existsSync(entry.file), entry.file);

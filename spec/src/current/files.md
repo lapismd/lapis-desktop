@@ -1,4 +1,4 @@
-# File management (M5)
+# File management (M5) — [Plugin background jobs](background.md)
 
 Notes follows [mobile layout](mobile-layout.md) without forcing a mode. Vault
 retirement revokes its [plugin credential leases](repository-remotes.md). Leave

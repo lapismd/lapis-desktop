@@ -93,6 +93,14 @@ pub fn shell_ready(
             window.set_focus().map_err(|error| error.to_string())?;
         }
     }
+    // GTK can present the WebView while constructing it despite a hidden builder.
+    // API-only acceptance retains its explicit hidden-window contract on Linux.
+    #[cfg(all(feature = "e2e", not(target_os = "macos")))]
+    if crate::acceptance::background::enabled()
+        && let Some(window) = app.get_webview_window("main")
+    {
+        window.hide().map_err(|error| error.to_string())?;
+    }
     crate::host::lifecycle::ready(&app).map_err(|error| error.to_string())?;
     if !state.ready.swap(true, Ordering::SeqCst) {
         println!("lapis-desktop: renderer ready");

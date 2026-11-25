@@ -1,8 +1,7 @@
 # Local dependency intake
 
-The Desktop credential adapter consumes the same Server revision for Core,
-Protocol and Content transports. Desktop keeps its approved Keychain item
-identities; the renderer takes the durable plugin API from the Notes registry.
+Background jobs and credentials use one combined Server revision for Core,
+Protocol, Content and CLI. Existing Keychain identities stay unchanged.
 
 The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)
@@ -392,6 +391,7 @@ prerequisites and native source pins remain enforced. Reviewed application
 intake renews the SDK context descriptor without changing its projection
 algorithm or held authority.
 
-Desktop credential intake requires published Notes API `^0.6.16` for the native
-plugin secret adapter. Keep one installed API peer context and preserve the
-separate checksummed projection for the remaining private packages.
+Background services and credentials consume released API `^0.6.16`, Workspace
+`^0.4.11` and Profile `^0.3.1` in one API peer context; only private AI retains
+an explicit archive. Refresh the SDK shape from the reviewed manifest, lock and
+CI inventory without changing its algorithm or held automation authority.

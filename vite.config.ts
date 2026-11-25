@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => ({
         }
       },
     },
-    ...(mode === "native-test"
+    ...(["native-test", "native-jobs-test"].includes(mode)
       ? [
           {
             name: "native-acceptance-entry",
@@ -46,7 +46,9 @@ export default defineConfig(({ mode }) => ({
                   );
                 return html.replace(
                   'src="/src/main.ts"',
-                  'src="/tests/desktop/entry.ts"',
+                  mode === "native-jobs-test"
+                    ? 'src="/tests/desktop/jobs-entry.ts"'
+                    : 'src="/tests/desktop/entry.ts"',
                 );
               },
             },

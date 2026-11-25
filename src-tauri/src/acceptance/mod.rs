@@ -5,3 +5,4 @@ pub(crate) mod backup_restore;
 pub(crate) mod integration;
 pub(crate) mod popouts;
 pub(crate) mod secondary_window;
+pub(crate) mod vault_admission;

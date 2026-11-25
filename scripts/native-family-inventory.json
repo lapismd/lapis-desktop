@@ -331,6 +331,12 @@
       "family": "smoke",
       "mode": "wdio",
       "coldProcess": false
+    },
+    {
+      "file": "tests/desktop/background-jobs.test.mjs",
+      "family": "workspace",
+      "mode": "feature",
+      "coldProcess": true
     }
   ]
 }

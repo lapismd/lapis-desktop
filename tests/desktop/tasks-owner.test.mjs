@@ -21,6 +21,7 @@ async function fixture(context, core) {
   ]) {
     const previous = process.env[key];
     if (core) process.env[key] = "core";
+    else if (key === "LAPIS_DESKTOP_TASKS_OWNER") process.env[key] = "renderer";
     else delete process.env[key];
     context.after(() => {
       if (previous === undefined) delete process.env[key];
@@ -73,7 +74,7 @@ async function fixture(context, core) {
   };
 }
 
-test("native Tasks remain unavailable by default even if the renderer forges its selection", async (context) => {
+test("explicit renderer Tasks cannot forge native selection", async (context) => {
   const f = await fixture(context, false);
   assert.equal((await f.call("shell_info")).tasksOwner, "renderer");
   await f.session.browser.execute(() => {
@@ -93,7 +94,17 @@ test("native Task transport shares editing fences, typed recovery and revoked va
   assert.equal(info.tasksOwner, "core");
   assert.equal(info.metadataOwner, "core");
   assert.equal(info.editingOwner, "core");
-  assert.equal(info.nativeVisibility.Ok[0], false);
+  assert.deepEqual(
+    await f.session.browser.execute(async () => {
+      const window = globalThis.__TAURI__.window.getCurrentWindow();
+      return [await window.isVisible(), await window.isFocused()];
+    }),
+    [false, false],
+  );
+  if (process.platform === "darwin") {
+    assert.equal(info.nativeVisibility.Ok[0], false);
+    assert.equal(info.nativeVisibility.Ok[4], false);
+  }
   assert.equal(
     await f.session.browser.execute(() => document.hasFocus()),
     false,

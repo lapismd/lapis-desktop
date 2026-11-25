@@ -28,7 +28,10 @@
             "core:event:allow-unlisten",
             "core:window:allow-set-focus",
             "lapis-ai:acp-session",
-            "allow-acp-acceptance-control"
+            "allow-acp-acceptance-control",
+            "core:window:allow-is-visible",
+            "core:window:allow-show",
+            "core:window:allow-is-focused"
           ]
         }
       ]

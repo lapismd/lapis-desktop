@@ -42,6 +42,25 @@ fn tasks_are_explicit_local_and_require_native_metadata_and_editing() {
     }
 }
 
+#[test]
+fn native_tasks_default_follows_admitted_metadata_and_editing() {
+    assert!(TasksOwner::select(None, true, true).unwrap().is_core());
+    for (metadata, editing) in [(false, false), (true, false), (false, true)] {
+        assert!(
+            !TasksOwner::select(None, metadata, editing)
+                .unwrap()
+                .is_core()
+        );
+        assert!(TasksOwner::select(Some("core"), metadata, editing).is_err());
+    }
+    assert!(
+        !TasksOwner::select(Some("renderer"), true, true)
+            .unwrap()
+            .is_core()
+    );
+    assert!(TasksOwner::select(Some("auto"), true, true).is_err());
+}
+
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn tasks_use_existing_client_and_writer_guards_with_private_profile_storage() {
     let temp = tempfile::tempdir().unwrap();

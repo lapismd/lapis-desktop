@@ -51,7 +51,7 @@ test("Task permission and lost-response errors are never replayed or replaced by
   }
 });
 
-test("Task selection stays renderer-owned unless explicitly selected with native writer prerequisites", () => {
+test("Task selection requires compatible native writer prerequisites and retains explicit renderer mode", () => {
   assert.doesNotThrow(() =>
     validateTasksSelection("renderer", "renderer", "renderer"),
   );

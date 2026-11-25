@@ -2,19 +2,21 @@
 
 ## Requirements
 
-| ID          | Requirement                                                                                                                                                                                                                                                                                        |
-| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LD-TASK-001 | Explicit native Tasks selection MUST require Core metadata and editing owners, use the existing admitted App client and installation-owned Task storage, and reject invalid, foreign or revoked authority without renderer fallback. Renderer ownership remains the default.                       |
-| LD-TASK-002 | Native Task calls MUST retain generated command/value types, conditional writes, ordered lifecycle journal, provider policy and typed uncertain outcomes. Observation detach MUST drain accepted calls without disabling or replaying work; explicit plugin disable remains the shared App policy. |
-| LD-TASK-003 | Native Tasks adoption MUST preserve startup declaration reconciliation, existing installed-plugin registration and planner/editor surfaces, including provider, locale, recovery and cold native acceptance. Source/editor qualification alone MUST NOT complete this gate.                        |
+| ID          | Requirement                                                                                                                                                                                                                                                                                                                                                    |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| LD-TASK-001 | Explicit native Tasks selection MUST require Core metadata and editing owners, use the existing admitted App client and installation-owned Task storage, and reject invalid, foreign or revoked authority without renderer fallback. Compatible Core metadata/editing selection MUST default Tasks to Core; explicit renderer compatibility remains available. |
+| LD-TASK-002 | Native Task calls MUST retain generated command/value types, conditional writes, ordered lifecycle journal, provider policy and typed uncertain outcomes. Observation detach MUST drain accepted calls without disabling or replaying work; explicit plugin disable remains the shared App policy.                                                             |
+| LD-TASK-003 | Native Tasks adoption MUST preserve startup declaration reconciliation, existing installed-plugin registration and planner/editor surfaces, including provider, locale, recovery and cold native acceptance. Source/editor qualification alone MUST NOT complete this gate.                                                                                    |
 
 ## Staged native Tasks intake (M16.9)
 
 `LAPIS_DESKTOP_TASKS_OWNER=core` selects the public native Task port only with
 `LAPIS_DESKTOP_METADATA_OWNER=core` and `LAPIS_DESKTOP_EDITING_OWNER=core`.
 Invalid or incomplete selection refuses startup before App/plugin construction.
-The default remains renderer-owned. This does not add Tasks to the bundled
-profile: installed Tasks registration and declaration remain source-owned.
+With Core metadata and editing, Tasks defaults to Core. Explicit renderer
+metadata or editing retains renderer Tasks unless Tasks is explicitly selected.
+This does not add Tasks to the bundled profile: installed Tasks registration and
+declaration remain source-owned.
 
 The Tauri adapter supplies only the existing admitted vault session and
 generated Task command. Core owns the private profile journal, provider policy,
@@ -90,3 +92,8 @@ Subsequent snapshots, every intent call, native policy and writes MUST remain
 real and unchanged. Cleanup clears an unconsumed fault and drains held reads;
 passive observations never supply outcomes, versions, guards or mutation
 authority. E-CI-007 retains the separate native acceptance gate.
+
+The default cutover is qualified separately under
+[E-JOB-001](../history/E-JOB-001.md), including the actual released workspace,
+private digest checkpoint, native editing fences and cold restart. Until those
+gates pass, the default cutover remains unqualified.
