@@ -38,3 +38,12 @@ exact source decision. Preserve current native/product/distribution gates.
 E-DEPENDENCIES-019 appends ed03 integration and renewed source evidence; fresh
 final-head hosted checks, authority reconciliation and health/callback remain
 held. Native cold-chat collection does not qualify native acceptance.
+
+## Linux startup resource repair
+
+[E-RELEASE-028](history/E-RELEASE-028.md) records rc.3 failing native Homebrew
+startup on both Linux targets after all three archives built. Linux packaging
+omitted required `bundled-skills.json`; its self-inventory did not check that
+startup requirement. Desktop owns the copy/verifier repair. Keep publication
+blocked until fresh source CI and both unchanged native installation checks
+pass; never modify the failed archive or substitute its receipts.

@@ -116,7 +116,7 @@
 | LD-REL-003 | Implemented | E-RELEASE-001/002/005 and E-CI-091: tooling, archives and receipts. [E-RELEASE-020](history/E-RELEASE-020.md): sealed candidate checksums independently verified. |
 | LD-REL-004 | Partial | [E-RELEASE-020](history/E-RELEASE-020.md)/[021](history/E-RELEASE-021.md): recovery; [026](history/E-RELEASE-026.md): automatic controller, publication pending. |
 | LD-REL-005 | Partial | [E-RELEASE-026](history/E-RELEASE-026.md): pinned CLI/tap handoff source; first formula/publication pending. |
-| LD-REL-006 | Implemented | E-RELEASE-005/019/020: both original Linux archives passed Homebrew lifecycle, window/quit and retained-data qualification. |
+| LD-REL-006 | Partial | [E-RELEASE-028](history/E-RELEASE-028.md): rc.3 omits startup skills; repair needs fresh native receipts. |
 | LD-TASK-001 | Planned | [E-CORE-036](history/E-CORE-036.md): explicit native selection, profile storage and admitted transport intake; composed native proof pending. |
 | LD-TASK-002 | Planned | [E-CORE-036](history/E-CORE-036.md): generated DTOs and existing App observation/journal; full source and installed-plugin acceptance pending. |
 | LD-TASK-003 | Planned | [E-CORE-036](history/E-CORE-036.md): M16.9 retains provider, locale, recovery, public-archive and actual native gates. |

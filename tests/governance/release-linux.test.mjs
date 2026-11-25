@@ -40,7 +40,7 @@ function elf(machine = 183) {
 const pinnedCliSource = (
   await readFile(new URL("../../src-tauri/Cargo.toml", import.meta.url), "utf8")
 ).match(/lapis-cli = .*rev = "([a-f0-9]{40})"/)?.[1];
-async function fixture(context, cli = {}) {
+async function fixture(context, cli = {}, skills = true) {
   const root = await mkdtemp(join(tmpdir(), "lapis-preview-linux-"));
   context.after(() => rm(root, { recursive: true, force: true }));
   for (const file of [
@@ -69,6 +69,11 @@ async function fixture(context, cli = {}) {
     `[Desktop Entry]\nExec=lapis-notes-preview %U\nX-Lapis-Identifier=${identifier}\nX-Lapis-Version=${identity.version}\n`,
   );
   await writeFile(join(root, "share/lapis-notes-preview.png"), "fixture icon");
+  if (skills)
+    await writeFile(
+      join(root, `lib/${productName}/bundled-skills.json`),
+      "[]\n",
+    );
   const runtime = join(root, linuxRuntime, "runtime-manifest.toml");
   await writeFile(runtime, 'profile = "release"\n');
   const metadata = {
@@ -174,4 +179,12 @@ test("Linux refuses CLI profile, target and checksum mismatches inside an intact
     const { root } = await fixture(context, cli);
     assert.throws(() => verifyLinuxBundle(root, identity, target), /CLI/);
   }
+});
+
+test("Linux rejects an intact inventory that omits the startup skills resource", async (context) => {
+  const { root } = await fixture(context, {}, false);
+  assert.throws(
+    () => verifyLinuxBundle(root, identity, target),
+    /bundled-skills/,
+  );
 });

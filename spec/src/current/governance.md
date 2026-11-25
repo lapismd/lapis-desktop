@@ -6,8 +6,8 @@ Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 [Local validation](../../../docs/validation.md) retains Docker/native gates
 (E-VALIDATION-001), archive receipts and owned cleanup. E-SYNC-006 requires one
 Notes cohort for API/Profile builds and imports. [Distribution](distribution.md)
-owns releases and E-RELEASE-005's Linux extension. E-CORE-025/026/045 pin
-Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
+owns releases; E-RELEASE-028 requires Linux startup skills. E-CORE-025/026/045
+pin Core/Tasks and DTOs; E-CORE-028/M16.6 share History ownership/controls.
 E-CORE-029/030 qualify metadata/Search; 033/034 qualify editing. Core readers
 use exact scoped IPC grants and bounded Sync waits; generic plugins deny.
 Tasks/default/Sync retain native leave guards. SSH retains literal arguments,

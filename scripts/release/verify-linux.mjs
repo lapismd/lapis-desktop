@@ -61,6 +61,12 @@ export function verifyLinuxBundle(directory, identity, target) {
     lstatSync(join(directory, "share/lapis-notes-preview.png")).isFile(),
     "Preview icon is required",
   );
+  assert.ok(
+    lstatSync(
+      join(directory, "lib", productName, "bundled-skills.json"),
+    ).isFile(),
+    "Packaged startup skills resource is required",
+  );
   const executable = join(directory, linuxBinary);
   const files = verifyOrdinary(directory, executable).filter(
     (file) => file !== metadataPath,

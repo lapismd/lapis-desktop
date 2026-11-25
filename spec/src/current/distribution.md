@@ -117,6 +117,10 @@ Linux candidate installation provisions the same pinned Homebrew setup action
 used by tap CI before invoking trust, audit and native installation. The macOS
 build runner performs no installation qualification.
 
+Linux packaging MUST retain the generated `bundled-skills.json` in the Tauri
+resource root; a self-consistent file inventory that omits this required startup
+resource MUST fail verification before installation.
+
 Linux packaging retains `bin/lapis-notes-preview` beside
 `lib/Lapis Notes Preview/lapis-ai`, matching the ordinary Tauri resource lookup.
 The complete archive stays in Homebrew's Caskroom; only the preview launcher and
