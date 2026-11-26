@@ -3,6 +3,7 @@ import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync, mkdirSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { resolve } from "node:path";
+import { nativeBuildEnvironment } from "./validation/model.mjs";
 
 if (process.platform !== "darwin" || process.arch !== "arm64")
   throw Error("Notification acceptance artifact requires macOS ARM64");
@@ -17,6 +18,9 @@ const config = JSON.parse(
 );
 config.productName = "Lapis Notification Acceptance";
 config.identifier = `com.lapismd.lapis-desktop.acceptance.notifications.r${run}a${attempt}`;
+// Notification delivery needs the production bootstrap, not distribution fixtures.
+config.build.beforeBuildCommand =
+  "pnpm exec vite build --mode native-jobs-test --outDir .local/native-test/ui";
 // Optional AI fixtures are irrelevant to this isolated OS boundary.
 config.bundle.resources = [];
 config.app.security.capabilities.push({
@@ -45,6 +49,7 @@ execFileSync(
     stdio: "inherit",
     env: {
       ...process.env,
+      ...nativeBuildEnvironment("build"),
       CARGO_PROFILE_DEV_DEBUG: "0",
       CARGO_PROFILE_DEV_STRIP: "debuginfo",
     },

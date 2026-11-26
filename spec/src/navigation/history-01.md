@@ -213,3 +213,4 @@
 
 - [Verify published background-job preview](../history/E-JOB-005.md)
 - [Record notification acceptance release intent](../history/E-JOB-006.md)
+- [Repair notification artifact renderer prerequisite](../history/E-JOB-007.md)

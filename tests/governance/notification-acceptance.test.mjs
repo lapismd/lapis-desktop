@@ -45,6 +45,7 @@ test("notification inspection is e2e-only and restricted to its dedicated bundle
   assert.match(hook, /get_delivered_notification_ids/u);
   assert.match(hook, /integration::services::job_delivery/u);
   const builder = read("scripts/build-notification-acceptance.mjs");
+  assert.match(builder, /--mode native-jobs-test/u);
   assert.match(builder, /config\.bundle\.resources = \[\]/u);
   assert.match(builder, /binarySha256/u);
 });

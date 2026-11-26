@@ -1,4 +1,4 @@
-# Governance — [native](native-acceptance.md), [CI](ci.md), [turns](ai-adapter.md), [mobile](mobile-layout.md), [Sync](lapis-sync.md) — [Job alerts](background.md)
+# Governance — [native](native-acceptance.md), [CI](ci.md), [turns](ai-adapter.md), [mobile](mobile-layout.md), [Sync](lapis-sync.md) — [alerts](background.md)
 
 Trusted bot PRs skip specs only; manual CI uses parent history (E-RELEASE-011).
 [Shared screens](shared-screen-integration.md) own integration;
@@ -397,4 +397,4 @@ Desktop's own source snapshot remains intentional.
 <!-- dependency-intake:validator-development:end -->
 
 [E-DEPENDENCIES-018](../history/E-DEPENDENCIES-018.md) grants no activation.
-[2026.31.6-rc.5](distribution.md).
+[Preview](distribution.md); [OS](ci.md).
