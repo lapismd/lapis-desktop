@@ -1,7 +1,10 @@
 # Local dependency intake
 
 Background jobs and credentials use one combined Server revision for Core,
-Protocol, Content and CLI. Existing Keychain identities stay unchanged.
+Protocol, Content and CLI. Existing Keychain identities stay unchanged. The
+notification acceptance script changes only manifest commands; its exact SDK
+projection shape is regenerated with the unchanged reviewed helper. Package
+ranges, registry integrity and pinned private sources remain unchanged.
 
 The shared-AI retirement intake used released API ^0.6.9, UI ^0.2.5 and App
 Profile ^0.2.6 through normal npm ranges. [E-CLI-008](../history/E-CLI-008.md)

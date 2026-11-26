@@ -28,6 +28,12 @@ export const nativeLaneOptIn = "LAPIS_DESKTOP_NATIVE_LANE";
  */
 export const macosNativeLanes = [
   {
+    name: "notifications",
+    script: "test:desktop:notifications",
+    delegate: "scripts/notification-acceptance.mjs",
+    needs: "isolated macOS permission and actual Notification Center delivery",
+  },
+  {
     name: "quarantine",
     script: "test:quarantine:diagnostic",
     delegate: "scripts/native-quarantine.mjs",

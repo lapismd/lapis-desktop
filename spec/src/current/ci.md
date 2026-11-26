@@ -4,6 +4,13 @@ Regular pull-request and main CI use an ordinary affected profile. Full
 qualification remains a separate explicit profile. Preview publication retains
 the separately required full exact-source qualification.
 
+An explicit manual `notification_acceptance` request MAY additionally build a
+debug e2e macOS notification artifact. The request MUST default off, execute no
+hosted macOS tests, retain a fresh acceptance-only bundle identity and publish
+the binary hash and exact source receipt. Ordinary release bytes and their
+qualification MUST remain separate. The explicit request MUST select full
+prerequisites and packaging even when the ordinary manual `full` input is false.
+
 Manual full qualification uses the source commit's first parent as its
 specification/evidence base, retaining historical receipt ancestry. Missing or
 invalid parent history rejects qualification. The existing initial-push root

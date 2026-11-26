@@ -11,6 +11,13 @@ on:
         type: boolean
         default: true
         required: false
+      notification_acceptance:
+        description:
+          Build an isolated macOS notification acceptance artifact (no hosted
+          tests)
+        type: boolean
+        default: false
+        required: false
   schedule:
     - cron: 17 2 * * *
 permissions:
@@ -509,7 +516,7 @@ jobs:
   bundle:
     name: Native bundle
     runs-on: macos-15
-    timeout-minutes: 60
+    timeout-minutes: ${{ inputs.notification_acceptance && 120 || 60 }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v6
@@ -577,6 +584,23 @@ jobs:
           node scripts/ci/timing.mjs run build-bundle-and-audit-the-native-app
           -- /bin/bash -e -o pipefail -c 'node scripts/run-turbo.mjs ci:bundle
           --summarize'
+      - name: Build isolated notification acceptance artifact
+        if:
+          github.event_name == 'workflow_dispatch' &&
+          inputs.notification_acceptance
+        run: node scripts/build-notification-acceptance.mjs
+      - uses: actions/upload-artifact@v7
+        if:
+          github.event_name == 'workflow_dispatch' &&
+          inputs.notification_acceptance
+        with:
+          name:
+            notification-acceptance-${{ github.run_id }}-${{ github.run_attempt
+            }}
+          path: .local/notification-acceptance/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 7
       - name: Report Turbo cache
         run: node scripts/report-turbo-cache.mjs --github-summary
       - uses: actions/upload-artifact@v7

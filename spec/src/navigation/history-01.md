@@ -209,3 +209,6 @@
 - [Version Desktop preview 2026.31.6-rc.5](../history/E-RELEASE-030.md)
 
 - [Close native background-job verification](../history/E-JOB-003.md)
+- [Prepare isolated macOS notification acceptance](../history/E-JOB-004.md)
+
+- [Verify published background-job preview](../history/E-JOB-005.md)

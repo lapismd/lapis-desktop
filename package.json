@@ -74,7 +74,8 @@
     "cli:prepare": "node scripts/prepare-cli.mjs",
     "changeset": "node scripts/release/changesets.mjs",
     "release:version": "node scripts/release/version.mjs",
-    "test:plugin-jobs:native": "node scripts/validation.mjs run test:plugin-jobs:native"
+    "test:plugin-jobs:native": "node scripts/validation.mjs run test:plugin-jobs:native",
+    "test:desktop:notifications": "node scripts/notification-acceptance.mjs"
   },
   "dependencies": {
     "@lapismd/ai-host": "^0.3.0",
