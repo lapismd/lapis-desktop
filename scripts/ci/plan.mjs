@@ -19,7 +19,9 @@ const event = JSON.parse(readFileSync(process.env.GITHUB_EVENT_PATH, "utf8"));
 const eventName = process.env.GITHUB_EVENT_NAME;
 const full =
   eventName === "schedule" ||
-  (eventName === "workflow_dispatch" && event.inputs?.full !== "false");
+  (eventName === "workflow_dispatch" &&
+    (event.inputs?.full !== "false" ||
+      event.inputs?.notification_acceptance === "true"));
 let base = event.pull_request?.base?.sha ?? event.before;
 let head = event.pull_request?.head?.sha ?? process.env.GITHUB_SHA;
 if (["schedule", "workflow_dispatch"].includes(eventName)) {

@@ -9,6 +9,11 @@ and Ayatana AppIndicator. Stable cutover remains in the
 
 ## Requirements
 
+The isolated background-job notification harness carries patch release intent
+under LD-REL-001; [E-JOB-006](../history/E-JOB-006.md) retains the original
+missing-intent failure. Its actual macOS acceptance remains separate from the
+ordinary preview distribution in [E-JOB-005](../history/E-JOB-005.md).
+
 | ID         | Requirement                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LD-REL-001 | Changesets version PRs MUST advance synchronized preview candidates; automatic preparation MUST require successful authoritative CI for the identical main commit. Only the latest push/manual attempt MAY qualify; scheduled runs MUST NOT qualify or mask it. Package, Rust and public app versions MUST agree on forward CalVer with an rc suffix; the numeric macOS bundle version MUST equal its base. Preview MUST retain distinct bundle/profile identity without stable URL schemes.                                                                                      |

@@ -4,6 +4,13 @@ Regular pull-request and main CI use an ordinary affected profile. Full
 qualification remains a separate explicit profile. Preview publication retains
 the separately required full exact-source qualification.
 
+An explicit manual `notification_acceptance` request MAY additionally build a
+debug e2e macOS notification artifact. The request MUST default off, execute no
+hosted macOS tests, retain a fresh acceptance-only bundle identity and publish
+the binary hash and exact source receipt. Ordinary release bytes and their
+qualification MUST remain separate. The explicit request MUST select full
+prerequisites and packaging even when the ordinary manual `full` input is false.
+
 Manual full qualification uses the source commit's first parent as its
 specification/evidence base, retaining historical receipt ancestry. Missing or
 invalid parent history rejects qualification. The existing initial-push root
@@ -298,3 +305,9 @@ existing full-qualification job names and native/platform gates remain required.
 Product PRs must add a Desktop Changeset; readme-only notes do not qualify. The
 generated version PR may consume notes only while changing its restricted
 version/changelog/evidence files. Product source cannot use that exemption.
+
+The isolated notification artifact uses `native-jobs-test` to run the existing
+production bootstrap without the broad distribution-fixture entry. A cold
+renderer build verifies this prerequisite before the build-only macOS attempt;
+[E-JOB-007](../history/E-JOB-007.md) retains the original missing-fixture
+failure.

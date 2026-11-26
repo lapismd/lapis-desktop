@@ -9,6 +9,8 @@ fn main() {
     const COMMANDS: &[&str] = &[
         #[cfg(feature = "e2e")]
         "acp_acceptance_control",
+        #[cfg(feature = "e2e")]
+        "notification_acceptance",
         "desktop_sync_open",
         "desktop_sync_snapshot",
         "desktop_sync_detach",

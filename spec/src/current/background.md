@@ -125,6 +125,14 @@ checks. The receipt MUST identify source, dependency lock, native executable and
 selected test families. Platform-specific system alerts retain their own OS
 acceptance.
 
+On-demand macOS notification acceptance MUST use a separately identified e2e
+bundle and a fresh isolated profile. It MUST prove unattended denial leaves
+undetermined permission unchanged, explicit foreground permission, actual
+Notification Center delivery through the production job sink, and authorized
+cold-process delivery. Send completion alone MUST NOT establish OS delivery. The
+driver MUST remove only its isolated bundle's test alerts. This narrow OS
+receipt grants no broader native CI parity or release qualification.
+
 The e2e-only native admission receipt MAY observe successful restore, picker and
 recent-vault admissions for the real Notes workspace. It MUST remain bounded and
 passive, contain no resource token and introduce no production command or

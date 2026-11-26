@@ -136,6 +136,8 @@ pub fn run() -> tauri::Result<()> {
             cli::access::desktop_cli_access,
             #[cfg(feature = "e2e")]
             crate::acceptance::acp::acp_acceptance_control,
+            #[cfg(feature = "e2e")]
+            crate::acceptance::notifications::notification_acceptance,
             crate::host::terminal::desktop_terminal_admit,
             crate::host::terminal::desktop_terminal_release,
             crate::host::ai::user_commands::desktop_ai_user_commands,

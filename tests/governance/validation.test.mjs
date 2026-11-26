@@ -422,6 +422,7 @@ test("every nonvisual test command uses the portable runner", async () => {
     "test:desktop:headed",
     "test:desktop:api",
     "test:desktop:onnx",
+    "test:desktop:notifications",
     "test:provider:live",
     "test:native:macos",
     "test:quarantine:diagnostic",
