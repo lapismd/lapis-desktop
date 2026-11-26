@@ -207,3 +207,5 @@
 
 - [E-JOB-002: Combined credentials and jobs](../history/E-JOB-002.md)
 - [Version Desktop preview 2026.31.6-rc.5](../history/E-RELEASE-030.md)
+
+- [Close native background-job verification](../history/E-JOB-003.md)
