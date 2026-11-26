@@ -212,3 +212,4 @@
 - [Prepare isolated macOS notification acceptance](../history/E-JOB-004.md)
 
 - [Verify published background-job preview](../history/E-JOB-005.md)
+- [Record notification acceptance release intent](../history/E-JOB-006.md)
